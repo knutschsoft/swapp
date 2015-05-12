@@ -1,69 +1,83 @@
-Symfony Standard Edition
+SWAPP
 ========================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony2
-application that you can use as the skeleton for your new applications.
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
-
-What's inside?
+How to start dev action?
 --------------
 
-The Symfony Standard Edition is configured with the following defaults:
+1. Install Database:
+On your MySQL console:
+```
+CREATE DATABASE swapp;
+GRANT ALL ON swapp.* TO swapp@'localhost' IDENTIFIED BY 'pa$$word';
+```
 
-  * An AppBundle you can use to start coding;
+2. Configure ACL
+How to install and configure acl: http://wiki.ubuntuusers.de/ACL
+Open a terminal and type in the following commands:
+```
+cd /your/symfony/dir
+sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
+sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
+```
 
-  * Twig as the only configured template engine;
+3. Setup webserver
 
-  * Doctrine ORM/DBAL;
+3.1. Create ```/etc/apache2/sites-available/swapp.conf``` as root with the following content.
 
-  * Swiftmailer;
+```
+<VirtualHost *:80>
+    ServerName swapp
+    ServerAlias swapp.localhost
+ 
+    DocumentRoot /your/symfony/dir/web
+ 
+    <Directory />
+        DirectoryIndex app.php
+        Options FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    <Directory "/your/symfony/dir/web">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+ 
+    ErrorLog ${APACHE_LOG_DIR}/swapp_error.log
+    CustomLog ${APACHE_LOG_DIR}/swapp_access.log combined
+ 
+</VirtualHost>
+```
 
-  * Annotations enabled for everything.
+3.2. run in terminal
 
-It comes pre-configured with the following bundles:
+```
+sudo a2ensite swapp.conf
+sudo service apache reload
+```
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+3.3. add in ```/etc/hosts```
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
+```
+127.0.0.1 swapp.localhost swapp
+```
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+4. install assets
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
+```
+php app/console assets:install web --symlink
+```
 
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
+5. check config
 
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
+Call in terminal:
+```
+php app/check.php
+```
 
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
+Open in browser:
+```
+http://swapp/config.php
+```
 
-  * [**AsseticBundle**][12] - Adds support for Assetic, an asset processing
-    library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  http://symfony.com/doc/2.6/book/installation.html
-[6]:  http://symfony.com/doc/2.6/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  http://symfony.com/doc/2.6/book/doctrine.html
-[8]:  http://symfony.com/doc/2.6/book/templating.html
-[9]:  http://symfony.com/doc/2.6/book/security.html
-[10]: http://symfony.com/doc/2.6/cookbook/email.html
-[11]: http://symfony.com/doc/2.6/cookbook/logging/monolog.html
-[12]: http://symfony.com/doc/2.6/cookbook/assetic/asset_management.html
-[13]: http://symfony.com/doc/2.6/bundles/SensioGeneratorBundle/index.html
