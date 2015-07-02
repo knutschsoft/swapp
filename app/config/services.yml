@@ -7,3 +7,20 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    app.controller.controller_as_a_service:
+        class: AppBundle\Controller\ControllerAsAServiceController
+        arguments: [@templating]
+
+    app.param_converter.example:
+        class: AppBundle\ParamConverter\ExampleParamConverter
+        arguments: []
+        tags:
+            - { name: request.param_converter, converter: example, priority: 10 }
+
+    app.param_converter.flash_bag:
+        class: AppBundle\ParamConverter\FlashBagParamConverter
+        arguments:
+          - @session
+        tags:
+            - { name: request.param_converter, converter: flash_bag, priority: 10 }
