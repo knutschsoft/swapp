@@ -1,7 +1,3 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
-
 controller_as_a_service_example:
     path: /caas
     defaults: { _controller: app.controller.controller_as_a_service:exampleAction }
