@@ -1,6 +1,8 @@
 SWAPP
 ========================
-
+<a href="https://travis-ci.org/knutschsoft/swapp" target='_blank'>
+  <img title="build status of swapp" src="https://travis-ci.org/knutschsoft/swapp.svg">
+</a>
 
 How to start dev action?
 --------------
