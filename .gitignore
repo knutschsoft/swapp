@@ -26,6 +26,12 @@
 /web/bundles/
 /web/uploads/
 
+#bower
+/bower_components/
+
+# npm
+/node_modules/
+
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
