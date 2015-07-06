@@ -24,3 +24,7 @@ services:
           - @session
         tags:
             - { name: request.param_converter, converter: flash_bag, priority: 10 }
+
+    app.controller.walks_controller:
+      class: AppBundle\Controller\WalksController
+      arguments: [@templating]
