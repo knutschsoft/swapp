@@ -27,4 +27,33 @@ services:
 
     app.controller.walks_controller:
       class: AppBundle\Controller\WalksController
-      arguments: [@templating]
+      arguments: [@templating, @app.factory_service.walk_repository]
+
+    app.controller.tag_controller:
+      class: AppBundle\Controller\TagController
+      arguments: [@templating, @app.factory_service.tag_repository]
+
+    app.controller.waypoint_controller:
+      class: AppBundle\Controller\WayPointController
+      arguments: [@templating, @app.factory_service.waypoint_repository]
+
+    app.factory_service.walk_repository:
+        class: AppBundle\Repository\WalkRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - AppBundle\Entity\Walk
+
+    app.factory_service.waypoint_repository:
+        class: AppBundle\Repository\WayPointRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - AppBundle\Entity\WayPoint
+
+    app.factory_service.tag_repository:
+        class: AppBundle\Repository\TagRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - AppBundle\Entity\Tag

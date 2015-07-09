@@ -18,3 +18,11 @@ param_converter_example:
 walk_homescreen:
     path: /walks
     defaults: { _controller: app.controller.walks_controller:homeScreenAction }
+
+tag_testcreen:
+    path: /tag
+    defaults: { _controller: app.controller.tag_controller:homeScreenAction }
+
+waypoint_testscreen:
+    path: /waypoint
+    defaults: { _controller: app.controller.waypoint_controller:homeScreenAction }

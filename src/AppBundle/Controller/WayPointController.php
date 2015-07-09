@@ -1,22 +1,22 @@
 <?php
 namespace AppBundle\Controller;
 
-use AppBundle\Repository\WalkRepository;
+use AppBundle\Repository\WayPointRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class WalksController
+class WayPointController
 {
     private $templateEngine;
-    private $walkRepository;
+    private $wayPointRepository;
 
     /**
      * @param EngineInterface $templateEngine
-     * @param WalkRepository $walkRepository
+     * @param WayPointRepository $wayPointRepository
      */
-    public function __construct(EngineInterface $templateEngine, WalkRepository $walkRepository)
+    public function __construct(EngineInterface $templateEngine, WayPointRepository $wayPointRepository)
     {
         $this->templateEngine = $templateEngine;
-        $this->walkRepository = $walkRepository;
+        $this->wayPointRepository = $wayPointRepository;
     }
 
     public function homeScreenAction()

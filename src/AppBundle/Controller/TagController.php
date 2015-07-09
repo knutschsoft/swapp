@@ -1,22 +1,22 @@
 <?php
 namespace AppBundle\Controller;
 
-use AppBundle\Repository\WalkRepository;
+use AppBundle\Repository\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class WalksController
+class TagController
 {
     private $templateEngine;
-    private $walkRepository;
+    private $tagRepository;
 
     /**
      * @param EngineInterface $templateEngine
-     * @param WalkRepository $walkRepository
+     * @param TagRepository $tagRepository
      */
-    public function __construct(EngineInterface $templateEngine, WalkRepository $walkRepository)
+    public function __construct(EngineInterface $templateEngine, TagRepository $tagRepository)
     {
         $this->templateEngine = $templateEngine;
-        $this->walkRepository = $walkRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     public function homeScreenAction()
