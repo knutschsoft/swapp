@@ -4,28 +4,35 @@ SWAPP
   <img title="build status of swapp" src="https://travis-ci.org/knutschsoft/swapp.svg">
 </a>
 
-How to start dev action?
---------------
+## How to start dev action?
 
-1. Install Database:
+### Install Database:
+
 On your MySQL console:
+
 ```
 CREATE DATABASE swapp;
 GRANT ALL ON swapp.* TO swapp@'localhost' IDENTIFIED BY 'pa$$word';
 ```
 
-2. Configure ACL
+### Execute Migrations
+
+```php app/console doctrine:migrations:migrate --no-interaction```
+
+### Configure ACL
+
 How to install and configure acl: http://wiki.ubuntuusers.de/ACL
 Open a terminal and type in the following commands:
+
 ```
 cd /your/symfony/dir
 sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
 sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
 ```
 
-3. Setup webserver
+### Setup webserver
 
-3.1. Create ```/etc/apache2/sites-available/swapp.conf``` as root with the following content.
+#### Create ```/etc/apache2/sites-available/swapp.conf``` as root with the following content.
 
 ```
 <VirtualHost *:80>
@@ -52,26 +59,26 @@ sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
 </VirtualHost>
 ```
 
-3.2. run in terminal
+#### run in terminal
 
 ```
 sudo a2ensite swapp.conf
 sudo service apache reload
 ```
 
-3.3. add in ```/etc/hosts```
+#### add in ```/etc/hosts```
 
 ```
 127.0.0.1 swapp.localhost swapp
 ```
 
-4. install assets
+### install assets
 
 ```
 php app/console assets:install web --symlink
 ```
 
-5. check config
+### check config
 
 Call in terminal:
 ```
