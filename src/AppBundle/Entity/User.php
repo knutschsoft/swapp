@@ -40,6 +40,18 @@ class User
     protected $walks;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            '%s (%s)',
+            $this->getName(),
+            $this->getEmail()
+        );
+    }
+
+    /**
      * @param mixed $email
      */
     public function setEmail($email)

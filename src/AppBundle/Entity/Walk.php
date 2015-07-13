@@ -75,6 +75,17 @@ class Walk
     protected $systemicAnswer;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            '%s',
+            $this->getName()
+        );
+    }
+
+    /**
      * @param mixed $endTime
      */
     public function setEndTime($endTime)

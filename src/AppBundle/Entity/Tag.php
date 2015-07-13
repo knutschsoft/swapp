@@ -41,6 +41,18 @@ class Tag
     protected $color;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            '%s (%s)',
+            $this->getName(),
+            $this->getColor()
+        );
+    }
+
+    /**
      * @param mixed $color
      */
     public function setColor($color)

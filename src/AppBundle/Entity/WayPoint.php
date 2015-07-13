@@ -59,6 +59,19 @@ class WayPoint
     protected $note;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            '%s (%s-%s)',
+            $this->getLocationName(),
+            $this->getAgeRangeStart(),
+            $this->getAgeRangeEnd()
+        );
+    }
+
+    /**
      * @param mixed $ageRangeEnd
      */
     public function setAgeRangeEnd($ageRangeEnd)
