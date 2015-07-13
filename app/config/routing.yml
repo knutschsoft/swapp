@@ -19,7 +19,7 @@ walk_homescreen:
     path: /walks
     defaults: { _controller: app.controller.walks_controller:homeScreenAction }
 
-tag_testcreen:
+tag_testscreen:
     path: /tag
     defaults: { _controller: app.controller.tag_controller:homeScreenAction }
 
