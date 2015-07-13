@@ -75,7 +75,8 @@ sudo service apache reload
 ### install assets
 
 ```
-php app/console assets:install web --symlink
+npm install
+./node_modules/.bin/gulp watch
 ```
 
 ### check config
