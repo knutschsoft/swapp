@@ -5,7 +5,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMTagRepository") * */
+/**
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMTagRepository")
+ * @ORM\Table(name="tag")
+ */
 class Tag
 {
     /**

@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMWalkRepository")
+ * @ORM\Table(name="walk")
  **/
 class Walk
 {
