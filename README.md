@@ -3,6 +3,9 @@ SWAPP
 <a href="https://travis-ci.org/knutschsoft/swapp" target='_blank'>
   <img title="build status of swapp" src="https://travis-ci.org/knutschsoft/swapp.svg">
 </a>
+[![Dependency Status](https://www.versioneye.com/user/projects/55a4aaac3863340023000001/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4aaac3863340023000001)
+[![Dependency Status](https://www.versioneye.com/user/projects/55a4aaed386334002000006d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4aaed386334002000006d)
+[![Dependency Status](https://www.versioneye.com/user/projects/55a4ae92386334001a00001d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4ae92386334001a00001d)
 
 ## How to start dev action?
 
