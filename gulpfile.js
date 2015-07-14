@@ -7,7 +7,7 @@ gulp.task('default', function() {
     // place code for your default task here
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', ['sass'], function () {
     var onChange = function (event) {
         console.log('File ' + event.path + ' has been ' + event.type);
         // Tell LiveReload to reload the window
@@ -27,7 +27,12 @@ gulp.task('watch', function () {
 });
 
 gulp.task('sass', function() {
-    gulp.src('app/Resources/public/css/main.scss')
+    gulp.src(
+            [
+                'app/Resources/public/css/main.scss',
+                'bower_components/basscss/css/basscss.css'
+            ]
+        )
         .pipe(plumber())
         .pipe(sass())
         .pipe(gulp.dest('web/css'))
