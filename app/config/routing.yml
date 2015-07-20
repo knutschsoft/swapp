@@ -23,6 +23,14 @@ tag_testscreen:
     path: /tag
     defaults: { _controller: app.controller.tag_controller:homeScreenAction }
 
+tag_createform:
+    path: /createtag
+    defaults: { _controller: app.controller.tag_controller:createTagForm }
+
+tag_create:
+   path: /tagcreated
+   defaults: { _controller: app.controller.tag_controller:createTag}
+
 waypoint_testscreen:
     path: /waypoint
     defaults: { _controller: app.controller.waypoint_controller:homeScreenAction }

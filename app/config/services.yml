@@ -35,7 +35,7 @@ services:
 
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController
-      arguments: [@templating, @app.factory_service.tag_repository]
+      arguments: [@templating, @app.factory_service.tag_repository, @service_container]
 
     app.controller.waypoint_controller:
       class: AppBundle\Controller\WayPointController

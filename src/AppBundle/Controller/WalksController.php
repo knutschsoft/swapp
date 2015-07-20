@@ -21,6 +21,6 @@ class WalksController
 
     public function homeScreenAction()
     {
-        return $this->templateEngine->renderResponse(':Walks:homeScreen.html.twig');
+        return $this->templateEngine->renderResponse(':Walks:walksHomeScreen.html.twig');
     }
 }
