@@ -2,7 +2,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -73,6 +72,27 @@ class Walk
      * @Assert\NotBlank()
      */
     protected $systemicAnswer;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
+     **/
+    protected $guests;
+
+    /**
+     * @return mixed
+     */
+    public function getGuests()
+    {
+        return $this->guests;
+    }
+
+    /**
+     * @param mixed $guests
+     */
+    public function setGuests($guests)
+    {
+        $this->guests = $guests;
+    }
 
     /**
      * @return string

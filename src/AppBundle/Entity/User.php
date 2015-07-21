@@ -2,7 +2,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,6 +37,27 @@ class User
      * @ORM\ManyToMany(targetEntity="Walk", mappedBy="walkTeamMembers")
      */
     protected $walks;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Team", inversedBy="users")
+     */
+    protected $teams;
+
+    /**
+     * @return mixed
+     */
+    public function getTeams()
+    {
+        return $this->teams;
+    }
+
+    /**
+     * @param mixed $teams
+     */
+    public function setTeams($teams)
+    {
+        $this->teams = $teams;
+    }
 
     /**
      * @return string

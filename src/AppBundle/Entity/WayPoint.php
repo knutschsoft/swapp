@@ -2,7 +2,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -57,6 +56,27 @@ class WayPoint
      * @ORM\Column(type="string", length=255)
      */
     protected $note;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $isMeeting;
+
+    /**
+     * @return mixed
+     */
+    public function getIsMeeting()
+    {
+        return $this->isMeeting;
+    }
+
+    /**
+     * @param mixed $isMeeting
+     */
+    public function setIsMeeting($isMeeting)
+    {
+        $this->isMeeting = $isMeeting;
+    }
 
     /**
      * @return string
