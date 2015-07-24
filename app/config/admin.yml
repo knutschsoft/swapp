@@ -1,0 +1,75 @@
+easy_admin:
+    site_name: Swapp -<br>Streetworker App
+    list:
+        actions:
+            - { name: 'show', icon: 'search', 'label': false }
+            - { name: 'edit', icon: 'pencil', 'label': false }
+    entities:
+        Team:
+            class: AppBundle\Entity\Team
+            label: app.team.menu
+            list:
+                title: app.team.list.title
+        Walk:
+            class: AppBundle\Entity\Walk
+            label: app.walk.menu
+            form:
+                fields:
+                    - 'id'
+                    - 'name'
+                    - { property: 'startTime', type: 'datetime' }
+                    - { property: 'endTime', type: 'datetime' }
+                    - 'walkReflection'
+                    - 'rating'
+                    - 'systemicQuestion'
+            list:
+                title: app.walk.list.title
+                fields:
+                    - 'id'
+                    - 'name'
+                    - { property: 'startTime', type: 'datetime' }
+                    - { property: 'endTime', type: 'datetime' }
+                    - 'walkReflection'
+                    - 'rating'
+                    - 'systemicQuestion'
+        WayPoint:
+            class: AppBundle\Entity\WayPoint
+            label: app.way_point.menu
+            list:
+                title: app.way_point.list.title
+                fields:
+                    - 'locationName'
+                    - 'ageRangeStart'
+                    - 'ageRangeEnd'
+                    - 'malesCount'
+                    - 'femalesCount'
+                    - 'note'
+                    - 'isMeeting'
+                    - 'walk'
+            form:
+                fields:
+                    - 'locationName'
+                    - 'ageRangeStart'
+                    - 'ageRangeEnd'
+                    - 'malesCount'
+                    - 'femalesCount'
+                    - 'note'
+                    - 'isMeeting'
+                    - 'walk'
+            show:
+                title: app.way_point.show.title
+        Tag:
+            class: AppBundle\Entity\Tag
+            label: app.tag.menu
+            list:
+                title: app.tag.list.title
+        User:
+            class: AppBundle\Entity\User
+            label: app.user.menu
+            list:
+                title: app.user.list.title
+        Guest:
+            class: AppBundle\Entity\Guest
+            label: app.guest.menu
+            list:
+                title: app.guest.list.title

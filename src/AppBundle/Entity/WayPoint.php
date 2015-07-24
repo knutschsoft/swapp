@@ -58,12 +58,12 @@ class WayPoint
     protected $note;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean", length=255)
      */
     protected $isMeeting;
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getIsMeeting()
     {
@@ -71,7 +71,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $isMeeting
+     * @param boolean $isMeeting
      */
     public function setIsMeeting($isMeeting)
     {
