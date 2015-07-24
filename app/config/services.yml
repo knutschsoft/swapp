@@ -35,7 +35,7 @@ services:
 
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController
-      arguments: [@templating, @app.factory_service.tag_repository, @service_container]
+      arguments: [@templating, @form.factory, @app.factory_service.tag_repository, @router]
 
     app.controller.waypoint_controller:
       class: AppBundle\Controller\WayPointController
@@ -61,3 +61,8 @@ services:
         factory_method: getRepository
         arguments:
             - AppBundle\Entity\Tag
+
+    app.form.type.tag:
+            class: AppBundle\Form\Type\TagType
+            tags:
+                - { name: form.type, alias: app_create_tag }

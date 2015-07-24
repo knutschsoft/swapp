@@ -9,21 +9,30 @@ class TagType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('color', 'text');
-        $builder->add('description', 'text');
         $builder->add('name', 'text');
-        $builder->add('Tag erstellen', 'submit');
+        $builder->add('description', 'text');
+        $builder->add('color', 'text');
+        $builder->add(
+            'create',
+            'submit',
+            array(
+                'label' => 'Tag erstellen',
+                'attr' => array('class' => 'btn btn-primary'),
+            )
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Tag'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'AppBundle\Entity\Tag',
+            )
+        );
     }
 
     public function getName()
     {
-        return 'name';
+        return 'app_create_tag';
     }
 }

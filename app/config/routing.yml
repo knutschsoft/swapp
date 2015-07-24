@@ -25,11 +25,11 @@ tag_testscreen:
 
 tag_createform:
     path: /createtag
-    defaults: { _controller: app.controller.tag_controller:createTagForm }
+    defaults: { _controller: app.controller.tag_controller:createTagFormAction }
 
 tag_create:
    path: /tagcreated
-   defaults: { _controller: app.controller.tag_controller:createTag}
+   defaults: { _controller: app.controller.tag_controller:createTagAction}
 
 waypoint_testscreen:
     path: /waypoint
