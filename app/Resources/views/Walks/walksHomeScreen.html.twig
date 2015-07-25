@@ -14,4 +14,35 @@
         </div>
     </div>
 
+    <div class="">
+
+        <table class="table-light">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Bewertung</th>
+                <th>Beginn</th>
+                <th>Detailansicht</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for walk in walks %}
+                    <tr>
+                        <td>{{ walk.getName }}</td>
+                        <td>{{ walk.getRating }}</td>
+                        <td>
+                            {{ walk.getStartTime|localizeddate('short', 'short') }}
+                        </td>
+                        <td>
+                            <a class="btn btn-outline" href="{{ path('walk_show', { 'id': walk.getId }) }}">Runde ansehen</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Es wurden noch keine Runden angelegt.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

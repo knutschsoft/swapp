@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="swapp-headline-container">
+        <h1>
+            Streetwork-Runde: {{ walk.getName }}
+        </h1>
+    </div>
+    <div class="swapp-password-change-container">
+        <div class="mb1">
+            <a href="{{ path('walk_homescreen') }}" class="btn btn-primary">zur Rundenübersicht</a>
+        </div>
+    </div>
+
+    {{ include(':Walks:showItem.html.twig', {'key': 'Name', 'value': walk.getName }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Beginn', 'value': walk.getStartTime|localizeddate('long', 'medium') }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Ende', 'value': walk.getEndTime|localizeddate('long', 'medium') }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Nachbetrachtung', 'value': walk.getWalkReflection }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Frage', 'value': walk.getSystemicQuestion }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Antwort', 'value': walk.getSystemicAnswer }) }}
+
+    {% set users %}
+        {% for user in walk.walkTeamMembers %}
+            <a href="{{ user.getId }}">{{ user.getName }}</a>
+        {% else %}
+            keine Teilnehmer
+        {% endfor %}
+    {% endset %}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Teilnehmer', 'value': users }) }}
+
+    {% set tags %}
+        {% for tag in walk.getTags %}
+            <a class="btn btn-outline" href="{{ tag.getId }}">{{ tag.getName }}</a>
+        {% else %}
+            keine Tags vergeben
+        {% endfor %}
+    {% endset %}
+
+    {{ include(':Walks:showItem.html.twig', {'key': 'Tags', 'value': tags }) }}
+
+{% endblock %}

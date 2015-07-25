@@ -22,6 +22,13 @@ services:
         tags:
             - { name: request.param_converter, converter: example, priority: 10 }
 
+    app.param_converter.entity:
+        class: AppBundle\ParamConverter\EntityParamConverter
+        arguments:
+          - @app.factory_service.walk_repository
+        tags:
+            - { name: request.param_converter, converter: entity, priority: 0 }
+
     app.param_converter.flash_bag:
         class: AppBundle\ParamConverter\FlashBagParamConverter
         arguments:
@@ -63,6 +70,12 @@ services:
             - AppBundle\Entity\Tag
 
     app.form.type.tag:
-            class: AppBundle\Form\Type\TagType
-            tags:
-                - { name: form.type, alias: app_create_tag }
+        class: AppBundle\Form\Type\TagType
+        tags:
+            - { name: form.type, alias: app_create_tag }
+
+    app.twig_extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        public: false
+        tags:
+            - { name: twig.extension }

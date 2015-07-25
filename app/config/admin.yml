@@ -15,17 +15,16 @@ easy_admin:
             label: app.walk.menu
             form:
                 fields:
-                    - 'id'
                     - 'name'
                     - { property: 'startTime', type: 'datetime' }
                     - { property: 'endTime', type: 'datetime' }
                     - 'walkReflection'
                     - 'rating'
-                    - 'systemicQuestion'
+                    - { property: 'systemicQuestion', type: 'textarea' }
+                    - { property: 'systemicAnswer', type: 'textarea' }
             list:
                 title: app.walk.list.title
                 fields:
-                    - 'id'
                     - 'name'
                     - { property: 'startTime', type: 'datetime' }
                     - { property: 'endTime', type: 'datetime' }
