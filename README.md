@@ -107,10 +107,14 @@ http://swapp/config.php
 
 ### Entrance:
 
-http://swapp/admin
-http://swapp/eadmin
-http://swapp/walks
+ http://swapp/admin
 
-http://swapp/app_dev.php/admin
-http://swapp/app_dev.php/eadmin
-http://swapp/app_dev.php/walks
+ http://swapp/eadmin
+
+ http://swapp/walks
+
+ http://swapp/app_dev.php/admin
+
+ http://swapp/app_dev.php/eadmin
+
+ http://swapp/app_dev.php/walks
