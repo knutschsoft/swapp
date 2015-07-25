@@ -18,10 +18,6 @@ CREATE DATABASE swapp;
 GRANT ALL ON swapp.* TO swapp@'localhost' IDENTIFIED BY 'pa$$word';
 ```
 
-### Execute Migrations
-
-```php app/console doctrine:migrations:migrate --no-interaction```
-
 ### Configure ACL
 
 How to install and configure acl: http://wiki.ubuntuusers.de/ACL
@@ -75,12 +71,16 @@ sudo service apache reload
 127.0.0.1 swapp.localhost swapp
 ```
 
-### install assets
+### install composer and composer packages
 
 ```
-npm install
-./node_modules/.bin/gulp watch
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
 ```
+
+### Execute Migrations
+
+```php app/console doctrine:migrations:migrate --no-interaction```
 
 ### check config
 
@@ -89,8 +89,28 @@ Call in terminal:
 php app/check.php
 ```
 
-Open in browser:
+### install assets and start watcher
+
+```
+sudo apt-get install nodejs-legacy
+
+npm install
+./node_modules/.bin/bower install
+./node_modules/.bin/gulp watch
+```
+
+### Open in browser:
+
 ```
 http://swapp/config.php
 ```
 
+### Entrance:
+
+http://swapp/admin
+http://swapp/eadmin
+http://swapp/walks
+
+http://swapp/app_dev.php/admin
+http://swapp/app_dev.php/eadmin
+http://swapp/app_dev.php/walks
