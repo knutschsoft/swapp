@@ -31,7 +31,7 @@ sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
 
 ### Setup webserver
 
-#### Create ```/etc/apache2/sites-available/swapp.conf``` as root with the following content.
+#### create ```/etc/apache2/sites-available/swapp.conf``` as root with the following content.
 
 ```
 <VirtualHost *:80>
@@ -71,7 +71,7 @@ sudo service apache reload
 127.0.0.1 swapp.localhost swapp
 ```
 
-### install composer and composer packages
+### Install composer and composer packages
 
 ```
 curl -sS https://getcomposer.org/installer | php
@@ -82,14 +82,22 @@ php composer.phar install
 
 ```php app/console doctrine:migrations:migrate --no-interaction```
 
-### check config
+### Load data fixtures
+
+```php app/console doctrine:fixtures:load```
+
+### Start unit tests
+
+```./bin/phpunit -c app```
+
+### Check config
 
 Call in terminal:
 ```
 php app/check.php
 ```
 
-### install assets and start watcher
+### Install assets and start watcher
 
 ```
 sudo apt-get install nodejs-legacy
