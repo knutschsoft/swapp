@@ -6,6 +6,7 @@ use AppBundle\Repository\WalkRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EntityParamConverter implements ParamConverterInterface
 {
@@ -18,6 +19,7 @@ class EntityParamConverter implements ParamConverterInterface
     {
         $this->walkRepository = $walkRepository;
     }
+
     /**
      * Stores the object in the request.
      *
@@ -38,11 +40,22 @@ class EntityParamConverter implements ParamConverterInterface
                 );
         }
 
+        if (!$resource) {
+            throw new NotFoundHttpException(
+                sprintf(
+                    'No User not found for id "%s" in %s',
+                    $request->get('id'),
+                    self::class
+                )
+            );
+        }
+
         $param = $configuration->getName();
         $request->attributes->set($param, $resource);
 
         return true;
     }
+
     /**
      * Checks if the object is supported.
      *
