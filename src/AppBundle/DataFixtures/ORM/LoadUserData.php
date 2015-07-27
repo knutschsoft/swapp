@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface
 {
-    const NUM_USERS = 4;
+    const NUM_USERS = 5;
 
     /**
      * {@inheritDoc}
@@ -22,12 +22,24 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             'Gustav',
             'Luise',
             'Bob',
+            'admin',
+        ];
+
+        $roles = [
+            ['ROLE_USER', 'ROLE_ADMIN'],
+            ['ROLE_ADMIN'],
+            ['ROLE_USER'],
         ];
 
         foreach ($names as $key => $name) {
             $user = new User();
             $user->setName($name);
+            $user->setUsername($name);
+            $user->setPlainPassword($name);
 
+            $role = $name === 'admin' ? ['ROLE_ADMIN'] : $roles[array_rand($roles, 1)];
+            $user->setRoles($role);
+            $user->setEnabled(true);
             $user->setEmail(mb_strtolower($name) . '@gmx.de');
             $user->setWalks($this->getWalksReferences());
             $user->setTeams($this->getTeamsReferences());

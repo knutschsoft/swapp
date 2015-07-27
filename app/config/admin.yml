@@ -67,6 +67,22 @@ easy_admin:
             label: app.user.menu
             list:
                 title: app.user.list.title
+                fields:
+                    - id
+                    - name
+                    - username
+                    - email
+                    - enabled
+                    - lastLogin
+                    - locked
+                    - roles
+            form:
+                fields:
+                    - username
+                    - email
+                    - plainPassword
+                    - roles
+                    - enabled
         Guest:
             class: AppBundle\Entity\Guest
             label: app.guest.menu

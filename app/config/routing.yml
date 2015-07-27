@@ -12,6 +12,9 @@ easy_admin_bundle:
     type:     annotation
     prefix:   /eadmin
 
+_fos:
+    resource: routing_fos.yml
+
 controller_as_a_service_example:
     path: /caas
     defaults: { _controller: app.controller.controller_as_a_service:exampleAction }

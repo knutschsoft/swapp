@@ -11,7 +11,7 @@ gulp.task('watch', ['sass'], function () {
     var onChange = function (event) {
         console.log('File ' + event.path + ' has been ' + event.type);
         // Tell LiveReload to reload the window
-        //livereload.changed(event.path);
+        livereload.changed(event.path);
     };
     // Starts the server
     livereload.listen();
@@ -22,7 +22,7 @@ gulp.task('watch', ['sass'], function () {
     gulp.watch('./app/Resources/public/js/*.js', ['js'])
         .on('change', onChange);
 
-    gulp.watch('./app/Resources/views/**/**.html.twig', ['twig'])
+    gulp.watch('./app/Resources/**/views/**/*.html.twig', ['twig'])
         .on('change', onChange);
 });
 
@@ -44,7 +44,5 @@ gulp.task('js', function() {
 });
 
 gulp.task('twig', function(event) {
-    console.log('twig');
-    gulp.src('./app/Resources/views/**/**.html.twig')
-        .pipe(livereload.reload());
+    livereload.reload();
 });

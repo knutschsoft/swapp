@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block title %}Tags{% endblock %}
-{% block body %}
+{% block content %}
     {% for flashMessage in app.session.flashbag.get('notice') %}
         <div class="flash-notice">
             {{ flashMessage }}

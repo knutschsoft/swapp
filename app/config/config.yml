@@ -26,6 +26,11 @@ framework:
     fragments:       ~
     http_method_override: true
 
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+
 sonata_block:
     default_contexts: [cms]
     blocks:

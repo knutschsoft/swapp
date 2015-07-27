@@ -2,6 +2,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Entity\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="user")
  * @package AppBundle\Entity
  */
-class User
+class User extends BaseUser
 {
     /**
      * @ORM\Id
@@ -27,12 +28,6 @@ class User
      * @Assert\NotBlank()
      */
     protected $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    protected $email;
 
     /**
      * @ORM\ManyToMany(targetEntity="Walk", mappedBy="walkTeamMembers")
@@ -70,22 +65,6 @@ class User
             $this->getName(),
             $this->getEmail()
         );
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**
