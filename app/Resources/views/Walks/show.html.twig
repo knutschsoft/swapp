@@ -20,8 +20,8 @@
     {{ include(':Walks:showItem.html.twig', {'key': 'Antwort', 'value': walk.getSystemicAnswer }) }}
 
     {% set users %}
-        {% for user in walk.walkTeamMembers %}
-            <a href="{{ user.getId }}">{{ user.getName }}</a>
+        {% for user in walk.getWalkTeamMembers %}
+            {{ user.getName }}
         {% else %}
             keine Teilnehmer
         {% endfor %}
@@ -30,12 +30,20 @@
 
     {% set tags %}
         {% for tag in walk.getTags %}
-            <a class="btn btn-outline" href="{{ tag.getId }}">{{ tag.getName }}</a>
+            {{ tag.getName }}
         {% else %}
             keine Tags vergeben
         {% endfor %}
     {% endset %}
-
     {{ include(':Walks:showItem.html.twig', {'key': 'Tags', 'value': tags }) }}
+
+    {% set guests %}
+        {% for guest in walk.getGuests %}
+            {{ guest.getName }}
+        {% else %}
+            Es haben keine Gäste teilgenommen.
+        {% endfor %}
+    {% endset %}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Gäste', 'value': guests }) }}
 
 {% endblock %}
