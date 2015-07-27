@@ -21,7 +21,7 @@
 
     {% set users %}
         {% for user in walk.getWalkTeamMembers %}
-            {{ user.getName }}
+            {{ user.getUsername }}
         {% else %}
             keine Teilnehmer
         {% endfor %}
