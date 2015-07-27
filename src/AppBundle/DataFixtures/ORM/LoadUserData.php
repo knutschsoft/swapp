@@ -33,7 +33,6 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
 
         foreach ($names as $key => $name) {
             $user = new User();
-            $user->setName($name);
             $user->setUsername($name);
             $user->setPlainPassword($name);
 

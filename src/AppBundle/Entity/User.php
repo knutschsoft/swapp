@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * This is for testing doctrine only, will be replaced with real user entity
- * @UniqueEntity(fields="name", message="name already taken")
  * @UniqueEntity(fields="email", message="Email already taken")
  * @ORM\Entity
  * @ORM\Table(name="user")
@@ -22,12 +21,6 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    protected $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="Walk", mappedBy="walkTeamMembers")
@@ -62,7 +55,7 @@ class User extends BaseUser
     {
         return sprintf(
             '%s (%s)',
-            $this->getName(),
+            $this->getUsername(),
             $this->getEmail()
         );
     }
@@ -81,22 +74,6 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
