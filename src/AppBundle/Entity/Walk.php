@@ -51,7 +51,7 @@ class Walk
     protected $walkTeamMembers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="walks")
+     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
      */
     protected $tags;
 
@@ -62,7 +62,7 @@ class Walk
     protected $rating;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SystemicQuestion", mappedBy="tags")
+     * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="question")
      */
     protected $systemicQuestion;
 
@@ -185,7 +185,7 @@ class Walk
     }
 
     /**
-     * @param mixed $systemicAnswer
+     * @param string $systemicAnswer
      */
     public function setSystemicAnswer($systemicAnswer)
     {
@@ -193,7 +193,7 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSystemicAnswer()
     {
@@ -201,15 +201,15 @@ class Walk
     }
 
     /**
-     * @param mixed $systemicQuestion
+     * @param SystemicQuestion $systemicQuestion
      */
-    public function setSystemicQuestion($systemicQuestion)
+    public function setSystemicQuestion(SystemicQuestion $systemicQuestion)
     {
         $this->systemicQuestion = $systemicQuestion;
     }
 
     /**
-     * @return mixed
+     * @return SystemicQuestion
      */
     public function getSystemicQuestion()
     {

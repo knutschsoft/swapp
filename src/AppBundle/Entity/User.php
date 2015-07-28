@@ -28,12 +28,12 @@ class User extends BaseUser
     protected $walks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Team", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Team", mappedBy="users")
      */
     protected $teams;
 
     /**
-     * @return mixed
+     * @return Team[]
      */
     public function getTeams()
     {
@@ -41,7 +41,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param mixed $teams
+     * @param Team[] $teams
      */
     public function setTeams($teams)
     {

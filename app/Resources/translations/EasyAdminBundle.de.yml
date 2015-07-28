@@ -11,6 +11,12 @@ app:
             title: Gäste
         show:
             title: Gast %entity_id% anzeigen
+    systemic-question:
+        menu: Fragen
+        list:
+            title: Fragen
+        show:
+            title: Frage %entity_id% anzeigen
     tag:
         menu: Tags
         list:

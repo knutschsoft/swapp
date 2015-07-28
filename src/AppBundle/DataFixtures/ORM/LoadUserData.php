@@ -54,7 +54,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
     {
         $teams = [];
         for ($i = 0; $i < rand(1, 10); $i++) {
-            //$teams[] = $this->getReference('team-' . rand(1, 10));
+//            $teams[] = $this->getReference('team-' . rand(1, LoadTeamData::NUM_TEAMS));
         }
 
         return $teams;
@@ -67,7 +67,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
     {
         $walks = [];
         for ($i = 0; $i < rand(1, 10); $i++) {
-            $walks[] = $this->getReference('walk-' . rand(1, LoadWalkData::NUM_WALKS));
+//            $walks[] = $this->getReference('walk-' . rand(1, LoadWalkData::NUM_WALKS));
         }
 
         return $walks;
@@ -79,6 +79,6 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
      */
     public function getOrder()
     {
-        return 2; // load after LoadWalkData
+        return 3; // load after LoadWalkData
     }
 }

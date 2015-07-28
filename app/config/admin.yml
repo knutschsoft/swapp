@@ -10,6 +10,18 @@ easy_admin:
             label: app.team.menu
             list:
                 title: app.team.list.title
+                fields:
+                  - 'id'
+                  - 'name'
+                  - 'users'
+            form:
+                fields:
+                  - 'name'
+                  - 'users'
+            show:
+                fields:
+                  - 'name'
+                  - 'users'
         Walk:
             class: AppBundle\Entity\Walk
             label: app.walk.menu
@@ -20,7 +32,7 @@ easy_admin:
                     - { property: 'endTime', type: 'datetime' }
                     - 'walkReflection'
                     - 'rating'
-                    - { property: 'systemicQuestion', type: 'textarea' }
+                    - 'systemicQuestion'
                     - { property: 'systemicAnswer', type: 'textarea' }
             list:
                 title: app.walk.list.title
@@ -75,15 +87,28 @@ easy_admin:
                     - lastLogin
                     - locked
                     - roles
+                    - teams
+                    - walks
             form:
                 fields:
                     - username
                     - email
                     - plainPassword
                     - roles
+                    - teams
+                    - walks
                     - enabled
         Guest:
             class: AppBundle\Entity\Guest
             label: app.guest.menu
             list:
                 title: app.guest.list.title
+        SystemicQuestion:
+            class: AppBundle\Entity\SystemicQuestion
+            label: app.systemic-question.menu
+            list:
+                title: app.systemic-question.list.title
+            form:
+                fields:
+                    - 'id'
+                    - { property: 'question', type: 'textarea' }

@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\SystemicQuestion;
+use AppBundle\Entity\User;
 use AppBundle\Entity\Walk;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -23,7 +25,6 @@ class LoadWalkData extends AbstractFixture implements FixtureInterface, OrderedF
             'Hechtviertel',
             'Lutherkirche',
         ];
-        $systemicQuestion = 'How are you?';
         $systemicAnswer = 'I\'m feeling fine!';
         $walkReflection = 'This walk was a good one!';
 
@@ -36,8 +37,9 @@ class LoadWalkData extends AbstractFixture implements FixtureInterface, OrderedF
             $walk->setStartTime(new \DateTime('-' . rand(50, 100) . 'minutes'));
             $walk->setEndTime(new \DateTime('-' . rand(0, 50) . 'minutes'));
             $walk->setSystemicAnswer($systemicAnswer . ' ' . $rating);
-            $walk->setSystemicQuestion($systemicQuestion . ' ' . $rating);
+            $walk->setSystemicQuestion($this->getSystemicQuestionReference());
             $walk->setWalkReflection($walkReflection . ' ' . $rating);
+            $walk->setWalkTeamMembers($this->getUsersReferences());
 
             $manager->persist($walk);
             $manager->flush();
@@ -47,10 +49,40 @@ class LoadWalkData extends AbstractFixture implements FixtureInterface, OrderedF
     }
 
     /**
+     * @return SystemicQuestion
+     */
+    private function getSystemicQuestionReference()
+    {
+
+        return $this->getReference('systemicQuestion-' . rand(1, LoadSystemicQuestionData::NUM_SYSTEMIC_QUESTION));
+    }
+
+    /**
+     * @return User[]
+     */
+    private function getUsersReferences()
+    {
+        $users = [];
+        $userIds = [];
+        for ($i = 0; $i < LoadUserData::NUM_USERS; $i++) {
+            $userId = rand(1, LoadUserData::NUM_USERS);
+            if (in_array($userId, $userIds)) {
+
+                break;
+            }
+            $userIds[] = $userId;
+
+            $users[] = $this->getReference('user-' . $userId);
+        }
+
+        return $users;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getOrder()
     {
-        return 1; // load after LoadGuestData, LoadUserData and LoadTagData
+        return 3; // load after LoadSystemicQuestionData
     }
 }

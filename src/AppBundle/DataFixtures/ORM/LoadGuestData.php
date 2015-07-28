@@ -47,6 +47,6 @@ class LoadGuestData extends AbstractFixture implements FixtureInterface, Ordered
      */
     public function getOrder()
     {
-        return 2; // load after LoadWalkData
+        return 4; // load after LoadWalkData
     }
 }

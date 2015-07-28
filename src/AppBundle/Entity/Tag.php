@@ -30,7 +30,7 @@ class Tag
     protected $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Walk", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Walk", inversedBy="tags")
      */
     protected $walks;
 

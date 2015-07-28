@@ -39,7 +39,7 @@ class WalksController
     public function homeScreenAction(User $user)
     {
         $walks = $this->walkRepository->findAll();
-        $teams = $user->getGroups();
+        $teams = $user->getTeams();
 
         $parameters = [
             'walks' => $walks,
@@ -49,10 +49,8 @@ class WalksController
         return $this->templateEngine->renderResponse(':Walks:walksHomeScreen.html.twig', $parameters);
     }
 
-    public
-    function showAction(
-        Walk $walk
-    ) {
+    public function showAction(Walk $walk)
+    {
         $parameters = [
             'walk' => $walk,
         ];
@@ -60,8 +58,7 @@ class WalksController
         return $this->templateEngine->renderResponse(':Walks:show.html.twig', $parameters);
     }
 
-    public
-    function createWalkFormAction()
+    public function createWalkFormAction()
     {
         $walk = new Walk();
         $form = $this->formFactory->create(
@@ -80,11 +77,8 @@ class WalksController
         );
     }
 
-    public
-    function createWalkAction(
-        Request $request,
-        FlashBag $flashBag
-    ) {
+    public function createWalkAction(Request $request, FlashBag $flashBag)
+    {
         $form = $this->formFactory->create('app_create_walk', new Walk());
 
         $form->handleRequest($request);

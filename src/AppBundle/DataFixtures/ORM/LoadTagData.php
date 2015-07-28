@@ -46,8 +46,16 @@ class LoadTagData extends AbstractFixture implements FixtureInterface, OrderedFi
     private function getWalksReferences()
     {
         $walks = [];
-        for ($i = 0; $i < rand(1, 10); $i++) {
-            $walks[] = $this->getReference('walk-' . rand(1, LoadWalkData::NUM_WALKS));
+        $walkIds = [];
+        for ($i = 0; $i < LoadWalkData::NUM_WALKS; $i++) {
+            $walkId = rand(1, LoadWalkData::NUM_WALKS);
+            if (in_array($walkId, $walkIds)) {
+
+                break;
+            }
+            $walkIds[] = $walkId;
+
+            $walks[] = $this->getReference('walk-' . $walkId);
         }
 
         return $walks;
@@ -58,6 +66,6 @@ class LoadTagData extends AbstractFixture implements FixtureInterface, OrderedFi
      */
     public function getOrder()
     {
-        return 2; // load after LoadWalkData
+        return 3; // load after LoadWalkData
     }
 }

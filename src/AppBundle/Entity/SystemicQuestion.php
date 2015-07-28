@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMSystemicQuestionRepository")
- * @ORM\Table(name="systemicquestion")
+ * @ORM\Table(name="systemic_question")
  */
 class SystemicQuestion
 {
@@ -18,12 +18,22 @@ class SystemicQuestion
     protected $id;
 
     /**
+     * @ORM\Column(type="string")
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Walk", mappedBy="systemicQuestion")
      **/
     protected $question;
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function __toString()
+    {
+
+        return $this->question;
+    }
+
+    /**
+     * @return integer
      */
     public function getId()
     {
@@ -31,7 +41,7 @@ class SystemicQuestion
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -39,7 +49,7 @@ class SystemicQuestion
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getQuestion()
     {
@@ -47,7 +57,7 @@ class SystemicQuestion
     }
 
     /**
-     * @param mixed $question
+     * @param string $question
      */
     public function setQuestion($question)
     {

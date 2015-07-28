@@ -24,9 +24,17 @@ class Team
     protected $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="teams")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="teams")
      */
     protected $users;
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * @return mixed
@@ -61,7 +69,7 @@ class Team
     }
 
     /**
-     * @return mixed
+     * @return User[]
      */
     public function getUsers()
     {
@@ -69,7 +77,7 @@ class Team
     }
 
     /**
-     * @param mixed $users
+     * @param User[] $users
      */
     public function setUsers($users)
     {

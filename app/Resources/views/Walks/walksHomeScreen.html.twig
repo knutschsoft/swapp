@@ -17,7 +17,9 @@
         <a href="{{ path('walk_createform') }}" class="btn btn-primary">Runde beginnen</a>
     </div>
     {% for team in teams %}
-        bla
+        {{ team.getName }}
+    {% else %}
+        no teams
     {% endfor %}
     <div class="">
         <table class="table-light">
