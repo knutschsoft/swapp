@@ -23,7 +23,7 @@ param_converter_example:
     path: /pc/{name}/{anotherName}
     defaults: { _controller: app.controller.controller_as_a_service:paramConverterAction }
 
-walk_homescreen:
+walk_homeScreen:
     path: /walks
     defaults: { _controller: app.controller.walks_controller:homeScreenAction }
 
@@ -31,7 +31,7 @@ walk_show:
     path: /walk/{id}
     defaults: { _controller: app.controller.walks_controller:showAction }
 
-tag_testscreen:
+tag_homeScreen:
     path: /tag
     defaults: { _controller: app.controller.tag_controller:homeScreenAction }
 
@@ -42,6 +42,14 @@ tag_createform:
 tag_create:
    path: /tagcreated
    defaults: { _controller: app.controller.tag_controller:createTagAction}
+
+walk_createform:
+   path: /createwalk
+   defaults: { _controller: app.controller.walks_controller:createWalkFormAction }
+
+walk_create:
+  path: /walkcreated
+  defaults: { _controller: app.controller.walks_controller:createWalkAction}
 
 waypoint_testscreen:
     path: /waypoint

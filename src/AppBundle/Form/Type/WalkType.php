@@ -9,21 +9,85 @@ class WalkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'name');
-        $builder->add('startTime', 'startTime');
-        $builder->add('endTime', 'endTime');
-        $builder->add('walkReflection', 'walkReflection');
+        $builder->add(
+            'name',
+            'text',
+            array(
+                'label' => 'Name',
+            )
+        );
+        $builder->add(
+            'startTime',
+            'datetime',
+            array(
+                'label' => 'Rundenstartzeit',
+            )
+        );
+        $builder->add(
+            'endTime',
+            'datetime',
+            array(
+                'label' => 'Runenendzeit',
+            )
+        );
+        $builder->add(
+            'walkReflection',
+            'textarea',
+            array(
+                'label' => 'Reflexion',
+            )
+        );
+        $builder->add(
+            'systemicQuestion',
+            'text',
+            array(
+                'label' => 'Systemische Frage',
+            )
+        );
+        $builder->add(
+            'systemicAnswer',
+            'textarea',
+            array(
+                'label' => 'Systemische Antwort',
+            )
+        );
+        $builder->add(
+            'rating',
+            'choice',
+            array(
+                'choices' => array(
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                ),
+                'required' => true,
+                'label' => 'Rundenbewertung',
+            )
+        );
+        $builder->add(
+            'create',
+            'submit',
+            array(
+                'label' => 'Runde abschliessen',
+                'attr' => array('class' => 'btn btn-primary'),
+            )
+        );
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'AppBundle\Entity\Walk',
+            )
+        );
     }
 
     public function getName()
     {
-        return 'user';
+        return 'app_create_walk';
     }
 }

@@ -2,20 +2,24 @@
 
 {% block title %}Streetwork-Runden{% endblock %}
 {% block content %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
     <div class="swapp-headline-container">
         <h1>
             Streetwork-Runden
         </h1>
     </div>
-    <div class="swapp-password-change-container">
-        <div class="mb1">
-            <a href="tag" class="btn btn-primary">Tags</a>
-            <input type="button" class="btn btn-primary" value="Input Button">
-        </div>
+    <div class="mb1">
+        <a href="tag" class="btn btn-primary">Tags</a>
+        <a href="{{ path('walk_createform') }}" class="btn btn-primary">Runde beginnen</a>
     </div>
-
+    {% for team in teams %}
+        bla
+    {% endfor %}
     <div class="">
-
         <table class="table-light">
             <thead>
             <tr>
@@ -26,22 +30,23 @@
             </tr>
             </thead>
             <tbody>
-                {% for walk in walks %}
-                    <tr>
-                        <td>{{ walk.getName }}</td>
-                        <td>{{ walk.getRating }}</td>
-                        <td>
-                            {{ walk.getStartTime|localizeddate('short', 'short') }}
-                        </td>
-                        <td>
-                            <a class="btn btn-outline" href="{{ path('walk_show', { 'id': walk.getId }) }}">Runde ansehen</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4">Es wurden noch keine Runden angelegt.</td>
-                    </tr>
-                {% endfor %}
+            {% for walk in walks %}
+                <tr>
+                    <td>{{ walk.getName }}</td>
+                    <td>{{ walk.getRating }}</td>
+                    <td>
+                        {{ walk.getStartTime|localizeddate('short', 'short') }}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('walk_show', { 'id': walk.getId }) }}">Runde
+                            ansehen</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Es wurden noch keine Runden angelegt.</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>

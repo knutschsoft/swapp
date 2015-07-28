@@ -1,5 +1,33 @@
 {% extends '::base.html.twig' %}
-{% block title %}Tag erstellen{% endblock %}
-{% block content %}
-    {{ form(form) }}
-{% endblock %}
+            {% block title %}Tag erstellen{% endblock %}
+            {% block content %}
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="col">
+                    <div class="flex flex-column ">
+                        <div class="p1">
+                            {{ form_label(form.name) }}
+                            <br>
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.color) }}
+                            <br>
+                            {{ form_errors(form.color) }}
+                            {{ form_widget(form.color) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.description) }}
+                            <br>
+                            {{ form_errors(form.description) }}
+                            {{ form_widget(form.description) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_widget(form.create) }}
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            {% endblock %}

@@ -45,7 +45,7 @@ services:
 
     app.controller.walks_controller:
       class: AppBundle\Controller\WalksController
-      arguments: [@templating, @app.factory_service.walk_repository]
+      arguments: [@templating, @form.factory, @app.factory_service.walk_repository, @router]
 
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController
@@ -81,8 +81,15 @@ services:
         tags:
             - { name: form.type, alias: app_create_tag }
 
+    app.form.type.walk:
+        class: AppBundle\Form\Type\WalkType
+        tags:
+            - { name: form.type, alias: app_create_walk }
+
     app.twig_extension.intl:
         class: Twig_Extensions_Extension_Intl
         public: false
         tags:
             - { name: twig.extension }
+
+

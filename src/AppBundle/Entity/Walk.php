@@ -62,8 +62,7 @@ class Walk
     protected $rating;
 
     /**
-     * @ORM\Column(type="string", length=4096)
-     * @Assert\NotBlank()
+     * @ORM\ManyToMany(targetEntity="SystemicQuestion", mappedBy="tags")
      */
     protected $systemicQuestion;
 

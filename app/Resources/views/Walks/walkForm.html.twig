@@ -1,0 +1,58 @@
+{% extends '::base.html.twig' %}
+            {% block title %}Runde abschlieﬂen{% endblock %}
+            {% block content %}
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="col">
+                    <div class="flex flex-column ">
+                        <div class="p1">
+                            {{ form_label(form.name) }}
+                            <br>
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.startTime) }}
+                            <br>
+                            {{ form_errors(form.startTime) }}
+                            {{ form_widget(form.startTime) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.endTime) }}
+                            <br>
+                            {{ form_errors(form.endTime) }}
+                            {{ form_widget(form.endTime) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.walkReflection) }}
+                            <br>
+                            {{ form_errors(form.walkReflection) }}
+                            {{ form_widget(form.walkReflection) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.systemicQuestion) }}
+                            <br>
+                            {{ form_errors(form.systemicQuestion) }}
+                            {{ form_widget(form.systemicQuestion) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.systemicAnswer) }}
+                            <br>
+                            {{ form_errors(form.systemicAnswer) }}
+                            {{ form_widget(form.systemicAnswer) }}
+                        </div>
+                        <div class="p1">
+                            {{ form_label(form.rating) }}
+                            <br>
+                            {{ form_errors(form.rating) }}
+                            {{ form_widget(form.rating) }}
+                        </div>
+
+                        <div class="p1">
+                            {{ form_widget(form.create) }}
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            {% endblock %}

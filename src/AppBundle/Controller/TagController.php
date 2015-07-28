@@ -74,7 +74,7 @@ class TagController extends Controller
                 'Tag wurde erfolgreich erstellt.'
             );
 
-            $url = $this->router->generate('tag_testscreen');
+            $url = $this->router->generate('tag_homeScreen');
 
             return new RedirectResponse($url);
         }

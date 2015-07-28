@@ -10,7 +10,11 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block content %}{% endblock %}
+    <div class="container">
+        <div class="clearfix">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
         {% block javascripts %}
             <script src="{{ asset('js/bundle.js') }}" ></script>
             {% if app.environment == 'dev' %}

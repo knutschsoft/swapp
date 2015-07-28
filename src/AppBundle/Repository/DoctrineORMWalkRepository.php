@@ -6,8 +6,6 @@ use Doctrine\ORM\EntityRepository;
 
 class DoctrineORMWalkRepository extends EntityRepository implements WalkRepository
 {
-
-
     public function findTrue()
     {
         return true;
@@ -34,5 +32,11 @@ class DoctrineORMWalkRepository extends EntityRepository implements WalkReposito
     {
 
         return parent::findOneBy(['id' => $id]);
+    }
+
+    public function save(Walk $walk)
+    {
+        $this->_em->persist($walk);
+        $this->_em->flush();
     }
 }
