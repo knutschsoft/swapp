@@ -40,7 +40,6 @@ class WalksController
     {
         $walks = $this->walkRepository->findAll();
         $teams = $user->getTeams();
-
         $parameters = [
             'walks' => $walks,
             'teams' => $teams,

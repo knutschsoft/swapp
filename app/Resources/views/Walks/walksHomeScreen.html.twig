@@ -13,14 +13,17 @@
         </h1>
     </div>
     <div class="mb1">
-        <a href="tag" class="btn btn-primary">Tags</a>
+        <select name="Team" class="btn-outline blue">
+            {% for team in teams %}
+                <option value={{ team.getName }}>{{ team.getName }}</option>
+            {% else %}
+                <option value="Keinem Team zugeordnet">Keinem Team zugeordnet</option>
+            {% endfor %}
+        </select>
         <a href="{{ path('walk_createform') }}" class="btn btn-primary">Runde beginnen</a>
+        <a href="tag" class="btn btn-primary sm-col-right">Tags</a>
     </div>
-    {% for team in teams %}
-        {{ team.getName }}
-    {% else %}
-        no teams
-    {% endfor %}
+
     <div class="">
         <table class="table-light">
             <thead>
@@ -28,7 +31,8 @@
                 <th>Name</th>
                 <th>Bewertung</th>
                 <th>Beginn</th>
-                <th>Detailansicht</th>
+                <th>Ende</th>
+                <th class="sm-col-right">Detailansicht</th>
             </tr>
             </thead>
             <tbody>
@@ -40,7 +44,10 @@
                         {{ walk.getStartTime|localizeddate('short', 'short') }}
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="{{ path('walk_show', { 'id': walk.getId }) }}">Runde
+                        {{ walk.getEndTime|localizeddate('short', 'short') }}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary sm-col-right" href="{{ path('walk_show', { 'id': walk.getId }) }}">Runde
                             ansehen</a>
                     </td>
                 </tr>
