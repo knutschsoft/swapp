@@ -79,6 +79,6 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
      */
     public function getOrder()
     {
-        return 3; // load after LoadWalkData
+        return 2; // load before LoadWalkData
     }
 }
