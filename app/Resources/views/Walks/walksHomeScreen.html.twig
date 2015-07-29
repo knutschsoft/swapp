@@ -15,12 +15,25 @@
     <div class="mb1">
         <select name="Team" class="s-select-team btn-outline blue">
             {% for team in teams %}
-                <option value={{ team.getName }}>{{ team.getName }}</option>
+                <option value={{ team.getId }}>{{ team.getName }}</option>
             {% else %}
                 <option value="Keinem Team zugeordnet">Keinem Team zugeordnet</option>
             {% endfor %}
         </select>
-        <a href="{{ path('walk_createform', { 'teamId': teams|first.getId}) }}" class="btn btn-primary">Runde beginnen</a>
+        <a class="s-select-team-link" href="{{ path('walk_createform', { 'teamId': teams|first.getId}) }}" class="btn btn-primary">Runde beginnen</a>
+        <script>
+            window.document.getElementsByClassName('s-select-team')[0].addEventListener('change', function() {
+                console.log(this.value);
+                var href, hrefParts, linkElem;
+                linkElem = window.document.getElementsByClassName('s-select-team-link')[0];
+                href = linkElem.getAttribute('href');
+                hrefParts = href.split('/');
+                hrefParts.pop();
+                hrefParts.push(this.value);
+                href = hrefParts.join('/');
+                linkElem.setAttribute('href', href);
+            });
+        </script>
         <a href="tag" class="btn btn-primary sm-col-right">Tags</a>
     </div>
 
