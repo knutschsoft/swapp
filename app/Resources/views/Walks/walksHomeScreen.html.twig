@@ -23,7 +23,6 @@
         <a class="s-select-team-link" href="{{ path('walk_createform', { 'teamId': teams|first.getId}) }}" class="btn btn-primary">Runde beginnen</a>
         <script>
             window.document.getElementsByClassName('s-select-team')[0].addEventListener('change', function() {
-                console.log(this.value);
                 var href, hrefParts, linkElem;
                 linkElem = window.document.getElementsByClassName('s-select-team-link')[0];
                 href = linkElem.getAttribute('href');
