@@ -20,7 +20,8 @@
                 <option value="Keinem Team zugeordnet">Keinem Team zugeordnet</option>
             {% endfor %}
         </select>
-        <a class="s-select-team-link" href="{{ path('walk_createform', { 'teamId': teams|first.getId}) }}" class="btn btn-primary">Runde beginnen</a>
+        <a class="s-select-team-link" href="{{ path('walk_create_form', { 'teamId': teams|first.getId}) }}"
+           class="btn btn-primary">Runde beginnen</a>
         <script>
             window.document.getElementsByClassName('s-select-team')[0].addEventListener('change', function() {
                 var href, hrefParts, linkElem;

@@ -53,7 +53,7 @@ services:
 
     app.controller.waypoint_controller:
       class: AppBundle\Controller\WayPointController
-      arguments: [@templating, @app.factory_service.way_point_repository]
+      arguments: [@templating, @form.factory, @app.factory_service.way_point_repository, @router]
 
     app.factory_service.systemic_question_repository:
         class: AppBundle\Repository\SystemicQuestionRepository
@@ -92,6 +92,11 @@ services:
         class: AppBundle\Form\Type\WalkType
         tags:
             - { name: form.type, alias: app_create_walk }
+
+    app.form.type.waypoint:
+        class: AppBundle\Form\Type\WayPointType
+        tags:
+            - { name: form.type, alias: app_create_way_point }
 
     app.twig_extension.intl:
         class: Twig_Extensions_Extension_Intl

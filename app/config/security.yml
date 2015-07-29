@@ -15,7 +15,7 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
-                default_target_path: walk_homeScreen
+                default_target_path: walk_home_screen
             logout:       true
             anonymous:    true
 

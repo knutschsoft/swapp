@@ -90,7 +90,7 @@ class WalksController
                 'Runde wurde erfolgreich erstellt.'
             );
 
-            $url = $this->router->generate('walk_homeScreen');
+            $url = $this->router->generate('walk_home_screen');
 
             return new RedirectResponse($url);
         }

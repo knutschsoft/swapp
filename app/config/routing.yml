@@ -23,7 +23,7 @@ param_converter_example:
     path: /pc/{name}/{anotherName}
     defaults: { _controller: app.controller.controller_as_a_service:paramConverterAction }
 
-walk_homeScreen:
+walk_home_screen:
     path: /walks
     defaults: { _controller: app.controller.walks_controller:homeScreenAction }
 
@@ -31,11 +31,11 @@ walk_show:
     path: /walk/{id}
     defaults: { _controller: app.controller.walks_controller:showAction }
 
-tag_homeScreen:
+tag_home_screen:
     path: /tag
     defaults: { _controller: app.controller.tag_controller:homeScreenAction }
 
-tag_createform:
+tag_create_form:
     path: /createtag
     defaults: { _controller: app.controller.tag_controller:createTagFormAction }
 
@@ -43,14 +43,22 @@ tag_create:
    path: /tagcreated
    defaults: { _controller: app.controller.tag_controller:createTagAction}
 
-walk_createform:
-   path: /createwalk/{teamId}
+walk_create_form:
+   path: /createwalk/
    defaults: { _controller: app.controller.walks_controller:createWalkFormAction }
 
 walk_create:
   path: /walkcreated
   defaults: { _controller: app.controller.walks_controller:createWalkAction}
 
-waypoint_testscreen:
+way_point_home_screen:
     path: /waypoint
     defaults: { _controller: app.controller.waypoint_controller:homeScreenAction }
+
+way_point_create_form:
+   path: /createwaypoint/
+   defaults: { _controller: app.controller.waypoint_controller:createWayPointFormAction }
+
+way_point_create:
+  path: /waypointcreated
+  defaults: { _controller: app.controller.waypoint_controller:createWayPointAction}
