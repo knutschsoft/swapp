@@ -14,7 +14,7 @@
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
                 <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-                <input placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}" class="block col-12 mb1 field" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                <input autofocus placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}" class="block col-12 mb1 field" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
 
                 <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
                 <input class="block col-12 mb1 field" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" type="password" id="password" name="_password" required="required" />
