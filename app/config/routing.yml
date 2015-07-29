@@ -44,7 +44,7 @@ tag_create:
    defaults: { _controller: app.controller.tag_controller:createTagAction}
 
 walk_create_form:
-   path: /createwalk/
+   path: /createwalk/{teamId}
    defaults: { _controller: app.controller.walks_controller:createWalkFormAction }
 
 walk_create:
