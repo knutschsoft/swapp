@@ -4,21 +4,28 @@
     {% if error %}
         <div class="bold center p2 mb2 white bg-red rounded">{{ error|trans({}, 'FOSUserBundle') }}</div>
     {% endif %}
+    <div class="sm-col-6 mx-auto mt2">
+        <div class="overflow-hidden bg-white border rounded">
+            <div class="p2 white bg-blue">
+                <h1 class="h2 m0">Anmeldung</h1>
+            </div>
 
-    <form class="m2 clearfix" action="{{ path("fos_user_security_check") }}" method="post">
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            <form class="sm-col-6 p2" action="{{ path("fos_user_security_check") }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-        <label class="hide" for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-        <input placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}" class="col col-4 md-col-5 field rounded-left x-group-item" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+                <input placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}" class="block col-12 mb1 field" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
 
-        <label class="hide" for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-        <input class="col col-4 md-col-5 field not-rounded x-group-item" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" type="password" id="password" name="_password" required="required" />
+                <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+                <input class="block col-12 mb1 field" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" type="password" id="password" name="_password" required="required" />
 
-        <input class="col col-4 md-col-2 btn btn-primary rounded-right" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+                <label class="block col-12 mb2" for="remember_me">
+                    {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                </label>
 
-        <label class="col col-12 mt2" for="remember_me">
-            {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
-            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-        </label>
-    </form>
+                <input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+            </form>
+        </div>
+    </div>
 {% endblock fos_user_content %}
