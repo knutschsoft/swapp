@@ -100,13 +100,13 @@ class WayPointType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'AppBundle\Entity\Walk',
+                'data_class' => 'AppBundle\Entity\WayPoint',
             )
         );
     }
 
     public function getName()
     {
-        return 'app_create_walk';
+        return 'app_create_way_point';
     }
 }
