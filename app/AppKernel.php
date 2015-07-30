@@ -22,6 +22,7 @@ class AppKernel extends Kernel
 
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Vich\UploaderBundle\VichUploaderBundle(),
 
             // SonataAdminBundle
             new Sonata\CoreBundle\SonataCoreBundle(),

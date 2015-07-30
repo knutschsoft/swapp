@@ -25,8 +25,8 @@ Open a terminal and type in the following commands:
 
 ```
 cd /your/symfony/dir
-sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
-sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs
+sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs web/images/way_points
+sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs web/images/way_points
 ```
 
 ### Setup webserver

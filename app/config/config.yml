@@ -42,6 +42,8 @@ sonata_block:
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
+    form_themes:
+        - 'VichUploaderBundle:Form:fields.html.twig'
     strict_variables: "%kernel.debug%"
 
 # Assetic Configuration
@@ -92,3 +94,13 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+        way_point_image:
+            uri_prefix:         /images/way_points
+            upload_destination: %kernel.root_dir%/../web/images/way_points
+            inject_on_load:     false # should the file be injected into the uploadable entity when it is loaded from the data store
+            delete_on_update:   true  # should the file be deleted when a new file is uploaded
+            delete_on_remove:   true  # should the file be deleted when a new file is removed

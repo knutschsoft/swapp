@@ -17,6 +17,16 @@ class WayPointType extends AbstractType
             )
         );
         $builder->add(
+            'imageFile',
+            'vich_image',
+            [
+                'required' => false,
+                'allow_delete' => true, // not mandatory, default is true
+                'download_link' => true, // not mandatory, default is true
+                'label' => 'Bildupload'
+            ]
+        );
+        $builder->add(
             'ageRangeStart',
             'text',
             array(
@@ -48,7 +58,7 @@ class WayPointType extends AbstractType
                     '10' => '10',
                 ),
                 'required' => true,
-                'label' => 'Anzahl Männer',
+                'label' => 'Anzahl Mï¿½nner',
             )
         );
         $builder->add(
