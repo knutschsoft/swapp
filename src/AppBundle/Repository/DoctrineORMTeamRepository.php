@@ -43,13 +43,13 @@ class DoctrineORMTeamRepository extends EntityRepository implements TeamReposito
     /**
      * Finds all teams in which the user is enlisted.
      *
-     * @param $userid
+     * @param $userId
      *
      * @return Team[]
      */
-    public function findAllFor($userid)
+    public function findAllFor($userId)
     {
-        return parent::findBy(['user_id' => $userid]);
+        return parent::findBy(['user_id' => $userId]);
     }
 
     /**

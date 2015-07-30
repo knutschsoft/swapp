@@ -11,4 +11,6 @@ interface WalkRepository
      * @return Walk[]
      */
     public function findAll();
+
+    public function save(Walk $walk);
 }

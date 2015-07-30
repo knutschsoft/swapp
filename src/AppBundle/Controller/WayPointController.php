@@ -1,7 +1,10 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Team;
+use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
+use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -22,17 +25,20 @@ class WayPointController
      * @param FormFactoryInterface $formFactory
      * @param WayPointRepository   $wayPointRepository
      * @param RouterInterface      $router
+     * @param WalkRepository       $walkRepository
      */
     public function __construct(
         EngineInterface $templateEngine,
         FormFactoryInterface $formFactory,
         WayPointRepository $wayPointRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        WalkRepository $walkRepository
     ) {
         $this->templateEngine = $templateEngine;
         $this->wayPointRepository = $wayPointRepository;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->walkRepository = $walkRepository;
     }
 
     public function homeScreenAction()
@@ -40,8 +46,13 @@ class WayPointController
         return $this->templateEngine->renderResponse(':WayPoint:wayPointForm.html.twig');
     }
 
-    public function createWayPointFormAction()
+    public function createWayPointFormAction(Team $team)
     {
+        $walk = new Walk();
+        foreach ($team->getUsers() as &$user) {
+            $walk->setWalkTeamMembers($user);
+        }
+//        $this->walkRepository->save($walk);
         $wayPoint = new WayPoint();
         $form = $this->formFactory->create(
             'app_create_way_point',
@@ -55,6 +66,7 @@ class WayPointController
             ':WayPoint:wayPointForm.html.twig',
             array(
                 'form' => $form->createView(),
+                'wayPoints' => $this->wayPointRepository->findAllFor($team->getId()),
             )
         );
     }
@@ -68,14 +80,29 @@ class WayPointController
         if ($form->isValid()) {
             $wayPoint = $form->getData();
             $this->wayPointRepository->save($wayPoint);
-            $flashBag->add(
-                'notice',
-                'Wegpunkt wurde erfolgreich erstellt.'
-            );
 
-            $url = $this->router->generate('walk_home_screen');
+            if ($form->get('createWayPoint')->isClicked()) {
+                // probably redirect to the add page again
+                $flashBag->add(
+                    'notice',
+                    'Wegpunkt wurde erfolgreich erstellt.'
+                );
 
-            return new RedirectResponse($url);
+                $url = $this->router->generate('way_point_create_form');
+
+                return new RedirectResponse($url);
+            }
+            if ($form->get('createWalk')->isClicked()) {
+                // probably redirect to the add page again
+                $flashBag->add(
+                    'notice',
+                    'Wegpunkt wurde erfolgreich erstellt.'
+                );
+
+                $url = $this->router->generate('walk_create_form');
+
+                return new RedirectResponse($url);
+            }
         }
 
         return $this->templateEngine->renderResponse(

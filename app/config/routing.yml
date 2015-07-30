@@ -44,19 +44,19 @@ tag_create:
    defaults: { _controller: app.controller.tag_controller:createTagAction}
 
 walk_create_form:
-   path: /createwalk/{teamId}
+   path: /createwalk/
    defaults: { _controller: app.controller.walks_controller:createWalkFormAction }
 
 walk_create:
   path: /walkcreated
   defaults: { _controller: app.controller.walks_controller:createWalkAction}
 
-way_point_home_screen:
-    path: /waypoint
+way_point_show:
+    path: /waypoint/{id}
     defaults: { _controller: app.controller.waypoint_controller:homeScreenAction }
 
 way_point_create_form:
-   path: /createwaypoint
+   path: /createwaypoint/{team}
    defaults: { _controller: app.controller.waypoint_controller:createWayPointFormAction }
 
 way_point_create:

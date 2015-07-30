@@ -33,6 +33,21 @@ class DoctrineORMWayPointRepository extends EntityRepository implements WayPoint
         return parent::findOneBy(['id' => $id]);
     }
 
+    /**
+     * Finds all wayPoints for a walkId.
+     *
+     * @param $walkId
+     *
+     * @return WayPoint[]
+     */
+    public function findAllFor($walkId)
+    {
+        return parent::findBy(['walk' => $walkId]);
+    }
+
+    /**
+     * @param WayPoint $wayPoint
+     */
     public function save(WayPoint $wayPoint)
     {
         $this->_em->persist($wayPoint);

@@ -1,7 +1,41 @@
 {% extends '::base.html.twig' %}
 {% block title %}Wegpunkt{% endblock %}
 {% block content %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
     {{ form_start(form) }}
     {{ form_errors(form) }}
     {{ form_end(form) }}
+
+    <div class="">
+        <table class="table-light">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Meeting</th>
+                <th>Männer</th>
+                <th>Frauen</th>
+                <th class="right-align">Detailansicht</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for waypoint in wayPoints %}
+                <tr>
+                    <td>{{ waypoint.getLocationName }}</td>
+                    <td>{% if waypoint.getIsMeeting == 1 %}ja{% else %}nein{% endif %}</td>
+                    <td>{{ waypoint.getFemalesCount }}</td>
+                    <td>{{ waypoint.getMalesCount }}</td>
+                    <td>
+                        <a class="btn btn-primary sm-col-right"
+                           href="{{ path('way_point_show', { 'id': waypoint.getId }) }}">Wegpunkt ansehen</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}

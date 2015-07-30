@@ -1,7 +1,9 @@
 <?php
 namespace AppBundle\ParamConverter;
 
+use AppBundle\Entity\Team;
 use AppBundle\Entity\Walk;
+use AppBundle\Repository\TeamRepository;
 use AppBundle\Repository\WalkRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -11,13 +13,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class EntityParamConverter implements ParamConverterInterface
 {
     private $walkRepository;
+    private $teamRepository;
 
     /**
      * @param WalkRepository $walkRepository
+     * @param TeamRepository $teamRepository
      */
-    public function __construct(WalkRepository $walkRepository)
+    public function __construct(WalkRepository $walkRepository, TeamRepository $teamRepository)
     {
         $this->walkRepository = $walkRepository;
+        $this->teamRepository = $teamRepository;
     }
 
     /**
@@ -33,6 +38,9 @@ class EntityParamConverter implements ParamConverterInterface
         switch ($configuration->getName()) {
             case 'walk':
                 $resource = $this->walkRepository->findOneById($request->get('id'));
+                break;
+            case 'team':
+                $resource = $this->teamRepository->findOneById($request->get('team'));
                 break;
             default:
                 throw new \InvalidArgumentException(
@@ -65,7 +73,6 @@ class EntityParamConverter implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration)
     {
-
-        return $configuration->getClass() === Walk::class;
+        return in_array($configuration->getClass(), [Walk::class, Team::class]);
     }
 }

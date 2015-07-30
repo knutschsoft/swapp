@@ -58,7 +58,7 @@ class WayPointType extends AbstractType
                     '10' => '10',
                 ),
                 'required' => true,
-                'label' => 'Anzahl Mï¿½nner',
+                'label' => 'Anzahl Männer',
             )
         );
         $builder->add(
@@ -94,10 +94,19 @@ class WayPointType extends AbstractType
             'checkbox',
             array(
                 'label' => 'Meeting',
+                'required' => false,
             )
         );
         $builder->add(
-            'create',
+            'createWayPoint',
+            'submit',
+            array(
+                'label' => 'neuer Wegpunk',
+                'attr' => array('class' => 'btn btn-primary'),
+            )
+        );
+        $builder->add(
+            'createWalk',
             'submit',
             array(
                 'label' => 'Runde abschliessen',

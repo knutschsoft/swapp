@@ -24,8 +24,7 @@ services:
 
     app.param_converter.entity:
         class: AppBundle\ParamConverter\EntityParamConverter
-        arguments:
-          - @app.factory_service.walk_repository
+        arguments: [@app.factory_service.walk_repository, @app.factory_service.team_repository]
         tags:
             - { name: request.param_converter, converter: entity, priority: 0 }
 
@@ -53,7 +52,7 @@ services:
 
     app.controller.waypoint_controller:
       class: AppBundle\Controller\WayPointController
-      arguments: [@templating, @form.factory, @app.factory_service.way_point_repository, @router]
+      arguments: [@templating, @form.factory, @app.factory_service.way_point_repository, @router, @app.factory_service.walk_repository]
 
     app.factory_service.systemic_question_repository:
         class: AppBundle\Repository\SystemicQuestionRepository
@@ -82,6 +81,13 @@ services:
         factory_method: getRepository
         arguments:
             - AppBundle\Entity\Tag
+
+    app.factory_service.team_repository:
+        class: AppBundle\Repository\TeamRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - AppBundle\Entity\Team
 
     app.form.type.tag:
         class: AppBundle\Form\Type\TagType

@@ -78,6 +78,28 @@ class Walk
     protected $guests;
 
     /**
+     * @ORM\Column(type="boolean", length=255)
+     */
+    protected $isInternal;
+
+    /**
+     * @return boolean
+     */
+    public function getIsInternal()
+    {
+        return $this->isInternal;
+    }
+
+    /**
+     * @param boolean $isInternal
+     */
+    public function setIsInternal($isInternal)
+    {
+        $this->isInternal = $isInternal;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getGuests()
