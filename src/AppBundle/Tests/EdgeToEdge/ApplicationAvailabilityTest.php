@@ -20,9 +20,14 @@ class ApplicationAvailabilityFunctionalTest extends BaseWebTestCase
     public function urlProvider()
     {
         return array(
-            array('/createwalk'),
             array('/walks'),
             array('/tag'),
+            array('/createtag'),
+            array('/tagcreated'),
+            array('/walkcreated'),
+//            array('/waypoint'), @TODO enable as soon as WayPointController::homeScreenAction is finished
+            array('/createwaypoint'),
+            array('/waypointcreated'),
             array('/eadmin/?action=list&entity=Team'),
             array('/eadmin/?action=list&entity=Walk'),
             array('/eadmin/?action=list&entity=WayPoint'),

@@ -56,7 +56,7 @@ way_point_home_screen:
     defaults: { _controller: app.controller.waypoint_controller:homeScreenAction }
 
 way_point_create_form:
-   path: /createwaypoint/
+   path: /createwaypoint
    defaults: { _controller: app.controller.waypoint_controller:createWayPointFormAction }
 
 way_point_create:
