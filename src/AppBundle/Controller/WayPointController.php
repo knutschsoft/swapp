@@ -85,52 +85,6 @@ class WayPointController
     }
 
     /**
-     * @param Team $team
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function startWalkWithWayPointAction(Team $team)
-    {
-        $walk = new Walk();
-
-        $walk->setName("");
-        $walk->setStartTime(new \DateTime());
-        $walk->setEndTime(new \DateTime());
-        $walk->setRating(1);
-        $walk->setSystemicAnswer("");
-        $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom()->getQuestion());
-        $walk->setWalkReflection("");
-        $walk->setWeather("");
-        $walk->setHolidays("");
-        $walk->setIsResubmission(false);
-        $walk->setHolidays(false);
-        $walk->setConceptOfDay("");
-
-        $this->walkRepository->save($walk);
-
-        foreach ($team->getUsers() as $user) {
-            $user->setWalks([$walk]);
-            $this->userManager->updateUser($user);
-        }
-        $wayPoint = new WayPoint();
-        $form = $this->formFactory->create(
-            'app_create_way_point',
-            $wayPoint,
-            array(
-                'action' => $this->router->generate('way_point_create', array('walkId' => $walk->getId())),
-            )
-        );
-
-        return $this->templateEngine->renderResponse(
-            ':WayPoint:wayPointForm.html.twig',
-            array(
-                'form' => $form->createView(),
-                'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
-            )
-        );
-    }
-
-    /**
      * @param Walk $walk
      *
      * @return \Symfony\Component\HttpFoundation\Response

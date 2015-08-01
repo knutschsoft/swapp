@@ -90,5 +90,5 @@
         </div>
     </div>
     {{ form_end(form) }}
-    {{ include (':WayPoint:wayPointOverview.html.twig', { 'wayPoints': walk.getWayPoints }) }}
+    {{ include (':WayPoint:wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
 {% endblock %}

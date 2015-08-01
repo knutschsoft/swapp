@@ -95,7 +95,7 @@ class WalksController
             'app_create_walk',
             $walk,
             array(
-                'action' => $this->router->generate('walk_create'),
+                'action' => $this->router->generate('walk_create', array('walkId' => $walk->getId())),
             )
         );
 
@@ -103,7 +103,7 @@ class WalksController
             ':Walks:walkForm.html.twig',
             array(
                 'form' => $form->createView(),
-                'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
+                'wayPoints' => $walk->getWayPoints(),
             )
         );
     }
