@@ -5,6 +5,7 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Walk;
 use AppBundle\Repository\SystemicQuestionRepository;
+use AppBundle\Repository\TagRepository;
 use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -26,6 +27,7 @@ class WalksController
     private $wayPointRepository;
     private $userManager;
     private $systemicQuestionRepository;
+    private $tagRepository;
 
     /**
      * @param EngineInterface            $templateEngine
@@ -35,6 +37,7 @@ class WalksController
      * @param WayPointRepository         $wayPointRepository
      * @param UserManagerInterface       $userManager
      * @param SystemicQuestionRepository $systemicQuestionRepository
+     * @param TagRepository              $tagRepository
      */
     public function __construct(
         EngineInterface $templateEngine,
@@ -43,7 +46,8 @@ class WalksController
         RouterInterface $router,
         WayPointRepository $wayPointRepository,
         UserManagerInterface $userManager,
-        SystemicQuestionRepository $systemicQuestionRepository
+        SystemicQuestionRepository $systemicQuestionRepository,
+        TagRepository $tagRepository
     ) {
         $this->formFactory = $formFactory;
         $this->templateEngine = $templateEngine;
@@ -52,6 +56,7 @@ class WalksController
         $this->wayPointRepository = $wayPointRepository;
         $this->userManager = $userManager;
         $this->systemicQuestionRepository = $systemicQuestionRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -191,6 +196,10 @@ class WalksController
 
         if ($form->isValid()) {
             $walk = $form->getData();
+            foreach ($walk->getTags() as $tag) {
+                $tag->setWalks([$walk]);
+                $this->tagRepository->updateTag($tag);
+            }
             $this->walkRepository->update($walk);
             $flashBag->add(
                 'notice',

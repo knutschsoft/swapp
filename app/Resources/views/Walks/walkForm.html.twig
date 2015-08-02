@@ -72,6 +72,12 @@
                 {{ form_widget(form.insights) }}
             </div>
             <div class="p1">
+                {{ form_label(form.tags) }}
+                <br>
+                {{ form_errors(form.tags) }}
+                {{ form_widget(form.tags) }}
+            </div>
+            <div class="p1">
                 {{ form_label(form.commitments) }}
                 <br>
                 {{ form_errors(form.commitments) }}

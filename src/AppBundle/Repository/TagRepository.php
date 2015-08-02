@@ -10,4 +10,6 @@ interface TagRepository
     public function save(Tag $tag);
 
     public function getTags();
+
+    public function updateTag(Tag $tag);
 }

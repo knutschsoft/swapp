@@ -33,4 +33,10 @@ class DoctrineORMTagRepository extends EntityRepository implements TagRepository
 
         return $query->getResult();
     }
+
+    public function updateTag(Tag $tag)
+    {
+        $this->_em->merge($tag);
+        $this->_em->flush();
+    }
 }

@@ -1,12 +1,23 @@
 <?php
 namespace AppBundle\Form\Type;
 
+use AppBundle\Repository\DoctrineORMTagRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WayPointType extends AbstractType
 {
+    private $tagRepository;
+
+    /**
+     * @param DoctrineORMTagRepository $tagRepository
+     */
+    public function __construct(DoctrineORMTagRepository $tagRepository)
+    {
+        $this->tagRepository = $tagRepository;
+    }
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -212,8 +223,11 @@ class WayPointType extends AbstractType
             'tags',
             'choice',
             array(
-                'choices' => array(),
-                'label' => 'Tags',
+                'choice_list' => new ChoiceList(
+                    $this->tagRepository->getTags(),
+                    $this->tagRepository->getTags()
+                ),
+                'multiple' => true,
             )
         );
         $builder->add(

@@ -12,6 +12,11 @@ interface WayPointRepository
      */
     public function findOneById($id);
 
+    /**
+     * @param WayPoint $wayPoint
+     *
+     * @return mixed
+     */
     public function save(WayPoint $wayPoint);
 
     /**

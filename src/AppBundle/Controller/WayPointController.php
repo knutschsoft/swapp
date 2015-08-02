@@ -5,6 +5,7 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
 use AppBundle\Repository\SystemicQuestionRepository;
+use AppBundle\Repository\TagRepository;
 use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -22,6 +23,7 @@ class WayPointController
     private $router;
     private $formFactory;
     private $userManager;
+    private $tagRepository;
 
     /**
      * @param EngineInterface            $templateEngine
@@ -31,6 +33,7 @@ class WayPointController
      * @param WalkRepository             $walkRepository
      * @param SystemicQuestionRepository $systemicQuestionRepository
      * @param UserManagerInterface       $userManager
+     * @param TagRepository              $tagRepository
      */
     public function __construct(
         EngineInterface $templateEngine,
@@ -39,7 +42,8 @@ class WayPointController
         RouterInterface $router,
         WalkRepository $walkRepository,
         SystemicQuestionRepository $systemicQuestionRepository,
-        UserManagerInterface $userManager
+        UserManagerInterface $userManager,
+        TagRepository $tagRepository
     ) {
         $this->templateEngine = $templateEngine;
         $this->wayPointRepository = $wayPointRepository;
@@ -48,6 +52,7 @@ class WayPointController
         $this->walkRepository = $walkRepository;
         $this->systemicQuestionRepository = $systemicQuestionRepository;
         $this->userManager = $userManager;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -126,6 +131,10 @@ class WayPointController
             $wayPoint = $form->getData();
             $wayPoint->setWalk($walk);
             $this->wayPointRepository->save($wayPoint);
+            foreach ($wayPoint->getTags() as $tag) {
+                $tag->setWayPoints([$wayPoint]);
+                $this->tagRepository->updateTag($tag);
+            }
 
             $flashBag->add(
                 'notice',

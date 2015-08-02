@@ -55,6 +55,7 @@ services:
         - @app.factory_service.way_point_repository
         - @fos_user.user_manager
         - @app.factory_service.systemic_question_repository
+        - @app.factory_service.tag_repository
 
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController
@@ -70,6 +71,7 @@ services:
         - @app.factory_service.walk_repository
         - @app.factory_service.systemic_question_repository
         - @fos_user.user_manager
+        - @app.factory_service.tag_repository
 
     app.factory_service.systemic_question_repository:
         class: AppBundle\Repository\SystemicQuestionRepository
@@ -132,6 +134,8 @@ services:
         class: AppBundle\Form\Type\WayPointType
         tags:
             - { name: form.type, alias: app_create_way_point }
+        arguments:
+                    - @app.factory_service.tag_repository
 
     app.twig_extension.intl:
         class: Twig_Extensions_Extension_Intl

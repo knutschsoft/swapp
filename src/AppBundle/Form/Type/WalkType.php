@@ -3,6 +3,7 @@ namespace AppBundle\Form\Type;
 
 use AppBundle\Repository\DoctrineORMTagRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -118,26 +119,17 @@ class WalkType extends AbstractType
                 'label' => 'Wetter',
             )
         );
-//        $builder->add(
-//            'tags',
-//            'choice',
-//            array(
-//                'choice_loader' => $this->tagRepository->getTags(),
-//                'choices_as_values' => true,
-//                'multiple' => true,
-//                'expanded' => true,
-//                'choice_label' => function ($tag, $key) {
-//                        return $tag->getName();
-//                },
-//                'choice_value' => function ($tag) {
-//
-//                    if (get_class($tag) != 'Doctrine\ORM\PersistentCollection') {
-//                        return $tag->getId();
-//                    }
-//                },
-//
-//            )
-//        );
+        $builder->add(
+            'tags',
+            'choice',
+            array(
+                'choice_list' => new ChoiceList(
+                    $this->tagRepository->getTags(),
+                    $this->tagRepository->getTags()
+                ),
+                //'multiple' => true,
+            )
+        );
         $builder->add(
             'insights',
             'textarea',
