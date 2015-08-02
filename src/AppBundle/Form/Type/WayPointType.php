@@ -18,6 +18,7 @@ class WayPointType extends AbstractType
     {
         $this->tagRepository = $tagRepository;
     }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options

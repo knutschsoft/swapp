@@ -1,7 +1,6 @@
 <?php
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Team;
 use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
 use AppBundle\Repository\SystemicQuestionRepository;
