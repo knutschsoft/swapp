@@ -62,7 +62,7 @@ class Walk
     protected $rating;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="question")
+     * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="walks")
      */
     protected $systemicQuestion;
 

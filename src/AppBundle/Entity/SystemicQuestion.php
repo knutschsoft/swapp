@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use AppBundle\Controller\WalksController;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,9 +20,13 @@ class SystemicQuestion
 
     /**
      * @ORM\Column(type="string")
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Walk", mappedBy="systemicQuestion")
      **/
     protected $question;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Walk", mappedBy="systemicQuestion")
+     **/
+    private $walks;
 
     /**
      * @return string
@@ -62,5 +67,21 @@ class SystemicQuestion
     public function setQuestion($question)
     {
         $this->question = $question;
+    }
+
+    /**
+     * @return Walk[]
+     */
+    public function getWalks()
+    {
+        return $this->walks;
+    }
+
+    /**
+     * @param Walk[] $walks
+     */
+    public function setWalks($walks)
+    {
+        $this->walks = $walks;
     }
 }
