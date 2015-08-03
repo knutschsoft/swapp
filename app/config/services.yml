@@ -52,7 +52,14 @@ services:
 
     app.controller.waypoint_controller:
       class: AppBundle\Controller\WayPointController
-      arguments: [@templating, @form.factory, @app.factory_service.way_point_repository, @router, @app.factory_service.walk_repository]
+      arguments:
+        - @templating
+        - @form.factory
+        - @app.factory_service.way_point_repository
+        - @router
+        - @app.factory_service.walk_repository
+        - @app.factory_service.systemic_question_repository
+        - @fos_user.user_manager
 
     app.factory_service.systemic_question_repository:
         class: AppBundle\Repository\SystemicQuestionRepository

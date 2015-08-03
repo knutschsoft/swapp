@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
+use AppBundle\Repository\SystemicQuestionRepository;
 use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
+use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,26 +21,33 @@ class WayPointController
     private $wayPointRepository;
     private $router;
     private $formFactory;
+    private $userManager;
 
     /**
-     * @param EngineInterface      $templateEngine
-     * @param FormFactoryInterface $formFactory
-     * @param WayPointRepository   $wayPointRepository
-     * @param RouterInterface      $router
-     * @param WalkRepository       $walkRepository
+     * @param EngineInterface            $templateEngine
+     * @param FormFactoryInterface       $formFactory
+     * @param WayPointRepository         $wayPointRepository
+     * @param RouterInterface            $router
+     * @param WalkRepository             $walkRepository
+     * @param SystemicQuestionRepository $systemicQuestionRepository
+     * @param UserManagerInterface       $userManager
      */
     public function __construct(
         EngineInterface $templateEngine,
         FormFactoryInterface $formFactory,
         WayPointRepository $wayPointRepository,
         RouterInterface $router,
-        WalkRepository $walkRepository
+        WalkRepository $walkRepository,
+        SystemicQuestionRepository $systemicQuestionRepository,
+        UserManagerInterface $userManager
     ) {
         $this->templateEngine = $templateEngine;
         $this->wayPointRepository = $wayPointRepository;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->walkRepository = $walkRepository;
+        $this->systemicQuestionRepository = $systemicQuestionRepository;
+        $this->userManager = $userManager;
     }
 
     public function homeScreenAction()
@@ -49,16 +58,28 @@ class WayPointController
     public function createWayPointFormAction(Team $team)
     {
         $walk = new Walk();
-        foreach ($team->getUsers() as &$user) {
-            $walk->setWalkTeamMembers($user);
+
+        $walk->setName("placeholder_name");
+        $walk->setIsInternal(true);
+        $walk->setStartTime(new \DateTime());
+        $walk->setEndTime(new \DateTime());
+        $walk->setRating(1);
+        $walk->setSystemicAnswer("placeholder_answer");
+        $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom());
+        $walk->setWalkReflection("placeholder_reflection");
+
+        $walkId = $this->walkRepository->save($walk);
+
+        foreach ($team->getUsers() as $user) {
+            $user->setWalks([$walk]);
+            $this->userManager->updateUser($user, true);
         }
-//        $this->walkRepository->save($walk);
         $wayPoint = new WayPoint();
         $form = $this->formFactory->create(
             'app_create_way_point',
             $wayPoint,
             array(
-                'action' => $this->router->generate('way_point_create'),
+                'action' => $this->router->generate('way_point_create', array('team' => $team->getId())),
             )
         );
 
@@ -67,11 +88,12 @@ class WayPointController
             array(
                 'form' => $form->createView(),
                 'wayPoints' => $this->wayPointRepository->findAllFor($team->getId()),
+                'walkId' => $walkId,
             )
         );
     }
 
-    public function createWayPointAction(Request $request, FlashBag $flashBag)
+    public function createWayPointAction(Request $request, FlashBag $flashBag, Team $team)
     {
         $form = $this->formFactory->create('app_create_way_point', new WayPoint());
 
@@ -88,7 +110,7 @@ class WayPointController
                     'Wegpunkt wurde erfolgreich erstellt.'
                 );
 
-                $url = $this->router->generate('way_point_create_form');
+                $url = $this->router->generate('way_point_create_form', array('team' => $team->getId()));
 
                 return new RedirectResponse($url);
             }

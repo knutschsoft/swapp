@@ -23,7 +23,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Walk", mappedBy="walkTeamMembers")
+     * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
      */
     protected $walks;
 

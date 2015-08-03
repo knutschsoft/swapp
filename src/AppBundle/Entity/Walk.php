@@ -46,7 +46,7 @@ class Walk
     protected $walkReflection;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="walks")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="walks")
      */
     protected $walkTeamMembers;
 

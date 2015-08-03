@@ -101,7 +101,7 @@ class WayPointType extends AbstractType
             'createWayPoint',
             'submit',
             array(
-                'label' => 'neuer Wegpunk',
+                'label' => 'neuer Wegpunkt',
                 'attr' => array('class' => 'btn btn-primary'),
             )
         );

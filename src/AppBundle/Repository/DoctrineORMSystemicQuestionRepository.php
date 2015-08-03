@@ -19,6 +19,15 @@ class DoctrineORMSystemicQuestionRepository extends EntityRepository implements 
 
     public function getRandom()
     {
-        // TODO: Implement getRandom() method.
+        $count = $this->createQueryBuilder('u')
+            ->select('COUNT(u)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $this->createQueryBuilder('u')
+            ->setFirstResult(rand(0, $count - 1))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
     }
 }

@@ -13,4 +13,6 @@ interface WalkRepository
     public function findAll();
 
     public function save(Walk $walk);
+
+    public function update(Walk $walk);
 }

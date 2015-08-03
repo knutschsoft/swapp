@@ -20,9 +20,10 @@
                 <option value="Keinem Team zugeordnet">Keinem Team zugeordnet</option>
             {% endfor %}
         </select>
-        <a class="btn btn-primary rounded-right s-select-team-link" href="{{ path('walk_create_form', { 'teamId': teams|first.getId}) }}">Runde beginnen</a>
+        <a class="btn btn-primary rounded-right s-select-team-link"
+           href="{{ path('way_point_create_form', { 'team': teams|first.getId}) }}">Runde beginnen</a>
         <script>
-            window.document.getElementsByClassName('s-select-team')[0].addEventListener('change', function() {
+            window.document.getElementsByClassName('s-select-team')[0].addEventListener('change', function () {
                 var href, hrefParts, linkElem;
                 linkElem = window.document.getElementsByClassName('s-select-team-link')[0];
                 href = linkElem.getAttribute('href');
@@ -51,20 +52,23 @@
             </thead>
             <tbody>
             {% for walk in walks %}
-                <tr>
-                    <td>{{ walk.getName }}</td>
-                    <td>{{ walk.getRating }}</td>
-                    <td>
-                        {{ walk.getStartTime|localizeddate('short', 'short') }}
-                    </td>
-                    <td>
-                        {{ walk.getEndTime|localizeddate('short', 'short') }}
-                    </td>
-                    <td>
-                        <a class="btn btn-primary sm-col-right" href="{{ path('walk_show', { 'id': walk.getId }) }}">Runde
-                            ansehen</a>
-                    </td>
-                </tr>
+                {% if walk.isInternal != 1 %}
+                    <tr>
+                        <td>{{ walk.getName }}</td>
+                        <td>{{ walk.getRating }}</td>
+                        <td>
+                            {{ walk.getStartTime|localizeddate('short', 'short') }}
+                        </td>
+                        <td>
+                            {{ walk.getEndTime|localizeddate('short', 'short') }}
+                        </td>
+                        <td>
+                            <a class="btn btn-primary sm-col-right"
+                               href="{{ path('walk_show', { 'id': walk.getId }) }}">Runde
+                                ansehen</a>
+                        </td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
                     <td colspan="4">Es wurden noch keine Runden angelegt.</td>

@@ -60,5 +60,5 @@ way_point_create_form:
    defaults: { _controller: app.controller.waypoint_controller:createWayPointFormAction }
 
 way_point_create:
-  path: /waypointcreated
+  path: /waypointcreated/{team}
   defaults: { _controller: app.controller.waypoint_controller:createWayPointAction}
