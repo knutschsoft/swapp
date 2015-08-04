@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Walk;
 use AppBundle\Repository\WalkRepository;
+use AppBundle\Repository\WayPointRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,23 +18,27 @@ class WalksController
     private $walkRepository;
     private $router;
     private $formFactory;
+    private $wayPointRepository;
 
     /**
      * @param EngineInterface      $templateEngine
      * @param FormFactoryInterface $formFactory
      * @param WalkRepository       $walkRepository
      * @param RouterInterface      $router
+     * @param WayPointRepository   $wayPointRepository
      */
     public function __construct(
         EngineInterface $templateEngine,
         FormFactoryInterface $formFactory,
         WalkRepository $walkRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        WayPointRepository $wayPointRepository
     ) {
         $this->formFactory = $formFactory;
         $this->templateEngine = $templateEngine;
         $this->walkRepository = $walkRepository;
         $this->router = $router;
+        $this->wayPointRepository = $wayPointRepository;
     }
 
     public function homeScreenAction(User $user)
@@ -57,12 +62,13 @@ class WalksController
         return $this->templateEngine->renderResponse(':Walks:show.html.twig', $parameters);
     }
 
-    public function createWalkFormAction()
+    public function createWalkFormAction(Walk $walk)
     {
-        $walk = new Walk();
+        $newWalk = new Walk();
+        $newWalk->setId($walk->getId());
         $form = $this->formFactory->create(
             'app_create_walk',
-            $walk,
+            $newWalk,
             array(
                 'action' => $this->router->generate('walk_create'),
             )
@@ -72,6 +78,8 @@ class WalksController
             ':Walks:walkForm.html.twig',
             array(
                 'form' => $form->createView(),
+                'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
+                'systemicQuestion' => $walk->getSystemicQuestion()->getQuestion(),
             )
         );
     }
@@ -84,6 +92,7 @@ class WalksController
 
         if ($form->isValid()) {
             $walk = $form->getData();
+            $walk->setIsInternal(0);
             $this->walkRepository->save($walk);
             $flashBag->add(
                 'notice',

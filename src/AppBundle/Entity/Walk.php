@@ -73,6 +73,38 @@ class Walk
     protected $systemicAnswer;
 
     /**
+     * @return mixed
+     */
+    public function getWeather()
+    {
+        return $this->weather;
+    }
+
+    /**
+     * @param mixed $weather
+     */
+    public function setWeather($weather)
+    {
+        $this->weather = $weather;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHolidays()
+    {
+        return $this->holidays;
+    }
+
+    /**
+     * @param mixed $holidays
+     */
+    public function setHolidays($holidays)
+    {
+        $this->holidays = $holidays;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
      **/
     protected $guests;
@@ -81,6 +113,16 @@ class Walk
      * @ORM\Column(type="boolean", length=255)
      */
     protected $isInternal;
+
+    /**
+     * @ORM\Column(type="string", length=4096)
+     */
+    protected $weather;
+
+    /**
+     * @ORM\Column(type="string", length=4096)
+     */
+    protected $holidays;
 
     /**
      * @return boolean

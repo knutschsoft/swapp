@@ -28,7 +28,7 @@ walk_home_screen:
     defaults: { _controller: app.controller.walks_controller:homeScreenAction }
 
 walk_show:
-    path: /walk/{id}
+    path: /walk/{walkId}
     defaults: { _controller: app.controller.walks_controller:showAction }
 
 tag_home_screen:
@@ -44,7 +44,7 @@ tag_create:
    defaults: { _controller: app.controller.tag_controller:createTagAction}
 
 walk_create_form:
-   path: /createwalk/
+   path: /createwalk/{walkId}
    defaults: { _controller: app.controller.walks_controller:createWalkFormAction }
 
 walk_create:
@@ -52,13 +52,17 @@ walk_create:
   defaults: { _controller: app.controller.walks_controller:createWalkAction}
 
 way_point_show:
-    path: /waypoint/{id}
+    path: /waypoint/{wayPointId}
     defaults: { _controller: app.controller.waypoint_controller:homeScreenAction }
 
-way_point_create_form:
-   path: /createwaypoint/{team}
-   defaults: { _controller: app.controller.waypoint_controller:createWayPointFormAction }
-
 way_point_create:
-  path: /waypointcreated/{team}
-  defaults: { _controller: app.controller.waypoint_controller:createWayPointAction}
+    path: /waypointcreated/{walkId}
+    defaults: { _controller: app.controller.waypoint_controller:createWayPointAction}
+
+start_walk_with_way_point:
+   path: /startWalkWithTeam/{teamId}
+   defaults: { _controller: app.controller.waypoint_controller:startWalkWithWayPointAction }
+
+update_walk_with_way_point:
+   path: /addWayPointToWalk/{walkId}
+   defaults: { _controller: app.controller.waypoint_controller:updateWalkWithWayPointAction }

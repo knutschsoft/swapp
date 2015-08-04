@@ -44,7 +44,12 @@ services:
 
     app.controller.walks_controller:
       class: AppBundle\Controller\WalksController
-      arguments: [@templating, @form.factory, @app.factory_service.walk_repository, @router]
+      arguments:
+        - @templating
+        - @form.factory
+        - @app.factory_service.walk_repository
+        - @router
+        - @app.factory_service.way_point_repository
 
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController

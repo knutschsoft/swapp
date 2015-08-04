@@ -8,34 +8,90 @@
     {% endfor %}
     {{ form_start(form) }}
     {{ form_errors(form) }}
+
+    <div class="col">
+        <div class="flex flex-column ">
+            <div class="p1">
+                {{ form_label(form.locationName) }}
+                <br>
+                {{ form_errors(form.locationName) }}
+                {{ form_widget(form.locationName) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.malesChildCount) }}
+                <br>
+                {{ form_errors(form.malesChildCount) }}
+                {{ form_widget(form.malesChildCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.femalesChildCount) }}
+                <br>
+                {{ form_errors(form.femalesChildCount) }}
+                {{ form_widget(form.femalesChildCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.malesKidCount) }}
+                <br>
+                {{ form_errors(form.malesKidCount) }}
+                {{ form_widget(form.malesKidCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.femalesKidCount) }}
+                <br>
+                {{ form_errors(form.femalesKidCount) }}
+                {{ form_widget(form.femalesKidCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.malesYouthCount) }}
+                <br>
+                {{ form_errors(form.malesYouthCount) }}
+                {{ form_widget(form.malesYouthCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.femalesYouthCount) }}
+                <br>
+                {{ form_errors(form.femalesYouthCount) }}
+                {{ form_widget(form.femalesYouthCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.malesAdultCount) }}
+                <br>
+                {{ form_errors(form.malesAdultCount) }}
+                {{ form_widget(form.malesAdultCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.femalesAdultCount) }}
+                <br>
+                {{ form_errors(form.femalesAdultCount) }}
+                {{ form_widget(form.femalesAdultCount) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.imageFile) }}
+                <br>
+                {{ form_errors(form.imageFile) }}
+                {{ form_widget(form.imageFile) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.note) }}
+                <br>
+                {{ form_errors(form.note) }}
+                {{ form_widget(form.note) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.isMeeting) }}
+                <br>
+                {{ form_errors(form.isMeeting) }}
+                {{ form_widget(form.isMeeting) }}
+            </div>
+            <div class="p1">
+                {{ form_widget(form.createWayPoint) }}
+            </div>
+            <div class="p1">
+                {{ form_widget(form.createWalk) }}
+            </div>
+        </div>
+    </div>
     {{ form_end(form) }}
 
-    <div class="">
-        <table class="table-light">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Meeting</th>
-                <th>Männer</th>
-                <th>Frauen</th>
-                <th class="right-align">Detailansicht</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for waypoint in wayPoints %}
-                <tr>
-                    <td>{{ waypoint.getLocationName }}</td>
-                    <td>{% if waypoint.getIsMeeting == 1 %}ja{% else %}nein{% endif %}</td>
-                    <td>{{ waypoint.getFemalesCount }}</td>
-                    <td>{{ waypoint.getMalesCount }}</td>
-                    <td>
-                        <a class="btn btn-primary sm-col-right"
-                           href="{{ path('way_point_show', { 'id': waypoint.getId }) }}">Wegpunkt ansehen</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
+    {{ include (':WayPoint:wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
 {% endblock %}

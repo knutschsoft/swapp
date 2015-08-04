@@ -55,7 +55,7 @@ class WayPointController
         return $this->templateEngine->renderResponse(':WayPoint:wayPointForm.html.twig');
     }
 
-    public function createWayPointFormAction(Team $team)
+    public function startWalkWithWayPointAction(Team $team)
     {
         $walk = new Walk();
 
@@ -67,8 +67,10 @@ class WayPointController
         $walk->setSystemicAnswer("placeholder_answer");
         $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom());
         $walk->setWalkReflection("placeholder_reflection");
+        $walk->setWeather("placeholder_weather");
+        $walk->setHolidays("placeholder_holidays");
 
-        $walkId = $this->walkRepository->save($walk);
+        $this->walkRepository->save($walk);
 
         foreach ($team->getUsers() as $user) {
             $user->setWalks([$walk]);
@@ -79,7 +81,7 @@ class WayPointController
             'app_create_way_point',
             $wayPoint,
             array(
-                'action' => $this->router->generate('way_point_create', array('team' => $team->getId())),
+                'action' => $this->router->generate('way_point_create', array('walkId' => $walk->getId())),
             )
         );
 
@@ -87,13 +89,32 @@ class WayPointController
             ':WayPoint:wayPointForm.html.twig',
             array(
                 'form' => $form->createView(),
-                'wayPoints' => $this->wayPointRepository->findAllFor($team->getId()),
-                'walkId' => $walkId,
+                'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
             )
         );
     }
 
-    public function createWayPointAction(Request $request, FlashBag $flashBag, Team $team)
+    public function updateWalkWithWayPointAction(Walk $walk)
+    {
+        $wayPoint = new WayPoint();
+        $form = $this->formFactory->create(
+            'app_create_way_point',
+            $wayPoint,
+            array(
+                'action' => $this->router->generate('way_point_create', array('walkId' => $walk->getId())),
+            )
+        );
+
+        return $this->templateEngine->renderResponse(
+            ':WayPoint:wayPointForm.html.twig',
+            array(
+                'form' => $form->createView(),
+                'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
+            )
+        );
+    }
+
+    public function createWayPointAction(Request $request, FlashBag $flashBag, Walk $walk)
     {
         $form = $this->formFactory->create('app_create_way_point', new WayPoint());
 
@@ -101,30 +122,23 @@ class WayPointController
 
         if ($form->isValid()) {
             $wayPoint = $form->getData();
+            $wayPoint->setWalk($walk);
             $this->wayPointRepository->save($wayPoint);
 
+            $flashBag->add(
+                'notice',
+                'Wegpunkt wurde erfolgreich erstellt.'
+            );
+
             if ($form->get('createWayPoint')->isClicked()) {
-                // probably redirect to the add page again
-                $flashBag->add(
-                    'notice',
-                    'Wegpunkt wurde erfolgreich erstellt.'
-                );
-
-                $url = $this->router->generate('way_point_create_form', array('team' => $team->getId()));
-
-                return new RedirectResponse($url);
+                $url = $this->router->generate('update_walk_with_way_point', array('walkId' => $walk->getid()));
             }
+
             if ($form->get('createWalk')->isClicked()) {
-                // probably redirect to the add page again
-                $flashBag->add(
-                    'notice',
-                    'Wegpunkt wurde erfolgreich erstellt.'
-                );
-
-                $url = $this->router->generate('walk_create_form');
-
-                return new RedirectResponse($url);
+                $url = $this->router->generate('walk_create_form', array('walkId' => $walk->getId()));
             }
+
+            return new RedirectResponse($url);
         }
 
         return $this->templateEngine->renderResponse(

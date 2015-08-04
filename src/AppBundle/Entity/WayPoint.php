@@ -51,25 +51,145 @@ class WayPoint
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $ageRangeStart;
+    protected $malesChildCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $ageRangeEnd;
+    protected $femalesChildCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $malesCount;
+    protected $malesKidCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $femalesCount;
+    protected $femalesKidCount;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
+     */
+    protected $malesYouthCount;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
+     */
+    protected $femalesYouthCount;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
+     */
+    protected $malesAdultCount;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
+     */
+    protected $femalesAdultCount;
+
+    /**
+     * @return mixed
+     */
+    public function getMalesKidCount()
+    {
+        return $this->malesKidCount;
+    }
+
+    /**
+     * @param mixed $malesKidCount
+     */
+    public function setMalesKidCount($malesKidCount)
+    {
+        $this->malesKidCount = $malesKidCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFemalesKidCount()
+    {
+        return $this->femalesKidCount;
+    }
+
+    /**
+     * @param mixed $femalesKidCount
+     */
+    public function setFemalesKidCount($femalesKidCount)
+    {
+        $this->femalesKidCount = $femalesKidCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMalesYouthCount()
+    {
+        return $this->malesYouthCount;
+    }
+
+    /**
+     * @param mixed $malesYouthCount
+     */
+    public function setMalesYouthCount($malesYouthCount)
+    {
+        $this->malesYouthCount = $malesYouthCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFemalesYouthCount()
+    {
+        return $this->femalesYouthCount;
+    }
+
+    /**
+     * @param mixed $femalesYouthCount
+     */
+    public function setFemalesYouthCount($femalesYouthCount)
+    {
+        $this->femalesYouthCount = $femalesYouthCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMalesAdultCount()
+    {
+        return $this->malesAdultCount;
+    }
+
+    /**
+     * @param mixed $malesAdultCount
+     */
+    public function setMalesAdultCount($malesAdultCount)
+    {
+        $this->malesAdultCount = $malesAdultCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFemalesAdultCount()
+    {
+        return $this->femalesAdultCount;
+    }
+
+    /**
+     * @param mixed $femalesAdultCount
+     */
+    public function setFemalesAdultCount($femalesAdultCount)
+    {
+        $this->femalesAdultCount = $femalesAdultCount;
+    }
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -155,51 +275,19 @@ class WayPoint
     }
 
     /**
-     * @param mixed $ageRangeEnd
+     * @param mixed $femalesChildCount
      */
-    public function setAgeRangeEnd($ageRangeEnd)
+    public function setFemalesChildCount($femalesChildCount)
     {
-        $this->ageRangeEnd = $ageRangeEnd;
+        $this->femalesChildCount = $femalesChildCount;
     }
 
     /**
      * @return mixed
      */
-    public function getAgeRangeEnd()
+    public function getFemalesChildCount()
     {
-        return $this->ageRangeEnd;
-    }
-
-    /**
-     * @param mixed $ageRangeStart
-     */
-    public function setAgeRangeStart($ageRangeStart)
-    {
-        $this->ageRangeStart = $ageRangeStart;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAgeRangeStart()
-    {
-        return $this->ageRangeStart;
-    }
-
-    /**
-     * @param mixed $femalesCount
-     */
-    public function setFemalesCount($femalesCount)
-    {
-        $this->femalesCount = $femalesCount;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFemalesCount()
-    {
-        return $this->femalesCount;
+        return $this->femalesChildCount;
     }
 
     /**
@@ -235,19 +323,19 @@ class WayPoint
     }
 
     /**
-     * @param mixed $malesCount
+     * @param mixed $malesChildCount
      */
-    public function setMalesCount($malesCount)
+    public function setMalesChildCount($malesChildCount)
     {
-        $this->malesCount = $malesCount;
+        $this->malesChildCount = $malesChildCount;
     }
 
     /**
      * @return mixed
      */
-    public function getMalesCount()
+    public function getMalesChildCount()
     {
-        return $this->malesCount;
+        return $this->malesChildCount;
     }
 
     /**

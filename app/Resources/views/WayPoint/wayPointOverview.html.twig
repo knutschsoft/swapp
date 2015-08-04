@@ -1,0 +1,27 @@
+<div class="">
+    <table class="table-light">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Meeting</th>
+            <th>Männer</th>
+            <th>Frauen</th>
+            <th class="right-align">Detailansicht</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for waypoint in wayPoints %}
+            <tr>
+                <td>{{ waypoint.getLocationName }}</td>
+                <td>{% if waypoint.getIsMeeting == 1 %}ja{% else %}nein{% endif %}</td>
+                <td>{{ waypoint.getFemalesChildCount }}</td>
+                <td>{{ waypoint.getMalesChildCount }}</td>
+                <td>
+                    <a class="btn btn-primary sm-col-right"
+                       href="{{ path('way_point_show', { 'wayPointId': waypoint.getId }) }}">Wegpunkt ansehen</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -42,6 +42,8 @@ class WalkType extends AbstractType
             'text',
             array(
                 'label' => 'Systemische Frage',
+                'read_only' => true,
+//                'data' => json_encode($options)
             )
         );
         $builder->add(
@@ -49,6 +51,20 @@ class WalkType extends AbstractType
             'textarea',
             array(
                 'label' => 'Systemische Antwort',
+            )
+        );
+        $builder->add(
+            'holidays',
+            'text',
+            array(
+                'label' => 'Ferien',
+            )
+        );
+        $builder->add(
+            'weather',
+            'text',
+            array(
+                'label' => 'Wetter',
             )
         );
         $builder->add(

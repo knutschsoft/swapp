@@ -2,10 +2,10 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 class WayPointAdmin extends Admin
 {
@@ -21,8 +21,8 @@ class WayPointAdmin extends Admin
             ->add('locationName')
             ->add('ageRangeStart')
             ->add('ageRangeEnd')
-            ->add('malesCount')
-            ->add('femalesCount')
+            ->add('malesChildCount')
+            ->add('femalesChildCount')
             ->add('note', null, array('required' => false));
     }
 
@@ -39,8 +39,8 @@ class WayPointAdmin extends Admin
             ->add('locationName')
             ->add('ageRangeStart')
             ->add('ageRangeEnd')
-            ->add('malesCount')
-            ->add('femalesCount')
+            ->add('malesChildCount')
+            ->add('femalesChildCount')
             ->add('note');
     }
 
@@ -57,8 +57,8 @@ class WayPointAdmin extends Admin
             ->addIdentifier('locationName')
             ->add('ageRangeStart')
             ->add('ageRangeEnd')
-            ->add('malesCount')
-            ->add('femalesCount')
+            ->add('malesChildCount')
+            ->add('femalesChildCount')
             ->add('note');
     }
 

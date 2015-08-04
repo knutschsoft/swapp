@@ -37,10 +37,10 @@ class EntityParamConverter implements ParamConverterInterface
     {
         switch ($configuration->getName()) {
             case 'walk':
-                $resource = $this->walkRepository->findOneById($request->get('id'));
+                $resource = $this->walkRepository->findOneById($request->get('walkId'));
                 break;
             case 'team':
-                $resource = $this->teamRepository->findOneById($request->get('team'));
+                $resource = $this->teamRepository->findOneById($request->get('teamId'));
                 break;
             default:
                 throw new \InvalidArgumentException(
