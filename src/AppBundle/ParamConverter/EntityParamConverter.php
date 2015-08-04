@@ -3,8 +3,10 @@ namespace AppBundle\ParamConverter;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\Walk;
+use AppBundle\Entity\WayPoint;
 use AppBundle\Repository\TeamRepository;
 use AppBundle\Repository\WalkRepository;
+use AppBundle\Repository\WayPointRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,15 +16,21 @@ class EntityParamConverter implements ParamConverterInterface
 {
     private $walkRepository;
     private $teamRepository;
+    private $wayPointRepository;
 
     /**
-     * @param WalkRepository $walkRepository
-     * @param TeamRepository $teamRepository
+     * @param TeamRepository     $teamRepository
+     * @param WalkRepository     $walkRepository
+     * @param WayPointRepository $wayPointRepository
      */
-    public function __construct(WalkRepository $walkRepository, TeamRepository $teamRepository)
-    {
-        $this->walkRepository = $walkRepository;
+    public function __construct(
+        TeamRepository $teamRepository,
+        WalkRepository $walkRepository,
+        WayPointRepository $wayPointRepository
+    ) {
         $this->teamRepository = $teamRepository;
+        $this->walkRepository = $walkRepository;
+        $this->wayPointRepository = $wayPointRepository;
     }
 
     /**
@@ -39,6 +47,9 @@ class EntityParamConverter implements ParamConverterInterface
             case 'walk':
                 $resource = $this->walkRepository->findOneById($request->get('walkId'));
                 break;
+            case 'wayPoint':
+                $resource = $this->wayPointRepository->findOneById($request->get('wayPointId'));
+                break;
             case 'team':
                 $resource = $this->teamRepository->findOneById($request->get('teamId'));
                 break;
@@ -51,7 +62,8 @@ class EntityParamConverter implements ParamConverterInterface
         if (!$resource) {
             throw new NotFoundHttpException(
                 sprintf(
-                    'No User not found for id "%s" in %s',
+                    'No %s not found for id "%s" in %s',
+                    $configuration->getName(),
                     $request->get('id'),
                     self::class
                 )
@@ -73,6 +85,6 @@ class EntityParamConverter implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration)
     {
-        return in_array($configuration->getClass(), [Walk::class, Team::class]);
+        return in_array($configuration->getClass(), [Team::class, Walk::class, WayPoint::class]);
     }
 }

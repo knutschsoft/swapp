@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wegpunkt Detailansicht{% endblock %}
+
+{% block content %}
+    <div class="swapp-headline-container">
+        <h1>
+            Wegpunkt: {{ wayPoint.getLocationName }}
+        </h1>
+    </div>
+    <div class="swapp-password-change-container">
+        <div class="mb1">
+            <a href="{{ path('update_walk_with_way_point', { 'walkId': wayPoint.getWalk.getId }) }}" class="btn btn-primary">zurück zur Rundenübersicht</a>
+        </div>
+    </div>
+
+    {{ include(':Walks:showItem.html.twig', {'key': 'Name', 'value': wayPoint.getLocationName }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Kids w', 'value': wayPoint.getFemalesKidCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Kinder w', 'value': wayPoint.getFemalesChildCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Jugendliche w', 'value': wayPoint.getFemalesYouthCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Erwachsene w', 'value': wayPoint.getFemalesAdultCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Kids m', 'value': wayPoint.getMalesKidCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Kinder m', 'value': wayPoint.getMalesChildCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Jugendliche m', 'value': wayPoint.getMalesYouthCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Erwachsene m', 'value': wayPoint.getMalesAdultCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Notiz', 'value': wayPoint.getNote }) }}
+
+    {% set image %}
+        {% if wayPoint.getImageName %}
+            <img src="{{ vich_uploader_asset(wayPoint, 'imageFile') }}" alt="{{ wayPoint.getImageName }}" />
+        {% else %}
+            kein Bild hochgeladen
+        {% endif %}
+    {% endset %}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Bild', 'value': image }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Meeting', 'value': wayPoint.getIsMeeting ? 'ja' : 'nein' }) }}
+
+{% endblock %}

@@ -53,7 +53,7 @@ walk_create:
 
 way_point_show:
     path: /waypoint/{wayPointId}
-    defaults: { _controller: app.controller.waypoint_controller:homeScreenAction }
+    defaults: { _controller: app.controller.waypoint_controller:showAction }
 
 way_point_create:
     path: /waypointcreated/{walkId}

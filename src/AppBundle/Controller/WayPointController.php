@@ -55,6 +55,15 @@ class WayPointController
         return $this->templateEngine->renderResponse(':WayPoint:wayPointForm.html.twig');
     }
 
+    public function showAction(WayPoint $wayPoint)
+    {
+        $parameters = [
+            'wayPoint' => $wayPoint,
+        ];
+
+        return $this->templateEngine->renderResponse('WayPoint/show.html.twig', $parameters);
+    }
+
     public function startWalkWithWayPointAction(Team $team)
     {
         $walk = new Walk();
