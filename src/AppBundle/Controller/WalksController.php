@@ -64,11 +64,9 @@ class WalksController
 
     public function createWalkFormAction(Walk $walk)
     {
-        $newWalk = new Walk();
-        $newWalk->setId($walk->getId());
         $form = $this->formFactory->create(
             'app_create_walk',
-            $newWalk,
+            $walk,
             array(
                 'action' => $this->router->generate('walk_create'),
             )
@@ -79,7 +77,7 @@ class WalksController
             array(
                 'form' => $form->createView(),
                 'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
-                'systemicQuestion' => $walk->getSystemicQuestion()->getQuestion(),
+                'systemicQuestion' => $walk->getSystemicQuestion(),
             )
         );
     }
@@ -93,7 +91,7 @@ class WalksController
         if ($form->isValid()) {
             $walk = $form->getData();
             $walk->setIsInternal(0);
-            $this->walkRepository->save($walk);
+            $this->walkRepository->update($walk);
             $flashBag->add(
                 'notice',
                 'Runde wurde erfolgreich erstellt.'

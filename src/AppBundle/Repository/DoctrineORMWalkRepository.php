@@ -42,7 +42,7 @@ class DoctrineORMWalkRepository extends EntityRepository implements WalkReposito
 
     public function update(Walk $walk)
     {
-        $this->_em->refresh($walk);
+        $this->_em->merge($walk);
         $this->_em->flush();
     }
 }

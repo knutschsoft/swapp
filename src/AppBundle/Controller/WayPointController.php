@@ -65,7 +65,7 @@ class WayPointController
         $walk->setEndTime(new \DateTime());
         $walk->setRating(1);
         $walk->setSystemicAnswer("placeholder_answer");
-        $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom());
+        $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom()->getQuestion());
         $walk->setWalkReflection("placeholder_reflection");
         $walk->setWeather("placeholder_weather");
         $walk->setHolidays("placeholder_holidays");

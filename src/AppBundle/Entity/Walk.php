@@ -62,7 +62,7 @@ class Walk
     protected $rating;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="walks")
+     * @ORM\Column(type="string", length=4096)
      */
     protected $systemicQuestion;
 
@@ -71,6 +71,22 @@ class Walk
      * @Assert\NotBlank()
      */
     protected $systemicAnswer;
+
+    /**
+     * @return mixed
+     */
+    public function getSystemicQuestion()
+    {
+        return $this->systemicQuestion;
+    }
+
+    /**
+     * @param mixed $systemicQuestion
+     */
+    public function setSystemicQuestion($systemicQuestion)
+    {
+        $this->systemicQuestion = $systemicQuestion;
+    }
 
     /**
      * @return mixed
@@ -139,7 +155,6 @@ class Walk
     {
         $this->isInternal = $isInternal;
     }
-
 
     /**
      * @return mixed
@@ -262,22 +277,6 @@ class Walk
     public function getSystemicAnswer()
     {
         return $this->systemicAnswer;
-    }
-
-    /**
-     * @param SystemicQuestion $systemicQuestion
-     */
-    public function setSystemicQuestion(SystemicQuestion $systemicQuestion)
-    {
-        $this->systemicQuestion = $systemicQuestion;
-    }
-
-    /**
-     * @return SystemicQuestion
-     */
-    public function getSystemicQuestion()
-    {
-        return $this->systemicQuestion;
     }
 
     /**
