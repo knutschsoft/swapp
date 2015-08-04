@@ -24,6 +24,9 @@ class WayPointType extends AbstractType
                 'allow_delete' => true, // not mandatory, default is true
                 'download_link' => true, // not mandatory, default is true
                 'label' => 'Bildupload',
+                'attr' => [
+                    'class' => 'btn btn-primary bg-silver',
+                ]
             ]
         );
         $builder->add(
