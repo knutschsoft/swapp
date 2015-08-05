@@ -12,6 +12,12 @@
                 {{ form_widget(form.name) }}
             </div>
             <div class="p1">
+                {{ form_label(form.conceptOfDay) }}
+                <br>
+                {{ form_errors(form.conceptOfDay) }}
+                {{ form_widget(form.conceptOfDay) }}
+            </div>
+            <div class="p1">
                 {{ form_label(form.startTime) }}
                 <br>
                 {{ form_errors(form.startTime) }}
@@ -58,6 +64,24 @@
                 <br>
                 {{ form_errors(form.rating) }}
                 {{ form_widget(form.rating) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.insights) }}
+                <br>
+                {{ form_errors(form.insights) }}
+                {{ form_widget(form.insights) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.commitments) }}
+                <br>
+                {{ form_errors(form.commitments) }}
+                {{ form_widget(form.commitments) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.isResubmission) }}
+                <br>
+                {{ form_errors(form.isResubmission) }}
+                {{ form_widget(form.isResubmission) }}
             </div>
 
             <div class="p1">

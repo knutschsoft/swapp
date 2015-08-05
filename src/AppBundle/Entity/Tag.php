@@ -38,6 +38,7 @@ class Tag
      * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="tags")
      */
     private $wayPoints;
+
     /**
      * @ORM\Column(type="string", length=255)
      */

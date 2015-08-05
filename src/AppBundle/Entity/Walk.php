@@ -99,13 +99,35 @@ class Walk
      */
     private $weather;
     /**
-     * @ORM\Column(type="string", length=4096)
+     * @ORM\Column(type="boolean", length=255)
      */
     private $holidays;
+    /**
+     * @ORM\Column(type="string", length=4096)
+     * @Assert\NotBlank()
+     */
+    private $conceptOfDay;
 
     /**
      * @return mixed
      */
+    public function getConceptOfDay()
+    {
+        return $this->conceptOfDay;
+    }
+
+    /**
+     * @return mixed
+     */
+
+    /**
+     * @param mixed $conceptOfDay
+     */
+    public function setConceptOfDay($conceptOfDay)
+    {
+        $this->conceptOfDay = $conceptOfDay;
+    }
+
     public function getInsights()
     {
         return $this->insights;
@@ -184,7 +206,7 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getHolidays()
     {
@@ -192,7 +214,7 @@ class Walk
     }
 
     /**
-     * @param mixed $holidays
+     * @param boolean $holidays
      */
     public function setHolidays($holidays)
     {

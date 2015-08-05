@@ -50,11 +50,19 @@ class WayPointController
         $this->userManager = $userManager;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function homeScreenAction()
     {
         return $this->templateEngine->renderResponse(':WayPoint:wayPointForm.html.twig');
     }
 
+    /**
+     * @param WayPoint $wayPoint
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function showAction(WayPoint $wayPoint)
     {
         $parameters = [
@@ -64,6 +72,9 @@ class WayPointController
         return $this->templateEngine->renderResponse('WayPoint/show.html.twig', $parameters);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function dataTableAction()
     {
         $parameters = [
@@ -73,26 +84,34 @@ class WayPointController
         return $this->templateEngine->renderResponse('WayPoint/dataTable.html.twig', $parameters);
     }
 
+    /**
+     * @param Team $team
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function startWalkWithWayPointAction(Team $team)
     {
         $walk = new Walk();
 
-        $walk->setName("placeholder_name");
+        $walk->setName("");
         $walk->setIsInternal(true);
         $walk->setStartTime(new \DateTime());
         $walk->setEndTime(new \DateTime());
         $walk->setRating(1);
-        $walk->setSystemicAnswer("placeholder_answer");
+        $walk->setSystemicAnswer("");
         $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom()->getQuestion());
-        $walk->setWalkReflection("placeholder_reflection");
-        $walk->setWeather("placeholder_weather");
-        $walk->setHolidays("placeholder_holidays");
+        $walk->setWalkReflection("");
+        $walk->setWeather("");
+        $walk->setHolidays("");
+        $walk->setIsResubmission(false);
+        $walk->setHolidays(false);
+        $walk->setConceptOfDay("");
 
         $this->walkRepository->save($walk);
 
         foreach ($team->getUsers() as $user) {
             $user->setWalks([$walk]);
-            $this->userManager->updateUser($user, true);
+            $this->userManager->updateUser($user);
         }
         $wayPoint = new WayPoint();
         $form = $this->formFactory->create(
@@ -112,6 +131,11 @@ class WayPointController
         );
     }
 
+    /**
+     * @param Walk $walk
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function updateWalkWithWayPointAction(Walk $walk)
     {
         $wayPoint = new WayPoint();
@@ -132,6 +156,13 @@ class WayPointController
         );
     }
 
+    /**
+     * @param Request  $request
+     * @param FlashBag $flashBag
+     * @param Walk     $walk
+     *
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function createWayPointAction(Request $request, FlashBag $flashBag, Walk $walk)
     {
         $form = $this->formFactory->create('app_create_way_point', new WayPoint());

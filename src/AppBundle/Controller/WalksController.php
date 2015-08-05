@@ -77,7 +77,6 @@ class WalksController
             array(
                 'form' => $form->createView(),
                 'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
-                'systemicQuestion' => $walk->getSystemicQuestion(),
             )
         );
     }

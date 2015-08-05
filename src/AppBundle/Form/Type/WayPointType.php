@@ -7,13 +7,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WayPointType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
             'locationName',
             'text',
             array(
-                'label' => 'Name',
+                'label' => 'Ort',
             )
         );
         $builder->add(
@@ -201,14 +205,22 @@ class WayPointType extends AbstractType
             'note',
             'textarea',
             array(
-                'label' => 'Notiz',
+                'label' => 'Beobachtung',
+            )
+        );
+        $builder->add(
+            'tags',
+            'choice',
+            array(
+                'choices' => array(),
+                'label' => 'Tags',
             )
         );
         $builder->add(
             'isMeeting',
             'checkbox',
             array(
-                'label' => 'Meeting',
+                'label' => 'mobiler Treff',
                 'required' => false,
             )
         );
@@ -230,6 +242,9 @@ class WayPointType extends AbstractType
         );
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -239,6 +254,9 @@ class WayPointType extends AbstractType
         );
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'app_create_way_point';

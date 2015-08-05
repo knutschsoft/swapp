@@ -21,6 +21,13 @@ class WalkType extends AbstractType
             )
         );
         $builder->add(
+            'conceptOfDay',
+            'textarea',
+            array(
+                'label' => 'Tageskonzept',
+            )
+        );
+        $builder->add(
             'startTime',
             'datetime',
             array(
@@ -47,7 +54,6 @@ class WalkType extends AbstractType
             array(
                 'label' => 'Systemische Frage',
                 'read_only' => true,
-//                'data' => json_encode($options)
             )
         );
         $builder->add(
@@ -84,6 +90,58 @@ class WalkType extends AbstractType
                 ),
                 'required' => true,
                 'label' => 'Rundenbewertung',
+            )
+        );
+        $builder->add(
+            'holidays',
+            'checkbox',
+            array(
+                'label' => 'Ferien',
+                'required' => false,
+            )
+        );
+        $builder->add(
+            'weather',
+            'choice',
+            array(
+                'choices' => array(
+                    'Sonne' => 'Sonne',
+                    'Wolken' => 'Wolken',
+                    'Regen' => 'Regen',
+                    'Schnee' => 'Schnee',
+                    'Arschkalt' => 'Arschkalt',
+                ),
+                'label' => 'Wetter',
+            )
+        );
+//        $builder->add(
+//            'tags',
+//            'choice',
+//            array(
+//                'choices' => array(),
+//                'label' => 'Tags',
+//            )
+//        );
+        $builder->add(
+            'insights',
+            'textarea',
+            array(
+                'label' => 'Erkenntnisse, Überlegungen, Zielsettungen',
+            )
+        );
+        $builder->add(
+            'commitments',
+            'textarea',
+            array(
+                'label' => 'Termine, Besorgungen, Verabredungen',
+            )
+        );
+        $builder->add(
+            'isResubmission',
+            'checkbox',
+            array(
+                'label' => 'Wiedervorlage Dienstberatung',
+                'required' => false,
             )
         );
         $builder->add(

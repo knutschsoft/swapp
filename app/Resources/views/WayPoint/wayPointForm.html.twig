@@ -78,6 +78,12 @@
                 {{ form_widget(form.note) }}
             </div>
             <div class="p1">
+                {{ form_label(form.tags) }}
+                <br>
+                {{ form_errors(form.tags) }}
+                {{ form_widget(form.tags) }}
+            </div>
+            <div class="p1">
                 {{ form_label(form.isMeeting) }}
                 <br>
                 {{ form_errors(form.isMeeting) }}
