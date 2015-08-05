@@ -24,9 +24,9 @@
             <a class="btn btn-primary rounded-right s-select-team-link"
                href="{{ path('start_walk_with_way_point', { 'teamId': teams|first.getId}) }}">Runde beginnen</a>
             <script>
-                window.document.getElementsByClassName('s-select-teamId')[0].addEventListener('change', function () {
+                window.document.getElementsByClassName('s-select-team')[0].addEventListener('change', function () {
                     var href, hrefParts, linkElem;
-                    linkElem = window.document.getElementsByClassName('s-select-teamId-link')[0];
+                    linkElem = window.document.getElementsByClassName('s-select-team-link')[0];
                     href = linkElem.getAttribute('href');
                     hrefParts = href.split('/');
                     hrefParts.pop();
