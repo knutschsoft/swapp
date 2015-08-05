@@ -114,6 +114,16 @@ services:
         tags:
             - { name: form.type, alias: app_create_walk }
 
+    app.form.type.walk.prologue:
+        class: AppBundle\Form\Type\WalkType
+        tags:
+            - { name: form.type, alias: app_create_walk_prologue }
+
+    app.form.type.walk.epilogue:
+            class: AppBundle\Form\Type\WalkType
+            tags:
+                - { name: form.type, alias: app_create_walk_epilogue }
+
     app.form.type.waypoint:
         class: AppBundle\Form\Type\WayPointType
         tags:
