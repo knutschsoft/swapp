@@ -15,18 +15,18 @@ class Team
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="teams")
      */
-    protected $users;
+    private $users;
 
     /**
      * @return string

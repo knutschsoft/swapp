@@ -15,29 +15,49 @@ class Tag
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
-    protected $description;
+    private $description;
 
     /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="tags")
      */
-    protected $walks;
+    private $walks;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="tags")
+     */
+    private $wayPoints;
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $color;
+    private $color;
+
+    /**
+     * @return mixed
+     */
+    public function getWayPoints()
+    {
+        return $this->wayPoints;
+    }
+
+    /**
+     * @param mixed $wayPoints
+     */
+    public function setWayPoints($wayPoints)
+    {
+        $this->wayPoints = $wayPoints;
+    }
 
     /**
      * @return string
@@ -52,51 +72,11 @@ class Tag
     }
 
     /**
-     * @param mixed $color
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-    }
-
-    /**
      * @return mixed
      */
-    public function getColor()
+    public function getName()
     {
-        return $this->color;
-    }
-
-    /**
-     * @param mixed $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
+        return $this->name;
     }
 
     /**
@@ -110,17 +90,49 @@ class Tag
     /**
      * @return mixed
      */
-    public function getName()
+    public function getColor()
     {
-        return $this->name;
+        return $this->color;
     }
 
     /**
-     * @param mixed $walks
+     * @param mixed $color
      */
-    public function setWalks($walks)
+    public function setColor($color)
     {
-        $this->walks = $walks;
+        $this->color = $color;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -129,5 +141,13 @@ class Tag
     public function getWalks()
     {
         return $this->walks;
+    }
+
+    /**
+     * @param mixed $walks
+     */
+    public function setWalks($walks)
+    {
+        $this->walks = $walks;
     }
 }

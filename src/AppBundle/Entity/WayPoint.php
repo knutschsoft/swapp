@@ -18,7 +18,7 @@ class WayPoint
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
@@ -27,73 +27,86 @@ class WayPoint
      *
      * @var File $imageFile
      */
-    protected $imageFile;
+    private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, name="image_name", nullable=true)
      *
      * @var string $imageName
      */
-    protected $imageName;
+    private $imageName;
 
     /**
      * @ORM\ManyToOne(targetEntity="Walk", inversedBy="wayPoints")
      */
-    protected $walk;
+    private $walk;
 
     /**
      * @ORM\Column(type="string", length=4096)
      * @Assert\NotBlank()
      */
-    protected $locationName;
+    private $locationName;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $malesChildCount;
+    private $malesChildCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $femalesChildCount;
+    private $femalesChildCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $malesKidCount;
+    private $malesKidCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $femalesKidCount;
+    private $femalesKidCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $malesYouthCount;
+    private $malesYouthCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $femalesYouthCount;
+    private $femalesYouthCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $malesAdultCount;
+    private $malesAdultCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $femalesAdultCount;
+    private $femalesAdultCount;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $note;
+    /**
+     * @ORM\Column(type="boolean", length=255)
+     */
+    private $isMeeting;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="wayPoints")
+     */
+    private $tags;
 
     /**
      * @return mixed
@@ -192,16 +205,6 @@ class WayPoint
     }
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $note;
-
-    /**
-     * @ORM\Column(type="boolean", length=255)
-     */
-    protected $isMeeting;
-
-    /**
      * @return boolean
      */
     public function getIsMeeting()
@@ -224,10 +227,32 @@ class WayPoint
     {
         return sprintf(
             '%s (%s-%s)',
-            $this->getLocationName(),
-            $this->getAgeRangeStart(),
-            $this->getAgeRangeEnd()
+            $this->getLocationName()
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocationName()
+    {
+        return $this->locationName;
+    }
+
+    /**
+     * @param mixed $locationName
+     */
+    public function setLocationName($locationName)
+    {
+        $this->locationName = $locationName;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
     }
 
     /**
@@ -251,11 +276,11 @@ class WayPoint
     }
 
     /**
-     * @return File
+     * @return string
      */
-    public function getImageFile()
+    public function getImageName()
     {
-        return $this->imageFile;
+        return $this->imageName;
     }
 
     /**
@@ -267,11 +292,11 @@ class WayPoint
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getImageName()
+    public function getFemalesChildCount()
     {
-        return $this->imageName;
+        return $this->femalesChildCount;
     }
 
     /**
@@ -285,9 +310,9 @@ class WayPoint
     /**
      * @return mixed
      */
-    public function getFemalesChildCount()
+    public function getId()
     {
-        return $this->femalesChildCount;
+        return $this->id;
     }
 
     /**
@@ -301,25 +326,9 @@ class WayPoint
     /**
      * @return mixed
      */
-    public function getId()
+    public function getMalesChildCount()
     {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $locationName
-     */
-    public function setLocationName($locationName)
-    {
-        $this->locationName = $locationName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLocationName()
-    {
-        return $this->locationName;
+        return $this->malesChildCount;
     }
 
     /**
@@ -333,9 +342,9 @@ class WayPoint
     /**
      * @return mixed
      */
-    public function getMalesChildCount()
+    public function getNote()
     {
-        return $this->malesChildCount;
+        return $this->note;
     }
 
     /**
@@ -349,9 +358,9 @@ class WayPoint
     /**
      * @return mixed
      */
-    public function getNote()
+    public function getWalk()
     {
-        return $this->note;
+        return $this->walk;
     }
 
     /**
@@ -365,8 +374,16 @@ class WayPoint
     /**
      * @return mixed
      */
-    public function getWalk()
+    public function getTags()
     {
-        return $this->walk;
+        return $this->tags;
+    }
+
+    /**
+     * @param mixed $tags
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
     }
 }

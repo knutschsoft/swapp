@@ -15,62 +15,141 @@ class Walk
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="WayPoint", mappedBy="walk")
      **/
-    protected $wayPoints;
+    private $wayPoints;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
      */
-    protected $startTime;
+    private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
      */
-    protected $endTime;
+    private $endTime;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $walkReflection;
+    private $walkReflection;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="walks")
      */
-    protected $walkTeamMembers;
+    private $walkTeamMembers;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
      */
-    protected $tags;
+    private $tags;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    protected $rating;
+    private $rating;
 
     /**
-     * @ORM\Column(type="string", length=4096)
+     * @ORM\Column(type="string")
      */
-    protected $systemicQuestion;
+    private $systemicQuestion;
 
     /**
      * @ORM\Column(type="string", length=4096)
      * @Assert\NotBlank()
      */
-    protected $systemicAnswer;
+    private $systemicAnswer;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $insights;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $commitments;
+
+    /**
+     * @ORM\Column(type="boolean", length=255)
+     */
+    private $isResubmission;
+    /**
+     * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
+     **/
+    private $guests;
+    /**
+     * @ORM\Column(type="boolean", length=255)
+     */
+    private $isInternal;
+    /**
+     * @ORM\Column(type="boolean", length=255)
+     */
+    private $weather;
+    /**
+     * @ORM\Column(type="string", length=4096)
+     */
+    private $holidays;
+
+    /**
+     * @return mixed
+     */
+    public function getInsights()
+    {
+        return $this->insights;
+    }
+
+    /**
+     * @param mixed $insights
+     */
+    public function setInsights($insights)
+    {
+        $this->insights = $insights;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommitments()
+    {
+        return $this->commitments;
+    }
+
+    /**
+     * @param mixed $commitments
+     */
+    public function setCommitments($commitments)
+    {
+        $this->commitments = $commitments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsResubmission()
+    {
+        return $this->isResubmission;
+    }
+
+    /**
+     * @param mixed $isResubmission
+     */
+    public function setIsResubmission($isResubmission)
+    {
+        $this->isResubmission = $isResubmission;
+    }
 
     /**
      * @return mixed
@@ -121,26 +200,6 @@ class Walk
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
-     **/
-    protected $guests;
-
-    /**
-     * @ORM\Column(type="boolean", length=255)
-     */
-    protected $isInternal;
-
-    /**
-     * @ORM\Column(type="string", length=4096)
-     */
-    protected $weather;
-
-    /**
-     * @ORM\Column(type="string", length=4096)
-     */
-    protected $holidays;
-
-    /**
      * @return boolean
      */
     public function getIsInternal()
@@ -184,35 +243,11 @@ class Walk
     }
 
     /**
-     * @param mixed $endTime
-     */
-    public function setEndTime($endTime)
-    {
-        $this->endTime = $endTime;
-    }
-
-    /**
      * @return mixed
      */
-    public function getEndTime()
+    public function getName()
     {
-        return $this->endTime;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
+        return $this->name;
     }
 
     /**
@@ -226,9 +261,41 @@ class Walk
     /**
      * @return mixed
      */
-    public function getName()
+    public function getEndTime()
     {
-        return $this->name;
+        return $this->endTime;
+    }
+
+    /**
+     * @param mixed $endTime
+     */
+    public function setEndTime($endTime)
+    {
+        $this->endTime = $endTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRating()
+    {
+        return $this->rating;
     }
 
     /**
@@ -242,9 +309,9 @@ class Walk
     /**
      * @return mixed
      */
-    public function getRating()
+    public function getStartTime()
     {
-        return $this->rating;
+        return $this->startTime;
     }
 
     /**
@@ -256,11 +323,11 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getStartTime()
+    public function getSystemicAnswer()
     {
-        return $this->startTime;
+        return $this->systemicAnswer;
     }
 
     /**
@@ -272,11 +339,11 @@ class Walk
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getSystemicAnswer()
+    public function getTags()
     {
-        return $this->systemicAnswer;
+        return $this->tags;
     }
 
     /**
@@ -290,9 +357,9 @@ class Walk
     /**
      * @return mixed
      */
-    public function getTags()
+    public function getWalkReflection()
     {
-        return $this->tags;
+        return $this->walkReflection;
     }
 
     /**
@@ -306,9 +373,9 @@ class Walk
     /**
      * @return mixed
      */
-    public function getWalkReflection()
+    public function getWalkTeamMembers()
     {
-        return $this->walkReflection;
+        return $this->walkTeamMembers;
     }
 
     /**
@@ -322,9 +389,9 @@ class Walk
     /**
      * @return mixed
      */
-    public function getWalkTeamMembers()
+    public function getWayPoints()
     {
-        return $this->walkTeamMembers;
+        return $this->wayPoints;
     }
 
     /**
@@ -333,13 +400,5 @@ class Walk
     public function setWayPoints($wayPoints)
     {
         $this->wayPoints = $wayPoints;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWayPoints()
-    {
-        return $this->wayPoints;
     }
 }

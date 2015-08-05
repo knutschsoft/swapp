@@ -1,7 +1,6 @@
 <?php
 namespace AppBundle\Entity;
 
-use AppBundle\Controller\WalksController;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,12 +15,12 @@ class SystemicQuestion
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string")
      **/
-    protected $question;
+    private $question;
 
     /**
      * @ORM\OneToMany(targetEntity="Walk", mappedBy="systemicQuestion")

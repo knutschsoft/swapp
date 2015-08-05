@@ -25,12 +25,12 @@ class User extends BaseUser
     /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
      */
-    protected $walks;
+    private $walks;
 
     /**
      * @ORM\ManyToMany(targetEntity="Team", mappedBy="users")
      */
-    protected $teams;
+    private $teams;
 
     /**
      * @return Team[]
@@ -61,6 +61,14 @@ class User extends BaseUser
     }
 
     /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @param mixed $id
      */
     public function setId($id)
@@ -71,9 +79,9 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getId()
+    public function getWalks()
     {
-        return $this->id;
+        return $this->walks;
     }
 
     /**
@@ -82,13 +90,5 @@ class User extends BaseUser
     public function setWalks($walks)
     {
         $this->walks = $walks;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWalks()
-    {
-        return $this->walks;
     }
 }
