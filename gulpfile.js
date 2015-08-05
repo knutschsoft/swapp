@@ -7,7 +7,7 @@ gulp.task('default', function() {
     // place code for your default task here
 });
 
-gulp.task('watch', ['sass'], function () {
+gulp.task('watch', ['sass', 'js'], function () {
     var onChange = function (event) {
         console.log('File ' + event.path + ' has been ' + event.type);
         // Tell LiveReload to reload the window
@@ -41,6 +41,15 @@ gulp.task('sass', function() {
 
 gulp.task('js', function() {
     console.log('js called');
+    gulp.src(
+        [,
+            'bower_components/jQuery/dist/jquery.js',
+            'bower_components/princeTable/princeFilter.JQuery.js'
+        ]
+    )
+        .pipe(plumber())
+        .pipe(gulp.dest('web/js'))
+        .pipe(livereload());
 });
 
 gulp.task('twig', function(event) {

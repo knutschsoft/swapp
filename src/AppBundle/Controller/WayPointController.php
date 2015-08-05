@@ -64,6 +64,15 @@ class WayPointController
         return $this->templateEngine->renderResponse('WayPoint/show.html.twig', $parameters);
     }
 
+    public function dataTableAction()
+    {
+        $parameters = [
+            'wayPoints' => $this->wayPointRepository->findAll()
+        ];
+
+        return $this->templateEngine->renderResponse('WayPoint/dataTable.html.twig', $parameters);
+    }
+
     public function startWalkWithWayPointAction(Team $team)
     {
         $walk = new Walk();

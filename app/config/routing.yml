@@ -63,6 +63,10 @@ start_walk_with_way_point:
    path: /startWalkWithTeam/{teamId}
    defaults: { _controller: app.controller.waypoint_controller:startWalkWithWayPointAction }
 
+data_table_way_point:
+   path: /table/waypoint
+   defaults: { _controller: app.controller.waypoint_controller:dataTableAction }
+
 update_walk_with_way_point:
    path: /addWayPointToWalk/{walkId}
    defaults: { _controller: app.controller.waypoint_controller:updateWalkWithWayPointAction }

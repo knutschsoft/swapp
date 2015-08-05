@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/princeFilter.JQuery.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblData1').princeFilter();
+        });
+    </script>
+{% endblock %}
+{% block title %}Wegpunkte-Auswertung{% endblock %}
+
+{% block content %}
+    <div class="swapp-headline-container">
+        <h1>
+            Wegpunkte-Auswertung
+        </h1>
+    </div>
+
+    <table cellspacing="0" rules="all" border="1" id="tblData1" style="border-collapse:collapse;">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Runde</th>
+            <th scope="col">Kids w</th>
+            <th scope="col">Kinder w</th>
+            <th scope="col">Jugendliche w</th>
+            <th scope="col">Erwachsene w</th>
+            <th scope="col">Kids m</th>
+            <th scope="col">Kinder m</th>
+            <th scope="col">Jugendliche m</th>
+            <th scope="col">Erwachsene m</th>
+            <th scope="col">Notiz</th>
+            <th scope="col">Bild</th>
+            <th scope="col">Ist Meeting</th>
+        </tr>
+        {% for wayPoint in wayPoints %}
+            <tr>
+                <td>{{ wayPoint.getLocationName }}</td>
+                <td>{{ wayPoint.getWalk.getName }} ({{ wayPoint.getWalk.getId }})</td>
+                <td>{{ wayPoint.femalesKidCount }}</td>
+                <td>{{ wayPoint.femalesChildCount }}</td>
+                <td>{{ wayPoint.femalesYouthCount }}</td>
+                <td>{{ wayPoint.femalesAdultCount }}</td>
+                <td>{{ wayPoint.malesKidCount }}</td>
+                <td>{{ wayPoint.malesChildCount }}</td>
+                <td>{{ wayPoint.malesYouthCount }}</td>
+                <td>{{ wayPoint.malesAdultCount }}</td>
+                <td>{{ wayPoint.getNote }}</td>
+                <td>
+                    {% set image %}
+                        {% if wayPoint.getImageName %}
+                            <img src="{{ vich_uploader_asset(wayPoint, 'imageFile') }}" alt="{{ wayPoint.getImageName }}" />
+                        {% else %}
+                            kein Bild hochgeladen
+                        {% endif %}
+                    {% endset %}
+                    {{ image }}
+                </td>
+                <td>{{ wayPoint.getIsMeeting ? 'Ja' : 'Nein' }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

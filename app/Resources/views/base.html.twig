@@ -10,11 +10,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-    <div class="container">
-        <div class="clearfix">
-            {% block content %}{% endblock %}
-        </div>
-    </div>
+        {% block content %}{% endblock %}
         {% block javascripts %}
             {% if app.environment == 'dev' %}
                 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
