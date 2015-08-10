@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+{% block title %}Runde abschließen{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="col">
+        <div class="flex flex-column ">
+            <div class="p1">
+                {{ form_label(form.name) }}
+                <br>
+                {{ form_errors(form.name) }}
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.conceptOfDay) }}
+                <br>
+                {{ form_errors(form.conceptOfDay) }}
+                {{ form_widget(form.conceptOfDay) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.startTime) }}
+                <br>
+                {{ form_errors(form.startTime) }}
+                {{ form_widget(form.startTime) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.holidays) }}
+                <br>
+                {{ form_errors(form.holidays) }}
+                {{ form_widget(form.holidays) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.weather) }}
+                <br>
+                {{ form_errors(form.weather) }}
+                {{ form_widget(form.weather) }}
+            </div>
+            <div class="p1">
+                {{ form_widget(form.create) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

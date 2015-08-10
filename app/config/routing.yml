@@ -49,7 +49,11 @@ walk_create_form:
 
 walk_create:
   path: /walkcreated
-  defaults: { _controller: app.controller.walks_controller:createWalkAction}
+  defaults: { _controller: app.controller.waypoint_controller:updateWalkWithWayPointAction}
+
+walk_start:
+    path: /walkstarted/{walkId}
+    defaults: { _controller: app.controller.walks_controller:createWalkPrologueAction}
 
 way_point_show:
     path: /waypoint/{wayPointId}
@@ -62,6 +66,10 @@ way_point_create:
 start_walk_with_way_point:
    path: /startWalkWithTeam/{teamId}
    defaults: { _controller: app.controller.waypoint_controller:startWalkWithWayPointAction }
+
+start_walk_with_walk_prologue:
+   path: /startWalkPrologueWithTeam/{teamId}
+   defaults: { _controller: app.controller.walks_controller:createWalkPrologueFormAction }
 
 data_table_way_point:
    path: /table/waypoint

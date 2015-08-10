@@ -53,6 +53,8 @@ services:
         - @app.factory_service.walk_repository
         - @router
         - @app.factory_service.way_point_repository
+        - @fos_user.user_manager
+        - @app.factory_service.systemic_question_repository
 
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController
@@ -113,14 +115,16 @@ services:
         class: AppBundle\Form\Type\WalkType
         tags:
             - { name: form.type, alias: app_create_walk }
+        arguments:
+            - @app.factory_service.tag_repository
 
     app.form.type.walk.prologue:
-        class: AppBundle\Form\Type\WalkType
+        class: AppBundle\Form\Type\WalkPrologueType
         tags:
             - { name: form.type, alias: app_create_walk_prologue }
 
     app.form.type.walk.epilogue:
-            class: AppBundle\Form\Type\WalkType
+            class: AppBundle\Form\Type\WalkEpilogueType
             tags:
                 - { name: form.type, alias: app_create_walk_epilogue }
 

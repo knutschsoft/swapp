@@ -35,64 +35,6 @@ class WalkPrologueType extends AbstractType
             )
         );
         $builder->add(
-            'endTime',
-            'datetime',
-            array(
-                'label' => 'Runenendzeit',
-            )
-        );
-        $builder->add(
-            'walkReflection',
-            'textarea',
-            array(
-                'label' => 'Reflexion',
-            )
-        );
-        $builder->add(
-            'systemicQuestion',
-            'text',
-            array(
-                'label' => 'Systemische Frage',
-                'read_only' => true,
-            )
-        );
-        $builder->add(
-            'systemicAnswer',
-            'textarea',
-            array(
-                'label' => 'Systemische Antwort',
-            )
-        );
-        $builder->add(
-            'holidays',
-            'text',
-            array(
-                'label' => 'Ferien',
-            )
-        );
-        $builder->add(
-            'weather',
-            'text',
-            array(
-                'label' => 'Wetter',
-            )
-        );
-        $builder->add(
-            'rating',
-            'choice',
-            array(
-                'choices' => array(
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5',
-                ),
-                'required' => true,
-                'label' => 'Rundenbewertung',
-            )
-        );
-        $builder->add(
             'holidays',
             'checkbox',
             array(
@@ -114,50 +56,19 @@ class WalkPrologueType extends AbstractType
                 'label' => 'Wetter',
             )
         );
-//        $builder->add(
-//            'tags',
-//            'choice',
-//            array(
-//                'choices' => array(),
-//                'label' => 'Tags',
-//            )
-//        );
-        $builder->add(
-            'insights',
-            'textarea',
-            array(
-                'label' => 'Erkenntnisse, Überlegungen, Zielsettungen',
-            )
-        );
-        $builder->add(
-            'commitments',
-            'textarea',
-            array(
-                'label' => 'Termine, Besorgungen, Verabredungen',
-            )
-        );
-        $builder->add(
-            'isResubmission',
-            'checkbox',
-            array(
-                'label' => 'Wiedervorlage Dienstberatung',
-                'required' => false,
-            )
-        );
         $builder->add(
             'create',
             'submit',
             array(
-                'label' => 'Runde abschliessen',
+                'label' => 'Wegpunkt anlegen',
                 'attr' => array('class' => 'btn btn-primary'),
             )
         );
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
+        $resolver->resolve(
             array(
                 'data_class' => 'AppBundle\Entity\Walk',
             )
