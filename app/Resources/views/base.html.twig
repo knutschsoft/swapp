@@ -6,16 +6,13 @@
         <title>{% block title %}Swapp!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/basscss.css') }}" />
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
         {% block content %}{% endblock %}
         {% block javascripts %}
-            {% if app.environment == 'dev' %}
-                <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
-            {% endif %}
+            <script src="/js/global.js"></script>
         {% endblock %}
     </body>
 </html>

@@ -23,6 +23,11 @@ param_converter_example:
     path: /pc/{name}/{anotherName}
     defaults: { _controller: app.controller.controller_as_a_service:paramConverterAction }
 
+home:
+    path: /
+    defaults: { _controller: app.controller.walks_controller:homeScreenAction }
+
+
 walk_home_screen:
     path: /walks
     defaults: { _controller: app.controller.walks_controller:homeScreenAction }

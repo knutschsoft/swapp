@@ -17,5 +17,8 @@
     "basscss": "~7.0",
     "princeTable": "git@github.com:fictus/princeFilter.git#master",
     "jQuery": "~2.1.4"
+  },
+  "devDependencies": {
+    "basscss-sass": "~2.0.0"
   }
 }
