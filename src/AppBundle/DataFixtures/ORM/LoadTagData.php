@@ -66,6 +66,6 @@ class LoadTagData extends AbstractFixture implements FixtureInterface, OrderedFi
      */
     public function getOrder()
     {
-        return 3; // load after LoadWalkData
+        return 4; // load after LoadWalkData
     }
 }
