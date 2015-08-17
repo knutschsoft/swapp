@@ -46,4 +46,8 @@
     {% endset %}
     {{ include(':Walks:showItem.html.twig', {'key': 'Gäste', 'value': guests }) }}
 
+    <h2>Wegpunkte dieser Runde</h2>
+
+    {{ include (':WayPoint:wayPointOverview.html.twig', { 'wayPoints': walk.getWayPoints }) }}
+
 {% endblock %}
