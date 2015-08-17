@@ -19,8 +19,7 @@ class Walk
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\NotBlank(groups={"default", "registration"})
      */
     private $name;
 
@@ -31,14 +30,13 @@ class Walk
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
-     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\NotBlank(groups={"default", "registration"})
      */
     private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"default"})
      */
     private $endTime;
 
@@ -59,7 +57,7 @@ class Walk
 
     /**
      * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"default"})
      */
     private $rating;
 
@@ -70,7 +68,7 @@ class Walk
 
     /**
      * @ORM\Column(type="string", length=4096)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"default"})
      */
     private $systemicAnswer;
 
@@ -108,8 +106,7 @@ class Walk
     private $holidays;
     /**
      * @ORM\Column(type="string", length=4096)
-     * @Assert\NotBlank()
-     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\NotBlank(groups={"default", "registration"})
      */
     private $conceptOfDay;
 
