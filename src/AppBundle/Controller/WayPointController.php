@@ -151,7 +151,7 @@ class WayPointController
             ':WayPoint:wayPointForm.html.twig',
             array(
                 'form' => $form->createView(),
-                'wayPoints' => $this->wayPointRepository->findAllFor($walk->getId()),
+                'wayPoints' => $walk->getWayPoints(),
             )
         );
     }
