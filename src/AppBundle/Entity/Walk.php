@@ -20,6 +20,7 @@ class Walk
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $name;
 
@@ -31,6 +32,7 @@ class Walk
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $startTime;
 
@@ -96,15 +98,18 @@ class Walk
     private $isInternal;
     /**
      * @ORM\Column(type="boolean", length=255)
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $weather;
     /**
      * @ORM\Column(type="boolean", length=255)
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $holidays;
     /**
      * @ORM\Column(type="string", length=4096)
      * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $conceptOfDay;
 

@@ -110,6 +110,8 @@ class WalksController
 
     public function createWalkPrologueFormAction(Team $team)
     {
+        // default walk
+        // TODO: refactor by move logic outside or something else
         $walk = new Walk();
 
         $walk->setName("");
@@ -123,7 +125,7 @@ class WalksController
         $walk->setWeather("");
         $walk->setIsResubmission(false);
         $walk->setHolidays(false);
-        $walk->getCommitments("");
+        $walk->setCommitments("");
         $walk->setInsights("");
         $walk->setConceptOfDay("");
 
@@ -150,12 +152,13 @@ class WalksController
 
     public function createWalkPrologueAction(Request $request, FlashBag $flashBag, Walk $walk)
     {
-        $form = $this->formFactory->create('app_create_walk_prologue');
+        $form = $this->formFactory->create('app_create_walk_prologue', $walk);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $walk->setIsInternal(false);
+            $walk = $form->getData();
+            $walk->setIsInternal(false); // TODO: why? at least some doc is helpful
             $this->walkRepository->update($walk);
             $flashBag->add(
                 'notice',

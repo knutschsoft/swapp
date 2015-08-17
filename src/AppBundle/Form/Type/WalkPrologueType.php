@@ -71,6 +71,7 @@ class WalkPrologueType extends AbstractType
         $resolver->resolve(
             array(
                 'data_class' => 'AppBundle\Entity\Walk',
+                'validation_groups' => array('prologue'),
             )
         );
     }
