@@ -40,7 +40,6 @@ class LoadWalkData extends AbstractFixture implements FixtureInterface, OrderedF
             $walk->setSystemicQuestion($this->getSystemicQuestionReference());
             $walk->setWalkReflection($walkReflection . ' ' . $rating);
             $walk->setWalkTeamMembers($this->getUsersReferences());
-            $walk->setIsInternal(false);
             $walk->setHolidays(false);
             $walk->setConceptOfDay("Uri finden");
             $walk->setWeather("Sonne");

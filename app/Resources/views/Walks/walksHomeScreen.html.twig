@@ -42,23 +42,21 @@
             </thead>
             <tbody>
             {% for walk in walks %}
-                {% if walk.isInternal != 1 %}
-                    <tr>
-                        <td>{{ walk.getName }}</td>
-                        <td>{{ walk.getRating }}</td>
-                        <td>
-                            {{ walk.getStartTime|localizeddate('short', 'short') }}
-                        </td>
-                        <td>
-                            {{ walk.getEndTime|localizeddate('short', 'short') }}
-                        </td>
-                        <td>
-                            <a class="btn btn-primary sm-col-right"
-                               href="{{ path('walk_show', { 'walkId': walk.getId }) }}">Runde
-                                ansehen</a>
-                        </td>
-                    </tr>
-                {% endif %}
+                <tr>
+                    <td>{{ walk.getName }}</td>
+                    <td>{{ walk.getRating }}</td>
+                    <td>
+                        {{ walk.getStartTime|localizeddate('short', 'short') }}
+                    </td>
+                    <td>
+                        {{ walk.getEndTime|localizeddate('short', 'short') }}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary sm-col-right"
+                           href="{{ path('walk_show', { 'walkId': walk.getId }) }}">Runde
+                            ansehen</a>
+                    </td>
+                </tr>
             {% else %}
                 <tr>
                     <td colspan="4">Es wurden noch keine Runden angelegt.</td>

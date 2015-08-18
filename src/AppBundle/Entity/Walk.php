@@ -92,10 +92,6 @@ class Walk
     private $guests;
     /**
      * @ORM\Column(type="boolean", length=255)
-     */
-    private $isInternal;
-    /**
-     * @ORM\Column(type="boolean", length=255)
      * @Assert\NotBlank(groups={"registration"})
      */
     private $weather;
@@ -221,22 +217,6 @@ class Walk
     public function setHolidays($holidays)
     {
         $this->holidays = $holidays;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsInternal()
-    {
-        return $this->isInternal;
-    }
-
-    /**
-     * @param boolean $isInternal
-     */
-    public function setIsInternal($isInternal)
-    {
-        $this->isInternal = $isInternal;
     }
 
     /**

@@ -94,7 +94,6 @@ class WayPointController
         $walk = new Walk();
 
         $walk->setName("");
-        $walk->setIsInternal(true);
         $walk->setStartTime(new \DateTime());
         $walk->setEndTime(new \DateTime());
         $walk->setRating(1);

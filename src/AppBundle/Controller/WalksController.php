@@ -115,7 +115,6 @@ class WalksController
         $walk = new Walk();
 
         $walk->setName("");
-        $walk->setIsInternal(true);
         $walk->setStartTime(new \DateTime());
         $walk->setEndTime(new \DateTime());
         $walk->setRating(1);
@@ -158,7 +157,6 @@ class WalksController
 
         if ($form->isValid()) {
             $walk = $form->getData();
-            $walk->setIsInternal(false); // TODO: why? at least some doc is helpful
             $this->walkRepository->update($walk);
             $flashBag->add(
                 'notice',
@@ -192,7 +190,6 @@ class WalksController
 
         if ($form->isValid()) {
             $walk = $form->getData();
-            $walk->setIsInternal(0);
             $this->walkRepository->update($walk);
             $flashBag->add(
                 'notice',
