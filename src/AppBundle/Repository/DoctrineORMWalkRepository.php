@@ -2,6 +2,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Walk;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
 class DoctrineORMWalkRepository extends EntityRepository implements WalkRepository
@@ -21,6 +22,18 @@ class DoctrineORMWalkRepository extends EntityRepository implements WalkReposito
         $query = $queryBuilder->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @return AbstractQuery
+     */
+    public function getFindAllQuery()
+    {
+        $queryBuilder = $this->createQueryBuilder('walk')
+            ->select();
+        $query = $queryBuilder->getQuery();
+
+        return $query;
     }
 
     /**

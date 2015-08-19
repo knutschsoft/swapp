@@ -235,6 +235,26 @@ class Walk
         $this->guests = $guests;
     }
 
+    public function toArray()
+    {
+        return [
+            $this->id,
+            $this->name,
+            $this->startTime->format('d.m.Y H:i:s'),
+            $this->endTime->format('d.m.Y H:i:s'),
+            $this->walkReflection,
+            $this->rating,
+            $this->systemicQuestion,
+            $this->systemicAnswer,
+            $this->insights,
+            $this->commitments,
+            $this->isResubmission,
+            $this->weather,
+            $this->holidays,
+            $this->conceptOfDay,
+        ];
+    }
+
     /**
      * @return string
      */

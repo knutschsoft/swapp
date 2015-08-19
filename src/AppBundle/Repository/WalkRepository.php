@@ -2,6 +2,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Walk;
+use Doctrine\ORM\AbstractQuery;
 
 interface WalkRepository
 {
@@ -11,6 +12,11 @@ interface WalkRepository
      * @return Walk[]
      */
     public function findAll();
+
+    /**
+     * @return AbstractQuery
+     */
+    public function getFindAllQuery();
 
     public function save(Walk $walk);
 

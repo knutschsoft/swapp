@@ -55,6 +55,10 @@ walk_create:
   path: /walkcreated/
   defaults: { _controller: app.controller.walks_controller:createWalkAction }
 
+walk_export:
+  path: /walkexport
+  defaults: { _controller: app.controller.walks_controller:exportAction}
+
 walk_start:
     path: /walkstarted/{walkId}
     defaults: { _controller: app.controller.walks_controller:createWalkPrologueAction}
