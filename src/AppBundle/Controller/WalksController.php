@@ -196,11 +196,13 @@ class WalksController
 
         if ($form->isValid()) {
             $walk = $form->getData();
-            foreach ($walk->getTags() as $tag) {
-                $tag->setWalks([$walk]);
+            $this->walkRepository->update($walk);
+            foreach ($walk->getWalkTags() as $tag) {
+                $array = $tag->getWalks()->getValues();
+                array_push($array, $walk);
+                $tag->setWalks($array);
                 $this->tagRepository->updateTag($tag);
             }
-            $this->walkRepository->update($walk);
             $flashBag->add(
                 'notice',
                 'Runde wurde erfolgreich erstellt.'

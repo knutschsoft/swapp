@@ -53,7 +53,7 @@ class Walk
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
      */
-    private $tags;
+    private $walkTags;
 
     /**
      * @ORM\Column(type="smallint")
@@ -252,6 +252,7 @@ class Walk
             $this->weather,
             $this->holidays,
             $this->conceptOfDay,
+            $this->walkTags,
         ];
     }
 
@@ -365,17 +366,17 @@ class Walk
     /**
      * @return mixed
      */
-    public function getTags()
+    public function getWalkTags()
     {
-        return $this->tags;
+        return $this->walkTags;
     }
 
     /**
-     * @param mixed $tags
+     * @param mixed $walkTags
      */
-    public function setTags($tags)
+    public function setWalkTags($walkTags)
     {
-        $this->tags = $tags;
+        $this->walkTags = $walkTags;
     }
 
     /**

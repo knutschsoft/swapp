@@ -106,7 +106,7 @@ class WayPoint
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="wayPoints")
      */
-    private $tags;
+    private $wayPointTags;
 
     /**
      * @return mixed
@@ -374,16 +374,16 @@ class WayPoint
     /**
      * @return mixed
      */
-    public function getTags()
+    public function getWayPointTags()
     {
-        return $this->tags;
+        return $this->wayPointTags;
     }
 
     /**
-     * @param mixed $tags
+     * @param mixed $wayPointTags
      */
-    public function setTags($tags)
+    public function setWayPointTags($wayPointTags)
     {
-        $this->tags = $tags;
+        $this->wayPointTags = $wayPointTags;
     }
 }

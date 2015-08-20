@@ -120,14 +120,15 @@ class WalkType extends AbstractType
             )
         );
         $builder->add(
-            'tags',
+            'walkTags',
             'choice',
             array(
                 'choice_list' => new ChoiceList(
                     $this->tagRepository->getTags(),
                     $this->tagRepository->getTags()
                 ),
-                //'multiple' => true,
+                'multiple' => true,
+                'expanded' => true,
             )
         );
         $builder->add(

@@ -221,7 +221,7 @@ class WayPointType extends AbstractType
             )
         );
         $builder->add(
-            'tags',
+            'wayPointTags',
             'choice',
             array(
                 'choice_list' => new ChoiceList(
@@ -229,6 +229,7 @@ class WayPointType extends AbstractType
                     $this->tagRepository->getTags()
                 ),
                 'multiple' => true,
+                'expanded' => true,
             )
         );
         $builder->add(

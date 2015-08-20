@@ -130,9 +130,12 @@ class WayPointController
             $wayPoint = $form->getData();
             $wayPoint->setWalk($walk);
             $this->wayPointRepository->save($wayPoint);
-            foreach ($wayPoint->getTags() as $tag) {
-                $tag->setWayPoints([$wayPoint]);
-                $this->tagRepository->updateTag($tag);
+
+            foreach ($wayPoint->getWayPointTags() as $tag) {
+                $array = $tag->getWayPoints()->getValues();
+                array_push($array, $wayPoint);
+                $tag->setWayPoints($array);
+                $this->tagRepository->save($tag);
             }
 
             $flashBag->add(

@@ -30,12 +30,12 @@ class Tag
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Walk", inversedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
      */
     private $walks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="tags")
+     * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="wayPointTags")
      */
     private $wayPoints;
 
