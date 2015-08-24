@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -52,6 +53,7 @@ class Walk
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
+     * @var ArrayCollection
      */
     private $walkTags;
 
@@ -105,6 +107,11 @@ class Walk
      * @Assert\NotBlank(groups={"default", "registration"})
      */
     private $conceptOfDay;
+
+    public function __construct()
+    {
+        $this->walkTags = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -361,6 +368,19 @@ class Walk
     public function setSystemicAnswer($systemicAnswer)
     {
         $this->systemicAnswer = $systemicAnswer;
+    }
+
+
+    public function addWalkTag(Tag $tag)
+    {
+        $tag->addWalk($this);
+        $this->walkTags->add($tag);
+    }
+
+    public function removeWalkTag(Tag $tag)
+    {
+        $tag->removeWalk($this);
+        $this->walkTags->removeElement($tag);
     }
 
     /**

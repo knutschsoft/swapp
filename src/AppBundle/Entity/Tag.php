@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,11 +32,13 @@ class Tag
 
     /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
+     * @var ArrayCollection
      */
     private $walks;
 
     /**
      * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="wayPointTags")
+     * @var ArrayCollection
      */
     private $wayPoints;
 
@@ -44,20 +47,10 @@ class Tag
      */
     private $color;
 
-    /**
-     * @return mixed
-     */
-    public function getWayPoints()
+    public function __construct()
     {
-        return $this->wayPoints;
-    }
-
-    /**
-     * @param mixed $wayPoints
-     */
-    public function setWayPoints($wayPoints)
-    {
-        $this->wayPoints = $wayPoints;
+        $this->wayPoints = new ArrayCollection();
+        $this->walks = new ArrayCollection();
     }
 
     /**
@@ -137,6 +130,26 @@ class Tag
     }
 
     /**
+     * @param Walk $walk
+     */
+    public function addWalk(Walk $walk)
+    {
+        if (!$this->walks->contains($walk)) {
+            $this->walks->add($walk);
+        }
+    }
+
+    /**
+     * @param Walk $walk
+     */
+    public function removeWalk(Walk $walk)
+    {
+        if ($this->walks->contains($walk)) {
+            $this->walks->removeElement($walk);
+        }
+    }
+
+    /**
      * @return mixed
      */
     public function getWalks()
@@ -150,5 +163,42 @@ class Tag
     public function setWalks($walks)
     {
         $this->walks = $walks;
+    }
+
+
+    /**
+     * @param WayPoint $wayPoint
+     */
+    public function addWayPoint(WayPoint $wayPoint)
+    {
+        if (!$this->wayPoints->contains($wayPoint)) {
+            $this->wayPoints->add($wayPoint);
+        }
+    }
+
+    /**
+     * @param WayPoint $wayPoint
+     */
+    public function removeWayPoint(WayPoint $wayPoint)
+    {
+        if ($this->wayPoints->contains($wayPoint)) {
+            $this->wayPoints->removeElement($wayPoint);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWayPoints()
+    {
+        return $this->wayPoints;
+    }
+
+    /**
+     * @param mixed $wayPoints
+     */
+    public function setWayPoints($wayPoints)
+    {
+        $this->wayPoints = $wayPoints;
     }
 }

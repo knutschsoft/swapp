@@ -29,7 +29,7 @@
     {{ include(':Walks:showItem.html.twig', {'key': 'Teilnehmer', 'value': users }) }}
 
     {% set tags %}
-        {% for tag in walk.getTags %}
+        {% for tag in walk.getWalkTags %}
             {{ tag.getName }}
         {% else %}
             keine Tags vergeben

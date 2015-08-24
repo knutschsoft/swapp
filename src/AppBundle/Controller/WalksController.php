@@ -185,24 +185,19 @@ class WalksController
     /**
      * @param Request  $request
      * @param FlashBag $flashBag
+     * @param Walk     $walk
      *
      * @return RedirectResponse|Response
      */
-    public function createWalkAction(Request $request, FlashBag $flashBag)
+    public function createWalkAction(Request $request, FlashBag $flashBag, Walk $walk)
     {
-        $form = $this->formFactory->create('app_create_walk', new Walk());
-
+        $form = $this->formFactory->create('app_create_walk', $walk);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $walk = $form->getData();
             $this->walkRepository->update($walk);
-            foreach ($walk->getWalkTags() as $tag) {
-                $array = $tag->getWalks()->getValues();
-                array_push($array, $walk);
-                $tag->setWalks($array);
-                $this->tagRepository->updateTag($tag);
-            }
+
             $flashBag->add(
                 'notice',
                 'Runde wurde erfolgreich erstellt.'

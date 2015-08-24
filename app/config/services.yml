@@ -117,8 +117,6 @@ services:
         class: AppBundle\Form\Type\WalkType
         tags:
             - { name: form.type, alias: app_create_walk }
-        arguments:
-            - @app.factory_service.tag_repository
 
     app.form.type.walk.prologue:
         class: AppBundle\Form\Type\WalkPrologueType
@@ -134,8 +132,6 @@ services:
         class: AppBundle\Form\Type\WayPointType
         tags:
             - { name: form.type, alias: app_create_way_point }
-        arguments:
-                    - @app.factory_service.tag_repository
 
     app.twig_extension.intl:
         class: Twig_Extensions_Extension_Intl

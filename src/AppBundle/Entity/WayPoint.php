@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -105,8 +106,14 @@ class WayPoint
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="wayPoints")
+     * @var ArrayCollection
      */
     private $wayPointTags;
+
+    public function __construct()
+    {
+        $this->wayPointTags = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -385,5 +392,17 @@ class WayPoint
     public function setWayPointTags($wayPointTags)
     {
         $this->wayPointTags = $wayPointTags;
+    }
+
+    public function addWayPointTag(Tag $tag)
+    {
+        $tag->addWayPoint($this);
+        $this->wayPointTags->add($tag);
+    }
+
+    public function removeWayPointTag(Tag $tag)
+    {
+        $tag->removeWayPoint($this);
+        $this->wayPointTags->removeElement($tag);
     }
 }
