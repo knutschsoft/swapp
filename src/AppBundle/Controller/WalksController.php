@@ -9,12 +9,12 @@ use AppBundle\Repository\TagRepository;
 use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
 use FOS\UserBundle\Model\UserManagerInterface;
+use QafooLabs\MVC\Flash;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -114,6 +114,11 @@ class WalksController
         );
     }
 
+    /**
+     * @param Team $team
+     *
+     * @return Response
+     */
     public function createWalkPrologueFormAction(Team $team)
     {
         // default walk
@@ -155,7 +160,14 @@ class WalksController
         );
     }
 
-    public function createWalkPrologueAction(Request $request, FlashBag $flashBag, Walk $walk)
+    /**
+     * @param Request $request
+     * @param Flash   $flash
+     * @param Walk    $walk
+     *
+     * @return RedirectResponse|Response
+     */
+    public function createWalkPrologueAction(Request $request, Flash $flash, Walk $walk)
     {
         $form = $this->formFactory->create('app_create_walk_prologue', $walk);
 
@@ -164,7 +176,7 @@ class WalksController
         if ($form->isValid()) {
             $walk = $form->getData();
             $this->walkRepository->update($walk);
-            $flashBag->add(
+            $flash->add(
                 'notice',
                 'Runde wurde erfolgreich gestartet.'
             );
@@ -183,13 +195,13 @@ class WalksController
     }
 
     /**
-     * @param Request  $request
-     * @param FlashBag $flashBag
-     * @param Walk     $walk
+     * @param Request $request
+     * @param Flash   $flash
+     * @param Walk    $walk
      *
      * @return RedirectResponse|Response
      */
-    public function createWalkAction(Request $request, FlashBag $flashBag, Walk $walk)
+    public function createWalkAction(Request $request, Flash $flash, Walk $walk)
     {
         $form = $this->formFactory->create('app_create_walk', $walk);
         $form->handleRequest($request);
@@ -198,7 +210,7 @@ class WalksController
             $walk = $form->getData();
             $this->walkRepository->update($walk);
 
-            $flashBag->add(
+            $flash->add(
                 'notice',
                 'Runde wurde erfolgreich erstellt.'
             );
@@ -216,52 +228,57 @@ class WalksController
         );
     }
 
+    /**
+     * @return StreamedResponse
+     */
     public function exportAction()
     {
         // get the service container to pass to the closure
         $walkRepository = $this->walkRepository;
 
-        $response = new StreamedResponse(function() use($walkRepository) {
+        $response = new StreamedResponse(
+            function () use ($walkRepository) {
 
-            // The getExportQuery method returns a query that is used to retrieve
-            // all the objects (lines of your csv file) you need. The iterate method
-            // is used to limit the memory consumption
-            $results = $walkRepository->getFindAllQuery()->iterate();
-            $handle = fopen('php://output', 'r+');
+                // The getExportQuery method returns a query that is used to retrieve
+                // all the objects (lines of your csv file) you need. The iterate method
+                // is used to limit the memory consumption
+                $results = $walkRepository->getFindAllQuery()->iterate();
+                $handle = fopen('php://output', 'r+');
 
-            $header = [
-                'Id',
-                'Name',
-                'Beginn',
-                'Ende',
-                'Reflexion',
-                'Bewertung',
-                'systemische Frage',
-                'systemische Antwort',
-                'Erkenntnisse, Überlegungen, Zielsettungen',
-                'Termine, Besorgungen, Verabredungen',
-                'Wiedervorlage Dienstberatung',
-                'Wetter',
-                'Ferien',
-                'Tageskonzept',
-            ];
+                $header = [
+                    'Id',
+                    'Name',
+                    'Beginn',
+                    'Ende',
+                    'Reflexion',
+                    'Bewertung',
+                    'systemische Frage',
+                    'systemische Antwort',
+                    'Erkenntnisse, Überlegungen, Zielsettungen',
+                    'Termine, Besorgungen, Verabredungen',
+                    'Wiedervorlage Dienstberatung',
+                    'Wetter',
+                    'Ferien',
+                    'Tageskonzept',
+                ];
 
-            fputcsv($handle, $header);
+                fputcsv($handle, $header);
 
-            while (false !== ($row = $results->next())) {
-                // add a line in the csv file. You need to implement a toArray() method
-                // to transform your object into an array
+                while (false !== ($row = $results->next())) {
+                    // add a line in the csv file. You need to implement a toArray() method
+                    // to transform your object into an array
 //                dump($row[0]->toArray());
-                fputcsv($handle, $row[0]->toArray());
-                // used to limit the memory consumption
+                    fputcsv($handle, $row[0]->toArray());
+                    // used to limit the memory consumption
 //                $em->detach($row[0]);
-            }
+                }
 
-            fclose($handle);
-        });
+                fclose($handle);
+            }
+        );
 
         $response->headers->set('Content-Type', 'application/force-download');
-        $response->headers->set('Content-Disposition','attachment; filename="export.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
 
         return $response;
     }

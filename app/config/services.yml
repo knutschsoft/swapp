@@ -31,13 +31,6 @@ services:
         tags:
             - { name: request.param_converter, converter: entity, priority: 0 }
 
-    app.param_converter.flash_bag:
-        class: AppBundle\ParamConverter\FlashBagParamConverter
-        arguments:
-          - @session
-        tags:
-            - { name: request.param_converter, converter: flash_bag, priority: 10 }
-
     app.param_converter.user:
         class: AppBundle\ParamConverter\UserParamConverter
         arguments:

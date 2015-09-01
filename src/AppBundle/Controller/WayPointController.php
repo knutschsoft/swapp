@@ -8,11 +8,12 @@ use AppBundle\Repository\TagRepository;
 use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
 use FOS\UserBundle\Model\UserManagerInterface;
+use QafooLabs\MVC\Flash;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class WayPointController
@@ -55,7 +56,7 @@ class WayPointController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function homeScreenAction()
     {
@@ -65,7 +66,7 @@ class WayPointController
     /**
      * @param WayPoint $wayPoint
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(WayPoint $wayPoint)
     {
@@ -77,12 +78,12 @@ class WayPointController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function dataTableAction()
     {
         $parameters = [
-            'wayPoints' => $this->wayPointRepository->findAll()
+            'wayPoints' => $this->wayPointRepository->findAll(),
         ];
 
         return $this->templateEngine->renderResponse('WayPoint/dataTable.html.twig', $parameters);
@@ -91,7 +92,7 @@ class WayPointController
     /**
      * @param Walk $walk
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function updateWalkWithWayPointAction(Walk $walk)
     {
@@ -114,13 +115,13 @@ class WayPointController
     }
 
     /**
-     * @param Request  $request
-     * @param FlashBag $flashBag
-     * @param Walk     $walk
+     * @param Request $request
+     * @param Flash   $flash
+     * @param Walk    $walk
      *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function createWayPointAction(Request $request, FlashBag $flashBag, Walk $walk)
+    public function createWayPointAction(Request $request, Flash $flash, Walk $walk)
     {
         $form = $this->formFactory->create('app_create_way_point', new WayPoint());
 
@@ -131,7 +132,7 @@ class WayPointController
             $wayPoint->setWalk($walk);
             $this->wayPointRepository->save($wayPoint);
 
-            $flashBag->add(
+            $flash->add(
                 'notice',
                 'Wegpunkt wurde erfolgreich erstellt.'
             );

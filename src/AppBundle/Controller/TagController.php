@@ -3,12 +3,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tag;
 use AppBundle\Repository\TagRepository;
+use QafooLabs\MVC\Flash;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class TagController extends Controller
@@ -36,11 +37,17 @@ class TagController extends Controller
         $this->router = $router;
     }
 
+    /**
+     * @return Response
+     */
     public function homeScreenAction()
     {
         return $this->templateEngine->renderResponse(':Tags:tagsHomeScreen.html.twig');
     }
 
+    /**
+     * @return Response
+     */
     public function createTagFormAction()
     {
         $tag = new Tag();
@@ -60,7 +67,13 @@ class TagController extends Controller
         );
     }
 
-    public function createTagAction(Request $request, FlashBag $flashBag)
+    /**
+     * @param Request $request
+     * @param Flash   $flash
+     *
+     * @return RedirectResponse|Response
+     */
+    public function createTagAction(Request $request, Flash $flash)
     {
         $form = $this->formFactory->create('app_create_tag', new Tag());
 
@@ -69,7 +82,7 @@ class TagController extends Controller
         if ($form->isValid()) {
             $tag = $form->getData();
             $this->tagRepository->save($tag);
-            $flashBag->add(
+            $flash->add(
                 'notice',
                 'Tag wurde erfolgreich erstellt.'
             );
