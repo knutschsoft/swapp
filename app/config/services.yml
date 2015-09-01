@@ -1,9 +1,5 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
-
-imports:
-    - { resource: services_admin.yml }
-
 parameters:
 #    parameter_name: value
 
