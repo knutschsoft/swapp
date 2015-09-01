@@ -259,7 +259,6 @@ class Walk
             $this->weather,
             $this->holidays,
             $this->conceptOfDay,
-            $this->walkTags,
         ];
     }
 
