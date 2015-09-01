@@ -6,6 +6,7 @@ use AppBundle\Form\Type\TagType;
 use AppBundle\Repository\TagRepository;
 use QafooLabs\MVC\Flash;
 use QafooLabs\MVC\FormRequest;
+use QafooLabs\MVC\RedirectRoute;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,6 @@ class TagController
     private $templateEngine;
     private $tagRepository;
     private $router;
-    private $formFactory;
 
     /**
      * @param EngineInterface      $templateEngine
@@ -89,8 +89,6 @@ class TagController
             'Tag wurde erfolgreich erstellt.'
         );
 
-        $url = $this->router->generate('tag_home_screen');
-
-        return new RedirectResponse($url);
+        return new RedirectRoute('tag_home_screen');
     }
 }
