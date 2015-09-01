@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "67ee9d9dd136d3232e8ef8125fb8c10e",
+    "hash": "6b908bf5ca38d857cb48b3a02ed921c5",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -1786,6 +1786,59 @@
             "time": "2012-12-21 11:40:51"
         },
         {
+            "name": "qafoolabs/no-framework-bundle",
+            "version": "v2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QafooLabs/QafooLabsNoFrameworkBundle.git",
+                "reference": "9e1688bd56ef0db080bcce3aead3ecb22c8d1169"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QafooLabs/QafooLabsNoFrameworkBundle/zipball/9e1688bd56ef0db080bcce3aead3ecb22c8d1169",
+                "reference": "9e1688bd56ef0db080bcce3aead3ecb22c8d1169",
+                "shasum": ""
+            },
+            "require-dev": {
+                "jms/serializer": "@stable",
+                "phake/phake": "@stable",
+                "sensio/framework-extra-bundle": "~3.0",
+                "symfony/form": "@stable",
+                "symfony/framework-bundle": "~2.1"
+            },
+            "suggest": {
+                "sensio/framework-extra-bundle": "~3.0 required",
+                "symfony/framework-bundle": "~2.1 required"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "QafooLabs\\Bundle\\NoFrameworkBundle\\": "src/",
+                    "QafooLabs\\MVC\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Manuel Pichler",
+                    "email": "manuel@qafoo.com"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "benjamin@qafoo.com"
+                }
+            ],
+            "description": "Various improvements for Symfony applications",
+            "keywords": [
+                "bundle",
+                "symfony"
+            ],
+            "time": "2015-02-08 10:12:35"
+        },
+        {
             "name": "sensio/distribution-bundle",
             "version": "v3.0.31",
             "target-dir": "Sensio/Bundle/DistributionBundle",
@@ -2877,7 +2930,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/41a74352fac4668f50cc42f9155a570727f62051",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/e256e857327061625b1b27093dab82b64dc8daca",
                 "reference": "41a74352fac4668f50cc42f9155a570727f62051",
                 "shasum": ""
             },
