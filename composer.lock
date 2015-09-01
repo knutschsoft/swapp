@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "54e13d0ebe2e7754bff48934c787db56",
+    "hash": "ee8453123a2459d2f2ba2df51fb90049",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2296,16 +2296,16 @@
         },
         {
             "name": "vich/uploader-bundle",
-            "version": "dev-master",
+            "version": "1.0.0-beta5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dustin10/VichUploaderBundle.git",
-                "reference": "e256e857327061625b1b27093dab82b64dc8daca"
+                "reference": "14486231da5c65b292ac2651c928aa90bd636d4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/e256e857327061625b1b27093dab82b64dc8daca",
-                "reference": "e256e857327061625b1b27093dab82b64dc8daca",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/14486231da5c65b292ac2651c928aa90bd636d4e",
+                "reference": "14486231da5c65b292ac2651c928aa90bd636d4e",
                 "shasum": ""
             },
             "require": {
@@ -2364,7 +2364,7 @@
                 "file uploads",
                 "upload"
             ],
-            "time": "2015-08-29 19:55:43"
+            "time": "2015-08-29 18:33:34"
         },
         {
             "name": "zendframework/zend-code",
@@ -3422,7 +3422,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "vich/uploader-bundle": 20
+        "vich/uploader-bundle": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
