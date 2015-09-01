@@ -2,17 +2,16 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tag;
+use AppBundle\Form\Type\TagType;
 use AppBundle\Repository\TagRepository;
 use QafooLabs\MVC\Flash;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use QafooLabs\MVC\FormRequest;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
-class TagController extends Controller
+class TagController
 {
     private $templateEngine;
     private $tagRepository;
@@ -21,17 +20,14 @@ class TagController extends Controller
 
     /**
      * @param EngineInterface      $templateEngine
-     * @param FormFactoryInterface $formFactory
      * @param TagRepository        $tagRepository
      * @param RouterInterface      $router
      */
     public function __construct(
         EngineInterface $templateEngine,
-        FormFactoryInterface $formFactory,
         TagRepository $tagRepository,
         RouterInterface $router
     ) {
-        $this->formFactory = $formFactory;
         $this->templateEngine = $templateEngine;
         $this->tagRepository = $tagRepository;
         $this->router = $router;
@@ -46,14 +42,15 @@ class TagController extends Controller
     }
 
     /**
+     * @param FormRequest $formRequest
+     *
      * @return Response
      */
-    public function createTagFormAction()
+    public function createTagFormAction(FormRequest $formRequest)
     {
-        $tag = new Tag();
-        $form = $this->formFactory->create(
-            'app_create_tag',
-            $tag,
+        $formRequest->handle(
+            new TagType(),
+            new Tag(),
             array(
                 'action' => $this->router->generate('tag_create'),
             )
@@ -62,41 +59,38 @@ class TagController extends Controller
         return $this->templateEngine->renderResponse(
             ':Tags:tagForm.html.twig',
             array(
-                'form' => $form->createView(),
+                'form' => $formRequest->createFormView(),
             )
         );
     }
 
     /**
-     * @param Request $request
-     * @param Flash   $flash
+     * @param FormRequest $formRequest
+     * @param Flash       $flash
      *
      * @return RedirectResponse|Response
      */
-    public function createTagAction(Request $request, Flash $flash)
+    public function createTagAction(FormRequest $formRequest, Flash $flash)
     {
-        $form = $this->formFactory->create('app_create_tag', new Tag());
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $tag = $form->getData();
-            $this->tagRepository->save($tag);
-            $flash->add(
-                'notice',
-                'Tag wurde erfolgreich erstellt.'
+        if (!$formRequest->handle(new TagType(), new Tag())) {
+            return $this->templateEngine->renderResponse(
+                ':Tags:tagForm.html.twig',
+                array(
+                    'form' => $formRequest->createFormView(),
+                )
             );
-
-            $url = $this->router->generate('tag_home_screen');
-
-            return new RedirectResponse($url);
         }
 
-        return $this->templateEngine->renderResponse(
-            ':Tags:tagForm.html.twig',
-            array(
-                'form' => $form->createView(),
-            )
+        $tag = $formRequest->getValidData();
+
+        $this->tagRepository->save($tag);
+        $flash->add(
+            'notice',
+            'Tag wurde erfolgreich erstellt.'
         );
+
+        $url = $this->router->generate('tag_home_screen');
+
+        return new RedirectResponse($url);
     }
 }
