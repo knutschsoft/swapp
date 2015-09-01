@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Tests\EdgeToEdge;
 
-class ApplicationAvailabilityFunctionalTest extends BaseWebTestCase
+class ApplicationAvailabilityTest extends BaseWebTestCase
 {
     /**
      * @dataProvider urlProvider
@@ -24,10 +24,6 @@ class ApplicationAvailabilityFunctionalTest extends BaseWebTestCase
             array('/tag'),
             array('/createtag'),
             array('/tagcreated'),
-            array('/walkcreated'),
-//            array('/waypoint'), @TODO enable as soon as WayPointController::homeScreenAction is finished
-            array('/createwaypoint'),
-            array('/waypointcreated'),
             array('/eadmin/?action=list&entity=Team'),
             array('/eadmin/?action=list&entity=Walk'),
             array('/eadmin/?action=list&entity=WayPoint'),
