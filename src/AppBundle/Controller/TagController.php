@@ -7,28 +7,23 @@ use AppBundle\Repository\TagRepository;
 use QafooLabs\MVC\Flash;
 use QafooLabs\MVC\FormRequest;
 use QafooLabs\MVC\RedirectRoute;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class TagController
 {
-    private $templateEngine;
     private $tagRepository;
     private $router;
 
     /**
-     * @param EngineInterface      $templateEngine
      * @param TagRepository        $tagRepository
      * @param RouterInterface      $router
      */
     public function __construct(
-        EngineInterface $templateEngine,
         TagRepository $tagRepository,
         RouterInterface $router
     ) {
-        $this->templateEngine = $templateEngine;
         $this->tagRepository = $tagRepository;
         $this->router = $router;
     }
@@ -38,7 +33,7 @@ class TagController
      */
     public function homeScreenAction()
     {
-        return $this->templateEngine->renderResponse(':Tags:tagsHomeScreen.html.twig');
+        return [];
     }
 
     /**
@@ -56,12 +51,7 @@ class TagController
             )
         );
 
-        return $this->templateEngine->renderResponse(
-            ':Tags:tagForm.html.twig',
-            array(
-                'form' => $formRequest->createFormView(),
-            )
-        );
+        return ['form' => $formRequest->createFormView()];
     }
 
     /**
@@ -73,12 +63,7 @@ class TagController
     public function createTagAction(FormRequest $formRequest, Flash $flash)
     {
         if (!$formRequest->handle(new TagType(), new Tag())) {
-            return $this->templateEngine->renderResponse(
-                ':Tags:tagForm.html.twig',
-                array(
-                    'form' => $formRequest->createFormView(),
-                )
-            );
+            return ['form' => $formRequest->createFormView()];
         }
 
         $tag = $formRequest->getValidData();
