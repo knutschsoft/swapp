@@ -1,7 +1,6 @@
 <?php
 namespace AppBundle\Form\Type;
 
-use AppBundle\Entity\Tag;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -107,17 +106,6 @@ class WalkType extends AbstractType
                     'Arschkalt' => 'Arschkalt',
                 ),
                 'label' => 'Wetter',
-            )
-        );
-        $builder->add(
-            'walkTags',
-            'entity',
-            array(
-                'class' => 'AppBundle\Entity\Tag',
-                'property' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-                'by_reference' => false,
             )
         );
         $builder->add(
