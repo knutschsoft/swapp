@@ -14,8 +14,17 @@
             <tr>
                 <td>{{ waypoint.getLocationName }}</td>
                 <td>{% if waypoint.getIsMeeting == 1 %}ja{% else %}nein{% endif %}</td>
-                <td>{{ waypoint.getFemalesChildCount }}</td>
-                <td>{{ waypoint.getMalesChildCount }}</td>
+                <td>{{ waypoint.getMalesKidCount
+                    + waypoint.getMalesChildCount
+                    + waypoint.getMalesYouthCount
+                    + waypoint.getMalesYoungAdultCount
+                    + waypoint.getMalesAdultCount }}</td>
+
+                <td>{{ waypoint.getFemalesKidCount
+                    + waypoint.getFemalesChildCount
+                    + waypoint.getFemalesYouthCount
+                    + waypoint.getFemalesYoungAdultCount
+                    + waypoint.getFemalesAdultCount }}</td>
                 <td>
                     <a class="btn btn-primary sm-col-right"
                        href="{{ path('way_point_show', { 'wayPointId': waypoint.getId }) }}">Wegpunkt ansehen</a>
