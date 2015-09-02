@@ -29,7 +29,7 @@ class TagController
     }
 
     /**
-     * @return Response
+     * @return array
      */
     public function homeScreenAction()
     {
@@ -41,7 +41,7 @@ class TagController
     /**
      * @param FormRequest $formRequest
      *
-     * @return Response
+     * @return array
      */
     public function createTagFormAction(FormRequest $formRequest)
     {
@@ -63,7 +63,7 @@ class TagController
      * @param FormRequest $formRequest
      * @param Flash       $flash
      *
-     * @return RedirectResponse|Response
+     * @return RedirectResponse|array
      */
     public function createTagAction(FormRequest $formRequest, Flash $flash)
     {
