@@ -76,6 +76,18 @@ class WayPoint
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
+    private $malesYoungAdultsCount;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
+     */
+    private $femalesYoungAdultsCount;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
+     */
     private $malesYouthCount;
 
     /**
@@ -404,5 +416,37 @@ class WayPoint
     {
         $tag->removeWayPoint($this);
         $this->wayPointTags->removeElement($tag);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMalesYoungAdultsCount()
+    {
+        return $this->malesYoungAdultsCount;
+    }
+
+    /**
+     * @param mixed $malesYoungAdultsCount
+     */
+    public function setMalesYoungAdultsCount($malesYoungAdultsCount)
+    {
+        $this->malesYoungAdultsCount = $malesYoungAdultsCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFemalesYoungAdultsCount()
+    {
+        return $this->femalesYoungAdultsCount;
+    }
+
+    /**
+     * @param mixed $femalesYoungAdultsCount
+     */
+    public function setFemalesYoungAdultsCount($femalesYoungAdultsCount)
+    {
+        $this->femalesYoungAdultsCount = $femalesYoungAdultsCount;
     }
 }

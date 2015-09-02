@@ -161,6 +161,48 @@ class WayPointType extends AbstractType
             )
         );
         $builder->add(
+            'malesYoungAdultsCount',
+            'choice',
+            array(
+                'choices' => array(
+                    '0' => '0',
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                    '6' => '6',
+                    '7' => '7',
+                    '8' => '8',
+                    '9' => '9',
+                    '10' => '10',
+                ),
+                'required' => true,
+                'label' => 'junge Erwachsene m',
+            )
+        );
+        $builder->add(
+            'femalesYoungAdultsCount',
+            'choice',
+            array(
+                'choices' => array(
+                    '0' => '0',
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                    '6' => '6',
+                    '7' => '7',
+                    '8' => '8',
+                    '9' => '9',
+                    '10' => '10',
+                ),
+                'required' => true,
+                'label' => 'junge Erwachsene w',
+            )
+        );
+        $builder->add(
             'malesAdultCount',
             'choice',
             array(
