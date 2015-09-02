@@ -39,4 +39,13 @@ class DoctrineORMTagRepository extends EntityRepository implements TagRepository
         $this->_em->merge($tag);
         $this->_em->flush();
     }
+
+    public function findAll()
+    {
+        $queryBuilder = $this->createQueryBuilder('tag')
+            ->select();
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
 }

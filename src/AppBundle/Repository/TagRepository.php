@@ -12,4 +12,6 @@ interface TagRepository
     public function getTags();
 
     public function updateTag(Tag $tag);
+
+    public function findAll();
 }
