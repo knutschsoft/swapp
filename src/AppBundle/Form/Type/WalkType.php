@@ -39,7 +39,7 @@ class WalkType extends AbstractType
             'endTime',
             'datetime',
             array(
-                'label' => 'Runenendzeit',
+                'label' => 'Rundenendzeit',
             )
         );
         $builder->add(
