@@ -18,5 +18,5 @@
             <a href="{{ path('tag_create_form') }}" class="btn btn-primary">Tag erstellen</a>
         </div>
     </div>
-    {{ include (':Tag:tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
+    {{ include ('@App/Tag/tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
 {% endblock %}

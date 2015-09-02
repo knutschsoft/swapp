@@ -49,7 +49,6 @@ services:
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController
       arguments:
-        - @templating
         - @app.factory_service.tag_repository
         - @router
 
