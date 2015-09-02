@@ -59,13 +59,18 @@ class WalkController
      *
      * @return array
      */
-    public function homeScreenAction(User $user)
+    public function homeScreenAction(User $user, Request $request)
     {
-        $walks = $this->walkRepository->findAll();
+        $order = $request->query->get('order', 'startTime');
+        $sort = $request->query->get('sort', 'asc');
+
+        $walks = $this->walkRepository->findAllOrderBy('walk.' . $order, $sort);
         $teams = $user->getTeams();
         return [
             'walks' => $walks,
             'teams' => $teams,
+            'order' => $order,
+            'sort' => $sort,
         ];
     }
 

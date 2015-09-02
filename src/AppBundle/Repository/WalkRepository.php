@@ -14,6 +14,11 @@ interface WalkRepository
     public function findAll();
 
     /**
+     * @return Walk[]
+     */
+    public function findAllOrderBy($order, $sort);
+
+    /**
      * @return AbstractQuery
      */
     public function getFindAllQuery();

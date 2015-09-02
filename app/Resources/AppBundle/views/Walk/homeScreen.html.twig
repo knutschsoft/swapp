@@ -36,12 +36,24 @@
         <table class="table-light">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Bewertung</th>
-                <th>Beginn</th>
-                <th>Ende</th>
-                <th>Team</th>
-                <th>WV DB</th>
+                <th>
+                    <a class="btn{{ (order == 'name') ? ' btn-' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'name', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Name</a>
+                </th>
+                <th>
+                    <a class="btn{{ (order == 'rating') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'rating', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Bewertung</a>
+                </th>
+                <th>
+                    <a class="btn{{ (order == 'startTime') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'startTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Beginn</a>
+                </th>
+                <th>
+                    <a class="btn{{ (order == 'endTime') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'endTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Ende</a>
+                </th>
+                <th>
+                    <a class="btn{{ (order == 'teamName') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'teamName', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Team</a>
+                </th>
+                <th>
+                    <a class="btn{{ (order == 'isResubmission') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'isResubmission', 'sort': (sort == 'asc') ? 'desc' : 'asc' }) }}">WV DB</a>
+                </th>
                 <th class="right-align">Detailansicht</th>
             </tr>
             </thead>

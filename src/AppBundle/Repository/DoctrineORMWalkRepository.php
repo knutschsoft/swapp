@@ -25,6 +25,19 @@ class DoctrineORMWalkRepository extends EntityRepository implements WalkReposito
     }
 
     /**
+     * @return Walk[]
+     */
+    public function findAllOrderBy($order, $sort = 'asc')
+    {
+        $queryBuilder = $this->createQueryBuilder('walk')
+            ->select()
+            ->orderBy($order, $sort);
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * @return AbstractQuery
      */
     public function getFindAllQuery()
