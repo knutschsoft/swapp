@@ -112,7 +112,7 @@ class WalkType extends AbstractType
             'insights',
             'textarea',
             array(
-                'label' => 'Erkenntnisse, Überlegungen, Zielsettungen',
+                'label' => 'Erkenntnisse, Überlegungen, Zielsetzungen',
             )
         );
         $builder->add(
