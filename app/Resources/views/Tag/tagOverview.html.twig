@@ -1,0 +1,20 @@
+<div class="">
+    <table class="table-light">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Farbe</th>
+            <th>Beschreibung</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tag in tags %}
+            <tr>
+                <td>{{ tag.getName }}</td>
+                <td>{{ tag.getColor }}</td>
+                <td>{{ tag.getDescription }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
