@@ -76,13 +76,13 @@ class WayPoint
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    private $malesYoungAdultsCount;
+    private $malesYoungAdultCount;
 
     /**
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      */
-    private $femalesYoungAdultsCount;
+    private $femalesYoungAdultCount;
 
     /**
      * @ORM\Column(type="smallint")
@@ -421,32 +421,32 @@ class WayPoint
     /**
      * @return mixed
      */
-    public function getMalesYoungAdultsCount()
+    public function getMalesYoungAdultCount()
     {
-        return $this->malesYoungAdultsCount;
+        return $this->malesYoungAdultCount;
     }
 
     /**
-     * @param mixed $malesYoungAdultsCount
+     * @param mixed $malesYoungAdultCount
      */
-    public function setMalesYoungAdultsCount($malesYoungAdultsCount)
+    public function setMalesYoungAdultCount($malesYoungAdultCount)
     {
-        $this->malesYoungAdultsCount = $malesYoungAdultsCount;
+        $this->malesYoungAdultCount = $malesYoungAdultCount;
     }
 
     /**
      * @return mixed
      */
-    public function getFemalesYoungAdultsCount()
+    public function getFemalesYoungAdultCount()
     {
-        return $this->femalesYoungAdultsCount;
+        return $this->femalesYoungAdultCount;
     }
 
     /**
-     * @param mixed $femalesYoungAdultsCount
+     * @param mixed $femalesYoungAdultCount
      */
-    public function setFemalesYoungAdultsCount($femalesYoungAdultsCount)
+    public function setFemalesYoungAdultCount($femalesYoungAdultCount)
     {
-        $this->femalesYoungAdultsCount = $femalesYoungAdultsCount;
+        $this->femalesYoungAdultCount = $femalesYoungAdultCount;
     }
 }

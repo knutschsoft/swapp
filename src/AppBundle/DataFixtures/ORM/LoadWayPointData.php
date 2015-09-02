@@ -39,8 +39,8 @@ class LoadWayPointData extends AbstractFixture implements FixtureInterface, Orde
             $wayPoint->setMalesChildCount(rand(0, 20));
             $wayPoint->setMalesKidCount(rand(0, 20));
             $wayPoint->setMalesYouthCount(rand(0, 20));
-            $wayPoint->setMalesYoungAdultsCount(rand(0, 20));
-            $wayPoint->setFemalesYoungAdultsCount(rand(0, 20));
+            $wayPoint->setMalesYoungAdultCount(rand(0, 20));
+            $wayPoint->setFemalesYoungAdultCount(rand(0, 20));
             $wayPoint->setIsMeeting(rand(0, 1));
             $wayPoint->setNote('note Lorem ipsum tralalala');
             $wayPoint->setWalk($this->getReference('walk-' . rand(1, LoadWalkData::NUM_WALKS)));
