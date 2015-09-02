@@ -10,7 +10,6 @@ use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
 use FOS\UserBundle\Model\UserManagerInterface;
 use QafooLabs\MVC\Flash;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +19,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 class WalkController
 {
-    private $templateEngine;
     private $walkRepository;
     private $router;
     private $formFactory;
@@ -30,7 +28,6 @@ class WalkController
     private $tagRepository;
 
     /**
-     * @param EngineInterface            $templateEngine
      * @param FormFactoryInterface       $formFactory
      * @param WalkRepository             $walkRepository
      * @param RouterInterface            $router
@@ -40,7 +37,6 @@ class WalkController
      * @param TagRepository              $tagRepository
      */
     public function __construct(
-        EngineInterface $templateEngine,
         FormFactoryInterface $formFactory,
         WalkRepository $walkRepository,
         RouterInterface $router,
@@ -50,7 +46,6 @@ class WalkController
         TagRepository $tagRepository
     ) {
         $this->formFactory = $formFactory;
-        $this->templateEngine = $templateEngine;
         $this->walkRepository = $walkRepository;
         $this->router = $router;
         $this->wayPointRepository = $wayPointRepository;
@@ -68,12 +63,10 @@ class WalkController
     {
         $walks = $this->walkRepository->findAll();
         $teams = $user->getTeams();
-        $parameters = [
+        return [
             'walks' => $walks,
             'teams' => $teams,
         ];
-
-        return $this->templateEngine->renderResponse(':Walks:walksHomeScreen.html.twig', $parameters);
     }
 
     /**
@@ -83,11 +76,9 @@ class WalkController
      */
     public function showAction(Walk $walk)
     {
-        $parameters = [
+        return [
             'walk' => $walk,
         ];
-
-        return $this->templateEngine->renderResponse(':Walks:show.html.twig', $parameters);
     }
 
     /**
@@ -105,13 +96,10 @@ class WalkController
             )
         );
 
-        return $this->templateEngine->renderResponse(
-            ':Walks:walkForm.html.twig',
-            array(
-                'form' => $form->createView(),
-                'wayPoints' => $walk->getWayPoints(),
-            )
-        );
+        return [
+            'form' => $form->createView(),
+            'wayPoints' => $walk->getWayPoints(),
+        ];
     }
 
     /**
@@ -153,12 +141,9 @@ class WalkController
             )
         );
 
-        return $this->templateEngine->renderResponse(
-            ':Walks:walkPrologueForm.html.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**
@@ -187,12 +172,9 @@ class WalkController
             return new RedirectResponse($url);
         }
 
-        return $this->templateEngine->renderResponse(
-            ':Walks:walkPrologueForm.html.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**
@@ -221,12 +203,9 @@ class WalkController
             return new RedirectResponse($url);
         }
 
-        return $this->templateEngine->renderResponse(
-            ':Walks:walkForm.html.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**

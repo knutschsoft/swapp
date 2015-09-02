@@ -1,0 +1,80 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+    <div class="swapp-headline-container">
+        <h1>
+            Streetwork-Runde: {{ walk.getName }}
+        </h1>
+    </div>
+    <div class="swapp-password-change-container">
+        <div class="mb1">
+            <a href="{{ path('walk_home_screen') }}" class="btn btn-primary">zur Rundenübersicht</a>
+        </div>
+    </div>
+
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Name', 'value': walk.getName }, with_context = false) }}
+
+
+    {% set personsMale %}
+        {% if walk.getMalesCount %}
+            {{ walk.getMalesCount }}
+        {% else %}
+            keine männlichen Personen angetroffen
+        {% endif %}
+    {% endset %}
+    {{ include('@App/Walk/showItem.html.twig', { 'key': 'angetroffene männliche Personen', 'value': personsMale }, with_context = false) }}
+
+    {% set personsFemale %}
+        {% if walk.getFemalesCount %}
+            {{ walk.getFemalesCount }}
+        {% else %}
+            keine weiblichen Personen angetroffen
+        {% endif %}
+    {% endset %}
+    {{ include('@App/Walk/showItem.html.twig', { 'key': 'angetroffene weibliche Personen', 'value': personsFemale }, with_context = false) }}
+
+    {% set persons %}
+        {% if walk.getMalesCount + walk.getFemalesCount %}
+            {{ walk.getMalesCount + walk.getFemalesCount }}
+        {% else %}
+            keine Personen angetroffen
+        {% endif %}
+    {% endset %}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'angetroffene Personen', 'value': persons }, with_context = false) }}
+
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Tageskonzept', 'value': walk.getConceptOfDay }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Ferien', 'value': walk.getHolidays ? 'ja' : 'nein'}, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Wetter', 'value': walk.getWeather }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Beginn', 'value': walk.getStartTime|localizeddate('long', 'medium') }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Ende', 'value': walk.getEndTime|localizeddate('long', 'medium') }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Systemische Frage', 'value': walk.getSystemicQuestion }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Systemische Antwort', 'value': walk.getSystemicAnswer }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Reflexion', 'value': walk.getWalkReflection }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Bewertung', 'value': walk.getRating }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Termine, Besorgungen, Verabredungen', 'value': walk.commitments}, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Erkenntnisse, Überlegungen, Zielsettungen', 'value': walk.insights }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Wiedervorlage Dienstberatung', 'value': walk.isResubmission ? 'ja' : 'nein'}, with_context = false) }}
+
+    {% set users %}
+        {% for user in walk.getWalkTeamMembers %}
+            {{ user.getUsername }}
+        {% else %}
+            keine Teilnehmer
+        {% endfor %}
+    {% endset %}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Teilnehmer', 'value': users }, with_context = false) }}
+
+    {% set guests %}
+        {% for guest in walk.getGuests %}
+            {{ guest.getName }}
+        {% else %}
+            Es haben keine Gäste teilgenommen.
+        {% endfor %}
+    {% endset %}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Gäste', 'value': guests }, with_context = false) }}
+
+    <h2>Wegpunkte dieser Runde</h2>
+
+    {{ include (':WayPoint:wayPointOverview.html.twig', { 'wayPoints': walk.getWayPoints }, with_context = false) }}
+
+{% endblock %}
