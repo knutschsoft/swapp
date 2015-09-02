@@ -57,7 +57,7 @@ class WalkController
     /**
      * @param User $user
      *
-     * @return Response
+     * @return array
      */
     public function homeScreenAction(User $user)
     {
@@ -72,7 +72,7 @@ class WalkController
     /**
      * @param Walk $walk
      *
-     * @return Response
+     * @return array
      */
     public function showAction(Walk $walk)
     {
@@ -84,7 +84,7 @@ class WalkController
     /**
      * @param Walk $walk
      *
-     * @return Response
+     * @return array
      */
     public function createWalkFormAction(Walk $walk)
     {
@@ -105,7 +105,7 @@ class WalkController
     /**
      * @param Team $team
      *
-     * @return Response
+     * @return array
      */
     public function createWalkPrologueFormAction(Team $team)
     {
@@ -151,7 +151,7 @@ class WalkController
      * @param Flash   $flash
      * @param Walk    $walk
      *
-     * @return RedirectResponse|Response
+     * @return RedirectResponse|array
      */
     public function createWalkPrologueAction(Request $request, Flash $flash, Walk $walk)
     {
@@ -182,7 +182,7 @@ class WalkController
      * @param Flash   $flash
      * @param Walk    $walk
      *
-     * @return RedirectResponse|Response
+     * @return RedirectResponse|array
      */
     public function createWalkAction(Request $request, Flash $flash, Walk $walk)
     {
