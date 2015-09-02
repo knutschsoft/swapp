@@ -13,6 +13,35 @@
     </div>
 
     {{ include(':Walks:showItem.html.twig', {'key': 'Name', 'value': walk.getName }) }}
+
+    {% set personsMale %}
+        {% for wayPoint in walk.wayPoints %}
+            {#{{ waypoint.getMalesKidCount#}
+            {#+ waypoint.getMalesChildCount#}
+            {#+ waypoint.getMalesYouthCount#}
+            {#+ waypoint.getMalesYoungAdultCount#}
+            {#+ waypoint.getMalesAdultCount }}#}
+        {% else %}
+            keine männlichen Personen angetroffen
+        {% endfor %}
+    {% endset %}
+    {{ include(':Walks:showItem.html.twig', {'key': 'angetroffene männliche Personen', 'value': personsMale }) }}
+
+    {% set personsFemale %}
+        {% for wayPoint in walk.getWayPoints %}
+            {#{{ waypoint.getFemalesKidCount#}
+            {#+ waypoint.getFemalesChildCount#}
+            {#+ waypoint.getFemalesYouthCount#}
+            {#+ waypoint.getFemalesYoungAdultCount#}
+            {#+ waypoint.getFemalesAdultCount }}#}
+        {% else %}
+            keine männlichen Personen angetroffen
+        {% endfor %}
+    {% endset %}
+    {{ include(':Walks:showItem.html.twig', {'key': 'angetroffene weibliche Personen', 'value': personsFemale }) }}
+
+    {#{{ include(':Walks:showItem.html.twig', {'key': 'angetroffene Personen', 'value': personsMale + personsFemale }) }}#}
+
     {{ include(':Walks:showItem.html.twig', {'key': 'Tageskonzept', 'value': walk.getConceptOfDay }) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Ferien', 'value': walk.getHolidays ? 'ja' : 'nein'}) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Wetter', 'value': walk.getWeather }) }}
