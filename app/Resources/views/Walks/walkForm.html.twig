@@ -30,10 +30,16 @@
                 {{ form_widget(form.endTime) }}
             </div>
             <div class="p1">
-                {{ form_label(form.walkReflection) }}
+                {{ form_label(form.holidays) }}
                 <br>
-                {{ form_errors(form.walkReflection) }}
-                {{ form_widget(form.walkReflection) }}
+                {{ form_errors(form.holidays) }}
+                {{ form_widget(form.holidays) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.weather) }}
+                <br>
+                {{ form_errors(form.weather) }}
+                {{ form_widget(form.weather) }}
             </div>
             <div class="p1">
                 {{ form_label(form.systemicQuestion) }}
@@ -48,16 +54,10 @@
                 {{ form_widget(form.systemicAnswer) }}
             </div>
             <div class="p1">
-                {{ form_label(form.holidays) }}
+                {{ form_label(form.walkReflection) }}
                 <br>
-                {{ form_errors(form.holidays) }}
-                {{ form_widget(form.holidays) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.weather) }}
-                <br>
-                {{ form_errors(form.weather) }}
-                {{ form_widget(form.weather) }}
+                {{ form_errors(form.walkReflection) }}
+                {{ form_widget(form.walkReflection) }}
             </div>
             <div class="p1">
                 {{ form_label(form.rating) }}
@@ -66,16 +66,16 @@
                 {{ form_widget(form.rating) }}
             </div>
             <div class="p1">
-                {{ form_label(form.insights) }}
-                <br>
-                {{ form_errors(form.insights) }}
-                {{ form_widget(form.insights) }}
-            </div>
-            <div class="p1">
                 {{ form_label(form.commitments) }}
                 <br>
                 {{ form_errors(form.commitments) }}
                 {{ form_widget(form.commitments) }}
+            </div>
+            <div class="p1">
+                {{ form_label(form.insights) }}
+                <br>
+                {{ form_errors(form.insights) }}
+                {{ form_widget(form.insights) }}
             </div>
             <div class="p1">
                 {{ form_label(form.isResubmission) }}
@@ -83,7 +83,6 @@
                 {{ form_errors(form.isResubmission) }}
                 {{ form_widget(form.isResubmission) }}
             </div>
-
             <div class="p1">
                 {{ form_widget(form.create) }}
             </div>
