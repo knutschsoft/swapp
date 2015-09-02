@@ -161,7 +161,7 @@ class WayPointType extends AbstractType
             )
         );
         $builder->add(
-            'malesYoungAdultsCount',
+            'malesYoungAdultCount',
             'choice',
             array(
                 'choices' => array(
@@ -182,7 +182,7 @@ class WayPointType extends AbstractType
             )
         );
         $builder->add(
-            'femalesYoungAdultsCount',
+            'femalesYoungAdultCount',
             'choice',
             array(
                 'choices' => array(
