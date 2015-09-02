@@ -436,7 +436,7 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return WayPoint[]
      */
     public function getWayPoints()
     {
@@ -444,7 +444,7 @@ class Walk
     }
 
     /**
-     * @param mixed $wayPoints
+     * @param WayPoint[] $wayPoints
      */
     public function setWayPoints($wayPoints)
     {
@@ -465,5 +465,30 @@ class Walk
     public function setTeamName($teamName)
     {
         $this->teamName = $teamName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFemalesCount()
+    {
+        $count = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $count += $wayPoint->getFemalesCount();
+        }
+
+        return $count;
+    }
+    /**
+     * @return int
+     */
+    public function getMalesCount()
+    {
+        $count = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $count += $wayPoint->getMalesCount();
+        }
+
+        return $count;
     }
 }

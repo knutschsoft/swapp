@@ -128,7 +128,31 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
+     */
+    public function getFemalesCount()
+    {
+        return $this->getFemalesKidCount() +
+            $this->getFemalesChildCount() +
+            $this->getFemalesAdultCount() +
+            $this->getFemalesYoungAdultCount() +
+            $this->getFemalesYouthCount();
+    }
+
+    /**
+     * @return integer
+     */
+    public function getMalesCount()
+    {
+        return $this->getMalesKidCount() +
+            $this->getMalesChildCount() +
+            $this->getMalesAdultCount() +
+            $this->getMalesYoungAdultCount() +
+            $this->getMalesYouthCount();
+    }
+
+    /**
+     * @return integer
      */
     public function getMalesKidCount()
     {
@@ -136,7 +160,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $malesKidCount
+     * @param integer $malesKidCount
      */
     public function setMalesKidCount($malesKidCount)
     {
@@ -144,7 +168,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getFemalesKidCount()
     {
@@ -152,7 +176,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $femalesKidCount
+     * @param integer $femalesKidCount
      */
     public function setFemalesKidCount($femalesKidCount)
     {
@@ -160,7 +184,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getMalesYouthCount()
     {
@@ -168,7 +192,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $malesYouthCount
+     * @param integer $malesYouthCount
      */
     public function setMalesYouthCount($malesYouthCount)
     {
@@ -176,7 +200,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getFemalesYouthCount()
     {
@@ -184,7 +208,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $femalesYouthCount
+     * @param integer $femalesYouthCount
      */
     public function setFemalesYouthCount($femalesYouthCount)
     {
@@ -192,7 +216,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getMalesAdultCount()
     {
@@ -200,7 +224,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $malesAdultCount
+     * @param integer $malesAdultCount
      */
     public function setMalesAdultCount($malesAdultCount)
     {
@@ -208,7 +232,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getFemalesAdultCount()
     {
@@ -216,7 +240,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $femalesAdultCount
+     * @param integer $femalesAdultCount
      */
     public function setFemalesAdultCount($femalesAdultCount)
     {
@@ -251,7 +275,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLocationName()
     {
@@ -259,7 +283,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $locationName
+     * @param string $locationName
      */
     public function setLocationName($locationName)
     {
@@ -311,7 +335,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getFemalesChildCount()
     {
@@ -319,7 +343,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $femalesChildCount
+     * @param integer $femalesChildCount
      */
     public function setFemalesChildCount($femalesChildCount)
     {
@@ -327,7 +351,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -335,7 +359,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -343,7 +367,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getMalesChildCount()
     {
@@ -351,7 +375,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $malesChildCount
+     * @param integer $malesChildCount
      */
     public function setMalesChildCount($malesChildCount)
     {
@@ -359,7 +383,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getNote()
     {
@@ -367,7 +391,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $note
+     * @param string $note
      */
     public function setNote($note)
     {
@@ -375,7 +399,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return Walk
      */
     public function getWalk()
     {
@@ -383,9 +407,9 @@ class WayPoint
     }
 
     /**
-     * @param mixed $walk
+     * @param Walk $walk
      */
-    public function setWalk($walk)
+    public function setWalk(Walk $walk)
     {
         $this->walk = $walk;
     }
@@ -406,12 +430,18 @@ class WayPoint
         $this->wayPointTags = $wayPointTags;
     }
 
+    /**
+     * @param Tag $tag
+     */
     public function addWayPointTag(Tag $tag)
     {
         $tag->addWayPoint($this);
         $this->wayPointTags->add($tag);
     }
 
+    /**
+     * @param Tag $tag
+     */
     public function removeWayPointTag(Tag $tag)
     {
         $tag->removeWayPoint($this);
@@ -419,7 +449,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getMalesYoungAdultCount()
     {
@@ -427,7 +457,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $malesYoungAdultCount
+     * @param integer $malesYoungAdultCount
      */
     public function setMalesYoungAdultCount($malesYoungAdultCount)
     {
@@ -435,7 +465,7 @@ class WayPoint
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getFemalesYoungAdultCount()
     {
@@ -443,7 +473,7 @@ class WayPoint
     }
 
     /**
-     * @param mixed $femalesYoungAdultCount
+     * @param integer $femalesYoungAdultCount
      */
     public function setFemalesYoungAdultCount($femalesYoungAdultCount)
     {
