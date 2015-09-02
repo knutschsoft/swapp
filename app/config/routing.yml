@@ -16,15 +16,15 @@ param_converter_example:
 
 home:
     path: /
-    defaults: { _controller: app.controller.walks_controller:homeScreenAction }
+    defaults: { _controller: app.controller.walk_controller:homeScreenAction }
 
 walk_home_screen:
     path: /walks
-    defaults: { _controller: app.controller.walks_controller:homeScreenAction }
+    defaults: { _controller: app.controller.walk_controller:homeScreenAction }
 
 walk_show:
     path: /walk/{walkId}
-    defaults: { _controller: app.controller.walks_controller:showAction }
+    defaults: { _controller: app.controller.walk_controller:showAction }
 
 tag_home_screen:
     path: /tag
@@ -40,19 +40,19 @@ tag_create:
 
 walk_create_form:
    path: /createwalk/{walkId}
-   defaults: { _controller: app.controller.walks_controller:createWalkFormAction }
+   defaults: { _controller: app.controller.walk_controller:createWalkFormAction }
 
 walk_create:
   path: /walkcreated/
-  defaults: { _controller: app.controller.walks_controller:createWalkAction }
+  defaults: { _controller: app.controller.walk_controller:createWalkAction }
 
 walk_export:
   path: /walkexport
-  defaults: { _controller: app.controller.walks_controller:exportAction}
+  defaults: { _controller: app.controller.walk_controller:exportAction}
 
 walk_start:
     path: /walkstarted/{walkId}
-    defaults: { _controller: app.controller.walks_controller:createWalkPrologueAction}
+    defaults: { _controller: app.controller.walk_controller:createWalkPrologueAction}
 
 way_point_show:
     path: /waypoint/{wayPointId}
@@ -64,7 +64,7 @@ way_point_create:
 
 start_walk_with_walk_prologue:
    path: /startWalkPrologueWithTeam/{teamId}
-   defaults: { _controller: app.controller.walks_controller:createWalkPrologueFormAction }
+   defaults: { _controller: app.controller.walk_controller:createWalkPrologueFormAction }
 
 data_table_way_point:
    path: /table/waypoint

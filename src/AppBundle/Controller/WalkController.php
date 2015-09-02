@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
 
-class WalksController
+class WalkController
 {
     private $templateEngine;
     private $walkRepository;

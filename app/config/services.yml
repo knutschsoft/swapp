@@ -34,8 +34,8 @@ services:
         tags:
             - { name: request.param_converter, converter: user, priority: 10 }
 
-    app.controller.walks_controller:
-      class: AppBundle\Controller\WalksController
+    app.controller.walk_controller:
+      class: AppBundle\Controller\WalkController
       arguments:
         - @templating
         - @form.factory
