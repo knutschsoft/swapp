@@ -13,11 +13,18 @@
     </div>
 
     {{ include(':Walks:showItem.html.twig', {'key': 'Name', 'value': walk.getName }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Tageskonzept', 'value': walk.getConceptOfDay }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Ferien', 'value': walk.getHolidays ? 'ja' : 'nein'}) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Wetter', 'value': walk.getWeather }) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Beginn', 'value': walk.getStartTime|localizeddate('long', 'medium') }) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Ende', 'value': walk.getEndTime|localizeddate('long', 'medium') }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Nachbetrachtung', 'value': walk.getWalkReflection }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Frage', 'value': walk.getSystemicQuestion }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Antwort', 'value': walk.getSystemicAnswer }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Systemische Frage', 'value': walk.getSystemicQuestion }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Systemische Antwort', 'value': walk.getSystemicAnswer }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Reflexion', 'value': walk.getWalkReflection }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Bewertung', 'value': walk.getRating }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Termine, Besorgungen, Verabredungen', 'value': walk.commitments}) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Erkenntnisse, Überlegungen, Zielsettungen', 'value': walk.insights }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Wiedervorlage Dienstberatung', 'value': walk.isResubmission ? 'ja' : 'nein'}) }}
 
     {% set users %}
         {% for user in walk.getWalkTeamMembers %}
@@ -27,15 +34,6 @@
         {% endfor %}
     {% endset %}
     {{ include(':Walks:showItem.html.twig', {'key': 'Teilnehmer', 'value': users }) }}
-
-    {% set tags %}
-        {% for tag in walk.getWalkTags %}
-            {{ tag.getName }}
-        {% else %}
-            keine Tags vergeben
-        {% endfor %}
-    {% endset %}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Tags', 'value': tags }) }}
 
     {% set guests %}
         {% for guest in walk.getGuests %}

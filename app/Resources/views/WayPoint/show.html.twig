@@ -14,16 +14,18 @@
         </div>
     </div>
 
-    {{ include(':Walks:showItem.html.twig', {'key': 'Name', 'value': wayPoint.getLocationName }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Kids w', 'value': wayPoint.getFemalesKidCount }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Kinder w', 'value': wayPoint.getFemalesChildCount }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Jugendliche w', 'value': wayPoint.getFemalesYouthCount }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Erwachsene w', 'value': wayPoint.getFemalesAdultCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Ort', 'value': wayPoint.getLocationName }) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Kids m', 'value': wayPoint.getMalesKidCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Kids w', 'value': wayPoint.getFemalesKidCount }) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Kinder m', 'value': wayPoint.getMalesChildCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Kinder w', 'value': wayPoint.getFemalesChildCount }) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Jugendliche m', 'value': wayPoint.getMalesYouthCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Jugendliche w', 'value': wayPoint.getFemalesYouthCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'junge Erwachsene m', 'value': wayPoint.getMalesYoungAdultCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'junge Erwachsene w', 'value': wayPoint.getFemalesYoungAdultCount }) }}
     {{ include(':Walks:showItem.html.twig', {'key': 'Erwachsene m', 'value': wayPoint.getMalesAdultCount }) }}
-    {{ include(':Walks:showItem.html.twig', {'key': 'Notiz', 'value': wayPoint.getNote }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Erwachsene w', 'value': wayPoint.getFemalesAdultCount }) }}
+    {{ include(':Walks:showItem.html.twig', {'key': 'Beobachtung', 'value': wayPoint.getNote }) }}
 
     {% set image %}
         {% if wayPoint.getImageName %}
