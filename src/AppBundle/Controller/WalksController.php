@@ -125,6 +125,7 @@ class WalksController
         // TODO: refactor by move logic outside or something else
         $walk = new Walk();
 
+        $walk->setTeamName($team->getName());
         $walk->setName("");
         $walk->setStartTime(new \DateTime());
         $walk->setEndTime(new \DateTime());

@@ -40,8 +40,8 @@
                 <th>Bewertung</th>
                 <th>Beginn</th>
                 <th>Ende</th>
-                <th>Teammitglieder</th>
-                <th>WV</th>
+                <th>Team</th>
+                <th>WV DB</th>
                 <th class="right-align">Detailansicht</th>
             </tr>
             </thead>
@@ -52,10 +52,7 @@
                     <td>{{ walk.getRating }}</td>
                     <td>{{ walk.getStartTime|localizeddate('short', 'short') }}</td>
                     <td>{{ walk.getEndTime|localizeddate('short', 'short') }}</td>
-                    <td>{% for user in walk.getWalkTeamMembers %}
-                            {{ user.username|e }}
-                        {% endfor %}
-                    </td>
+                    <td>{{ walk.teamName }} </td>
                     <td>{% if walk.isResubmission == 1 %} ja
                         {% else %} nein
                         {% endif %}

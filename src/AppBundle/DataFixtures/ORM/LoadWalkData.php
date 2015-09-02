@@ -32,6 +32,7 @@ class LoadWalkData extends AbstractFixture implements FixtureInterface, OrderedF
             $rating++;
 
             $walk = new Walk();
+            $walk->setTeamName("");
             $walk->setName($names[rand(0, count($names) - 1)]);
             $walk->setRating(rand(0, 100));
             $walk->setStartTime(new \DateTime('-' . rand(50, 100) . 'minutes'));

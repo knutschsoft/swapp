@@ -47,7 +47,7 @@ class Walk
     private $walkReflection;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="walks")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
      */
     private $walkTeamMembers;
 
@@ -107,6 +107,11 @@ class Walk
      * @Assert\NotBlank(groups={"default", "registration"})
      */
     private $conceptOfDay;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $teamName;
 
     public function __construct()
     {
@@ -444,5 +449,21 @@ class Walk
     public function setWayPoints($wayPoints)
     {
         $this->wayPoints = $wayPoints;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTeamName()
+    {
+        return $this->teamName;
+    }
+
+    /**
+     * @param string $teamName
+     */
+    public function setTeamName($teamName)
+    {
+        $this->teamName = $teamName;
     }
 }
