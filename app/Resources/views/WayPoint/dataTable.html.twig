@@ -24,14 +24,16 @@
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Runde</th>
-            <th scope="col">Kids w</th>
-            <th scope="col">Kinder w</th>
-            <th scope="col">Jugendliche w</th>
-            <th scope="col">Erwachsene w</th>
             <th scope="col">Kids m</th>
+            <th scope="col">Kids w</th>
             <th scope="col">Kinder m</th>
+            <th scope="col">Kinder w</th>
             <th scope="col">Jugendliche m</th>
+            <th scope="col">Jugendliche w</th>
+            <th scope="col">junge Erwachsene m</th>
+            <th scope="col">junge Erwachsene w</th>
             <th scope="col">Erwachsene m</th>
+            <th scope="col">Erwachsene w</th>
             <th scope="col">Notiz</th>
             <th scope="col">Bild</th>
             <th scope="col">Ist Meeting</th>
@@ -40,14 +42,16 @@
             <tr>
                 <td>{{ wayPoint.getLocationName }}</td>
                 <td>{{ wayPoint.getWalk.getName }} ({{ wayPoint.getWalk.getId }})</td>
-                <td>{{ wayPoint.femalesKidCount }}</td>
-                <td>{{ wayPoint.femalesChildCount }}</td>
-                <td>{{ wayPoint.femalesYouthCount }}</td>
-                <td>{{ wayPoint.femalesAdultCount }}</td>
                 <td>{{ wayPoint.malesKidCount }}</td>
+                <td>{{ wayPoint.femalesKidCount }}</td>
                 <td>{{ wayPoint.malesChildCount }}</td>
+                <td>{{ wayPoint.femalesChildCount }}</td>
                 <td>{{ wayPoint.malesYouthCount }}</td>
+                <td>{{ wayPoint.femalesYouthCount }}</td>
+                <td>{{ wayPoint.malesYoungAdultCount }}</td>
+                <td>{{ wayPoint.femalesYoungAdultCount }}</td>
                 <td>{{ wayPoint.malesAdultCount }}</td>
+                <td>{{ wayPoint.femalesAdultCount }}</td>
                 <td>{{ wayPoint.getNote }}</td>
                 <td>
                     {% set image %}
