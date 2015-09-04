@@ -56,6 +56,7 @@ class WayPointController
     }
 
     /**
+     * @todo needed?
      * @return Response
      */
     public function homeScreenAction()
@@ -152,6 +153,7 @@ class WayPointController
             ':WayPoint:wayPointForm.html.twig',
             array(
                 'form' => $form->createView(),
+                'wayPoints' => $walk->getWayPoints(),
             )
         );
     }

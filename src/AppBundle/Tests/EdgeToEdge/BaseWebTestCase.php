@@ -36,11 +36,15 @@ abstract class BaseWebTestCase extends WebTestCase
 
         $user = $this->userManager->findUserByUsername(self::USERNAME);
         if (!$user) {
+
+            $teams = $this->client->getContainer()->get('app.factory_service.team_repository')->findAll();
+
             $user = new User();
             $user->setUsername(self::USERNAME);
             $user->setPlainPassword(self::PASSWORD);
             $user->setEmail(self::EMAIL);
             $user->setEnabled(true);
+            $user->setTeams($teams);
 
             $this->userManager->updateUser($user);
         }
