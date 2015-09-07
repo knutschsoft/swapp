@@ -37,7 +37,6 @@ services:
     app.controller.walk_controller:
       class: AppBundle\Controller\WalkController
       arguments:
-        - @form.factory
         - @app.factory_service.walk_repository
         - @router
         - @app.factory_service.way_point_repository

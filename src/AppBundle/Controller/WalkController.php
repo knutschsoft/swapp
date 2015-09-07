@@ -4,16 +4,17 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Walk;
+use AppBundle\Form\Type\WalkPrologueType;
+use AppBundle\Form\Type\WalkType;
 use AppBundle\Repository\SystemicQuestionRepository;
 use AppBundle\Repository\TagRepository;
 use AppBundle\Repository\WalkRepository;
 use AppBundle\Repository\WayPointRepository;
 use FOS\UserBundle\Model\UserManagerInterface;
 use QafooLabs\MVC\Flash;
-use Symfony\Component\Form\FormFactoryInterface;
+use QafooLabs\MVC\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -21,14 +22,12 @@ class WalkController
 {
     private $walkRepository;
     private $router;
-    private $formFactory;
     private $wayPointRepository;
     private $userManager;
     private $systemicQuestionRepository;
     private $tagRepository;
 
     /**
-     * @param FormFactoryInterface       $formFactory
      * @param WalkRepository             $walkRepository
      * @param RouterInterface            $router
      * @param WayPointRepository         $wayPointRepository
@@ -37,7 +36,6 @@ class WalkController
      * @param TagRepository              $tagRepository
      */
     public function __construct(
-        FormFactoryInterface $formFactory,
         WalkRepository $walkRepository,
         RouterInterface $router,
         WayPointRepository $wayPointRepository,
@@ -45,7 +43,6 @@ class WalkController
         SystemicQuestionRepository $systemicQuestionRepository,
         TagRepository $tagRepository
     ) {
-        $this->formFactory = $formFactory;
         $this->walkRepository = $walkRepository;
         $this->router = $router;
         $this->wayPointRepository = $wayPointRepository;
@@ -87,32 +84,34 @@ class WalkController
     }
 
     /**
-     * @param Walk $walk
+     * @param Walk        $walk
+     * @param FormRequest $formRequest
      *
      * @return array
      */
-    public function createWalkFormAction(Walk $walk)
+    public function createWalkFormAction(Walk $walk, FormRequest $formRequest)
     {
-        $form = $this->formFactory->create(
-            'app_create_walk',
+        $formRequest->handle(
+            new WalkType(),
             $walk,
-            array(
+            [
                 'action' => $this->router->generate('walk_create', array('walkId' => $walk->getId())),
-            )
+            ]
         );
 
         return [
-            'form' => $form->createView(),
+            'form' => $formRequest->createFormView(),
             'wayPoints' => $walk->getWayPoints(),
         ];
     }
 
     /**
-     * @param Team $team
+     * @param Team        $team
+     * @param FormRequest $formRequest
      *
      * @return array
      */
-    public function createWalkPrologueFormAction(Team $team)
+    public function createWalkPrologueFormAction(Team $team, FormRequest $formRequest)
     {
         // default walk
         // TODO: refactor by move logic outside or something else
@@ -138,79 +137,78 @@ class WalkController
             $user->setWalks([$walk]);
             $this->userManager->updateUser($user);
         }
-        $form = $this->formFactory->create(
-            'app_create_walk_prologue',
+
+        $formRequest->handle(
+            new WalkPrologueType(),
             $walk,
-            array(
+            [
                 'action' => $this->router->generate('walk_start', array('walkId' => $walk->getId())),
-            )
+            ]
         );
 
         return [
-            'form' => $form->createView(),
+            'form' => $formRequest->createFormView(),
         ];
     }
 
     /**
-     * @param Request $request
-     * @param Flash   $flash
-     * @param Walk    $walk
+     * @param Flash       $flash
+     * @param Walk        $walk
+     * @param FormRequest $formRequest
      *
-     * @return RedirectResponse|array
+     * @return array|RedirectResponse
      */
-    public function createWalkPrologueAction(Request $request, Flash $flash, Walk $walk)
+    public function createWalkPrologueAction(Flash $flash, Walk $walk, FormRequest $formRequest)
     {
-        $form = $this->formFactory->create('app_create_walk_prologue', $walk);
+        if (!$formRequest->handle(
+            new WalkPrologueType(),
+            $walk
+        )) {
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $walk = $form->getData();
-            $this->walkRepository->update($walk);
-            $flash->add(
-                'notice',
-                'Runde wurde erfolgreich gestartet.'
-            );
-
-            $url = $this->router->generate('update_walk_with_way_point', array('walkId' => $walk->getId()));
-
-            return new RedirectResponse($url);
+            return [
+                'form' => $formRequest->createFormView(),
+            ];
         }
 
-        return [
-            'form' => $form->createView(),
-        ];
+        $walk = $formRequest->getValidData();
+        $this->walkRepository->update($walk);
+        $flash->add(
+            'notice',
+            'Runde wurde erfolgreich gestartet.'
+        );
+
+        $url = $this->router->generate('update_walk_with_way_point', array('walkId' => $walk->getId()));
+
+        return new RedirectResponse($url);
     }
 
     /**
-     * @param Request $request
-     * @param Flash   $flash
-     * @param Walk    $walk
+     * @param Flash       $flash
+     * @param Walk        $walk
+     * @param FormRequest $formRequest
      *
-     * @return RedirectResponse|array
+     * @return array|RedirectResponse
      */
-    public function createWalkAction(Request $request, Flash $flash, Walk $walk)
+    public function createWalkAction(Flash $flash, Walk $walk, FormRequest $formRequest)
     {
-        $form = $this->formFactory->create('app_create_walk', $walk);
-        $form->handleRequest($request);
+        if (!$formRequest->handle(new WalkType(), $walk)) {
 
-        if ($form->isValid()) {
-            $walk = $form->getData();
-            $this->walkRepository->update($walk);
-
-            $flash->add(
-                'notice',
-                'Runde wurde erfolgreich erstellt.'
-            );
-
-            $url = $this->router->generate('walk_home_screen');
-
-            return new RedirectResponse($url);
+            return [
+                'form' => $formRequest->createFormView(),
+            ];
         }
 
-        return [
-            'form' => $form->createView(),
-        ];
+        $walk = $formRequest->getValidData();
+        $this->walkRepository->update($walk);
+
+        $flash->add(
+            'notice',
+            'Runde wurde erfolgreich erstellt.'
+        );
+
+        $url = $this->router->generate('walk_home_screen');
+
+        return new RedirectResponse($url);
     }
 
     /**
