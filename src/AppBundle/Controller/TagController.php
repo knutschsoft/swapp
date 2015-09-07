@@ -45,14 +45,11 @@ class TagController
      */
     public function createTagFormAction(FormRequest $formRequest)
     {
-        $parameters = [
-            'tags' => $this->tagRepository->findAll(),
-        ];
         $formRequest->handle(
             new TagType(),
             new Tag(),
             array(
-                'action' => $this->router->generate('tag_create', $parameters),
+                'action' => $this->router->generate('tag_create'),
             )
         );
 
