@@ -13,7 +13,7 @@ use AppBundle\Repository\WayPointRepository;
 use FOS\UserBundle\Model\UserManagerInterface;
 use QafooLabs\MVC\Flash;
 use QafooLabs\MVC\FormRequest;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use QafooLabs\MVC\RedirectRoute;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
@@ -156,7 +156,7 @@ class WalkController
      * @param Walk        $walk
      * @param FormRequest $formRequest
      *
-     * @return array|RedirectResponse
+     * @return array|RedirectRoute
      */
     public function createWalkPrologueAction(Flash $flash, Walk $walk, FormRequest $formRequest)
     {
@@ -177,9 +177,7 @@ class WalkController
             'Runde wurde erfolgreich gestartet.'
         );
 
-        $url = $this->router->generate('update_walk_with_way_point', array('walkId' => $walk->getId()));
-
-        return new RedirectResponse($url);
+        return new RedirectRoute('update_walk_with_way_point', ['walkId' => $walk->getId()]);
     }
 
     /**
@@ -187,7 +185,7 @@ class WalkController
      * @param Walk        $walk
      * @param FormRequest $formRequest
      *
-     * @return array|RedirectResponse
+     * @return array|RedirectRoute
      */
     public function createWalkAction(Flash $flash, Walk $walk, FormRequest $formRequest)
     {
@@ -206,9 +204,7 @@ class WalkController
             'Runde wurde erfolgreich erstellt.'
         );
 
-        $url = $this->router->generate('walk_home_screen');
-
-        return new RedirectResponse($url);
+        return new RedirectRoute('walk_home_screen');
     }
 
     /**
