@@ -4,3 +4,17 @@ Name: Name
 Email: E-Mail
 Walk: Runde
 
+tag:
+  create:
+    title: Tag erstellen
+  list:
+    title: Tags
+    headline: Tags
+  overview:
+    name: Name
+    description: Beschreibung
+    color: Farbe
+
+global:
+  navigation:
+    back: zurück

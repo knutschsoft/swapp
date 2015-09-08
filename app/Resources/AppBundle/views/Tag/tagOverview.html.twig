@@ -1,20 +1,18 @@
-<div class="">
-    <table class="table-light">
-        <thead>
+<table class="table-light">
+    <thead>
+    <tr>
+        <th>{{ 'tag.overview.name'|trans }}</th>
+        <th>{{ 'tag.overview.color'|trans }}</th>
+        <th>{{ 'tag.overview.description'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for tag in tags %}
         <tr>
-            <th>Name</th>
-            <th>Farbe</th>
-            <th>Beschreibung</th>
+            <td>{{ tag.getName }}</td>
+            <td>{{ tag.getColor }}</td>
+            <td>{{ tag.getDescription }}</td>
         </tr>
-        </thead>
-        <tbody>
-        {% for tag in tags %}
-            <tr>
-                <td>{{ tag.getName }}</td>
-                <td>{{ tag.getColor }}</td>
-                <td>{{ tag.getDescription }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+    {% endfor %}
+    </tbody>
+</table>

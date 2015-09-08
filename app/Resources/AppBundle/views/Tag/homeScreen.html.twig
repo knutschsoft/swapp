@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Tags{% endblock %}
+{% block title %}{{ 'tag.list.title'|trans }}{% endblock %}
 {% block content %}
     {% for flashMessage in app.session.flashbag.get('notice') %}
         <div class="flash-notice">
@@ -9,13 +9,13 @@
     {% endfor %}
     <div class="swapp-headline-container">
         <h1>
-            Tags
+            {{ 'tag.list.headline'|trans }}
         </h1>
     </div>
     <div class="swapp-password-change-container">
         <div class="mb1">
-            <a href="{{ path('walk_home_screen') }}" class="btn btn-primary">zurück</a>
-            <a href="{{ path('tag_create') }}" class="btn btn-primary">Tag erstellen</a>
+            <a href="{{ path('walk_home_screen') }}" class="btn btn-primary">{{ 'global.navigation.back'|trans }}</a>
+            <a href="{{ path('tag_create') }}" class="btn btn-primary">{{ 'tag.create.title'|trans }}</a>
         </div>
     </div>
     {{ include ('@App/Tag/tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
