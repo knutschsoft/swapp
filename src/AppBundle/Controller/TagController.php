@@ -8,24 +8,18 @@ use QafooLabs\MVC\Flash;
 use QafooLabs\MVC\FormRequest;
 use QafooLabs\MVC\RedirectRoute;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 
 class TagController
 {
     private $tagRepository;
-    private $router;
 
     /**
      * @param TagRepository   $tagRepository
-     * @param RouterInterface $router
      */
     public function __construct(
-        TagRepository $tagRepository,
-        RouterInterface $router
+        TagRepository $tagRepository
     ) {
         $this->tagRepository = $tagRepository;
-        $this->router = $router;
     }
 
     /**
@@ -36,24 +30,6 @@ class TagController
         return [
             'tags' => $this->tagRepository->findAll(),
         ];
-    }
-
-    /**
-     * @param FormRequest $formRequest
-     *
-     * @return array
-     */
-    public function createTagFormAction(FormRequest $formRequest)
-    {
-        $formRequest->handle(
-            new TagType(),
-            new Tag(),
-            array(
-                'action' => $this->router->generate('tag_create'),
-            )
-        );
-
-        return ['form' => $formRequest->createFormView()];
     }
 
     /**

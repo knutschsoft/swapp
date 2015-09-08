@@ -30,12 +30,8 @@ tag_home_screen:
     path: /tag
     defaults: { _controller: app.controller.tag_controller:homeScreenAction }
 
-tag_create_form:
-    path: /createtag
-    defaults: { _controller: app.controller.tag_controller:createTagFormAction }
-
 tag_create:
-   path: /tagcreated
+   path: /createtag
    defaults: { _controller: app.controller.tag_controller:createTagAction}
 
 walk_create_form:

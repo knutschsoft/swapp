@@ -23,7 +23,6 @@ class ApplicationAvailabilityTest extends BaseWebTestCase
             array('/walks'),
             array('/tag'),
             array('/createtag'),
-            array('/tagcreated'),
             array('/eadmin/?action=list&entity=Team'),
             array('/eadmin/?action=list&entity=Walk'),
             array('/eadmin/?action=list&entity=WayPoint'),

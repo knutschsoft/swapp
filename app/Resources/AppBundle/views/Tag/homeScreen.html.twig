@@ -15,7 +15,7 @@
     <div class="swapp-password-change-container">
         <div class="mb1">
             <a href="{{ path('walk_home_screen') }}" class="btn btn-primary">zurück</a>
-            <a href="{{ path('tag_create_form') }}" class="btn btn-primary">Tag erstellen</a>
+            <a href="{{ path('tag_create') }}" class="btn btn-primary">Tag erstellen</a>
         </div>
     </div>
     {{ include ('@App/Tag/tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
