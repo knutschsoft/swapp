@@ -93,7 +93,7 @@ class Walk
      **/
     private $guests;
     /**
-     * @ORM\Column(type="boolean", length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(groups={"registration"})
      */
     private $weather;
@@ -264,6 +264,11 @@ class Walk
             $this->weather,
             $this->holidays,
             $this->conceptOfDay,
+            $this->getMalesCount(),
+            $this->getFemalesCount(),
+            $this->teamName,
+//            $this->walkTeamMembers,
+//            $this->guests,
         ];
     }
 

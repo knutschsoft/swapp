@@ -239,6 +239,11 @@ class WalkController
                     'Wetter',
                     'Ferien',
                     'Tageskonzept',
+                    'angetroffene Männer',
+                    'angetroffene Frauen',
+                    'Teamname',
+//                    'TeamMitglieder',
+//                    'Gäste',
                 ];
 
                 fputcsv($handle, $header);
