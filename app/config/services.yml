@@ -8,6 +8,16 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
+    app.command.deploy:
+        class: AppBundle\Command\DeploymentCommand
+        arguments:
+            - %command.host_ip%
+            - %command.ssh_user%
+            - %command.credentials_location%
+        tags:
+            -  { name: console.command }
+
+
     app.controller.controller_as_a_service:
         class: AppBundle\Controller\ControllerAsAServiceController
         arguments: [@templating]
