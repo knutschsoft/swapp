@@ -269,7 +269,7 @@ class WayPoint
     public function __toString()
     {
         return sprintf(
-            '%s (%s-%s)',
+            '%s',
             $this->getLocationName()
         );
     }
