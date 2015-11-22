@@ -27,7 +27,7 @@
         "qafoolabs/no-framework-bundle": "^2.3"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3",
+        "sensio/generator-bundle": "~3.0",
         "phpunit/phpunit": "^4.7",
         "elao/web-profiler-extra-bundle": "^2.3",
         "symfony/assetic-bundle": "^2.7"
