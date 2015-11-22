@@ -35,7 +35,7 @@ class Guest
     private $walk;
 
     /**
-     * @return mixed
+     * @return Walk
      */
     public function getWalk()
     {
@@ -43,9 +43,9 @@ class Guest
     }
 
     /**
-     * @param mixed $walk
+     * @param Walk $walk
      */
-    public function setWalk($walk)
+    public function setWalk(Walk $walk)
     {
         $this->walk = $walk;
     }

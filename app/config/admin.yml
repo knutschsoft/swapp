@@ -50,23 +50,13 @@ easy_admin:
                 title: app.way_point.list.title
                 fields:
                     - 'locationName'
-                    - 'ageRangeStart'
-                    - 'ageRangeEnd'
                     - 'malesChildCount'
                     - 'femalesChildCount'
                     - 'note'
                     - 'isMeeting'
                     - 'walk'
             form:
-                fields:
-                    - 'locationName'
-                    - 'ageRangeStart'
-                    - 'ageRangeEnd'
-                    - 'malesChildCount'
-                    - 'femalesChildCount'
-                    - 'note'
-                    - 'isMeeting'
-                    - 'walk'
+                title: app.way_point.edit.title
             show:
                 title: app.way_point.show.title
         Tag:
@@ -112,3 +102,4 @@ easy_admin:
                 fields:
                     - 'id'
                     - { property: 'question', type: 'textarea' }
+                    - 'walks'

@@ -123,7 +123,7 @@ class WalkController
         $walk->setEndTime(new \DateTime());
         $walk->setRating(1);
         $walk->setSystemicAnswer("");
-        $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom()->getQuestion());
+        $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom());
         $walk->setWalkReflection("");
         $walk->setWeather("");
         $walk->setIsResubmission(false);

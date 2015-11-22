@@ -64,7 +64,7 @@ class Walk
     private $rating;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="walks")
      */
     private $systemicQuestion;
 
