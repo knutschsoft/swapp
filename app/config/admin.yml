@@ -30,6 +30,7 @@ easy_admin:
                     - 'name'
                     - { property: 'startTime', type: 'datetime' }
                     - { property: 'endTime', type: 'datetime' }
+                    - 'wayPoints'
                     - 'walkReflection'
                     - 'rating'
                     - 'systemicQuestion'
@@ -40,6 +41,7 @@ easy_admin:
                     - 'name'
                     - { property: 'startTime', type: 'datetime' }
                     - { property: 'endTime', type: 'datetime' }
+                    - 'wayPoints'
                     - 'walkReflection'
                     - 'rating'
                     - 'systemicQuestion'
