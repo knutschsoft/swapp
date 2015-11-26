@@ -3,11 +3,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMWalkRepository")
  * @ORM\Table(name="walk")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  **/
 class Walk
 {
@@ -112,6 +114,11 @@ class Walk
      * @ORM\Column(type="string", length=255)
      */
     private $teamName;
+
+    /**
+     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     public function __construct()
     {
@@ -495,5 +502,21 @@ class Walk
         }
 
         return $count;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param null|string $deletedAt
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

@@ -3,11 +3,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMSystemicQuestionRepository")
  * @ORM\Table(name="systemic_question")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class SystemicQuestion
 {
@@ -28,6 +30,11 @@ class SystemicQuestion
      **/
     private $walks;
 
+    /**
+     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
     public function __construct()
     {
         $this->walks = new ArrayCollection();
@@ -38,7 +45,6 @@ class SystemicQuestion
      */
     public function __toString()
     {
-
         return $this->question;
     }
 
@@ -88,5 +94,21 @@ class SystemicQuestion
     public function setWalks($walks)
     {
         $this->walks = $walks;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param null|string $deletedAt
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
     }
 }
