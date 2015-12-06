@@ -41,6 +41,8 @@ class Version20151122231729 extends AbstractMigration
         $this->addSql('ALTER TABLE tag_waypoint ADD CONSTRAINT FK_85ED235A7BB1FD97 FOREIGN KEY (waypoint_id) REFERENCES way_point (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE way_point ADD CONSTRAINT FK_9B2531745EEE1B48 FOREIGN KEY (walk_id) REFERENCES walk (id)');
 
+        // included down() from Version20151122231829 because this migration was created via migrations:diff
+        // and already contains Version20151122231829 changes
         $this->addSql('ALTER TABLE walk DROP FOREIGN KEY FK_8D917A55638AAAEC');
         $this->addSql('DROP INDEX IDX_8D917A55638AAAEC ON walk');
         $this->addSql('ALTER TABLE walk ADD systemicQuestion VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, DROP systemicQuestion_id, CHANGE weather weather TINYINT(1) NOT NULL');
