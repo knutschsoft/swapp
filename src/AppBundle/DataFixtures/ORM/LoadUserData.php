@@ -18,10 +18,13 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
     public function load(ObjectManager $manager)
     {
         $names = [
-            'Karl',
-            'Gustav',
-            'Luise',
-            'Bob',
+            'waldi_beta',
+            'werner_beta',
+            'eva_beta',
+            'jens_beta',
+            'franzi_beta',
+            'heinz_beta',
+            'patrick_beta',
             'admin',
         ];
 
@@ -39,8 +42,8 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             $role = $name === 'admin' ? ['ROLE_ADMIN'] : $roles[array_rand($roles, 1)];
             $user->setRoles($role);
             $user->setEnabled(true);
-            $user->setEmail(mb_strtolower($name) . '@gmx.de');
-            $user->setWalks($this->getWalksReferences());
+            $user->setEmail(mb_strtolower($name).'@bla.org');
+//            $user->setWalks($this->getWalksReferences());
             $user->setTeams($this->getTeamsReferences());
 
             $manager->persist($user);
@@ -67,7 +70,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
     {
         $walks = [];
         for ($i = 0; $i < rand(1, 10); $i++) {
-//            $walks[] = $this->getReference('walk-' . rand(1, LoadWalkData::NUM_WALKS));
+            $walks[] = $this->getReference('walk-'.rand(1, LoadWalkData::NUM_WALKS));
         }
 
         return $walks;

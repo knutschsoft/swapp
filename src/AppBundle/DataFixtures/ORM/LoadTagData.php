@@ -18,10 +18,21 @@ class LoadTagData extends AbstractFixture implements FixtureInterface, OrderedFi
     public function load(ObjectManager $manager)
     {
         $names = [
-            'Hart',
-            'Schön',
-            'Speziell',
-            'Lange Runde',
+            'Schule',
+            'Gewalt (körperlich)',
+            'Gewalt (verbal)',
+            'Drogen',
+            'Partnerschaft',
+            'jobcenter',
+            'Ausbildung',
+            'Sexualität',
+            'Politik',
+            'Wohnungslosigkeit',
+            'Schwangerschaft',
+            'Polizei',
+            'Sozialstunden',
+            'Gemeinwesen',
+            'Grundversorgung',
         ];
 
         $colors = ['Rot', 'Grün', 'Blau', 'Gelb'];

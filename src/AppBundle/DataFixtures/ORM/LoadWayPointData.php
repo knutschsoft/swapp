@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadWayPointData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface
 {
-    const NUM_WAY_POINTS = 100;
+    const NUM_WAY_POINTS = 0;
 
     /**
      * {@inheritDoc}

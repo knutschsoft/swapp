@@ -2,7 +2,6 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Team;
-use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -19,39 +18,60 @@ class LoadTeamData extends AbstractFixture implements FixtureInterface, OrderedF
     {
         $names = [
             'Team Rocket',
-            'ESL Players',
-            'Team Rosa Panda',
-            'Traktorfreaks',
+            'Team Nord',
+            'Team Süd',
         ];
 
         foreach ($names as $key => $name) {
             $team = new Team();
             $team->setName($name);
-            $team->setUsers($this->getUsersReferences());
+            if ($name == 'Team Rocket') {
+                $team->setUsers($this->getUsersReferences('Rocket'));
+            }
+            if ($name == 'Team Nord') {
+                $team->setUsers($this->getUsersReferences('Nord'));
+            }
+            if ($name == 'Team Süd') {
+                $team->setUsers($this->getUsersReferences('Sued'));
+            }
 
             $manager->persist($team);
             $manager->flush();
 
-            $this->setReference('team-' . ($key + 1), $team);
+            $this->setReference('team-'.($key + 1), $team);
         }
     }
 
     /**
-     * @return User[]
+     * @param $team
+     *
+     * @return array
      */
-    private function getUsersReferences()
+    private function getUsersReferences($team)
     {
         $users = [];
-        $userIds = [];
-        for ($i = 0; $i < LoadUserData::NUM_USERS; $i++) {
-            $userId = rand(1, LoadUserData::NUM_USERS);
-            if (in_array($userId, $userIds)) {
+        $users[] = $this->getReference('user-8');
 
-                break;
-            }
-            $userIds[] = $userId;
-
-            $users[] = $this->getReference('user-' . $userId);
+        if ($team == 'Rocket') {
+//            $userIds = [1, 2, 3];
+//            foreach ($userIds as $userId) {
+//                if (in_array($userId, $userIds)) {
+//                    break;
+//                }
+//                $users[] = $this->getReference('user-'.$userId);
+//            }
+            $users[] = $this->getReference('user-1');
+            $users[] = $this->getReference('user-2');
+            $users[] = $this->getReference('user-3');
+        }
+        if ($team == 'Nord') {
+            $users[] = $this->getReference('user-3');
+            $users[] = $this->getReference('user-4');
+            $users[] = $this->getReference('user-5');
+        }
+        if ($team == 'Sued') {
+            $users[] = $this->getReference('user-6');
+            $users[] = $this->getReference('user-7');
         }
 
         return $users;

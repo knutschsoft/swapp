@@ -11,20 +11,15 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadWalkData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface
 {
-    const NUM_WALKS = 10;
+    const NUM_WALKS = 0;
 
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-
         $rating = 0;
-        $names = [
-            'Köni runter',
-            'Hechtviertel',
-            'Lutherkirche',
-        ];
+        $names = [];
         $systemicAnswer = 'I\'m feeling fine!';
         $walkReflection = 'This walk was a good one!';
 

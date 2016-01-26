@@ -2,7 +2,6 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\SystemicQuestion;
-use AppBundle\Entity\Walk;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -18,16 +17,14 @@ class LoadSystemicQuestionData extends AbstractFixture implements FixtureInterfa
     public function load(ObjectManager $manager)
     {
         $questions = [
-            'Wie heißt du mit Vornamen?',
-            'Wie groß ist Rudolf?',
-            'Wie lautet das Codewort?',
-            'Wann ist der Tag der deutschen Einheit?',
-            'Wann war die französische Revolution?',
-            'Ist Pluto ein Planet?',
-            'Wie heiß ist die Sonne?',
-            'Was ist die tiefste Temperatur?',
-            'Wann ist das nächste Millenium?',
-            'In welchem Jahr wurde der Nikolaus geboren?',
+            'Was war heute der größte Erfolg bei dem Angebot?',
+            'Was würden Deine Kolleg_innen zum heutigen Angebot sagen?',
+            'Worin unterscheidet sich das Angebot heute von einem vorhergehenden?',
+            'Wie würdest Du das Angebot auf einer Skala von 1-10 einordnen? Warum?',
+            'Was müsste geschehen das es heute kein schönes Angebot war?',
+            'Was denkt ihr, würden die Adressat_innen zum heutigen Angebot sagen?',
+            'Was wäre heute geschehen wenn auf einmal alles zu 100% perfekt gelaufen ist?',
+            'Wie müsstet ihr eure Zeit verbringen damit euer Angebot am wirkungsvollsten ist?',
         ];
 
         foreach ($questions as $key => $questionString) {

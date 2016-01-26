@@ -16,17 +16,15 @@ class LoadGuestData extends AbstractFixture implements FixtureInterface, Ordered
     public function load(ObjectManager $manager)
     {
         $names = [
-            'Dupreet',
-            'Michelle',
-            'Carolin',
-            'Elke',
+            'achim_gast',
+            'drogenfahnder_gast',
         ];
 
         foreach ($names as $key => $name) {
             $guest = new Guest();
             $guest->setName($name);
-            $guest->setEmail($name . '@t-online.de');
-            $guest->setWalk($this->getWalkReference());
+            $guest->setEmail($name.'@bla.org');
+//            $guest->setWalk($this->getWalkReference());
 
             $manager->persist($guest);
         }
