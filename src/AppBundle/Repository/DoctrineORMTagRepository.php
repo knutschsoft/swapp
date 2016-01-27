@@ -40,6 +40,9 @@ class DoctrineORMTagRepository extends EntityRepository implements TagRepository
         $this->_em->flush();
     }
 
+    /**
+     * @return Tag[]
+     */
     public function findAll()
     {
         $queryBuilder = $this->createQueryBuilder('tag')

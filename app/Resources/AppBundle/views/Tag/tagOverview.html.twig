@@ -7,12 +7,12 @@
     </tr>
     </thead>
     <tbody>
-    {% for tag in tags %}
-        <tr>
-            <td>{{ tag.getName }}</td>
-            <td>{{ tag.getColor }}</td>
-            <td>{{ tag.getDescription }}</td>
-        </tr>
-    {% endfor %}
+        {% for tag in tags %}
+            <tr>
+                <td>{{ tag.getName }}</td>
+                <td>{{ tag.getColor }}</td>
+                <td>{{ tag.getDescription }}</td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>

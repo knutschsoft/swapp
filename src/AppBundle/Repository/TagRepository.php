@@ -13,5 +13,8 @@ interface TagRepository
 
     public function updateTag(Tag $tag);
 
+    /**
+     * @return Tag[]
+     */
     public function findAll();
 }

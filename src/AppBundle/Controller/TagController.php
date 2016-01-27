@@ -14,7 +14,7 @@ class TagController
     private $tagRepository;
 
     /**
-     * @param TagRepository   $tagRepository
+     * @param TagRepository $tagRepository
      */
     public function __construct(
         TagRepository $tagRepository

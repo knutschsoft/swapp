@@ -24,9 +24,9 @@ class Team
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="teams")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="teams")
      */
-    private $users;
+    public $users;
 
     /**
      * @return string
@@ -74,6 +74,9 @@ class Team
     public function getUsers()
     {
         return $this->users;
+        /* @var \Doctrine\ORM\PersistentCollection $users */
+        $users = $this->users;
+        return $users->last();
     }
 
     /**
