@@ -4,17 +4,53 @@ Name: Name
 Email: E-Mail
 Walk: Runde
 
+eadmin:
+    team:
+        label: Teams
+        list:
+            title: Übersicht Teams
+    walk:
+        label: Runden
+        list:
+          title: Übersicht Runden
+    way-point:
+        label: Teams
+        list:
+            title: Übersicht Teams
+    tag:
+        label: Gäste
+        list:
+            title: Übersicht Gäste
+    user:
+        label: Benutzer
+        list:
+            title: Übersicht Benutzer
+    guest:
+        label: Gäste
+        list:
+            title: Übersicht Gäste
+    systemic-question:
+        label: Systemische Fragen
+        list:
+            title: Übersicht Systemische Fragen
+
+
+
+tags: Tags
+
+hello-world: Hallo du schöne Welt!
+
 tag:
-  create:
-    title: Tag erstellen
-  list:
-    title: Tags
-    headline: Tags
-  overview:
-    name: Name
-    description: Beschreibung
-    color: Farbe
+    create:
+        title: Tag erstellen
+    list:
+        title: Tags
+        headline: Tags
+    overview:
+        name: Name
+        description: Beschreibung
+        color: Farbe
 
 global:
-  navigation:
-    back: zurück
+    navigation:
+        back: zurück

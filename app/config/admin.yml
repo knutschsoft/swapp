@@ -7,9 +7,9 @@ easy_admin:
     entities:
         Team:
             class: AppBundle\Entity\Team
-            label: app.team.menu
+            label: eadmin.team.label
             list:
-                title: app.team.list.title
+                title: eadmin.team.list.title
                 fields:
                   - 'id'
                   - 'name'
@@ -24,7 +24,7 @@ easy_admin:
                   - 'users'
         Walk:
             class: AppBundle\Entity\Walk
-            label: app.walk.menu
+            label: eadmin.walk.label
             form:
                 fields:
                     - 'name'
@@ -36,7 +36,7 @@ easy_admin:
                     - 'systemicQuestion'
                     - { property: 'systemicAnswer', type: 'textarea' }
             list:
-                title: app.walk.list.title
+                title: eadmin.walk.list.title
                 fields:
                     - 'name'
                     - { property: 'startTime', type: 'datetime' }
@@ -47,9 +47,9 @@ easy_admin:
                     - 'systemicQuestion'
         WayPoint:
             class: AppBundle\Entity\WayPoint
-            label: app.way_point.menu
+            label: eadmin.way-point.label
             list:
-                title: app.way_point.list.title
+                title: eadmin.way_point.list.title
                 fields:
                     - 'locationName'
                     - 'malesChildCount'
@@ -58,19 +58,19 @@ easy_admin:
                     - 'isMeeting'
                     - 'walk'
             form:
-                title: app.way_point.edit.title
+                title: eadmin.way_point.edit.title
             show:
-                title: app.way_point.show.title
+                title: eadmin.way_point.show.title
         Tag:
             class: AppBundle\Entity\Tag
-            label: app.tag.menu
+            label: eadmin.tag.label
             list:
-                title: app.tag.list.title
+                title: eadmin.tag.list.title
         User:
             class: AppBundle\Entity\User
-            label: app.user.menu
+            label: eadmin.user.label
             list:
-                title: app.user.list.title
+                title: eadmin.user.list.title
                 fields:
                     - id
                     - username
@@ -92,14 +92,14 @@ easy_admin:
                     - enabled
         Guest:
             class: AppBundle\Entity\Guest
-            label: app.guest.menu
+            label: eadmin.guest.label
             list:
-                title: app.guest.list.title
+                title: eadmin.guest.list.title
         SystemicQuestion:
             class: AppBundle\Entity\SystemicQuestion
-            label: app.systemic-question.menu
+            label: eadmin.systemic-question.label
             list:
-                title: app.systemic-question.list.title
+                title: eadmin.systemic-question.list.title
             form:
                 fields:
                     - 'id'

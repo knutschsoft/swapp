@@ -19,8 +19,8 @@ web_profiler_extra:
         enabled:        true
         display_in_wdt: true
     assetic:
-        enabled:        true
-        display_in_wdt: true
+        enabled:        false
+        display_in_wdt: false
     twig:
         enabled:        true
         display_in_wdt: true
