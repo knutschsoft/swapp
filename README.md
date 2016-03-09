@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/knutschsoft/swapp.png?label=ready&title=Ready)](https://waffle.io/knutschsoft/swapp)
 SWAPP
 ========================
 <a href="https://travis-ci.org/knutschsoft/swapp" target='_blank'>
