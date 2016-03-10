@@ -92,7 +92,7 @@ class WalkController
     public function createWalkFormAction(Walk $walk, FormRequest $formRequest)
     {
         $formRequest->handle(
-            new WalkType(),
+            WalkType::class,
             $walk,
             [
                 'action' => $this->router->generate('walk_create', array('walkId' => $walk->getId())),
@@ -139,7 +139,7 @@ class WalkController
         }
 
         $formRequest->handle(
-            new WalkPrologueType(),
+            WalkPrologueType::class,
             $walk,
             [
                 'action' => $this->router->generate('walk_start', array('walkId' => $walk->getId())),
@@ -161,7 +161,7 @@ class WalkController
     public function createWalkPrologueAction(Flash $flash, Walk $walk, FormRequest $formRequest)
     {
         if (!$formRequest->handle(
-            new WalkPrologueType(),
+            WalkPrologueType::class,
             $walk
         )) {
 
@@ -189,7 +189,7 @@ class WalkController
      */
     public function createWalkAction(Flash $flash, Walk $walk, FormRequest $formRequest)
     {
-        if (!$formRequest->handle(new WalkType(), $walk)) {
+        if (!$formRequest->handle(WalkType::class, $walk)) {
 
             return [
                 'form' => $formRequest->createFormView(),

@@ -1,9 +1,3 @@
-# Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
-
 # Deployment
 /build/
 
@@ -18,7 +12,6 @@
 /app/config/parameters.ini
 
 # Managed by Composer
-/app/bootstrap.php.cache
 /var/bootstrap.php.cache
 /bin/*
 !bin/console
@@ -36,7 +29,6 @@
 /node_modules/
 
 # PHPUnit
-/app/phpunit.xml
 /phpunit.xml
 
 # Build data

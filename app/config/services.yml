@@ -20,7 +20,7 @@ services:
 
     app.controller.controller_as_a_service:
         class: AppBundle\Controller\ControllerAsAServiceController
-        arguments: [@templating]
+        arguments: ['@templating']
 
     app.param_converter.example:
         class: AppBundle\ParamConverter\ExampleParamConverter
@@ -31,80 +31,75 @@ services:
     app.param_converter.entity:
         class: AppBundle\ParamConverter\EntityParamConverter
         arguments:
-            - @app.factory_service.team_repository
-            - @app.factory_service.walk_repository
-            - @app.factory_service.way_point_repository
+            - '@app.factory_service.team_repository'
+            - '@app.factory_service.walk_repository'
+            - '@app.factory_service.way_point_repository'
         tags:
             - { name: request.param_converter, converter: entity, priority: 0 }
 
     app.param_converter.user:
         class: AppBundle\ParamConverter\UserParamConverter
         arguments:
-          - @security.token_storage
+          - '@security.token_storage'
         tags:
             - { name: request.param_converter, converter: user, priority: 10 }
 
     app.controller.walk_controller:
       class: AppBundle\Controller\WalkController
       arguments:
-        - @app.factory_service.walk_repository
-        - @router
-        - @app.factory_service.way_point_repository
-        - @fos_user.user_manager
-        - @app.factory_service.systemic_question_repository
-        - @app.factory_service.tag_repository
+        - '@app.factory_service.walk_repository'
+        - '@router'
+        - '@app.factory_service.way_point_repository'
+        - '@fos_user.user_manager'
+        - '@app.factory_service.systemic_question_repository'
+        - '@app.factory_service.tag_repository'
 
     app.controller.tag_controller:
       class: AppBundle\Controller\TagController
       arguments:
-        - @app.factory_service.tag_repository
+        - '@app.factory_service.tag_repository'
 
     app.controller.waypoint_controller:
-      class: AppBundle\Controller\WayPointController
-      arguments:
-        - @templating
-        - @form.factory
-        - @app.factory_service.way_point_repository
-        - @router
-        - @app.factory_service.walk_repository
-        - @app.factory_service.systemic_question_repository
-        - @fos_user.user_manager
-        - @app.factory_service.tag_repository
+        class: AppBundle\Controller\WayPointController
+        arguments:
+          - '@templating'
+          - '@form.factory'
+          - '@app.factory_service.way_point_repository'
+          - '@router'
+          - '@app.factory_service.walk_repository'
+          - '@app.factory_service.systemic_question_repository'
+          - '@fos_user.user_manager'
+          - '@app.factory_service.tag_repository'
 
     app.factory_service.systemic_question_repository:
         class: AppBundle\Repository\SystemicQuestionRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\SystemicQuestion
+            - 'AppBundle:SystemicQuestion'
 
     app.factory_service.walk_repository:
         class: AppBundle\Repository\WalkRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\Walk
+            - 'AppBundle:Walk'
 
     app.factory_service.way_point_repository:
         class: AppBundle\Repository\WayPointRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\WayPoint
+            - 'AppBundle:WayPoint'
 
     app.factory_service.tag_repository:
         class: AppBundle\Repository\TagRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\Tag
+            - 'AppBundle:Tag'
 
     app.factory_service.team_repository:
         class: AppBundle\Repository\TeamRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\Team
+            - 'AppBundle:Team'
 
     app.form.type.tag:
         class: AppBundle\Form\Type\TagType

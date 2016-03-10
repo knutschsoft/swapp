@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
+use AppBundle\Form\Type\WayPointType;
 use AppBundle\Repository\SystemicQuestionRepository;
 use AppBundle\Repository\TagRepository;
 use AppBundle\Repository\WalkRepository;
@@ -99,7 +100,7 @@ class WayPointController
     {
         $wayPoint = new WayPoint();
         $form = $this->formFactory->create(
-            'app_create_way_point',
+            WayPointType::class,
             $wayPoint,
             array(
                 'action' => $this->router->generate('way_point_create', array('walkId' => $walk->getId())),
@@ -124,7 +125,7 @@ class WayPointController
      */
     public function createWayPointAction(Request $request, Flash $flash, Walk $walk)
     {
-        $form = $this->formFactory->create('app_create_way_point', new WayPoint());
+        $form = $this->formFactory->create(WayPointType::class, new WayPoint());
 
         $form->handleRequest($request);
 

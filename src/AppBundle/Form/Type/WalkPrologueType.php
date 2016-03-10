@@ -2,6 +2,13 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,32 +18,32 @@ class WalkPrologueType extends AbstractType
     {
         $builder->add(
             'id',
-            'hidden'
+            HiddenType::class
         );
         $builder->add(
             'name',
-            'text',
+            TextType::class,
             array(
                 'label' => 'Name',
             )
         );
         $builder->add(
             'conceptOfDay',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Tageskonzept',
             )
         );
         $builder->add(
             'startTime',
-            'datetime',
+            DateTimeType::class,
             array(
                 'label' => 'Rundenstartzeit',
             )
         );
         $builder->add(
             'holidays',
-            'checkbox',
+            CheckboxType::class,
             array(
                 'label' => 'Ferien',
                 'required' => false,
@@ -44,7 +51,7 @@ class WalkPrologueType extends AbstractType
         );
         $builder->add(
             'weather',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     'Sonne' => 'Sonne',
@@ -58,7 +65,7 @@ class WalkPrologueType extends AbstractType
         );
         $builder->add(
             'create',
-            'submit',
+            SubmitType::class,
             array(
                 'label' => 'Wegpunkt anlegen',
                 'attr' => array('class' => 'btn btn-primary'),
@@ -76,7 +83,7 @@ class WalkPrologueType extends AbstractType
         );
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'app_create_walk_prologue';
     }

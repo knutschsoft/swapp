@@ -2,6 +2,13 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,46 +19,46 @@ class WalkType extends AbstractType
     {
         $builder->add(
             'id',
-            'hidden'
+            HiddenType::class
         );
         $builder->add(
             'name',
-            'text',
+            TextType::class,
             array(
                 'label' => 'Name',
             )
         );
         $builder->add(
             'conceptOfDay',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Tageskonzept',
             )
         );
         $builder->add(
             'startTime',
-            'datetime',
+            DateTimeType::class,
             array(
                 'label' => 'Rundenstartzeit',
             )
         );
         $builder->add(
             'endTime',
-            'datetime',
+            DateTimeType::class,
             array(
                 'label' => 'Rundenendzeit',
             )
         );
         $builder->add(
             'walkReflection',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Reflexion',
             )
         );
         $builder->add(
             'systemicQuestion',
-            'text',
+            TextType::class,
             array(
                 'label' => 'Systemische Frage',
                 'read_only' => true,
@@ -59,21 +66,21 @@ class WalkType extends AbstractType
         );
         $builder->add(
             'systemicAnswer',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Systemische Antwort',
             )
         );
         $builder->add(
             'holidays',
-            'text',
+            TextType::class,
             array(
                 'label' => 'Ferien',
             )
         );
         $builder->add(
             'rating',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '1' => '1',
@@ -88,7 +95,7 @@ class WalkType extends AbstractType
         );
         $builder->add(
             'holidays',
-            'checkbox',
+            CheckboxType::class,
             array(
                 'label' => 'Ferien',
                 'required' => false,
@@ -96,7 +103,7 @@ class WalkType extends AbstractType
         );
         $builder->add(
             'weather',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     'Sonne' => 'Sonne',
@@ -110,21 +117,21 @@ class WalkType extends AbstractType
         );
         $builder->add(
             'insights',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Erkenntnisse, Überlegungen, Zielsetzungen',
             )
         );
         $builder->add(
             'commitments',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Termine, Besorgungen, Verabredungen',
             )
         );
         $builder->add(
             'isResubmission',
-            'checkbox',
+            CheckboxType::class,
             array(
                 'label' => 'Wiedervorlage Dienstberatung',
                 'required' => false,
@@ -132,7 +139,7 @@ class WalkType extends AbstractType
         );
         $builder->add(
             'create',
-            'submit',
+            SubmitType::class,
             array(
                 'label' => 'Runde abschließen',
                 'attr' => array('class' => 'btn btn-primary'),
@@ -149,7 +156,7 @@ class WalkType extends AbstractType
         );
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'app_create_walk';
     }

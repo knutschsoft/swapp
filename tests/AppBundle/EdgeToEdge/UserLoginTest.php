@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Tests\EdgeToEdge;
+namespace Tests\AppBundle\EdgeToEdge;
 
 class UserLoginTest extends BaseWebTestCase
 {

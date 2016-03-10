@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Tests\EdgeToEdge;
+namespace Tests\AppBundle\EdgeToEdge;
 
 use AppBundle\Entity\User;
 use FOS\UserBundle\Doctrine\UserManager;

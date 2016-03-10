@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Tests\EdgeToEdge;
+namespace Tests\AppBundle\EdgeToEdge;
 
 class ImageUploadTest extends BaseWebTestCase
 {
@@ -50,7 +50,7 @@ class ImageUploadTest extends BaseWebTestCase
 //        $crawler = $this->client->followRedirect();
 
         $fileLocation = $this->client->getContainer()->getParameter('kernel.root_dir');
-        $fileLocation .= '/../src/AppBundle/Tests/fixtures/image.jpg';
+        $fileLocation .= '/../tests/AppBundle/fixtures/image.jpg';
 
         $form['app_create_way_point[imageFile][file]']->upload($fileLocation);
         $form['app_create_way_point[locationName]'] = 'Buxtehude is the locationName value';

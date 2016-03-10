@@ -2,6 +2,9 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,28 +14,28 @@ class TagType extends AbstractType
     {
         $builder->add(
             'name',
-            'text',
+            TextType::class,
             array(
                 'label' => 'Name',
             )
         );
         $builder->add(
             'description',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Beschreibung',
             )
         );
         $builder->add(
             'color',
-            'text',
+            TextType::class,
             array(
                 'label' => 'Farbe',
             )
         );
         $builder->add(
             'create',
-            'submit',
+            SubmitType::class,
             array(
                 'label' => 'Tag erstellen',
                 'attr' => array('class' => 'btn btn-primary'),
@@ -49,7 +52,7 @@ class TagType extends AbstractType
         );
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'app_create_tag';
     }

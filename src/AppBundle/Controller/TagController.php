@@ -40,7 +40,7 @@ class TagController
      */
     public function createTagAction(FormRequest $formRequest, Flash $flash)
     {
-        if (!$formRequest->handle(new TagType(), new Tag())) {
+        if (!$formRequest->handle(TagType::class, new Tag())) {
             return ['form' => $formRequest->createFormView()];
         }
 

@@ -2,9 +2,16 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Tag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class WayPointType extends AbstractType
 {
@@ -16,14 +23,14 @@ class WayPointType extends AbstractType
     {
         $builder->add(
             'locationName',
-            'text',
+            TextType::class,
             array(
                 'label' => 'Ort',
             )
         );
         $builder->add(
             'imageFile',
-            'vich_image',
+            VichImageType::class,
             [
                 'required' => false,
                 'allow_delete' => true, // not mandatory, default is true
@@ -36,7 +43,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'malesChildCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -67,7 +74,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'femalesChildCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -98,7 +105,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'malesKidCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -129,7 +136,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'femalesKidCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -160,7 +167,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'malesYouthCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -191,7 +198,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'femalesYouthCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -222,7 +229,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'malesYoungAdultCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -253,7 +260,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'femalesYoungAdultCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -284,7 +291,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'malesAdultCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -315,7 +322,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'femalesAdultCount',
-            'choice',
+            ChoiceType::class,
             array(
                 'choices' => array(
                     '0' => '0',
@@ -346,17 +353,17 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'note',
-            'textarea',
+            TextareaType::class,
             array(
                 'label' => 'Beobachtung',
             )
         );
         $builder->add(
             'wayPointTags',
-            'entity',
+            EntityType::class,
             array(
                 'class' => 'AppBundle\Entity\Tag',
-                'property' => 'name',
+                'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
                 'by_reference' => false,
@@ -364,7 +371,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'isMeeting',
-            'checkbox',
+            CheckboxType::class,
             array(
                 'label' => 'mobiler Treff',
                 'required' => false,
@@ -372,7 +379,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'createWayPoint',
-            'submit',
+            SubmitType::class,
             array(
                 'label' => 'speichern',
                 'attr' => array('class' => 'btn btn-primary'),
@@ -380,7 +387,7 @@ class WayPointType extends AbstractType
         );
         $builder->add(
             'createWalk',
-            'submit',
+            SubmitType::class,
             array(
                 'label' => 'speichern, Runde abschließen',
                 'attr' => array('class' => 'btn btn-primary'),
@@ -403,7 +410,7 @@ class WayPointType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'app_create_way_point';
     }
