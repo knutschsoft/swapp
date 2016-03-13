@@ -3,14 +3,21 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Tag;
 
-interface TagRepository
+interface TagRepositoryInterface
 {
-    public function findTrue();
-
+    /**
+     * @param Tag $tag
+     */
     public function save(Tag $tag);
 
+    /**
+     * @return Tag[]
+     */
     public function getTags();
 
+    /**
+     * @param Tag $tag
+     */
     public function updateTag(Tag $tag);
 
     /**

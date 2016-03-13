@@ -3,11 +3,15 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\SystemicQuestion;
 
-interface SystemicQuestionRepository
+interface SystemicQuestionRepositoryInterface
 {
-    public function findTrue();
-
+    /**
+     * @param SystemicQuestion $systemicQuestion
+     */
     public function save(SystemicQuestion $systemicQuestion);
 
+    /**
+     * @return mixed
+     */
     public function getRandom();
 }

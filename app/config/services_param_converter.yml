@@ -1,0 +1,16 @@
+services:
+    app.param_converter.entity:
+        class: AppBundle\ParamConverter\EntityParamConverter
+        arguments:
+            - @app.factory_service.team_repository
+            - @app.factory_service.walk_repository
+            - @app.factory_service.way_point_repository
+        tags:
+            - { name: request.param_converter, converter: entity, priority: 0 }
+
+    app.param_converter.user:
+        class: AppBundle\ParamConverter\UserParamConverter
+        arguments:
+            - @security.token_storage
+        tags:
+            - { name: request.param_converter, converter: user, priority: 10 }

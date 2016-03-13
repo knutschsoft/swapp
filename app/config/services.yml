@@ -1,135 +1,24 @@
-# Learn more about services, parameters and containers at
-# http://symfony.com/doc/current/book/service_container.html
-parameters:
-#    parameter_name: value
+imports:
+    - { resource: services_command.yml }
+    - { resource: services_controller.yml }
+    - { resource: services_form_type.yml }
+    - { resource: services_param_converter.yml }
+    - { resource: services_repository.yml }
+    - { resource: services_twig.yml }
 
 services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
-    app.command.deploy:
-        class: AppBundle\Command\DeploymentCommand
-        arguments:
-            - %command.host_ip%
-            - %command.ssh_user%
-            - %command.credentials_location%
-        tags:
-            -  { name: console.command }
-
-
+# dummy service for controller as a service
     app.controller.controller_as_a_service:
         class: AppBundle\Controller\ControllerAsAServiceController
         arguments: ['@templating']
 
+# dummy service for param converter
     app.param_converter.example:
         class: AppBundle\ParamConverter\ExampleParamConverter
         arguments: []
         tags:
             - { name: request.param_converter, converter: example, priority: 10 }
-
-    app.param_converter.entity:
-        class: AppBundle\ParamConverter\EntityParamConverter
-        arguments:
-            - '@app.factory_service.team_repository'
-            - '@app.factory_service.walk_repository'
-            - '@app.factory_service.way_point_repository'
-        tags:
-            - { name: request.param_converter, converter: entity, priority: 0 }
-
-    app.param_converter.user:
-        class: AppBundle\ParamConverter\UserParamConverter
-        arguments:
-          - '@security.token_storage'
-        tags:
-            - { name: request.param_converter, converter: user, priority: 10 }
-
-    app.controller.walk_controller:
-      class: AppBundle\Controller\WalkController
-      arguments:
-        - '@app.factory_service.walk_repository'
-        - '@router'
-        - '@app.factory_service.way_point_repository'
-        - '@fos_user.user_manager'
-        - '@app.factory_service.systemic_question_repository'
-        - '@app.factory_service.tag_repository'
-
-    app.controller.tag_controller:
-      class: AppBundle\Controller\TagController
-      arguments:
-        - '@app.factory_service.tag_repository'
-
-    app.controller.waypoint_controller:
-        class: AppBundle\Controller\WayPointController
-        arguments:
-          - '@templating'
-          - '@form.factory'
-          - '@app.factory_service.way_point_repository'
-          - '@router'
-          - '@app.factory_service.walk_repository'
-          - '@app.factory_service.systemic_question_repository'
-          - '@fos_user.user_manager'
-          - '@app.factory_service.tag_repository'
-
-    app.factory_service.systemic_question_repository:
-        class: AppBundle\Repository\SystemicQuestionRepository
-        factory: ['@doctrine', getRepository]
-        arguments:
-            - 'AppBundle:SystemicQuestion'
-
-    app.factory_service.walk_repository:
-        class: AppBundle\Repository\WalkRepository
-        factory: ['@doctrine', getRepository]
-        arguments:
-            - 'AppBundle:Walk'
-
-    app.factory_service.way_point_repository:
-        class: AppBundle\Repository\WayPointRepository
-        factory: ['@doctrine', getRepository]
-        arguments:
-            - 'AppBundle:WayPoint'
-
-    app.factory_service.tag_repository:
-        class: AppBundle\Repository\TagRepository
-        factory: ['@doctrine', getRepository]
-        arguments:
-            - 'AppBundle:Tag'
-
-    app.factory_service.team_repository:
-        class: AppBundle\Repository\TeamRepository
-        factory: ['@doctrine', getRepository]
-        arguments:
-            - 'AppBundle:Team'
-
-    app.form.type.tag:
-        class: AppBundle\Form\Type\TagType
-        tags:
-            - { name: form.type, alias: app_create_tag }
-
-    app.form.type.walk:
-        class: AppBundle\Form\Type\WalkType
-        tags:
-            - { name: form.type, alias: app_create_walk }
-
-    app.form.type.walk.prologue:
-        class: AppBundle\Form\Type\WalkPrologueType
-        tags:
-            - { name: form.type, alias: app_create_walk_prologue }
-
-    app.form.type.walk.epilogue:
-            class: AppBundle\Form\Type\WalkEpilogueType
-            tags:
-                - { name: form.type, alias: app_create_walk_epilogue }
-
-    app.form.type.waypoint:
-        class: AppBundle\Form\Type\WayPointType
-        tags:
-            - { name: form.type, alias: app_create_way_point }
-
-    app.twig_extension.intl:
-        class: Twig_Extensions_Extension_Intl
-        public: false
-        tags:
-            - { name: twig.extension }
-
-

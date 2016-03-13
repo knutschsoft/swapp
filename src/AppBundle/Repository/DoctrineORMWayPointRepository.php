@@ -4,13 +4,8 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\WayPoint;
 use Doctrine\ORM\EntityRepository;
 
-class DoctrineORMWayPointRepository extends EntityRepository implements WayPointRepository
+class DoctrineORMWayPointRepository extends EntityRepository implements WayPointRepositoryInterface
 {
-    public function findTrue()
-    {
-        return true;
-    }
-
     /**
      * @return WayPoint[]
      */

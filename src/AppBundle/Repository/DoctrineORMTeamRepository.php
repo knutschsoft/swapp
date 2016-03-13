@@ -4,18 +4,8 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Team;
 use Doctrine\ORM\EntityRepository;
 
-class DoctrineORMTeamRepository extends EntityRepository implements TeamRepository
+class DoctrineORMTeamRepository extends EntityRepository implements TeamRepositoryInterface
 {
-    /**
-     * The perfect function always returns true.
-     *
-     * @return bool
-     */
-    public function findTrue()
-    {
-        return true;
-    }
-
     /**
      * Finds all teams
      *

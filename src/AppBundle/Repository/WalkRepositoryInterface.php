@@ -4,10 +4,8 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Walk;
 use Doctrine\ORM\AbstractQuery;
 
-interface WalkRepository
+interface WalkRepositoryInterface
 {
-    public function findTrue();
-
     /**
      * @return Walk[]
      */
@@ -23,7 +21,13 @@ interface WalkRepository
      */
     public function getFindAllQuery();
 
+    /**
+     * @param Walk $walk
+     */
     public function save(Walk $walk);
 
+    /**
+     * @param Walk $walk
+     */
     public function update(Walk $walk);
 }
