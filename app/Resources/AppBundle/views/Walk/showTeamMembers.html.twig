@@ -1,0 +1,9 @@
+{% set users %}
+    {% for user in walk.getWalkTeamMembers %}
+        {{ user.getUsername }}
+    {% else %}
+        keine Teilnehmer
+    {% endfor %}
+{% endset %}
+
+{{ include('@App/Walk/showItem.html.twig', {'key': 'Teilnehmer', 'value': users}, with_context = false) }}

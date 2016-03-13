@@ -1,0 +1,9 @@
+{% set personsMale %}
+    {% if walk.getMalesCount %}
+        {{ walk.getMalesCount }}
+    {% else %}
+        keine männlichen Personen angetroffen
+    {% endif %}
+{% endset %}
+
+{{ include('@App/Walk/showItem.html.twig', {'key': 'angetroffene männliche Personen', 'value': personsMale}, with_context = false) }}
