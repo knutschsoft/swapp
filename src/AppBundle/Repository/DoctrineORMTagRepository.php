@@ -4,11 +4,15 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Tag;
 use Doctrine\ORM\EntityRepository;
 
-class DoctrineORMTagRepository extends EntityRepository implements TagRepository
+class DoctrineORMTagRepository extends EntityRepository implements TagRepositoryInterface
 {
-    public function findTrue()
+    /**
+     * @param Tag $tag
+     */
+    public function updateTag(Tag $tag)
     {
-        return true;
+        $this->_em->merge($tag);
+        $this->_em->flush();
     }
 
     public function save(Tag $tag)
@@ -17,6 +21,9 @@ class DoctrineORMTagRepository extends EntityRepository implements TagRepository
         $this->_em->flush();
     }
 
+    /**
+     * @return Tag[]
+     */
     public function getTags()
     {
         $queryBuilder = $this->createQueryBuilder('tag')->select();
@@ -30,14 +37,6 @@ class DoctrineORMTagRepository extends EntityRepository implements TagRepository
         }
 
         return $tagList;
-
-        return $query->getResult();
-    }
-
-    public function updateTag(Tag $tag)
-    {
-        $this->_em->merge($tag);
-        $this->_em->flush();
     }
 
     /**

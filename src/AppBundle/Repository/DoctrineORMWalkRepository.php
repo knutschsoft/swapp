@@ -5,13 +5,8 @@ use AppBundle\Entity\Walk;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
-class DoctrineORMWalkRepository extends EntityRepository implements WalkRepository
+class DoctrineORMWalkRepository extends EntityRepository implements WalkRepositoryInterface
 {
-    public function findTrue()
-    {
-        return true;
-    }
-
     /**
      * @return Walk[]
      */
@@ -60,12 +55,18 @@ class DoctrineORMWalkRepository extends EntityRepository implements WalkReposito
         return parent::findOneBy(['id' => $id]);
     }
 
+    /**
+     * @param Walk $walk
+     */
     public function save(Walk $walk)
     {
         $this->_em->persist($walk);
         $this->_em->flush();
     }
 
+    /**
+     * @param Walk $walk
+     */
     public function update(Walk $walk)
     {
         $this->_em->merge($walk);

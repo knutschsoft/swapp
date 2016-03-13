@@ -6,10 +6,10 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Walk;
 use AppBundle\Form\Type\WalkPrologueType;
 use AppBundle\Form\Type\WalkType;
-use AppBundle\Repository\SystemicQuestionRepository;
-use AppBundle\Repository\TagRepository;
-use AppBundle\Repository\WalkRepository;
-use AppBundle\Repository\WayPointRepository;
+use AppBundle\Repository\SystemicQuestionRepositoryInterface;
+use AppBundle\Repository\TagRepositoryInterface;
+use AppBundle\Repository\WalkRepositoryInterface;
+use AppBundle\Repository\WayPointRepositoryInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use QafooLabs\MVC\Flash;
 use QafooLabs\MVC\FormRequest;
@@ -28,20 +28,20 @@ class WalkController
     private $tagRepository;
 
     /**
-     * @param WalkRepository             $walkRepository
-     * @param RouterInterface            $router
-     * @param WayPointRepository         $wayPointRepository
-     * @param UserManagerInterface       $userManager
-     * @param SystemicQuestionRepository $systemicQuestionRepository
-     * @param TagRepository              $tagRepository
+     * @param WalkRepositoryInterface             $walkRepository
+     * @param RouterInterface                     $router
+     * @param WayPointRepositoryInterface         $wayPointRepository
+     * @param UserManagerInterface                $userManager
+     * @param SystemicQuestionRepositoryInterface $systemicQuestionRepository
+     * @param TagRepositoryInterface              $tagRepository
      */
     public function __construct(
-        WalkRepository $walkRepository,
+        WalkRepositoryInterface $walkRepository,
         RouterInterface $router,
-        WayPointRepository $wayPointRepository,
+        WayPointRepositoryInterface $wayPointRepository,
         UserManagerInterface $userManager,
-        SystemicQuestionRepository $systemicQuestionRepository,
-        TagRepository $tagRepository
+        SystemicQuestionRepositoryInterface $systemicQuestionRepository,
+        TagRepositoryInterface $tagRepository
     ) {
         $this->walkRepository = $walkRepository;
         $this->router = $router;

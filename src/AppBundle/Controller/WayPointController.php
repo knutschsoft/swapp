@@ -3,10 +3,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
-use AppBundle\Repository\SystemicQuestionRepository;
-use AppBundle\Repository\TagRepository;
-use AppBundle\Repository\WalkRepository;
-use AppBundle\Repository\WayPointRepository;
+use AppBundle\Repository\SystemicQuestionRepositoryInterface;
+use AppBundle\Repository\TagRepositoryInterface;
+use AppBundle\Repository\WalkRepositoryInterface;
+use AppBundle\Repository\WayPointRepositoryInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use QafooLabs\MVC\Flash;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -26,24 +26,24 @@ class WayPointController
     private $tagRepository;
 
     /**
-     * @param EngineInterface            $templateEngine
-     * @param FormFactoryInterface       $formFactory
-     * @param WayPointRepository         $wayPointRepository
-     * @param RouterInterface            $router
-     * @param WalkRepository             $walkRepository
-     * @param SystemicQuestionRepository $systemicQuestionRepository
-     * @param UserManagerInterface       $userManager
-     * @param TagRepository              $tagRepository
+     * @param EngineInterface                     $templateEngine
+     * @param FormFactoryInterface                $formFactory
+     * @param WayPointRepositoryInterface         $wayPointRepository
+     * @param RouterInterface                     $router
+     * @param WalkRepositoryInterface             $walkRepository
+     * @param SystemicQuestionRepositoryInterface $systemicQuestionRepository
+     * @param UserManagerInterface                $userManager
+     * @param TagRepositoryInterface              $tagRepository
      */
     public function __construct(
         EngineInterface $templateEngine,
         FormFactoryInterface $formFactory,
-        WayPointRepository $wayPointRepository,
+        WayPointRepositoryInterface $wayPointRepository,
         RouterInterface $router,
-        WalkRepository $walkRepository,
-        SystemicQuestionRepository $systemicQuestionRepository,
+        WalkRepositoryInterface $walkRepository,
+        SystemicQuestionRepositoryInterface $systemicQuestionRepository,
         UserManagerInterface $userManager,
-        TagRepository $tagRepository
+        TagRepositoryInterface $tagRepository
     ) {
         $this->templateEngine = $templateEngine;
         $this->wayPointRepository = $wayPointRepository;

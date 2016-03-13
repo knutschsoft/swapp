@@ -3,9 +3,10 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Guest;
 
-interface GuestRepository
+interface GuestRepositoryInterface
 {
-    public function findTrue();
-
+    /**
+     * @param Guest $guest
+     */
     public function save(Guest $guest);
 }

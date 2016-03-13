@@ -4,9 +4,9 @@ namespace AppBundle\ParamConverter;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
-use AppBundle\Repository\TeamRepository;
-use AppBundle\Repository\WalkRepository;
-use AppBundle\Repository\WayPointRepository;
+use AppBundle\Repository\TeamRepositoryInterface;
+use AppBundle\Repository\WalkRepositoryInterface;
+use AppBundle\Repository\WayPointRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,14 +19,14 @@ class EntityParamConverter implements ParamConverterInterface
     private $wayPointRepository;
 
     /**
-     * @param TeamRepository     $teamRepository
-     * @param WalkRepository     $walkRepository
-     * @param WayPointRepository $wayPointRepository
+     * @param TeamRepositoryInterface     $teamRepository
+     * @param WalkRepositoryInterface     $walkRepository
+     * @param WayPointRepositoryInterface $wayPointRepository
      */
     public function __construct(
-        TeamRepository $teamRepository,
-        WalkRepository $walkRepository,
-        WayPointRepository $wayPointRepository
+        TeamRepositoryInterface $teamRepository,
+        WalkRepositoryInterface $walkRepository,
+        WayPointRepositoryInterface $wayPointRepository
     ) {
         $this->teamRepository = $teamRepository;
         $this->walkRepository = $walkRepository;

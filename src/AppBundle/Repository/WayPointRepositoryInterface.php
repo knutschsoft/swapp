@@ -3,10 +3,8 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\WayPoint;
 
-interface WayPointRepository
+interface WayPointRepositoryInterface
 {
-    public function findTrue();
-
     /**
      * @return WayPoint
      */
@@ -14,8 +12,6 @@ interface WayPointRepository
 
     /**
      * @param WayPoint $wayPoint
-     *
-     * @return mixed
      */
     public function save(WayPoint $wayPoint);
 

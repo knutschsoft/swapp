@@ -3,7 +3,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tag;
 use AppBundle\Form\Type\TagType;
-use AppBundle\Repository\TagRepository;
+use AppBundle\Repository\TagRepositoryInterface;
 use QafooLabs\MVC\Flash;
 use QafooLabs\MVC\FormRequest;
 use QafooLabs\MVC\RedirectRoute;
@@ -14,10 +14,10 @@ class TagController
     private $tagRepository;
 
     /**
-     * @param TagRepository $tagRepository
+     * @param TagRepositoryInterface $tagRepository
      */
     public function __construct(
-        TagRepository $tagRepository
+        TagRepositoryInterface $tagRepository
     ) {
         $this->tagRepository = $tagRepository;
     }
