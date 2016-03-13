@@ -1,35 +1,30 @@
 services:
     app.factory_service.systemic_question_repository:
         class: AppBundle\Repository\SystemicQuestionRepositoryInterface
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\SystemicQuestion
+            - 'AppBundle:SystemicQuestion'
 
     app.factory_service.walk_repository:
         class: AppBundle\Repository\WalkRepositoryInterface
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\Walk
+            - 'AppBundle:Walk'
 
     app.factory_service.way_point_repository:
         class: AppBundle\Repository\WayPointRepositoryInterface
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\WayPoint
+            - 'AppBundle:WayPoint'
 
     app.factory_service.tag_repository:
         class: AppBundle\Repository\TagRepositoryInterface
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\Tag
+            - 'AppBundle:Tag'
 
     app.factory_service.team_repository:
         class: AppBundle\Repository\TeamRepositoryInterface
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine', getRepository]
         arguments:
-            - AppBundle\Entity\Team
+            - 'AppBundle:Team'

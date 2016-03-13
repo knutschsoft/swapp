@@ -2,26 +2,26 @@ services:
     app.controller.walk_controller:
         class: AppBundle\Controller\WalkController
         arguments:
-            - @app.factory_service.walk_repository
-            - @router
-            - @app.factory_service.way_point_repository
-            - @fos_user.user_manager
-            - @app.factory_service.systemic_question_repository
-            - @app.factory_service.tag_repository
+            - '@app.factory_service.walk_repository'
+            - '@router'
+            - '@app.factory_service.way_point_repository'
+            - '@fos_user.user_manager'
+            - '@app.factory_service.systemic_question_repository'
+            - '@app.factory_service.tag_repository'
 
     app.controller.tag_controller:
         class: AppBundle\Controller\TagController
         arguments:
-            - @app.factory_service.tag_repository
+            - '@app.factory_service.tag_repository'
 
     app.controller.waypoint_controller:
         class: AppBundle\Controller\WayPointController
         arguments:
-            - @templating
-            - @form.factory
-            - @app.factory_service.way_point_repository
-            - @router
-            - @app.factory_service.walk_repository
-            - @app.factory_service.systemic_question_repository
-            - @fos_user.user_manager
-            - @app.factory_service.tag_repository
+            - '@templating'
+            - '@form.factory'
+            - '@app.factory_service.way_point_repository'
+            - '@router'
+            - '@app.factory_service.walk_repository'
+            - '@app.factory_service.systemic_question_repository'
+            - '@fos_user.user_manager'
+            - '@app.factory_service.tag_repository'
