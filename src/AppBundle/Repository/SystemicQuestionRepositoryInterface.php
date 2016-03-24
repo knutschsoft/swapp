@@ -11,7 +11,7 @@ interface SystemicQuestionRepositoryInterface
     public function save(SystemicQuestion $systemicQuestion);
 
     /**
-     * @return mixed
+     * @return SystemicQuestion
      */
     public function getRandom();
 }
