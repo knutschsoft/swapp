@@ -96,7 +96,7 @@ class DeploymentCommand extends Command
         $this->info('changeOwnerToWwwData');
         $this->executeRemoteCommand(
             sprintf(
-                'chown -R www-data:www-data %s/app/logs/ %s/app/cache/',
+            'chown -R www-data:www-data %s/var/logs/ %s/var/cache/',
                 $this->remoteAppRoot,
                 $this->remoteAppRoot
             )
@@ -132,7 +132,7 @@ class DeploymentCommand extends Command
 
         $this->executeRemoteCommand(
             sprintf(
-                'rm -rf %s/app/cache/*',
+                'rm -rf %s/var/cache/*',
                 $this->remoteAppRoot
             )
         );
@@ -156,7 +156,7 @@ class DeploymentCommand extends Command
         $syncCommand = sprintf(
             'rsync %s %s build/* %s@%s:%s',
             '--recursive --cvs-exclude --verbose --copy-links --delete --delete-after --delete-excluded --links --times',
-            '--exclude=/app/cache/* --exclude=/app/logs/* --exclude=/web/app_*.php --exclude=/web/config.php',
+            '--exclude=/var/cache/* --exclude=/var/logs/* --exclude=/web/app_*.php --exclude=/web/config.php',
             $this->deployUser,
             $this->hostIp,
             $this->remoteAppRoot
