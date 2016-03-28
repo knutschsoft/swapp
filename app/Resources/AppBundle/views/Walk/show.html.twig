@@ -28,7 +28,7 @@
     {{ include('@App/Walk/showItem.html.twig', {'key': 'Reflexion', 'value': walk.getWalkReflection }, with_context = false) }}
     {{ include('@App/Walk/showItem.html.twig', {'key': 'Bewertung', 'value': walk.getRating }, with_context = false) }}
     {{ include('@App/Walk/showItem.html.twig', {'key': 'Termine, Besorgungen, Verabredungen', 'value': walk.commitments}, with_context = false) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Erkenntnisse, Überlegungen, Zielsettungen', 'value': walk.insights }, with_context = false) }}
+    {{ include('@App/Walk/showItem.html.twig', {'key': 'Erkenntnisse, Überlegungen, Zielsetzungen', 'value': walk.insights }, with_context = false) }}
     {{ include('@App/Walk/showItem.html.twig', {'key': 'Wiedervorlage Dienstberatung', 'value': walk.isResubmission ? 'ja' : 'nein'}, with_context = false) }}
 
     {{ include('@App/Walk/showTeamMembers.html.twig', {'walk': walk}, with_context = false) }}

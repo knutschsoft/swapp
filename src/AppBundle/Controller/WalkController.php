@@ -235,7 +235,7 @@ class WalkController
                     'Bewertung',
                     'systemische Frage',
                     'systemische Antwort',
-                    'Erkenntnisse, Überlegungen, Zielsettungen',
+                    'Erkenntnisse, Überlegungen, Zielsetzungen',
                     'Termine, Besorgungen, Verabredungen',
                     'Wiedervorlage Dienstberatung',
                     'Wetter',

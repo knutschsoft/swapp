@@ -58,10 +58,13 @@ class WalkType extends AbstractType
         );
         $builder->add(
             'systemicQuestion',
-            TextType::class,
+            TextareaType::class,
             [
                 'label' => 'Systemische Frage',
                 'disabled' => true,
+                'attr' => [
+                    'style' => 'width:100%;'
+                ],
             ]
         );
         $builder->add(

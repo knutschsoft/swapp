@@ -45,13 +45,16 @@ class EntityParamConverter implements ParamConverterInterface
     {
         switch ($configuration->getName()) {
             case 'walk':
-                $resource = $this->walkRepository->findOneById($request->get('walkId'));
+                $id = $request->get('walkId');
+                $resource = $this->walkRepository->findOneById($id);
                 break;
             case 'wayPoint':
-                $resource = $this->wayPointRepository->findOneById($request->get('wayPointId'));
+                $id = $request->get('wayPointId');
+                $resource = $this->wayPointRepository->findOneById($id);
                 break;
             case 'team':
-                $resource = $this->teamRepository->findOneById($request->get('teamId'));
+                $id = $request->get('teamId');
+                $resource = $this->teamRepository->findOneById($id);
                 break;
             default:
                 throw new \InvalidArgumentException(
@@ -64,7 +67,7 @@ class EntityParamConverter implements ParamConverterInterface
                 sprintf(
                     'No %s not found for id "%s" in %s',
                     $configuration->getName(),
-                    $request->get('id'),
+                    $id,
                     self::class
                 )
             );
