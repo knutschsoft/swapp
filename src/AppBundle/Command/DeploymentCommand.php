@@ -221,7 +221,7 @@ class DeploymentCommand extends Command
     {
         $this->output->writeln($cmd);
         try {
-            $process = new Process($cmd);
+            $process = new Process($cmd, null, null, null, 180);
             $process->mustRun();
         } catch (ProcessFailedException $e) {
             throw new \RuntimeException($e->getMessage());
