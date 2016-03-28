@@ -19,6 +19,8 @@ class DeploymentCommand extends Command
     private $output;
     private $hostIp;
     private $credentialsLocation;
+    private $deployUser;
+    private $sshUser;
 
     /**
      * DeploymentCommand constructor.
@@ -106,19 +108,19 @@ class DeploymentCommand extends Command
         $this->info('doctrineRemoteRecreation');
         $this->executeRemoteCommand(
             sprintf(
-                'php %s/app/console doctrine:schema:drop --full-database --force --env=prod',
+                'php %s/bin/console doctrine:schema:drop --full-database --force --env=prod',
                 $this->remoteAppRoot
             )
         );
         $this->executeRemoteCommand(
             sprintf(
-                'php %s/app/console doctrine:schema:create --no-interaction --env=prod',
+                'php %s/bin/console doctrine:schema:create --no-interaction --env=prod',
                 $this->remoteAppRoot
             )
         );
         $this->executeRemoteCommand(
             sprintf(
-                'php %s/app/console doctrine:fixtures:load --no-interaction --env=prod',
+                'php %s/bin/console doctrine:fixtures:load --no-interaction --env=prod',
                 $this->remoteAppRoot
             )
         );
@@ -141,7 +143,7 @@ class DeploymentCommand extends Command
         $this->info('warmupRemoteCache');
         $this->executeRemoteCommand(
             sprintf(
-                'php %s/app/console cache:clear --no-debug --no-interaction --env=prod',
+                'php %s/bin/console cache:clear --no-debug --no-interaction --env=prod',
                 $this->remoteAppRoot
             )
         );
