@@ -59,10 +59,10 @@ class WalkType extends AbstractType
         $builder->add(
             'systemicQuestion',
             TextType::class,
-            array(
+            [
                 'label' => 'Systemische Frage',
-                'read_only' => true,
-            )
+                'disabled' => true,
+            ]
         );
         $builder->add(
             'systemicAnswer',
@@ -142,7 +142,11 @@ class WalkType extends AbstractType
             SubmitType::class,
             array(
                 'label' => 'Runde abschließen',
-                'attr' => array('class' => 'btn btn-primary'),
+                'attr' =>
+                    [
+                        'class' => 'btn btn-primary',
+                        'data-test' => 'create-walk',
+                    ],
             )
         );
     }

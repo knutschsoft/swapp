@@ -22,7 +22,8 @@
         </select>
         {% if teams|length %}
             <a class="btn btn-primary rounded-right s-select-team-link"
-               href="{{ path('start_walk_with_walk_prologue', { 'teamId': teams|first.getId}) }}">Runde beginnen</a>
+                href="{{ path('start_walk_with_walk_prologue', { 'teamId': teams|first.getId}) }}"
+                data-test="create-walk">Runde beginnen</a>
         {% endif %}
     </div>
     <div class="right">

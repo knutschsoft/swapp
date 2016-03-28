@@ -61,8 +61,9 @@ class WalkController
         $order = $request->query->get('order', 'startTime');
         $sort = $request->query->get('sort', 'asc');
 
-        $walks = $this->walkRepository->findAllOrderBy('walk.' . $order, $sort);
+        $walks = $this->walkRepository->findAllOrderBy('walk.'.$order, $sort);
         $teams = $user->getTeams();
+
         return [
             'walks' => $walks,
             'teams' => $teams,
@@ -163,7 +164,8 @@ class WalkController
         if (!$formRequest->handle(
             WalkPrologueType::class,
             $walk
-        )) {
+        )
+        ) {
 
             return [
                 'form' => $formRequest->createFormView(),

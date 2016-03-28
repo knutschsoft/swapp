@@ -68,7 +68,11 @@ class WalkPrologueType extends AbstractType
             SubmitType::class,
             array(
                 'label' => 'Wegpunkt anlegen',
-                'attr' => array('class' => 'btn btn-primary'),
+                'attr' =>
+                    [
+                        'class' => 'btn btn-primary',
+                        'data-test' => 'create-way-point',
+                    ],
             )
         );
     }

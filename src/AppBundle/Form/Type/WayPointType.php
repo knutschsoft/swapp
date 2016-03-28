@@ -382,7 +382,10 @@ class WayPointType extends AbstractType
             SubmitType::class,
             array(
                 'label' => 'speichern',
-                'attr' => array('class' => 'btn btn-primary'),
+                'attr' => [
+                    'class' => 'btn btn-primary',
+                    'data-test' => 'save-way-point',
+                ],
             )
         );
         $builder->add(
@@ -390,7 +393,10 @@ class WayPointType extends AbstractType
             SubmitType::class,
             array(
                 'label' => 'speichern, Runde abschließen',
-                'attr' => array('class' => 'btn btn-primary'),
+                'attr' => [
+                    'class' => 'btn btn-primary',
+                    'data-test' => 'save-and-finish-way-point',
+                ],
             )
         );
     }
