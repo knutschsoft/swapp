@@ -1,0 +1,13 @@
+AppBundle\Entity\User:
+    user_{1..10}:
+        username: <firstName()>
+        plainPassword: <password()>
+        email: <email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_admin:
+        username: admin
+        plainPassword: admin
+        email: <email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN', 'ROLE_USER')))>

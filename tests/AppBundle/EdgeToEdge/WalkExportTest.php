@@ -1,18 +1,18 @@
 <?php
 namespace Tests\AppBundle\EdgeToEdge;
 
-class WalkExportTest extends BaseWebTestCase
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+
+class WalkExportTest extends WebTestCase
 {
     public function testWalkExportIsSuccessful()
     {
-        $this->logIn();
+        $client = static::makeClient(true);
+
         ob_start();
-        $this->client->request('GET', '/walkexport');
+        $client->request('GET', '/walkexport');
         ob_get_clean();
 
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code is ' . $this->client->getResponse()->getStatusCode()
-        );
+        $this->isSuccessful($client->getResponse());
     }
 }

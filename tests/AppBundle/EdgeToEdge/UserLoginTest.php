@@ -1,66 +1,72 @@
 <?php
 namespace Tests\AppBundle\EdgeToEdge;
 
-class UserLoginTest extends BaseWebTestCase
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+
+class UserLoginTest extends WebTestCase
 {
+    const USERNAME = 'username';
+    const PASSWORD = 'password';
+    const USERNAME_ADMIN = 'admin';
+    const PASSWORD_ADMIN = 'admin';
+
     public function testUserLoginBackendFailsWithWrongRole()
     {
-        $this->client->followRedirects(true);
-        $crawler = $this->client->request('GET', '/eadmin');
+        $client = static::makeClient();
 
-        $form = $crawler->selectButton('Anmelden')->form(array(
-            '_username' => self::USERNAME,
-            '_password' => self::PASSWORD,
-            '_remember_me' => 'on',
-        ));
+        $client->followRedirects(true);
+        $crawler = $client->request('GET', '/eadmin');
 
-        $crawler = $this->client->submit($form);
-
-        $this->assertEquals(
-            403,
-            $this->client->getResponse()->getStatusCode(),
-            'Response have wrong status code'
+        $form = $crawler->selectButton('Anmelden')->form(
+            [
+                '_username' => self::USERNAME,
+                '_password' => self::PASSWORD,
+                '_remember_me' => 'on',
+            ]
         );
-//        $this->assertTrue($crawler->selectButton('Anmelden')->count() === 1, 'Button "Anmelden" not found');
+
+        $crawler = $client->submit($form);
+        $this->isSuccessful($client->getResponse());
+        $this->assertTrue($crawler->selectButton('Anmelden')->count() === 1, 'Button "Anmelden" not found');
     }
 
     public function testUserLoginBackend()
     {
-        $this->user->setRoles(array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'));
-        $this->user->setSuperAdmin(true);
-        $this->userManager->updateUser($this->user);
+        $client = static::makeClient();
+        $client->followRedirects(true);
+        $crawler = $client->request('GET', '/eadmin');
 
-        $this->userManager->refreshUser($this->user);
+        $form = $crawler->selectButton('Anmelden')->form(
+            array(
+                '_username' => self::USERNAME_ADMIN,
+                '_password' => self::PASSWORD_ADMIN,
+                '_remember_me' => 'on',
+            )
+        );
 
-        $this->client->followRedirects(true);
-        $crawler = $this->client->request('GET', '/eadmin');
+        $crawler = $client->submit($form);
 
-        $form = $crawler->selectButton('Anmelden')->form(array(
-            '_username' => self::USERNAME,
-            '_password' => self::PASSWORD,
-            '_remember_me' => 'on',
-        ));
-
-        $crawler = $this->client->submit($form);
-
-        $this->assertTrue($this->client->getResponse()->isSuccessful(), 'Response not successful');
+        $this->isSuccessful($client->getResponse());
         $this->assertTrue($crawler->selectButton('Anmelden')->count() === 0, 'Button "Anmelden" found');
     }
 
     public function testUserLoginFrontend()
     {
-        $this->client->followRedirects(true);
-        $crawler = $this->client->request('GET', '/login');
+        $client = static::makeClient();
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/login');
 
-        $form = $crawler->selectButton('Anmelden')->form(array(
-            '_username' => self::USERNAME,
-            '_password' => self::PASSWORD,
-            '_remember_me' => 'on',
-        ));
+        $form = $crawler->selectButton('Anmelden')->form(
+            array(
+                '_username' => self::USERNAME_ADMIN,
+                '_password' => self::PASSWORD_ADMIN,
+                '_remember_me' => 'on',
+            )
+        );
 
-        $crawler = $this->client->submit($form);
+        $crawler = $client->submit($form);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful(), 'Response not successful');
+        $this->isSuccessful($client->getResponse());
         $this->assertTrue($crawler->filter('Anmelden')->count() === 0, 'Button "Anmelden" found');
     }
 }

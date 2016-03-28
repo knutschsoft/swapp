@@ -1,0 +1,16 @@
+AppBundle\Entity\WayPoint:
+    way_point_{1..100}:
+        locationName: <streetName()>
+        femalesAdultCount: <numberBetween(0, 20)>
+        femalesChildCount: <numberBetween(0, 20)>
+        femalesKidCount: <numberBetween(0, 20)>
+        femalesYouthCount: <numberBetween(0, 20)>
+        femalesYoungAdultCount: <numberBetween(0, 20)>
+        malesAdultCount: <numberBetween(0, 20)>
+        malesChildCount: <numberBetween(0, 20)>
+        malesKidCount: <numberBetween(0, 20)>
+        malesYouthCount: <numberBetween(0, 20)>
+        malesYoungAdultCount: <numberBetween(0, 20)>
+        isMeeting: <boolean(50)>
+        note: <text()>
+        walk: '@walk*'

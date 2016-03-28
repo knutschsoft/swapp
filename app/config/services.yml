@@ -22,3 +22,7 @@ services:
         arguments: []
         tags:
             - { name: request.param_converter, converter: example, priority: 10 }
+
+    faker.provider.tag:
+        class: AppBundle\DataFixtures\Faker\Provider\TagProvider
+        tags: [ { name: hautelook_alice.faker.provider } ]

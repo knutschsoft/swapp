@@ -11,13 +11,12 @@ matrix:
     - php: 7.0
     - php: hhvm
 
-
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer install -vv
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
-  - php bin/console doctrine:fixtures:load -n --env=test
+  - php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction --env=test
 
 script:
   - phpunit --coverage-text

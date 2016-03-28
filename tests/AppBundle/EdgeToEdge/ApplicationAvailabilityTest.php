@@ -1,20 +1,18 @@
 <?php
 namespace Tests\AppBundle\EdgeToEdge;
 
-class ApplicationAvailabilityTest extends BaseWebTestCase
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+
+class ApplicationAvailabilityTest extends WebTestCase
 {
     /**
      * @dataProvider urlProvider
      */
     public function testPageIsSuccessful($url)
     {
-        $this->logIn();
-        $this->client->request('GET', $url);
-
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code is ' . $this->client->getResponse()->getStatusCode()
-        );
+        $client = static::makeClient(true);
+        $client->request('GET', $url);
+        $this->isSuccessful($client->getResponse());
     }
 
     public function urlProvider()

@@ -1,0 +1,4 @@
+AppBundle\Entity\Team:
+    team_{1..5}:
+        name: Team <company()>
+        users: <numberBetween(1, 5)>x @user_*

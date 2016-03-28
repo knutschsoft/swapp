@@ -31,7 +31,6 @@
         "symfony/monolog-bundle": "~2.4",
         "incenteev/composer-parameter-handler": "~2.0",
         "javiereguiluz/easyadmin-bundle": "~1.0",
-        "doctrine/doctrine-fixtures-bundle": "^2.2",
         "friendsofsymfony/user-bundle": "dev-master",
         "vich/uploader-bundle": "^1.0.0-beta5",
         "qafoolabs/no-framework-bundle": "dev-feature/symfony3",
@@ -42,7 +41,8 @@
         "phpunit/phpunit": "^4.7",
         "elao/web-profiler-extra-bundle": "^2.3",
         "liip/functional-test-bundle": "^1.5",
-        "hautelook/alice-bundle": "^1.2"
+        "hautelook/alice-bundle": "^1.2",
+        "doctrine/data-fixtures": "^1.1"
     },
     "scripts": {
         "post-root-package-install": [

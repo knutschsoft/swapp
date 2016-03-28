@@ -1,29 +1,38 @@
 <?php
 namespace Tests\AppBundle\EdgeToEdge;
 
-class WayPointTest extends BaseWebTestCase
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+
+class WayPointTest extends WebTestCase
 {
     public function testWayPointShow()
     {
-        $this->logIn();
-        $crawler = $this->client->request('GET', '/walks');
-
-        $crawler = $crawler->filter('table td a');
-
-        $crawler = $this->client->click($crawler->link());
-
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code of "Runde ansehen" is ' . $this->client->getResponse()->getStatusCode()
+        $this->loadFixtureFiles(
+            [
+                '@AppBundle/DataFixtures/ORM/user.yml',
+                '@AppBundle/DataFixtures/ORM/walk.yml',
+                '@AppBundle/DataFixtures/ORM/systemicQuestion.yml',
+                '@AppBundle/DataFixtures/ORM/wayPoint.yml',
+            ]
         );
 
+        $client = static::makeClient(true);
+
+        $crawler = $client->request('GET', '/walks');
+        $this->isSuccessful($client->getResponse());
+
+        // link in first table which is listing walks
         $crawler = $crawler->filter('table td a');
 
-        $this->client->click($crawler->link());
+        $crawler = $client->click($crawler->link());
 
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code of "Wegpunkt ansehen" is ' . $this->client->getResponse()->getStatusCode()
-        );
+        $this->isSuccessful($client->getResponse());
+
+        // link in first table which is listing wayPoints
+        $crawler = $crawler->filter('table td a');
+
+        $client->click($crawler->link());
+
+        $this->isSuccessful($client->getResponse());
     }
 }

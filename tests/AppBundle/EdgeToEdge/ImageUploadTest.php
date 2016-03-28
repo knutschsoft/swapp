@@ -1,23 +1,30 @@
 <?php
 namespace Tests\AppBundle\EdgeToEdge;
 
-class ImageUploadTest extends BaseWebTestCase
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+
+class ImageUploadTest extends WebTestCase
 {
     public function testImageUpload()
     {
-        $this->logIn();
-        $this->client->followRedirects(true);
-        $crawler = $this->client->request('GET', '/walks');
+        $this->loadFixtureFiles(
+            [
+                '@AppBundle/DataFixtures/ORM/user.yml',
+                '@AppBundle/DataFixtures/ORM/team.yml',
+                '@AppBundle/DataFixtures/ORM/walk.yml',
+                '@AppBundle/DataFixtures/ORM/systemicQuestion.yml',
+                '@AppBundle/DataFixtures/ORM/wayPoint.yml',
+            ]
+        );
+
+        $client = static::makeClient(true);
+        $client->followRedirects(true);
+        $crawler = $client->request('GET', '/walks');
 
         $crawler = $crawler->selectLink('Runde beginnen');
 
-
-        $crawler = $this->client->click($crawler->link());
-
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code of "Runde beginnen" is ' . $this->client->getResponse()->getStatusCode()
-        );
+        $crawler = $client->click($crawler->link());
+        $this->isSuccessful($client->getResponse());
 
         $form = $crawler->selectButton('Wegpunkt anlegen')->form(
             [
@@ -26,50 +33,30 @@ class ImageUploadTest extends BaseWebTestCase
             ]
         );
 
-        $crawler = $this->client->submit($form);
-
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code of "Wegpunkt anlegen" is ' . $this->client->getResponse()->getStatusCode()
-        );
-
-//        $crawler = $this->client->followRedirect();
+        $crawler = $client->submit($form);
+        $this->isSuccessful($client->getResponse());
 
         // submit invalid form; we are redirected to this form
         $form = $crawler->selectButton('speichern')->form();
-        $crawler = $this->client->submit($form);
-
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code of "Wegpunkt anlegen" is ' . $this->client->getResponse()->getStatusCode()
-        );
+        $crawler = $client->submit($form);
+        $this->isSuccessful($client->getResponse());
 
         $form = $crawler->selectButton('speichern')->form();
 
-
-//        $crawler = $this->client->followRedirect();
-
-        $fileLocation = $this->client->getContainer()->getParameter('kernel.root_dir');
+        $fileLocation = $client->getContainer()->getParameter('kernel.root_dir');
         $fileLocation .= '/../tests/AppBundle/fixtures/image.jpg';
 
         $form['app_create_way_point[imageFile][file]']->upload($fileLocation);
         $form['app_create_way_point[locationName]'] = 'Buxtehude is the locationName value';
         $form['app_create_way_point[note]'] = 'note value';
 
-        $crawler = $this->client->submit($form);
-
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code of "Wegpunkt anlegen" is ' . $this->client->getResponse()->getStatusCode()
-        );
+        $crawler = $client->submit($form);
+        $this->isSuccessful($client->getResponse());
 
         // check for saved image
         $link = $crawler->selectLink('Wegpunkt ansehen');
-        $crawler = $this->client->click($link->link());
-        $this->assertTrue(
-            $this->client->getResponse()->isSuccessful(),
-            'status code of "Wegpunkt anlegen" is ' . $this->client->getResponse()->getStatusCode()
-        );
+        $crawler = $client->click($link->link());
+        $this->isSuccessful($client->getResponse());
 
         $img = $crawler->filter('img');
         $this->assertSame('/images/way_points/image.jpg', $img->attr('src'));
