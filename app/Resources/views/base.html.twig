@@ -11,6 +11,14 @@
     </head>
     <body>
         {% block content %}{% endblock %}
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <div class="bold border-top p1 block clearfix">
+                <a class="btn btn-primary right bg-red" href="{{ logout_path() }}">
+                    Logout
+                </a>
+            </div>
+        {% endif %}
         {% block javascripts %}
             <script src="/js/global.js"></script>
         {% endblock %}
