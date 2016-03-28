@@ -120,7 +120,7 @@ class DeploymentCommand extends Command
         );
         $this->executeRemoteCommand(
             sprintf(
-                'php %s/bin/console doctrine:fixtures:load --no-interaction --env=prod',
+                'php %s/bin/console hautelook_alice:doctrine:fixtures:load --no-interaction --env=prod',
                 $this->remoteAppRoot
             )
         );
