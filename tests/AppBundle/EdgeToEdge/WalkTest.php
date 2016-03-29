@@ -19,7 +19,12 @@ class WalkTest extends WebTestCase
             ]
         );
 
-        $client = static::makeClient(true);
+        $credentials = [
+            'username' => 'admin',
+            'password' => 'admin',
+        ];
+
+        $client = static::makeClient($credentials);
         $client->followRedirects(true);
 
         $crawler = $client->request('GET', '/walks');

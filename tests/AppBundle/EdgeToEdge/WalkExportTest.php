@@ -7,7 +7,12 @@ class WalkExportTest extends WebTestCase
 {
     public function testWalkExportIsSuccessful()
     {
-        $client = static::makeClient(true);
+        $credentials = [
+            'username' => 'admin',
+            'password' => 'admin',
+        ];
+
+        $client = static::makeClient($credentials);
 
         ob_start();
         $client->request('GET', '/walkexport');

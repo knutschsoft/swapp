@@ -12,9 +12,6 @@ framework:
         collect: false
 
 liip_functional_test:
-    authentication:
-        username: "admin"
-        password: "admin"
     cache_sqlite_db: true
 
 doctrine:

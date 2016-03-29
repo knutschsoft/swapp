@@ -19,7 +19,12 @@ class WayPointTest extends WebTestCase
             ]
         );
 
-        $client = static::makeClient(true);
+        $credentials = [
+            'username' => 'admin',
+            'password' => 'admin',
+        ];
+
+        $client = static::makeClient($credentials);
 
         $crawler = $client->request('GET', '/walks');
         $this->isSuccessful($client->getResponse());

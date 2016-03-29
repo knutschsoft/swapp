@@ -10,7 +10,12 @@ class ApplicationAvailabilityTest extends WebTestCase
      */
     public function testPageIsSuccessful($url)
     {
-        $client = static::makeClient(true);
+        $credentials = [
+            'username' => 'admin',
+            'password' => 'admin',
+        ];
+
+        $client = static::makeClient($credentials);
         $client->request('GET', $url);
         $this->isSuccessful($client->getResponse());
     }
