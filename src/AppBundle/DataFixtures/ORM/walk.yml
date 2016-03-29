@@ -1,6 +1,6 @@
 AppBundle\Entity\Walk:
     walk_{1..10}:
-        name: <name()>
+        name: <domainWord()>
         startTime: <datetime()>
         endTime: <datetime()>
         rating: <numberBetween(1, 5)>
@@ -11,6 +11,5 @@ AppBundle\Entity\Walk:
         holidays: <randomElement($array = array (true, false))>
         isResubmission: <randomElement($array = array (true, false))>
         conceptOfDay: <randomElement($array = array (true, false))>
-        teamName: 'Connect to Team?'
+        teamName: '@team*->name'
         systemicQuestion: '@systemic_question_*'
-#        wayPoints: <numberBetween(1, 5)>x @way_point*
