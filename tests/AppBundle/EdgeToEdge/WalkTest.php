@@ -10,8 +10,12 @@ class WalkTest extends WebTestCase
         $this->loadFixtureFiles(
             [
                 '@AppBundle/DataFixtures/ORM/user.yml',
+                '@AppBundle/DataFixtures/ORM/guest.yml',
+                '@AppBundle/DataFixtures/ORM/tag.yml',
                 '@AppBundle/DataFixtures/ORM/team.yml',
+                '@AppBundle/DataFixtures/ORM/walk.yml',
                 '@AppBundle/DataFixtures/ORM/systemicQuestion.yml',
+                '@AppBundle/DataFixtures/ORM/wayPoint.yml',
             ]
         );
 
