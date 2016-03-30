@@ -1,0 +1,14 @@
+global_exclude_dirs:
+    - vendor
+    - vendors
+    - test
+    - tests
+    - Tests
+    - lib/vendor
+    - web/js
+
+exclude_patterns:
+    - app/check.php
+    - app/SymfonyRequirements.php
+    - web/config.php
+    - web/app_*.php
