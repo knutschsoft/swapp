@@ -5,10 +5,8 @@ use AppBundle\Entity\Walk;
 use AppBundle\Entity\WayPoint;
 use AppBundle\Form\Type\WayPointType;
 use AppBundle\Repository\SystemicQuestionRepositoryInterface;
-use AppBundle\Repository\TagRepositoryInterface;
 use AppBundle\Repository\WalkRepositoryInterface;
 use AppBundle\Repository\WayPointRepositoryInterface;
-use FOS\UserBundle\Model\UserManagerInterface;
 use QafooLabs\MVC\Flash;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -23,8 +21,6 @@ class WayPointController
     private $wayPointRepository;
     private $router;
     private $formFactory;
-    private $userManager;
-    private $tagRepository;
 
     /**
      * @param EngineInterface                     $templateEngine
@@ -33,8 +29,6 @@ class WayPointController
      * @param RouterInterface                     $router
      * @param WalkRepositoryInterface             $walkRepository
      * @param SystemicQuestionRepositoryInterface $systemicQuestionRepository
-     * @param UserManagerInterface                $userManager
-     * @param TagRepositoryInterface              $tagRepository
      */
     public function __construct(
         EngineInterface $templateEngine,
@@ -42,9 +36,7 @@ class WayPointController
         WayPointRepositoryInterface $wayPointRepository,
         RouterInterface $router,
         WalkRepositoryInterface $walkRepository,
-        SystemicQuestionRepositoryInterface $systemicQuestionRepository,
-        UserManagerInterface $userManager,
-        TagRepositoryInterface $tagRepository
+        SystemicQuestionRepositoryInterface $systemicQuestionRepository
     ) {
         $this->templateEngine = $templateEngine;
         $this->wayPointRepository = $wayPointRepository;
@@ -52,8 +44,6 @@ class WayPointController
         $this->router = $router;
         $this->walkRepository = $walkRepository;
         $this->systemicQuestionRepository = $systemicQuestionRepository;
-        $this->userManager = $userManager;
-        $this->tagRepository = $tagRepository;
     }
 
     /**
