@@ -4,10 +4,8 @@ services:
         arguments:
             - '@app.factory_service.walk_repository'
             - '@router'
-            - '@app.factory_service.way_point_repository'
             - '@fos_user.user_manager'
             - '@app.factory_service.systemic_question_repository'
-            - '@app.factory_service.tag_repository'
 
     app.controller.tag_controller:
         class: AppBundle\Controller\TagController

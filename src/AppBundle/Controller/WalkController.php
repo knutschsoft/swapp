@@ -7,9 +7,7 @@ use AppBundle\Entity\Walk;
 use AppBundle\Form\Type\WalkPrologueType;
 use AppBundle\Form\Type\WalkType;
 use AppBundle\Repository\SystemicQuestionRepositoryInterface;
-use AppBundle\Repository\TagRepositoryInterface;
 use AppBundle\Repository\WalkRepositoryInterface;
-use AppBundle\Repository\WayPointRepositoryInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use QafooLabs\MVC\Flash;
 use QafooLabs\MVC\FormRequest;
@@ -22,33 +20,25 @@ class WalkController
 {
     private $walkRepository;
     private $router;
-    private $wayPointRepository;
     private $userManager;
     private $systemicQuestionRepository;
-    private $tagRepository;
 
     /**
      * @param WalkRepositoryInterface             $walkRepository
      * @param RouterInterface                     $router
-     * @param WayPointRepositoryInterface         $wayPointRepository
      * @param UserManagerInterface                $userManager
      * @param SystemicQuestionRepositoryInterface $systemicQuestionRepository
-     * @param TagRepositoryInterface              $tagRepository
      */
     public function __construct(
         WalkRepositoryInterface $walkRepository,
         RouterInterface $router,
-        WayPointRepositoryInterface $wayPointRepository,
         UserManagerInterface $userManager,
-        SystemicQuestionRepositoryInterface $systemicQuestionRepository,
-        TagRepositoryInterface $tagRepository
+        SystemicQuestionRepositoryInterface $systemicQuestionRepository
     ) {
         $this->walkRepository = $walkRepository;
         $this->router = $router;
-        $this->wayPointRepository = $wayPointRepository;
         $this->userManager = $userManager;
         $this->systemicQuestionRepository = $systemicQuestionRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     /**
