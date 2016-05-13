@@ -2,6 +2,7 @@
 namespace AppBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,7 +11,7 @@ use Symfony\Component\Process\Process;
 
 class DeploymentCommand extends Command
 {
-    private $instanceName;
+    private $instanceNames;
     private $remoteAppRoot;
 
     /**
@@ -43,11 +44,11 @@ class DeploymentCommand extends Command
     {
         $this->setName('swapp:deploy');
         $this->setDescription('Deploys swapp project.');
-        $this->addOption(
-            'instance-name',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'instance-name; currently supported are beta1 till beta11 and swapp'
+        $this->addArgument(
+            'instance-names',
+            InputArgument::IS_ARRAY  | InputArgument::REQUIRED,
+            'instance-names; currently supported are swapp1.streetworkapp.de till swapp11.streetworkapp.de' .
+            ' separate multiple values with a space'
         );
     }
 
@@ -61,20 +62,27 @@ class DeploymentCommand extends Command
     {
         $this->output = $output;
 
-        $this->instanceName = $input->getOption('instance-name');
+        $this->instanceNames = $input->getArgument('instance-names');
 
-        $this->remoteAppRoot = sprintf('/var/www/%s', $this->instanceName);
-
-        $output->writeln(
-            sprintf(
-                '<info>Deploy swapp to [ %s ] using [ %s ]</info>',
-                $this->remoteAppRoot,
-                $this->instanceName
-            )
-        );
         $this->buildProject();
 
-        $this->doDeploy();
+        foreach ($this->instanceNames as $instanceName) {
+            $this->remoteAppRoot = sprintf('/var/www/%s', $instanceName);
+
+            $output->writeln(
+                sprintf(
+                    '<info>Deploy swapp to [ %s ] using [ %s ]</info>',
+                    $this->remoteAppRoot,
+                    $instanceName
+                )
+            );
+
+            $this->setCredentials($instanceName);
+
+            $this->doDeploy();
+        }
+
+        $this->clearBuildDir();
 
         $this->info('SUCCESS');
     }
@@ -87,8 +95,6 @@ class DeploymentCommand extends Command
         $this->doctrineRemoteRecreation();
         $this->remoteWarmupCache();
         $this->changeOwnerToWwwData();
-
-        $this->clearBuildDir();
     }
 
     private function changeOwnerToWwwData()
@@ -172,15 +178,17 @@ class DeploymentCommand extends Command
         $this->clearBuildDir();
         $this->checkoutBranch();
         $this->installInBuildDir();
-        $this->setCredentials();
     }
 
-    private function setCredentials()
+    /**
+     * @param string $instanceName
+     */
+    private function setCredentials($instanceName)
     {
         $credentialsTmpDir = 'build/credentials_tmp';
         $this->runProcess(sprintf('git clone %s %s', $this->credentialsLocation, $credentialsTmpDir));
 
-        $credentialsFile = sprintf('%s/%s/%s/parameters.yml', $credentialsTmpDir, 'swapp', $this->instanceName);
+        $credentialsFile = sprintf('%s/%s/%s/parameters.yml', $credentialsTmpDir, 'swapp', $instanceName);
         $credentialsDestination = 'build/app/config';
 
         $this->runProcess(sprintf('mv %s %s', $credentialsFile, $credentialsDestination));
