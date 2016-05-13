@@ -157,7 +157,7 @@ class DeploymentCommand extends Command
         $syncCommand = sprintf(
             'rsync %s %s build/* %s@%s:%s',
             '--recursive --cvs-exclude --verbose --copy-links --delete --delete-after --delete-excluded --links --times',
-            '--exclude=/var/cache/* --exclude=/var/logs/* --exclude=/web/app_*.php --exclude=/web/config.php',
+            '--exclude=/var/cache/* --exclude=/var/logs/* --exclude=/web/app_*.php --exclude=/web/config.php  --exclude=git_hooks',
             $this->deployUser,
             $this->hostIp,
             $this->remoteAppRoot
