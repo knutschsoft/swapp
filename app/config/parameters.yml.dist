@@ -26,4 +26,4 @@ parameters:
     command.credentials_location: ~
 
     bugsnag.app_version: local_dev
-    bugsnag.api_key: ~
+    bugsnag.api_key: dummy
