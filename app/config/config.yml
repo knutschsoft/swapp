@@ -4,6 +4,12 @@ imports:
     - { resource: admin.yml }
     - { resource: services.yml }
 
+bugsnag:
+    api_key: '%bugsnag.api_key%'
+    enabled_stages: [prod]
+    notify_stages: [production]
+    app_version: '%bugsnag.app_version%'
+
 framework:
     #esi:             ~
     translator:      { fallbacks: ["de"] }

@@ -12,3 +12,5 @@ parameters:
     mailer_password: null
     locale: de
     secret: ThisTokenIsNotSoSecretChangeIt
+    bugsnag.app_version: travis
+    bugsnag.api_key: ~
