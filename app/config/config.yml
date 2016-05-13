@@ -9,6 +9,7 @@ bugsnag:
     enabled_stages: [prod]
     notify_stages: [production]
     app_version: '%bugsnag.app_version%'
+    user: app.bugsnag_user
 
 framework:
     #esi:             ~

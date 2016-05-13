@@ -23,6 +23,10 @@ services:
         tags:
             - { name: request.param_converter, converter: example, priority: 10 }
 
+    app.bugsnag_user:
+        class: AppBundle\BugsnagUser
+        arguments: ['@security.token_storage']
+
     faker.provider.tag:
         class: AppBundle\DataFixtures\Faker\Provider\TagProvider
         tags: [ { name: hautelook_alice.faker.provider } ]
