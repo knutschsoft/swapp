@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "acfe115ab32e516145e3597a0b4f743b",
-    "content-hash": "ff854f246317b422e4cfdc4a9806767b",
+    "hash": "e0c15e2b5f84f5ab6ad0076ee0f86ed3",
+    "content-hash": "291770b182b910ac70ecbd0f072b4d59",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -994,23 +994,22 @@
         },
         {
             "name": "evolution7/bugsnag-bundle",
-            "version": "2.0.0",
+            "version": "dev-master",
             "target-dir": "Evolution7/BugsnagBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/evolution7/Evolution7BugsnagBundle.git",
-                "reference": "eaf263d1d2a8edadd508866880c6ab828ad7c2db"
+                "reference": "17c8cc40e1cad91303099f9f2b282c7679c95a93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/evolution7/Evolution7BugsnagBundle/zipball/eaf263d1d2a8edadd508866880c6ab828ad7c2db",
-                "reference": "eaf263d1d2a8edadd508866880c6ab828ad7c2db",
+                "url": "https://api.github.com/repos/evolution7/Evolution7BugsnagBundle/zipball/17c8cc40e1cad91303099f9f2b282c7679c95a93",
+                "reference": "17c8cc40e1cad91303099f9f2b282c7679c95a93",
                 "shasum": ""
             },
             "require": {
                 "bugsnag/bugsnag": "2.*",
-                "php": ">=5.3.3",
-                "symfony/symfony": ">=2.4.0"
+                "symfony/symfony": "~2.4.0|~3.0"
             },
             "require-dev": {
                 "evolution7/qa-tools": "1.*"
@@ -1035,7 +1034,7 @@
                 "logging",
                 "tracking"
             ],
-            "time": "2016-01-20 04:39:56"
+            "time": "2016-03-28 23:40:24"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -4154,7 +4153,8 @@
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
         "vich/uploader-bundle": 10,
-        "qafoolabs/no-framework-bundle": 20
+        "qafoolabs/no-framework-bundle": 20,
+        "evolution7/bugsnag-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

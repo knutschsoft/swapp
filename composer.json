@@ -35,7 +35,7 @@
         "vich/uploader-bundle": "^1.0.0-beta5",
         "qafoolabs/no-framework-bundle": "dev-feature/symfony3",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "evolution7/bugsnag-bundle": "^2.0"
+        "evolution7/bugsnag-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
