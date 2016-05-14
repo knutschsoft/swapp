@@ -9,13 +9,13 @@ class WayPointTest extends WebTestCase
     {
         $this->loadFixtureFiles(
             [
-                '@AppBundle/DataFixtures/ORM/user.yml',
-                '@AppBundle/DataFixtures/ORM/guest.yml',
-                '@AppBundle/DataFixtures/ORM/tag.yml',
-                '@AppBundle/DataFixtures/ORM/team.yml',
-                '@AppBundle/DataFixtures/ORM/walk.yml',
-                '@AppBundle/DataFixtures/ORM/systemicQuestion.yml',
-                '@AppBundle/DataFixtures/ORM/wayPoint.yml',
+                '@AppBundle/DataFixtures/ORM/test/user.yml',
+                '@AppBundle/DataFixtures/ORM/test/guest.yml',
+                '@AppBundle/DataFixtures/ORM/test/tag.yml',
+                '@AppBundle/DataFixtures/ORM/test/team.yml',
+                '@AppBundle/DataFixtures/ORM/test/walk.yml',
+                '@AppBundle/DataFixtures/ORM/test/systemicQuestion.yml',
+                '@AppBundle/DataFixtures/ORM/test/wayPoint.yml',
             ]
         );
 
