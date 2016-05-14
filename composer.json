@@ -46,6 +46,29 @@
         "doctrine/data-fixtures": "^1.1"
     },
     "scripts": {
+      "database-init": [
+        "php bin/console doctrine:database:drop --no-interaction --force --if-exists",
+        "php bin/console doctrine:database:create",
+        "php bin/console doctrine:migrations:migrate --no-interaction",
+        "php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction"
+      ],
+      "database-prototype": [
+        "php bin/console doctrine:generate:entities AppBundle",
+        "php bin/console doctrine:migrations:diff --no-interaction",
+        "php bin/console doctrine:migrations:migrate --no-interaction"
+      ],
+      "database-migrations-diff": [
+        "php bin/console doctrine:database:drop --no-interaction --force --if-exists",
+        "php bin/console doctrine:database:create",
+        "php bin/console doctrine:migrations:diff"
+      ],
+      "ci": [
+        "vendor/bin/phpcbf --standard=Symfony2 src || true",
+        "vendor/bin/phpcs --standard=symfony2 src || true",
+        "vendor/bin/phpunit || true",
+        "vendor/bin/phpmd src xml phpmd.xml || true",
+        "vendor/bin/phpcpd src || true"
+      ],
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
         ],
