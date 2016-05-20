@@ -27,8 +27,8 @@ Open a terminal and type in the following commands:
 
 ```
 cd /your/symfony/dir
-sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs web/images/way_points
-sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs web/images/way_points
+sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/logs web/images/way_points
+sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/logs web/images/way_points
 ```
 
 ### Setup webserver
@@ -64,7 +64,7 @@ sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs web/imag
 
 ```
 sudo a2ensite swapp.conf
-sudo service apache reload
+sudo service apache2 reload
 ```
 
 #### add in ```/etc/hosts```
