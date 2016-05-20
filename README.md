@@ -82,11 +82,11 @@ php composer.phar install
 
 ### Execute Migrations
 
-```php app/console doctrine:migrations:migrate --no-interaction```
+```php bin/console doctrine:migrations:migrate --no-interaction```
 
 ### Load data fixtures
 
-```php app/console doctrine:fixtures:load```
+```php bin/console doctrine:fixtures:load```
 
 ### Start unit tests
 
