@@ -86,7 +86,7 @@ php composer.phar install
 
 ### Load data fixtures
 
-```php bin/console doctrine:fixtures:load```
+```php bin/console hautelook_alice:doctrine:fixtures:load```
 
 ### Start unit tests
 
