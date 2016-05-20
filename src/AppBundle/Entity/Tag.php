@@ -25,12 +25,6 @@ class Tag
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $description;
-
-    /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
      * @var ArrayCollection
      */

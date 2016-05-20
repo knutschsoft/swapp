@@ -20,13 +20,6 @@ class TagType extends AbstractType
             )
         );
         $builder->add(
-            'description',
-            TextareaType::class,
-            array(
-                'label' => 'Beschreibung',
-            )
-        );
-        $builder->add(
             'color',
             TextType::class,
             array(

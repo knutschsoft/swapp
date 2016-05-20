@@ -356,6 +356,7 @@ class WayPointType extends AbstractType
             TextareaType::class,
             array(
                 'label' => 'Beobachtung',
+                'required' => false,
             )
         );
         $builder->add(
