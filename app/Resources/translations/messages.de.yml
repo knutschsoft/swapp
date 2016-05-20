@@ -14,13 +14,13 @@ eadmin:
         list:
           title: Übersicht Runden
     way-point:
-        label: Teams
+        label: Wegpunkte
         list:
-            title: Übersicht Teams
+            title: Übersicht Wegpunkte
     tag:
-        label: Gäste
+        label: Tag
         list:
-            title: Übersicht Gäste
+            title: Übersicht Tags
     user:
         label: Benutzer
         list:
