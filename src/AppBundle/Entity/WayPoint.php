@@ -107,10 +107,12 @@ class WayPoint
      * @Assert\NotBlank()
      */
     private $femalesAdultCount;
+
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $note;
+
     /**
      * @ORM\Column(type="boolean", length=255)
      */
