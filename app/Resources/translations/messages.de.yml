@@ -48,7 +48,6 @@ tag:
         headline: Tags
     overview:
         name: Name
-        description: Beschreibung
         color: Farbe
 
 global:
