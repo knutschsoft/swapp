@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e82764d2eaa5310f406dd6aa77ddf980",
-    "content-hash": "0a6954be556e083198ef6a1fb314ce6e",
+    "hash": "8c0ea8fa7f216dfa2746122739e7aa30",
+    "content-hash": "bd95921f1b2cffbcbbd4eaf7021694cd",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1717,16 +1717,16 @@
         },
         {
             "name": "qafoolabs/no-framework-bundle",
-            "version": "dev-feature/symfony3",
+            "version": "v2.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/UFOMelkor/QafooLabsNoFrameworkBundle.git",
-                "reference": "e548f77fcad62da165ab713a598c108542219419"
+                "url": "https://github.com/QafooLabs/QafooLabsNoFrameworkBundle.git",
+                "reference": "b5ac4ff0cefcce804c56c73f1f4e4b8f886d38fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UFOMelkor/QafooLabsNoFrameworkBundle/zipball/e548f77fcad62da165ab713a598c108542219419",
-                "reference": "e548f77fcad62da165ab713a598c108542219419",
+                "url": "https://api.github.com/repos/QafooLabs/QafooLabsNoFrameworkBundle/zipball/b5ac4ff0cefcce804c56c73f1f4e4b8f886d38fa",
+                "reference": "b5ac4ff0cefcce804c56c73f1f4e4b8f886d38fa",
                 "shasum": ""
             },
             "require-dev": {
@@ -1750,17 +1750,18 @@
                     "QafooLabs\\MVC\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Benjamin Eberlei",
-                    "email": "benjamin@qafoo.com"
-                },
-                {
                     "name": "Manuel Pichler",
                     "email": "manuel@qafoo.com"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "benjamin@qafoo.com"
                 }
             ],
             "description": "Various improvements for Symfony applications",
@@ -1768,10 +1769,7 @@
                 "bundle",
                 "symfony"
             ],
-            "support": {
-                "source": "https://github.com/UFOMelkor/QafooLabsNoFrameworkBundle/tree/feature/symfony3"
-            },
-            "time": "2016-01-12 12:58:54"
+            "time": "2016-05-08 08:37:24"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -4153,8 +4151,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
-        "vich/uploader-bundle": 10,
-        "qafoolabs/no-framework-bundle": 20
+        "vich/uploader-bundle": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
