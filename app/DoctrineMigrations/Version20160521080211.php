@@ -135,7 +135,7 @@ class Version20160521080211 extends AbstractMigration
                         "Gewalt (verbal)",
                         "Drogen",
                         "Partnerschaft",
-                        "jobcenter",
+                        "Jobcenter",
                         "Ausbildung",
                         "Sexualität",
                         "Politik",
