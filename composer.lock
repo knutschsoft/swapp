@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aed97e8c04014217e5d96d806bba3e68",
-    "content-hash": "291770b182b910ac70ecbd0f072b4d59",
+    "hash": "e82764d2eaa5310f406dd6aa77ddf980",
+    "content-hash": "0a6954be556e083198ef6a1fb314ce6e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -994,22 +994,23 @@
         },
         {
             "name": "evolution7/bugsnag-bundle",
-            "version": "dev-master",
+            "version": "2.0.0",
             "target-dir": "Evolution7/BugsnagBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/evolution7/Evolution7BugsnagBundle.git",
-                "reference": "17c8cc40e1cad91303099f9f2b282c7679c95a93"
+                "reference": "eaf263d1d2a8edadd508866880c6ab828ad7c2db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/evolution7/Evolution7BugsnagBundle/zipball/17c8cc40e1cad91303099f9f2b282c7679c95a93",
-                "reference": "17c8cc40e1cad91303099f9f2b282c7679c95a93",
+                "url": "https://api.github.com/repos/evolution7/Evolution7BugsnagBundle/zipball/eaf263d1d2a8edadd508866880c6ab828ad7c2db",
+                "reference": "eaf263d1d2a8edadd508866880c6ab828ad7c2db",
                 "shasum": ""
             },
             "require": {
                 "bugsnag/bugsnag": "2.*",
-                "symfony/symfony": "~2.4.0|~3.0"
+                "php": ">=5.3.3",
+                "symfony/symfony": ">=2.4.0"
             },
             "require-dev": {
                 "evolution7/qa-tools": "1.*"
@@ -1034,7 +1035,7 @@
                 "logging",
                 "tracking"
             ],
-            "time": "2016-03-28 23:40:24"
+            "time": "2016-01-20 04:39:56"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -1042,12 +1043,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "abb35b94ed8ec78a504c9e1a2cd803d85d3ffad9"
+                "reference": "d1fccc6335b74beca94525551cacc06b256ed261"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/abb35b94ed8ec78a504c9e1a2cd803d85d3ffad9",
-                "reference": "abb35b94ed8ec78a504c9e1a2cd803d85d3ffad9",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/d1fccc6335b74beca94525551cacc06b256ed261",
+                "reference": "d1fccc6335b74beca94525551cacc06b256ed261",
                 "shasum": ""
             },
             "require": {
@@ -1103,7 +1104,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2016-05-13 11:27:34"
+            "time": "2016-05-27 12:14:43"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -4153,8 +4154,7 @@
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
         "vich/uploader-bundle": 10,
-        "qafoolabs/no-framework-bundle": 20,
-        "evolution7/bugsnag-bundle": 20
+        "qafoolabs/no-framework-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
