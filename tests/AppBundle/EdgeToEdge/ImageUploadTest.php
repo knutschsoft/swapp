@@ -20,8 +20,8 @@ class ImageUploadTest extends WebTestCase
         );
 
         $credentials = [
-            'username' => 'admin',
-            'password' => 'admin',
+            'username' => 'waldi_beta',
+            'password' => 'waldi_beta',
         ];
 
         $client = static::makeClient($credentials);
