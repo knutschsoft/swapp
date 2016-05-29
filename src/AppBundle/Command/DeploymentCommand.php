@@ -13,6 +13,7 @@ class DeploymentCommand extends Command
 {
     private $instanceNames;
     private $remoteAppRoot;
+    private $isDatabaseRecreation;
 
     /**
      * @var OutputInterface $output
@@ -50,6 +51,12 @@ class DeploymentCommand extends Command
             'instance-names; currently supported are swapp1.streetworkapp.de till swapp11.streetworkapp.de' .
             ' separate multiple values with a space'
         );
+        $this->addOption(
+            'database-recreation',
+            'd',
+            InputOption::VALUE_NONE,
+            'Use if the database should be recreated on deployment. Warning! Data will be erased.'
+        );
     }
 
     /**
@@ -64,6 +71,8 @@ class DeploymentCommand extends Command
 
         $this->instanceNames = $input->getArgument('instance-names');
 
+        $this->isDatabaseRecreation = (bool) $input->getOption('database-recreation');
+
         $this->buildProject();
 
         foreach ($this->instanceNames as $instanceName) {
@@ -71,9 +80,10 @@ class DeploymentCommand extends Command
 
             $output->writeln(
                 sprintf(
-                    '<info>Deploy swapp to [ %s ] using [ %s ]</info>',
+                    '<info>Deploy swapp to [ %s ] using [ %s ] with [ %s ]</info>',
                     $this->remoteAppRoot,
-                    $instanceName
+                    $instanceName,
+                    $this->isDatabaseRecreation ? 'database recreation' : 'migration'
                 )
             );
 
@@ -92,7 +102,13 @@ class DeploymentCommand extends Command
         $this->rSync();
 
         $this->clearRemoteCache();
-        $this->doctrineRemoteRecreation();
+
+        if ($this->isDatabaseRecreation) {
+            $this->doctrineRemoteRecreation();
+        }
+
+        $this->doctrineRemoteMigrate();
+
         $this->remoteWarmupCache();
         $this->changeOwnerToWwwData();
     }
@@ -110,6 +126,17 @@ class DeploymentCommand extends Command
         );
     }
 
+    private function doctrineRemoteMigrate()
+    {
+        $this->info('doctrineRemoteMigrate');
+        $this->executeRemoteCommand(
+            sprintf(
+                'php %s/bin/console doctrine:migration:migrate --no-interaction --env=prod',
+                $this->remoteAppRoot
+            )
+        );
+    }
+
     private function doctrineRemoteRecreation()
     {
         $this->info('doctrineRemoteRecreation');
@@ -119,12 +146,14 @@ class DeploymentCommand extends Command
                 $this->remoteAppRoot
             )
         );
+
         $this->executeRemoteCommand(
             sprintf(
-                'php %s/bin/console doctrine:schema:create --no-interaction --env=prod',
+                'php %s/bin/console doctrine:migration:migrate --no-interaction --env=prod',
                 $this->remoteAppRoot
             )
         );
+
         $this->executeRemoteCommand(
             sprintf(
                 'php %s/bin/console hautelook_alice:doctrine:fixtures:load --no-interaction --env=dev',
