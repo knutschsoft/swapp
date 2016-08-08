@@ -64,9 +64,6 @@
         "vendor/bin/phpmd src xml phpmd.xml || true",
         "vendor/bin/phpcpd src || true"
       ],
-        "post-root-package-install": [
-            "SymfonyStandard\\Composer::hookRootPackageInstall"
-        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
