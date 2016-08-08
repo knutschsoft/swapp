@@ -9,11 +9,11 @@ AppBundle\Entity\User:
         username: admin
         plainPassword: admin
         email: <email()>
-        enabled: 0
-        roles: <randomElement($array = array (array('ROLE_ADMIN', 'ROLE_USER')))>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN')))>
     user_inactive:
             username: inactiveuser
-            plainPassword: inactiveUser
+            plainPassword: inactiveuser
             email: <email()>
             enabled: 0
             roles: <randomElement($array = array (array('ROLE_ADMIN', 'ROLE_USER')))>
