@@ -2,7 +2,7 @@
 
 {% block fos_user_content %}
     {% if error %}
-        <div class="bold center p2 mb2 white bg-red rounded">{{ error|trans({}, 'FOSUserBundle') }}</div>
+        <div class="bold center p2 mb2 white bg-red rounded">{{ error.messageKey|trans( [], 'security') }}</div>
     {% endif %}
     <div class="sm-col-10 md-col-6 lg-col-4 mx-auto mt2">
         <div class="overflow-hidden bg-white border rounded">
