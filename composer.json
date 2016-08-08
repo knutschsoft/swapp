@@ -12,6 +12,11 @@
            "Tests\\": "tests/"
         }
     },
+    "config": {
+      "platform": {
+        "php": "5.5.21"
+      }
+    },
     "require": {
         "php": ">=5.5",
         "symfony/symfony": "3.1.*",
