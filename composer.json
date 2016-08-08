@@ -37,7 +37,8 @@
         "elao/web-profiler-extra-bundle": "^2.3",
         "liip/functional-test-bundle": "^1.5",
         "hautelook/alice-bundle": "^1.2",
-        "doctrine/data-fixtures": "^1.1"
+        "doctrine/data-fixtures": "^1.1",
+        "symfony/phpunit-bridge": "^3.1"
     },
     "scripts": {
       "database-init": [
