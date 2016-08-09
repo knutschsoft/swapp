@@ -72,7 +72,7 @@ doctrine:
                 enabled: true
 
 doctrine_migrations:
-    dir_name: %kernel.root_dir%/DoctrineMigrations
+    dir_name: '%kernel.root_dir%/DoctrineMigrations'
     namespace: Application\Migrations
     table_name: migration_versions
     name: Application Migrations
@@ -97,7 +97,7 @@ vich_uploader:
     mappings:
         way_point_image:
             uri_prefix:         /images/way_points
-            upload_destination: %kernel.root_dir%/../web/images/way_points
+            upload_destination: '%kernel.root_dir%/../web/images/way_points'
             inject_on_load:     false # should the file be injected into the uploadable entity when it is loaded from the data store
             delete_on_update:   true  # should the file be deleted when a new file is uploaded
             delete_on_remove:   true  # should the file be deleted when a new file is removed
