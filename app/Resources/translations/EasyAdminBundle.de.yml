@@ -4,43 +4,43 @@ app:
         list:
             title: Teams
         show:
-            title: Team %entity_id% anzeigen
+            title: Team '%entity_id%' anzeigen
     guest:
         menu: Gäste
         list:
             title: Gäste
         show:
-            title: Gast %entity_id% anzeigen
+            title: Gast '%entity_id%' anzeigen
     systemic-question:
         menu: Fragen
         list:
             title: Fragen
         show:
-            title: Frage %entity_id% anzeigen
+            title: Frage '%entity_id%' anzeigen
     tag:
         menu: Tags
         list:
             title: Tags
         show:
-            title: Tag %entity_id% anzeigen
+            title: Tag '%entity_id%' anzeigen
     user:
         menu: Benutzer
         list:
             title: Benutzer
         show:
-            title: Benutzer %entity_id% anzeigen
+            title: Benutzer '%entity_id%' anzeigen
     walk:
         menu: Runden
         list:
             title: Runden
         show:
-            title: Runde %entity_id% anzeigen
+            title: Runde '%entity_id%' anzeigen
     way_point:
         menu: Wegpunkte
         list:
             title: Wegpunkte
         show:
-            title: Wegpunkt %entity_id% anzeigen
+            title: Wegpunkt '%entity_id%' anzeigen
 
 
 
