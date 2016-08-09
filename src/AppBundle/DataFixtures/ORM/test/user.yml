@@ -10,7 +10,7 @@ AppBundle\Entity\User:
         plainPassword: admin
         email: <email()>
         enabled: 1
-        roles: <randomElement($array = array (array('ROLE_ADMIN', 'ROLE_USER')))>
+        roles: <randomElement($array = array (array('ROLE_ADMIN')))>
     user_waldi_beta:
         username: waldi_beta
         plainPassword: waldi_beta
