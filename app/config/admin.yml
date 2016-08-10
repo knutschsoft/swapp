@@ -18,6 +18,10 @@ easy_admin:
                 fields:
                   - 'name'
                   - 'users'
+            edit:
+                fields:
+                    - 'name'
+                    - { property: 'users', type_options: { disabled: true } }
             show:
                 fields:
                   - 'name'

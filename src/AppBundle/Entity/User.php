@@ -111,13 +111,15 @@ class User extends BaseUser
     public function addTeam($team)
     {
         $team->addUser($this);
-        $this->teams[] = $team;
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+        }
     }
 
     /**
      * @param Team $team
      */
-    public function removeFromTeam($team)
+    public function removeTeam($team)
     {
         $team->removeUser($this);
         if (!$this->teams->contains($team)) {

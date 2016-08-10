@@ -109,7 +109,7 @@ class Team
     }
 
     /**
-     * @param User[] $users
+     * @param ArrayCollection
      */
     public function setUsers($users)
     {
