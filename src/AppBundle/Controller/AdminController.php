@@ -6,18 +6,37 @@ use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdmin
 
 class AdminController extends BaseAdminController
 {
-    public function createNewUsersEntity()
+    /**
+     * @return User
+     */
+    public function createNewUserEntity()
     {
-        return $this->container->get('fos_user.user_manager')->createUser();
+        return  new User();
     }
 
-    public function prePersistUsersEntity(User $user)
+    /**
+     * @param User $user
+     */
+    public function prePersistUserEntity(User $user)
     {
-        $this->container->get('fos_user.user_manager')->updateUser($user, false);
+        $teams = $user->getTeams();
+        if($teams) {
+            $user->setTeams($teams);
+            foreach ($teams as $team) {
+                $team->addUser($user);
+            }
+        }
     }
 
-    public function preUpdateUsersEntity(User $user)
+    /**
+     * @param User $user
+     */
+    public function preUpdateUserEntity(User $user)
     {
-        $this->container->get('fos_user.user_manager')->updateUser($user, false);
+        $teams = $user->getTeams();
+        if ($teams) {
+            $user->setTeams($teams);
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,12 +29,24 @@ class User extends BaseUser
     private $walks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Team", mappedBy="users")
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="users", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="users_teams")
      */
     private $teams;
 
     /**
-     * @return Team[]
+     * User constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->walks = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
      */
     public function getTeams()
     {
@@ -41,7 +54,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param Team[] $teams
+     * @param ArrayCollection
      */
     public function setTeams($teams)
     {
@@ -85,10 +98,30 @@ class User extends BaseUser
     }
 
     /**
-     * @param mixed $walks
+     * @param ArrayCollection
      */
     public function setWalks($walks)
     {
         $this->walks = $walks;
+    }
+
+    /**
+     * @param Team $team
+     */
+    public function addTeam($team)
+    {
+        $team->addUser($this);
+        $this->teams[] = $team;
+    }
+
+    /**
+     * @param Team $team
+     */
+    public function removeFromTeam($team)
+    {
+        $team->removeUser($this);
+        if (!$this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+        }
     }
 }

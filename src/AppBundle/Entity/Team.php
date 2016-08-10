@@ -3,6 +3,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMTeamRepository")
@@ -24,9 +25,20 @@ class Team
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="teams")
+     * @var arrayCollection
+     * @ORM\ManyToMany(
+     *     targetEntity="AppBundle\Entity\User",
+     *     mappedBy="teams")
      */
     public $users;
+
+    /**
+     * Team constructor.
+     */
+    public function __construct()
+    {
+        $this->users= new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -69,14 +81,31 @@ class Team
     }
 
     /**
-     * @return User[]
+     * @return ArrayCollection
      */
     public function getUsers()
     {
         return $this->users;
-        /* @var \Doctrine\ORM\PersistentCollection $users */
-        $users = $this->users;
-        return $users->last();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function addUser($user)
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+    }
+
+    /**
+     * @param User $user
+     */
+    public function removeUser($user)
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+        }
     }
 
     /**
