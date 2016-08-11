@@ -30,7 +30,7 @@ class User extends BaseUser
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="users", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="users")
      * @ORM\JoinTable(name="users_teams")
      */
     private $teams;
@@ -110,10 +110,7 @@ class User extends BaseUser
      */
     public function addTeam($team)
     {
-        $team->addUser($this);
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-        }
+        $this->teams[] = $team;
     }
 
     /**
@@ -121,9 +118,6 @@ class User extends BaseUser
      */
     public function removeTeam($team)
     {
-        $team->removeUser($this);
-        if (!$this->teams->contains($team)) {
-            $this->teams->removeElement($team);
-        }
+        $this->teams->removeElement($team);
     }
 }
