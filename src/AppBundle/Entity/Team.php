@@ -93,9 +93,8 @@ class Team
      */
     public function addUser($user)
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-        }
+        $this->users[] = $user;
+        $user->addTeam($this);
     }
 
     /**
@@ -103,9 +102,8 @@ class Team
      */
     public function removeUser($user)
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-        }
+        $this->users->removeElement($user);
+        $user->removeTeam($this);
     }
 
     /**

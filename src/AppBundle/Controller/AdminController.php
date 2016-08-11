@@ -29,13 +29,7 @@ class AdminController extends BaseAdminController
      */
     public function prePersistUserEntity(User $user)
     {
-        $teams = $user->getTeams();
-        if($teams) {
-            $user->setTeams($teams);
-            foreach ($teams as $team) {
-                $team->addUser($user);
-            }
-        }
+
     }
 
     /**
@@ -60,6 +54,17 @@ class AdminController extends BaseAdminController
             foreach ($users as $user) {
                 $user->addTeam($team);
             }
+        }
+    }
+
+    /**
+     * @param Team $team
+     */
+    public function preUpdateTeamEntity(Team $team)
+    {
+        $users = $team->getUsers();
+        if ($users) {
+            $team->setUsers($users);
         }
     }
 }
