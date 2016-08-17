@@ -75,6 +75,7 @@ class UserLoginTest extends WebTestCase
     }
 
     /**
+     * @param string $url
      * @dataProvider urlProvider
      */
     public function testUserLoginFrontendWithBadCredentialsIsRedirected($url)
@@ -90,9 +91,10 @@ class UserLoginTest extends WebTestCase
         $this->assertStatusCode(302, $client);
     }
     /**
+     * @param string $url
      * @dataProvider urlProvider
      */
-    public function testUserLoginFrontendDisabledAccountisRedirected($url)
+    public function testUserLoginFrontendDisabledAccountIsRedirected($url)
     {
         $this->loadUserFixtures();
 
@@ -106,6 +108,7 @@ class UserLoginTest extends WebTestCase
     }
 
     /**
+     * @param string $url
      * @dataProvider urlProvider
      */
     public function testUserLoginFrontendAdminUserHasAccess($url)
