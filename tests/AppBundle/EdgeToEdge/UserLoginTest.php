@@ -9,6 +9,10 @@ class UserLoginTest extends WebTestCase
     const PASSWORD = 'password';
     const USERNAME_ADMIN = 'admin';
     const PASSWORD_ADMIN = 'admin';
+    const DISABLED_NAME = 'inactiveuser';
+    const DISABLED_PASS = 'inactiveuser';
+    const BAD_NAME = 'ashd73ddb';
+    const BAD_PASS = 'www';
 
     public function testUserLoginBackendFailsWithWrongRole()
     {
@@ -68,5 +72,77 @@ class UserLoginTest extends WebTestCase
 
         $this->isSuccessful($client->getResponse());
         $this->assertTrue($crawler->filter('Anmelden')->count() === 0, 'Button "Anmelden" found');
+    }
+
+    /**
+     * @dataProvider urlProvider
+     */
+    public function testUserLoginFrontendWithBadCredentialsisRedirected($url)
+    {
+        $this->loadUserFixtures();
+
+        $client = static::makeClient([
+            'username' => self::BAD_NAME,
+            'password' => self::BAD_PASS
+        ]);
+
+        $client->request('GET', $url);
+        $this->assertStatusCode(302, $client);
+    }
+    /**
+     * @dataProvider urlProvider
+     */
+    public function testUserLoginFrontendDisabledAccountisRedirected($url)
+    {
+        $this->loadUserFixtures();
+
+        $client = static::makeClient([
+            'username' => self::DISABLED_NAME,
+            'password' => self::DISABLED_PASS
+        ]);
+
+        $client->request('GET', $url);
+        $this->assertStatusCode(302, $client);
+    }
+
+    /**
+     * @dataProvider urlProvider
+     */
+    public function testUserLoginFrontendAdminUserHasAccess($url)
+    {
+        $this->loadUserFixtures();
+
+        $client = static::makeClient([
+            'username' => self::USERNAME_ADMIN,
+            'password' => self::PASSWORD_ADMIN
+        ]);
+
+        $crawler = $client->request('GET', $url);
+        $this->isSuccessful($client->getResponse(), true);
+
+        $this->assertStatusCode(200, $client);
+    }
+
+    public function urlProvider()
+    {
+        return array(
+            array('/walks'),
+            array('/tag'),
+            array('/createtag'),
+            array('/eadmin/?action=list&entity=Team'),
+            array('/eadmin/?action=list&entity=Walk'),
+            array('/eadmin/?action=list&entity=WayPoint'),
+            array('/eadmin/?action=list&entity=Tag'),
+            array('/eadmin/?action=list&entity=User'),
+            array('/eadmin/?action=list&entity=Guest'),
+            array('/eadmin/?action=list&entity=SystemicQuestion'),
+            // ...
+        );
+    }
+    private function loadUserFixtures()
+    {
+        $this->loadFixtureFiles([
+            '@AppBundle/DataFixtures/ORM/test/user.yml',
+        ]);
     }
 }
