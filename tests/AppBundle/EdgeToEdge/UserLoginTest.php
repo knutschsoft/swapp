@@ -77,7 +77,7 @@ class UserLoginTest extends WebTestCase
     /**
      * @dataProvider urlProvider
      */
-    public function testUserLoginFrontendWithBadCredentialsisRedirected($url)
+    public function testUserLoginFrontendWithBadCredentialsIsRedirected($url)
     {
         $this->loadUserFixtures();
 
