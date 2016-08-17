@@ -2,8 +2,8 @@ services:
     app.command.deploy:
         class: AppBundle\Command\DeploymentCommand
         arguments:
-            - %command.host_ip%
-            - %command.ssh_user%
-            - %command.credentials_location%
+            - '%command.host_ip%'
+            - '%command.ssh_user%'
+            - '%command.credentials_location%'
         tags:
             -  { name: console.command }

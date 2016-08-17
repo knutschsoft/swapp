@@ -1,6 +1,9 @@
 # Deployment
 /build/
 
+#phpstorm IDEA config
+/.idea/
+
 # Cache and logs (Symfony3)
 /var/cache/*
 /var/logs/*
