@@ -22,18 +22,18 @@ class ApplicationAvailabilityTest extends WebTestCase
 
     public function urlProvider()
     {
-        return array(
-            array('/walks'),
-            array('/tag'),
-            array('/createtag'),
-            array('/eadmin/?action=list&entity=Team'),
-            array('/eadmin/?action=list&entity=Walk'),
-            array('/eadmin/?action=list&entity=WayPoint'),
-            array('/eadmin/?action=list&entity=Tag'),
-            array('/eadmin/?action=list&entity=User'),
-            array('/eadmin/?action=list&entity=Guest'),
-            array('/eadmin/?action=list&entity=SystemicQuestion'),
+        return [
+            ['/walks'],
+            ['/tag'],
+            ['/createtag'],
+            ['/eadmin/?action=list&entity=Team'],
+            ['/eadmin/?action=list&entity=Walk'],
+            ['/eadmin/?action=list&entity=WayPoint'],
+            ['/eadmin/?action=list&entity=Tag'],
+            ['/eadmin/?action=list&entity=User'],
+            ['/eadmin/?action=list&entity=Guest'],
+            ['/eadmin/?action=list&entity=SystemicQuestion'],
             // ...
-        );
+        ];
     }
 }
