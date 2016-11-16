@@ -1,41 +1,87 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
 {% block fos_user_content %}
-    {% if error %}
-        <div class="bold center p2 mb2 white bg-red rounded">{{ error.messageKey|trans( [], 'security') }}</div>
-    {% endif %}
-    <div class="sm-col-10 md-col-6 lg-col-4 mx-auto mt2">
-        <div class="overflow-hidden bg-white border rounded">
-            <div class="p2 white bg-blue">
-                <h1 class="h2 m0">Anmeldung</h1>
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info" >
+            <div class="panel-heading">
+                <div class="panel-title">Anmeldung</div>
+                <div style="float:right; font-size: 80%; position: relative; top:-10px">
+                    <a href="{{ path('fos_user_resetting_request') }}">Passwort vergessen?</a>
+                </div>
             </div>
+            <div class="panel-body">
 
-            <form class="sm-col-6 p2" action="{{ path("fos_user_security_check") }}" method="post">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                <small class="text-muted">Verbinde dich mit Swapp über Facebook</small>
+                <p>
+                    <a class="btn btn-primary social-login-btn social-facebook" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a>
+                </p>
 
-                <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-                <input autofocus placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}" class="block col-12 mb1 field" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                <div class="or-text">
+                    <div class="or-text-row">
+                        <div class="or-text-line">
+                            <button type="button" class="btn btn-default btn-circle" disabled="disabled">oder</button>
+                        </div>
+                    </div>
+                </div>
 
-                <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-                <input class="block col-12 mb1 field" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" type="password" id="password" name="_password" required="required" />
+                {% if error %}
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12">{{ error.messageKey|trans( [], 'security') }}</div>
+                {% endif %}
+                <form class="form-horizontal" role="form" action="{{ path("fos_user_security_check") }}" method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-                <label class="block col-12 mb2" for="remember_me">
-                    {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-                </label>
+                    <div class="col-sm-12 form-group">
+                        <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
 
-                <input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input autofocus placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}"
+                               class="form-control login-input"
+                               type="text"
+                               id="username"
+                               name="_username"
+                               value="{{ last_username }}"
+                               required="required" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}
+                        </label>
 
-
-            </form>
-
-            <div style="width: 100%; height: 15px; border-bottom: 1px solid lightgrey; text-align: center">
-               <span style="font-size: 20px; background-color: #F3F5F6; padding: 0 20px;">
-                    oder <!--Padding is optional-->
-                </span>
-            </div>
-            <div class="sm-col-12 p2">
-                <a class="btn btn-reddit btn-primary" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}">Mit Facebook anmelden</a>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input class="form-control login-input-pass"
+                                   placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}"
+                                   type="password"
+                                   id="password"
+                                   name="_password"
+                                   required="required" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <div class="input-group">
+                            <div class="checkbox">
+                                <label class="" for="remember_me">
+                                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                                    {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 controls">
+                            <input class="btn btn-lg btn-primary btn-block btn-center" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+                        </div>
+                    </div>
+                    <div class="">
+                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                            Noch kein Account?
+                            <a href="{{ path('fos_user_registration_register') }}">
+                                Hier registrieren!
+                            </a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

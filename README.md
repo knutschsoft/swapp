@@ -99,16 +99,34 @@ Call in terminal:
 php app/check.php
 ```
 
-### Install assets and start watcher
+### Install assets
 
 ```
-sudo apt-get install nodejs-legacy
+nvm install v7.1.0
+nvm use v7.1.0
 
 npm install
 ./node_modules/.bin/bower install
-./node_modules/.bin/gulp watch
 ```
 
+### run webpack dev server
+
+This one launches the webpack dev server which serves js and css assets in dev environment.
+It also reloads web page on asset change.
+
+```
+node_modules/.bin/webpack-dev-server
+
+
+```
+
+### want to create assets for non dev environment?
+
+```
+node_modules/.bin/webpack
+
+
+```
 ### Open in browser:
 
 ```

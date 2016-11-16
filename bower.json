@@ -13,12 +13,11 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "basscss": "~8.0",
-    "princeTable": "git@github.com:fictus/princeFilter.git#master",
-    "jQuery": "~2.1.4"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "basscss-sass": "~2.0.0"
+    "princeTable": "git@github.com:fictus/princeFilter.git#master",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.0.0",
+    "font-awesome": "^4.7.0"
   }
 }

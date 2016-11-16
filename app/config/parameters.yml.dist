@@ -27,3 +27,5 @@ parameters:
 
     bugsnag.app_version: local_dev
     bugsnag.api_key: dummy
+
+    assets_base_url: 'http://localhost:8092'
