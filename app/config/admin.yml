@@ -2,8 +2,19 @@ easy_admin:
     site_name: Swapp -<br>Streetworker App
     list:
         actions:
-            - { name: 'show', icon: 'search', 'label': false }
-            - { name: 'edit', icon: 'pencil', 'label': false }
+            - { name: 'show', icon: 'search', 'label': 'Anzeigen' }
+            - { name: 'edit', icon: 'pencil', 'label': 'Bearbeiten' }
+    design:
+        menu:
+            - { entity: 'User', icon: 'user' }
+            - { entity: 'Guest', icon: 'user-secret' }
+            - { entity: 'Team', icon: 'users' }
+            - { entity: 'Walk', icon: 'map' }
+            - { entity: 'WayPoint', icon: 'crosshairs' }
+            - { entity: 'Tag', icon: 'tag' }
+            - { entity: 'SystemicQuestion', icon: 'question-circle' }
+            - { label: 'Frontend', route: 'home', icon: 'home' }
+            - { label: 'Logout', route: 'fos_user_security_logout', icon: 'sign-out' }
     entities:
         Team:
             class: AppBundle\Entity\Team
@@ -89,11 +100,22 @@ easy_admin:
                 fields:
                     - username
                     - email
-                    - plainPassword
-                    - roles
+                    - enabled
+                    - { property: 'plainPassword', type: 'text', type_options: { required: false } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
                     - teams
                     - walks
+            show:
+                fields:
+                    - username
+                    - email
                     - enabled
+                    - lastLogin
+                    - locked
+                    - roles
+                    - facebook_id
+                    - teams
+                    - walks
         Guest:
             class: AppBundle\Entity\Guest
             label: eadmin.guest.label

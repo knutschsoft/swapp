@@ -28,6 +28,7 @@ class Walk
 
     /**
      * @ORM\OneToMany(targetEntity="WayPoint", mappedBy="walk")
+     * @var ArrayCollection|WayPoint[]
      **/
     private $wayPoints;
 
@@ -50,12 +51,13 @@ class Walk
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
+     * @var ArrayCollection|User[]
      */
     private $walkTeamMembers;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
-     * @var ArrayCollection
+     * @var ArrayCollection|Tag[]
      */
     private $walkTags;
 
@@ -67,6 +69,7 @@ class Walk
 
     /**
      * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="walks")
+     * @var SystemicQuestion
      */
     private $systemicQuestion;
 
@@ -92,6 +95,7 @@ class Walk
     private $isResubmission;
     /**
      * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
+     * @var ArrayCollection|Guest[]
      **/
     private $guests;
     /**
@@ -518,5 +522,77 @@ class Walk
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    /**
+     * Add wayPoint
+     *
+     * @param WayPoint $wayPoint
+     *
+     * @return Walk
+     */
+    public function addWayPoint(WayPoint $wayPoint)
+    {
+        $this->wayPoints[] = $wayPoint;
+
+        return $this;
+    }
+
+    /**
+     * Remove wayPoint
+     *
+     * @param WayPoint $wayPoint
+     */
+    public function removeWayPoint(WayPoint $wayPoint)
+    {
+        $this->wayPoints->removeElement($wayPoint);
+    }
+
+    /**
+     * Add walkTeamMember
+     *
+     * @param User $walkTeamMember
+     *
+     * @return Walk
+     */
+    public function addWalkTeamMember(User $walkTeamMember)
+    {
+        $this->walkTeamMembers[] = $walkTeamMember;
+
+        return $this;
+    }
+
+    /**
+     * Remove walkTeamMember
+     *
+     * @param User $walkTeamMember
+     */
+    public function removeWalkTeamMember(User $walkTeamMember)
+    {
+        $this->walkTeamMembers->removeElement($walkTeamMember);
+    }
+
+    /**
+     * Add guest
+     *
+     * @param Guest $guest
+     *
+     * @return Walk
+     */
+    public function addGuest(Guest $guest)
+    {
+        $this->guests[] = $guest;
+
+        return $this;
+    }
+
+    /**
+     * Remove guest
+     *
+     * @param Guest $guest
+     */
+    public function removeGuest(Guest $guest)
+    {
+        $this->guests->removeElement($guest);
     }
 }

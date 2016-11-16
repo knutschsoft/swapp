@@ -6,6 +6,9 @@ easy_admin_bundle:
 _fos:
     resource: routing_fos.yml
 
+_hwio:
+    resource: routing_hwio.yml
+
 controller_as_a_service_example:
     path: /caas
     defaults: { _controller: app.controller.controller_as_a_service:exampleAction }

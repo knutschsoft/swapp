@@ -12,7 +12,7 @@ class AdminController extends BaseAdminController
      */
     public function createNewUserEntity()
     {
-        return  new User();
+        return $this->get('fos_user.user_manager')->createUser();
     }
 
 
@@ -29,7 +29,7 @@ class AdminController extends BaseAdminController
      */
     public function prePersistUserEntity(User $user)
     {
-
+        $this->get('fos_user.user_manager')->updateUser($user, false);
     }
 
     /**
@@ -41,7 +41,7 @@ class AdminController extends BaseAdminController
         if ($teams) {
             $user->setTeams($teams);
         }
-
+        $this->get('fos_user.user_manager')->updateUser($user, false);
     }
 
     /**

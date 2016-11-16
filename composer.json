@@ -34,7 +34,9 @@
         "vich/uploader-bundle": "^1.0.0-beta5",
         "qafoolabs/no-framework-bundle": "^2.5",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "evolution7/bugsnag-bundle": "~2.0"
+        "evolution7/bugsnag-bundle": "~2.0",
+        "hwi/oauth-bundle": "^0.5.1",
+        "easycorp/easy-log-handler": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

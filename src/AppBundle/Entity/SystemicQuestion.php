@@ -111,4 +111,28 @@ class SystemicQuestion
     {
         $this->deletedAt = $deletedAt;
     }
+
+    /**
+     * Add walk
+     *
+     * @param Walk $walk
+     *
+     * @return SystemicQuestion
+     */
+    public function addWalk(Walk $walk)
+    {
+        $this->walks[] = $walk;
+
+        return $this;
+    }
+
+    /**
+     * Remove walk
+     *
+     * @param Walk $walk
+     */
+    public function removeWalk(Walk $walk)
+    {
+        $this->walks->removeElement($walk);
+    }
 }

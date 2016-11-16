@@ -1,13 +1,12 @@
 security:
     providers:
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
-
         main:
             pattern: ^/
             form_login:
@@ -16,13 +15,22 @@ security:
                 default_target_path: walk_home_screen
             logout:       true
             anonymous:    true
+            oauth:
+                resource_owners:
+                    facebook: "/login/check-facebook"
+                login_path: /login
+                use_forward: false
+                failure_path: /login
+                oauth_user_provider:
+                    service: my_user_provider
+            remember_me:
+                secret: "%secret%"
 
     encoders:
         FOS\UserBundle\Model\UserInterface: sha512
 
-
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }

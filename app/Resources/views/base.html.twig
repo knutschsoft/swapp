@@ -14,8 +14,13 @@
 
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="bold border-top p1 block clearfix">
-                <a class="btn btn-primary right bg-red" href="{{ logout_path() }}">
-                    Logout
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="btn btn-primary right bg-aqua" href="{{ path('easyadmin') }}">
+                        Backend
+                    </a>
+                {% endif %}
+                <a class="btn btn-primary right bg-red" href="{{ logout_path('main') }}">
+                    Logout ({{ app.getUser.getUsername }})
                 </a>
             </div>
         {% endif %}

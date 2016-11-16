@@ -38,6 +38,39 @@ fos_user:
     firewall_name: main
     user_class: AppBundle\Entity\User
 
+hwi_oauth:
+    # list of names of the firewalls in which this bundle is active, this setting MUST be set
+    firewall_names: [main]
+
+    # an optional setting to configure a query string parameter which can be used to redirect
+    # the user after authentication, e.g. /connect/facebook?_destination=/my/destination will
+    # redirect the user to /my/destination after facebook authenticates them.  If this is not
+    # set then the user will be redirected to the original resource that they requested, or
+    # the base address if no resource was requested.  This is similar to the behaviour of
+    # [target_path_parameter for form login](http://symfony.com/doc/2.0/cookbook/security/form_login.html).
+    # target_path_parameter: _destination
+
+    # an optional setting to use the HTTP REFERER header to be used in case no
+    # previous URL was stored in the session (i.e. no resource was requested).
+    # This is similar to the behaviour of
+    # [using the referring URL for form login](http://symfony.com/doc/2.0/cookbook/security/form_login.html#using-the-referring-url).
+    # use_referer: true
+    connect:
+        account_connector: my_user_provider
+    fosub:
+        username_iterations: 30
+        properties:
+            facebook:    facebook_id
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           1088679254563341
+            client_secret:       7322f9b66850ae9ea761f495623a20a3
+            scope:               "email" # "email"
+            options:
+                display: popup #dialog is optimized for popup window
+                auth_type: rerequest # Re-asking for Declined Permissions
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"

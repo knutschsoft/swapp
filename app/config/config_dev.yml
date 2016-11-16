@@ -27,10 +27,14 @@ web_profiler_extra:
 
 monolog:
     handlers:
-        main:
-            type:   stream
-            path:   "%kernel.logs_dir%/%kernel.environment%.log"
-            level:  debug
+        buffered:
+            type:     buffer
+            handler:  easylog
+            channels: ["!event"]
+            level:    debug
+        easylog:
+            type: service
+            id:   easycorp.easylog.handler
         console:
             type:   console
             bubble: false
