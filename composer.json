@@ -74,6 +74,7 @@
         ],
         "compile": [
             "AppBundle\\Composer\\HerokuEnvironment::populateEnvironment",
+            "@post-install-cmd",
             "rm web/app_dev.php",
             "php bin/console doctrine:migration:migrate --no-interaction --env=prod"
         ],
