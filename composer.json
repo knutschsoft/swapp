@@ -73,6 +73,7 @@
             "vendor/bin/phpcpd src || true"
         ],
         "compile": [
+            "node_modules/.bin/webpack",
             "AppBundle\\Composer\\HerokuEnvironment::populateEnvironment",
             "@post-install-cmd",
             "rm web/app_dev.php",
