@@ -35,6 +35,18 @@ class Guest
     private $walk;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            "%s (%s)",
+            $this->getName(),
+            $this->getEmail()
+        );
+    }
+
+    /**
      * @return Walk
      */
     public function getWalk()
