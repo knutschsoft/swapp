@@ -2,7 +2,7 @@
   "name": "swapp",
   "version": "1.0.0",
   "description": "street worker app ===",
-  "devDependencies": {
+  "dependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
