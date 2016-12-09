@@ -32,6 +32,6 @@
   "author": "robertfausk <robertfreigang@gmx.de>",
   "license": "MIT",
   "engines": {
-    "node": "7.1.10"
+    "node": "6.9.2"
   }
 }
