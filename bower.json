@@ -14,7 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "princeTable": "^2.0",
+    "princeTable": "git@github.com:fictus/princeFilter.git#master",
     "bootstrap": "^3.3.7",
     "jquery": "^3.0.0",
     "font-awesome": "^4.7.0"
