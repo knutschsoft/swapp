@@ -30,5 +30,8 @@
     "url": "https://git@github.com:knutschsoft/swapp.git"
   },
   "author": "robertfausk <robertfreigang@gmx.de>",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "7.1.10"
+  }
 }
