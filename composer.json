@@ -74,7 +74,8 @@
         ],
         "compile": [
             "AppBundle\\Composer\\HerokuEnvironment::populateEnvironment",
-            "rm web/app_dev.php"
+            "rm web/app_dev.php",
+            "@post-install-cmd"
         ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
