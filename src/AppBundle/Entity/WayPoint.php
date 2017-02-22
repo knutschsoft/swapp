@@ -109,7 +109,7 @@ class WayPoint
     private $femalesAdultCount;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, length=4096)
      */
     private $note;
 
