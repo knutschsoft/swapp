@@ -45,7 +45,8 @@
         "liip/functional-test-bundle": "^1.5",
         "hautelook/alice-bundle": "^1.2",
         "doctrine/data-fixtures": "^1.1",
-        "symfony/phpunit-bridge": "^3.3"
+        "symfony/phpunit-bridge": "^3.3",
+        "phpunit/phpunit": "^5.7"
     },
     "scripts": {
         "database-init": [
