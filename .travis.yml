@@ -21,4 +21,4 @@ before_script:
   - php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction --env=test
 
 script:
-  - ./vendor/bin/phpunit --coverage-text
+  - ./vendor/bin/phpunit
