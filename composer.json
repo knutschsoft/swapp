@@ -46,7 +46,7 @@
         "hautelook/alice-bundle": "^1.2",
         "doctrine/data-fixtures": "^1.1",
         "symfony/phpunit-bridge": "^3.3",
-        "phpunit/phpunit": "^5.7"
+        "phpunit/phpunit": ">= 5.4.3 <6.0"
     },
     "scripts": {
         "database-init": [
