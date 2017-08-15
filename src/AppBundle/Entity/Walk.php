@@ -45,7 +45,7 @@ class Walk
     private $endTime;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=4096)
      */
     private $walkReflection;
 
