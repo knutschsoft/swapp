@@ -90,7 +90,7 @@ php composer.phar install
 
 ### Start unit tests
 
-```./bin/phpunit -c app```
+```./bin/phpunit```
 
 ### Check config
 
@@ -135,13 +135,9 @@ http://swapp/config.php
 
 ### Entrance:
 
- http://swapp/admin
-
  http://swapp/eadmin
 
  http://swapp/walks
-
- http://swapp/app_dev.php/admin
 
  http://swapp/app_dev.php/eadmin
 

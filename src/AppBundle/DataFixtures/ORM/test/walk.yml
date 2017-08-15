@@ -10,6 +10,5 @@ AppBundle\Entity\Walk:
         weather: <randomElement($array = array ('Sonne', 'Regen', 'Bewölkt'))>
         holidays: <randomElement($array = array (true, false))>
         isResubmission: <randomElement($array = array (true, false))>
-        conceptOfDay: <randomElement($array = array (true, false))>
         teamName: '@team*->name'
         systemicQuestion: '@systemic_question_*'
