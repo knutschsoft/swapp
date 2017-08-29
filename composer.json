@@ -30,7 +30,7 @@
         "symfony/monolog-bundle": "~2.4",
         "incenteev/composer-parameter-handler": "~2.0",
         "javiereguiluz/easyadmin-bundle": "~1.0",
-        "friendsofsymfony/user-bundle": "dev-master",
+        "friendsofsymfony/user-bundle": "~2.0",
         "vich/uploader-bundle": "^1.0.0-beta5",
         "qafoolabs/no-framework-bundle": "^2.5",
         "stof/doctrine-extensions-bundle": "^1.2",
