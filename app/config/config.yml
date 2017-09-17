@@ -41,8 +41,8 @@ fos_user:
         confirmation:
             enabled: true
     from_email:
-        address: %mailer_user%
-        sender_name: %mailer_user%
+        address: '%mailer_user%'
+        sender_name: '%mailer_user%'
 
 
 hwi_oauth:
