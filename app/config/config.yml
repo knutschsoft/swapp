@@ -40,6 +40,10 @@ fos_user:
     registration:
         confirmation:
             enabled: true
+    from_email:
+        address: '%mailer_user%'
+        sender_name: '%mailer_user%'
+
 
 hwi_oauth:
     # list of names of the firewalls in which this bundle is active, this setting MUST be set

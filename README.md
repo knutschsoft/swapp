@@ -79,6 +79,22 @@ sudo service apache2 reload
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 ```
+### Set up parameters
+You have to set database and mailer credentials in your
+`app/config/parameters.yml`.
+
+```
+ parameters:
+     database_host: 127.0.0.1
+     database_name: swapp
+     database_user: swapp
+     database_password: pa$$word
+     ...
+     mailer_user: swapp_mail
+     mailer_password: swapp_mail
+```
+Change the values whatever database name, username and password you've used while creating the database on your mySQL console.
+FOSUserBundle requires the mailer parameters to also be set.
 
 ### Execute Migrations
 

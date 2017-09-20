@@ -1,4 +1,4 @@
-# This file is auto-generated during the composer install
+# parametes.yml for travis.cin containing dummy parameter values
 parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
@@ -8,8 +8,8 @@ parameters:
     database_password: ~
     mailer_transport: smtp
     mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    mailer_user: ci@travis-mailer.com
+    mailer_password: travis-mailer
     locale: de
     secret: ThisTokenIsNotSoSecretChangeIt
     bugsnag.app_version: travis

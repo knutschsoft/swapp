@@ -24,6 +24,11 @@
 # Assets and user uploads
 /web/bundles/
 /web/uploads/
+/web/images/
+/web/js/
+!/web/js/princeFilter.JQuery.js
+!/web/js/global.js
+!/web/js/jquery.js
 
 #bower
 /bower_components/
