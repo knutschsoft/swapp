@@ -1,2 +1,3 @@
-require('../../../../../bower_components/font-awesome/css/font-awesome.css');
-require('../../css/main.scss');
+var updateHrefOnSelectChange = require('./../updateHrefOnSelectChange');
+
+updateHrefOnSelectChange('s-select-team', 's-select-team-link');

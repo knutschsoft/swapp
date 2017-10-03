@@ -25,22 +25,13 @@
 /web/bundles/
 /web/uploads/
 /web/images/
-/web/js/
-!/web/js/princeFilter.JQuery.js
-!/web/js/global.js
-!/web/js/jquery.js
-
-#bower
-/bower_components/
+/web/build/
 
 # npm
 /node_modules/
 
 # PHPUnit
 /phpunit.xml
-
-# Build data
-/build/
 
 # Composer PHAR
 /composer.phar

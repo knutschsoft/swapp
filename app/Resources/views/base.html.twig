@@ -6,16 +6,13 @@
         <title>{% block title %}Swapp!{% endblock %}</title>
         {% block meta_description %}{% endblock %}
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('build/global.css') }}">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
         {% block javascripts %}
-            {% if app.environment == "dev" %}
-                <script src="{{ asset('webpack-dev-server.js') }}"></script>
-            {% endif %}
-            <script src="{{ asset('js/bootstraploader.bundle.js') }}"></script>
-            <script src="{{ asset('/js/global.bundle.js') }}"></script>
+            <script src="{{ asset('build/app.js') }}"></script>
         {% endblock %}
         {% block content %}
         {% endblock %}

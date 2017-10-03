@@ -168,7 +168,7 @@ http://swapp/config.php
     $ sudo vi /etc/hosts 
   
     ...
-    127.0.0.1 surveythor-demo
+    127.0.0.1 swapp
     ```
 
 ## Development with docker containers

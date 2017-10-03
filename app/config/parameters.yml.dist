@@ -3,9 +3,9 @@ parameters:
     database_driver:   pdo_mysql
     database_host:     127.0.0.1
     database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
+    database_name:     swapp
+    database_user:     swapp
+    database_password: pa$$word
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
@@ -27,5 +27,3 @@ parameters:
 
     bugsnag.app_version: local_dev
     bugsnag.api_key: dummy
-
-    assets_base_url: 'http://localhost:8092'

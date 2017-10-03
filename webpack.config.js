@@ -1,68 +1,47 @@
-var isProduction = process.env.NODE_ENV === 'production';
-var path = require('path');
-var dest = path.resolve(__dirname, 'web/js');
-var bower = path.resolve(__dirname, 'bower_components');
-var node = path.resolve(__dirname, 'node_modules');
+let assets_dir = './app/Resources/assets';
 
-module.exports = {
-    entry: {
-        bootstraploader: 'bootstrap-loader',
-        global: './app/Resources/assets/js/pages/global.js'
-    },
-    output: {
-        filename: '[name].bundle.js',
-        path: dest,
-        publicPath: isProduction ? '/js/' : 'http://localhost:8092/js/'
-    },
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: node,
-                loader: "babel-loader"
-            },
-            {
-                test: /\.css$/,
-                loader: "style-loader!css"
-            },
-            {
-                test: /\.(png|gif|jpe?g|svg?(\?v=[0-9]\.[0-9]\.[0-9])?)$/i,
-                loader: 'url-loader?limit=10000'
-            },
-            {
-                test: /\.scss$/,
-                loader: "style-loader!css-loader!sass-loader"
-            },
-            {test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports-loader?jQuery=jquery'},
-            {test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000'},
-            {test: /\.(ttf|eot)$/, loader: 'file-loader'}
-        ]
-    },
-    plugins: [],
-    externals: [
-        {
-            'window': 'window'
-        }
-    ],
-    devtool: isProduction ? '#source-map' : '#inline-source-map',
-    devServer: {
-        hot: false,
-        contentBase: './web/',
-        headers: {
-            "Access-Control-Allow-Origin": "*"
-        },
-        port: 8092
-    },
-    resolve: {
-        modules: [
-            bower,
-            node
-        ],
-        alias: {
-            jquery: path.resolve(bower, 'jquery/src/jquery.js'),
-        }
-    },
-    resolveLoader: { //only used for bc on webpack beta version as long as not all loaders/plugins support "-loader"
-        moduleExtensions: ['-loader']
-    }
-};
+let Encore = require('@symfony/webpack-encore');
+
+Encore
+// directory where all compiled assets will be stored
+    .setOutputPath('web/build/')
+
+    // what's the public path to this directory (relative to your project's document root dir)
+    .setPublicPath(Encore.isProduction() ? '/build' : 'https://swapp:8082/build/')
+
+    // .setOutputPath()
+
+    // empty the outputPath dir before each build
+    .cleanupOutputBeforeBuild()
+
+    // will output as web/build/app.js
+    .addEntry('app', assets_dir + '/js/pages/global.js')
+
+    // will output as web/build/global.css
+    .addStyleEntry('global', assets_dir + '/css/main.scss')
+
+    // allow sass/scss files to be processed
+    .enableSassLoader()
+
+    // allow legacy applications to use $/jQuery as a global variable
+    .autoProvidejQuery()
+
+    .enableSourceMaps(!Encore.isProduction())
+
+    .setManifestKeyPrefix('build/')
+
+    // create hashed filenames (e.g. app.abc123.css)
+    .enableVersioning(Encore.isProduction())
+;
+
+// export the final configuration
+config = Encore.getWebpackConfig();
+
+if (config.devServer) {
+    config.devServer.host = '0.0.0.0';
+    config.devServer.https = true;
+    config.devServer.port = '8082';
+    config.devServer.public = "swapp:8082";
+}
+
+module.exports = config;
