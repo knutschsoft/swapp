@@ -78,3 +78,23 @@
   //line-height: 1.428571429;
   border-radius: 15px;
 }
+
+select {
+  height: 2.25rem;
+  vertical-align: middle;
+  line-height: 1.75;
+  padding: 0.5rem 0.5rem;
+}
+
+input, select, textarea, fieldset {
+  font-family: inherit;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.mxn1 {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
