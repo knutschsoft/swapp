@@ -1,5 +1,10 @@
 language: php
 
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
 dist: trusty
 sudo: required
 
@@ -13,6 +18,7 @@ matrix:
 
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
+  - yarn install
   - composer install -vv
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
