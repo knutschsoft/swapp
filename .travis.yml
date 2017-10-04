@@ -19,6 +19,7 @@ matrix:
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - yarn install
+  - node_modules/.bin/encore production
   - composer install -vv
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
