@@ -48,7 +48,8 @@ class DeploymentCommand extends Command
         $this->addArgument(
             'instance-names',
             InputArgument::IS_ARRAY  | InputArgument::REQUIRED,
-            'instance-names; currently supported are swapp1.streetworkapp.de till swapp11.streetworkapp.de' .
+            'instance-names; currently supported are swapp1.streetworkapp.de till swapp11.streetworkapp.de'.
+			' and swappdemo.streetworkapp.de' .
             ' separate multiple values with a space'
         );
         $this->addOption(
@@ -192,7 +193,7 @@ class DeploymentCommand extends Command
         $syncCommand = sprintf(
             'rsync %s %s build/* %s@%s:%s',
             '--recursive --cvs-exclude --verbose --copy-links --delete --delete-after --delete-excluded --links --times',
-            '--exclude=/var/cache/* --exclude=/var/logs/* --exclude=/web/app_*.php --exclude=/web/config.php  --exclude=git_hooks',
+            '--exclude=/node_modules/ --exclude=/var/cache/* --exclude=/var/logs/* --exclude=/web/app_*.php --exclude=/web/config.php  --exclude=git_hooks',
             $this->deployUser,
             $this->hostIp,
             $this->remoteAppRoot
@@ -231,6 +232,9 @@ class DeploymentCommand extends Command
         $this->runProcess('cd build && curl -sS https://getcomposer.org/installer | php');
         $this->runProcess('cd build && php composer.phar install --optimize-autoloader');
         $this->runProcess('cd build && php composer.phar dump-autoload --optimize');
+
+        $this->runProcess('cd build && yarn install');
+        $this->runProcess('cd build && node_modules/.bin/encore production');
     }
 
     private function checkoutBranch()
