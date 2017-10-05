@@ -118,7 +118,7 @@ class DeploymentCommand extends Command
         $this->info('changeOwnerToWwwData');
         $this->executeRemoteCommand(
             sprintf(
-            'chown -R www-data:www-data %s/var/logs/ %s/var/cache/ %s/web/',
+            'chown -R www-data:www-data %s/var/logs/ %s/var/cache/ %s/var/sessions/ %s/web/',
                 $this->remoteAppRoot,
                 $this->remoteAppRoot,
                 $this->remoteAppRoot
