@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new Evolution7\BugsnagBundle\BugsnagBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
 
-            new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
+            new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
             new QafooLabs\Bundle\NoFrameworkBundle\QafooLabsNoFrameworkBundle(),
