@@ -1,12 +1,11 @@
 SWAPP
 ========================
-<a href="https://travis-ci.org/knutschsoft/swapp" target='_blank'>
-  <img title="build status of swapp" src="https://travis-ci.org/knutschsoft/swapp.svg">
-</a>
+
+[![build status of swapp](https://travis-ci.org/knutschsoft/swapp.svg)](https://travis-ci.org/knutschsoft/swapp)
+[![StyleCi](https://styleci.io/repos/34905820/shield?branch=master)](https://styleci.io/analyses/q2mZ0l)
 [![Stories in Ready](https://badge.waffle.io/knutschsoft/swapp.png?label=ready&title=Ready)](https://waffle.io/knutschsoft/swapp)
 [![Dependency Status](https://www.versioneye.com/user/projects/55a4aaac3863340023000001/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4aaac3863340023000001)
 [![Dependency Status](https://www.versioneye.com/user/projects/55a4aaed386334002000006d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4aaed386334002000006d)
-[![Dependency Status](https://www.versioneye.com/user/projects/55a4ae92386334001a00001d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4ae92386334001a00001d)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5/big.png)](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5)
 
 ## How to start dev action??
