@@ -1,0 +1,13 @@
+preset: symfony
+
+risky: true
+
+finder:
+  exclude:
+    - "tests"
+  name:
+    - "*.php"
+  not-name:
+    - "*Stub.php"
+  depth:
+    - "< 3"
