@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle;
 
 use Evolution7\BugsnagBundle\UserInterface as BugsnagUserInterface;
@@ -21,7 +22,7 @@ class BugsnagUser implements BugsnagUserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUserAsArray()
     {
@@ -38,7 +39,7 @@ class BugsnagUser implements BugsnagUserInterface
         return [
             'id' => $user->getId(),
             'name' => $user->getUsername(),
-            'email' => $user->getEmail()
+            'email' => $user->getEmail(),
         ];
     }
 }
