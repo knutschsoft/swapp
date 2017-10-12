@@ -24,92 +24,92 @@ class Version20160521080211 extends AbstractMigration
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Gewalt (körperlich)",
-                "red"
+                'Gewalt (körperlich)',
+                'red'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Gewalt (verbal)",
-                "orange"
+                'Gewalt (verbal)',
+                'orange'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Drogen",
-                "orange"
+                'Drogen',
+                'orange'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Partnerschaft",
-                "blue"
+                'Partnerschaft',
+                'blue'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Jobcenter",
-                "yellow"
+                'Jobcenter',
+                'yellow'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Ausbildung",
-                "yellow"
+                'Ausbildung',
+                'yellow'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Sexualität",
-                "blue"
+                'Sexualität',
+                'blue'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Politik",
-                "green"
+                'Politik',
+                'green'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Wohnungslosigkeit",
-                "yellow"
+                'Wohnungslosigkeit',
+                'yellow'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Schwangerschaft",
-                "orange"
+                'Schwangerschaft',
+                'orange'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Polizei",
-                "blue"
+                'Polizei',
+                'blue'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Grundversorgung",
-                "yellow"
+                'Grundversorgung',
+                'yellow'
             )
         );
         $this->addSql(
             sprintf(
                 'INSERT INTO tag (name, color) VALUES ("%s", "%s")',
-                "Kindeswohl",
-                "red"
+                'Kindeswohl',
+                'red'
             )
         );
     }
@@ -131,18 +131,18 @@ class Version20160521080211 extends AbstractMigration
                 implode(
                     '\', \'',
                     [
-                        "Gewalt (körperlich)",
-                        "Gewalt (verbal)",
-                        "Drogen",
-                        "Partnerschaft",
-                        "Jobcenter",
-                        "Ausbildung",
-                        "Sexualität",
-                        "Politik",
-                        "Wohnungslosigkeit",
-                        "Schwangerschaft",
-                        "Polizei",
-                        "Grundversorgung",
+                        'Gewalt (körperlich)',
+                        'Gewalt (verbal)',
+                        'Drogen',
+                        'Partnerschaft',
+                        'Jobcenter',
+                        'Ausbildung',
+                        'Sexualität',
+                        'Politik',
+                        'Wohnungslosigkeit',
+                        'Schwangerschaft',
+                        'Polizei',
+                        'Grundversorgung',
                     ]
                 )
             )
