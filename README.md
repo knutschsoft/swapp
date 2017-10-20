@@ -78,6 +78,16 @@ sudo service apache2 reload
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 ```
+### Install assets
+
+```
+nvm install v7.1.0
+nvm use v7.1.0
+
+npm install
+yarn install
+```
+
 ### Set up parameters
 You have to set database and mailer credentials in your
 `app/config/parameters.yml`.
@@ -114,34 +124,18 @@ Call in terminal:
 php app/check.php
 ```
 
-### Install assets
-
+### run webpack encore
+dev mode
+enables dev options like sourcemaps
 ```
-nvm install v7.1.0
-nvm use v7.1.0
-
-npm install
-./node_modules/.bin/bower install
+node_modules/.bin/encore dev
 ```
 
-### run webpack dev server
-
-This one launches the webpack dev server which serves js and css assets in dev environment.
-It also reloads web page on asset change.
-
+production switch
 ```
-node_modules/.bin/webpack-dev-server
-
-
+node_modules/.bin/encore production
 ```
 
-### want to create assets for non dev environment?
-
-```
-node_modules/.bin/webpack
-
-
-```
 ### Open in browser:
 
 ```

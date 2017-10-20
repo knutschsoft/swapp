@@ -26,6 +26,8 @@ class WayPoint
      *
      * @Vich\UploadableField(mapping="way_point_image", fileNameProperty="imageName")
      *
+     * @Assert\File(maxSize = "2048k")
+     *
      * @var File $imageFile
      */
     private $imageFile;
