@@ -1,7 +1,9 @@
 <?php
+
 namespace Tests\AppBundle\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageUploadTest extends WebTestCase
 {
@@ -66,5 +68,64 @@ class ImageUploadTest extends WebTestCase
 
         $img = $crawler->filter('img');
         $this->assertSame('/images/way_points/image.jpg', $img->attr('src'));
+    }
+
+    public function testImageExceedingMaxsizeRendersFormErrors()
+    {
+        $this->loadFixtureFiles(
+            [
+                '@AppBundle/DataFixtures/ORM/test/tag.yml',
+                '@AppBundle/DataFixtures/ORM/test/guest.yml',
+                '@AppBundle/DataFixtures/ORM/test/team.yml',
+                '@AppBundle/DataFixtures/ORM/test/user.yml',
+                '@AppBundle/DataFixtures/ORM/test/walk.yml',
+                '@AppBundle/DataFixtures/ORM/test/systemicQuestion.yml',
+                '@AppBundle/DataFixtures/ORM/test/wayPoint.yml',
+            ]
+        );
+
+        $credentials = [
+            'username' => 'waldi_beta',
+            'password' => 'waldi_beta',
+        ];
+
+        $client = static::makeClient($credentials);
+        $client->followRedirects(true);
+        $crawler = $client->request('GET', '/walks');
+
+        $crawler = $crawler->selectLink('Runde beginnen');
+        $crawler = $client->click($crawler->link());
+        $this->isSuccessful($client->getResponse());
+
+        $form = $crawler->selectButton('Wegpunkt anlegen')->form(
+            [
+                'app_create_walk_prologue[name]' => 'name test',
+                'app_create_walk_prologue[conceptOfDay]' => 'conceptOfDay test',
+            ]
+        );
+
+        $crawler = $client->submit($form);
+        $this->isSuccessful($client->getResponse());
+
+
+        $fileLocation = $client->getContainer()->getParameter('kernel.root_dir');
+        $fileLocation .= '/../tests/AppBundle/fixtures/huge.png';
+
+        $imgStub = new UploadedFile($fileLocation, 'huge.png');
+
+        $form = $crawler->selectButton('speichern')->form();
+
+        $form['app_create_way_point[imageFile][file]'] = $imgStub;
+        $form['app_create_way_point[locationName]'] = 'Buxtehude is the locationName value';
+        $form['app_create_way_point[note]'] = 'note value';
+
+        $crawler = $client->submit($form);
+
+        $text = $crawler->text();
+
+        $this->assertContains('Die Datei ist zu groß',
+            $text,
+            'File was uploaded and File-Assertion maxSize did not trigger. Although the file is exceeding the given max size.');
+
     }
 }
