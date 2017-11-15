@@ -212,6 +212,12 @@ http://swapp/config.php
 * To activate/deactivate XDebug simply adjust ENV-Variable `PHP_XDEBUG_ENABLED` in `docker-compose.yml`
 and restart containers (`docker-compose down && docker-compose up -d`) 
 
+### Setting the max_uploaded_filesize for docker
+* head to ./.docker/web/init-container.sh
+* in section `Prepare PHP` change the line
+    `sh -c "echo 'upload_max_filesize = 10M'` according to your needs
+* if you want to allow bigger image files you have to adjust this php.ini setting as well as the `File` constraint's `maxSize` option on the imageFile property in `WayPoint.php`
+    
 ### Cheat Sheet
 
 * Execute symfony command
