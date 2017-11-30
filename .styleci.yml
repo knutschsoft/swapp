@@ -5,6 +5,8 @@ risky: true
 finder:
   exclude:
     - "tests"
+    - "app/DoctrineMigrations"
+    - "var"
   name:
     - "*.php"
   not-name:
