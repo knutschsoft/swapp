@@ -2,7 +2,6 @@ language: php
 
 node_js:
  - "node"
- - "8"
 
 cache:
   directories:
@@ -21,6 +20,7 @@ matrix:
 
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
+  - node -v
   - yarn install
   - node_modules/.bin/encore production
   - composer install -vv
