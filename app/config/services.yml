@@ -40,3 +40,10 @@ services:
         public: false
         arguments:
             - '%kernel.logs_dir%/%kernel.environment%.log'
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        autowire: true
+        autoconfigure: true
+        arguments:
+            - 'mysql:dbname=%database_name%;host=%database_host%'
+            - { db_table: 'sessions', db_username: '%database_user%', db_password: '%database_password%' }
