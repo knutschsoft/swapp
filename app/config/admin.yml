@@ -12,10 +12,16 @@ easy_admin:
             - { entity: 'Walk', icon: 'map' }
             - { entity: 'WayPoint', icon: 'crosshairs' }
             - { entity: 'Tag', icon: 'tag' }
+            - { entity: 'AgeRange', icon: 'crosshairs' }
             - { entity: 'SystemicQuestion', icon: 'question-circle' }
             - { label: 'Frontend', route: 'home', icon: 'home' }
             - { label: 'Logout', route: 'fos_user_security_logout', icon: 'sign-out' }
     entities:
+        AgeRange:
+            class: AppBundle\Entity\AgeRange
+            label: AgeRange
+            form:
+                form_options: { data_class: 'AppBundle\Entity\AgeRange'}
         Team:
             class: AppBundle\Entity\Team
             label: eadmin.team.label
