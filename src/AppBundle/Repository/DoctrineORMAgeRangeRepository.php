@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Value\AgeRange;
+use AppBundle\Entity\AgeRange;
 use Doctrine\ORM\EntityRepository;
 
 /**

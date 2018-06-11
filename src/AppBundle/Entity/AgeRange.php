@@ -2,13 +2,14 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Value\AgeGroupRange;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="DoctrineORMAgeRangeRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMAgeRangeRepository")
  * @ORM\Table(name="age_range")
  */
-final class AgeRange
+class AgeRange extends AgeGroupRange
 {
     /**
      * @ORM\Id
@@ -17,45 +18,27 @@ final class AgeRange
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    private $rangeStart;
 
     /**
      * @ORM\Column(type="smallint")
      * @var int
      */
-    private $rangeEnd;
+    protected $rangeStart;
 
-    private function __construct($rangeStart, $rangeEnd)
+    /**
+     * @ORM\Column(type="smallint")
+     * @var int
+     */
+    protected $rangeEnd;
+
+    public function __construct($rangeStart, $rangeEnd)
     {
-        $this->setRangeStart($rangeStart);
-        $this->setRangeEnd($rangeEnd);
-    }
-
-    public static function fromArray(array $count = [])
-    {
-        $start = isset($count['start']) ? $count['start'] : isset($count[0]) ? $count[0] : 0;
-        $end = isset($count['end']) ? $count['end'] : isset($count[1]) ? $count[1] : 0;
-
-        return new self($start, $end);
+        parent::fromArray([$rangeStart, $rangeEnd]);
     }
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getRangeStart()
-    {
-        return $this->rangeStart;
-    }
-
-    public function getRangeEnd()
-    {
-        return $this->rangeEnd;
     }
 
     public function setRangeStart($rangeStart)
@@ -68,8 +51,4 @@ final class AgeRange
         $this->rangeEnd = $rangeEnd;
     }
 
-    private function isPositiveInt($number)
-    {
-        return is_int($number) && (int)$number >= 0;
-    }
 }

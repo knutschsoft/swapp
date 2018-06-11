@@ -1,7 +1,6 @@
 <?php
 namespace AppBundle\Controller;
 
-use AppBundle\DTO\RangeDTO;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\AgeRange;
@@ -27,7 +26,7 @@ class AdminController extends BaseAdminController
 
     public function createNewAgeRangeEntity()
     {
-        return AgeRange::fromArray();
+        return new AgeRange(0,0);
     }
 
     /**
