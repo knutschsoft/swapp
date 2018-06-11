@@ -7,6 +7,9 @@
 !var/cache/.gitkeep
 !var/logs/.gitkeep
 
+# docker
+docker-compose.override.yml
+
 # Parameters
 /app/config/parameters.yml
 /app/config/parameters.ini
