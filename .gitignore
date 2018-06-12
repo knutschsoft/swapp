@@ -1,5 +1,7 @@
 # Deployment
 /build/
+/.docker/web/.ssh/*
+!.docker/web/.ssh/.gitkeep
 
 #phpstorm IDEA config
 /.idea/

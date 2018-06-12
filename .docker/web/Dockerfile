@@ -8,6 +8,8 @@ COPY . /var/www/html
 # replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
+RUN apt-cache search php*
+
 RUN apt-get update && apt-get install -y \
         wget \
         libicu-dev \
@@ -15,11 +17,12 @@ RUN apt-get update && apt-get install -y \
         libjpeg-dev \
         libpng-dev \
         git-core \
-        php5-sqlite \
-        php5-intl \
-        php5-mysql \
-        php5-curl \
-        php5-dev \
+#        php-sqlite \
+#        php-intl \
+#        php-mysql \
+#        mysql \
+#        php-curl \
+#        php-dev \
         acl \
         mysql-client && \
         docker-php-ext-configure gd --with-jpeg-dir=/usr/include/  &&  \
