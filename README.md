@@ -5,8 +5,6 @@ SWAPP
 [![build status of swapp](https://travis-ci.org/knutschsoft/swapp.svg)](https://travis-ci.org/knutschsoft/swapp)
 [![StyleCi](https://styleci.io/repos/34905820/shield?branch=master)](https://styleci.io/repos/34905820)
 [![Stories in Ready](https://badge.waffle.io/knutschsoft/swapp.png?label=ready&title=Ready)](https://waffle.io/knutschsoft/swapp)
-[![Dependency Status](https://www.versioneye.com/user/projects/55a4aaac3863340023000001/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4aaac3863340023000001)
-[![Dependency Status](https://www.versioneye.com/user/projects/55a4aaed386334002000006d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55a4aaed386334002000006d)
 
 ## How to start dev action??
 
