@@ -30,6 +30,9 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     useradd --uid $HOST_UID --gid $HOST_GID -ms /bin/bash $CONTAINER_USER
     chown -R $HOST_UID:$HOST_GID $PWD
     chown -R $CONTAINER_USER:$CONTAINER_GROUP /home/$CONTAINER_USER
+
+    setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
+    setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
 elif [ "${APP_ENVIRONMENT}" = "test" ]; then
     SYMFONY_ENV=${APP_ENVIRONMENT} composer self-update
     SYMFONY_ENV=${APP_ENVIRONMENT} composer install
@@ -52,9 +55,6 @@ if [ "${APP_ENVIRONMENT}" != "dev" ]; then
     #setfacl -dR -m u:www-data:rwx -m m:rwx var web/uploads
     chown -R www-data:www-data var web/images
 fi
-
-setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
-setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
 
 ##############################################################
 # execute the default command
