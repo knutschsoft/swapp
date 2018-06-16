@@ -88,6 +88,7 @@ COPY composer.json composer.lock /var/www/html/
 # remove for flex
 WORKDIR /var/www/html
 COPY . /var/www/html
+COPY app/config/parameters.yml.dist app/config/parameters.yml
 # end remove for flex
 
 RUN cd /var/www/html
