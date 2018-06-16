@@ -19,11 +19,5 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeItYeahChangedItSoKnutschMe
 
-
-    command.host_ip: ~
-    command.ssh_user: ~
-
-    command.credentials_location: ~
-
     bugsnag.app_version: '%env(BUGSNAG_APP_VERSION)'
     bugsnag.api_key: '%env(BUGSNAG_API_KEY)'
