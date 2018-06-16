@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_command.yml }
     - { resource: services_controller.yml }
     - { resource: services_form_type.yml }
     - { resource: services_param_converter.yml }
