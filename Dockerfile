@@ -114,7 +114,7 @@ RUN a2enmod rewrite
 RUN a2enmod headers
 RUN a2enmod ssl
 
-RUN openssl genrsa -des3 -passout pass:x -out /etc/ssl/private/swapp.pass.key 2048
+RUN openssl genrsa -passout pass:x -out /etc/ssl/private/swapp.pass.key 2048
 RUN openssl rsa -passin pass:x -in /etc/ssl/private/swapp.pass.key -out /etc/ssl/private/swapp.key
 RUN openssl req -new -key /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.csr -batch
 RUN openssl x509 -req -days 365 -in /etc/ssl/private/swapp.csr -signkey /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.crt
