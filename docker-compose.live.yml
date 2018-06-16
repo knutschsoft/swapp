@@ -2,6 +2,7 @@ version: "3"
 services:
 
   web:
+    env_file: .env # needed in deployment cause docker-compose up could not handle .env.docker
     image: knutschsoft/swapp:latest
     ports:
       - ${OUTER_WEB_PORT}:80

@@ -2,6 +2,7 @@ version: "3"
 services:
 
   web:
+    env_file: .env.docker
     build:
       context: .
     volumes:
