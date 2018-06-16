@@ -2,14 +2,11 @@ version: "3"
 services:
 
   web:
-    volumes:
-      - .:/var/www/html
     networks:
       - swapp
     command: /init-project.sh
     restart: "always"
     tty: true
-    container_name: swapp
     depends_on:
       - mysql
 
@@ -20,6 +17,11 @@ services:
     networks:
       - swapp
     restart: "always"
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
 
 volumes:
   mysql_data:
