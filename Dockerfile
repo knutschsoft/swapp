@@ -33,6 +33,7 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 # only needed for yarn :-/
 RUN apt-get update && apt-get install -y \
         curl \
+        gnupg \
         apt-transport-https
 
 # yarn
