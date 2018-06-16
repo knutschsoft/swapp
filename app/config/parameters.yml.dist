@@ -1,11 +1,11 @@
 # This file is a "template" of what your parameters.yml file should look like
 parameters:
     database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     swapp
-    database_user:     swapp
-    database_password: pa$$word
+    database_host:     '%env(MYSQL_HOST)%'
+    database_port: 3306
+    database_name:     '%env(MYSQL_DATABASE)%'
+    database_user:     '%env(MYSQL_USER)%'
+    database_password: '%env(MYSQL_PASSWORD)%'
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
@@ -25,5 +25,5 @@ parameters:
 
     command.credentials_location: ~
 
-    bugsnag.app_version: local_dev
-    bugsnag.api_key: dummy
+    bugsnag.app_version: '%env(BUGSNAG_APP_VERSION)'
+    bugsnag.api_key: '%env(BUGSNAG_API_KEY)'

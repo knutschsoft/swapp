@@ -1,0 +1,11 @@
+version: "3"
+services:
+
+  web:
+    image: knutschsoft/swapp:latest
+    ports:
+      - ${OUTER_WEB_PORT}:80
+    volumes:
+      - ${APACHE_LOG_DIR}:/var/log/apache2/
+      - ${PHP_LOG_DIR}:/var/www/html/var/log/
+      - ${WAYPOINTS_IMAGES_DIR}:/var/www/html/web/images/way_points

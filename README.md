@@ -6,141 +6,7 @@ SWAPP
 [![StyleCi](https://styleci.io/repos/34905820/shield?branch=master)](https://styleci.io/repos/34905820)
 [![Stories in Ready](https://badge.waffle.io/knutschsoft/swapp.png?label=ready&title=Ready)](https://waffle.io/knutschsoft/swapp)
 
-## How to start dev action??
-
-### Install Database:
-
-On your MySQL console:
-
-```
-CREATE DATABASE swapp;
-GRANT ALL ON swapp.* TO swapp@'localhost' IDENTIFIED BY 'pa$$word';
-```
-
-### Configure ACL
-
-How to install and configure acl: http://wiki.ubuntuusers.de/ACL
-Open a terminal and type in the following commands:
-
-```
-cd /your/symfony/dir
-sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/logs web/images/way_points
-sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/logs web/images/way_points
-```
-
-### Setup webserver
-
-#### create ```/etc/apache2/sites-available/swapp.conf``` as root with the following content.
-
-```
-<VirtualHost *:80>
-    ServerName swapp
-    ServerAlias swapp.localhost
- 
-    DocumentRoot /your/symfony/dir/web
- 
-    <Directory />
-        DirectoryIndex app.php
-        Options FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-    <Directory "/your/symfony/dir/web">
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride All
-        Require all granted
-    </Directory>
- 
-    ErrorLog ${APACHE_LOG_DIR}/swapp_error.log
-    CustomLog ${APACHE_LOG_DIR}/swapp_access.log combined
- 
-</VirtualHost>
-```
-
-#### run in terminal
-
-```
-sudo a2ensite swapp.conf
-sudo service apache2 reload
-```
-
-#### add in ```/etc/hosts```
-
-```
-127.0.0.1 swapp.localhost swapp
-```
-
-### Install composer and composer packages
-
-```
-curl -sS https://getcomposer.org/installer | php
-php composer.phar install
-```
-### Install assets
-
-```
-nvm install v7.1.0
-nvm use v7.1.0
-
-npm install
-yarn install
-```
-
-### Set up parameters
-You have to set database and mailer credentials in your
-`app/config/parameters.yml`.
-
-```
- parameters:
-     database_host: 127.0.0.1
-     database_name: swapp
-     database_user: swapp
-     database_password: pa$$word
-     ...
-     mailer_user: swapp_mail
-     mailer_password: swapp_mail
-```
-Change the values whatever database name, username and password you've used while creating the database on your mySQL console.
-FOSUserBundle requires the mailer parameters to also be set.
-
-### Execute Migrations
-
-```php bin/console doctrine:migrations:migrate --no-interaction```
-
-### Load data fixtures
-
-```php bin/console hautelook_alice:doctrine:fixtures:load```
-
-### Start unit tests
-
-```./bin/phpunit```
-
-### Check config
-
-Call in terminal:
-```
-php app/check.php
-```
-
-### run webpack encore
-dev mode
-enables dev options like sourcemaps
-```
-node_modules/.bin/encore dev
-```
-
-production switch
-```
-node_modules/.bin/encore production
-```
-
-### Open in browser:
-
-```
-http://swapp/config.php
-```
-
-### Entrance:
+# Entrance:
 
  http://swapp/eadmin
 
@@ -161,7 +27,19 @@ http://swapp/config.php
     ...
     127.0.0.1 swapp
     ```
+     
+* copy docker .env file
 
+    ```bash
+    $ copy .env.docker.dist .env.docker 
+    ```
+    
+* build container once and start container immediately
+
+    ```bash
+    $ docker-compose up --build web
+    ```
+    
 ## Development with docker containers
 
 * All commands have to be executed in workspace (symfony project root)
@@ -182,19 +60,14 @@ http://swapp/config.php
         ```bash
         $ docker-compose exec web php bin/console hautelook_alice:doctrine:fixtures:load -n
         ```
-### Use XDebug
+## If you want to use XDebug
 
-* Activate XDebug in `docker-compse.yml`:
-```yaml
-  services:
+* Activate XDebug in `.env.docker`:
+    ```
     ...
-    web:  
-      ...
-      environment:
-        PHP_XDEBUG_ENABLED: 0                       # load XDebug on container start
-        XDEBUG_CONFIG: remote_host=172.17.0.1       # docker HOST-IP
-        PHP_IDE_CONFIG: serverName=localhost        # PHPStorm server name - only used in CLI debug
-```
+    PHP_XDEBUG_ENABLED: 1
+    ...
+    ```
 * PHPStorm setup:
     * Settings... -> Languages & Frameworks -> PHP -> Servers: Add
         * name: has to be same as PHP_IDE_CONFIG value
@@ -204,14 +77,15 @@ http://swapp/config.php
         * `Port`: 9000
 * Start containers:
     ```bash
-    $ docker-compose up -d
+    $ docker-compose up -d web
     ```
 * After clicking "Start Listening for PHP Debug Connections" in PHPStorm you can jump to web and cli breakpoints.
 * To activate/deactivate XDebug simply adjust ENV-Variable `PHP_XDEBUG_ENABLED` in `docker-compose.yml`
 and restart containers (`docker-compose down && docker-compose up -d`) 
 
-### Setting the max_uploaded_filesize for docker
-* head to ./.docker/web/init-container.sh
+### Setting the max_uploaded_filesize
+
+* head to ./init-container.sh
 * in section `Prepare PHP` change the line
     `sh -c "echo 'upload_max_filesize = 10M'` according to your needs
 * if you want to allow bigger image files you have to adjust this php.ini setting as well as the `File` constraint's `maxSize` option on the imageFile property in `WayPoint.php`
