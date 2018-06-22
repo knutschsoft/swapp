@@ -37,7 +37,8 @@
         "evolution7/bugsnag-bundle": "~2.0",
         "hwi/oauth-bundle": "^0.5.1",
         "easycorp/easy-log-handler": "^1.0",
-        "sensio/distribution-bundle": "^5.0"
+        "sensio/distribution-bundle": "^5.0",
+        "symfony/dotenv": "^3.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
