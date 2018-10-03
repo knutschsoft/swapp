@@ -28,55 +28,78 @@
         <a href="{{ path('tag_home_screen') }}" class="btn btn-primary px1">Tags</a>
     </div>
 
-    <div class="">
-        <table class="table-light">
-            <thead>
-            <tr>
-                <th>
-                    <a class="btn{{ (order == 'name') ? ' btn-' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'name', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Name</a>
-                </th>
-                <th>
-                    <a class="btn{{ (order == 'rating') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'rating', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Bewertung</a>
-                </th>
-                <th>
-                    <a class="btn{{ (order == 'startTime') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'startTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Beginn</a>
-                </th>
-                <th>
-                    <a class="btn{{ (order == 'endTime') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'endTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Ende</a>
-                </th>
-                <th>
-                    <a class="btn{{ (order == 'teamName') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'teamName', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">Team</a>
-                </th>
-                <th>
-                    <a class="btn{{ (order == 'isResubmission') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'isResubmission', 'sort': (sort == 'asc') ? 'desc' : 'asc' }) }}">WV DB</a>
-                </th>
-                <th class="right-align">Detailansicht</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for walk in walks %}
-                <tr>
-                    <td>{{ walk.getName }}</td>
-                    <td>{{ walk.getRating }}</td>
-                    <td>{{ walk.getStartTime|localizeddate('short', 'short') }}</td>
-                    <td>{{ walk.getEndTime|localizeddate('short', 'short') }}</td>
-                    <td>{{ walk.teamName }} </td>
-                    <td>{% if walk.isResubmission == 1 %} ja
-                        {% else %} nein
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a class="btn btn-primary sm-col-right"
-                           href="{{ path('walk_show', { 'walkId': walk.getId }) }}">
-                            Runde ansehen</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4">Es wurden noch keine Runden angelegt.</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="card mt-3">
+        <div class="card-header">Liste aller Runden</div>
+        <div class="card-body pl-1 pr-1">
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">
+                                <a class="btn{{ (order == 'name') ? ' btn-' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'name', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                    Name
+                                    {% if sort == 'asc' %}<i class="icon ion-md-arrow-dropup"></i>{% else %}<i class="icon ion-md-arrow-dropdown"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col"><ion-icon name="arrow-dropup"></ion-icon>
+                                <a class="btn{{ (order == 'rating') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'rating', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                    <i class="icon ion-md-star"></i>
+                                    {% if sort == 'asc' %}<i class="icon ion-md-arrow-dropup"></i>{% else %}<i class="icon ion-md-arrow-dropdown"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a class="btn{{ (order == 'startTime') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'startTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                    Beginn
+                                    {% if sort == 'asc' %}<i class="icon ion-md-arrow-dropup"></i>{% else %}<i class="icon ion-md-arrow-dropdown"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a class="btn{{ (order == 'endTime') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'endTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                    Ende
+                                    {% if sort == 'asc' %}<i class="icon ion-md-arrow-dropup"></i>{% else %}<i class="icon ion-md-arrow-dropdown"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a class="btn{{ (order == 'teamName') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'teamName', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                    Team
+                                    {% if sort == 'asc' %}<i class="icon ion-md-arrow-dropup"></i>{% else %}<i class="icon ion-md-arrow-dropdown"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a class="btn{{ (order == 'isResubmission') ? ' btn-primary' }} btn-outline" href="{{ path('walk_home_screen', { 'order': 'isResubmission', 'sort': (sort == 'asc') ? 'desc' : 'asc' }) }}">
+                                    WV DB
+                                    {% if sort == 'asc' %}<i class="icon ion-md-arrow-dropup"></i>{% else %}<i class="icon ion-md-arrow-dropdown"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col" class="right-align">Detailansicht</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for walk in walks %}
+                            <tr>
+                                <td class="text-center small">{{ walk.getName }}</td>
+                                <td class="text-center small">{{ walk.getRating }}</td>
+                                <td class="text-center small">{{ walk.getStartTime|localizeddate('short', 'short') }}</td>
+                                <td class="text-center small">{{ walk.getEndTime|localizeddate('short', 'short') }}</td>
+                                <td class="text-center small">{{ walk.teamName }}</td>
+                                <td class="text-center">{% if walk.isResubmission == 1 %}<i class="icon ion-md-checkbox-outline text-success"></i>
+                                    {% else %} <i class="icon ion-md-close text-warning"></i>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-primary sm-col-right"
+                                       href="{{ path('walk_show', { 'walkId': walk.getId }) }}">
+                                        Runde ansehen</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Es wurden noch keine Runden angelegt.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}

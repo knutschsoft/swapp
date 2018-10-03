@@ -2979,6 +2979,11 @@ invert-kv@^1.0.0:
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
   integrity sha1-EEqOSqym09jNFXqO+L+rLXo//bY=
 
+ionicons@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-4.4.4.tgz#d2b2dfe240e4c8686f59acd91c9c8c1dd13931c1"
+  integrity sha512-HOcxF+pFHQQA4x7zy1eyuzTsaJzyyKKGYGsqvMMnB26rvp9sTKjA8JDZ4L4GRSNWliHC/oXbBoidglJa/0kiPA==
+
 ip@^1.1.0, ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
