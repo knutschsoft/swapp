@@ -1,11 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block title %}Wegpunkt{% endblock %}
 {% block content %}
-    {% for flashMessage in app.session.flashbag.get('notice') %}
-        <div class="flash-notice">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
     {{ form_start(form) }}
     {{ form_errors(form) }}
 

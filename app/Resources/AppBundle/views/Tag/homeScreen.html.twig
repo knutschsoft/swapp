@@ -2,11 +2,6 @@
 
 {% block title %}{{ 'tag.list.title'|trans }}{% endblock %}
 {% block content %}
-    {% for flashMessage in app.session.flashbag.get('notice') %}
-        <div class="flash-notice">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
     <div class="swapp-headline-container">
         <h1>
             {{ 'tag.list.headline'|trans }}

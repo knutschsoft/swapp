@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}Swapp!{% endblock %}</title>
         {% block meta_description %}{% endblock %}
         {% block stylesheets %}
@@ -14,6 +14,13 @@
         {% block javascripts %}
             <script src="{{ asset('build/app.js') }}"></script>
         {% endblock %}
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="alert alert-info" role="alert">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
         {% block content %}
         {% endblock %}
 
