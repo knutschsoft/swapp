@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Walk;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,23 +24,24 @@ class WalkPrologueType extends AbstractType
         $builder->add(
             'name',
             TextType::class,
-            array(
+            [
                 'label' => 'Name',
-            )
+                'required' => true,
+            ]
         );
         $builder->add(
             'conceptOfDay',
             TextareaType::class,
-            array(
+            [
                 'label' => 'Tageskonzept',
-            )
+            ]
         );
         $builder->add(
             'startTime',
             DateTimeType::class,
-            array(
+            [
                 'label' => 'Rundenstartzeit',
-            )
+            ]
         );
         $builder->add(
             'holidays',
@@ -80,10 +82,10 @@ class WalkPrologueType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->resolve(
-            array(
-                'data_class' => 'AppBundle\Entity\Walk',
-                'validation_groups' => array('prologue'),
-            )
+            [
+                'data_class' => Walk::class,
+                'validation_groups' => ['prologue'],
+            ]
         );
     }
 
