@@ -24,18 +24,40 @@
         {% block content %}
         {% endblock %}
 
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <div class="bold border-top p1 block clearfix">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a class="btn btn-primary right bg-aqua" href="{{ path('easyadmin') }}">
-                        Backend
-                    </a>
+        <footer class="footer fixed-bottom">
+
+            <div class="form-row align-items-center float-right">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="col-xs-6 mt-3 ml-1">
+
+                            <a class="input-group input-group-sm" href="{{ path('easyadmin') }}">
+
+                                <div class="btn btn-primary form-control">
+                                    Backend
+                                </div>
+                                <div class="input-group-append">
+                                    <div class="input-group-text"><i class="ion ion-md-cog"></i></div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="col-xs-6 mt-3">
+                        <a class="input-group input-group-sm" href="{{ logout_path('main') }}">
+                            <button class="btn btn-primary form-control">
+                                Logout ({{ app.getUser.getUsername }})
+                            </button>
+                            <div class="input-group-append">
+                                <div class="input-group-text"><i class="ion ion-md-log-out"></i></div>
+                            </div>
+                        </a>
+                    </div>
                 {% endif %}
-                <a class="btn btn-primary right bg-red" href="{{ logout_path('main') }}">
-                    Logout ({{ app.getUser.getUsername }})
-                </a>
+                {#<div class="col-sm-auto my-1 small">#}
+                    {#<span class="">Copyright &copy; {{ 'now'|date('Y') }}</span> swapp - Die StreetWorkAPP#}
+                {#</div>#}
             </div>
-        {% endif %}
+        </footer>
 
     </body>
 </html>
