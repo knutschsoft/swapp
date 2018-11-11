@@ -30,90 +30,91 @@
 
             <hr \>
 
-            <a class="input-group input-group-sm" href="{{ path('walk_export') }}">
-                <div class="btn btn-block mb-1 btn-primary form-control">
-                    Runden exportieren
-                </div>
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="ion ion-md-download"></i></span>
-                </div>
-            </a>
+            {% if walks|length %}
 
-            <div class="table-responsive">
-                        <table class="table table-striped table-sm mb-0">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="text-center" scope="col">
-                                        <a class="btn{{ (order == 'name') ? ' btn-' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'name', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
-                                            Name
-                                            {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
-                                        </a>
-                                    </th>
-                                    <th class="text-center" scope="col"><ion-ion name="arrow-dropup"></ion-ion>
-                                        <a class="btn{{ (order == 'rating') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'rating', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
-                                            <i class="ion ion-md-star"></i>
-                                            {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
-                                        </a>
-                                    </th>
-                                    <th class="text-center" scope="col">
-                                        <a class="btn{{ (order == 'startTime') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'startTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
-                                            Beginn
-                                            {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
-                                        </a>
-                                    </th>
-                                    <th class="text-center" scope="col">
-                                        <a class="btn{{ (order == 'endTime') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'endTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
-                                            Ende
-                                            {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
-                                        </a>
-                                    </th>
-                                    <th class="text-center" scope="col">
-                                        <a class="btn{{ (order == 'teamName') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'teamName', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
-                                            Team
-                                            {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
-                                        </a>
-                                    </th>
-                                    <th class="text-center" scope="col">
-                                        <a class="btn{{ (order == 'isResubmission') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'isResubmission', 'sort': (sort == 'asc') ? 'desc' : 'asc' }) }}">
-                                            WV DB
-                                            {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
-                                        </a>
-                                    </th>
-                                    <th scope="col" class="text-center"><div class="btn-outline btn btn-sm">Detailansicht</div></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for walk in walks %}
-                                    <tr>
-                                        <td class="text-center small">{{ walk.getName }}</td>
-                                        <td class="text-center small">{{ walk.getRating }}</td>
-                                        <td class="text-center small">{{ walk.getStartTime|localizeddate('short', 'short') }}</td>
-                                        <td class="text-center small">{{ walk.getEndTime|localizeddate('short', 'short') }}</td>
-                                        <td class="text-center small">{{ walk.teamName }}</td>
-                                        <td class="text-center">{% if walk.isResubmission == 1 %}<i class="ion ion-md-checkbox-outline text-success"></i>
-                                            {% else %} <i class="ion ion-md-close text-warning"></i>
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="input-group input-group-sm"
-                                               href="{{ path('walk_show', { 'walkId': walk.getId }) }}">
-                                                <button class="btn btn-primary form-control">
-                                                    Runde
-                                                </button>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="ion ion-md-eye"></i></span>
-                                                </div>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="4">Es wurden noch keine Runden angelegt.</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                <a class="input-group input-group-sm" href="{{ path('walk_export') }}">
+                    <div class="btn btn-block mb-1 btn-primary form-control">
+                        Runden exportieren
                     </div>
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="ion ion-md-download"></i></span>
+                    </div>
+                </a>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" scope="col">
+                                    <a class="btn{{ (order == 'name') ? ' btn-' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'name', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                        Name
+                                        {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
+                                    </a>
+                                </th>
+                                <th class="text-center" scope="col"><ion-ion name="arrow-dropup"></ion-ion>
+                                    <a class="btn{{ (order == 'rating') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'rating', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                        <i class="ion ion-md-star"></i>
+                                        {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
+                                    </a>
+                                </th>
+                                <th class="text-center" scope="col">
+                                    <a class="btn{{ (order == 'startTime') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'startTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                        Beginn
+                                        {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
+                                    </a>
+                                </th>
+                                <th class="text-center" scope="col">
+                                    <a class="btn{{ (order == 'endTime') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'endTime', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                        Ende
+                                        {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
+                                    </a>
+                                </th>
+                                <th class="text-center" scope="col">
+                                    <a class="btn{{ (order == 'teamName') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'teamName', 'sort': sort == 'asc' ? 'desc' : 'asc' }) }}">
+                                        Team
+                                        {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
+                                    </a>
+                                </th>
+                                <th class="text-center" scope="col">
+                                    <a class="btn{{ (order == 'isResubmission') ? ' btn-primary' }} btn-sm btn-outline" href="{{ path('walk_home_screen', { 'order': 'isResubmission', 'sort': (sort == 'asc') ? 'desc' : 'asc' }) }}">
+                                        WV DB
+                                        {% if sort == 'asc' %}<i class="ion ion-md-arrow-dropup"></i>{% else %}<i class="ion ion-md-arrow-dropdown"></i>{% endif %}
+                                    </a>
+                                </th>
+                                <th scope="col" class="text-center"><div class="btn-outline btn btn-sm">Detailansicht</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for walk in walks %}
+                                <tr>
+                                    <td class="text-center small">{{ walk.getName }}</td>
+                                    <td class="text-center small">{{ walk.getRating }}</td>
+                                    <td class="text-center small">{{ walk.getStartTime|localizeddate('short', 'short') }}</td>
+                                    <td class="text-center small">{{ walk.getEndTime|localizeddate('short', 'short') }}</td>
+                                    <td class="text-center small">{{ walk.teamName }}</td>
+                                    <td class="text-center">{% if walk.isResubmission == 1 %}<i class="ion ion-md-checkbox-outline text-success"></i>
+                                        {% else %} <i class="ion ion-md-close text-warning"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="input-group input-group-sm"
+                                           href="{{ path('walk_show', { 'walkId': walk.getId }) }}">
+                                            <button class="btn btn-primary form-control">
+                                                Runde
+                                            </button>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="ion ion-md-eye"></i></span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                 Es wurden bisher keine Runden angelegt.
+            {% endif %}
 
             <hr/>
             <a class="input-group input-group-sm" href="{{ path('tag_home_screen') }}">
