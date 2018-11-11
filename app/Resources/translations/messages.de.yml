@@ -42,7 +42,7 @@ hello-world: Hallo du schöne Welt!
 
 tag:
     create:
-        title: Tag erstellen
+        title: neuen Tag erstellen
     list:
         title: Tags
         headline: Tags

@@ -29,10 +29,25 @@
 
         <footer class="footer fixed-bottom">
 
-            <div class="form-row align-items-center float-right">
+            <div class="d-flex">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+                    {% if block('footer_back_href') is not empty %}
+                        <div class="mr-auto p-2 ml-1">
+                            <a class="input-group input-group-sm" href="{% block footer_back_href %}{% endblock %}">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="ion ion-md-arrow-back"></i></div>
+                                </div>
+
+                                <div class="btn btn-primary form-control">
+                                    {{ 'global.navigation.back'|trans }}
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+
                     {% if is_granted('ROLE_ADMIN') %}
-                        <div class="col-xs-6 mt-3 ml-1">
+                        <div class="p-2">
 
                             <a class="input-group input-group-sm" href="{{ path('easyadmin') }}">
 
@@ -45,7 +60,7 @@
                             </a>
                         </div>
                     {% endif %}
-                    <div class="col-xs-6 mt-3">
+                    <div class="p-2">
                         <a class="input-group input-group-sm" href="{{ logout_path('main') }}">
                             <button class="btn btn-primary form-control">
                                 Logout ({{ app.getUser.getUsername }})

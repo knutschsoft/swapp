@@ -1,16 +1,12 @@
-<table class="table-light">
-    <thead>
-    <tr>
-        <th>{{ 'tag.overview.name'|trans }}</th>
-        <th>{{ 'tag.overview.color'|trans }}</th>
-    </tr>
-    </thead>
-    <tbody>
-        {% for tag in tags %}
-            <tr>
-                <td>{{ tag.getName }}</td>
-                <td>{{ tag.getColor }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<ul class="list-group">
+    <li class="list-group-item font-weight-bold d-flex justify-content-between align-items-center lead">
+        <span class="text-strong">{{ 'tag.overview.name'|trans }}</span>
+        <span class="text-strong">{{ 'tag.overview.color'|trans }}</span>
+    </li>
+    {% for tag in tags %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ tag.getName }}
+            <span class="badge badge-primary badge-pill" style="background-color: {{ tag.getColor }};">{{ tag.getColor }}</span>
+        </li>
+    {% endfor %}
+</ul>

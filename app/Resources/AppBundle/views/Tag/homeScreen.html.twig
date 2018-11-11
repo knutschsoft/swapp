@@ -2,16 +2,28 @@
 
 {% block title %}{{ 'tag.list.title'|trans }}{% endblock %}
 {% block content %}
-    <div class="swapp-headline-container">
-        <h1>
-            {{ 'tag.list.headline'|trans }}
-        </h1>
-    </div>
-    <div class="swapp-password-change-container">
-        <div class="mb1">
-            <a href="{{ path('walk_home_screen') }}" class="btn btn-primary">{{ 'global.navigation.back'|trans }}</a>
-            <a href="{{ path('tag_create') }}" class="btn btn-primary">{{ 'tag.create.title'|trans }}</a>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h5 mb-0">
+                {{ 'tag.list.headline'|trans }}
+            </h1>
+        </div>
+        <div class="card-body pl-1 pr-1 pb-2">
+            {{ include('@App/Tag/tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
+            <hr>
+
+            <a class="input-group input-group-sm" href="{{ path('tag_create') }}">
+                <div class="btn btn-block mb-1 btn-primary form-control">
+                    {{ 'tag.create.title'|trans }}
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="ion ion-md-pricetags"></i></span>
+                </div>
+            </a>
         </div>
     </div>
-    {{ include ('@App/Tag/tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
+{% endblock %}
+
+{% block footer_back_href %}
+    {{- path('walk_home_screen') -}}
 {% endblock %}
