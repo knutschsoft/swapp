@@ -508,6 +508,18 @@ class Walk
 
         return $count;
     }
+    /**
+     * @return int
+     */
+    public function getUndefinedCount()
+    {
+        $count = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $count += $wayPoint->getUndefinedCount();
+        }
+
+        return $count;
+    }
 
     /**
      * @return null|string

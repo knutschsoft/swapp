@@ -4,6 +4,8 @@ Name: Name
 Email: E-Mail
 Walk: Runde
 
+AgeRange: Altersgruppe
+
 eadmin:
     team:
         label: Teams

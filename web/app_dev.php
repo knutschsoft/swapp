@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
@@ -22,6 +23,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 
 $loader = require __DIR__.'/../app/autoload.php';
 Debug::enable();
+(new Dotenv())->load(__DIR__.'/../.env');
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();

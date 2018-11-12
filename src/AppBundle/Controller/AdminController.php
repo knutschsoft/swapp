@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
+use AppBundle\Entity\AgeRange;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 
 class AdminController extends BaseAdminController
@@ -15,13 +16,17 @@ class AdminController extends BaseAdminController
         return $this->get('fos_user.user_manager')->createUser();
     }
 
-
     /**
      * @return Team
      */
     public function createNewTeamEntity()
     {
         return new Team();
+    }
+
+    public function createNewAgeRangeEntity()
+    {
+        return new AgeRange(0,0);
     }
 
     /**

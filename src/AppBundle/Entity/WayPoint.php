@@ -1,6 +1,8 @@
 <?php
+
 namespace AppBundle\Entity;
 
+use AppBundle\Value\AgeGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -51,65 +53,10 @@ class WayPoint
     private $locationName;
 
     /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
+     * @ORM\Column(type="json")
+     * @var ArrayCollection|AgeGroup[]
      */
-    private $malesChildCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $femalesChildCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $malesKidCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $femalesKidCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $malesYoungAdultCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $femalesYoungAdultCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $malesYouthCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $femalesYouthCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $malesAdultCount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
-    private $femalesAdultCount;
-
+    private $ageGroups;
     /**
      * @ORM\Column(type="string", nullable=true, length=4096)
      */
@@ -129,6 +76,27 @@ class WayPoint
     public function __construct()
     {
         $this->wayPointTags = new ArrayCollection();
+        $this->ageGroups = new ArrayCollection();
+    }
+
+    public function getAgeGroups()
+    {
+        return $this->ageGroups;
+    }
+
+    public function setAgeGroups(array $ageGroups)
+    {
+        $this->ageGroups = new ArrayCollection($ageGroups);
+    }
+
+    public function addAgeGroup(AgeGroup $ageGroup)
+    {
+        $this->ageGroups->add($ageGroup);
+    }
+
+    public function removeAgeGroup(AgeGroup $ageGroup)
+    {
+        $this->ageGroups->removeElement($ageGroup);
     }
 
     /**
@@ -136,11 +104,12 @@ class WayPoint
      */
     public function getFemalesCount()
     {
-        return $this->getFemalesKidCount() +
-            $this->getFemalesChildCount() +
-            $this->getFemalesAdultCount() +
-            $this->getFemalesYoungAdultCount() +
-            $this->getFemalesYouthCount();
+        $sum = 0;
+        foreach ($this->ageGroups as $ageGroup) {
+            $sum += $ageGroup->count()->females();
+        }
+
+        return $sum;
     }
 
     /**
@@ -148,107 +117,25 @@ class WayPoint
      */
     public function getMalesCount()
     {
-        return $this->getMalesKidCount() +
-            $this->getMalesChildCount() +
-            $this->getMalesAdultCount() +
-            $this->getMalesYoungAdultCount() +
-            $this->getMalesYouthCount();
+        $sum = 0;
+        foreach ($this->ageGroups as $ageGroup) {
+            $sum += $ageGroup->count()->males();
+        }
+
+        return $sum;
     }
 
     /**
      * @return integer
      */
-    public function getMalesKidCount()
+    public function getUndefinedCount()
     {
-        return $this->malesKidCount;
-    }
+        $sum = 0;
+        foreach ($this->ageGroups as $ageGroup) {
+            $sum += $ageGroup->count()->undefined();
+        }
 
-    /**
-     * @param integer $malesKidCount
-     */
-    public function setMalesKidCount($malesKidCount)
-    {
-        $this->malesKidCount = $malesKidCount;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getFemalesKidCount()
-    {
-        return $this->femalesKidCount;
-    }
-
-    /**
-     * @param integer $femalesKidCount
-     */
-    public function setFemalesKidCount($femalesKidCount)
-    {
-        $this->femalesKidCount = $femalesKidCount;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getMalesYouthCount()
-    {
-        return $this->malesYouthCount;
-    }
-
-    /**
-     * @param integer $malesYouthCount
-     */
-    public function setMalesYouthCount($malesYouthCount)
-    {
-        $this->malesYouthCount = $malesYouthCount;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getFemalesYouthCount()
-    {
-        return $this->femalesYouthCount;
-    }
-
-    /**
-     * @param integer $femalesYouthCount
-     */
-    public function setFemalesYouthCount($femalesYouthCount)
-    {
-        $this->femalesYouthCount = $femalesYouthCount;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getMalesAdultCount()
-    {
-        return $this->malesAdultCount;
-    }
-
-    /**
-     * @param integer $malesAdultCount
-     */
-    public function setMalesAdultCount($malesAdultCount)
-    {
-        $this->malesAdultCount = $malesAdultCount;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getFemalesAdultCount()
-    {
-        return $this->femalesAdultCount;
-    }
-
-    /**
-     * @param integer $femalesAdultCount
-     */
-    public function setFemalesAdultCount($femalesAdultCount)
-    {
-        $this->femalesAdultCount = $femalesAdultCount;
+        return $sum;
     }
 
     /**
@@ -341,22 +228,6 @@ class WayPoint
     /**
      * @return integer
      */
-    public function getFemalesChildCount()
-    {
-        return $this->femalesChildCount;
-    }
-
-    /**
-     * @param integer $femalesChildCount
-     */
-    public function setFemalesChildCount($femalesChildCount)
-    {
-        $this->femalesChildCount = $femalesChildCount;
-    }
-
-    /**
-     * @return integer
-     */
     public function getId()
     {
         return $this->id;
@@ -368,22 +239,6 @@ class WayPoint
     public function setId($id)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getMalesChildCount()
-    {
-        return $this->malesChildCount;
-    }
-
-    /**
-     * @param integer $malesChildCount
-     */
-    public function setMalesChildCount($malesChildCount)
-    {
-        $this->malesChildCount = $malesChildCount;
     }
 
     /**
@@ -452,53 +307,13 @@ class WayPoint
         $this->wayPointTags->removeElement($tag);
     }
 
-    /**
-     * @return integer
-     */
-    public function getMalesYoungAdultCount()
-    {
-        return $this->malesYoungAdultCount;
-    }
-
-    /**
-     * @param integer $malesYoungAdultCount
-     */
-    public function setMalesYoungAdultCount($malesYoungAdultCount)
-    {
-        $this->malesYoungAdultCount = $malesYoungAdultCount;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getFemalesYoungAdultCount()
-    {
-        return $this->femalesYoungAdultCount;
-    }
-
-    /**
-     * @param integer $femalesYoungAdultCount
-     */
-    public function setFemalesYoungAdultCount($femalesYoungAdultCount)
-    {
-        $this->femalesYoungAdultCount = $femalesYoungAdultCount;
-    }
-
     public function getAllFemalesCount()
     {
-        return $this->getFemalesKidCount()
-            + $this->getFemalesChildCount()
-            + $this->getFemalesYouthCount()
-            + $this->getFemalesYoungAdultCount()
-            + $this->getFemalesAdultCount();
+        return $this->getFemalesCount();
     }
 
     public function getAllMalesCount()
     {
-        return $this->getMalesKidCount()
-            + $this->getMalesChildCount()
-            + $this->getMalesYouthCount()
-            + $this->getMalesYoungAdultCount()
-            + $this->getMalesAdultCount();
+        return $this->getMalesCount();
     }
 }
