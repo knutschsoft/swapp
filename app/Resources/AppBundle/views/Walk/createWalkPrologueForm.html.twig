@@ -1,44 +1,27 @@
     {% extends '::base.html.twig' %}
 {% block title %}Runde abschließen{% endblock %}
 {% block content %}
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    <div class="col">
-        <div class="flex flex-column ">
-            <div class="p1">
-                {{ form_label(form.name) }}
-                <br>
-                {{ form_errors(form.name) }}
-                {{ form_widget(form.name) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.conceptOfDay) }}
-                <br>
-                {{ form_errors(form.conceptOfDay) }}
-                {{ form_widget(form.conceptOfDay) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.startTime) }}
-                <br>
-                {{ form_errors(form.startTime) }}
-                {{ form_widget(form.startTime) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.holidays) }}
-                <br>
-                {{ form_errors(form.holidays) }}
-                {{ form_widget(form.holidays) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.weather) }}
-                <br>
-                {{ form_errors(form.weather) }}
-                {{ form_widget(form.weather) }}
-            </div>
-            <div class="p1">
-                {{ form_widget(form.create) }}
-            </div>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h5 mb-0">
+                {{ 'tag.list.headline'|trans }}
+            </h1>
+        </div>
+        <div class="card-body pl-1 pr-1 pb-2">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.conceptOfDay) }}
+            {{ form_row(form.startTime) }}
+            {{ form_row(form.holidays) }}
+            {{ form_row(form.weather) }}
+            {{ form_row(form.create) }}
+            {{ form_end(form) }}
         </div>
     </div>
-    {{ form_end(form) }}
+{% endblock %}
+
+{% block footer_back_href %}
+    {{- path('home') -}}
 {% endblock %}

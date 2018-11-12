@@ -22,7 +22,7 @@ class Walk
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"default", "registration"})
+     * @Assert\NotBlank(groups={"prologue", "registration"})
      */
     private $name;
 
@@ -34,13 +34,13 @@ class Walk
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank(groups={"default", "registration"})
+     * @Assert\NotBlank(groups={"prologue", "registration"})
      */
     private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank(groups={"default"})
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $endTime;
 
@@ -63,7 +63,7 @@ class Walk
 
     /**
      * @ORM\Column(type="smallint")
-     * @Assert\NotBlank(groups={"default"})
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $rating;
 
@@ -75,7 +75,7 @@ class Walk
 
     /**
      * @ORM\Column(type="string", length=4096)
-     * @Assert\NotBlank(groups={"default"})
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $systemicAnswer;
 
@@ -100,22 +100,22 @@ class Walk
     private $guests;
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\NotBlank(groups={"prologue"})
      */
     private $weather;
     /**
      * @ORM\Column(type="boolean", length=255)
-     * @Assert\NotBlank(groups={"registration"})
      */
     private $holidays;
     /**
      * @ORM\Column(type="string", length=4096)
-     * @Assert\NotBlank(groups={"default", "registration"})
+     * @Assert\NotBlank(groups={"prologue"})
      */
     private $conceptOfDay;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"prologue"})
      */
     private $teamName;
 

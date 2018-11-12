@@ -62,6 +62,7 @@ class WalkPrologueType extends AbstractType
                     'Schnee' => 'Schnee',
                     'Arschkalt' => 'Arschkalt',
                 ),
+                'placeholder' => '---',
                 'label' => 'Wetter',
             )
         );
@@ -84,13 +85,12 @@ class WalkPrologueType extends AbstractType
         $resolver->resolve(
             [
                 'data_class' => Walk::class,
+            ]
+        );
+        $resolver->setDefaults(
+            [
                 'validation_groups' => ['prologue'],
             ]
         );
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'app_create_walk_prologue';
     }
 }

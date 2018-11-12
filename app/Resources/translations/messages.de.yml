@@ -42,7 +42,8 @@ hello-world: Hallo du schöne Welt!
 
 tag:
     create:
-        title: neuen Tag erstellen
+        title: Neuen Tag erstellen
+        headline: 'Neuen Tag erstellen'
     list:
         title: Tags
         headline: Tags
@@ -53,3 +54,6 @@ tag:
 global:
     navigation:
         back: zurück
+walk:
+  form:
+    headline: 'Runde abschließen'

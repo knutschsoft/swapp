@@ -151,11 +151,7 @@ class WalkController
      */
     public function createWalkPrologueAction(Flash $flash, Walk $walk, FormRequest $formRequest)
     {
-        if (!$formRequest->handle(
-            WalkPrologueType::class,
-            $walk
-        )
-        ) {
+        if (!$formRequest->handle(WalkPrologueType::class, $walk)) {
 
             return [
                 'form' => $formRequest->createFormView(),
