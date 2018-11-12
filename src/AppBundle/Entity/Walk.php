@@ -46,6 +46,7 @@ class Walk
 
     /**
      * @ORM\Column(type="string", length=4096)
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $walkReflection;
 

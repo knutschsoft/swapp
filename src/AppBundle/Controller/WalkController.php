@@ -91,6 +91,7 @@ class WalkController
         );
 
         return [
+            'walk' => $walk,
             'form' => $formRequest->createFormView(),
             'wayPoints' => $walk->getWayPoints(),
         ];
@@ -180,6 +181,8 @@ class WalkController
         if (!$formRequest->handle(WalkType::class, $walk)) {
 
             return [
+                'walk' => $walk,
+                'wayPoints' => $walk->getWayPoints(),
                 'form' => $formRequest->createFormView(),
             ];
         }

@@ -483,4 +483,22 @@ class WayPoint
     {
         $this->femalesYoungAdultCount = $femalesYoungAdultCount;
     }
+
+    public function getAllFemalesCount()
+    {
+        return $this->getFemalesKidCount()
+            + $this->getFemalesChildCount()
+            + $this->getFemalesYouthCount()
+            + $this->getFemalesYoungAdultCount()
+            + $this->getFemalesAdultCount();
+    }
+
+    public function getAllMalesCount()
+    {
+        return $this->getMalesKidCount()
+            + $this->getMalesChildCount()
+            + $this->getMalesYouthCount()
+            + $this->getMalesYoungAdultCount()
+            + $this->getMalesAdultCount();
+    }
 }
