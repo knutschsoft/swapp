@@ -151,6 +151,7 @@ class WayPointController
             array(
                 'form' => $form->createView(),
                 'wayPoints' => $walk->getWayPoints(),
+                'walk' => $walk,
             )
         );
     }

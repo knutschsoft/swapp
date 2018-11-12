@@ -3,38 +3,40 @@
 {% block title %}Wegpunkt Detailansicht{% endblock %}
 
 {% block content %}
-    <div class="swapp-headline-container">
-        <h1>
-            Wegpunkt: {{ wayPoint.getLocationName }}
-        </h1>
-    </div>
-    <div class="swapp-password-change-container">
-        <div class="mb1">
-            <a href="javascript:history.back();" class="btn btn-primary">zurück zur Rundenübersicht</a>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h5 mb-0">
+                Wegpunkt: {{ wayPoint.getLocationName }}
+            </h1>
+        </div>
+
+        <div class="card-body pl-1 pr-1 pb-2">
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Ort', 'value': wayPoint.getLocationName }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Kids m', 'value': wayPoint.getMalesKidCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Kids w', 'value': wayPoint.getFemalesKidCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Kinder m', 'value': wayPoint.getMalesChildCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Kinder w', 'value': wayPoint.getFemalesChildCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Jugendliche m', 'value': wayPoint.getMalesYouthCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Jugendliche w', 'value': wayPoint.getFemalesYouthCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'junge Erwachsene m', 'value': wayPoint.getMalesYoungAdultCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'junge Erwachsene w', 'value': wayPoint.getFemalesYoungAdultCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Erwachsene m', 'value': wayPoint.getMalesAdultCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Erwachsene w', 'value': wayPoint.getFemalesAdultCount }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Beobachtung', 'value': wayPoint.getNote }) }}
+
+            {% set image %}
+                {% if wayPoint.getImageName %}
+                    <img src="{{ vich_uploader_asset(wayPoint, 'imageFile') }}" alt="{{ wayPoint.getImageName }}" style="max-width:100%;max-height:400px;width: auto;height: auto;" />
+                {% else %}
+                    kein Bild hochgeladen
+                {% endif %}
+            {% endset %}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Bild', 'value': image }) }}
+            {{ include('@App/Walk/showItem.html.twig', {'key': 'Meeting', 'value': wayPoint.getIsMeeting ? 'ja' : 'nein' }) }}
         </div>
     </div>
-
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Ort', 'value': wayPoint.getLocationName }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Kids m', 'value': wayPoint.getMalesKidCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Kids w', 'value': wayPoint.getFemalesKidCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Kinder m', 'value': wayPoint.getMalesChildCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Kinder w', 'value': wayPoint.getFemalesChildCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Jugendliche m', 'value': wayPoint.getMalesYouthCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Jugendliche w', 'value': wayPoint.getFemalesYouthCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'junge Erwachsene m', 'value': wayPoint.getMalesYoungAdultCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'junge Erwachsene w', 'value': wayPoint.getFemalesYoungAdultCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Erwachsene m', 'value': wayPoint.getMalesAdultCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Erwachsene w', 'value': wayPoint.getFemalesAdultCount }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Beobachtung', 'value': wayPoint.getNote }) }}
-
-    {% set image %}
-        {% if wayPoint.getImageName %}
-            <img src="{{ vich_uploader_asset(wayPoint, 'imageFile') }}" alt="{{ wayPoint.getImageName }}" />
-        {% else %}
-            kein Bild hochgeladen
-        {% endif %}
-    {% endset %}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Bild', 'value': image }) }}
-    {{ include('@App/Walk/showItem.html.twig', {'key': 'Meeting', 'value': wayPoint.getIsMeeting ? 'ja' : 'nein' }) }}
-
 {% endblock %}
+
+{% block footer_back_href -%}
+    javascript:history.back();
+{%- endblock %}
