@@ -24,13 +24,15 @@ class ImageUploadTest extends WebTestCase
 
         $form = $crawler->selectButton('Wegpunkt anlegen')->form(
             [
-                'app_create_walk_prologue[name]' => 'name test',
-                'app_create_walk_prologue[conceptOfDay]' => 'conceptOfDay test',
+                'walk_prologue[name]' => 'name test',
+                'walk_prologue[conceptOfDay]' => 'conceptOfDay test',
+                'walk_prologue[weather]' => 'Sonne',
             ]
         );
 
         $crawler = $client->submit($form);
         $this->isSuccessful($client->getResponse());
+        $this->assertContains('Runde wurde erfolgreich gestartet.', $crawler->text());
 
         return [$client, $crawler];
     }
@@ -78,7 +80,7 @@ class ImageUploadTest extends WebTestCase
         $this->isSuccessful($client->getResponse());
 
         // check for saved image - todo refactor to own testmethod
-        $link = $crawler->selectLink('Wegpunkt ansehen');
+        $link = $crawler->selectLink('Wegpunkt');
         $crawler = $client->click($link->link());
         $this->isSuccessful($client->getResponse());
 
