@@ -363,11 +363,12 @@ class WayPointType extends AbstractType
             'wayPointTags',
             EntityType::class,
             array(
-                'class' => 'AppBundle\Entity\Tag',
+                'class' => Tag::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
                 'by_reference' => false,
+                'label' => 'Tags'
             )
         );
         $builder->add(

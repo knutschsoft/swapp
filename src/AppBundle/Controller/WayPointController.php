@@ -100,6 +100,7 @@ class WayPointController
         return $this->templateEngine->renderResponse(
             ':WayPoint:wayPointForm.html.twig',
             array(
+                'walk' => $walk,
                 'form' => $form->createView(),
                 'wayPoints' => $walk->getWayPoints(),
             )
@@ -120,13 +121,18 @@ class WayPointController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            /** @var WayPoint $wayPoint */
             $wayPoint = $form->getData();
             $wayPoint->setWalk($walk);
             $this->wayPointRepository->save($wayPoint);
 
             $flash->add(
                 'notice',
-                'Wegpunkt wurde erfolgreich erstellt.'
+                sprintf(
+                'Wegpunkt %s wurde erfolgreich zur Runde %s hinzugefügt.',
+                    $wayPoint->getLocationName(),
+                    $walk->getName()
+                )
             );
 
             if ($form->get('createWayPoint')->isClicked()) {

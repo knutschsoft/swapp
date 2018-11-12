@@ -57,3 +57,6 @@ global:
 walk:
   form:
     headline: 'Runde abschließen'
+waypoint:
+  create:
+    headline: 'Wegpunkt zur Runde %walk% hinzufügen'
