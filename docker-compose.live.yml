@@ -9,4 +9,3 @@ services:
     volumes:
       - ${APACHE_LOG_DIR}:/var/log/apache2/
       - ${PHP_LOG_DIR}:/var/www/html/var/logs/
-      - ${WAYPOINTS_IMAGES_DIR}:/var/www/html/web/images/way_points

@@ -37,8 +37,8 @@ class WalkTest extends WebTestCase
         $form = $crawler->filter('[data-test="create-way-point"]')->form();
         $form->setValues(
             [
-                'app_create_walk_prologue[name]' => 'name',
-                'app_create_walk_prologue[conceptOfDay]' => 'conceptOfDay',
+                'walk_prologue[name]' => 'name',
+                'walk_prologue[conceptOfDay]' => 'conceptOfDay',
             ]
         );
         $crawler = $client->submit($form);
@@ -47,8 +47,8 @@ class WalkTest extends WebTestCase
         $form = $crawler->filter('[data-test="save-and-finish-way-point"]')->form();
         $form->setValues(
             [
-                'app_create_way_point[locationName]' => 'location',
-                'app_create_way_point[note]' => 'note',
+                'way_point[locationName]' => 'location',
+                'way_point[note]' => 'note',
             ]
         );
         $crawler = $client->submit($form);
@@ -57,8 +57,8 @@ class WalkTest extends WebTestCase
         $form = $crawler->filter('[data-test="create-walk"]')->form();
         $form->setValues(
             [
-                'app_create_walk[walkReflection]' => 'walkReflectionText',
-                'app_create_walk[systemicAnswer]' => 'systemicAnswerText',
+                'walk[walkReflection]' => 'walkReflectionText',
+                'walk[systemicAnswer]' => 'systemicAnswerText',
             ]
         );
         $crawler = $client->submit($form);

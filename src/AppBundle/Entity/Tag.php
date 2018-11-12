@@ -38,6 +38,7 @@ class Tag
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $color;
 

@@ -1,115 +1,38 @@
 {% extends '::base.html.twig' %}
-{% block title %}Wegpunkt{% endblock %}
+{% block title %}{{ 'waypoint.create.headline'|trans }}{% endblock %}
 {% block content %}
-    {% for flashMessage in app.session.flashbag.get('notice') %}
-        <div class="flash-notice">
-            {{ flashMessage }}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h5 mb-0">
+                {{ 'waypoint.create.headline'|trans({'%walk%': walk.name}) }}
+            </h1>
         </div>
-    {% endfor %}
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+        <div class="card-body pl-1 pr-1 pb-2">
 
-    <div class="col">
-        <div class="flex flex-column ">
-            <div class="p1">
-                {{ form_label(form.locationName) }}
-                <br>
-                {{ form_errors(form.locationName) }}
-                {{ form_widget(form.locationName) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.malesChildCount) }}
-                <br>
-                {{ form_errors(form.malesChildCount) }}
-                {{ form_widget(form.malesChildCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.femalesChildCount) }}
-                <br>
-                {{ form_errors(form.femalesChildCount) }}
-                {{ form_widget(form.femalesChildCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.malesKidCount) }}
-                <br>
-                {{ form_errors(form.malesKidCount) }}
-                {{ form_widget(form.malesKidCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.femalesKidCount) }}
-                <br>
-                {{ form_errors(form.femalesKidCount) }}
-                {{ form_widget(form.femalesKidCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.malesYouthCount) }}
-                <br>
-                {{ form_errors(form.malesYouthCount) }}
-                {{ form_widget(form.malesYouthCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.femalesYouthCount) }}
-                <br>
-                {{ form_errors(form.femalesYouthCount) }}
-                {{ form_widget(form.femalesYouthCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.malesYoungAdultCount) }}
-                <br>
-                {{ form_errors(form.malesYoungAdultCount) }}
-                {{ form_widget(form.malesYoungAdultCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.femalesYoungAdultCount) }}
-                <br>
-                {{ form_errors(form.femalesYoungAdultCount) }}
-                {{ form_widget(form.femalesYoungAdultCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.malesAdultCount) }}
-                <br>
-                {{ form_errors(form.malesAdultCount) }}
-                {{ form_widget(form.malesAdultCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.femalesAdultCount) }}
-                <br>
-                {{ form_errors(form.femalesAdultCount) }}
-                {{ form_widget(form.femalesAdultCount) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.imageFile) }}
-                <br>
-                {{ form_errors(form.imageFile) }}
-                {{ form_widget(form.imageFile) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.note) }}
-                <br>
-                {{ form_errors(form.note) }}
-                {{ form_widget(form.note) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.wayPointTags) }}
-                <br>
-                {{ form_errors(form.wayPointTags) }}
-                {{ form_widget(form.wayPointTags) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.isMeeting) }}
-                <br>
-                {{ form_errors(form.isMeeting) }}
-                {{ form_widget(form.isMeeting) }}
-            </div>
-            <div class="p1">
-                {{ form_widget(form.createWayPoint) }}
-            </div>
-            <div class="p1">
-                {{ form_widget(form.createWalk) }}
-            </div>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.locationName) }}
+            {{ form_row(form.malesChildCount) }}
+            {{ form_row(form.femalesChildCount) }}
+            {{ form_row(form.malesKidCount) }}
+            {{ form_row(form.femalesKidCount) }}
+            {{ form_row(form.malesYouthCount) }}
+            {{ form_row(form.femalesYouthCount) }}
+            {{ form_row(form.malesYoungAdultCount) }}
+            {{ form_row(form.femalesYoungAdultCount) }}
+            {{ form_row(form.malesAdultCount) }}
+            {{ form_row(form.femalesAdultCount) }}
+            {{ form_row(form.imageFile) }}
+            {{ form_row(form.note) }}
+            {{ form_row(form.wayPointTags) }}
+            {{ form_row(form.isMeeting) }}
+            {{ form_row(form.createWayPoint) }}
+            {{ form_row(form.createWalk) }}
+            {{ form_end(form) }}
+            <hr>
+
+            {{ include (':WayPoint:wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
         </div>
     </div>
-    {{ form_end(form) }}
-
-    {{ include (':WayPoint:wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
 {% endblock %}

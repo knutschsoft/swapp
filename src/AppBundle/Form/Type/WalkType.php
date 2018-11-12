@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Walk;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,10 +18,6 @@ class WalkType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'id',
-            HiddenType::class
-        );
         $builder->add(
             'name',
             TextType::class,
@@ -107,16 +104,17 @@ class WalkType extends AbstractType
         $builder->add(
             'weather',
             ChoiceType::class,
-            array(
-                'choices' => array(
+            [
+                'choices' => [
                     'Sonne' => 'Sonne',
                     'Wolken' => 'Wolken',
                     'Regen' => 'Regen',
                     'Schnee' => 'Schnee',
                     'Arschkalt' => 'Arschkalt',
-                ),
+                ],
+                'placeholder' => '---',
                 'label' => 'Wetter',
-            )
+            ]
         );
         $builder->add(
             'insights',
@@ -140,31 +138,19 @@ class WalkType extends AbstractType
                 'required' => false,
             )
         );
-        $builder->add(
-            'create',
-            SubmitType::class,
-            array(
-                'label' => 'Runde abschließen',
-                'attr' =>
-                    [
-                        'class' => 'btn btn-primary',
-                        'data-test' => 'create-walk',
-                    ],
-            )
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'AppBundle\Entity\Walk',
-            )
+            [
+                'data_class' => Walk::class,
+            ]
         );
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'app_create_walk';
+        $resolver->setDefaults(
+            [
+                'validation_groups' => ['prologue', 'registration'],
+            ]
+        );
     }
 }

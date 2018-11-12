@@ -7,6 +7,8 @@ services:
     command: /init-project.sh
     restart: "always"
     tty: true
+    volumes:
+      - ${WAYPOINTS_IMAGES_DIR}:/var/www/html/web/images/way_points
     depends_on:
       - mysql
 

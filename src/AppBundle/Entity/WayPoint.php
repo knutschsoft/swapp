@@ -306,4 +306,14 @@ class WayPoint
         $tag->removeWayPoint($this);
         $this->wayPointTags->removeElement($tag);
     }
+
+    public function getAllFemalesCount()
+    {
+        return $this->getFemalesCount();
+    }
+
+    public function getAllMalesCount()
+    {
+        return $this->getMalesCount();
+    }
 }

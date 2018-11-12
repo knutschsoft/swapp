@@ -1,93 +1,46 @@
 {% extends '::base.html.twig' %}
-{% block title %}Runde abschließen{% endblock %}
+{% block title %}{{ 'walk.form.headline'|trans }}{% endblock %}
 {% block content %}
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    <div class="col">
-        <div class="flex flex-column ">
-            <div class="p1">
-                {{ form_label(form.name) }}
-                <br>
-                {{ form_errors(form.name) }}
-                {{ form_widget(form.name) }}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h5 mb-0">
+                {{ 'walk.form.headline'|trans }}
+            </h1>
+        </div>
+        <div class="card-body pl-1 pr-1 pb-2">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.conceptOfDay) }}
+            {{ form_row(form.startTime) }}
+            {{ form_row(form.endTime) }}
+            {{ form_row(form.holidays) }}
+            {{ form_row(form.weather) }}
+            {{ form_row(form.systemicQuestion) }}
+            {{ form_row(form.systemicAnswer) }}
+            {{ form_row(form.walkReflection) }}
+            {{ form_row(form.rating) }}
+            {{ form_row(form.commitments) }}
+            {{ form_row(form.insights) }}
+            {{ form_row(form.isResubmission) }}
+
+            <div class="input-group input-group-sm">
+                <button class="btn btn-block mb-1 btn-primary form-control"
+                        type="submit" formaction="{{ path('walk_create', {'walkId': walk.id}) }}" data-test="create-walk"
+                >
+                    Runde abschließen
+                </button>
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="ion ion-md-checkmark"></i></span>
+                    <span class="input-group-text"><i class="ion ion-md-walk"></i></span>
+                </div>
             </div>
-            <div class="p1">
-                {{ form_label(form.conceptOfDay) }}
-                <br>
-                {{ form_errors(form.conceptOfDay) }}
-                {{ form_widget(form.conceptOfDay) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.startTime) }}
-                <br>
-                {{ form_errors(form.startTime) }}
-                {{ form_widget(form.startTime) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.endTime) }}
-                <br>
-                {{ form_errors(form.endTime) }}
-                {{ form_widget(form.endTime) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.holidays) }}
-                <br>
-                {{ form_errors(form.holidays) }}
-                {{ form_widget(form.holidays) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.weather) }}
-                <br>
-                {{ form_errors(form.weather) }}
-                {{ form_widget(form.weather) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.systemicQuestion) }}
-                <br>
-                {{ form_errors(form.systemicQuestion) }}
-                {{ form_widget(form.systemicQuestion) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.systemicAnswer) }}
-                <br>
-                {{ form_errors(form.systemicAnswer) }}
-                {{ form_widget(form.systemicAnswer) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.walkReflection) }}
-                <br>
-                {{ form_errors(form.walkReflection) }}
-                {{ form_widget(form.walkReflection) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.rating) }}
-                <br>
-                {{ form_errors(form.rating) }}
-                {{ form_widget(form.rating) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.commitments) }}
-                <br>
-                {{ form_errors(form.commitments) }}
-                {{ form_widget(form.commitments) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.insights) }}
-                <br>
-                {{ form_errors(form.insights) }}
-                {{ form_widget(form.insights) }}
-            </div>
-            <div class="p1">
-                {{ form_label(form.isResubmission) }}
-                <br>
-                {{ form_errors(form.isResubmission) }}
-                {{ form_widget(form.isResubmission) }}
-            </div>
-            <div class="p1">
-                {{ form_widget(form.create) }}
-            </div>
+
+            {{ form_end(form) }}
+
+            <hr>
+
+            {{ include (':WayPoint:wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
         </div>
     </div>
-    {{ form_end(form) }}
-    {{ include (':WayPoint:wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
 {% endblock %}
