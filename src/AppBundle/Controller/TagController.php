@@ -36,7 +36,7 @@ class TagController
      * @param FormRequest $formRequest
      * @param Flash       $flash
      *
-     * @return RedirectResponse|array
+     * @return RedirectRoute|array
      */
     public function createTagAction(FormRequest $formRequest, Flash $flash)
     {
@@ -44,12 +44,17 @@ class TagController
             return ['form' => $formRequest->createFormView()];
         }
 
+        /** @var Tag $tag */
         $tag = $formRequest->getValidData();
 
         $this->tagRepository->save($tag);
         $flash->add(
             'notice',
-            'Tag wurde erfolgreich erstellt.'
+            sprintf(
+                'Tag %s mit der Farbe %s wurde erfolgreich erstellt.',
+                $tag->getName(),
+                $tag->getColor()
+            )
         );
 
         return new RedirectRoute('tag_home_screen');
