@@ -30,7 +30,7 @@
         <footer class="footer fixed-bottom">
 
             <div class="d-flex">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
                     {% if block('footer_back_href') is not empty %}
                         <div class="mr-auto p-2 ml-1">
