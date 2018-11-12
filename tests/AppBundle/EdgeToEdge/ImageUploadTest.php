@@ -53,7 +53,7 @@ class ImageUploadTest extends WebTestCase
         $this->isSuccessful($client->getResponse());
 
         $form = $crawler->selectButton('speichern')->form();
-        $this->assertArrayHasKey('app_create_way_point', $form->getPhpValues(),
+        $this->assertArrayHasKey('way_point', $form->getPhpValues(),
             'Form didnt not redirect to itself when submitting with invalid values');
     }
 
@@ -72,9 +72,9 @@ class ImageUploadTest extends WebTestCase
         $fileLocation = $client->getKernel()->getRootDir();
         $fileLocation .= '/../tests/AppBundle/fixtures/image.jpg';
 
-        $form['app_create_way_point[imageFile][file]']->upload($fileLocation);
-        $form['app_create_way_point[locationName]'] = 'Buxtehude is the locationName value';
-        $form['app_create_way_point[note]'] = 'note value';
+        $form['way_point[imageFile][file]']->upload($fileLocation);
+        $form['way_point[locationName]'] = 'Buxtehude is the locationName value';
+        $form['way_point[note]'] = 'note value';
 
         $crawler = $client->submit($form);
         $this->isSuccessful($client->getResponse());
@@ -105,9 +105,9 @@ class ImageUploadTest extends WebTestCase
         $imgStub = new UploadedFile($fileLocation, $fileName);
 
         $form = $crawler->selectButton('speichern')->form();
-        $form['app_create_way_point[imageFile][file]'] = $imgStub;
-        $form['app_create_way_point[locationName]'] = 'Buxtehude is the locationName value';
-        $form['app_create_way_point[note]'] = 'note value';
+        $form['way_point[imageFile][file]'] = $imgStub;
+        $form['way_point[locationName]'] = 'Buxtehude is the locationName value';
+        $form['way_point[note]'] = 'note value';
         $crawler = $client->submit($form);
 
         // only working with german translation messages

@@ -2,6 +2,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Tag;
+use AppBundle\Entity\WayPoint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -410,16 +411,8 @@ class WayPointType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'AppBundle\Entity\WayPoint',
+                'data_class' => WayPoint::class,
             )
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
-    {
-        return 'app_create_way_point';
     }
 }
