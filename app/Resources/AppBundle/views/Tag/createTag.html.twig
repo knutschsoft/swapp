@@ -14,15 +14,16 @@
             {{ form_row(form.name) }}
             {{ form_row(form.color) }}
 
-            <a class="input-group input-group-sm" href="{{ path('tag_create') }}">
-                <div class="btn btn-block mb-1 btn-primary form-control">
+            <div class="input-group input-group-sm">
+                <button class="btn btn-block mb-1 btn-primary form-control" type="submit" formaction="{{ path('tag_create') }}">
                     {{ 'tag.create.title'|trans }}
-                </div>
+                </button>
                 <div class="input-group-append">
                     <span class="input-group-text"><i class="ion ion-md-add"></i></span>
                     <span class="input-group-text"><i class="ion ion-md-pricetags"></i></span>
                 </div>
-            </a>
+            </div>
+
             {{ form_end(form) }}
         </div>
     </div>
