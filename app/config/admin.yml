@@ -17,11 +17,6 @@ easy_admin:
             - { label: 'Frontend', route: 'home', icon: 'home' }
             - { label: 'Logout', route: 'fos_user_security_logout', icon: 'sign-out' }
     entities:
-        AgeRange:
-            class: AppBundle\Entity\AgeRange
-            label: AgeRange
-            form:
-                form_options: { data_class: 'AppBundle\Entity\AgeRange'}
         Team:
             class: AppBundle\Entity\Team
             label: eadmin.team.label
@@ -31,18 +26,22 @@ easy_admin:
                   - 'id'
                   - 'name'
                   - 'users'
+                  - 'ageGroups'
             form:
                 fields:
                   - 'name'
                   - 'users'
+                  - 'ageGroups'
             edit:
                 fields:
                     - 'name'
                     - { property: 'users',type_options: { by_reference: false }}
+                    - 'ageGroups'
             show:
                 fields:
                   - 'name'
                   - 'users'
+                  - 'ageGroups'
         Walk:
             class: AppBundle\Entity\Walk
             label: eadmin.walk.label

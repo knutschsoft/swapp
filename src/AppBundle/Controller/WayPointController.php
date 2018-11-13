@@ -7,6 +7,10 @@ use AppBundle\Form\Type\WayPointType;
 use AppBundle\Repository\SystemicQuestionRepositoryInterface;
 use AppBundle\Repository\WalkRepositoryInterface;
 use AppBundle\Repository\WayPointRepositoryInterface;
+use AppBundle\Value\AgeGroup;
+use AppBundle\Value\AgeRange;
+use AppBundle\Value\Gender;
+use AppBundle\Value\PeopleCount;
 use QafooLabs\MVC\Flash;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -89,6 +93,12 @@ class WayPointController
     public function updateWalkWithWayPointAction(Walk $walk)
     {
         $wayPoint = new WayPoint();
+
+        // TODO: should be defined per team
+        $ageGroups = [];
+        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 8]), Gender::fromString('m'), PeopleCount::fromInt(12));
+        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 7]), Gender::fromString('w'), PeopleCount::fromInt(12));
+        $wayPoint->setAgeGroups($ageGroups);
         $form = $this->formFactory->create(
             WayPointType::class,
             $wayPoint,
@@ -116,7 +126,14 @@ class WayPointController
      */
     public function createWayPointAction(Request $request, Flash $flash, Walk $walk)
     {
-        $form = $this->formFactory->create(WayPointType::class, new WayPoint());
+        $wayPoint1 = new WayPoint();
+
+        // TODO: should be defined per team
+        $ageGroups = [];
+        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 8]), Gender::fromString('m'), PeopleCount::fromInt(12));
+        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 7]), Gender::fromString('w'), PeopleCount::fromInt(12));
+        $wayPoint1->setAgeGroups($ageGroups);
+        $form = $this->formFactory->create(WayPointType::class, $wayPoint1);
 
         $form->handleRequest($request);
 

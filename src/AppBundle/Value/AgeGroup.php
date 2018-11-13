@@ -4,29 +4,42 @@ namespace AppBundle\Value;
 
 final class AgeGroup
 {
-    /** @var AgeGroupRange */
-    private $ageRange;
-    /** @var GenderCount */
-    private $count;
+    /** @var AgeRange */
+    public $ageRange;
+    /** @var Gender */
+    public $gender;
+    /** @var PeopleCount */
+    public $peopleCount;
 
-    private function __construct($range, $count)
+    public function __construct(AgeRange $ageRange, Gender $gender, PeopleCount $peopleCount)
     {
-        $this->ageRange = $range;
-        $this->count = $count;
+        $this->ageRange = $ageRange;
+        $this->gender = $gender;
+        $this->peopleCount = $peopleCount;
     }
 
-    public static function fromRangeAndCount(AgeGroupRange $range, GenderCount $count)
+    public static function fromRangeGenderAndCount(AgeRange $range, Gender $gender, PeopleCount $peopleCount)
     {
-        return new self($range, $count);
+        return new self($range, $gender, $peopleCount);
     }
 
-    public function ageRange()
+    public function ageRange(): AgeRange
     {
         return $this->ageRange;
     }
 
-    public function count()
+    public function gender(): Gender
     {
-        return $this->count;
+        return $this->gender;
+    }
+
+    public function peopleCount(): PeopleCount
+    {
+        return $this->peopleCount;
+    }
+
+    public function equalType(AgeGroup $ageGroup): bool
+    {
+        return $this->ageRange->equal($ageGroup->ageRange()) && $this->gender->equal($ageGroup->gender());
     }
 }

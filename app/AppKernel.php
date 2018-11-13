@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
             new QafooLabs\Bundle\NoFrameworkBundle\QafooLabsNoFrameworkBundle(),
+            new \Dunglas\DoctrineJsonOdm\Bundle\DunglasDoctrineJsonOdmBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

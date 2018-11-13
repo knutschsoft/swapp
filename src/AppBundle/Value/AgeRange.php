@@ -2,29 +2,30 @@
 
 namespace AppBundle\Value;
 
+use Webmozart\Assert\Assert;
 
-class AgeGroupRange
+final class AgeRange
 {
     /** @var int */
-    protected $rangeStart;
+    public $rangeStart;
 
     /**@var int */
-    protected $rangeEnd;
+    public $rangeEnd;
 
-    private function __construct($rangeStart, $rangeEnd)
+    public function __construct($rangeStart, $rangeEnd)
     {
-        if (!$this->isPositiveInt($rangeStart) || !$this->isPositiveInt($rangeEnd)) {
-            throw new \InvalidArgumentException('A range must end with positive Integer.');
-        }
+        Assert::integerish($rangeStart);
+        Assert::integerish($rangeEnd);
+
         if ($rangeStart > $rangeEnd) {
             throw new \InvalidArgumentException('The start of a range has to be smaller than it\'s end.');
         }
 
-        $this->rangeStart = $rangeStart;
-        $this->rangeEnd = $rangeEnd;
+        $this->rangeStart = (int)$rangeStart;
+        $this->rangeEnd = (int)$rangeEnd;
     }
 
-    protected static function fromArray(array $count = [])
+    public static function fromArray(array $count = [])
     {
         $start = isset($count['start']) ? $count['start'] : isset($count[0]) ? $count[0] : 0;
         $end = isset($count['end']) ? $count['end'] : isset($count[1]) ? $count[1] : 0;
@@ -42,8 +43,8 @@ class AgeGroupRange
         return $this->rangeEnd;
     }
 
-    protected function isPositiveInt($number)
+    public function equal(AgeRange $ageRange): bool
     {
-        return is_int($number) && (int)$number >= 0;
+        return $this->getRangeStart() === $ageRange->getRangeStart() && $this->getRangeEnd() === $ageRange->getRangeEnd();
     }
 }

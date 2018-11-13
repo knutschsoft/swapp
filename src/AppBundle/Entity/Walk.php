@@ -484,10 +484,7 @@ class Walk
         $this->teamName = $teamName;
     }
 
-    /**
-     * @return int
-     */
-    public function getFemalesCount()
+    public function getFemalesCount(): int
     {
         $count = 0;
         foreach ($this->getWayPoints() as $wayPoint) {
@@ -496,10 +493,8 @@ class Walk
 
         return $count;
     }
-    /**
-     * @return int
-     */
-    public function getMalesCount()
+
+    public function getMalesCount(): int
     {
         $count = 0;
         foreach ($this->getWayPoints() as $wayPoint) {
@@ -508,14 +503,12 @@ class Walk
 
         return $count;
     }
-    /**
-     * @return int
-     */
-    public function getUndefinedCount()
+
+    public function getQueerCount(): int
     {
         $count = 0;
         foreach ($this->getWayPoints() as $wayPoint) {
-            $count += $wayPoint->getUndefinedCount();
+            $count += $wayPoint->getQueerCount();
         }
 
         return $count;

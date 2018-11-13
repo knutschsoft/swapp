@@ -21,6 +21,10 @@
                         Frauen
                         <span class=""><i class="ion ion-md-female"></i></span>
                     </th>
+                    <th class="text-center" scope="col">
+                        Andere
+                        <span class=""><i class="ion ion-md-transgender"></i></span>
+                    </th>
                     <th class="text-center" scope="col">Detailansicht</th>
                 </tr>
                 </thead>
@@ -29,9 +33,10 @@
                         <tr>
                             <td class="text-center small">{{ waypoint.getLocationName }}</td>
                             <td class="text-center small">{% if waypoint.getIsMeeting == 1 %}ja{% else %}nein{% endif %}</td>
-                            <td class="text-center small">{{ waypoint.getAllMalesCount }}</td>
+                            <td class="text-center small">{{ waypoint.malesCount }}</td>
 
-                            <td class="text-center small">{{ waypoint.getAllFemalesCount }}</td>
+                            <td class="text-center small">{{ waypoint.femalesCount }}</td>
+                            <td class="text-center small">{{ waypoint.queerCount }}</td>
                             <td class="text-center">
                                 <a class="input-group input-group-sm"
                                    href="{{ path('way_point_show', { 'wayPointId': waypoint.getId }) }}">

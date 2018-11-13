@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f55a4d586070c92ead9376fe8b292de",
+    "content-hash": "b2d32b7e9ff6233d3a9d930472cae9f8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1325,6 +1325,71 @@
                 "reflection"
             ],
             "time": "2018-06-14T14:45:07+00:00"
+        },
+        {
+            "name": "dunglas/doctrine-json-odm",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dunglas/doctrine-json-odm.git",
+                "reference": "91f3629b65f3b7bb07d04e26ac8f69dfd9909da0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dunglas/doctrine-json-odm/zipball/91f3629b65f3b7bb07d04e26ac8f69dfd9909da0",
+                "reference": "91f3629b65f3b7bb07d04e26ac8f69dfd9909da0",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.5",
+                "php": ">=5.5.9",
+                "symfony/property-access": "^2.8 || ^3.0 || ^4.0",
+                "symfony/property-info": "^2.8 || ^3.0 || ^4.0",
+                "symfony/serializer": "^2.8 || ^3.0 || ^4.0"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "^1.6",
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0",
+                "symfony/finder": "^2.8 || ^3.0 || ^4.0",
+                "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0"
+            },
+            "suggest": {
+                "symfony/framework-bundle": "To use the provided bundle."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dunglas\\DoctrineJsonOdm\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kévin Dunglas",
+                    "email": "dunglas@gmail.com",
+                    "homepage": "https://dunglas.fr"
+                }
+            ],
+            "description": "An object document mapper for Doctrine ORM using JSON types of modern RDBMS.",
+            "homepage": "https://dunglas.fr",
+            "keywords": [
+                "database",
+                "json",
+                "mysql",
+                "odm",
+                "orm",
+                "postgresql",
+                "rdbms"
+            ],
+            "time": "2018-08-23T18:52:18+00:00"
         },
         {
             "name": "easycorp/easy-log-handler",

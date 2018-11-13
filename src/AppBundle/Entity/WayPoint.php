@@ -53,8 +53,8 @@ class WayPoint
     private $locationName;
 
     /**
-     * @ORM\Column(type="json")
-     * @var ArrayCollection|AgeGroup[]
+     * @ORM\Column(type="json_document", options={"jsonb": true})
+     * @var AgeGroup[]
      */
     private $ageGroups;
     /**
@@ -76,63 +76,61 @@ class WayPoint
     public function __construct()
     {
         $this->wayPointTags = new ArrayCollection();
-        $this->ageGroups = new ArrayCollection();
+        $this->ageGroups = [];
     }
 
-    public function getAgeGroups()
+    /**
+     * @return AgeGroup[]
+     */
+    public function getAgeGroups(): array
     {
         return $this->ageGroups;
     }
 
-    public function setAgeGroups(array $ageGroups)
+    public function setAgeGroups(array $ageGroups): void
     {
-        $this->ageGroups = new ArrayCollection($ageGroups);
+        $this->ageGroups = $ageGroups;
     }
 
-    public function addAgeGroup(AgeGroup $ageGroup)
+    public function addAgeGroup(AgeGroup $ageGroup): void
     {
-        $this->ageGroups->add($ageGroup);
+        $this->ageGroups[] = $ageGroup;
     }
 
-    public function removeAgeGroup(AgeGroup $ageGroup)
-    {
-        $this->ageGroups->removeElement($ageGroup);
-    }
-
-    /**
-     * @return integer
-     */
-    public function getFemalesCount()
+    public function getFemalesCount(): int
     {
         $sum = 0;
-        foreach ($this->ageGroups as $ageGroup) {
-            $sum += $ageGroup->count()->females();
+        foreach ($this->getAgeGroups() as $ageGroup) {
+            if (!$ageGroup->gender()->isFemale()) {
+                continue;
+            }
+            $sum += $ageGroup->peopleCount()->count();
         }
 
         return $sum;
     }
 
-    /**
-     * @return integer
-     */
-    public function getMalesCount()
+    public function getMalesCount(): int
     {
         $sum = 0;
-        foreach ($this->ageGroups as $ageGroup) {
-            $sum += $ageGroup->count()->males();
+        foreach ($this->getAgeGroups() as $ageGroup) {
+            if (!$ageGroup->gender()->isMale()) {
+                continue;
+            }
+            $sum += $ageGroup->peopleCount()->count();
         }
 
         return $sum;
     }
 
-    /**
-     * @return integer
-     */
-    public function getUndefinedCount()
+    public function getQueerCount(): int
     {
         $sum = 0;
-        foreach ($this->ageGroups as $ageGroup) {
-            $sum += $ageGroup->count()->undefined();
+        foreach ($this->getAgeGroups() as $ageGroup) {
+            if (!$ageGroup->gender()->isQueer()) {
+                continue;
+            }
+            $sum += $ageGroup->peopleCount()->count();
         }
 
         return $sum;
@@ -305,15 +303,5 @@ class WayPoint
     {
         $tag->removeWayPoint($this);
         $this->wayPointTags->removeElement($tag);
-    }
-
-    public function getAllFemalesCount()
-    {
-        return $this->getFemalesCount();
-    }
-
-    public function getAllMalesCount()
-    {
-        return $this->getMalesCount();
     }
 }
