@@ -12,7 +12,6 @@ easy_admin:
             - { entity: 'Walk', icon: 'map' }
             - { entity: 'WayPoint', icon: 'crosshairs' }
             - { entity: 'Tag', icon: 'tag' }
-            - { entity: 'AgeRange', icon: 'crosshairs' }
             - { entity: 'SystemicQuestion', icon: 'question-circle' }
             - { label: 'Frontend', route: 'home', icon: 'home' }
             - { label: 'Logout', route: 'fos_user_security_logout', icon: 'sign-out' }
@@ -72,13 +71,19 @@ easy_admin:
                 title: eadmin.way_point.list.title
                 fields:
                     - 'locationName'
-                    - 'malesChildCount'
-                    - 'femalesChildCount'
+                    - 'malesCount'
+                    - 'femalesCount'
                     - 'note'
                     - 'isMeeting'
                     - 'walk'
             form:
                 title: eadmin.way_point.edit.title
+                fields:
+                    - 'locationName'
+                    - 'note'
+                    - 'isMeeting'
+                    - 'walk'
+                    - { property: 'ageGroups', type: '' }
             show:
                 title: eadmin.way_point.show.title
         Tag:
