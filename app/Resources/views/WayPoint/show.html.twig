@@ -12,14 +12,14 @@
         </div>
 
         <div class="card-body pl-1 pr-1 pb-2">
-            {{ include('@App/Walk/showItem.html.twig', {'key': 'Ort', 'value': wayPoint.getLocationName }) }}
+            {{ include('walk/showItem.html.twig', {'key': 'Ort', 'value': wayPoint.getLocationName }) }}
             {% for ageGroup in wayPoint.ageGroups %}
-                {{ include('@App/Walk/showItem.html.twig', {
+                {{ include('walk/showItem.html.twig', {
                     'key': ageGroup.ageRange.rangeStart ~ '-' ~ ageGroup.ageRange.rangeEnd ~ ageGroup.gender.gender,
                     'value': ageGroup.peopleCount.count })
                 }}
             {% endfor %}
-            {{ include('@App/Walk/showItem.html.twig', {'key': 'Beobachtung', 'value': wayPoint.getNote }) }}
+            {{ include('walk/showItem.html.twig', {'key': 'Beobachtung', 'value': wayPoint.getNote }) }}
 
             {% set image %}
                 {% if wayPoint.getImageName %}
@@ -28,8 +28,8 @@
                     kein Bild hochgeladen
                 {% endif %}
             {% endset %}
-            {{ include('@App/Walk/showItem.html.twig', {'key': 'Bild', 'value': image }) }}
-            {{ include('@App/Walk/showItem.html.twig', {'key': 'Meeting', 'value': wayPoint.getIsMeeting ? 'ja' : 'nein' }) }}
+            {{ include('walk/showItem.html.twig', {'key': 'Bild', 'value': image }) }}
+            {{ include('walk/showItem.html.twig', {'key': 'Meeting', 'value': wayPoint.getIsMeeting ? 'ja' : 'nein' }) }}
         </div>
     </div>
 {% endblock %}

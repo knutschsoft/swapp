@@ -6,4 +6,4 @@
     {% endif %}
 {% endset %}
 
-{{ include('@App/Walk/showItem.html.twig', {'key': 'angetroffene Personen', 'value': persons}, with_context = false) }}
+{{ include('walk/showItem.html.twig', {'key': 'angetroffene Personen', 'value': persons}, with_context = false) }}

@@ -1,3 +1,7 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
 easy_admin_bundle:
     resource: "@AppBundle/Controller/AdminController.php"
     type:     annotation
@@ -9,66 +13,10 @@ _fos:
 _hwio:
     resource: routing_hwio.yml
 
-controller_as_a_service_example:
-    path: /caas
-    defaults: { _controller: app.controller.controller_as_a_service:exampleAction }
-
-param_converter_example:
-    path: /pc/{name}/{anotherName}
-    defaults: { _controller: app.controller.controller_as_a_service:paramConverterAction }
-
 home:
     path: /
-    defaults: { _controller: app.controller.walk_controller:homeScreenAction }
-
-walk_home_screen:
-    path: /walks
-    defaults: { _controller: app.controller.walk_controller:homeScreenAction }
-
-walk_show:
-    path: /walk/{walkId}
-    defaults: { _controller: app.controller.walk_controller:showAction }
-
-tag_home_screen:
-    path: /tag
-    defaults: { _controller: app.controller.tag_controller:homeScreenAction }
-
-tag_create:
-   path: /createtag
-   defaults: { _controller: app.controller.tag_controller:createTagAction}
-
-walk_create_form:
-   path: /createwalk/{walkId}
-   defaults: { _controller: app.controller.walk_controller:createWalkFormAction }
-
-walk_create:
-  path: /walkcreated/
-  defaults: { _controller: app.controller.walk_controller:createWalkAction }
-
-walk_export:
-  path: /walkexport
-  defaults: { _controller: app.controller.walk_controller:exportAction}
-
-walk_start:
-    path: /walkstarted/{walkId}
-    defaults: { _controller: app.controller.walk_controller:createWalkPrologueAction}
-
-way_point_show:
-    path: /waypoint/{wayPointId}
-    defaults: { _controller: app.controller.waypoint_controller:showAction }
-
-way_point_create:
-    path: /waypointcreated/{walkId}
-    defaults: { _controller: app.controller.waypoint_controller:createWayPointAction}
-
-start_walk_with_walk_prologue:
-   path: /startWalkPrologueWithTeam/{teamId}
-   defaults: { _controller: app.controller.walk_controller:createWalkPrologueFormAction }
-
-data_table_way_point:
-   path: /table/waypoint
-   defaults: { _controller: app.controller.waypoint_controller:dataTableAction }
-
-update_walk_with_way_point:
-   path: /addWayPointToWalk/{walkId}
-   defaults: { _controller: app.controller.waypoint_controller:updateWalkWithWayPointAction }
+    controller: FrameworkBundle:Redirect:redirect
+    defaults:
+        route: walk_home_screen
+        permanent: false
+        ignoreAttributes: true

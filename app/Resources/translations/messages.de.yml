@@ -36,11 +36,13 @@ eadmin:
         list:
             title: Übersicht Systemische Fragen
 
+tags:
+    manage:
+        button: Tags verwalten
 
-
-tags: Tags
-
-hello-world: Hallo du schöne Welt!
+teams:
+  manage:
+    button: Teams verwalten
 
 tag:
     create:
@@ -62,3 +64,9 @@ walk:
 waypoint:
   create:
     headline: 'Wegpunkt zur Runde %walk% hinzufügen'
+team:
+  list:
+    headline: 'messages'
+    title: 'messages'
+  create:
+    title: 'messages'

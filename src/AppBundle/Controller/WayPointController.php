@@ -11,12 +11,13 @@ use AppBundle\Value\AgeGroup;
 use AppBundle\Value\AgeRange;
 use AppBundle\Value\Gender;
 use AppBundle\Value\PeopleCount;
-use QafooLabs\MVC\Flash;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 class WayPointController
@@ -62,6 +63,8 @@ class WayPointController
     /**
      * @param WayPoint $wayPoint
      *
+     * @Route("waypoint/{wayPointId}", name="way_point_show")
+     *
      * @return Response
      */
     public function showAction(WayPoint $wayPoint)
@@ -74,6 +77,8 @@ class WayPointController
     }
 
     /**
+     * @Route("table/waypoint", name="data_table_way_point")
+     *
      * @return Response
      */
     public function dataTableAction()
@@ -87,6 +92,8 @@ class WayPointController
 
     /**
      * @param Walk $walk
+     *
+     * @Route("addWayPointToWalk/{walkId}", name="update_walk_with_way_point")
      *
      * @return Response
      */
@@ -118,13 +125,15 @@ class WayPointController
     }
 
     /**
-     * @param Request $request
-     * @param Flash   $flash
-     * @param Walk    $walk
+     * @param FlashBagInterface $flash
+     * @param Walk              $walk
+     * @param Request           $request
+     *
+     * @Route("waypointcreated/{walkId}", name="way_point_create")
      *
      * @return RedirectResponse|Response
      */
-    public function createWayPointAction(Request $request, Flash $flash, Walk $walk)
+    public function createWayPointAction(FlashBagInterface $flash, Walk $walk, Request $request)
     {
         $wayPoint1 = new WayPoint();
 

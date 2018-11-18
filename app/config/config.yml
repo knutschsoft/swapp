@@ -88,6 +88,7 @@ twig:
         - 'VichUploaderBundle:Form:fields.html.twig'
         - 'bootstrap_4_layout.html.twig'
     strict_variables: "%kernel.debug%"
+    paths: ["%kernel.root_dir%/../templates"]
 
 # Doctrine Configuration
 doctrine:

@@ -9,7 +9,7 @@
             </h1>
         </div>
         <div class="card-body pl-1 pr-1 pb-2">
-            {{ include('@App/Tag/tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
+            {{ include('tag//tagOverview.html.twig', { 'tags': tags }, with_context = false) }}
             <hr>
 
             <a class="input-group input-group-sm" href="{{ path('tag_create') }}">
