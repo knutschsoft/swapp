@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,16 +26,13 @@ class Team
     private $name;
 
     /**
-     * @var arrayCollection
+     * @var User[]|Collection
      * @ORM\ManyToMany(
      *     targetEntity="AppBundle\Entity\User",
      *     mappedBy="teams")
      */
     public $users;
 
-    /**
-     * Team constructor.
-     */
     public function __construct()
     {
         $this->users= new ArrayCollection();

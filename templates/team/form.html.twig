@@ -1,0 +1,34 @@
+{% extends '::base.html.twig' %}
+{% block title %}{{ 'team.create.title'|trans }}{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h5 mb-0">
+                {{ 'team.create.headline'|trans }}
+            </h1>
+        </div>
+        <div class="card-body pl-1 pr-1 pb-2">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.users) }}
+
+            <div class="input-group input-group-sm">
+                <button class="btn btn-block mb-1 btn-primary form-control" type="submit" formaction="{{ path('team_form') }}">
+                    {{ 'team.create.title'|trans }}
+                </button>
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="ion ion-md-add"></i></span>
+                    <span class="input-group-text"><i class="ion ion-md-people"></i></span>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_back_href %}
+    {{- path('team_list') -}}
+{% endblock %}

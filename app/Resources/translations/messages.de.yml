@@ -66,7 +66,8 @@ waypoint:
     headline: 'Wegpunkt zur Runde %walk% hinzufügen'
 team:
   list:
-    headline: 'messages'
-    title: 'messages'
+    headline: 'Teams verwalten'
+    title: 'Teams verwalten'
   create:
-    title: 'messages'
+    title: 'Team anlegen/bearbeiten'
+    headline: 'Team anlegen/bearbeiten'

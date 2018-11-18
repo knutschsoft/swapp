@@ -55,6 +55,10 @@ class EntityParamConverter implements ParamConverterInterface
             case 'team':
                 $id = $request->get('teamId');
                 $resource = $this->teamRepository->findOneById($id);
+                if (!$resource) {
+                    $id = $request->get('id');
+                    $resource = $this->teamRepository->findOneById($id);
+                }
                 break;
             default:
                 throw new \InvalidArgumentException(
@@ -62,7 +66,7 @@ class EntityParamConverter implements ParamConverterInterface
                 );
         }
 
-        if (!$resource) {
+        if (!$resource && !$configuration->isOptional()) {
             throw new NotFoundHttpException(
                 sprintf(
                     'No %s not found for id "%s" in %s',
