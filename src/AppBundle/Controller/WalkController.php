@@ -125,24 +125,8 @@ class WalkController
      */
     public function createWalkPrologueFormAction(Team $team, Request $request): array
     {
-        // default walk
-        // TODO: refactor by move logic outside or something else
-        $walk = new Walk();
-
-        $walk->setTeamName($team->getName());
-        $walk->setName("");
-        $walk->setStartTime(new \DateTime());
-        $walk->setEndTime(new \DateTime());
-        $walk->setRating(1);
-        $walk->setSystemicAnswer("");
-        $walk->setSystemicQuestion($this->systemicQuestionRepository->getRandom());
-        $walk->setWalkReflection("");
-        $walk->setWeather("");
-        $walk->setIsResubmission(false);
-        $walk->setHolidays(false);
-        $walk->setCommitments("");
-        $walk->setInsights("");
-        $walk->setConceptOfDay("");
+        $systemicQuestion = $this->systemicQuestionRepository->getRandom();
+        $walk = Walk::prologue($team, $systemicQuestion);
 
         $this->walkRepository->save($walk);
         foreach ($team->getUsers() as $user) {

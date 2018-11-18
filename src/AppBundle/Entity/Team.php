@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
-use AppBundle\Value\AgeRange;
+use AppBundle\Entity\Fields\AgeRangeField;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Team
 {
+    use AgeRangeField;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -33,12 +35,6 @@ class Team
      *     mappedBy="teams")
      */
     public $users;
-
-    /**
-     * @ORM\Column(type="json_document", options={"jsonb": true})
-     * @var AgeRange[]
-     */
-    private $ageRanges;
 
     public function __construct()
     {
@@ -84,33 +80,6 @@ class Team
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return AgeRange[]
-     */
-    public function getAgeRanges(): array
-    {
-        return $this->ageRanges;
-    }
-
-    public function setAgeRanges(array $ageRanges): void
-    {
-        $this->ageRanges = $ageRanges;
-    }
-
-    public function addAgeRange(AgeRange $ageRange): void
-    {
-        $this->ageRanges[] = $ageRange;
-    }
-
-    public function removeAgeRange(AgeRange $ageRange)
-    {
-        foreach ($this->ageRanges as $key => $ageRangeToBeRemoved) {
-            if ($ageRange->equal($ageRangeToBeRemoved)) {
-                unset($this->ageRanges[$key]);
-            }
-        }
     }
 
     /**

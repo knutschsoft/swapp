@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Fields\AgeRangeField;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -13,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  **/
 class Walk
 {
+    use AgeRangeField;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -127,7 +130,31 @@ class Walk
 
     public function __construct()
     {
+        $this->ageRanges = [];
         $this->walkTags = new ArrayCollection();
+    }
+
+    public static function prologue(Team $team, SystemicQuestion $systemicQuestion): self
+    {
+        $instance = new self();
+
+        $instance->setTeamName($team->getName());
+        $instance->setName("");
+        $instance->setStartTime(new \DateTime());
+        $instance->setEndTime(new \DateTime());
+        $instance->setRating(1);
+        $instance->setSystemicAnswer("");
+        $instance->setSystemicQuestion($systemicQuestion);
+        $instance->setWalkReflection("");
+        $instance->setWeather("");
+        $instance->setIsResubmission(false);
+        $instance->setHolidays(false);
+        $instance->setCommitments("");
+        $instance->setInsights("");
+        $instance->setConceptOfDay("");
+        $instance->setAgeRanges($team->getAgeRanges());
+
+        return $instance;
     }
 
     /**
