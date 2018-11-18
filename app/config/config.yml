@@ -88,7 +88,9 @@ twig:
         - 'VichUploaderBundle:Form:fields.html.twig'
         - 'bootstrap_4_layout.html.twig'
     strict_variables: "%kernel.debug%"
-    paths: ["%kernel.root_dir%/../templates"]
+    paths:
+        - "%kernel.root_dir%/../templates"
+        - "%kernel.root_dir%/../vendor/ninsuo/symfony-collection"
 
 # Doctrine Configuration
 doctrine:
@@ -100,7 +102,7 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
-        server_version: 5.5 # your database server version here
+        server_version: 5.7 # your database server version here
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"

@@ -30,7 +30,7 @@ class TeamFormController
     }
 
     /**
-     * @Route("/team/form-{id}", name="team_form", requirements={"id"="\d+"}, defaults={"id"="7"})
+     * @Route("/team/form-{id}", name="team_form", requirements={"id"="\d+"}, defaults={"id"=""})
      * @Template(template="team/form.html.twig")
      *
      * @return array|RedirectResponse

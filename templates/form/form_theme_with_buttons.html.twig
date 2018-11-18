@@ -1,0 +1,24 @@
+{% block AgeRangeType_label %}{% if value %}{{ value.rangeStart }}-{{ value.rangeEnd }} Jahre{% endif %}{% endblock %}
+
+{% block AgeRangeType_widget %}
+    <div class="row">
+        <div class="col-6 col-sm-2">
+            {{ form_widget(form.rangeStart) }}
+        </div>
+        <div class="col-6 col-sm-2">
+            {{ form_widget(form.rangeEnd) }}
+        </div>
+        <div class="col-3 col-sm-1">
+            <a href="#" class="collection-up btn" title="Altersbereich nach oben verschieben"><span class="input-group-text"><i class="ion ion-md-arrow-round-up"></i></span></a>
+        </div>
+        <div class="col-3 col-sm-1">
+            <a href="#" class="collection-down btn" title="Altersbereich nach unten verschieben"><span class="input-group-text"><i class="ion ion-md-arrow-round-down"></i></span></a>
+        </div>
+        <div class="col-3 col-sm-1">
+            <a href="#" class="collection-remove btn btn-default" title="Altersbereich löschen"><span class="input-group-text"><i class="ion ion-md-trash"></i></span></a>
+        </div>
+        <div class="col-3 col-sm-1">
+            <a href="#" class="collection-add btn btn-default" title="Altersbereich hinzufügen"><span class="input-group-text"><i class="ion ion-md-add"></i></span></a>
+        </div>
+    </div>
+{% endblock %}

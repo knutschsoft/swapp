@@ -2,11 +2,11 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Entity\Tag;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +21,20 @@ class TeamType extends AbstractType
             [
                 'label' => 'Name',
                 'required' => true,
+            ]
+        );
+        $builder->add(
+            'ageRanges',
+            CollectionType::class,
+            [
+                'entry_type' => AgeRangeType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'attr' => [
+                    'class' => 'js-team-type-age-ranges'
+                ],
+                'label' => 'Altersbereiche',
             ]
         );
         $builder->add(

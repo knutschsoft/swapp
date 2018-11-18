@@ -8,15 +8,22 @@
             </h1>
         </div>
         <div class="card-body pl-1 pr-1 pb-2">
+            {%
+                form_theme form
+                    'form/form_theme_with_buttons.html.twig'
+                    'jquery.collection.html.twig'
+            %}
+
             {{ form_start(form) }}
             {{ form_errors(form) }}
 
             {{ form_row(form.name) }}
+            {{ form_row(form.ageRanges) }}
             {{ form_row(form.users) }}
 
             <div class="input-group input-group-sm">
-                <button class="btn btn-block mb-1 btn-primary form-control" type="submit" formaction="{{ path('team_form') }}">
-                    {{ 'team.create.title'|trans }}
+                <button class="btn btn-block mb-1 btn-primary form-control" type="submit">
+                    {{ 'team.create.save'|trans }}
                 </button>
                 <div class="input-group-append">
                     <span class="input-group-text"><i class="ion ion-md-add"></i></span>

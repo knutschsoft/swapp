@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45c23ef18215ba89e289c41c66c4e187",
+    "content-hash": "470424bdf6e7034adf12a32276da9072",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1328,30 +1328,30 @@
         },
         {
             "name": "dunglas/doctrine-json-odm",
-            "version": "0.1.2",
+            "version": "0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dunglas/doctrine-json-odm.git",
-                "reference": "91f3629b65f3b7bb07d04e26ac8f69dfd9909da0"
+                "reference": "8cb9b078fece8fada641d89295126c55e88f3b88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dunglas/doctrine-json-odm/zipball/91f3629b65f3b7bb07d04e26ac8f69dfd9909da0",
-                "reference": "91f3629b65f3b7bb07d04e26ac8f69dfd9909da0",
+                "url": "https://api.github.com/repos/dunglas/doctrine-json-odm/zipball/8cb9b078fece8fada641d89295126c55e88f3b88",
+                "reference": "8cb9b078fece8fada641d89295126c55e88f3b88",
                 "shasum": ""
             },
             "require": {
                 "doctrine/orm": "^2.5",
-                "php": ">=5.5.9",
+                "php": "^5.5.9 || ^7.0",
                 "symfony/property-access": "^2.8 || ^3.0 || ^4.0",
                 "symfony/property-info": "^2.8 || ^3.0 || ^4.0",
                 "symfony/serializer": "^2.8 || ^3.0 || ^4.0"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "^1.6",
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0",
                 "symfony/finder": "^2.8 || ^3.0 || ^4.0",
-                "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0"
+                "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0",
+                "symfony/phpunit-bridge": "^3.3 || ^4.0"
             },
             "suggest": {
                 "symfony/framework-bundle": "To use the provided bundle."
@@ -1389,7 +1389,7 @@
                 "postgresql",
                 "rdbms"
             ],
-            "time": "2018-08-23T18:52:18+00:00"
+            "time": "2018-11-16T10:07:37+00:00"
         },
         {
             "name": "easycorp/easy-log-handler",
@@ -2237,6 +2237,39 @@
                 "psr-3"
             ],
             "time": "2018-11-05T09:00:11+00:00"
+        },
+        {
+            "name": "ninsuo/symfony-collection",
+            "version": "2.1.30",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ninsuo/symfony-collection.git",
+                "reference": "88db2caea7bba13cd7a7beb938fa706a340b38e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ninsuo/symfony-collection/zipball/88db2caea7bba13cd7a7beb938fa706a340b38e9",
+                "reference": "88db2caea7bba13cd7a7beb938fa706a340b38e9",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "ScriptHandler.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alain Tiemblo",
+                    "email": "ninsuo@gmail.com"
+                }
+            ],
+            "description": "A jQuery plugin that manages adding, deleting and moving elements from a Symfony collection",
+            "time": "2018-07-01T15:06:12+00:00"
         },
         {
             "name": "nyholm/psr7",

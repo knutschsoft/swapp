@@ -21,6 +21,9 @@
                                 Name
                             </th>
                             <th class="text-center" scope="col">
+                                Alters&shy;bereiche
+                            </th>
+                            <th class="text-center" scope="col">
                                 Mitglieder
                             </th>
                             <th scope="col" class="text-center"><div class="btn-outline btn btn-sm">Aktionen</div></th>
@@ -30,6 +33,7 @@
                             {% for team in teams %}
                                 <tr>
                                     <td class="text-center small">{{ team.name }}</td>
+                                    <td class="text-center small">{% for ageRange in team.ageRanges %}{{ ageRange.rangeStart }}-{{ ageRange.rangeEnd }}{% if not loop.last %},{% endif %} {% endfor %}</td>
                                     <td class="text-center small">{% for user in team.users %}{{ user.username }}{% if not loop.last %},{% endif %} {% endfor %}</td>
                                     <td class="text-center">
                                         <a class="input-group input-group-sm"

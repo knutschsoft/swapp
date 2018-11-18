@@ -71,3 +71,4 @@ team:
   create:
     title: 'Team anlegen/bearbeiten'
     headline: 'Team anlegen/bearbeiten'
+    save: 'Team speichern'
