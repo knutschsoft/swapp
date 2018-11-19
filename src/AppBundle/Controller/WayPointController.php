@@ -99,13 +99,8 @@ class WayPointController
      */
     public function updateWalkWithWayPointAction(Walk $walk)
     {
-        $wayPoint = new WayPoint();
+        $wayPoint = WayPoint::fromWalk($walk);
 
-        // TODO: should be defined per team
-        $ageGroups = [];
-        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 8]), Gender::fromString('m'), PeopleCount::fromInt(12));
-        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 7]), Gender::fromString('w'), PeopleCount::fromInt(12));
-        $wayPoint->setAgeGroups($ageGroups);
         $form = $this->formFactory->create(
             WayPointType::class,
             $wayPoint,
@@ -135,13 +130,8 @@ class WayPointController
      */
     public function createWayPointAction(FlashBagInterface $flash, Walk $walk, Request $request)
     {
-        $wayPoint1 = new WayPoint();
+        $wayPoint1 = WayPoint::fromWalk($walk);
 
-        // TODO: should be defined per team
-        $ageGroups = [];
-        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 8]), Gender::fromString('m'), PeopleCount::fromInt(12));
-        $ageGroups[] = AgeGroup::fromRangeGenderAndCount(AgeRange::fromArray([3, 7]), Gender::fromString('w'), PeopleCount::fromInt(12));
-        $wayPoint1->setAgeGroups($ageGroups);
         $form = $this->formFactory->create(WayPointType::class, $wayPoint1);
 
         $form->handleRequest($request);

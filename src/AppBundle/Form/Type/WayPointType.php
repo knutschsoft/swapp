@@ -47,6 +47,7 @@ class WayPointType extends AbstractType
             AgeGroupType::class,
             [
                 'data' => $options['data']->getAgeGroups(),
+                'label' => 'Altersgruppen',
             ]
         );
         $builder->add(

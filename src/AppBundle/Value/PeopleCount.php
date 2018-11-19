@@ -20,6 +20,11 @@ final class PeopleCount
         return new self($count);
     }
 
+    public static function none(): self
+    {
+        return new self(0);
+    }
+
     public function count(): int
     {
         return $this->count;

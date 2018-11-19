@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Value\AgeGroup;
+use AppBundle\Value\Gender;
+use AppBundle\Value\PeopleCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -79,6 +81,22 @@ class WayPoint
         $this->ageGroups = [];
     }
 
+    public static function fromWalk(Walk $walk): self
+    {
+        $instance = new self();
+
+        foreach ($walk->getAgeRanges() as $ageRange) {
+            $ageGroup = AgeGroup::fromRangeGenderAndCount($ageRange, Gender::fromString('m'), PeopleCount::none());
+            $instance->addAgeGroup($ageGroup);
+            $ageGroup = AgeGroup::fromRangeGenderAndCount($ageRange, Gender::fromString('w'), PeopleCount::none());
+            $instance->addAgeGroup($ageGroup);
+            $ageGroup = AgeGroup::fromRangeGenderAndCount($ageRange, Gender::fromString('x'), PeopleCount::none());
+            $instance->addAgeGroup($ageGroup);
+        }
+
+        return $instance;
+    }
+
     /**
      * @return AgeGroup[]
      */
@@ -87,6 +105,9 @@ class WayPoint
         return $this->ageGroups;
     }
 
+    /**
+     * @param AgeGroup[] $ageGroups
+     */
     public function setAgeGroups(array $ageGroups): void
     {
         $this->ageGroups = $ageGroups;
