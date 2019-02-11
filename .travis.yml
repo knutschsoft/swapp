@@ -20,8 +20,8 @@ before_script:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - node -v
   - yarn install
-  - node_modules/.bin/encore production
   - composer install -vv
+  - yarn encore production
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction --env=test
