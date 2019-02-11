@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Tests\AppBundle\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -10,6 +12,7 @@ class ApplicationAvailabilityTest extends WebTestCase
      */
     public function testPageIsSuccessful($url)
     {
+        $this->loadAllFixtures();
         $credentials = [
             'username' => 'admin',
             'password' => 'admin',
@@ -35,5 +38,23 @@ class ApplicationAvailabilityTest extends WebTestCase
             ['/eadmin/?action=list&entity=SystemicQuestion'],
             // ...
         ];
+    }
+
+    /**
+     * @return \Doctrine\Common\DataFixtures\Executor\AbstractExecutor|null|void
+     */
+    private function loadAllFixtures()
+    {
+        $this->loadFixtureFiles(
+            [
+                '@AppBundle/DataFixtures/ORM/test/tag.yml',
+                '@AppBundle/DataFixtures/ORM/test/guest.yml',
+                '@AppBundle/DataFixtures/ORM/test/team.yml',
+                '@AppBundle/DataFixtures/ORM/test/user.yml',
+                '@AppBundle/DataFixtures/ORM/test/walk.yml',
+                '@AppBundle/DataFixtures/ORM/test/systemicQuestion.yml',
+                '@AppBundle/DataFixtures/ORM/test/wayPoint.yml',
+            ]
+        );
     }
 }
