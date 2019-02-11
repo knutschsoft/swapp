@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Resource;
 
 /**
  * @ORM\Entity()
@@ -52,7 +51,7 @@ class Session
         return $this->sessData;
     }
 
-    public function setSessData(Resource $sessData)
+    public function setSessData($sessData)
     {
         $this->sessData = $sessData;
     }
