@@ -27,8 +27,8 @@ final class AgeRange
 
     public static function fromArray(array $count = [])
     {
-        $start = isset($count['start']) ? $count['start'] : isset($count[0]) ? $count[0] : 0;
-        $end = isset($count['end']) ? $count['end'] : isset($count[1]) ? $count[1] : 0;
+        $start = isset($count['start']) ? $count['start'] : (isset($count[0]) ? $count[0] : 0);
+        $end = isset($count['end']) ? $count['end'] : (isset($count[1]) ? $count[1] : 0);
 
         return new self($start, $end);
     }
