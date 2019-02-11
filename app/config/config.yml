@@ -148,3 +148,7 @@ vich_uploader:
             inject_on_load:     false # should the file be injected into the uploadable entity when it is loaded from the data store
             delete_on_update:   true  # should the file be deleted when a new file is uploaded
             delete_on_remove:   true  # should the file be deleted when a new file is removed
+
+sensio_framework_extra:
+    router:
+        annotations: false
