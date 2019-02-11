@@ -26,13 +26,6 @@ services:
         resource: '../../src/AppBundle/Controller'
         tags: ['controller.service_arguments']
 
-# dummy service for param converter
-    app.param_converter.example:
-        class: AppBundle\ParamConverter\ExampleParamConverter
-        arguments: []
-        tags:
-            - { name: request.param_converter, converter: example, priority: 10 }
-
     app.bugsnag_user:
         class: AppBundle\BugsnagUser
         arguments: ['@security.token_storage']

@@ -30,6 +30,9 @@ docker-compose.override.yml
 # npm
 /node_modules/
 
+# phpstan
+/phpstan.neon
+
 # PHPUnit
 /phpunit.xml
 

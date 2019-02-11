@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
@@ -7,6 +8,7 @@ use AppBundle\Value\Gender;
 use AppBundle\Value\PeopleCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -18,6 +20,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class WayPoint
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Walk;
@@ -22,10 +24,18 @@ use Symfony\Component\Routing\RouterInterface;
 
 class WayPointController
 {
+    /** @var EngineInterface */
     private $templateEngine;
+    /** @var WayPointRepositoryInterface */
     private $wayPointRepository;
+    /** @var RouterInterface */
     private $router;
+    /** @var FormFactoryInterface */
     private $formFactory;
+    /** @var WalkRepositoryInterface */
+    private $walkRepository;
+    /** @var SystemicQuestionRepositoryInterface */
+    private $systemicQuestionRepository;
 
     /**
      * @param EngineInterface                     $templateEngine
@@ -153,10 +163,10 @@ class WayPointController
 
             if ($form->get('createWayPoint')->isClicked()) {
                 $url = $this->router->generate('update_walk_with_way_point', array('walkId' => $walk->getid()));
-            }
-
-            if ($form->get('createWalk')->isClicked()) {
+            } elseif ($form->get('createWalk')->isClicked()) {
                 $url = $this->router->generate('walk_create_form', array('walkId' => $walk->getId()));
+            } else {
+                throw new \RuntimeException('Invalid submit button used or no button clicked.');
             }
 
             return new RedirectResponse($url);

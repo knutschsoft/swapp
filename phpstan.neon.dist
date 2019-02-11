@@ -1,0 +1,11 @@
+parameters:
+    level: 1
+    paths:
+        - %currentWorkingDirectory%/src
+    excludes_analyse:
+#        - %currentWorkingDirectory%/src/Migrations/Version*.php # sf4
+        - %currentWorkingDirectory%/app/DoctrineMigrations/Version*.php # sf3
+    parameters:
+        symfony:
+#            container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml # sf4
+            container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml # sf3

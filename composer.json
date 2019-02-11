@@ -50,7 +50,8 @@
         "doctrine/data-fixtures": "^1.1",
         "symfony/phpunit-bridge": "^3.3",
         "phpunit/phpunit": ">= 5.4.3 <6.0",
-        "sensiolabs/security-checker": "^5.0"
+        "sensiolabs/security-checker": "^5.0",
+        "phpstan/phpstan": "^0.11.1"
     },
     "scripts": {
         "database-init": [
@@ -68,22 +69,6 @@
             "php bin/console doctrine:database:drop --no-interaction --force --if-exists",
             "php bin/console doctrine:database:create",
             "php bin/console doctrine:migrations:diff"
-        ],
-        "ci": [
-            "vendor/bin/phpcbf --standard=Symfony2 src || true",
-            "vendor/bin/phpcs --standard=symfony2 src || true",
-            "vendor/bin/phpunit || true",
-            "vendor/bin/phpmd src xml phpmd.xml || true",
-            "vendor/bin/phpcpd src || true"
-        ],
-        "compile": [
-            "npm install",
-            "node_modules/.bin/bower install",
-            "node_modules/.bin/webpack",
-            "AppBundle\\Composer\\HerokuEnvironment::populateEnvironment",
-            "@post-install-cmd",
-            "rm web/app_dev.php",
-            "php bin/console doctrine:migration:migrate --no-interaction --env=prod"
         ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

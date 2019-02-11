@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\ParamConverter;
 
 use AppBundle\Entity\Team;
@@ -62,7 +64,7 @@ class EntityParamConverter implements ParamConverterInterface
                 break;
             default:
                 throw new \InvalidArgumentException(
-                    sprintf('Wrong configuration "%s" in ', $configuration->getName(), __CLASS__)
+                    sprintf('Wrong configuration "%s" in "%s"', $configuration->getName(), __CLASS__)
                 );
         }
 
