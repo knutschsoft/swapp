@@ -54,6 +54,14 @@
         "phpstan/phpstan": "^0.11.1"
     },
     "scripts": {
+        "unit": "bin/phpunit || true",
+        "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
+        "qa": [
+            "bin/console doctrine:schema:update --env=test --force",
+            "yarn encore production --colors",
+            "@unit",
+            "@stan"
+        ],
         "database-init": [
             "php bin/console doctrine:database:drop --no-interaction --force --if-exists",
             "php bin/console doctrine:database:create --if-not-exists",
