@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * This is for testing doctrine only, will be replaced with real user entity
@@ -59,10 +60,7 @@ class User extends BaseUser
         return $this->teams;
     }
 
-    /**
-     * @param ArrayCollection
-     */
-    public function setTeams($teams)
+    public function setTeams(ArrayCollection $teams): void
     {
         $this->teams = $teams;
     }
@@ -95,58 +93,34 @@ class User extends BaseUser
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getWalks()
+    public function getWalks(): ArrayCollection
     {
         return $this->walks;
     }
 
-    /**
-     * @param ArrayCollection
-     */
-    public function setWalks($walks)
+    public function setWalks(ArrayCollection $walks): void
     {
         $this->walks = $walks;
     }
 
-    /**
-     * @param Team $team
-     */
-    public function addTeam($team)
+    public function addTeam(Team $team): void
     {
         $this->teams[] = $team;
     }
 
-    /**
-     * @param Team $team
-     */
-    public function removeTeam($team)
+    public function removeTeam(Team $team): void
     {
         $this->teams->removeElement($team);
     }
 
-    /**
-     * Set facebookId
-     *
-     * @param string $facebookId
-     *
-     * @return User
-     */
-    public function setFacebookId($facebookId)
+    public function setFacebookId(string $facebookId): self
     {
         $this->facebook_id = $facebookId;
 
         return $this;
     }
 
-    /**
-     * Get facebookId
-     *
-     * @return string
-     */
-    public function getFacebookId()
+    public function getFacebookId(): string
     {
         return $this->facebook_id;
     }

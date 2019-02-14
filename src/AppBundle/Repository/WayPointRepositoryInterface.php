@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\WayPoint;
@@ -19,9 +21,4 @@ interface WayPointRepositoryInterface
      * @return WayPoint[]
      */
     public function findAll();
-
-    /**
-     * @return WayPoint[]
-     */
-    public function findAllFor($walkId);
 }

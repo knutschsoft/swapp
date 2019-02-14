@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\WayPoint;
@@ -26,18 +28,6 @@ class DoctrineORMWayPointRepository extends EntityRepository implements WayPoint
     public function findOneById($id)
     {
         return parent::findOneBy(['id' => $id]);
-    }
-
-    /**
-     * Finds all wayPoints for a walkId.
-     *
-     * @param $walkId
-     *
-     * @return WayPoint[]
-     */
-    public function findAllFor($walkId)
-    {
-        return parent::findBy(['walk' => $walkId]);
     }
 
     /**

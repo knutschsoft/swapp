@@ -1,15 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle;
 
 use Evolution7\BugsnagBundle\UserInterface as BugsnagUserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 class BugsnagUser implements BugsnagUserInterface
 {
     /**
-     * @var TokenStorageInterface
+     * @var TokenInterface|null
      */
     private $token;
 
@@ -34,12 +36,12 @@ class BugsnagUser implements BugsnagUserInterface
             return [];
         }
 
+        /** @var SymfonyUserInterface $user */
         $user = $this->token->getUser();
 
         return [
-            'id' => $user->getId(),
+            'id' => $user->getUsername(),
             'name' => $user->getUsername(),
-            'email' => $user->getEmail(),
         ];
     }
 }

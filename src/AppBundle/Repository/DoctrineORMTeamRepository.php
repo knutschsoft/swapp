@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Team;
@@ -28,18 +30,6 @@ class DoctrineORMTeamRepository extends EntityRepository implements TeamReposito
     public function findOneById($id)
     {
         return parent::findOneBy(['id' => $id]);
-    }
-
-    /**
-     * Finds all teams in which the user is enlisted.
-     *
-     * @param $userId
-     *
-     * @return Team[]
-     */
-    public function findAllFor($userId)
-    {
-        return parent::findBy(['user_id' => $userId]);
     }
 
     /**

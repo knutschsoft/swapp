@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\Fields\AgeRangeField;
@@ -82,36 +84,27 @@ class Team
         $this->name = $name;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getUsers()
+    public function getUsers(): ArrayCollection
     {
         return $this->users;
     }
 
-    /**
-     * @param User $user
-     */
-    public function addUser($user)
+    public function addUser(User $user): void
     {
         $this->users[] = $user;
         $user->addTeam($this);
     }
 
-    /**
-     * @param User $user
-     */
-    public function removeUser($user)
+    public function removeUser(User $user): void
     {
         $this->users->removeElement($user);
         $user->removeTeam($this);
     }
 
     /**
-     * @param ArrayCollection
+     * @param ArrayCollection $users
      */
-    public function setUsers($users)
+    public function setUsers(ArrayCollection $users): void
     {
         $this->users = $users;
     }

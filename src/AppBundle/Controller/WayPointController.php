@@ -9,12 +9,10 @@ use AppBundle\Form\Type\WayPointType;
 use AppBundle\Repository\SystemicQuestionRepositoryInterface;
 use AppBundle\Repository\WalkRepositoryInterface;
 use AppBundle\Repository\WayPointRepositoryInterface;
-use AppBundle\Value\AgeGroup;
-use AppBundle\Value\AgeRange;
-use AppBundle\Value\Gender;
-use AppBundle\Value\PeopleCount;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -114,18 +112,18 @@ class WayPointController
         $form = $this->formFactory->create(
             WayPointType::class,
             $wayPoint,
-            array(
-                'action' => $this->router->generate('way_point_create', array('walkId' => $walk->getId())),
-            )
+            [
+                'action' => $this->router->generate('way_point_create', ['walkId' => $walk->getId()]),
+            ]
         );
 
         return $this->templateEngine->renderResponse(
             ':WayPoint:wayPointForm.html.twig',
-            array(
+            [
                 'walk' => $walk,
                 'form' => $form->createView(),
                 'wayPoints' => $walk->getWayPoints(),
-            )
+            ]
         );
     }
 
@@ -155,16 +153,20 @@ class WayPointController
             $flash->add(
                 'notice',
                 sprintf(
-                'Wegpunkt %s wurde erfolgreich zur Runde %s hinzugefügt.',
+                    'Wegpunkt %s wurde erfolgreich zur Runde %s hinzugefügt.',
                     $wayPoint->getLocationName(),
                     $walk->getName()
                 )
             );
 
-            if ($form->get('createWayPoint')->isClicked()) {
-                $url = $this->router->generate('update_walk_with_way_point', array('walkId' => $walk->getid()));
-            } elseif ($form->get('createWalk')->isClicked()) {
-                $url = $this->router->generate('walk_create_form', array('walkId' => $walk->getId()));
+            /** @var FormInterface|ClickableInterface $createWaypointForm */
+            $createWaypointForm = $form->get('createWayPoint');
+            /** @var FormInterface|ClickableInterface $createWalkForm */
+            $createWalkForm = $form->get('createWalk');
+            if ($createWaypointForm->isClicked()) {
+                $url = $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getid()]);
+            } elseif ($createWalkForm->isClicked()) {
+                $url = $this->router->generate('walk_create_form', ['walkId' => $walk->getId()]);
             } else {
                 throw new \RuntimeException('Invalid submit button used or no button clicked.');
             }
@@ -174,11 +176,11 @@ class WayPointController
 
         return $this->templateEngine->renderResponse(
             ':WayPoint:wayPointForm.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
                 'wayPoints' => $walk->getWayPoints(),
                 'walk' => $walk,
-            )
+            ]
         );
     }
 }
