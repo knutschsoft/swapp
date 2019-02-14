@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -25,12 +26,13 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var Walk[]|Collection
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
      */
     private $walks;
 
     /**
-     * @var ArrayCollection
+     * @var Team[]|Collection
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="users")
      * @ORM\JoinTable(name="users_teams")
      */
@@ -53,14 +55,17 @@ class User extends BaseUser
     }
 
     /**
-     * @return ArrayCollection
+     * @return Team[]|Collection
      */
-    public function getTeams()
+    public function getTeams(): Collection
     {
         return $this->teams;
     }
 
-    public function setTeams(ArrayCollection $teams): void
+    /**
+     * @param Team[]|Collection $teams
+     */
+    public function setTeams($teams): void
     {
         $this->teams = $teams;
     }
@@ -93,12 +98,18 @@ class User extends BaseUser
         $this->id = $id;
     }
 
-    public function getWalks(): ArrayCollection
+    /**
+     * @return Walk[]|Collection
+     */
+    public function getWalks(): Collection
     {
         return $this->walks;
     }
 
-    public function setWalks(ArrayCollection $walks): void
+    /**
+     * @param Walk[]|Collection $walks
+     */
+    public function setWalks($walks): void
     {
         $this->walks = $walks;
     }
@@ -149,26 +160,14 @@ class User extends BaseUser
         return $this->facebook_access_token;
     }
 
-    /**
-     * Add walk
-     *
-     * @param Walk $walk
-     *
-     * @return User
-     */
-    public function addWalk(Walk $walk)
+    public function addWalk(Walk $walk): self
     {
         $this->walks[] = $walk;
 
         return $this;
     }
 
-    /**
-     * Remove walk
-     *
-     * @param Walk $walk
-     */
-    public function removeWalk(Walk $walk)
+    public function removeWalk(Walk $walk): void
     {
         $this->walks->removeElement($walk);
     }

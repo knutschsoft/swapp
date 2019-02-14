@@ -84,7 +84,7 @@ class Team
         $this->name = $name;
     }
 
-    public function getUsers(): ArrayCollection
+    public function getUsers(): Collection
     {
         return $this->users;
     }
@@ -102,9 +102,9 @@ class Team
     }
 
     /**
-     * @param ArrayCollection $users
+     * @param User[]|Collection $users
      */
-    public function setUsers(ArrayCollection $users): void
+    public function setUsers($users): void
     {
         $this->users = $users;
     }
