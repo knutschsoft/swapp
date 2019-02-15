@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Walk;
@@ -44,15 +46,12 @@ class DoctrineORMWalkRepository extends EntityRepository implements WalkReposito
         return $query;
     }
 
-    /**
-     * @param int $id id of the walk entity
-     *
-     * @return Walk
-     */
-    public function findOneById($id)
+    public function findOneById($id): ?Walk
     {
+        /** @var Walk|null $walk */
+        $walk = parent::findOneBy(['id' => $id]);
 
-        return parent::findOneBy(['id' => $id]);
+        return $walk;
     }
 
     /**

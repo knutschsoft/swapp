@@ -22,14 +22,12 @@ class DoctrineORMTeamRepository extends EntityRepository implements TeamReposito
         return $query->getResult();
     }
 
-    /**
-     * @param int $id id of the team entity
-     *
-     * @return Team
-     */
-    public function findOneById($id)
+    public function findOneById($id): ?Team
     {
-        return parent::findOneBy(['id' => $id]);
+        /** @var Team|null $team */
+        $team = parent::findOneBy(['id' => $id]);
+
+        return $team;
     }
 
     /**

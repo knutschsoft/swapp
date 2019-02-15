@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\Fields\AgeRangeField;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,7 +34,7 @@ class Walk
 
     /**
      * @ORM\OneToMany(targetEntity="WayPoint", mappedBy="walk")
-     * @var ArrayCollection|WayPoint[]
+     * @var Collection|WayPoint[]
      **/
     private $wayPoints;
 
@@ -55,7 +58,7 @@ class Walk
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
-     * @var ArrayCollection|User[]
+     * @var Collection|User[]
      */
     private $walkTeamMembers;
 
@@ -132,6 +135,8 @@ class Walk
     {
         $this->ageRanges = [];
         $this->walkTags = new ArrayCollection();
+        $this->walkTeamMembers = new ArrayCollection();
+        $this->wayPoints = new ArrayCollection();
     }
 
     public static function prologue(Team $team, SystemicQuestion $systemicQuestion): self
@@ -480,17 +485,17 @@ class Walk
     }
 
     /**
-     * @return WayPoint[]
+     * @return WayPoint[]|Collection
      */
-    public function getWayPoints()
+    public function getWayPoints(): Collection
     {
         return $this->wayPoints;
     }
 
     /**
-     * @param WayPoint[] $wayPoints
+     * @param WayPoint[]|Collection $wayPoints
      */
-    public function setWayPoints($wayPoints)
+    public function setWayPoints(Collection $wayPoints): void
     {
         $this->wayPoints = $wayPoints;
     }

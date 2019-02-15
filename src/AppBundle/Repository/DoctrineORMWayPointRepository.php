@@ -20,14 +20,12 @@ class DoctrineORMWayPointRepository extends EntityRepository implements WayPoint
         return $query->getResult();
     }
 
-    /**
-     * @param int $id id of the wayPoint entity
-     *
-     * @return WayPoint
-     */
-    public function findOneById($id)
+    public function findOneById($id): ?WayPoint
     {
-        return parent::findOneBy(['id' => $id]);
+        /** @var WayPoint|null $WayPoint */
+        $WayPoint = parent::findOneBy(['id' => $id]);
+
+        return $WayPoint;
     }
 
     /**
