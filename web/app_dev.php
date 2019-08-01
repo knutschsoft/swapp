@@ -14,7 +14,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     || !(
         in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1'))
-        || in_array($_SERVER['HTTP_HOST'], ['swapp', '127.0.0.1:8082', 'localhost:8082'])
+        || in_array($_SERVER['HTTP_HOST'], ['swapp', '127.0.0.1:8082', 'localhost:8082', 'swapp:8082'])
         || 'cli-server' === php_sapi_name())
 ) {
     header('HTTP/1.0 403 Forbidden');

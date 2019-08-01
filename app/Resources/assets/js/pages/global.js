@@ -5,6 +5,7 @@ import 'jquery-ui/ui/widgets/sortable';
 var updateHrefOnSelectChange = require('./../updateHrefOnSelectChange');
 
 updateHrefOnSelectChange('s-select-team', 's-select-team-link');
+updateHrefOnSelectChange('s-select-unfinished-walk', 's-select-unfinished-walk-link');
 
 $(function () {
     $('.js-team-type-age-ranges').collection(

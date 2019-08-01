@@ -62,9 +62,11 @@ class WalkController
         $sort = $request->query->get('sort', 'asc');
 
         $walks = $this->walkRepository->findAllOrderBy('walk.'.$order, $sort);
+        $unfinishedWalks = $this->walkRepository->findAllUnfinishedByUser($user);
         $teams = $user->getTeams();
 
         return [
+            'unfinishedWalks' => $unfinishedWalks,
             'walks' => $walks,
             'teams' => $teams,
             'order' => $order,

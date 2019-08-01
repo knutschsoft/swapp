@@ -1,5 +1,8 @@
 {% extends '::base.html.twig' %}
 
+{# unfinishedWalks \AppBundle\Entity\Walk[] #}
+{# teams \AppBundle\Entity\Team[] #}
+
 {% block title %}Streetwork-Runden{% endblock %}
 {% block content %}
     <div class="card">
@@ -27,6 +30,24 @@
                     </a>
                 {% endif %}
             </div>
+
+            {% if unfinishedWalks|length %}
+                <hr \>
+
+                <div class="input-group input-group-sm">
+
+                    <select name="Team" class="s-select-unfinished-walk form-control">
+                        {% for walk in unfinishedWalks %}
+                            <option value={{ walk.getId }}>{{ walk.getName }} - {{ walk.teamName }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <a class="input-group-append s-select-unfinished-walk-link" href="{{ path('update_walk_with_way_point', { 'walkId': unfinishedWalks|first.getId }) }}" data-test="continue-unfinished-walk">
+                        <button class="btn btn-primary">Runde fortsetzen</button>
+                        <span class="input-group-text"><i class="ion ion-md-walk"></i></span>
+                    </a>
+                </div>
+            {% endif %}
 
             <hr \>
 

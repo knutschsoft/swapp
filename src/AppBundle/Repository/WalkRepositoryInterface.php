@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
 use AppBundle\Entity\Walk;
 use Doctrine\ORM\AbstractQuery;
 
@@ -9,25 +12,23 @@ interface WalkRepositoryInterface
     /**
      * @return Walk[]
      */
-    public function findAll();
+    public function findAll(): array;
 
     /**
      * @return Walk[]
      */
-    public function findAllOrderBy($order, $sort);
+    public function findAllOrderBy($order, $sort): array;
 
     /**
-     * @return AbstractQuery
+     * @param User $user
+     *
+     * @return Walk[]
      */
-    public function getFindAllQuery();
+    public function findAllUnfinishedByUser(User $user);
 
-    /**
-     * @param Walk $walk
-     */
-    public function save(Walk $walk);
+    public function getFindAllQuery(): AbstractQuery;
 
-    /**
-     * @param Walk $walk
-     */
-    public function update(Walk $walk);
+    public function save(Walk $walk): void;
+
+    public function update(Walk $walk): void;
 }

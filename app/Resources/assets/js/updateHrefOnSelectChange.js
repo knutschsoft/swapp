@@ -3,6 +3,7 @@ module.exports = function(selectClass, hrefClass) {
         var selectElement = window.document.getElementsByClassName(selectClass)[0];
 
         if (selectElement === undefined) {
+            console.error('Element with class "'+selectClass+'" not found.');
             return;
         }
 
