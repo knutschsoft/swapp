@@ -9,6 +9,7 @@ services:
       - .:/var/www/html
     ports:
       - 8082:80
+      - 8083:8083
     restart: "no"
     environment:
       HOST_UID: ${HOST_UID} # set in ~/.bashrc
