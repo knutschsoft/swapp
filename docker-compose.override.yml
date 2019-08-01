@@ -15,52 +15,12 @@ services:
       HOST_GID: ${HOST_GID} # set in ~/.bashrc
       CONTAINER_USER: docker
       CONTAINER_GROUP: docker
-    depends_on:
-      - node-chrome
-      - node-firefox
 
   mysql:
     ports:
       - 8875:3306
     restart: "no"
 
-  selenium_hub:
-    image: selenium/hub
-#    ports:
-#      - "4444:4444"
-    networks:
-      - swapp
-
-  node-firefox:
-    image: selenium/node-firefox-debug
-    networks:
-      - swapp
-    ports:
-      - "5901:5900"
-    depends_on:
-      - selenium_hub
-    environment:
-      HUB_HOST: selenium_hub
-      HUB_PORT_4444_TCP_ADDR: selenium_hub
-      HUB_PORT_4444_TCP_PORT: 4444
-
-  node-chrome:
-    image: selenium/node-chrome-debug
-    networks:
-      - swapp
-    ports:
-      - "5900:5900"
-    depends_on:
-      - selenium_hub
-    environment:
-      HUB_HOST: selenium_hub
-      HUB_PORT_4444_TCP_ADDR: selenium_hub
-      HUB_PORT_4444_TCP_PORT: 4444
-
 networks:
   swapp:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.28.0.0/16
