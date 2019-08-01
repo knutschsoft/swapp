@@ -1,4 +1,4 @@
-FROM composer:1.5 as composer
+FROM composer:1.8 as composer
 FROM php:7.1-apache
 
 ENV MYSQL_HOST=${MYSQL_HOST}
@@ -55,7 +55,7 @@ RUN apt-get update && apt-get install -y \
         libssl-dev \
         git-core \
         acl \
-        mysql-client
+        default-mysql-client
 
 RUN docker-php-ext-configure opcache --enable-opcache && \
         docker-php-ext-install opcache && \
