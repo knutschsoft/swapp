@@ -11,7 +11,9 @@
 
         <div class="card-body">
             <form class="sm-col-6 p2" action="{{ path("fos_user_security_check") }}" method="post">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                {% if csrf_token %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                {% endif %}
 
                 <div class="form-group">
                     <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
@@ -19,7 +21,7 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="ion ion-md-person"></i></div>
                         </div>
-                        <input autofocus placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}" class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                        <input autofocus placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}" class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
                     </div>
                 </div>
 
@@ -29,7 +31,7 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="ion ion-md-unlock"></i></div>
                         </div>
-                        <input class="form-control" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" type="password" id="password" name="_password" required="required" />
+                        <input class="form-control" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" type="password" id="password" name="_password" required="required" autocomplete="current-password" />
                     </div>
                 </div>
                 <div class="form-group form-check">
