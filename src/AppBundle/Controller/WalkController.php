@@ -59,7 +59,7 @@ class WalkController
     public function homeScreenAction(User $user, Request $request)
     {
         $order = $request->query->get('order', 'startTime');
-        $sort = $request->query->get('sort', 'asc');
+        $sort = $request->query->get('sort', 'desc');
 
         $walks = $this->walkRepository->findAllOrderBy('walk.'.$order, $sort);
         $unfinishedWalks = $this->walkRepository->findAllUnfinishedByUser($user);
