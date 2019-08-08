@@ -155,4 +155,4 @@ sensio_framework_extra:
         annotations: false
 
 webpack_encore:
-    output_path: 'build'
+    output_path: '%kernel.project_dir%/web/build'
