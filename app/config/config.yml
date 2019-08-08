@@ -153,3 +153,6 @@ vich_uploader:
 sensio_framework_extra:
     router:
         annotations: false
+
+webpack_encore:
+    output_path: 'build'

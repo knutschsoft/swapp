@@ -6,13 +6,13 @@
         <title>{% block title %}Swapp!{% endblock %}</title>
         {% block meta_description %}{% endblock %}
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('build/global.css') }}">
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
         {% block javascripts %}
-            <script src="{{ asset('build/app.js') }}"></script>
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
 
         {% for flashMessage in app.session.flashbag.get('notice') %}

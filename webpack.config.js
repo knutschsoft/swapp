@@ -17,8 +17,9 @@ Encore
     // will output as web/build/app.js
     .addEntry('app', assets_dir + '/js/pages/global.js')
 
-    // will output as web/build/global.css
-    .addStyleEntry('global', assets_dir + '/css/main.scss')
+    // will require an extra script tag for runtime.js
+    // but, you probably want this, unless you're building a single-page app
+    .enableSingleRuntimeChunk()
 
     // allow sass/scss files to be processed
     .enableSassLoader()

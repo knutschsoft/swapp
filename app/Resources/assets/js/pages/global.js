@@ -1,6 +1,11 @@
-import 'bootstrap';
+const $ = require('jquery');
+// this "modifies" the jquery module: adding behavior to it
+// the bootstrap module doesn't export/return anything
+require('bootstrap');
+
 import '../../../../../vendor/ninsuo/symfony-collection/jquery.collection';
 import 'jquery-ui/ui/widgets/sortable';
+import '../../css/main.scss';
 
 var updateHrefOnSelectChange = require('./../updateHrefOnSelectChange');
 

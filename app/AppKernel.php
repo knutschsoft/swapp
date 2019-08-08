@@ -24,7 +24,8 @@ class AppKernel extends Kernel
             new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
-            new \Dunglas\DoctrineJsonOdm\Bundle\DunglasDoctrineJsonOdmBundle(),
+            new Dunglas\DoctrineJsonOdm\Bundle\DunglasDoctrineJsonOdmBundle(),
+            new Symfony\WebpackEncoreBundle\WebpackEncoreBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
