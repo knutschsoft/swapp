@@ -18,11 +18,13 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 8.1.3
+ENV NODE_VERSION 12.8.0
+ENV NVM_VERSION 0.34.0
+RUN mkdir $NVM_DIR
 
 # install nvm
 # https://github.com/creationix/nvm#install-script
-RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | bash
 
 # install node and npm
 RUN source $NVM_DIR/nvm.sh \
