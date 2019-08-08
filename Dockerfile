@@ -1,5 +1,5 @@
 FROM composer:1.8 as composer
-FROM php:7.2-apache
+FROM php:7.3-apache
 
 ENV MYSQL_HOST=${MYSQL_HOST}
 ENV MYSQL_USER=${MYSQL_USER}
