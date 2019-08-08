@@ -27,6 +27,7 @@ before_script:
   - php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction --env=test
 
 script:
+  - ls -lath ./web/build
   - ./vendor/bin/phpunit
   - ./vendor/bin/security-checker security:check
   - ./vendor/bin/phpstan analyse
