@@ -14,11 +14,11 @@
     },
     "config": {
       "platform": {
-        "php": "7.1"
+        "php": "7.2"
       }
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "symfony/symfony": "3.4.*",
         "doctrine/orm": "^2.6",
         "doctrine/dbal": "^2.8",
