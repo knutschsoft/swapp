@@ -10,6 +10,7 @@ sudo: required
 
 php:
   - 7.2
+  - 7.3
 
 env:
   - TRAVIS_NODE_VERSION="12.8.0"
