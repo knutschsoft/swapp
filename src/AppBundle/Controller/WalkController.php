@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Team;
@@ -17,6 +19,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class WalkController
 {
@@ -260,6 +263,7 @@ class WalkController
 //                    'Gäste',
                 ];
 
+                Assert::resource($handle);
                 fputcsv($handle, $header);
 
                 while (false !== ($row = $results->next())) {

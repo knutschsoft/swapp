@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class WayPointController
 {
@@ -159,10 +160,10 @@ class WayPointController
                 )
             );
 
-            /** @var FormInterface|ClickableInterface $createWaypointForm */
             $createWaypointForm = $form->get('createWayPoint');
-            /** @var FormInterface|ClickableInterface $createWalkForm */
             $createWalkForm = $form->get('createWalk');
+            Assert::isInstanceOf($createWaypointForm, ClickableInterface::class);
+            Assert::isInstanceOf($createWalkForm, ClickableInterface::class);
             if ($createWaypointForm->isClicked()) {
                 $url = $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getid()]);
             } elseif ($createWalkForm->isClicked()) {
