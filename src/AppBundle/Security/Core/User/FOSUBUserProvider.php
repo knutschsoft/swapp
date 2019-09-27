@@ -61,9 +61,13 @@ class FOSUBUserProvider extends BaseClass
             $user->$setter_token($response->getAccessToken());
             //I have set all requested data with the user's username
             //modify here with relevant data
-            $user->setUsername($response->getRealName());
+            $realName = $response->getRealName();
+            Assert::string($realName);
+            $email = $response->getEmail();
+            Assert::string($email);
+            $user->setUsername($realName);
             $user->setPassword($username);
-            $user->setEmail($response->getEmail());
+            $user->setEmail($email);
             $user->setRoles(['ROLE_USER']);
             $user->setPassword('');
             $user->setPlainPassword('');

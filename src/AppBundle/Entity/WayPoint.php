@@ -36,7 +36,7 @@ class WayPoint
      *
      * @Assert\File(maxSize = "10240k")
      *
-     * @var File $imageFile
+     * @var File|null $imageFile
      */
     private $imageFile;
 
@@ -169,10 +169,7 @@ class WayPoint
         return $this->isMeeting;
     }
 
-    /**
-     * @param boolean $isMeeting
-     */
-    public function setIsMeeting($isMeeting)
+    public function setIsMeeting(bool $isMeeting): void
     {
         $this->isMeeting = $isMeeting;
     }
@@ -196,18 +193,12 @@ class WayPoint
         return $this->locationName;
     }
 
-    /**
-     * @param string $locationName
-     */
-    public function setLocationName($locationName)
+    public function setLocationName(string $locationName)
     {
         $this->locationName = $locationName;
     }
 
-    /**
-     * @return File
-     */
-    public function getImageFile()
+    public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
@@ -221,7 +212,7 @@ class WayPoint
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setImageFile(File $image = null)
+    public function setImageFile(File $image = null): void
     {
         $this->imageFile = $image;
 
@@ -240,26 +231,17 @@ class WayPoint
         return $this->imageName;
     }
 
-    /**
-     * @param string $imageName
-     */
-    public function setImageName($imageName)
+    public function setImageName(string $imageName)
     {
         $this->imageName = $imageName;
     }
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param integer $id
-     */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -272,25 +254,16 @@ class WayPoint
         return $this->note;
     }
 
-    /**
-     * @param string $note
-     */
-    public function setNote($note)
+    public function setNote(string $note)
     {
         $this->note = $note;
     }
 
-    /**
-     * @return Walk
-     */
-    public function getWalk()
+    public function getWalk(): Walk
     {
         return $this->walk;
     }
 
-    /**
-     * @param Walk $walk
-     */
     public function setWalk(Walk $walk)
     {
         $this->walk = $walk;
