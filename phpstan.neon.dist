@@ -1,11 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+
 parameters:
-    level: 4
+    level: 5
     paths:
         - %currentWorkingDirectory%/src
     excludes_analyse:
 #        - %currentWorkingDirectory%/src/Migrations/Version*.php # sf4
         - %currentWorkingDirectory%/app/DoctrineMigrations/Version*.php # sf3
-    parameters:
-        symfony:
-#            container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml # sf4
-            container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml # sf3

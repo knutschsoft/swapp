@@ -1,10 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Security\Core\User;
 
 use AppBundle\Entity\User;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Webmozart\Assert\Assert;
 
 class FOSUBUserProvider extends BaseClass
 {
@@ -29,6 +32,7 @@ class FOSUBUserProvider extends BaseClass
         //we connect current user
         $user->$setter_id($username);
         $user->$setter_token($response->getAccessToken());
+        Assert::isInstanceOf($user, User::class);
         $this->userManager->updateUser($user);
     }
 
