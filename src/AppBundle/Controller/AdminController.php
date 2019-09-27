@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Team;
@@ -7,63 +9,39 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminContr
 
 class AdminController extends BaseAdminController
 {
-    /**
-     * @return User
-     */
-    public function createNewUserEntity()
+    public function createNewUserEntity(): User
     {
         return $this->get('fos_user.user_manager')->createUser();
     }
 
-    /**
-     * @return Team
-     */
-    public function createNewTeamEntity()
+    public function createNewTeamEntity(): Team
     {
         return new Team();
     }
 
-    /**
-     * @param User $user
-     */
-    public function prePersistUserEntity(User $user)
+    public function prePersistUserEntity(User $user): void
     {
         $this->get('fos_user.user_manager')->updateUser($user, false);
     }
 
-    /**
-     * @param User $user
-     */
-    public function preUpdateUserEntity(User $user)
+    public function preUpdateUserEntity(User $user): void
     {
         $teams = $user->getTeams();
-        if ($teams) {
-            $user->setTeams($teams);
-        }
+        $user->setTeams($teams);
         $this->get('fos_user.user_manager')->updateUser($user, false);
     }
 
-    /**
-     * @param Team $team
-     */
-    public function prePersistTeamEntity(Team $team)
+    public function prePersistTeamEntity(Team $team): void
     {
         $users = $team->getUsers();
-        if($users) {
-            foreach ($users as $user) {
-                $user->addTeam($team);
-            }
+        foreach ($users as $user) {
+            $user->addTeam($team);
         }
     }
 
-    /**
-     * @param Team $team
-     */
-    public function preUpdateTeamEntity(Team $team)
+    public function preUpdateTeamEntity(Team $team): void
     {
         $users = $team->getUsers();
-        if ($users) {
-            $team->setUsers($users);
-        }
+        $team->setUsers($users);
     }
 }
