@@ -52,16 +52,32 @@
         "phpunit/phpunit": ">= 5.4.3 <6.0",
         "sensiolabs/security-checker": "^5.0",
         "phpstan/phpstan": "^0.11.1",
-        "phpstan/phpstan-webmozart-assert": "^0.11.2"
+        "phpstan/phpstan-webmozart-assert": "^0.11.2",
+        "projektmotor/symfony-coding-standard": "^1.0"
     },
     "scripts": {
+        "cbf": "vendor/bin/phpcbf --colors src tests || true",
+        "cs": "vendor/bin/phpcs -s src tests || true",
         "unit": "vendor/bin/phpunit --colors || true",
         "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
+        "security": "./vendor/bin/security-checker security:check --ansi || true",
         "qa": [
+            "@cbf",
+            "@cs",
+            "@stan",
+            "@unit",
+            "@security"
+        ],
+        "qa-full": [
             "bin/console doctrine:schema:update --env=test --force",
             "yarn encore production --colors",
+            "@qa"
+        ],
+        "qa-ci": [
+            "@cs",
+            "@stan",
             "@unit",
-            "@stan"
+            "@security"
         ],
         "database-init": [
             "php bin/console doctrine:database:drop --no-interaction --force --if-exists",
@@ -85,7 +101,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -94,7 +111,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/"
         ]
     },
     "extra": {

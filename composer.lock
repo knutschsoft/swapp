@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "823636f6182d45699ae144d7c51bfce2",
+    "content-hash": "7a56f43ff09e973dc2499a665c5fb2ea",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4218,6 +4218,59 @@
             "time": "2019-02-04T07:19:17+00:00"
         },
         {
+            "name": "escapestudios/symfony2-coding-standard",
+            "version": "3.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/djoos/Symfony-coding-standard.git",
+                "reference": "369b5f2579be6aed478ca3a4248619eab6e54e41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/djoos/Symfony-coding-standard/zipball/369b5f2579be6aed478ca3a4248619eab6e54e41",
+                "reference": "369b5f2579be6aed478ca3a4248619eab6e54e41",
+                "shasum": ""
+            },
+            "require": {
+                "squizlabs/php_codesniffer": "^3.3.1"
+            },
+            "conflict": {
+                "squizlabs/php_codesniffer": "<3 || >=4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+            },
+            "type": "phpcodesniffer-standard",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Joos",
+                    "email": "iam@davidjoos.com"
+                },
+                {
+                    "name": "Community contributors",
+                    "homepage": "https://github.com/djoos/Symfony-coding-standard/graphs/contributors"
+                }
+            ],
+            "description": "CodeSniffer ruleset for the Symfony 2+ coding standard",
+            "homepage": "https://github.com/djoos/Symfony-coding-standard",
+            "keywords": [
+                "Coding Standard",
+                "Symfony2",
+                "phpcs",
+                "symfony"
+            ],
+            "time": "2019-09-25T08:43:58+00:00"
+        },
+        {
             "name": "fzaninotto/faker",
             "version": "v1.8.0",
             "source": {
@@ -5936,6 +5989,54 @@
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
+            "name": "projektmotor/symfony-coding-standard",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/projektmotor/symfony-coding-standard.git",
+                "reference": "4e61d03e442d31faa892c644587182eacdfd7c47"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/projektmotor/symfony-coding-standard/zipball/4e61d03e442d31faa892c644587182eacdfd7c47",
+                "reference": "4e61d03e442d31faa892c644587182eacdfd7c47",
+                "shasum": ""
+            },
+            "require": {
+                "escapestudios/symfony2-coding-standard": "^3.5",
+                "slevomat/coding-standard": "^5.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "conflict": {
+                "squizlabs/php_codesniffer": "<3 || >=4"
+            },
+            "type": "phpcodesniffer-standard",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Freigang",
+                    "email": "robert.freigang@projektmotor.de"
+                },
+                {
+                    "name": "ProjektMOTOR GmbH",
+                    "homepage": "https://www.projektmotor.de"
+                }
+            ],
+            "description": "Internal PHP coding standard of ProjektMOTOR",
+            "homepage": "https://www.projektmotor.de",
+            "keywords": [
+                "Coding Standard",
+                "code sniffer",
+                "phpcs",
+                "psr",
+                "symfony"
+            ],
+            "time": "2019-04-01T16:41:41+00:00"
+        },
+        {
             "name": "sebastian/code-unit-reverse-lookup",
             "version": "1.0.1",
             "source": {
@@ -6381,6 +6482,97 @@
             ],
             "description": "This bundle generates code for you",
             "time": "2017-12-07T15:36:41+00:00"
+        },
+        {
+            "name": "slevomat/coding-standard",
+            "version": "5.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/slevomat/coding-standard.git",
+                "reference": "287ac3347c47918c0bf5e10335e36197ea10894c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/287ac3347c47918c0bf5e10335e36197ea10894c",
+                "reference": "287ac3347c47918c0bf5e10335e36197ea10894c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1",
+                "phpstan/phpdoc-parser": "^0.3.1",
+                "squizlabs/php_codesniffer": "^3.4.1"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "phing/phing": "2.16.1",
+                "phpstan/phpstan": "0.11.4",
+                "phpstan/phpstan-phpunit": "0.11",
+                "phpstan/phpstan-strict-rules": "0.11",
+                "phpunit/phpunit": "8.0.5"
+            },
+            "type": "phpcodesniffer-standard",
+            "autoload": {
+                "psr-4": {
+                    "SlevomatCodingStandard\\": "SlevomatCodingStandard"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
+            "time": "2019-03-22T19:10:53+00:00"
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "0afebf16a2e7f1e434920fa976253576151effe9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0afebf16a2e7f1e434920fa976253576151effe9",
+                "reference": "0afebf16a2e7f1e434920fa976253576151effe9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+            },
+            "bin": [
+                "bin/phpcs",
+                "bin/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2019-09-26T23:12:26+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
