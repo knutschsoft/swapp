@@ -69,7 +69,7 @@ class UserProvider implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('User with ID "%s" could not be reloaded.', $user->getId()));
         }
 
-        return $user;
+        return $reloadedUser;
     }
 
     /**
