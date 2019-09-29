@@ -87,7 +87,7 @@ class BaseWebTestCase extends WebTestCase
                 $crawler->filter('h1.exception-message')->count() ? \trim(
                     $crawler->filter('h1.exception-message')->text()
                 ) : 'empty',
-                $client->getResponse()->getStatusCode() === 302 ? ' It wants to redirect to '.$client->followRedirect()->getUri() : ''
+                302 === $client->getResponse()->getStatusCode() ? ' It wants to redirect to '.$client->followRedirect()->getUri() : ''
             )
         );
     }
@@ -100,7 +100,7 @@ class BaseWebTestCase extends WebTestCase
             $session = self::$container->get('session');
             $firewallName = 'main';
 
-            /** @var UserInterface|null $user */
+            /* @var UserInterface|null $user */
             try {
                 $user = self::$container
                     ->get(UserProvider::class)

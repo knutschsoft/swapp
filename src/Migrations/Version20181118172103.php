@@ -15,7 +15,7 @@ final class Version20181118172103 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf(
-            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
             'Migration can only be executed safely on \'mysql\'.'
         );
 
@@ -25,7 +25,7 @@ final class Version20181118172103 extends AbstractMigration
     public function postUp(Schema $schema): void
     {
         $this->abortIf(
-            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
             'Migration can only be executed safely on \'mysql\'.'
         );
 
@@ -45,7 +45,7 @@ final class Version20181118172103 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf(
-            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
             'Migration can only be executed safely on \'mysql\'.'
         );
 

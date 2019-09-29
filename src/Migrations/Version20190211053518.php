@@ -21,7 +21,7 @@ final class Version20190211053518 extends AbstractMigration
     public function preUp(Schema $schema): void
     {
         $this->abortIf(
-            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
             'Migration can only be executed safely on \'mysql\'.'
         );
 
@@ -39,7 +39,7 @@ final class Version20190211053518 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf(
-            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
             'Migration can only be executed safely on \'mysql\'.'
         );
         $this->addSql(
@@ -50,7 +50,7 @@ final class Version20190211053518 extends AbstractMigration
     public function postUp(Schema $schema): void
     {
         $this->abortIf(
-            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
             'Migration can only be executed safely on \'mysql\'.'
         );
 
@@ -80,7 +80,7 @@ final class Version20190211053518 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf(
-            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
             'Migration can only be executed safely on \'mysql\'.'
         );
 
@@ -93,7 +93,7 @@ final class Version20190211053518 extends AbstractMigration
     {
         $ageGroups = [];
         foreach ($wayPoint as $key => $value) {
-            if ($key === 'id') {
+            if ('id' === $key) {
                 continue;
             }
 
@@ -114,26 +114,31 @@ final class Version20190211053518 extends AbstractMigration
             case 'femalesChildCount':
                 $start = 6;
                 $end = 11;
+
                 break;
             case 'malesKidCount':
             case 'femalesKidCount':
                 $start = 0;
                 $end = 5;
+
                 break;
             case 'malesYoungAdultCount':
             case 'femalesYoungAdultCount':
                 $start = 18;
                 $end = 21;
+
                 break;
             case 'malesYouthCount':
             case 'femalesYouthCount':
                 $start = 12;
                 $end = 17;
+
                 break;
             case 'malesAdultCount':
             case 'femalesAdultCount':
                 $start = 22;
                 $end = 27;
+
                 break;
             default:
                 throw new AbortMigration('Unknown old internal name in migration: '.$oldInternalName);
@@ -151,6 +156,7 @@ final class Version20190211053518 extends AbstractMigration
             case 'malesYouthCount':
             case 'malesAdultCount':
                 $gender = Gender::GENDER_MALE;
+
                 break;
             case 'femalesChildCount':
             case 'femalesYoungAdultCount':
@@ -158,6 +164,7 @@ final class Version20190211053518 extends AbstractMigration
             case 'femalesKidCount':
             case 'femalesAdultCount':
                 $gender = Gender::GENDER_FEMALE;
+
                 break;
             default:
                 throw new AbortMigration('Unknown old internal name in migration: '.$oldInternalName);
