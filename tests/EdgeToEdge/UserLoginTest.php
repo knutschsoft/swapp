@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\AppBundle\EdgeToEdge;
+namespace App\Tests\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 

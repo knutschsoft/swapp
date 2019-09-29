@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\AppBundle\Unit;
+namespace App\Tests\Unit;
 
 use AppBundle\Value\AgeRange;
 use PHPUnit\Framework\TestCase;

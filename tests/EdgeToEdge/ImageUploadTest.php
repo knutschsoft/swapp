@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\AppBundle\EdgeToEdge;
+namespace App\Tests\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -76,7 +76,7 @@ class ImageUploadTest extends WebTestCase
 
         $form = $crawler->selectButton('speichern')->form();
         $fileLocation = $client->getKernel()->getRootDir();
-        $fileLocation .= '/../tests/AppBundle/fixtures/image.jpg';
+        $fileLocation .= '/../tests/fixtures/image.jpg';
 
         $form['way_point[imageFile][file]']->upload($fileLocation);
         $form['way_point[locationName]'] = 'Buxtehude is the locationName value';
@@ -108,7 +108,7 @@ class ImageUploadTest extends WebTestCase
 
         $fileName = 'test_image_42MB.png';
         $fileLocation = $client->getKernel()->getRootDir();
-        $fileLocation .= '/../tests/AppBundle/fixtures/' . $fileName;
+        $fileLocation .= '/../tests/fixtures/' . $fileName;
         $imgStub = new UploadedFile($fileLocation, $fileName);
 
         $form = $crawler->selectButton('speichern')->form();
