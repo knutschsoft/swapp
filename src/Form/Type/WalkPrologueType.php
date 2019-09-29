@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Form\Type;
@@ -73,8 +74,7 @@ class WalkPrologueType extends AbstractType
             SubmitType::class,
             array(
                 'label' => 'Wegpunkt anlegen',
-                'attr' =>
-                    [
+                'attr' => [
                         'class' => 'btn btn-primary',
                         'data-test' => 'create-way-point',
                     ],

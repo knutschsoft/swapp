@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Value;
@@ -7,8 +8,10 @@ final class AgeGroup
 {
     /** @var AgeRange */
     public $ageRange;
+
     /** @var Gender */
     public $gender;
+
     /** @var PeopleCount */
     public $peopleCount;
 
@@ -39,7 +42,7 @@ final class AgeGroup
         return $this->peopleCount;
     }
 
-    public function equalType(AgeGroup $ageGroup): bool
+    public function equalType(self $ageGroup): bool
     {
         return $this->ageRange->equal($ageGroup->ageRange()) && $this->gender->equal($ageGroup->gender());
     }

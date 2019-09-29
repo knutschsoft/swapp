@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -22,10 +23,13 @@ class WayPointController
 {
     /** @var EngineInterface */
     private $templateEngine;
+
     /** @var WayPointRepository */
     private $wayPointRepository;
+
     /** @var RouterInterface */
     private $router;
+
     /** @var FormFactoryInterface */
     private $formFactory;
 

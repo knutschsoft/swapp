@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\ParamConverter;
@@ -18,8 +19,10 @@ class EntityParamConverter implements ParamConverterInterface
 {
     /** @var WalkRepository */
     private $walkRepository;
+
     /** @var TeamRepository */
     private $teamRepository;
+
     /** @var WayPointRepository */
     private $wayPointRepository;
 
@@ -47,10 +50,12 @@ class EntityParamConverter implements ParamConverterInterface
             case 'walk':
                 $id = $request->get('walkId');
                 $resource = $this->walkRepository->findOneById($id);
+
                 break;
             case 'wayPoint':
                 $id = $request->get('wayPointId');
                 $resource = $this->wayPointRepository->findOneById($id);
+
                 break;
             case 'team':
                 $id = $request->get('teamId');
@@ -59,6 +64,7 @@ class EntityParamConverter implements ParamConverterInterface
                     $id = $request->get('id');
                     $resource = $this->teamRepository->findOneById($id);
                 }
+
                 break;
             default:
                 throw new \InvalidArgumentException(

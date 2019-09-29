@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -26,12 +27,16 @@ class WalkController
 {
     /** @var WalkRepository */
     private $walkRepository;
+
     /** @var RouterInterface */
     private $router;
+
     /** @var UserRepository */
     private $userRepository;
+
     /** @var SystemicQuestionRepository */
     private $systemicQuestionRepository;
+
     /** @var FormFactoryInterface */
     private $formFactory;
 
@@ -247,7 +252,6 @@ class WalkController
 
         $response = new StreamedResponse(
             static function () use ($walkRepository): void {
-
                 // The getExportQuery method returns a query that is used to retrieve
                 // all the objects (lines of your csv file) you need. The iterate method
                 // is used to limit the memory consumption

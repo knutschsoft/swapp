@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -131,12 +132,14 @@ class Walk
      * @var bool
      */
     private $isResubmission;
+
     /**
      * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
      *
      * @var ArrayCollection|Guest[]
      **/
     private $guests;
+
     /**
      * @ORM\Column(type="string", length=255)
      *
@@ -145,12 +148,14 @@ class Walk
      * @var string
      */
     private $weather;
+
     /**
      * @ORM\Column(type="boolean", length=255)
      *
      * @var bool
      */
     private $holidays;
+
     /**
      * @ORM\Column(type="string", length=4096)
      *
@@ -189,19 +194,19 @@ class Walk
         $instance = new self();
 
         $instance->setTeamName($team->getName());
-        $instance->setName("");
+        $instance->setName('');
         $instance->setStartTime(new \DateTime());
         $instance->setEndTime(new \DateTime());
         $instance->setRating(1);
-        $instance->setSystemicAnswer("");
+        $instance->setSystemicAnswer('');
         $instance->setSystemicQuestion($systemicQuestion);
-        $instance->setWalkReflection("");
-        $instance->setWeather("");
+        $instance->setWalkReflection('');
+        $instance->setWeather('');
         $instance->setIsResubmission(false);
         $instance->setHolidays(false);
-        $instance->setCommitments("");
-        $instance->setInsights("");
-        $instance->setConceptOfDay("");
+        $instance->setCommitments('');
+        $instance->setInsights('');
+        $instance->setConceptOfDay('');
         $instance->setAgeRanges($team->getAgeRanges());
 
         return $instance;
@@ -465,7 +470,6 @@ class Walk
         $this->systemicAnswer = $systemicAnswer;
     }
 
-
     public function addWalkTag(Tag $tag): void
     {
         $tag->addWalk($this);
@@ -598,7 +602,7 @@ class Walk
         $this->deletedAt = $deletedAt;
     }
 
-    public function addWayPoint(WayPoint $wayPoint): Walk
+    public function addWayPoint(WayPoint $wayPoint): self
     {
         $this->wayPoints[] = $wayPoint;
 
@@ -610,7 +614,7 @@ class Walk
         $this->wayPoints->removeElement($wayPoint);
     }
 
-    public function addWalkTeamMember(User $walkTeamMember): Walk
+    public function addWalkTeamMember(User $walkTeamMember): self
     {
         $this->walkTeamMembers[] = $walkTeamMember;
 
@@ -622,7 +626,7 @@ class Walk
         $this->walkTeamMembers->removeElement($walkTeamMember);
     }
 
-    public function addGuest(Guest $guest): Walk
+    public function addGuest(Guest $guest): self
     {
         $this->guests[] = $guest;
 
