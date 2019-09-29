@@ -14,7 +14,7 @@ class Version20170222232845 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' != $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE walk CHANGE walkReflection walkReflection VARCHAR(4096) NOT NULL');
         $this->addSql('ALTER TABLE systemic_question CHANGE question question VARCHAR(4096) NOT NULL');
@@ -24,7 +24,7 @@ class Version20170222232845 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' != $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE systemic_question CHANGE question question VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
         $this->addSql('ALTER TABLE walk CHANGE walkReflection walkReflection VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
