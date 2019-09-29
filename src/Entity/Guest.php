@@ -16,6 +16,8 @@ class Guest
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
      */
     private $id;
 
@@ -23,6 +25,8 @@ class Guest
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank()
+     *
+     * @var string
      */
     private $name;
 
@@ -30,15 +34,18 @@ class Guest
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank()
+     *
+     * @var string
      */
     private $email;
 
-    /** @ORM\ManyToOne(targetEntity="Walk", inversedBy="guests") */
+    /**
+     * @ORM\ManyToOne(targetEntity="Walk", inversedBy="guests")
+     *
+     * @var Walk
+     */
     private $walk;
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return \sprintf(
@@ -48,66 +55,42 @@ class Guest
         );
     }
 
-    /**
-     * @return Walk
-     */
     public function getWalk(): Walk
     {
         return $this->walk;
     }
 
-    /**
-     * @param Walk $walk
-     */
     public function setWalk(Walk $walk): void
     {
         $this->walk = $walk;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }

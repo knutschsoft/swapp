@@ -7,7 +7,7 @@ use App\Entity\SystemicQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository implements SystemicQuestionRepositoryInterface
+class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository implements SystemicQuestionRepository
 {
     public function __construct(RegistryInterface $registry)
     {

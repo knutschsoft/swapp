@@ -6,9 +6,7 @@ namespace App\Controller;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
 use App\Form\Type\WayPointType;
-use App\Repository\SystemicQuestionRepositoryInterface;
-use App\Repository\WalkRepositoryInterface;
-use App\Repository\WayPointRepositoryInterface;
+use App\Repository\WayPointRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -24,39 +22,29 @@ class WayPointController
 {
     /** @var EngineInterface */
     private $templateEngine;
-    /** @var WayPointRepositoryInterface */
+    /** @var WayPointRepository */
     private $wayPointRepository;
     /** @var RouterInterface */
     private $router;
     /** @var FormFactoryInterface */
     private $formFactory;
-    /** @var WalkRepositoryInterface */
-    private $walkRepository;
-    /** @var SystemicQuestionRepositoryInterface */
-    private $systemicQuestionRepository;
 
     /**
-     * @param EngineInterface                     $templateEngine
-     * @param FormFactoryInterface                $formFactory
-     * @param WayPointRepositoryInterface         $wayPointRepository
-     * @param RouterInterface                     $router
-     * @param WalkRepositoryInterface             $walkRepository
-     * @param SystemicQuestionRepositoryInterface $systemicQuestionRepository
+     * @param EngineInterface      $templateEngine
+     * @param FormFactoryInterface $formFactory
+     * @param WayPointRepository   $wayPointRepository
+     * @param RouterInterface      $router
      */
     public function __construct(
         EngineInterface $templateEngine,
         FormFactoryInterface $formFactory,
-        WayPointRepositoryInterface $wayPointRepository,
-        RouterInterface $router,
-        WalkRepositoryInterface $walkRepository,
-        SystemicQuestionRepositoryInterface $systemicQuestionRepository
+        WayPointRepository $wayPointRepository,
+        RouterInterface $router
     ) {
         $this->templateEngine = $templateEngine;
         $this->wayPointRepository = $wayPointRepository;
         $this->formFactory = $formFactory;
         $this->router = $router;
-        $this->walkRepository = $walkRepository;
-        $this->systemicQuestionRepository = $systemicQuestionRepository;
     }
 
     /**

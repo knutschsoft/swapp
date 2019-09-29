@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\TagRepositoryInterface;
+use App\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TagListController
 {
-    /** @var TagRepositoryInterface */
+    /** @var TagRepository */
     private $tagRepository;
 
     public function __construct(
-        TagRepositoryInterface $tagRepository
+        TagRepository $tagRepository
     ) {
         $this->tagRepository = $tagRepository;
     }

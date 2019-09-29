@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Tag;
 use App\Form\Type\TagType;
-use App\Repository\TagRepositoryInterface;
+use App\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +17,7 @@ use Webmozart\Assert\Assert;
 
 class TagCreateController
 {
-    /** @var TagRepositoryInterface */
+    /** @var TagRepository */
     private $tagRepository;
     /** @var FormFactoryInterface */
     private $formFactory;
@@ -25,7 +25,7 @@ class TagCreateController
     private $router;
 
     public function __construct(
-        TagRepositoryInterface $tagRepository,
+        TagRepository $tagRepository,
         FormFactoryInterface $formFactory,
         RouterInterface $router
     ) {

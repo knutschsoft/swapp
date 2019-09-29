@@ -16,7 +16,7 @@ final class PeopleCount
         $this->count = $count;
     }
 
-    public static function fromInt(int $count)
+    public static function fromInt(int $count): self
     {
         return new self($count);
     }
@@ -31,7 +31,7 @@ final class PeopleCount
         return $this->count;
     }
 
-    private function validateCount($count): void
+    private function validateCount(int $count): void
     {
         Assert::greaterThanEq($count, 0);
     }

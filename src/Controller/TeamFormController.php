@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use App\Form\Type\TeamType;
-use App\Repository\TeamRepositoryInterface;
+use App\Repository\TeamRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,14 +19,14 @@ class TeamFormController
 {
     /** @var FormFactoryInterface */
     private $formFactory;
-    /** @var TeamRepositoryInterface */
+    /** @var TeamRepository */
     private $teamRepository;
     /** @var RouterInterface */
     private $router;
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        TeamRepositoryInterface $teamRepository,
+        TeamRepository $teamRepository,
         RouterInterface $router
     ) {
         $this->formFactory = $formFactory;

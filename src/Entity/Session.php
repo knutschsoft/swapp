@@ -22,7 +22,7 @@ class Session
     /**
      * @ORM\Column(name="sess_data",type="blob", nullable=false)
      *
-     * @var Resource
+     * @var object
      */
     protected $sessData;
 
@@ -40,42 +40,42 @@ class Session
      */
     protected $sessLifetime;
 
-    public function getSessId()
+    public function getSessId(): string
     {
         return $this->sessId;
     }
 
-    public function setSessId($sessId): void
+    public function setSessId(string $sessId): void
     {
         $this->sessId = $sessId;
     }
 
-    public function getSessData()
+    public function getSessData(): object
     {
         return $this->sessData;
     }
 
-    public function setSessData($sessData): void
+    public function setSessData(object $sessData): void
     {
         $this->sessData = $sessData;
     }
 
-    public function getSessTime()
+    public function getSessTime(): int
     {
         return $this->sessTime;
     }
 
-    public function setSessTime($sessTime): void
+    public function setSessTime(int $sessTime): void
     {
         $this->sessTime = $sessTime;
     }
 
-    public function getSessLifetime()
+    public function getSessLifetime(): int
     {
         return $this->sessLifetime;
     }
 
-    public function setSessLifetime($sessLifetime): void
+    public function setSessLifetime(int $sessLifetime): void
     {
         $this->sessLifetime = $sessLifetime;
     }

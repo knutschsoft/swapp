@@ -5,7 +5,7 @@ namespace App\Repository;
 
 use App\Entity\Guest;
 
-interface GuestRepositoryInterface
+interface GuestRepository
 {
     /**
      * @param Guest $guest

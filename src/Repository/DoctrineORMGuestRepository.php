@@ -7,7 +7,7 @@ use App\Entity\Guest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMGuestRepository extends ServiceEntityRepository implements GuestRepositoryInterface
+class DoctrineORMGuestRepository extends ServiceEntityRepository implements GuestRepository
 {
     public function __construct(RegistryInterface $registry)
     {

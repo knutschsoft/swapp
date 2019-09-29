@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-interface UserRepositoryInterface extends UserLoaderInterface
+interface UserRepository extends UserLoaderInterface
 {
     public function refresh(User $user): void;
 

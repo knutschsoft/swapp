@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use App\Entity\User;
-use App\Repository\UserRepositoryInterface;
+use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use Webmozart\Assert\Assert;
 
@@ -47,10 +47,10 @@ class AdminController extends BaseAdminController
         $team->setUsers($users);
     }
 
-    private function getUserRepository(): UserRepositoryInterface
+    private function getUserRepository(): UserRepository
     {
-        $userRepository = $this->get(UserRepositoryInterface::class);
-        Assert::isInstanceOf($userRepository, UserRepositoryInterface::class);
+        $userRepository = $this->get(UserRepository::class);
+        Assert::isInstanceOf($userRepository, UserRepository::class);
 
         return $userRepository;
     }

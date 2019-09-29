@@ -10,11 +10,11 @@ final class Gender
     /** @var string */
     public $gender;
 
-    const GENDER_QUEER = 'x';
+    private const GENDER_QUEER = 'x';
 
-    const GENDER_FEMALE = 'w';
+    private const GENDER_FEMALE = 'w';
 
-    const GENDER_MALE = 'm';
+    private const GENDER_MALE = 'm';
 
     public function __construct(string $gender)
     {

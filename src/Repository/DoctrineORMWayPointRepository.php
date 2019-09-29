@@ -7,7 +7,7 @@ use App\Entity\WayPoint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMWayPointRepository extends ServiceEntityRepository implements WayPointRepositoryInterface
+class DoctrineORMWayPointRepository extends ServiceEntityRepository implements WayPointRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -26,12 +26,17 @@ class DoctrineORMWayPointRepository extends ServiceEntityRepository implements W
         return $query->getResult();
     }
 
+    /**
+     * @param mixed $id
+     *
+     * @return WayPoint|null
+     */
     public function findOneById($id): ?WayPoint
     {
-        /** @var WayPoint|null $WayPoint */
-        $WayPoint = parent::findOneBy(['id' => $id]);
+        /** @var WayPoint|null $wayPoint */
+        $wayPoint = parent::findOneBy(['id' => $id]);
 
-        return $WayPoint;
+        return $wayPoint;
     }
 
     public function save(WayPoint $wayPoint): void

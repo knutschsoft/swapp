@@ -24,6 +24,8 @@ class Walk
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
      */
     private $id;
 
@@ -31,6 +33,8 @@ class Walk
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank(groups={"prologue", "registration"})
+     *
+     * @var string
      */
     private $name;
 
@@ -45,6 +49,8 @@ class Walk
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank(groups={"prologue", "registration"})
+     *
+     * @var \DateTime
      */
     private $startTime;
 
@@ -52,6 +58,8 @@ class Walk
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank(groups={"registration"})
+     *
+     * @var \DateTime
      */
     private $endTime;
 
@@ -59,6 +67,8 @@ class Walk
      * @ORM\Column(type="string", length=4096)
      *
      * @Assert\NotBlank(groups={"registration"})
+     *
+     * @var string
      */
     private $walkReflection;
 
@@ -80,6 +90,8 @@ class Walk
      * @ORM\Column(type="smallint")
      *
      * @Assert\NotBlank(groups={"registration"})
+     *
+     * @var int
      */
     private $rating;
 
@@ -94,16 +106,30 @@ class Walk
      * @ORM\Column(type="string", length=4096)
      *
      * @Assert\NotBlank(groups={"registration"})
+     *
+     * @var string
      */
     private $systemicAnswer;
 
-    /** @ORM\Column(type="string", nullable=true) */
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var ?string
+     */
     private $insights;
 
-    /** @ORM\Column(type="string", nullable=true) */
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var ?string
+     */
     private $commitments;
 
-    /** @ORM\Column(type="boolean", length=255) */
+    /**
+     * @ORM\Column(type="boolean", length=255)
+     *
+     * @var bool
+     */
     private $isResubmission;
     /**
      * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
@@ -115,14 +141,22 @@ class Walk
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank(groups={"prologue"})
+     *
+     * @var string
      */
     private $weather;
-    /** @ORM\Column(type="boolean", length=255) */
+    /**
+     * @ORM\Column(type="boolean", length=255)
+     *
+     * @var bool
+     */
     private $holidays;
     /**
      * @ORM\Column(type="string", length=4096)
      *
      * @Assert\NotBlank(groups={"prologue"})
+     *
+     * @var string
      */
     private $conceptOfDay;
 
@@ -130,10 +164,16 @@ class Walk
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank(groups={"prologue"})
+     *
+     * @var string
      */
     private $teamName;
 
-    /** @ORM\Column(name="deletedAt", type="datetime", nullable=true) */
+    /**
+     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+     *
+     * @var ?\DateTime
+     */
     private $deletedAt;
 
     public function __construct()
@@ -187,15 +227,12 @@ class Walk
         $this->conceptOfDay = $conceptOfDay;
     }
 
-    public function getInsights()
+    public function getInsights(): ?string
     {
         return $this->insights;
     }
 
-    /**
-     * @param mixed $insights
-     */
-    public function setInsights($insights): void
+    public function setInsights(?string $insights): void
     {
         $this->insights = $insights;
     }
@@ -296,7 +333,7 @@ class Walk
         $this->guests = $guests;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             $this->id,
@@ -551,29 +588,16 @@ class Walk
         return $count;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDeletedAt(): ?string
+    public function getDeletedAt(): ?\DateTime
     {
         return $this->deletedAt;
     }
 
-    /**
-     * @param string|null $deletedAt
-     */
-    public function setDeletedAt(?string $deletedAt): void
+    public function setDeletedAt(?\DateTime $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
 
-    /**
-     * Add wayPoint
-     *
-     * @param WayPoint $wayPoint
-     *
-     * @return Walk
-     */
     public function addWayPoint(WayPoint $wayPoint): Walk
     {
         $this->wayPoints[] = $wayPoint;
@@ -581,23 +605,11 @@ class Walk
         return $this;
     }
 
-    /**
-     * Remove wayPoint
-     *
-     * @param WayPoint $wayPoint
-     */
     public function removeWayPoint(WayPoint $wayPoint): void
     {
         $this->wayPoints->removeElement($wayPoint);
     }
 
-    /**
-     * Add walkTeamMember
-     *
-     * @param User $walkTeamMember
-     *
-     * @return Walk
-     */
     public function addWalkTeamMember(User $walkTeamMember): Walk
     {
         $this->walkTeamMembers[] = $walkTeamMember;
@@ -605,23 +617,11 @@ class Walk
         return $this;
     }
 
-    /**
-     * Remove walkTeamMember
-     *
-     * @param User $walkTeamMember
-     */
     public function removeWalkTeamMember(User $walkTeamMember): void
     {
         $this->walkTeamMembers->removeElement($walkTeamMember);
     }
 
-    /**
-     * Add guest
-     *
-     * @param Guest $guest
-     *
-     * @return Walk
-     */
     public function addGuest(Guest $guest): Walk
     {
         $this->guests[] = $guest;
@@ -629,11 +629,6 @@ class Walk
         return $this;
     }
 
-    /**
-     * Remove guest
-     *
-     * @param Guest $guest
-     */
     public function removeGuest(Guest $guest): void
     {
         $this->guests->removeElement($guest);

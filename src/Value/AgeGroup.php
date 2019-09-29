@@ -19,7 +19,7 @@ final class AgeGroup
         $this->peopleCount = $peopleCount;
     }
 
-    public static function fromRangeGenderAndCount(AgeRange $range, Gender $gender, PeopleCount $peopleCount)
+    public static function fromRangeGenderAndCount(AgeRange $range, Gender $gender, PeopleCount $peopleCount): self
     {
         return new self($range, $gender, $peopleCount);
     }

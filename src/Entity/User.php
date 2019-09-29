@@ -14,9 +14,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
-    const ROLE_DEFAULT = 'ROLE_USER';
+    private const ROLE_DEFAULT = 'ROLE_USER';
 
-    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    private const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     /**
      * @var string
      *
@@ -197,7 +197,7 @@ class User implements UserInterface
     public function addRole(string $role): void
     {
         $role = \strtoupper($role);
-        if ($role === static::ROLE_DEFAULT) {
+        if (static::ROLE_DEFAULT === $role) {
             return;
         }
 
@@ -341,7 +341,7 @@ class User implements UserInterface
         }
     }
 
-    public function hasRole($role): bool
+    public function hasRole(string $role): bool
     {
         return \in_array(\strtoupper($role), $this->getRoles(), true);
     }
@@ -361,9 +361,10 @@ class User implements UserInterface
         return $this->hasRole(static::ROLE_SUPER_ADMIN);
     }
 
-    public function removeRole($role): void
+    public function removeRole(string $role): void
     {
-        if (false !== $key = \array_search(\strtoupper($role), $this->roles, true)) {
+        $key = \array_search(\strtoupper($role), $this->roles, true);
+        if (false !== $key) {
             unset($this->roles[$key]);
             $this->roles = \array_values($this->roles);
         }

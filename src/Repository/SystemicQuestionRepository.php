@@ -5,7 +5,7 @@ namespace App\Repository;
 
 use App\Entity\SystemicQuestion;
 
-interface SystemicQuestionRepositoryInterface
+interface SystemicQuestionRepository
 {
     /**
      * @param SystemicQuestion $systemicQuestion

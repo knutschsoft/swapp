@@ -7,7 +7,7 @@ use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamRepositoryInterface
+class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -26,6 +26,11 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
         return $query->getResult();
     }
 
+    /**
+     * @param int|string $id
+     *
+     * @return Team|null
+     */
     public function findOneById($id): ?Team
     {
         /** @var Team|null $team */

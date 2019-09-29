@@ -5,11 +5,8 @@ namespace App\Repository;
 
 use App\Entity\Tag;
 
-interface TagRepositoryInterface
+interface TagRepository
 {
-    /**
-     * @param Tag $tag
-     */
     public function save(Tag $tag): void;
 
     /**
@@ -17,9 +14,6 @@ interface TagRepositoryInterface
      */
     public function getTags(): array;
 
-    /**
-     * @param Tag $tag
-     */
     public function updateTag(Tag $tag): void;
 
     /**

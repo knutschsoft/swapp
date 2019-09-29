@@ -58,7 +58,12 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
                 [
                     'choices' => $choices,
                     'required' => true,
-                    'label' => $ageGroup->ageRange()->getRangeStart().' - '.$ageGroup->ageRange()->getRangeEnd().' '.$ageGroup->gender()->gender,
+                    'label' => \sprintf(
+                        '%s - %s %s',
+                        $ageGroup->ageRange()->getRangeStart(),
+                        $ageGroup->ageRange()->getRangeEnd(),
+                        $ageGroup->gender()->gender
+                    ),
                 ]
             );
         }
@@ -78,28 +83,9 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
         );
     }
 
-    private function getChildName(AgeGroup $ageGroup): string
-    {
-        return $ageGroup->gender()->gender().$ageGroup->ageRange()->getRangeStart().'to'.$ageGroup->ageRange()->getRangeEnd();
-    }
-
-    private function getAgeGroupFromChildName(string $childName, Form $form): AgeGroup
-    {
-        $gender = Gender::fromString(\substr($childName, 0, 1));
-        $rangeArray = \explode('to', \substr($childName, 1, \strlen($childName)));
-        $range = AgeRange::fromArray($rangeArray);
-        $peopleCount = PeopleCount::fromInt((int) $form->getData());
-
-        return AgeGroup::fromRangeGenderAndCount($range, $gender, $peopleCount);
-    }
-
     /**
-     * Maps properties of some data to a list of forms.
-     *
-     * @param mixed                        $data  Structured data
-     * @param FormInterface[]|\Traversable $forms A list of {@link FormInterface} instances
-     *
-     * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported
+     * @param mixed                        $data
+     * @param FormInterface[]|\Traversable $forms
      */
     public function mapDataToForms($data, $forms): void
     {
@@ -145,5 +131,20 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
             $ageGroups[] = $ageGroup;
         }
         $data = $ageGroups;
+    }
+
+    private function getChildName(AgeGroup $ageGroup): string
+    {
+        return $ageGroup->gender()->gender().$ageGroup->ageRange()->getRangeStart().'to'.$ageGroup->ageRange()->getRangeEnd();
+    }
+
+    private function getAgeGroupFromChildName(string $childName, Form $form): AgeGroup
+    {
+        $gender = Gender::fromString(\substr($childName, 0, 1));
+        $rangeArray = \explode('to', \substr($childName, 1, \strlen($childName)));
+        $range = AgeRange::fromArray($rangeArray);
+        $peopleCount = PeopleCount::fromInt((int) $form->getData());
+
+        return AgeGroup::fromRangeGenderAndCount($range, $gender, $peopleCount);
     }
 }

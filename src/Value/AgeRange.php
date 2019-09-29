@@ -13,6 +13,10 @@ final class AgeRange
     /**@var int */
     public $rangeEnd;
 
+    /**
+     * @param mixed $rangeStart
+     * @param mixed $rangeEnd
+     */
     public function __construct($rangeStart, $rangeEnd)
     {
         Assert::integerish($rangeStart);
@@ -26,7 +30,7 @@ final class AgeRange
         $this->rangeEnd = (int) $rangeEnd;
     }
 
-    public static function fromArray(array $count = [])
+    public static function fromArray(array $count = []): self
     {
         $start = $count['start'] ?? ($count[0] ?? 0);
         $end = $count['end'] ?? ($count[1] ?? 0);
@@ -34,12 +38,12 @@ final class AgeRange
         return new self($start, $end);
     }
 
-    public function getRangeStart()
+    public function getRangeStart(): int
     {
         return $this->rangeStart;
     }
 
-    public function getRangeEnd()
+    public function getRangeEnd(): int
     {
         return $this->rangeEnd;
     }

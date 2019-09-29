@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Entity\Walk;
 use Doctrine\ORM\AbstractQuery;
 
-interface WalkRepositoryInterface
+interface WalkRepository
 {
     /**
      * @return Walk[]
@@ -15,9 +15,12 @@ interface WalkRepositoryInterface
     public function findAll(): array;
 
     /**
+     * @param string $order
+     * @param string $sort
+     *
      * @return Walk[]
      */
-    public function findAllOrderBy($order, $sort): array;
+    public function findAllOrderBy(string $order, string $sort): array;
 
     /**
      * @param User $user
@@ -27,6 +30,13 @@ interface WalkRepositoryInterface
     public function findAllUnfinishedByUser(User $user): array;
 
     public function getFindAllQuery(): AbstractQuery;
+
+    /**
+     * @param int|string $id
+     *
+     * @return Walk|null
+     */
+    public function findOneById($id): ?Walk;
 
     public function save(Walk $walk): void;
 

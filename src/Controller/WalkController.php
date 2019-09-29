@@ -8,9 +8,9 @@ use App\Entity\User;
 use App\Entity\Walk;
 use App\Form\Type\WalkPrologueType;
 use App\Form\Type\WalkType;
-use App\Repository\SystemicQuestionRepositoryInterface;
-use App\Repository\UserRepositoryInterface;
-use App\Repository\WalkRepositoryInterface;
+use App\Repository\SystemicQuestionRepository;
+use App\Repository\UserRepository;
+use App\Repository\WalkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -24,26 +24,30 @@ use Webmozart\Assert\Assert;
 
 class WalkController
 {
+    /** @var WalkRepository */
     private $walkRepository;
+    /** @var RouterInterface */
     private $router;
-    /** @var UserRepositoryInterface */
+    /** @var UserRepository */
     private $userRepository;
+    /** @var SystemicQuestionRepository */
     private $systemicQuestionRepository;
     /** @var FormFactoryInterface */
     private $formFactory;
 
     /**
-     * @param WalkRepositoryInterface             $walkRepository
-     * @param RouterInterface                     $router
-     * @param FormFactoryInterface                $formFactory
-     * @param SystemicQuestionRepositoryInterface $systemicQuestionRepository
+     * @param WalkRepository             $walkRepository
+     * @param RouterInterface            $router
+     * @param FormFactoryInterface       $formFactory
+     * @param UserRepository             $userRepository
+     * @param SystemicQuestionRepository $systemicQuestionRepository
      */
     public function __construct(
-        WalkRepositoryInterface $walkRepository,
+        WalkRepository $walkRepository,
         RouterInterface $router,
         FormFactoryInterface $formFactory,
-        UserRepositoryInterface $userRepository,
-        SystemicQuestionRepositoryInterface $systemicQuestionRepository
+        UserRepository $userRepository,
+        SystemicQuestionRepository $systemicQuestionRepository
     ) {
         $this->walkRepository = $walkRepository;
         $this->router = $router;
@@ -53,13 +57,14 @@ class WalkController
     }
 
     /**
-     * @param User $user
+     * @param User    $user
+     * @param Request $request
+     *
+     * @return array
      *
      * @Route("walks", name="walk_home_screen")
      *
      * @Template(template="walk/homeScreen.html.twig")
-     *
-     * @return array
      */
     public function homeScreenAction(User $user, Request $request): array
     {
@@ -111,7 +116,7 @@ class WalkController
             WalkType::class,
             $walk,
             [
-                'action' => $this->router->generate('walk_create', array('walkId' => $walk->getId())),
+                'action' => $this->router->generate('walk_create', ['walkId' => $walk->getId()]),
             ]
         );
         $form->handleRequest($request);
@@ -148,7 +153,7 @@ class WalkController
             WalkPrologueType::class,
             $walk,
             [
-                'action' => $this->router->generate('walk_start', array('walkId' => $walk->getId())),
+                'action' => $this->router->generate('walk_start', ['walkId' => $walk->getId()]),
             ]
         );
         $form->handleRequest($request);
@@ -186,9 +191,10 @@ class WalkController
             'Runde wurde erfolgreich gestartet.'
         );
 
-        return new RedirectResponse(
-            $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getId()])
-        );
+        $url = $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getId()]);
+        Assert::notNull($url);
+
+        return new RedirectResponse($url);
     }
 
     /**
@@ -223,9 +229,10 @@ class WalkController
             'Runde wurde erfolgreich erstellt.'
         );
 
-        return new RedirectResponse(
-            $this->router->generate('walk_home_screen')
-        );
+        $url = $this->router->generate('walk_home_screen');
+        Assert::notNull($url);
+
+        return new RedirectResponse($url);
     }
 
     /**
@@ -265,8 +272,8 @@ class WalkController
                     'angetroffene Männer',
                     'angetroffene Frauen',
                     'Teamname',
-            //                    'TeamMitglieder',
-            //                    'Gäste',
+                    //                    'TeamMitglieder',
+                    //                    'Gäste',
                 ];
 
                 Assert::resource($handle);
@@ -275,10 +282,10 @@ class WalkController
                 while (false !== ($row = $results->next())) {
                     // add a line in the csv file. You need to implement a toArray() method
                     // to transform your object into an array
-            //                dump($row[0]->toArray());
+                    //                dump($row[0]->toArray());
                     \fputcsv($handle, $row[0]->toArray());
                     // used to limit the memory consumption
-            //                $em->detach($row[0]);
+                    //                $em->detach($row[0]);
                 }
 
                 \fclose($handle);

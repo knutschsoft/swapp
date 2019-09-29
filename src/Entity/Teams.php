@@ -10,6 +10,9 @@ class Teams implements StrictlyTypedCollectionInterface
 {
     use StrictlyTypedCollectionInterfaceImplementationTrait;
 
+    /**
+     * @inheritDoc
+     */
     public function checkType($item): bool
     {
         return $item instanceof Team;

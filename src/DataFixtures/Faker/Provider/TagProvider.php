@@ -5,7 +5,9 @@ namespace App\DataFixtures\Faker\Provider;
 
 class TagProvider
 {
+    /** @var int */
     private static $position = 0;
+    /** @var string[] */
     private static $tagNames = [
         'Gewalt (körperlich)',
         'Gewalt (verbal)',
@@ -23,7 +25,7 @@ class TagProvider
         'Grundversorgung',
     ];
 
-    public static function tagName()
+    public static function tagName(): string
     {
         $tagName = self::$tagNames[self::$position];
 

@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DoctrineORMUserRepository extends ServiceEntityRepository implements UserRepositoryInterface
+class DoctrineORMUserRepository extends ServiceEntityRepository implements UserRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -32,6 +32,9 @@ class DoctrineORMUserRepository extends ServiceEntityRepository implements UserR
         $this->_em->flush();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function loadUserByUsername($username): ?UserInterface
     {
         return $this->createQueryBuilder('u')

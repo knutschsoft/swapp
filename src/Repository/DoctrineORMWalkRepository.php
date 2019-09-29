@@ -9,7 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkRepositoryInterface
+class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -29,9 +29,9 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
     }
 
     /**
-     * @return Walk[]
+     * @inheritDoc
      */
-    public function findAllOrderBy($order, $sort = 'asc'): array
+    public function findAllOrderBy(string $order, string $sort = 'asc'): array
     {
         $queryBuilder = $this->createQueryBuilder('walk')
             ->select()
@@ -75,6 +75,11 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
         return $queryBuilder->getQuery();
     }
 
+    /**
+     * @param int|string $id
+     *
+     * @return Walk|null
+     */
     public function findOneById($id): ?Walk
     {
         /** @var Walk|null $walk */

@@ -5,8 +5,13 @@ namespace App\Repository;
 
 use App\Entity\WayPoint;
 
-interface WayPointRepositoryInterface
+interface WayPointRepository
 {
+    /**
+     * @param mixed $id
+     *
+     * @return WayPoint|null
+     */
     public function findOneById($id): ?WayPoint;
 
     public function save(WayPoint $wayPoint): void;
