@@ -55,14 +55,16 @@
         "sensiolabs/security-checker": "^5.0",
         "phpstan/phpstan": "^0.11.1",
         "phpstan/phpstan-webmozart-assert": "^0.11.2",
-        "projektmotor/symfony-coding-standard": "^1.0"
+        "projektmotor/symfony-coding-standard": "^1.0",
+        "captainhook/captainhook": "^4.5",
+        "captainhook/plugin-composer": "^4.0"
     },
     "scripts": {
         "cbf": "vendor/bin/phpcbf --colors src tests || true",
         "cs": "vendor/bin/phpcs -s src tests || true",
         "unit": "vendor/bin/phpunit --colors || true",
         "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
-        "security": "./vendor/bin/security-checker security:check --ansi || true",
+        "security": "vendor/bin/security-checker security:check --ansi || true",
         "qa": [
             "@cbf",
             "@cs",

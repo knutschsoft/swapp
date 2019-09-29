@@ -1,0 +1,69 @@
+{
+    "config": {
+        "run-mode": "docker",
+        "run-exec": "docker-compose exec --user=docker -T web"
+    },
+    "commit-msg": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams",
+                "options": {
+                    "subjectLength": 72,
+                    "bodyLineLength": 100
+                },
+                "conditions": []
+            }
+        ]
+    },
+    "pre-push": {
+        "enabled": false,
+        "actions": []
+    },
+    "pre-commit": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting",
+                "options": [],
+                "conditions": []
+            },
+            {
+                "action": "vendor/bin/phpcs -s src tests",
+                "options": [],
+                "conditions": []
+            },
+            {
+                "action": "vendor/bin/phpstan analyse --no-progress --ansi",
+                "options": [],
+                "conditions": []
+            },
+            {
+                "action": "vendor/bin/phpunit --colors --filter=Unit",
+                "options": [],
+                "conditions": []
+            },
+            {
+                "action": "vendor/bin/security-checker security:check --ansi",
+                "options": [],
+                "conditions": []
+            }
+        ]
+    },
+    "prepare-commit-msg": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-commit": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-merge": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-checkout": {
+        "enabled": false,
+        "actions": []
+    }
+}
