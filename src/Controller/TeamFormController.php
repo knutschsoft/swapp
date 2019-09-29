@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -19,8 +20,10 @@ class TeamFormController
 {
     /** @var FormFactoryInterface */
     private $formFactory;
+
     /** @var TeamRepository */
     private $teamRepository;
+
     /** @var RouterInterface */
     private $router;
 

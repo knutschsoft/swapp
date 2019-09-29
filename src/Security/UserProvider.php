@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Security;
@@ -21,7 +22,7 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function loadUserByUsername($usernameOrEmail): UserInterface
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Unit;
@@ -9,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 class AgeRangeTest extends TestCase
 {
     private const START = 3;
+
     private const END = 7;
 
     /**

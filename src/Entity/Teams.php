@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -11,7 +12,7 @@ class Teams implements StrictlyTypedCollectionInterface
     use StrictlyTypedCollectionInterfaceImplementationTrait;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function checkType($item): bool
     {

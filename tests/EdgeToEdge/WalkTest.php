@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\EdgeToEdge;
@@ -8,6 +9,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class WalkTest extends WebTestCase
 {
     private const WAYPOINT_NAME = 'location';
+
     private const WALK_NAME = 'name';
 
     public function testCreateWalk(): void

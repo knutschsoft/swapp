@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Security;
@@ -27,10 +28,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     /** @var EntityManagerInterface */
     private $entityManager;
+
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
+
     /** @var CsrfTokenManagerInterface */
     private $csrfTokenManager;
+
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
 
@@ -71,7 +75,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getUser($credentials, UserProviderInterface $userProvider): User
     {
@@ -88,7 +92,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
@@ -100,7 +104,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {

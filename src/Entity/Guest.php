@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -49,7 +50,7 @@ class Guest
     public function __toString(): string
     {
         return \sprintf(
-            "%s (%s)",
+            '%s (%s)',
             $this->getName(),
             $this->getEmail()
         );

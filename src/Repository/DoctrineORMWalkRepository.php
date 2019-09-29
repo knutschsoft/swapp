@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Repository;
@@ -29,7 +30,7 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findAllOrderBy(string $order, string $sort = 'asc'): array
     {
