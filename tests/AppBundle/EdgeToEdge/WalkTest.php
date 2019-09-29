@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Tests\AppBundle\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -8,7 +10,7 @@ class WalkTest extends WebTestCase
     private const WAYPOINT_NAME = 'location';
     private const WALK_NAME = 'name';
 
-    public function testCreateWalk()
+    public function testCreateWalk(): void
     {
         $this->loadFixtureFiles(
             [
@@ -59,7 +61,7 @@ class WalkTest extends WebTestCase
         $this->isSuccessful($client->getResponse());
 
         $this->assertContains(
-            sprintf('Wegpunkt %s wurde erfolgreich zur Runde %s hinzugefügt.', self::WAYPOINT_NAME, self::WALK_NAME),
+            \sprintf('Wegpunkt %s wurde erfolgreich zur Runde %s hinzugefügt.', self::WAYPOINT_NAME, self::WALK_NAME),
             $crawler->text()
         );
 

@@ -36,7 +36,12 @@ class TeamFormController
 
     /**
      * @Route("/team/form-{id}", name="team_form", requirements={"id"="\d+"}, defaults={"id"=""})
+     *
      * @Template(template="team/form.html.twig")
+     *
+     * @param Request           $request
+     * @param FlashBagInterface $flash
+     * @param Team|null         $team
      *
      * @return array|RedirectResponse
      */
@@ -51,9 +56,9 @@ class TeamFormController
             ];
         }
 
-        /** @var Team $data */
-        $data = $form->getData();
-        $this->teamRepository->save($data);
+        /** @var Team $team */
+        $team = $form->getData();
+        $this->teamRepository->save($team);
 
         $flash->add('notice', 'Team erfolgreich erstellt/bearbeitet.');
 

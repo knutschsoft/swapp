@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace AppBundle;
@@ -11,9 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 class BugsnagUser implements BugsnagUserInterface
 {
-    /**
-     * @var TokenInterface|null
-     */
+    /** @var TokenInterface|null */
     private $token;
 
     /**
@@ -29,8 +26,7 @@ class BugsnagUser implements BugsnagUserInterface
      */
     public function getUserAsArray()
     {
-        if (
-            is_null($this->token)
+        if (\is_null($this->token)
             || !$this->token->isAuthenticated()
             || !$this->token->getUser() instanceof SymfonyUserInterface
         ) {

@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Tests\AppBundle\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class WayPointTest extends WebTestCase
 {
-    public function testWayPointShow()
+    public function testWayPointShow(): void
     {
         $this->loadFixtureFiles(
             [

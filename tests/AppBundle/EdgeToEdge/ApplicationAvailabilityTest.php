@@ -10,7 +10,7 @@ class ApplicationAvailabilityTest extends WebTestCase
     /**
      * @dataProvider urlProvider
      */
-    public function testPageIsSuccessful($url)
+    public function testPageIsSuccessful($url): void
     {
         $this->loadAllFixtures();
         $credentials = [
@@ -41,7 +41,7 @@ class ApplicationAvailabilityTest extends WebTestCase
     }
 
     /**
-     * @return \Doctrine\Common\DataFixtures\Executor\AbstractExecutor|null|void
+     * @return \Doctrine\Common\DataFixtures\Executor\AbstractExecutor|void|null
      */
     private function loadAllFixtures()
     {

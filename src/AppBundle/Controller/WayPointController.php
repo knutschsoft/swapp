@@ -61,9 +61,10 @@ class WayPointController
 
     /**
      * @return Response
+     *
      * @todo needed?
      */
-    public function homeScreenAction()
+    public function homeScreenAction(): Response
     {
         return $this->templateEngine->renderResponse(':WayPoint:wayPointForm.html.twig');
     }
@@ -75,7 +76,7 @@ class WayPointController
      *
      * @return Response
      */
-    public function showAction(WayPoint $wayPoint)
+    public function showAction(WayPoint $wayPoint): Response
     {
         $parameters = [
             'wayPoint' => $wayPoint,
@@ -89,7 +90,7 @@ class WayPointController
      *
      * @return Response
      */
-    public function dataTableAction()
+    public function dataTableAction(): Response
     {
         $parameters = [
             'wayPoints' => $this->wayPointRepository->findAll(),
@@ -105,7 +106,7 @@ class WayPointController
      *
      * @return Response
      */
-    public function updateWalkWithWayPointAction(Walk $walk)
+    public function updateWalkWithWayPointAction(Walk $walk): Response
     {
         $wayPoint = WayPoint::fromWalk($walk);
 
@@ -152,7 +153,7 @@ class WayPointController
 
             $flash->add(
                 'notice',
-                sprintf(
+                \sprintf(
                     'Wegpunkt %s wurde erfolgreich zur Runde %s hinzugefügt.',
                     $wayPoint->getLocationName(),
                     $walk->getName()

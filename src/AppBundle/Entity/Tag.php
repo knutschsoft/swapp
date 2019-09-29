@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,24 +22,28 @@ class Tag
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
+     *
      * @var ArrayCollection
      */
     private $walks;
 
     /**
      * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="wayPointTags")
+     *
      * @var ArrayCollection
      */
     private $wayPoints;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank()
      */
     private $color;
@@ -51,9 +57,9 @@ class Tag
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s (%s)',
             $this->getName(),
             $this->getColor()
@@ -71,7 +77,7 @@ class Tag
     /**
      * @param mixed $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -87,7 +93,7 @@ class Tag
     /**
      * @param mixed $color
      */
-    public function setColor($color)
+    public function setColor($color): void
     {
         $this->color = $color;
     }
@@ -103,7 +109,7 @@ class Tag
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -111,7 +117,7 @@ class Tag
     /**
      * @param Walk $walk
      */
-    public function addWalk(Walk $walk)
+    public function addWalk(Walk $walk): void
     {
         if (!$this->walks->contains($walk)) {
             $this->walks->add($walk);
@@ -121,7 +127,7 @@ class Tag
     /**
      * @param Walk $walk
      */
-    public function removeWalk(Walk $walk)
+    public function removeWalk(Walk $walk): void
     {
         if ($this->walks->contains($walk)) {
             $this->walks->removeElement($walk);
@@ -139,7 +145,7 @@ class Tag
     /**
      * @param mixed $walks
      */
-    public function setWalks($walks)
+    public function setWalks($walks): void
     {
         $this->walks = $walks;
     }
@@ -148,7 +154,7 @@ class Tag
     /**
      * @param WayPoint $wayPoint
      */
-    public function addWayPoint(WayPoint $wayPoint)
+    public function addWayPoint(WayPoint $wayPoint): void
     {
         if (!$this->wayPoints->contains($wayPoint)) {
             $this->wayPoints->add($wayPoint);
@@ -158,7 +164,7 @@ class Tag
     /**
      * @param WayPoint $wayPoint
      */
-    public function removeWayPoint(WayPoint $wayPoint)
+    public function removeWayPoint(WayPoint $wayPoint): void
     {
         if ($this->wayPoints->contains($wayPoint)) {
             $this->wayPoints->removeElement($wayPoint);
@@ -176,7 +182,7 @@ class Tag
     /**
      * @param mixed $wayPoints
      */
-    public function setWayPoints($wayPoints)
+    public function setWayPoints($wayPoints): void
     {
         $this->wayPoints = $wayPoints;
     }

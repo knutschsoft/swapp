@@ -1,14 +1,17 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMSystemicQuestionRepository")
  * @ORM\Table(name="systemic_question")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class SystemicQuestion
@@ -17,21 +20,29 @@ class SystemicQuestion
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=4096)
-     **/
+     *
+     * @var string
+     */
     private $question;
 
     /**
      * @ORM\OneToMany(targetEntity="Walk", mappedBy="systemicQuestion")
-     **/
+     *
+     * @var Walk[]|Collection
+     */
     private $walks;
 
     /**
      * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+     *
+     * @var ?\DateTime
      */
     private $deletedAt;
 
@@ -40,48 +51,33 @@ class SystemicQuestion
         $this->walks = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->question;
     }
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param integer $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
-    public function getQuestion()
+    public function getQuestion(): string
     {
         return $this->question;
     }
 
-    /**
-     * @param string $question
-     */
-    public function setQuestion($question)
+    public function setQuestion(string $question): void
     {
         $this->question = $question;
     }
 
     /**
-     * @return Walk[]
+     * @return Walk[]|Collection
      */
     public function getWalks()
     {
@@ -89,49 +85,31 @@ class SystemicQuestion
     }
 
     /**
-     * @param Walk[] $walks
+     * @param Collection|Walk[] $walks
      */
-    public function setWalks($walks)
+    public function setWalks($walks): void
     {
         $this->walks = $walks;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getDeletedAt()
+    public function getDeletedAt(): ?\DateTime
     {
         return $this->deletedAt;
     }
 
-    /**
-     * @param null|string $deletedAt
-     */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(\DateTime $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
 
-    /**
-     * Add walk
-     *
-     * @param Walk $walk
-     *
-     * @return SystemicQuestion
-     */
-    public function addWalk(Walk $walk)
+    public function addWalk(Walk $walk): SystemicQuestion
     {
         $this->walks[] = $walk;
 
         return $this;
     }
 
-    /**
-     * Remove walk
-     *
-     * @param Walk $walk
-     */
-    public function removeWalk(Walk $walk)
+    public function removeWalk(Walk $walk): void
     {
         $this->walks->removeElement($walk);
     }

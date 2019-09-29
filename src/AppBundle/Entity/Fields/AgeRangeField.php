@@ -10,6 +10,7 @@ trait AgeRangeField
 {
     /**
      * @ORM\Column(type="json_document", options={"jsonb": true})
+     *
      * @var AgeRange[]
      */
     private $ageRanges;
@@ -32,7 +33,7 @@ trait AgeRangeField
         $this->ageRanges[] = $ageRange;
     }
 
-    public function removeAgeRange(AgeRange $ageRange)
+    public function removeAgeRange(AgeRange $ageRange): void
     {
         foreach ($this->ageRanges as $key => $ageRangeToBeRemoved) {
             if ($ageRange->equal($ageRangeToBeRemoved)) {

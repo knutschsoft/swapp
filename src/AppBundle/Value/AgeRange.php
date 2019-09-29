@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Value;
 
@@ -21,14 +22,14 @@ final class AgeRange
             throw new \InvalidArgumentException('The start of a range has to be smaller than it\'s end.');
         }
 
-        $this->rangeStart = (int)$rangeStart;
-        $this->rangeEnd = (int)$rangeEnd;
+        $this->rangeStart = (int) $rangeStart;
+        $this->rangeEnd = (int) $rangeEnd;
     }
 
     public static function fromArray(array $count = [])
     {
-        $start = isset($count['start']) ? $count['start'] : (isset($count[0]) ? $count[0] : 0);
-        $end = isset($count['end']) ? $count['end'] : (isset($count[1]) ? $count[1] : 0);
+        $start = $count['start'] ?? ($count[0] ?? 0);
+        $end = $count['end'] ?? ($count[1] ?? 0);
 
         return new self($start, $end);
     }

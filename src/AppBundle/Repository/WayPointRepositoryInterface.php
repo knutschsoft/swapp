@@ -7,18 +7,12 @@ use AppBundle\Entity\WayPoint;
 
 interface WayPointRepositoryInterface
 {
-    /**
-     * @return WayPoint
-     */
-    public function findOneById($id);
+    public function findOneById($id): ?WayPoint;
 
-    /**
-     * @param WayPoint $wayPoint
-     */
-    public function save(WayPoint $wayPoint);
+    public function save(WayPoint $wayPoint): void;
 
     /**
      * @return WayPoint[]
      */
-    public function findAll();
+    public function findAll(): array;
 }

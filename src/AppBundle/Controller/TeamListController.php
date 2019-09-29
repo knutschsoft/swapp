@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
@@ -18,6 +19,7 @@ class TeamListController
 
     /**
      * @Route("team/list", name="team_list")
+     *
      * @Template(template="team/list.html.twig")
      *
      * @return array

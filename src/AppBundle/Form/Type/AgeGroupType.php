@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Form\Type;
 
@@ -21,7 +22,7 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $ageGroups = $options['data'];
 
@@ -68,7 +69,7 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -84,10 +85,10 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
 
     private function getAgeGroupFromChildName(string $childName, Form $form): AgeGroup
     {
-        $gender = Gender::fromString(substr($childName, 0, 1));
-        $rangeArray = explode('to', substr($childName, 1, strlen($childName)));
+        $gender = Gender::fromString(\substr($childName, 0, 1));
+        $rangeArray = \explode('to', \substr($childName, 1, \strlen($childName)));
         $range = AgeRange::fromArray($rangeArray);
-        $peopleCount = PeopleCount::fromInt((int)$form->getData());
+        $peopleCount = PeopleCount::fromInt((int) $form->getData());
 
         return AgeGroup::fromRangeGenderAndCount($range, $gender, $peopleCount);
     }
@@ -100,13 +101,13 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
      *
      * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported
      */
-    public function mapDataToForms($data, $forms)
+    public function mapDataToForms($data, $forms): void
     {
         if (null === $data) {
             return;
         }
 
-        $forms = iterator_to_array($forms);
+        $forms = \iterator_to_array($forms);
 
         $ageGroups = [];
         foreach ($forms as $childName => $form) {
@@ -130,13 +131,13 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
      *
      * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported
      */
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$data): void
     {
         if (null === $data) {
             return;
         }
 
-        $forms = iterator_to_array($forms);
+        $forms = \iterator_to_array($forms);
 
         $ageGroups = [];
         foreach ($forms as $childName => $form) {

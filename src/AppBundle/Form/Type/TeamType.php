@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Form\Type;
 
@@ -13,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TeamType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'name',
@@ -32,7 +33,7 @@ class TeamType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
                 'attr' => [
-                    'class' => 'js-team-type-age-ranges'
+                    'class' => 'js-team-type-age-ranges',
                 ],
                 'label' => 'Altersbereiche',
             ]
@@ -42,7 +43,7 @@ class TeamType extends AbstractType
             EntityType::class,
             [
                 'class' => User::class,
-                'choice_label' => function (User $user) {
+                'choice_label' => static function (User $user) {
                     return $user->getUsername();
                 },
                 'multiple' => true,
@@ -50,11 +51,12 @@ class TeamType extends AbstractType
                 'label' => 'Mitglieder',
                 'required' => true,
                 'placeholder' => '---',
+                'by_reference' => false,
             ]
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [

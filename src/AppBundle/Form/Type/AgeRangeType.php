@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Form\Type;
 
@@ -10,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Webmozart\Assert\Assert;
 
 class AgeRangeType extends AbstractType implements DataMapperInterface
 {
@@ -17,7 +19,7 @@ class AgeRangeType extends AbstractType implements DataMapperInterface
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'rangeStart',
@@ -40,7 +42,7 @@ class AgeRangeType extends AbstractType implements DataMapperInterface
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -52,19 +54,20 @@ class AgeRangeType extends AbstractType implements DataMapperInterface
     /**
      * Maps properties of some data to a list of forms.
      *
-     * @param AgeRange|null                $data  Structured data
+     * @param AgeRange|mixed|null          $data  Structured data
      * @param FormInterface[]|\Traversable $forms A list of {@link FormInterface} instances
      *
      * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported
      */
-    public function mapDataToForms($data, $forms)
+    public function mapDataToForms($data, $forms): void
     {
         if (null === $data) {
             return;
         }
 
-        $forms = iterator_to_array($forms);
+        $forms = \iterator_to_array($forms);
 
+        Assert::isInstanceOf($data, AgeRange::class);
         $forms['rangeStart']->setData($data->getRangeStart());
         $forms['rangeEnd']->setData($data->getRangeEnd());
     }
@@ -77,13 +80,13 @@ class AgeRangeType extends AbstractType implements DataMapperInterface
      *
      * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported
      */
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$data): void
     {
         if (null === $data) {
             return;
         }
 
-        $forms = iterator_to_array($forms);
+        $forms = \iterator_to_array($forms);
         $data = AgeRange::fromArray(
             [
                 0 => $forms['rangeStart']->getData(),

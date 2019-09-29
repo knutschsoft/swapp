@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Tests\AppBundle\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class WalkExportTest extends WebTestCase
 {
-    public function testWalkExportIsSuccessful()
+    public function testWalkExportIsSuccessful(): void
     {
         $credentials = [
             'username' => 'admin',
@@ -14,9 +16,9 @@ class WalkExportTest extends WebTestCase
 
         $client = static::makeClient($credentials);
 
-        ob_start();
+        \ob_start();
         $client->request('GET', '/walkexport');
-        ob_get_clean();
+        \ob_get_clean();
 
         $this->isSuccessful($client->getResponse());
     }

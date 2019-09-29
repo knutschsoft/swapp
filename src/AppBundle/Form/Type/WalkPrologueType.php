@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Walk;
@@ -15,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WalkPrologueType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'id',
@@ -80,7 +82,7 @@ class WalkPrologueType extends AbstractType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->resolve(
             [

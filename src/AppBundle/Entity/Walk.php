@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMWalkRepository")
  * @ORM\Table(name="walk")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  **/
 class Walk
@@ -28,107 +29,111 @@ class Walk
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank(groups={"prologue", "registration"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="WayPoint", mappedBy="walk")
+     *
      * @var Collection|WayPoint[]
      **/
     private $wayPoints;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Assert\NotBlank(groups={"prologue", "registration"})
      */
     private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Assert\NotBlank(groups={"registration"})
      */
     private $endTime;
 
     /**
      * @ORM\Column(type="string", length=4096)
+     *
      * @Assert\NotBlank(groups={"registration"})
      */
     private $walkReflection;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
+     *
      * @var Collection|User[]
      */
     private $walkTeamMembers;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
+     *
      * @var ArrayCollection|Tag[]
      */
     private $walkTags;
 
     /**
      * @ORM\Column(type="smallint")
+     *
      * @Assert\NotBlank(groups={"registration"})
      */
     private $rating;
 
     /**
      * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="walks")
+     *
      * @var SystemicQuestion
      */
     private $systemicQuestion;
 
     /**
      * @ORM\Column(type="string", length=4096)
+     *
      * @Assert\NotBlank(groups={"registration"})
      */
     private $systemicAnswer;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    /** @ORM\Column(type="string", nullable=true) */
     private $insights;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    /** @ORM\Column(type="string", nullable=true) */
     private $commitments;
 
-    /**
-     * @ORM\Column(type="boolean", length=255)
-     */
+    /** @ORM\Column(type="boolean", length=255) */
     private $isResubmission;
     /**
      * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
+     *
      * @var ArrayCollection|Guest[]
      **/
     private $guests;
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank(groups={"prologue"})
      */
     private $weather;
-    /**
-     * @ORM\Column(type="boolean", length=255)
-     */
+    /** @ORM\Column(type="boolean", length=255) */
     private $holidays;
     /**
      * @ORM\Column(type="string", length=4096)
+     *
      * @Assert\NotBlank(groups={"prologue"})
      */
     private $conceptOfDay;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank(groups={"prologue"})
      */
     private $teamName;
 
-    /**
-     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
-     */
+    /** @ORM\Column(name="deletedAt", type="datetime", nullable=true) */
     private $deletedAt;
 
     public function __construct()
@@ -177,7 +182,7 @@ class Walk
     /**
      * @param mixed $conceptOfDay
      */
-    public function setConceptOfDay($conceptOfDay)
+    public function setConceptOfDay($conceptOfDay): void
     {
         $this->conceptOfDay = $conceptOfDay;
     }
@@ -190,7 +195,7 @@ class Walk
     /**
      * @param mixed $insights
      */
-    public function setInsights($insights)
+    public function setInsights($insights): void
     {
         $this->insights = $insights;
     }
@@ -206,7 +211,7 @@ class Walk
     /**
      * @param mixed $commitments
      */
-    public function setCommitments($commitments)
+    public function setCommitments($commitments): void
     {
         $this->commitments = $commitments;
     }
@@ -222,7 +227,7 @@ class Walk
     /**
      * @param mixed $isResubmission
      */
-    public function setIsResubmission($isResubmission)
+    public function setIsResubmission($isResubmission): void
     {
         $this->isResubmission = $isResubmission;
     }
@@ -238,7 +243,7 @@ class Walk
     /**
      * @param mixed $systemicQuestion
      */
-    public function setSystemicQuestion($systemicQuestion)
+    public function setSystemicQuestion($systemicQuestion): void
     {
         $this->systemicQuestion = $systemicQuestion;
     }
@@ -254,23 +259,23 @@ class Walk
     /**
      * @param mixed $weather
      */
-    public function setWeather($weather)
+    public function setWeather($weather): void
     {
         $this->weather = $weather;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function getHolidays()
+    public function getHolidays(): bool
     {
         return $this->holidays;
     }
 
     /**
-     * @param boolean $holidays
+     * @param bool $holidays
      */
-    public function setHolidays($holidays)
+    public function setHolidays(bool $holidays): void
     {
         $this->holidays = $holidays;
     }
@@ -286,7 +291,7 @@ class Walk
     /**
      * @param mixed $guests
      */
-    public function setGuests($guests)
+    public function setGuests($guests): void
     {
         $this->guests = $guests;
     }
@@ -319,9 +324,9 @@ class Walk
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s',
             $this->getName()
         );
@@ -338,7 +343,7 @@ class Walk
     /**
      * @param mixed $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -354,7 +359,7 @@ class Walk
     /**
      * @param mixed $endTime
      */
-    public function setEndTime($endTime)
+    public function setEndTime($endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -370,7 +375,7 @@ class Walk
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -386,7 +391,7 @@ class Walk
     /**
      * @param mixed $rating
      */
-    public function setRating($rating)
+    public function setRating($rating): void
     {
         $this->rating = $rating;
     }
@@ -402,7 +407,7 @@ class Walk
     /**
      * @param mixed $startTime
      */
-    public function setStartTime($startTime)
+    public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -410,7 +415,7 @@ class Walk
     /**
      * @return string
      */
-    public function getSystemicAnswer()
+    public function getSystemicAnswer(): string
     {
         return $this->systemicAnswer;
     }
@@ -418,19 +423,19 @@ class Walk
     /**
      * @param string $systemicAnswer
      */
-    public function setSystemicAnswer($systemicAnswer)
+    public function setSystemicAnswer(string $systemicAnswer): void
     {
         $this->systemicAnswer = $systemicAnswer;
     }
 
 
-    public function addWalkTag(Tag $tag)
+    public function addWalkTag(Tag $tag): void
     {
         $tag->addWalk($this);
         $this->walkTags->add($tag);
     }
 
-    public function removeWalkTag(Tag $tag)
+    public function removeWalkTag(Tag $tag): void
     {
         $tag->removeWalk($this);
         $this->walkTags->removeElement($tag);
@@ -447,7 +452,7 @@ class Walk
     /**
      * @param mixed $walkTags
      */
-    public function setWalkTags($walkTags)
+    public function setWalkTags($walkTags): void
     {
         $this->walkTags = $walkTags;
     }
@@ -463,7 +468,7 @@ class Walk
     /**
      * @param mixed $walkReflection
      */
-    public function setWalkReflection($walkReflection)
+    public function setWalkReflection($walkReflection): void
     {
         $this->walkReflection = $walkReflection;
     }
@@ -479,7 +484,7 @@ class Walk
     /**
      * @param mixed $walkTeamMembers
      */
-    public function setWalkTeamMembers($walkTeamMembers)
+    public function setWalkTeamMembers($walkTeamMembers): void
     {
         $this->walkTeamMembers = $walkTeamMembers;
     }
@@ -503,7 +508,7 @@ class Walk
     /**
      * @return string
      */
-    public function getTeamName()
+    public function getTeamName(): string
     {
         return $this->teamName;
     }
@@ -511,7 +516,7 @@ class Walk
     /**
      * @param string $teamName
      */
-    public function setTeamName($teamName)
+    public function setTeamName(string $teamName): void
     {
         $this->teamName = $teamName;
     }
@@ -547,17 +552,17 @@ class Walk
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): ?string
     {
         return $this->deletedAt;
     }
 
     /**
-     * @param null|string $deletedAt
+     * @param string|null $deletedAt
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(?string $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -569,7 +574,7 @@ class Walk
      *
      * @return Walk
      */
-    public function addWayPoint(WayPoint $wayPoint)
+    public function addWayPoint(WayPoint $wayPoint): Walk
     {
         $this->wayPoints[] = $wayPoint;
 
@@ -581,7 +586,7 @@ class Walk
      *
      * @param WayPoint $wayPoint
      */
-    public function removeWayPoint(WayPoint $wayPoint)
+    public function removeWayPoint(WayPoint $wayPoint): void
     {
         $this->wayPoints->removeElement($wayPoint);
     }
@@ -593,7 +598,7 @@ class Walk
      *
      * @return Walk
      */
-    public function addWalkTeamMember(User $walkTeamMember)
+    public function addWalkTeamMember(User $walkTeamMember): Walk
     {
         $this->walkTeamMembers[] = $walkTeamMember;
 
@@ -605,7 +610,7 @@ class Walk
      *
      * @param User $walkTeamMember
      */
-    public function removeWalkTeamMember(User $walkTeamMember)
+    public function removeWalkTeamMember(User $walkTeamMember): void
     {
         $this->walkTeamMembers->removeElement($walkTeamMember);
     }
@@ -617,7 +622,7 @@ class Walk
      *
      * @return Walk
      */
-    public function addGuest(Guest $guest)
+    public function addGuest(Guest $guest): Walk
     {
         $this->guests[] = $guest;
 
@@ -629,7 +634,7 @@ class Walk
      *
      * @param Guest $guest
      */
-    public function removeGuest(Guest $guest)
+    public function removeGuest(Guest $guest): void
     {
         $this->guests->removeElement($guest);
     }

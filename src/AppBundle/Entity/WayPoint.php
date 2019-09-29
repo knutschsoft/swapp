@@ -7,6 +7,7 @@ use AppBundle\Value\AgeGroup;
 use AppBundle\Value\Gender;
 use AppBundle\Value\PeopleCount;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\HttpFoundation\File\File;
@@ -16,6 +17,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMWayPointRepository")
  * @ORM\Table(name="way_point")
+ *
  * @Vich\Uploadable
  */
 class WayPoint
@@ -26,6 +28,8 @@ class WayPoint
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
      */
     private $id;
 
@@ -43,39 +47,50 @@ class WayPoint
     /**
      * @ORM\Column(type="string", length=255, name="image_name", nullable=true)
      *
-     * @var string $imageName
+     * @var ?string $imageName
      */
     private $imageName;
 
     /**
      * @ORM\ManyToOne(targetEntity="Walk", inversedBy="wayPoints")
+     *
+     * @var Walk
      */
     private $walk;
 
     /**
      * @ORM\Column(type="string", length=4096)
+     *
      * @Assert\NotBlank()
+     *
+     * @var string
      */
     private $locationName;
 
     /**
      * @ORM\Column(type="json_document", options={"jsonb": true})
+     *
      * @var AgeGroup[]
      */
     private $ageGroups;
     /**
      * @ORM\Column(type="string", nullable=true, length=4096)
+     *
+     * @var ?string
      */
     private $note;
 
     /**
      * @ORM\Column(type="boolean", length=255)
+     *
+     * @var bool
      */
     private $isMeeting;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="wayPoints")
-     * @var ArrayCollection
+     *
+     * @var Collection|Tag[]
      */
     private $wayPointTags;
 
@@ -83,6 +98,8 @@ class WayPoint
     {
         $this->wayPointTags = new ArrayCollection();
         $this->ageGroups = [];
+        $this->locationName = '';
+        $this->isMeeting = false;
     }
 
     public static function fromWalk(Walk $walk): self
@@ -162,9 +179,9 @@ class WayPoint
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function getIsMeeting()
+    public function getIsMeeting(): bool
     {
         return $this->isMeeting;
     }
@@ -177,25 +194,22 @@ class WayPoint
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s',
             $this->getLocationName()
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getLocationName()
+    public function getLocationName(): string
     {
         return $this->locationName;
     }
 
-    public function setLocationName(string $locationName)
+    public function setLocationName(?string $locationName): void
     {
-        $this->locationName = $locationName;
+        $this->locationName = (string) $locationName;
     }
 
     public function getImageFile(): ?File
@@ -212,7 +226,7 @@ class WayPoint
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setImageFile(File $image = null): void
+    public function setImageFile(?File $image = null): void
     {
         $this->imageFile = $image;
 
@@ -223,15 +237,12 @@ class WayPoint
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getImageName()
+    public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
-    public function setImageName(string $imageName)
+    public function setImageName(string $imageName): void
     {
         $this->imageName = $imageName;
     }
@@ -241,20 +252,17 @@ class WayPoint
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
-    public function getNote()
+    public function getNote(): ?string
     {
         return $this->note;
     }
 
-    public function setNote(string $note)
+    public function setNote(?string $note): void
     {
         $this->note = $note;
     }
@@ -264,13 +272,13 @@ class WayPoint
         return $this->walk;
     }
 
-    public function setWalk(Walk $walk)
+    public function setWalk(Walk $walk): void
     {
         $this->walk = $walk;
     }
 
     /**
-     * @return mixed
+     * @return Collection|Tag[]
      */
     public function getWayPointTags()
     {
@@ -278,26 +286,20 @@ class WayPoint
     }
 
     /**
-     * @param mixed $wayPointTags
+     * @param Collection|Tag[] $wayPointTags
      */
-    public function setWayPointTags($wayPointTags)
+    public function setWayPointTags($wayPointTags): void
     {
         $this->wayPointTags = $wayPointTags;
     }
 
-    /**
-     * @param Tag $tag
-     */
-    public function addWayPointTag(Tag $tag)
+    public function addWayPointTag(Tag $tag): void
     {
         $tag->addWayPoint($this);
         $this->wayPointTags->add($tag);
     }
 
-    /**
-     * @param Tag $tag
-     */
-    public function removeWayPointTag(Tag $tag)
+    public function removeWayPointTag(Tag $tag): void
     {
         $tag->removeWayPoint($this);
         $this->wayPointTags->removeElement($tag);

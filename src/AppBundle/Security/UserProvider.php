@@ -21,23 +21,16 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * Loads the user for the given username.
-     *
-     * This method must throw UsernameNotFoundException if the user is not
-     * found.
-     *
-     * @param string $usernameOrEmail The username
-     *
-     * @return UserInterface
-     *
-     * @throws UsernameNotFoundException if the user is not found
+     * @inheritDoc
      */
-    public function loadUserByUsername($usernameOrEmail)
+    public function loadUserByUsername($usernameOrEmail): UserInterface
     {
         $user = $this->userRepository->loadUserByUsername($usernameOrEmail);
         if (\is_null($user)) {
             throw new UsernameNotFoundException();
-        } elseif ($user instanceof User && !$user->isEnabled()) {
+        }
+
+        if ($user instanceof User && !$user->isEnabled()) {
             throw new UsernameNotFoundException();
         }
 
@@ -56,30 +49,23 @@ class UserProvider implements UserProviderInterface
      *
      * @throws UnsupportedUserException if the user is not supported
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(
-                sprintf('Expected an instance of %s, but got "%s".', User::class, get_class($user))
+                \sprintf('Expected an instance of %s, but got "%s".', User::class, \get_class($user))
             );
         }
 
         $reloadedUser = $this->userRepository->findOneBy(['id' => $user->getId()]);
         if (null === $reloadedUser) {
-            throw new UsernameNotFoundException(sprintf('User with ID "%s" could not be reloaded.', $user->getId()));
+            throw new UsernameNotFoundException(\sprintf('User with ID "%s" could not be reloaded.', $user->getId()));
         }
 
         return $reloadedUser;
     }
 
-    /**
-     * Whether this provider supports the given user class.
-     *
-     * @param string $class
-     *
-     * @return bool
-     */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return User::class === $class;
     }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
@@ -10,28 +11,31 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Session
 {
-
     /**
      * @ORM\Id()
      * @ORM\Column(name="sess_id",type="string", length=128, nullable=false)
+     *
      * @var string
      */
     protected $sessId;
 
     /**
      * @ORM\Column(name="sess_data",type="blob", nullable=false)
+     *
      * @var Resource
      */
     protected $sessData;
 
     /**
      * @ORM\Column(name="sess_time",type="integer", nullable=false, options={"unsigned": false})
+     *
      * @var int
      */
     protected $sessTime;
 
     /**
      * @ORM\Column(name="sess_lifetime",type="integer", nullable=false)
+     *
      * @var int
      */
     protected $sessLifetime;
@@ -41,7 +45,7 @@ class Session
         return $this->sessId;
     }
 
-    public function setSessId($sessId)
+    public function setSessId($sessId): void
     {
         $this->sessId = $sessId;
     }
@@ -51,7 +55,7 @@ class Session
         return $this->sessData;
     }
 
-    public function setSessData($sessData)
+    public function setSessData($sessData): void
     {
         $this->sessData = $sessData;
     }
@@ -61,7 +65,7 @@ class Session
         return $this->sessTime;
     }
 
-    public function setSessTime($sessTime)
+    public function setSessTime($sessTime): void
     {
         $this->sessTime = $sessTime;
     }
@@ -71,7 +75,7 @@ class Session
         return $this->sessLifetime;
     }
 
-    public function setSessLifetime($sessLifetime)
+    public function setSessLifetime($sessLifetime): void
     {
         $this->sessLifetime = $sessLifetime;
     }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,27 +21,27 @@ class Guest
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank()
      */
     private $email;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Walk", inversedBy="guests")
-     */
+    /** @ORM\ManyToOne(targetEntity="Walk", inversedBy="guests") */
     private $walk;
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             "%s (%s)",
             $this->getName(),
             $this->getEmail()
@@ -49,7 +51,7 @@ class Guest
     /**
      * @return Walk
      */
-    public function getWalk()
+    public function getWalk(): Walk
     {
         return $this->walk;
     }
@@ -57,7 +59,7 @@ class Guest
     /**
      * @param Walk $walk
      */
-    public function setWalk(Walk $walk)
+    public function setWalk(Walk $walk): void
     {
         $this->walk = $walk;
     }
@@ -73,7 +75,7 @@ class Guest
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -89,7 +91,7 @@ class Guest
     /**
      * @param mixed $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -105,7 +107,7 @@ class Guest
     /**
      * @param mixed $email
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }

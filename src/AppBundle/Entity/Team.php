@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\Fields\AgeRangeField;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DoctrineORMTeamRepository")
@@ -21,17 +21,23 @@ class Team
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank()
+     *
+     * @var string
      */
     private $name;
 
     /**
      * @var User[]|Collection
+     *
      * @ORM\ManyToMany(
      *     targetEntity="AppBundle\Entity\User",
      *     mappedBy="teams")
@@ -41,64 +47,56 @@ class Team
     public function __construct()
     {
         $this->ageRanges = [];
-        $this->users= new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getUsers(): Collection
+    /**
+     * @return User[]|Collection
+     */
+    public function getUsers()
     {
         return $this->users;
     }
 
     public function addUser(User $user): void
     {
-        $this->users[] = $user;
-        $user->addTeam($this);
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addTeam($this);
+        }
     }
 
     public function removeUser(User $user): void
     {
-        $this->users->removeElement($user);
-        $user->removeTeam($this);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeTeam($this);
+        }
     }
 
     /**
@@ -107,5 +105,11 @@ class Team
     public function setUsers($users): void
     {
         $this->users = $users;
+        // foreach ($this->users as $user) {
+        //     $user->removeTeam($this);
+        // }
+        // foreach ($users as $user) {
+        //     $user->addTeam($this);
+        // }
     }
 }

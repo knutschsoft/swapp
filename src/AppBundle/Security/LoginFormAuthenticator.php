@@ -70,14 +70,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $credentials;
     }
 
-    /**
-     * @param array                 $credentials
-     * @param UserProviderInterface $userProvider
-     *
-     * @return User
-     */
     public function getUser($credentials, UserProviderInterface $userProvider): User
     {
+        Assert::isArray($credentials);
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
@@ -89,27 +84,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $user;
     }
 
-    /**
-     * @param array         $credentials
-     * @param UserInterface $user
-     *
-     * @return bool
-     */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
+        Assert::isArray($credentials);
         /** @var User $appUser */
         $appUser = $user;
 
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']) && $appUser->isEnabled();
     }
 
-    /**
-     * @param Request        $request
-     * @param TokenInterface $token
-     * @param string         $providerKey
-     *
-     * @return RedirectResponse
-     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {
         $session = $request->getSession();

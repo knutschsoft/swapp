@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Repository;
 
@@ -13,7 +14,7 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
         parent::__construct($registry, SystemicQuestion::class);
     }
 
-    public function save(SystemicQuestion $systemicQuestion)
+    public function save(SystemicQuestion $systemicQuestion): void
     {
         $this->_em->persist($systemicQuestion);
         $this->_em->flush();
@@ -21,11 +22,12 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
 
     /**
      * @return SystemicQuestion
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @throws \Doctrine\ORM\NoResultException
      */
-    public function getRandom()
+    public function getRandom(): SystemicQuestion
     {
         $count = $this->createQueryBuilder('u')
             ->select('COUNT(u)')
@@ -33,7 +35,7 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
             ->getSingleScalarResult();
 
         return $this->createQueryBuilder('u')
-            ->setFirstResult(rand(0, $count - 1))
+            ->setFirstResult(\rand(0, $count - 1))
             ->setMaxResults(1)
             ->getQuery()
             ->getSingleResult();

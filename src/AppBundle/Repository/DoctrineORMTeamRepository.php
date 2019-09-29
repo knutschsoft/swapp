@@ -17,7 +17,7 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
     /**
      * @return Team[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         $queryBuilder = $this->createQueryBuilder('team')
             ->select();

@@ -7,8 +7,5 @@ use AppBundle\Entity\Team;
 
 interface TeamRepositoryInterface
 {
-    /**
-     * @param Team $team
-     */
-    public function save(Team $team);
+    public function save(Team $team): void;
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
@@ -11,7 +12,7 @@ class Teams implements StrictlyTypedCollectionInterface
 
     public function checkType($item): bool
     {
-        return ($item instanceof Team);
+        return $item instanceof Team;
     }
 
     public function getType(): string

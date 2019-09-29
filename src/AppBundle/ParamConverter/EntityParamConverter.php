@@ -43,7 +43,7 @@ class EntityParamConverter implements ParamConverterInterface
      *
      * @return bool True if the object has been successfully set, else false
      */
-    public function apply(Request $request, ParamConverter $configuration)
+    public function apply(Request $request, ParamConverter $configuration): bool
     {
         switch ($configuration->getName()) {
             case 'walk':
@@ -64,13 +64,13 @@ class EntityParamConverter implements ParamConverterInterface
                 break;
             default:
                 throw new \InvalidArgumentException(
-                    sprintf('Wrong configuration "%s" in "%s"', $configuration->getName(), __CLASS__)
+                    \sprintf('Wrong configuration "%s" in "%s"', $configuration->getName(), self::class)
                 );
         }
 
         if (!$resource && !$configuration->isOptional()) {
             throw new NotFoundHttpException(
-                sprintf(
+                \sprintf(
                     'No %s not found for id "%s" in %s',
                     $configuration->getName(),
                     $id,
@@ -92,8 +92,8 @@ class EntityParamConverter implements ParamConverterInterface
      *
      * @return bool True if the object is supported, else false
      */
-    public function supports(ParamConverter $configuration)
+    public function supports(ParamConverter $configuration): bool
     {
-        return in_array($configuration->getClass(), [Team::class, Walk::class, WayPoint::class]);
+        return \in_array($configuration->getClass(), [Team::class, Walk::class, WayPoint::class]);
     }
 }

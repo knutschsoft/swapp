@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\ParamConverter;
 
 use AppBundle\Entity\User;
+use AppBundle\Security\UserProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,13 +13,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class UserParamConverter implements ParamConverterInterface
 {
     private $tokenStorage;
+    /** @var UserProvider */
+    private $userProvider;
 
     /**
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage, UserProvider $userProvider)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->userProvider = $userProvider;
     }
     /**
      * Stores the object in the request.
@@ -26,7 +32,7 @@ class UserParamConverter implements ParamConverterInterface
      *
      * @return bool True if the object has been successfully set, else false
      */
-    public function apply(Request $request, ParamConverter $configuration)
+    public function apply(Request $request, ParamConverter $configuration): bool
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $param = $configuration->getName();
@@ -41,9 +47,8 @@ class UserParamConverter implements ParamConverterInterface
      *
      * @return bool True if the object is supported, else false
      */
-    public function supports(ParamConverter $configuration)
+    public function supports(ParamConverter $configuration): bool
     {
-
         return $configuration->getClass() === User::class;
     }
 }

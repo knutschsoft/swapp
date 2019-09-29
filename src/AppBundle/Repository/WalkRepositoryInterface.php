@@ -24,7 +24,7 @@ interface WalkRepositoryInterface
      *
      * @return Walk[]
      */
-    public function findAllUnfinishedByUser(User $user);
+    public function findAllUnfinishedByUser(User $user): array;
 
     public function getFindAllQuery(): AbstractQuery;
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Tests\AppBundle\EdgeToEdge;
 
@@ -12,7 +13,7 @@ class ImageUploadTest extends WebTestCase
     /**
      * @return array
      */
-    public function testNavigateToCreateWaypointForm()
+    public function testNavigateToCreateWaypointForm(): array
     {
         $this->loadAllFixtures();
         $client = $this->createAuthenticatedClient();
@@ -39,9 +40,10 @@ class ImageUploadTest extends WebTestCase
 
     /**
      * @depends testNavigateToCreateWaypointForm
+     *
      * @param array $args
      */
-    public function testSubmittingEmptyFormRedirectsToForm(array $args)
+    public function testSubmittingEmptyFormRedirectsToForm(array $args): void
     {
         /**@var Client $client */
         $client = $args[0];
@@ -53,15 +55,19 @@ class ImageUploadTest extends WebTestCase
         $this->isSuccessful($client->getResponse());
 
         $form = $crawler->selectButton('speichern')->form();
-        $this->assertArrayHasKey('way_point', $form->getPhpValues(),
-            'Form didnt not redirect to itself when submitting with invalid values');
+        $this->assertArrayHasKey(
+            'way_point',
+            $form->getPhpValues(),
+            'Form didnt not redirect to itself when submitting with invalid values'
+        );
     }
 
     /**
      * @depends testNavigateToCreateWaypointForm
+     *
      * @param array $args
      */
-    public function testSubmittingValidImageSavesImage(array $args)
+    public function testSubmittingValidImageSavesImage(array $args): void
     {
         /**@var Client $client */
         $client = $args[0];
@@ -90,9 +96,10 @@ class ImageUploadTest extends WebTestCase
 
     /**
      * @depends testNavigateToCreateWaypointForm
+     *
      * @param array $args
      */
-    public function testUploadingImageExcceedingMaxFileSizeRendersFormErrors(array $args)
+    public function testUploadingImageExcceedingMaxFileSizeRendersFormErrors(array $args): void
     {
         /**@var Client $client */
         $client = $args[0];
@@ -112,14 +119,16 @@ class ImageUploadTest extends WebTestCase
 
         // only working with german translation messages
         $text = $crawler->text();
-        $this->assertContains('Datei ist zu groß',
+        $this->assertContains(
+            'Datei ist zu groß',
             $text,
             'Error uploading ' . $fileName . '. Either upload_max_filesize in php.ini is lower than the assertion.
-                or file was uploaded without triggering a form error.');
+                or file was uploaded without triggering a form error.'
+        );
     }
 
     /**
-     * @return \Doctrine\Common\DataFixtures\Executor\AbstractExecutor|null|void
+     * @return \Doctrine\Common\DataFixtures\Executor\AbstractExecutor|void|null
      */
     private function loadAllFixtures()
     {
@@ -139,7 +148,7 @@ class ImageUploadTest extends WebTestCase
     /**
      * @return Client
      */
-    private function createAuthenticatedClient()
+    private function createAuthenticatedClient(): Client
     {
         $credentials = [
             'username' => 'waldi_beta',
@@ -148,6 +157,7 @@ class ImageUploadTest extends WebTestCase
 
         $client = static::makeClient($credentials);
         $client->followRedirects(true);
+
         return $client;
     }
 }

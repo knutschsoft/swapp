@@ -93,12 +93,14 @@ class User implements UserInterface
     private $username;
     /**
      * @var Walk[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
      */
     private $walks;
 
     /**
      * @var Team[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="users")
      * @ORM\JoinTable(name="users_teams")
      */
@@ -126,11 +128,14 @@ class User implements UserInterface
     public function setTeams($teams): void
     {
         $this->teams = $teams;
+        foreach ($teams as $team) {
+            $team->addUser($this);
+        }
     }
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s (%s)',
             $this->getUsername(),
             $this->getEmail()
@@ -142,7 +147,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -165,19 +170,23 @@ class User implements UserInterface
 
     public function addTeam(Team $team): void
     {
-        $this->teams[] = $team;
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->addUser($this);
+        }
     }
 
     public function removeTeam(Team $team): void
     {
-        $this->teams->removeElement($team);
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+            $team->removeUser($this);
+        }
     }
 
-    public function addWalk(Walk $walk): self
+    public function addWalk(Walk $walk): void
     {
-        $this->walks[] = $walk;
-
-        return $this;
+        $this->walks->add($walk);
     }
 
     public function removeWalk(Walk $walk): void
@@ -187,19 +196,19 @@ class User implements UserInterface
 
     public function addRole(string $role): void
     {
-        $role = strtoupper($role);
+        $role = \strtoupper($role);
         if ($role === static::ROLE_DEFAULT) {
             return;
         }
 
-        if (!in_array($role, $this->roles, true)) {
+        if (!\in_array($role, $this->roles, true)) {
             $this->roles[] = $role;
         }
     }
 
     public function serialize(): string
     {
-        return serialize(
+        return \serialize(
             [
                 $this->password,
                 $this->salt,
@@ -211,28 +220,28 @@ class User implements UserInterface
         );
     }
 
-    public function unserialize(string $serialized)
+    public function unserialize(string $serialized): void
     {
-        $data = unserialize($serialized);
+        $data = \unserialize($serialized);
 
-        if (13 === count($data)) {
+        if (13 === \count($data)) {
             // Unserializing a User object from 1.3.x
             unset($data[4], $data[5], $data[6], $data[9], $data[10]);
-            $data = array_values($data);
-        } elseif (11 === count($data)) {
+            $data = \array_values($data);
+        } elseif (11 === \count($data)) {
             // Unserializing a User from a dev version somewhere between 2.0-alpha3 and 2.0-beta1
             unset($data[4], $data[7], $data[8]);
-            $data = array_values($data);
+            $data = \array_values($data);
         }
 
-        list(
+        [
             $this->password,
             $this->salt,
             $this->username,
             $this->enabled,
             $this->id,
             $this->email,
-            ) = $data;
+            ] = $data;
     }
 
     public function eraseCredentials(): void
@@ -320,7 +329,7 @@ class User implements UserInterface
         // we need to make sure to have at least one role
         $roles[] = static::ROLE_DEFAULT;
 
-        return array_unique($roles);
+        return \array_unique($roles);
     }
 
     public function setRoles(array $roles): void
@@ -334,7 +343,7 @@ class User implements UserInterface
 
     public function hasRole($role): bool
     {
-        return in_array(strtoupper($role), $this->getRoles(), true);
+        return \in_array(\strtoupper($role), $this->getRoles(), true);
     }
 
     public function isEnabled(): bool
@@ -354,9 +363,9 @@ class User implements UserInterface
 
     public function removeRole($role): void
     {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+        if (false !== $key = \array_search(\strtoupper($role), $this->roles, true)) {
             unset($this->roles[$key]);
-            $this->roles = array_values($this->roles);
+            $this->roles = \array_values($this->roles);
         }
     }
 
@@ -374,7 +383,7 @@ class User implements UserInterface
         return $this->passwordRequestedAt;
     }
 
-    public function setPasswordRequestedAt(\DateTime $date = null): void
+    public function setPasswordRequestedAt(?\DateTime $date = null): void
     {
         $this->passwordRequestedAt = $date;
     }
@@ -382,6 +391,6 @@ class User implements UserInterface
     public function isPasswordRequestNonExpired(int $ttl): bool
     {
         return $this->getPasswordRequestedAt() instanceof \DateTime &&
-            $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
+            $this->getPasswordRequestedAt()->getTimestamp() + $ttl > \time();
     }
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tag;
@@ -37,6 +39,7 @@ class TagCreateController
      * @param FlashBagInterface $flash
      *
      * @Route("createtag", name="tag_create")
+     *
      * @Template("tag/createTag.html.twig")
      *
      * @return array|RedirectResponse
@@ -56,7 +59,7 @@ class TagCreateController
         $this->tagRepository->save($tag);
         $flash->add(
             'notice',
-            sprintf(
+            \sprintf(
                 'Tag %s mit der Farbe %s wurde erfolgreich erstellt.',
                 $tag->getName(),
                 $tag->getColor()

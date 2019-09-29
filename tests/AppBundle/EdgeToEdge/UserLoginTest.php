@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Tests\AppBundle\EdgeToEdge;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -14,7 +16,7 @@ class UserLoginTest extends WebTestCase
     const BAD_NAME = 'ashd73ddb';
     const BAD_PASS = 'www';
 
-    public function testUserLoginBackendFailsWithWrongRole()
+    public function testUserLoginBackendFailsWithWrongRole(): void
     {
         $client = static::makeClient();
 
@@ -34,7 +36,7 @@ class UserLoginTest extends WebTestCase
         $this->assertTrue($crawler->selectButton('Anmelden')->count() === 1, 'Button "Anmelden" not found');
     }
 
-    public function testUserLoginBackend()
+    public function testUserLoginBackend(): void
     {
         $client = static::makeClient();
         $client->followRedirects(true);
@@ -54,7 +56,7 @@ class UserLoginTest extends WebTestCase
         $this->assertTrue($crawler->selectButton('Anmelden')->count() === 0, 'Button "Anmelden" found');
     }
 
-    public function testUserLoginFrontend()
+    public function testUserLoginFrontend(): void
     {
         $client = static::makeClient();
         $client->followRedirects();
@@ -76,15 +78,16 @@ class UserLoginTest extends WebTestCase
 
     /**
      * @param string $url
+     *
      * @dataProvider urlProvider
      */
-    public function testUserLoginFrontendWithBadCredentialsIsRedirected($url)
+    public function testUserLoginFrontendWithBadCredentialsIsRedirected(string $url): void
     {
         $this->loadUserFixtures();
 
         $client = static::makeClient([
             'username' => self::BAD_NAME,
-            'password' => self::BAD_PASS
+            'password' => self::BAD_PASS,
         ]);
 
         $client->request('GET', $url);
@@ -92,15 +95,16 @@ class UserLoginTest extends WebTestCase
     }
     /**
      * @param string $url
+     *
      * @dataProvider urlProvider
      */
-    public function testUserLoginFrontendDisabledAccountIsRedirected($url)
+    public function testUserLoginFrontendDisabledAccountIsRedirected(string $url): void
     {
         $this->loadUserFixtures();
 
         $client = static::makeClient([
             'username' => self::DISABLED_NAME,
-            'password' => self::DISABLED_PASS
+            'password' => self::DISABLED_PASS,
         ]);
 
         $client->request('GET', $url);
@@ -111,15 +115,16 @@ class UserLoginTest extends WebTestCase
 
     /**
      * @param string $url
+     *
      * @dataProvider urlProvider
      */
-    public function testUserLoginFrontendAdminUserHasAccess($url)
+    public function testUserLoginFrontendAdminUserHasAccess(string $url): void
     {
         $this->loadUserFixtures();
 
         $client = static::makeClient([
             'username' => self::USERNAME_ADMIN,
-            'password' => self::PASSWORD_ADMIN
+            'password' => self::PASSWORD_ADMIN,
         ]);
 
         $crawler = $client->request('GET', $url);
@@ -144,7 +149,7 @@ class UserLoginTest extends WebTestCase
             // ...
         );
     }
-    private function loadUserFixtures()
+    private function loadUserFixtures(): void
     {
         $this->loadFixtureFiles([
             '@AppBundle/DataFixtures/ORM/test/user.yml',

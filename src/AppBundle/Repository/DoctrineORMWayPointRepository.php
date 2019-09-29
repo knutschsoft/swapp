@@ -17,7 +17,7 @@ class DoctrineORMWayPointRepository extends ServiceEntityRepository implements W
     /**
      * @return WayPoint[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         $queryBuilder = $this->createQueryBuilder('way_point')
             ->select();

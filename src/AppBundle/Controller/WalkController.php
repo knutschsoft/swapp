@@ -11,6 +11,7 @@ use AppBundle\Form\Type\WalkType;
 use AppBundle\Repository\SystemicQuestionRepositoryInterface;
 use AppBundle\Repository\UserRepositoryInterface;
 use AppBundle\Repository\WalkRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -55,11 +56,12 @@ class WalkController
      * @param User $user
      *
      * @Route("walks", name="walk_home_screen")
+     *
      * @Template(template="walk/homeScreen.html.twig")
      *
      * @return array
      */
-    public function homeScreenAction(User $user, Request $request)
+    public function homeScreenAction(User $user, Request $request): array
     {
         $order = $request->query->get('order', 'startTime');
         $sort = $request->query->get('sort', 'desc');
@@ -81,11 +83,12 @@ class WalkController
      * @param Walk $walk
      *
      * @Route("walk/{walkId}", name="walk_show")
+     *
      * @Template(template="walk/show.html.twig")
      *
      * @return array
      */
-    public function showAction(Walk $walk)
+    public function showAction(Walk $walk): array
     {
         return [
             'walk' => $walk,
@@ -97,6 +100,7 @@ class WalkController
      * @param Request $request
      *
      * @Route("createwalk/{walkId}", name="walk_create_form")
+     *
      * @Template(template="walk/createWalkForm.html.twig")
      *
      * @return array
@@ -124,6 +128,7 @@ class WalkController
      * @param Request $request
      *
      * @Route("/startWalkPrologueWithTeam/{teamId}", name="start_walk_with_walk_prologue")
+     *
      * @Template(template="walk/createWalkPrologueForm.html.twig")
      *
      * @return array
@@ -135,7 +140,7 @@ class WalkController
 
         $this->walkRepository->save($walk);
         foreach ($team->getUsers() as $user) {
-            $user->setWalks([$walk]);
+            $user->setWalks(new ArrayCollection([$walk]));
             $this->userRepository->save($user);
         }
 
@@ -159,6 +164,7 @@ class WalkController
      * @param Request           $request
      *
      * @Route("/walkstarted/{walkId}", name="walk_start")
+     *
      * @Template(template="walk/createWalkPrologue.html.twig")
      *
      * @return array|RedirectResponse
@@ -168,7 +174,6 @@ class WalkController
         $form = $this->formFactory->create(WalkPrologueType::class, $walk);
         $form->handleRequest($request);
         if (!$form->isSubmitted() || !$form->isValid()) {
-
             return [
                 'form' => $form->createView(),
             ];
@@ -182,7 +187,8 @@ class WalkController
         );
 
         return new RedirectResponse(
-            $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getId()]));
+            $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getId()])
+        );
     }
 
     /**
@@ -191,6 +197,7 @@ class WalkController
      * @param Request           $request
      *
      * @Route("walkcreated", name="walk_create")
+     *
      * @Template(template="walk/createWalk.html.twig")
      *
      * @return array|RedirectResponse
@@ -201,7 +208,6 @@ class WalkController
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-
             return [
                 'walk' => $walk,
                 'wayPoints' => $walk->getWayPoints(),
@@ -233,13 +239,13 @@ class WalkController
         $walkRepository = $this->walkRepository;
 
         $response = new StreamedResponse(
-            function () use ($walkRepository) {
+            static function () use ($walkRepository): void {
 
                 // The getExportQuery method returns a query that is used to retrieve
                 // all the objects (lines of your csv file) you need. The iterate method
                 // is used to limit the memory consumption
                 $results = $walkRepository->getFindAllQuery()->iterate();
-                $handle = fopen('php://output', 'r+');
+                $handle = \fopen('php://output', 'r+');
 
                 $header = [
                     'Id',
@@ -259,23 +265,23 @@ class WalkController
                     'angetroffene Männer',
                     'angetroffene Frauen',
                     'Teamname',
-//                    'TeamMitglieder',
-//                    'Gäste',
+            //                    'TeamMitglieder',
+            //                    'Gäste',
                 ];
 
                 Assert::resource($handle);
-                fputcsv($handle, $header);
+                \fputcsv($handle, $header);
 
                 while (false !== ($row = $results->next())) {
                     // add a line in the csv file. You need to implement a toArray() method
                     // to transform your object into an array
-//                dump($row[0]->toArray());
-                    fputcsv($handle, $row[0]->toArray());
+            //                dump($row[0]->toArray());
+                    \fputcsv($handle, $row[0]->toArray());
                     // used to limit the memory consumption
-//                $em->detach($row[0]);
+            //                $em->detach($row[0]);
                 }
 
-                fclose($handle);
+                \fclose($handle);
             }
         );
 

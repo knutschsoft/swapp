@@ -71,9 +71,8 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
     {
         $queryBuilder = $this->createQueryBuilder('walk')
             ->select();
-        $query = $queryBuilder->getQuery();
 
-        return $query;
+        return $queryBuilder->getQuery();
     }
 
     public function findOneById($id): ?Walk

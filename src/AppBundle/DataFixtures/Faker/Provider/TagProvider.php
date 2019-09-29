@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\DataFixtures\Faker\Provider;
 
 class TagProvider
@@ -27,7 +29,7 @@ class TagProvider
 
         self::$position++;
 
-        if (self::$position >= count(self::$tagNames)) {
+        if (self::$position >= \count(self::$tagNames)) {
             self::$position = 0;
         }
 

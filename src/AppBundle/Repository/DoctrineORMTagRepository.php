@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Repository;
 
@@ -13,13 +14,13 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
         parent::__construct($registry, Tag::class);
     }
 
-    public function updateTag(Tag $tag)
+    public function updateTag(Tag $tag): void
     {
         $this->_em->merge($tag);
         $this->_em->flush();
     }
 
-    public function save(Tag $tag)
+    public function save(Tag $tag): void
     {
         $this->_em->persist($tag);
         $this->_em->flush();
@@ -28,7 +29,7 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
     /**
      * @return Tag[]
      */
-    public function getTags()
+    public function getTags(): array
     {
         $queryBuilder = $this->createQueryBuilder('tag')->select();
         $query = $queryBuilder->getQuery();
@@ -46,7 +47,7 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
     /**
      * @return Tag[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         $queryBuilder = $this->createQueryBuilder('tag')
             ->select();
