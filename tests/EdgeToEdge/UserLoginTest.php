@@ -7,14 +7,14 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class UserLoginTest extends WebTestCase
 {
-    const USERNAME = 'username';
-    const PASSWORD = 'password';
-    const USERNAME_ADMIN = 'admin';
-    const PASSWORD_ADMIN = 'admin';
-    const DISABLED_NAME = 'inactiveuser';
-    const DISABLED_PASS = 'inactiveuser';
-    const BAD_NAME = 'ashd73ddb';
-    const BAD_PASS = 'www';
+    private const USERNAME = 'username';
+    private const PASSWORD = 'password';
+    private const USERNAME_ADMIN = 'admin';
+    private const PASSWORD_ADMIN = 'admin';
+    private const DISABLED_NAME = 'inactiveuser';
+    private const DISABLED_PASS = 'inactiveuser';
+    private const BAD_NAME = 'ashd73ddb';
+    private const BAD_PASS = 'www';
 
     public function testUserLoginBackendFailsWithWrongRole(): void
     {
@@ -127,13 +127,13 @@ class UserLoginTest extends WebTestCase
             'password' => self::PASSWORD_ADMIN,
         ]);
 
-        $crawler = $client->request('GET', $url);
+        $client->request('GET', $url);
         $this->isSuccessful($client->getResponse(), true);
 
         $this->assertStatusCode(200, $client);
     }
 
-    public function urlProvider()
+    public function urlProvider(): array
     {
         return array(
             array('/walks'),
@@ -149,6 +149,7 @@ class UserLoginTest extends WebTestCase
             // ...
         );
     }
+
     private function loadUserFixtures(): void
     {
         $this->loadFixtureFiles([

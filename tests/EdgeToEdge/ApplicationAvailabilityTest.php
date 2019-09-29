@@ -9,8 +9,10 @@ class ApplicationAvailabilityTest extends WebTestCase
 {
     /**
      * @dataProvider urlProvider
+     *
+     * @param string $url
      */
-    public function testPageIsSuccessful($url): void
+    public function testPageIsSuccessful(string $url): void
     {
         $this->loadAllFixtures();
         $credentials = [
@@ -23,7 +25,7 @@ class ApplicationAvailabilityTest extends WebTestCase
         $this->isSuccessful($client->getResponse());
     }
 
-    public function urlProvider()
+    public function urlProvider(): array
     {
         return [
             ['/walks'],
