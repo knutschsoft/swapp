@@ -39,7 +39,7 @@ final class AgeGroup
         return $this->peopleCount;
     }
 
-    public function equalType(AgeGroup $ageGroup): bool
+    public function equalType(self $ageGroup): bool
     {
         return $this->ageRange->equal($ageGroup->ageRange()) && $this->gender->equal($ageGroup->gender());
     }

@@ -102,7 +102,7 @@ class SystemicQuestion
         $this->deletedAt = $deletedAt;
     }
 
-    public function addWalk(Walk $walk): SystemicQuestion
+    public function addWalk(Walk $walk): self
     {
         $this->walks[] = $walk;
 

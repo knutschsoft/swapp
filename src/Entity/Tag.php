@@ -132,7 +132,6 @@ class Tag
         $this->walks = $walks;
     }
 
-
     public function addWayPoint(WayPoint $wayPoint): void
     {
         if (!$this->wayPoints->contains($wayPoint)) {

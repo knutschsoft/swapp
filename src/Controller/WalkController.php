@@ -247,7 +247,6 @@ class WalkController
 
         $response = new StreamedResponse(
             static function () use ($walkRepository): void {
-
                 // The getExportQuery method returns a query that is used to retrieve
                 // all the objects (lines of your csv file) you need. The iterate method
                 // is used to limit the memory consumption

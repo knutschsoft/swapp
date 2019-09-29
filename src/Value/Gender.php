@@ -34,20 +34,20 @@ final class Gender
 
     public function isMale(): bool
     {
-        return $this->gender === self::GENDER_MALE;
+        return self::GENDER_MALE === $this->gender;
     }
 
     public function isFemale(): bool
     {
-        return $this->gender === self::GENDER_FEMALE;
+        return self::GENDER_FEMALE === $this->gender;
     }
 
     public function isQueer(): bool
     {
-        return $this->gender === self::GENDER_QUEER;
+        return self::GENDER_QUEER === $this->gender;
     }
 
-    public function equal(Gender $gender): bool
+    public function equal(self $gender): bool
     {
         return $this->gender() === $gender->gender();
     }
