@@ -1,14 +1,18 @@
 <?php
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\SystemicQuestion;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMSystemicQuestionRepository extends EntityRepository implements SystemicQuestionRepositoryInterface
+class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository implements SystemicQuestionRepositoryInterface
 {
-    /**
-     * @param SystemicQuestion $systemicQuestion
-     */
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, SystemicQuestion::class);
+    }
+
     public function save(SystemicQuestion $systemicQuestion)
     {
         $this->_em->persist($systemicQuestion);
@@ -16,10 +20,10 @@ class DoctrineORMSystemicQuestionRepository extends EntityRepository implements 
     }
 
     /**
-     * @throws \Doctrine\ORM\NoResultException
+     * @return SystemicQuestion
      * @throws \Doctrine\ORM\NonUniqueResultException
      *
-     * @return SystemicQuestion
+     * @throws \Doctrine\ORM\NoResultException
      */
     public function getRandom()
     {

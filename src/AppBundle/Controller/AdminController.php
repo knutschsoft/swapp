@@ -5,16 +5,15 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
+use AppBundle\Repository\UserRepositoryInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
-use FOS\UserBundle\Doctrine\UserManager;
-use FOS\UserBundle\Model\UserInterface;
 use Webmozart\Assert\Assert;
 
 class AdminController extends BaseAdminController
 {
-    public function createNewUserEntity(): UserInterface
+    public function createNewUserEntity(): User
     {
-        return $this->getUserManager()->createUser();
+        return new User();
     }
 
     public function createNewTeamEntity(): Team
@@ -24,14 +23,14 @@ class AdminController extends BaseAdminController
 
     public function prePersistUserEntity(User $user): void
     {
-        $this->getUserManager()->updateUser($user, false);
+        $this->getUserRepository()->save($user);
     }
 
     public function preUpdateUserEntity(User $user): void
     {
         $teams = $user->getTeams();
         $user->setTeams($teams);
-        $this->getUserManager()->updateUser($user, false);
+        $this->getUserRepository()->save($user);
     }
 
     public function prePersistTeamEntity(Team $team): void
@@ -48,11 +47,11 @@ class AdminController extends BaseAdminController
         $team->setUsers($users);
     }
 
-    private function getUserManager(): UserManager
+    private function getUserRepository(): UserRepositoryInterface
     {
-        $userManager = $this->get('fos_user.user_manager');
-        Assert::isInstanceOf($userManager, UserManager::class);
-        
-        return $userManager;
+        $userRepository = $this->get(UserRepositoryInterface::class);
+        Assert::isInstanceOf($userRepository, UserRepositoryInterface::class);
+
+        return $userRepository;
     }
 }

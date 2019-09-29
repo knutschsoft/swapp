@@ -12,7 +12,6 @@ use AppBundle\Repository\WayPointRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,8 +60,8 @@ class WayPointController
     }
 
     /**
-     * @todo needed?
      * @return Response
+     * @todo needed?
      */
     public function homeScreenAction()
     {
@@ -171,6 +170,7 @@ class WayPointController
             } else {
                 throw new \RuntimeException('Invalid submit button used or no button clicked.');
             }
+            Assert::notNull($url);
 
             return new RedirectResponse($url);
         }

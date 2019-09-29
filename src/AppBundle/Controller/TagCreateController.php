@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class TagCreateController
 {
@@ -62,6 +63,9 @@ class TagCreateController
             )
         );
 
-        return new RedirectResponse($this->router->generate('tag_home_screen'));
+        $url = $this->router->generate('tag_home_screen');
+        Assert::notNull($url);
+
+        return new RedirectResponse($url);
     }
 }

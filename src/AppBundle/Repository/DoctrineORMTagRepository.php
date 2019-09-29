@@ -1,14 +1,18 @@
 <?php
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Tag;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMTagRepository extends EntityRepository implements TagRepositoryInterface
+class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRepositoryInterface
 {
-    /**
-     * @param Tag $tag
-     */
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Tag::class);
+    }
+
     public function updateTag(Tag $tag)
     {
         $this->_em->merge($tag);

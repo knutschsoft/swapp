@@ -14,7 +14,7 @@ easy_admin:
             - { entity: 'Tag', icon: 'tag' }
             - { entity: 'SystemicQuestion', icon: 'question-circle' }
             - { label: 'Frontend', route: 'home', icon: 'home' }
-            - { label: 'Logout', route: 'fos_user_security_logout', icon: 'sign-out' }
+            - { label: 'Logout', route: 'app_logout', icon: 'sign-out' }
     entities:
         Team:
             class: AppBundle\Entity\Team

@@ -1,33 +1,32 @@
 security:
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
+        app_user_provider:
+            id: AppBundle\Security\UserProvider
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
         main:
+            guard:
+                authenticators:
+                    - AppBundle\Security\LoginFormAuthenticator
+                entry_point: AppBundle\Security\LoginFormAuthenticator
             pattern: ^/
             form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-                default_target_path: walk_home_screen
-            logout:       true
+                login_path: login
+                check_path: login
+            logout:
+                path: app_logout
             anonymous:    true
-            oauth:
-                resource_owners:
-                    facebook: "/login/check-facebook"
-                login_path: /login
-                use_forward: false
-                failure_path: /login
-                oauth_user_provider:
-                    service: my_user_provider
             remember_me:
                 secret: "%secret%"
 
     encoders:
-        FOS\UserBundle\Model\UserInterface: sha512
+        AppBundle\Entity\User:
+            algorithm: sha512
+        #            algorithm: argon2i
+        #            algorithm: auto
 
     access_control:
         - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }

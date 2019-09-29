@@ -19,10 +19,8 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Evolution7\BugsnagBundle\BugsnagBundle(),
-            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
 
             new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),
-            new FOS\UserBundle\FOSUserBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
             new Dunglas\DoctrineJsonOdm\Bundle\DunglasDoctrineJsonOdmBundle(),
             new Symfony\WebpackEncoreBundle\WebpackEncoreBundle(),

@@ -4,13 +4,17 @@ declare(strict_types=1);
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Team;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMTeamRepository extends EntityRepository implements TeamRepositoryInterface
+class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamRepositoryInterface
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Team::class);
+    }
+
     /**
-     * Finds all teams
-     *
      * @return Team[]
      */
     public function findAll()
@@ -30,12 +34,7 @@ class DoctrineORMTeamRepository extends EntityRepository implements TeamReposito
         return $team;
     }
 
-    /**
-     * Persists the team to the database.
-     *
-     * @param Team $team
-     */
-    public function save(Team $team)
+    public function save(Team $team): void
     {
         $this->_em->persist($team);
         $this->_em->flush();

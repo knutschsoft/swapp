@@ -10,4 +10,4 @@ php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction
 
 #yarn install
 
-./bin/phpunit
+./vendor/bin/phpunit

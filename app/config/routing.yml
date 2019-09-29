@@ -7,12 +7,6 @@ easy_admin_bundle:
     type:     annotation
     prefix:   /eadmin
 
-_fos:
-    resource: routing_fos.yml
-
-_hwio:
-    resource: routing_hwio.yml
-
 home:
     path: /
     controller: FrameworkBundle:Redirect:redirect

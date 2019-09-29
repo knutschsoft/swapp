@@ -105,6 +105,8 @@ class UserLoginTest extends WebTestCase
 
         $client->request('GET', $url);
         $this->assertStatusCode(302, $client);
+        $client->followRedirect();
+        $this->assertContains('/login', $client->getCrawler()->getUri());
     }
 
     /**

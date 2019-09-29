@@ -1,15 +1,20 @@
 <?php
+declare(strict_types=1);
+
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Guest;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMGuestRepository extends EntityRepository implements GuestRepositoryInterface
+class DoctrineORMGuestRepository extends ServiceEntityRepository implements GuestRepositoryInterface
 {
-    /**
-     * @param Guest $guest
-     */
-    public function save(Guest $guest)
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Guest::class);
+    }
+
+    public function save(Guest $guest): void
     {
         $this->_em->persist($guest);
         $this->_em->flush();

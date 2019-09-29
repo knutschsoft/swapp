@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class TeamFormController
 {
@@ -22,8 +24,11 @@ class TeamFormController
     /** @var RouterInterface */
     private $router;
 
-    public function __construct(FormFactoryInterface $formFactory, TeamRepositoryInterface $teamRepository, RouterInterface $router)
-    {
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        TeamRepositoryInterface $teamRepository,
+        RouterInterface $router
+    ) {
         $this->formFactory = $formFactory;
         $this->teamRepository = $teamRepository;
         $this->router = $router;
@@ -52,6 +57,9 @@ class TeamFormController
 
         $flash->add('notice', 'Team erfolgreich erstellt/bearbeitet.');
 
-        return new RedirectResponse($this->router->generate('team_list'));
+        $url = $this->router->generate('team_list');
+        Assert::notNull($url);
+
+        return new RedirectResponse($url);
     }
 }

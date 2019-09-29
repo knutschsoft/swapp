@@ -4,10 +4,16 @@ declare(strict_types=1);
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\WayPoint;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMWayPointRepository extends EntityRepository implements WayPointRepositoryInterface
+class DoctrineORMWayPointRepository extends ServiceEntityRepository implements WayPointRepositoryInterface
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, WayPoint::class);
+    }
+
     /**
      * @return WayPoint[]
      */
@@ -28,10 +34,7 @@ class DoctrineORMWayPointRepository extends EntityRepository implements WayPoint
         return $WayPoint;
     }
 
-    /**
-     * @param WayPoint $wayPoint
-     */
-    public function save(WayPoint $wayPoint)
+    public function save(WayPoint $wayPoint): void
     {
         $this->_em->persist($wayPoint);
         $this->_em->flush();

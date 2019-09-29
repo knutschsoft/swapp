@@ -5,11 +5,17 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Walk;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DoctrineORMWalkRepository extends EntityRepository implements WalkRepositoryInterface
+class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkRepositoryInterface
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Walk::class);
+    }
+
     /**
      * @return Walk[]
      */

@@ -34,10 +34,6 @@ services:
         class: AppBundle\DataFixtures\Faker\Provider\TagProvider
         tags: [ { name: hautelook_alice.faker.provider } ]
 
-    my_user_provider:
-        class: AppBundle\Security\Core\User\FOSUBUserProvider
-        arguments: ['@fos_user.user_manager', {facebook: facebook_id}]
-
     easycorp.easylog.handler:
         class: EasyCorp\EasyLog\EasyLogHandler
         public: false
@@ -50,3 +46,7 @@ services:
         arguments:
             - 'mysql:dbname=%database_name%;host=%database_host%'
             - { db_table: 'sessions', db_username: '%database_user%', db_password: '%database_password%' }
+
+    alice.processor.user:
+        class: AppBundle\DataFixtures\Processor\UserProcessor
+        tags: [ { name: hautelook_alice.alice.processor } ]

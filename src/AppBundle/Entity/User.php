@@ -3,28 +3,94 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Model\User as BaseUser;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * This is for testing doctrine only, will be replaced with real user entity
- * @UniqueEntity(fields="email", message="Email already taken")
  * @ORM\Entity
  * @ORM\Table(name="user")
- * @package AppBundle\Entity
  */
-class User extends BaseUser
+class User implements UserInterface
 {
+    const ROLE_DEFAULT = 'ROLE_USER';
+
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    protected $email;
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $enabled;
+    /**
+     * The salt to use for hashing.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $salt;
+    /**
+     * Encrypted password. Must be persisted.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $password;
+    /**
+     * Plain password. Used for model validation. Must not be persisted.
+     *
+     * @var ?string
+     */
+    protected $plainPassword;
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", name="last_login", nullable=true)
+     */
+    protected $lastLogin;
+    /**
+     * Random string sent to the user email address in order to verify it.
+     *
+     * @var ?string
+     *
+     * @ORM\Column(type="string", length=180, unique=true, name="confirmation_token", nullable=true)
+     */
+    protected $confirmationToken;
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", name="password_requested_at", nullable=true)
+     */
+    protected $passwordRequestedAt;
+    /**
+     * @var string[]
+     *
+     * @ORM\Column(type="array")
+     */
+    protected $roles;
+    /**
+     * @var int
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
-
+    private $id;
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $username;
     /**
      * @var Walk[]|Collection
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
@@ -38,18 +104,10 @@ class User extends BaseUser
      */
     private $teams;
 
-    /** @ORM\Column(name="facebook_id", type="string", length=255, nullable=true) */
-    protected $facebook_id;
-
-    /** @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true) */
-    protected $facebook_access_token;
-
-    /**
-     * User constructor.
-     */
     public function __construct()
     {
-        parent::__construct();
+        $this->enabled = false;
+        $this->roles = [];
         $this->walks = new ArrayCollection();
         $this->teams = new ArrayCollection();
     }
@@ -70,10 +128,7 @@ class User extends BaseUser
         $this->teams = $teams;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf(
             '%s (%s)',
@@ -82,18 +137,12 @@ class User extends BaseUser
         );
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -124,42 +173,6 @@ class User extends BaseUser
         $this->teams->removeElement($team);
     }
 
-    public function setFacebookId(string $facebookId): self
-    {
-        $this->facebook_id = $facebookId;
-
-        return $this;
-    }
-
-    public function getFacebookId(): string
-    {
-        return $this->facebook_id;
-    }
-
-    /**
-     * Set facebookAccessToken
-     *
-     * @param string $facebookAccessToken
-     *
-     * @return User
-     */
-    public function setFacebookAccessToken($facebookAccessToken)
-    {
-        $this->facebook_access_token = $facebookAccessToken;
-
-        return $this;
-    }
-
-    /**
-     * Get facebookAccessToken
-     *
-     * @return string
-     */
-    public function getFacebookAccessToken()
-    {
-        return $this->facebook_access_token;
-    }
-
     public function addWalk(Walk $walk): self
     {
         $this->walks[] = $walk;
@@ -170,5 +183,205 @@ class User extends BaseUser
     public function removeWalk(Walk $walk): void
     {
         $this->walks->removeElement($walk);
+    }
+
+    public function addRole(string $role): void
+    {
+        $role = strtoupper($role);
+        if ($role === static::ROLE_DEFAULT) {
+            return;
+        }
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+    }
+
+    public function serialize(): string
+    {
+        return serialize(
+            [
+                $this->password,
+                $this->salt,
+                $this->username,
+                $this->enabled,
+                $this->id,
+                $this->email,
+            ]
+        );
+    }
+
+    public function unserialize(string $serialized)
+    {
+        $data = unserialize($serialized);
+
+        if (13 === count($data)) {
+            // Unserializing a User object from 1.3.x
+            unset($data[4], $data[5], $data[6], $data[9], $data[10]);
+            $data = array_values($data);
+        } elseif (11 === count($data)) {
+            // Unserializing a User from a dev version somewhere between 2.0-alpha3 and 2.0-beta1
+            unset($data[4], $data[7], $data[8]);
+            $data = array_values($data);
+        }
+
+        list(
+            $this->password,
+            $this->salt,
+            $this->username,
+            $this->enabled,
+            $this->id,
+            $this->email,
+            ) = $data;
+    }
+
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function getSalt(): string
+    {
+        return (string) $this->salt;
+    }
+
+    public function setSalt(string $salt): void
+    {
+        $this->salt = $salt;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function getPlainPassword(): string
+    {
+        return (string) $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $password): void
+    {
+        $this->plainPassword = $password;
+    }
+
+    public function getLastLogin(): ?\DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    public function updateLastLoginAt(): void
+    {
+        $this->lastLogin = new \DateTime();
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+
+        // we need to make sure to have at least one role
+        $roles[] = static::ROLE_DEFAULT;
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = [];
+
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
+    }
+
+    public function hasRole($role): bool
+    {
+        return in_array(strtoupper($role), $this->getRoles(), true);
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(string $boolean): void
+    {
+        $this->enabled = (bool) $boolean;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole(static::ROLE_SUPER_ADMIN);
+    }
+
+    public function removeRole($role): void
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+    }
+
+    public function setSuperAdmin(bool $boolean): void
+    {
+        if (true === $boolean) {
+            $this->addRole(static::ROLE_SUPER_ADMIN);
+        } else {
+            $this->removeRole(static::ROLE_SUPER_ADMIN);
+        }
+    }
+
+    public function getPasswordRequestedAt(): ?\DateTime
+    {
+        return $this->passwordRequestedAt;
+    }
+
+    public function setPasswordRequestedAt(\DateTime $date = null): void
+    {
+        $this->passwordRequestedAt = $date;
+    }
+
+    public function isPasswordRequestNonExpired(int $ttl): bool
+    {
+        return $this->getPasswordRequestedAt() instanceof \DateTime &&
+            $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 }

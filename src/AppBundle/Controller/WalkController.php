@@ -9,8 +9,8 @@ use AppBundle\Entity\Walk;
 use AppBundle\Form\Type\WalkPrologueType;
 use AppBundle\Form\Type\WalkType;
 use AppBundle\Repository\SystemicQuestionRepositoryInterface;
+use AppBundle\Repository\UserRepositoryInterface;
 use AppBundle\Repository\WalkRepositoryInterface;
-use FOS\UserBundle\Model\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,7 +25,8 @@ class WalkController
 {
     private $walkRepository;
     private $router;
-    private $userManager;
+    /** @var UserRepositoryInterface */
+    private $userRepository;
     private $systemicQuestionRepository;
     /** @var FormFactoryInterface */
     private $formFactory;
@@ -34,19 +35,18 @@ class WalkController
      * @param WalkRepositoryInterface             $walkRepository
      * @param RouterInterface                     $router
      * @param FormFactoryInterface                $formFactory
-     * @param UserManagerInterface                $userManager
      * @param SystemicQuestionRepositoryInterface $systemicQuestionRepository
      */
     public function __construct(
         WalkRepositoryInterface $walkRepository,
         RouterInterface $router,
         FormFactoryInterface $formFactory,
-        UserManagerInterface $userManager,
+        UserRepositoryInterface $userRepository,
         SystemicQuestionRepositoryInterface $systemicQuestionRepository
     ) {
         $this->walkRepository = $walkRepository;
         $this->router = $router;
-        $this->userManager = $userManager;
+        $this->userRepository = $userRepository;
         $this->systemicQuestionRepository = $systemicQuestionRepository;
         $this->formFactory = $formFactory;
     }
@@ -136,7 +136,7 @@ class WalkController
         $this->walkRepository->save($walk);
         foreach ($team->getUsers() as $user) {
             $user->setWalks([$walk]);
-            $this->userManager->updateUser($user);
+            $this->userRepository->save($user);
         }
 
         $form = $this->formFactory->create(
