@@ -8,12 +8,19 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class UserLoginTest extends WebTestCase
 {
     private const USERNAME = 'username';
+
     private const PASSWORD = 'password';
+
     private const USERNAME_ADMIN = 'admin';
+
     private const PASSWORD_ADMIN = 'admin';
+
     private const DISABLED_NAME = 'inactiveuser';
+
     private const DISABLED_PASS = 'inactiveuser';
+
     private const BAD_NAME = 'ashd73ddb';
+
     private const BAD_PASS = 'www';
 
     public function testUserLoginBackendFailsWithWrongRole(): void
@@ -33,7 +40,7 @@ class UserLoginTest extends WebTestCase
 
         $crawler = $client->submit($form);
         $this->isSuccessful($client->getResponse());
-        $this->assertTrue($crawler->selectButton('Anmelden')->count() === 1, 'Button "Anmelden" not found');
+        $this->assertTrue(1 === $crawler->selectButton('Anmelden')->count(), 'Button "Anmelden" not found');
     }
 
     public function testUserLoginBackend(): void
@@ -53,7 +60,7 @@ class UserLoginTest extends WebTestCase
         $crawler = $client->submit($form);
 
         $this->isSuccessful($client->getResponse());
-        $this->assertTrue($crawler->selectButton('Anmelden')->count() === 0, 'Button "Anmelden" found');
+        $this->assertTrue(0 === $crawler->selectButton('Anmelden')->count(), 'Button "Anmelden" found');
     }
 
     public function testUserLoginFrontend(): void
@@ -73,7 +80,7 @@ class UserLoginTest extends WebTestCase
         $crawler = $client->submit($form);
 
         $this->isSuccessful($client->getResponse());
-        $this->assertTrue($crawler->filter('Anmelden')->count() === 0, 'Button "Anmelden" found');
+        $this->assertTrue(0 === $crawler->filter('Anmelden')->count(), 'Button "Anmelden" found');
     }
 
     /**
@@ -93,6 +100,7 @@ class UserLoginTest extends WebTestCase
         $client->request('GET', $url);
         $this->assertStatusCode(302, $client);
     }
+
     /**
      * @param string $url
      *

@@ -40,14 +40,14 @@ class WayPoint
      *
      * @Assert\File(maxSize = "10240k")
      *
-     * @var File|null $imageFile
+     * @var File|null
      */
     private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, name="image_name", nullable=true)
      *
-     * @var ?string $imageName
+     * @var ?string
      */
     private $imageName;
 

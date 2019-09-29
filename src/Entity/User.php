@@ -17,6 +17,7 @@ class User implements UserInterface
     private const ROLE_DEFAULT = 'ROLE_USER';
 
     private const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
     /**
      * @var string
      *

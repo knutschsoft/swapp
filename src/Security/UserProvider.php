@@ -21,7 +21,7 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function loadUserByUsername($usernameOrEmail): UserInterface
     {

@@ -8,6 +8,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class WalkTest extends WebTestCase
 {
     private const WAYPOINT_NAME = 'location';
+
     private const WALK_NAME = 'name';
 
     public function testCreateWalk(): void

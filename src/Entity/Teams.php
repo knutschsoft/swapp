@@ -11,7 +11,7 @@ class Teams implements StrictlyTypedCollectionInterface
     use StrictlyTypedCollectionInterfaceImplementationTrait;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function checkType($item): bool
     {

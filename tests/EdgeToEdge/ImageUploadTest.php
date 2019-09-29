@@ -45,9 +45,9 @@ class ImageUploadTest extends WebTestCase
      */
     public function testSubmittingEmptyFormRedirectsToForm(array $args): void
     {
-        /**@var Client $client */
+        /** @var Client $client */
         $client = $args[0];
-        /**@var Crawler $crawler */
+        /** @var Crawler $crawler */
         $crawler = $args[1];
 
         $form = $crawler->selectButton('speichern')->form();
@@ -69,9 +69,9 @@ class ImageUploadTest extends WebTestCase
      */
     public function testSubmittingValidImageSavesImage(array $args): void
     {
-        /**@var Client $client */
+        /** @var Client $client */
         $client = $args[0];
-        /**@var Crawler $crawler */
+        /** @var Crawler $crawler */
         $crawler = $args[1];
 
         $form = $crawler->selectButton('speichern')->form();
@@ -101,14 +101,14 @@ class ImageUploadTest extends WebTestCase
      */
     public function testUploadingImageExcceedingMaxFileSizeRendersFormErrors(array $args): void
     {
-        /**@var Client $client */
+        /** @var Client $client */
         $client = $args[0];
-        /**@var Crawler $crawler */
+        /** @var Crawler $crawler */
         $crawler = $args[1];
 
         $fileName = 'test_image_42MB.png';
         $fileLocation = $client->getKernel()->getRootDir();
-        $fileLocation .= '/../tests/fixtures/' . $fileName;
+        $fileLocation .= '/../tests/fixtures/'.$fileName;
         $imgStub = new UploadedFile($fileLocation, $fileName);
 
         $form = $crawler->selectButton('speichern')->form();
@@ -122,7 +122,7 @@ class ImageUploadTest extends WebTestCase
         $this->assertContains(
             'Datei ist zu groß',
             $text,
-            'Error uploading ' . $fileName . '. Either upload_max_filesize in php.ini is lower than the assertion.
+            'Error uploading '.$fileName.'. Either upload_max_filesize in php.ini is lower than the assertion.
                 or file was uploaded without triggering a form error.'
         );
     }

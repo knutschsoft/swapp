@@ -10,7 +10,7 @@ final class AgeRange
     /** @var int */
     public $rangeStart;
 
-    /**@var int */
+    /** @var int */
     public $rangeEnd;
 
     /**
@@ -48,7 +48,7 @@ final class AgeRange
         return $this->rangeEnd;
     }
 
-    public function equal(AgeRange $ageRange): bool
+    public function equal(self $ageRange): bool
     {
         return $this->getRangeStart() === $ageRange->getRangeStart() && $this->getRangeEnd() === $ageRange->getRangeEnd();
     }

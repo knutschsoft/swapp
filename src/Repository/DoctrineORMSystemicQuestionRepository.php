@@ -24,7 +24,6 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
      * @return SystemicQuestion
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
-     *
      * @throws \Doctrine\ORM\NoResultException
      */
     public function getRandom(): SystemicQuestion

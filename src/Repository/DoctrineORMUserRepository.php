@@ -33,7 +33,7 @@ class DoctrineORMUserRepository extends ServiceEntityRepository implements UserR
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function loadUserByUsername($username): ?UserInterface
     {
