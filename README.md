@@ -4,7 +4,6 @@ SWAPP
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5/big.png)](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5)
 [![build status of swapp](https://travis-ci.org/knutschsoft/swapp.svg)](https://travis-ci.org/knutschsoft/swapp)
 [![StyleCi](https://styleci.io/repos/34905820/shield?branch=master)](https://styleci.io/repos/34905820)
-[![Stories in Ready](https://badge.waffle.io/knutschsoft/swapp.png?label=ready&title=Ready)](https://waffle.io/knutschsoft/swapp)
 
 # Entrance:
 
