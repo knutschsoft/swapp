@@ -79,10 +79,10 @@
             "@qa"
         ],
         "qa-ci": [
-            "@cs",
-            "@stan",
-            "@unit",
-            "@security"
+            "vendor/bin/phpcbf --colors src tests",
+            "vendor/bin/phpstan analyse --no-progress --ansi",
+            "vendor/bin/phpunit --colors",
+            "vendor/bin/security-checker security:check --ansi"
         ],
         "database-init": [
             "php bin/console doctrine:database:drop --no-interaction --force --if-exists",

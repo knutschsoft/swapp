@@ -24,7 +24,7 @@ before_script:
   - yarn encore production
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
-  - php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction --env=test
+  - php bin/console hautelook:fixtures:load --no-interaction --env=test
 
 script:
   - composer qa-ci
