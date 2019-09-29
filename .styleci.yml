@@ -1,10 +1,12 @@
 preset: symfony
 
+disabled:
+  - blank_line_before_declare
+
 risky: true
 
 finder:
   exclude:
-    - "tests"
     - "app/DoctrineMigrations"
     - "var"
   name:
@@ -12,4 +14,4 @@ finder:
   not-name:
     - "*Stub.php"
   depth:
-    - "< 3"
+    - "< 4"
