@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -17,18 +18,21 @@ class User implements UserInterface
     private const ROLE_DEFAULT = 'ROLE_USER';
 
     private const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=180, unique=true)
      */
     protected $email;
+
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
     protected $enabled;
+
     /**
      * The salt to use for hashing.
      *
@@ -37,6 +41,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", nullable=true)
      */
     protected $salt;
+
     /**
      * Encrypted password. Must be persisted.
      *
@@ -45,18 +50,21 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     protected $password;
+
     /**
      * Plain password. Used for model validation. Must not be persisted.
      *
      * @var ?string
      */
     protected $plainPassword;
+
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", name="last_login", nullable=true)
      */
     protected $lastLogin;
+
     /**
      * Random string sent to the user email address in order to verify it.
      *
@@ -65,18 +73,21 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true, name="confirmation_token", nullable=true)
      */
     protected $confirmationToken;
+
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", name="password_requested_at", nullable=true)
      */
     protected $passwordRequestedAt;
+
     /**
      * @var string[]
      *
      * @ORM\Column(type="array")
      */
     protected $roles;
+
     /**
      * @var int
      *
@@ -85,12 +96,14 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
+
     /**
      * @var Walk[]|Collection
      *

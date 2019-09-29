@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\ParamConverter;
@@ -49,6 +50,6 @@ class UserParamConverter implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration): bool
     {
-        return $configuration->getClass() === User::class;
+        return User::class === $configuration->getClass();
     }
 }

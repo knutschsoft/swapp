@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -19,8 +20,10 @@ class TagCreateController
 {
     /** @var TagRepository */
     private $tagRepository;
+
     /** @var FormFactoryInterface */
     private $formFactory;
+
     /** @var RouterInterface */
     private $router;
 

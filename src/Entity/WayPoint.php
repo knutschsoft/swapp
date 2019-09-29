@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -40,14 +41,14 @@ class WayPoint
      *
      * @Assert\File(maxSize = "10240k")
      *
-     * @var File|null $imageFile
+     * @var File|null
      */
     private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, name="image_name", nullable=true)
      *
-     * @var ?string $imageName
+     * @var ?string
      */
     private $imageName;
 
@@ -73,6 +74,7 @@ class WayPoint
      * @var AgeGroup[]
      */
     private $ageGroups;
+
     /**
      * @ORM\Column(type="string", nullable=true, length=4096)
      *
