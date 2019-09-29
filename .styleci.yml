@@ -1,17 +1,18 @@
 preset: symfony
 
-disabled:
-  - blank_line_before_declare
-
 risky: true
 
+disabled:
+    - blank_line_after_opening_tag
+    - property_separation
+
 finder:
-  exclude:
-    - "app/DoctrineMigrations"
-    - "var"
-  name:
-    - "*.php"
-  not-name:
-    - "*Stub.php"
-  depth:
-    - "< 4"
+    exclude:
+        - "app/DoctrineMigrations"
+        - "var"
+    name:
+        - "*.php"
+    not-name:
+        - "*Stub.php"
+    depth:
+        - "< 4"
