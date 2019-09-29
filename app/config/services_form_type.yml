@@ -1,20 +1,20 @@
 services:
     app.form.type.tag:
-        class: AppBundle\Form\Type\TagType
+        class: App\Form\Type\TagType
         tags:
             - { name: form.type, alias: tag }
 
     app.form.type.walk:
-        class: AppBundle\Form\Type\WalkType
+        class: App\Form\Type\WalkType
         tags:
             - { name: form.type, alias: walk }
 
     app.form.type.walk.prologue:
-        class: AppBundle\Form\Type\WalkPrologueType
+        class: App\Form\Type\WalkPrologueType
         tags:
             - { name: form.type, alias: walk_prologue }
 
     app.form.type.waypoint:
-        class: AppBundle\Form\Type\WayPointType
+        class: App\Form\Type\WayPointType
         tags:
             - { name: form.type, alias: way_point }

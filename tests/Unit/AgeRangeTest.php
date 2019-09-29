@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit;
 
-use AppBundle\Value\AgeRange;
+use App\Value\AgeRange;
 use PHPUnit\Framework\TestCase;
 
 class AgeRangeTest extends TestCase

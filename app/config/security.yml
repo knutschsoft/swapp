@@ -1,7 +1,7 @@
 security:
     providers:
         app_user_provider:
-            id: AppBundle\Security\UserProvider
+            id: App\Security\UserProvider
 
     firewalls:
         dev:
@@ -10,8 +10,8 @@ security:
         main:
             guard:
                 authenticators:
-                    - AppBundle\Security\LoginFormAuthenticator
-                entry_point: AppBundle\Security\LoginFormAuthenticator
+                    - App\Security\LoginFormAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
             pattern: ^/
             form_login:
                 login_path: login
@@ -23,7 +23,7 @@ security:
                 secret: "%secret%"
 
     encoders:
-        AppBundle\Entity\User:
+        App\Entity\User:
             algorithm: sha512
         #            algorithm: argon2i
         #            algorithm: auto

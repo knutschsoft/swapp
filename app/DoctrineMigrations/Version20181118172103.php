@@ -28,7 +28,7 @@ final class Version20181118172103 extends AbstractMigration
             'Migration can only be executed safely on \'mysql\'.'
         );
 
-        $value = '{"6": {"#type": "AppBundle\\\\Value\\\\AgeRange", "rangeEnd": 5, "rangeStart": 0}, "7": {"#type": "AppBundle\\\\Value\\\\AgeRange", "rangeEnd": 11, "rangeStart": 6}, "8": {"#type": "AppBundle\\\\Value\\\\AgeRange", "rangeEnd": 17, "rangeStart": 12}, "9": {"#type": "AppBundle\\\\Value\\\\AgeRange", "rangeEnd": 21, "rangeStart": 18}, "10": {"#type": "AppBundle\\\\Value\\\\AgeRange", "rangeEnd": 27, "rangeStart": 22}}';
+        $value = '{"6": {"#type": "App\\\\Value\\\\AgeRange", "rangeEnd": 5, "rangeStart": 0}, "7": {"#type": "App\\\\Value\\\\AgeRange", "rangeEnd": 11, "rangeStart": 6}, "8": {"#type": "App\\\\Value\\\\AgeRange", "rangeEnd": 17, "rangeStart": 12}, "9": {"#type": "App\\\\Value\\\\AgeRange", "rangeEnd": 21, "rangeStart": 18}, "10": {"#type": "App\\\\Value\\\\AgeRange", "rangeEnd": 27, "rangeStart": 22}}';
 
         $query = $this->connection->createQueryBuilder()
             ->update('team')

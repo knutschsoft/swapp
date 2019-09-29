@@ -1,7 +1,5 @@
 imports:
     - { resource: services_form_type.yml }
-    - { resource: services_param_converter.yml }
-    - { resource: services_repository.yml }
     - { resource: services_twig.yml }
 
 services:
@@ -12,26 +10,26 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
 
-    # makes classes in src/AppBundle available to be used as services
+    # makes classes in src available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    AppBundle\:
-        resource: '../../src/AppBundle/*'
+    App\:
+        resource: '../../src/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../src/AppBundle/{Entity,Repository}'
+        exclude: '../../src/{Entity}'
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
-    AppBundle\Controller\:
-        resource: '../../src/AppBundle/Controller'
+    App\Controller\:
+        resource: '../../src/Controller'
         tags: ['controller.service_arguments']
 
     app.bugsnag_user:
-        class: AppBundle\BugsnagUser
+        class: App\BugsnagUser
         arguments: ['@security.token_storage']
 
     faker.provider.tag:
-        class: AppBundle\DataFixtures\Faker\Provider\TagProvider
+        class: App\DataFixtures\Faker\Provider\TagProvider
         tags: [ { name: hautelook_alice.faker.provider } ]
 
     easycorp.easylog.handler:
@@ -48,5 +46,5 @@ services:
             - { db_table: 'sessions', db_username: '%database_user%', db_password: '%database_password%' }
 
     alice.processor.user:
-        class: AppBundle\DataFixtures\Processor\UserProcessor
+        class: App\DataFixtures\Processor\UserProcessor
         tags: [ { name: hautelook_alice.alice.processor } ]

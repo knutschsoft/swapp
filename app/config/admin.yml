@@ -17,7 +17,7 @@ easy_admin:
             - { label: 'Logout', route: 'app_logout', icon: 'sign-out' }
     entities:
         Team:
-            class: AppBundle\Entity\Team
+            class: App\Entity\Team
             label: eadmin.team.label
             list:
                 title: eadmin.team.list.title
@@ -42,7 +42,7 @@ easy_admin:
                   - 'users'
                   - 'ageGroups'
         Walk:
-            class: AppBundle\Entity\Walk
+            class: App\Entity\Walk
             label: eadmin.walk.label
             form:
                 fields:
@@ -65,7 +65,7 @@ easy_admin:
                     - 'rating'
                     - 'systemicQuestion'
         WayPoint:
-            class: AppBundle\Entity\WayPoint
+            class: App\Entity\WayPoint
             label: eadmin.way-point.label
             list:
                 title: eadmin.way_point.list.title
@@ -87,12 +87,12 @@ easy_admin:
             show:
                 title: eadmin.way_point.show.title
         Tag:
-            class: AppBundle\Entity\Tag
+            class: App\Entity\Tag
             label: eadmin.tag.label
             list:
                 title: eadmin.tag.list.title
         User:
-            class: AppBundle\Entity\User
+            class: App\Entity\User
             label: eadmin.user.label
             list:
                 title: eadmin.user.list.title
@@ -133,12 +133,12 @@ easy_admin:
                     - teams
                     - walks
         Guest:
-            class: AppBundle\Entity\Guest
+            class: App\Entity\Guest
             label: eadmin.guest.label
             list:
                 title: eadmin.guest.list.title
         SystemicQuestion:
-            class: AppBundle\Entity\SystemicQuestion
+            class: App\Entity\SystemicQuestion
             label: eadmin.systemic-question.label
             list:
                 title: eadmin.systemic-question.list.title

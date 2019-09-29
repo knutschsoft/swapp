@@ -12,4 +12,4 @@ exclude_patterns:
     - app/SymfonyRequirements.php
     - web/config.php
     - web/app_*.php
-    - src/AppBundle/DataFixtures/ORM/user.yml
+    - src/DataFixtures/ORM/user.yml

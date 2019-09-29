@@ -17,7 +17,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new AppBundle\AppBundle(),
+            new App\AppBundle(),
             new Evolution7\BugsnagBundle\BugsnagBundle(),
 
             new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),

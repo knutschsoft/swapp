@@ -1,0 +1,61 @@
+App\Entity\User:
+    user_{1..10}:
+        username: <firstName()>
+        plainPassword: <password()>
+        email: <email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_admin:
+        username: admin
+        plainPassword: admin
+        email: <email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN')))>
+    user_inactive:
+        username: inactiveuser
+        plainPassword: inactiveuser
+        email: <email()>
+        enabled: 0
+        roles: <randomElement($array = array (array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_waldi_beta:
+        username: waldi_beta
+        plainPassword: waldi_beta
+        email: waldi_beta<email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_werner_beta:
+        username: werner_beta
+        plainPassword: werner_beta
+        email: werner_beta<email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_eva_beta:
+        username: eva_beta
+        plainPassword: eva_beta
+        email: eva_beta<email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_jens_beta:
+        username: jens_beta
+        plainPassword: jens_beta
+        email: jens_beta<email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_heinz_beta:
+        username: heinz_beta
+        plainPassword: heinz_beta
+        email: heinz_beta<email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_franzi_beta:
+        username: franzi_beta
+        plainPassword: franzi_beta
+        email: franzi_beta<email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>
+    user_patrick_beta:
+        username: patrick_beta
+        plainPassword: patrick_beta
+        email: patrick_beta<email()>
+        enabled: 1
+        roles: <randomElement($array = array (array('ROLE_ADMIN'), array('ROLE_USER'), array('ROLE_ADMIN', 'ROLE_USER')))>

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Application\Migrations;
 
-use AppBundle\Value\AgeGroup;
-use AppBundle\Value\AgeRange;
-use AppBundle\Value\Gender;
-use AppBundle\Value\PeopleCount;
+use App\Value\AgeGroup;
+use App\Value\AgeRange;
+use App\Value\Gender;
+use App\Value\PeopleCount;
 use Doctrine\DBAL\Migrations\AbortMigrationException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
