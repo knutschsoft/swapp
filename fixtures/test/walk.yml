@@ -1,0 +1,14 @@
+App\Entity\Walk:
+    walk_{1..10}:
+        name: <domainWord()>
+        startTime: <datetime()>
+        endTime: <datetime()>
+        rating: <numberBetween(1, 5)>
+        walkReflection: <realText()>
+        systemicAnswer: <realText()>
+        conceptOfDay: <realText()>
+        weather: <randomElement(['Sonne', 'Regen', 'Bewölkt'])>
+        holidays: <randomElement([true, false])>
+        isResubmission: <randomElement([true, false])>
+        teamName: '@team*->name'
+        systemicQuestion: '@systemic_question_*'

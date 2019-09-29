@@ -1,4 +1,0 @@
-App\Entity\Tag:
-    tag_{1..14}:
-        name: <tagName()>
-        color: <colorName()>

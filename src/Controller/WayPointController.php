@@ -54,7 +54,7 @@ class WayPointController
      */
     public function homeScreenAction(): Response
     {
-        return $this->templateEngine->renderResponse(':WayPoint:wayPointForm.html.twig');
+        return $this->templateEngine->renderResponse('way_point/wayPointForm.html.twig');
     }
 
     /**
@@ -70,7 +70,7 @@ class WayPointController
             'wayPoint' => $wayPoint,
         ];
 
-        return $this->templateEngine->renderResponse('WayPoint/show.html.twig', $parameters);
+        return $this->templateEngine->renderResponse('way_point/show.html.twig', $parameters);
     }
 
     /**
@@ -84,7 +84,7 @@ class WayPointController
             'wayPoints' => $this->wayPointRepository->findAll(),
         ];
 
-        return $this->templateEngine->renderResponse('WayPoint/dataTable.html.twig', $parameters);
+        return $this->templateEngine->renderResponse('way_point/dataTable.html.twig', $parameters);
     }
 
     /**
@@ -107,7 +107,7 @@ class WayPointController
         );
 
         return $this->templateEngine->renderResponse(
-            ':WayPoint:wayPointForm.html.twig',
+            'way_point/wayPointForm.html.twig',
             [
                 'walk' => $walk,
                 'form' => $form->createView(),
@@ -165,7 +165,7 @@ class WayPointController
         }
 
         return $this->templateEngine->renderResponse(
-            ':WayPoint:wayPointForm.html.twig',
+            'way_point/wayPointForm.html.twig',
             [
                 'form' => $form->createView(),
                 'wayPoints' => $walk->getWayPoints(),

@@ -1,0 +1,5 @@
+App\Entity\Tag:
+    tag_{1..14}:
+        name: '<tagName()>'
+        color: <colorName()>
+        walks: <numberBetween(1, 10)>x @walk_*

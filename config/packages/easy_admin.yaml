@@ -1,0 +1,149 @@
+easy_admin:
+    site_name: Swapp -<br>Streetworker App
+    list:
+        actions:
+            - { name: 'show', icon: 'search', 'label': 'Anzeigen' }
+            - { name: 'edit', icon: 'pencil', 'label': 'Bearbeiten' }
+    design:
+        menu:
+            - { entity: 'User', icon: 'user' }
+            - { entity: 'Guest', icon: 'user-secret' }
+            - { entity: 'Team', icon: 'users' }
+            - { entity: 'Walk', icon: 'map' }
+            - { entity: 'WayPoint', icon: 'crosshairs' }
+            - { entity: 'Tag', icon: 'tag' }
+            - { entity: 'SystemicQuestion', icon: 'question-circle' }
+            - { label: 'Frontend', route: 'home', icon: 'home' }
+            - { label: 'Logout', route: 'app_logout', icon: 'sign-out' }
+    entities:
+        Team:
+            class: App\Entity\Team
+            label: eadmin.team.label
+            list:
+                title: eadmin.team.list.title
+                fields:
+                    - 'id'
+                    - 'name'
+                    - 'users'
+                    - 'ageGroups'
+            form:
+                fields:
+                    - 'name'
+                    - 'users'
+                    - 'ageGroups'
+            edit:
+                fields:
+                    - 'name'
+                    - { property: 'users',type_options: { by_reference: false }}
+                    - 'ageGroups'
+            show:
+                fields:
+                    - 'name'
+                    - 'users'
+                    - 'ageGroups'
+        Walk:
+            class: App\Entity\Walk
+            label: eadmin.walk.label
+            form:
+                fields:
+                    - 'name'
+                    - { property: 'startTime', type: 'datetime' }
+                    - { property: 'endTime', type: 'datetime' }
+                    - 'wayPoints'
+                    - 'walkReflection'
+                    - 'rating'
+                    - 'systemicQuestion'
+                    - { property: 'systemicAnswer', type: 'textarea' }
+            list:
+                title: eadmin.walk.list.title
+                fields:
+                    - 'name'
+                    - { property: 'startTime', type: 'datetime' }
+                    - { property: 'endTime', type: 'datetime' }
+                    - 'wayPoints'
+                    - 'walkReflection'
+                    - 'rating'
+                    - 'systemicQuestion'
+        WayPoint:
+            class: App\Entity\WayPoint
+            label: eadmin.way-point.label
+            list:
+                title: eadmin.way_point.list.title
+                fields:
+                    - 'locationName'
+                    - 'malesCount'
+                    - 'femalesCount'
+                    - 'note'
+                    - 'isMeeting'
+                    - 'walk'
+            form:
+                title: eadmin.way_point.edit.title
+                fields:
+                    - 'locationName'
+                    - 'note'
+                    - 'isMeeting'
+                    - 'walk'
+                    - { property: 'ageGroups', type: '' }
+            show:
+                title: eadmin.way_point.show.title
+        Tag:
+            class: App\Entity\Tag
+            label: eadmin.tag.label
+            list:
+                title: eadmin.tag.list.title
+        User:
+            class: App\Entity\User
+            label: eadmin.user.label
+            list:
+                title: eadmin.user.list.title
+                fields:
+                    - id
+                    - username
+                    - email
+                    - enabled
+                    - lastLogin
+                    - roles
+                    - teams
+                    - walks
+            edit:
+                fields:
+                    - username
+                    - email
+                    - enabled
+                    - { property: 'plainPassword', type: 'text', type_options: { required: false } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+                    - teams
+                    - walks
+            new:
+                fields:
+                    - username
+                    - email
+                    - enabled
+                    - { property: 'plainPassword', type: 'text', type_options: { required: true } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+                    - teams
+                    - walks
+            show:
+                fields:
+                    - username
+                    - email
+                    - enabled
+                    - lastLogin
+                    - roles
+                    - teams
+                    - walks
+        Guest:
+            class: App\Entity\Guest
+            label: eadmin.guest.label
+            list:
+                title: eadmin.guest.list.title
+        SystemicQuestion:
+            class: App\Entity\SystemicQuestion
+            label: eadmin.systemic-question.label
+            list:
+                title: eadmin.systemic-question.list.title
+            form:
+                fields:
+                    - 'id'
+                    - { property: 'question', type: 'textarea' }
+                    - 'walks'

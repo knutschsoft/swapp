@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\EdgeToEdge;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-
-class ApplicationAvailabilityTest extends WebTestCase
+class ApplicationAvailabilityTest extends BaseWebTestCase
 {
     /**
      * @dataProvider urlProvider
@@ -15,14 +13,11 @@ class ApplicationAvailabilityTest extends WebTestCase
     public function testPageIsSuccessful(string $url): void
     {
         $this->loadAllFixtures();
-        $credentials = [
-            'username' => 'admin',
-            'password' => 'admin',
-        ];
-
-        $client = static::makeClient($credentials);
-        $client->request('GET', $url);
-        $this->isSuccessful($client->getResponse());
+        $user = 'admin';
+        $client = $this->getClient($user);
+        $crawler = $client->request('GET', $url);
+        $expectedStatusCode = 200;
+        $this->assertStatusCode($expectedStatusCode, $client, $crawler, $url, $user);
     }
 
     public function urlProvider(): array
@@ -49,13 +44,13 @@ class ApplicationAvailabilityTest extends WebTestCase
     {
         $this->loadFixtureFiles(
             [
-                '@AppBundle/DataFixtures/ORM/test/tag.yml',
-                '@AppBundle/DataFixtures/ORM/test/guest.yml',
-                '@AppBundle/DataFixtures/ORM/test/team.yml',
-                '@AppBundle/DataFixtures/ORM/test/user.yml',
-                '@AppBundle/DataFixtures/ORM/test/walk.yml',
-                '@AppBundle/DataFixtures/ORM/test/systemicQuestion.yml',
-                '@AppBundle/DataFixtures/ORM/test/wayPoint.yml',
+                'fixtures/test/tag.yml',
+                'fixtures/test/guest.yml',
+                'fixtures/test/team.yml',
+                'fixtures/test/user.yml',
+                'fixtures/test/walk.yml',
+                'fixtures/test/systemicQuestion.yml',
+                'fixtures/test/wayPoint.yml',
             ]
         );
     }

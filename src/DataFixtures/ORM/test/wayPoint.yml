@@ -1,8 +1,0 @@
-App\Entity\WayPoint:
-    way_point_{1..100}:
-        locationName: <streetName()>
-        isMeeting: <boolean(50)>
-        note: <text()>
-        walk: '@walk*'
-        createdAt: <date()>
-        updatedAt: <date()>

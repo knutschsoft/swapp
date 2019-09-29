@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Faker\Provider;
 
-class TagProvider
+use Faker\Provider\Base;
+
+class TagProvider extends Base
 {
     /** @var int */
     private static $position = 0;

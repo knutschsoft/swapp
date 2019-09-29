@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\Processor;
 
 use App\Entity\User;
-use Nelmio\Alice\ProcessorInterface;
+use Fidry\AliceDataFixtures\ProcessorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Webmozart\Assert\Assert;
 
@@ -21,7 +21,7 @@ class UserProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function preProcess($object)
+    public function preProcess(string $id, $object): void
     {
         if (false === $object instanceof User) {
             return;
@@ -37,7 +37,7 @@ class UserProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function postProcess($object)
+    public function postProcess(string $id, $object): void
     {
         // do nothing
     }

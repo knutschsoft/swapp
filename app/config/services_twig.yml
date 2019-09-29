@@ -1,6 +1,0 @@
-services:
-    app.twig_extension.intl:
-        class: Twig_Extensions_Extension_Intl
-        public: false
-        tags:
-            - { name: twig.extension }

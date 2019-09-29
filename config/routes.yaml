@@ -1,0 +1,7 @@
+home:
+    path: /
+    controller: FrameworkBundle:Redirect:redirect
+    defaults:
+        route: walk_home_screen
+        permanent: false
+        ignoreAttributes: true

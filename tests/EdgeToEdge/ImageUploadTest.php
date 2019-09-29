@@ -3,16 +3,12 @@ declare(strict_types=1);
 
 namespace App\Tests\EdgeToEdge;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ImageUploadTest extends WebTestCase
+class ImageUploadTest extends BaseWebTestCase
 {
-    /**
-     * @return array
-     */
     public function testNavigateToCreateWaypointForm(): array
     {
         $this->loadAllFixtures();
@@ -21,7 +17,7 @@ class ImageUploadTest extends WebTestCase
         $crawler = $client->request('GET', '/walks');
         $crawler = $crawler->selectLink('Runde beginnen');
         $crawler = $client->click($crawler->link());
-        $this->isSuccessful($client->getResponse());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('Wegpunkt anlegen')->form(
             [
@@ -32,8 +28,8 @@ class ImageUploadTest extends WebTestCase
         );
 
         $crawler = $client->submit($form);
-        $this->isSuccessful($client->getResponse());
-        $this->assertContains('Runde wurde erfolgreich gestartet.', $crawler->text());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
+        $this->assertStringContainsString('Runde wurde erfolgreich gestartet.', $crawler->text());
 
         return [$client, $crawler];
     }
@@ -45,14 +41,14 @@ class ImageUploadTest extends WebTestCase
      */
     public function testSubmittingEmptyFormRedirectsToForm(array $args): void
     {
-        /** @var Client $client */
+        /** @var KernelBrowser $client */
         $client = $args[0];
         /** @var Crawler $crawler */
         $crawler = $args[1];
 
         $form = $crawler->selectButton('speichern')->form();
         $crawler = $client->submit($form);
-        $this->isSuccessful($client->getResponse());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('speichern')->form();
         $this->assertArrayHasKey(
@@ -69,26 +65,26 @@ class ImageUploadTest extends WebTestCase
      */
     public function testSubmittingValidImageSavesImage(array $args): void
     {
-        /** @var Client $client */
+        /** @var KernelBrowser $client */
         $client = $args[0];
         /** @var Crawler $crawler */
         $crawler = $args[1];
 
         $form = $crawler->selectButton('speichern')->form();
-        $fileLocation = $client->getKernel()->getRootDir();
-        $fileLocation .= '/../tests/fixtures/image.jpg';
+        $fileLocation = $client->getKernel()->getProjectDir();
+        $fileLocation .= '/tests/fixtures/image.jpg';
 
         $form['way_point[imageFile][file]']->upload($fileLocation);
         $form['way_point[locationName]'] = 'Buxtehude is the locationName value';
         $form['way_point[note]'] = 'note value';
 
         $crawler = $client->submit($form);
-        $this->isSuccessful($client->getResponse());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         // check for saved image - todo refactor to own testmethod
         $link = $crawler->selectLink('Wegpunkt');
         $crawler = $client->click($link->link());
-        $this->isSuccessful($client->getResponse());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         $img = $crawler->filter('img');
         $this->assertSame('/images/way_points/image.jpg', $img->attr('src'));
@@ -101,14 +97,14 @@ class ImageUploadTest extends WebTestCase
      */
     public function testUploadingImageExcceedingMaxFileSizeRendersFormErrors(array $args): void
     {
-        /** @var Client $client */
+        /** @var KernelBrowser $client */
         $client = $args[0];
         /** @var Crawler $crawler */
         $crawler = $args[1];
 
         $fileName = 'test_image_42MB.png';
-        $fileLocation = $client->getKernel()->getRootDir();
-        $fileLocation .= '/../tests/fixtures/'.$fileName;
+        $fileLocation = $client->getKernel()->getProjectDir();
+        $fileLocation .= '/tests/fixtures/'.$fileName;
         $imgStub = new UploadedFile($fileLocation, $fileName);
 
         $form = $crawler->selectButton('speichern')->form();
@@ -119,7 +115,7 @@ class ImageUploadTest extends WebTestCase
 
         // only working with german translation messages
         $text = $crawler->text();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Datei ist zu groß',
             $text,
             'Error uploading '.$fileName.'. Either upload_max_filesize in php.ini is lower than the assertion.
@@ -134,28 +130,25 @@ class ImageUploadTest extends WebTestCase
     {
         $this->loadFixtureFiles(
             [
-                '@AppBundle/DataFixtures/ORM/test/tag.yml',
-                '@AppBundle/DataFixtures/ORM/test/guest.yml',
-                '@AppBundle/DataFixtures/ORM/test/team.yml',
-                '@AppBundle/DataFixtures/ORM/test/user.yml',
-                '@AppBundle/DataFixtures/ORM/test/walk.yml',
-                '@AppBundle/DataFixtures/ORM/test/systemicQuestion.yml',
-                '@AppBundle/DataFixtures/ORM/test/wayPoint.yml',
+                'fixtures/test/tag.yml',
+                'fixtures/test/guest.yml',
+                'fixtures/test/team.yml',
+                'fixtures/test/user.yml',
+                'fixtures/test/walk.yml',
+                'fixtures/test/systemicQuestion.yml',
+                'fixtures/test/wayPoint.yml',
             ]
         );
     }
 
-    /**
-     * @return Client
-     */
-    private function createAuthenticatedClient(): Client
+    private function createAuthenticatedClient(): KernelBrowser
     {
         $credentials = [
             'username' => 'waldi_beta',
             'password' => 'waldi_beta',
         ];
 
-        $client = static::makeClient($credentials);
+        $client = $this->getClient($credentials['username']);
         $client->followRedirects(true);
 
         return $client;

@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block title %}{{ 'walk.form.headline'|trans }}{% endblock %}
 {% block content %}
     <div class="card">
@@ -40,7 +40,7 @@
 
             <hr>
 
-            {{ include (':WayPoint:wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
+            {{ include ('way_point/wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
         </div>
     </div>
 {% endblock %}

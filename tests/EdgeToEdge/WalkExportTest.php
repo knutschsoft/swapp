@@ -3,23 +3,26 @@ declare(strict_types=1);
 
 namespace App\Tests\EdgeToEdge;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-
-class WalkExportTest extends WebTestCase
+class WalkExportTest extends BaseWebTestCase
 {
     public function testWalkExportIsSuccessful(): void
     {
-        $credentials = [
-            'username' => 'admin',
-            'password' => 'admin',
-        ];
+        $this->loadUserFixtures();
+        $user = 'admin';
+        $client = $this->getClient($user);
 
-        $client = static::makeClient($credentials);
-
+        $url = '/walkexport';
         \ob_start();
-        $client->request('GET', '/walkexport');
+        $crawler = $client->request('GET', $url);
         \ob_get_clean();
 
-        $this->isSuccessful($client->getResponse());
+        $this->assertStatusCode(200, $client, $crawler, $url, $user);
+    }
+
+    private function loadUserFixtures(): void
+    {
+        $this->loadFixtureFiles([
+            'fixtures/test/user.yml',
+        ]);
     }
 }

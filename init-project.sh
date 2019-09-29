@@ -21,8 +21,8 @@ done
 
 
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
-    SYMFONY_ENV=${APP_ENVIRONMENT} composer self-update
-    SYMFONY_ENV=${APP_ENVIRONMENT} composer install
+    APP_ENV=${APP_ENVIRONMENT} composer self-update
+    APP_ENV=${APP_ENVIRONMENT} composer install
     ##############################################################
     # fix permission problems
     ##############################################################
@@ -34,16 +34,16 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
     setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
 elif [ "${APP_ENVIRONMENT}" = "test" ]; then
-    SYMFONY_ENV=${APP_ENVIRONMENT} composer self-update
-    SYMFONY_ENV=${APP_ENVIRONMENT} composer install
+    APP_ENV=${APP_ENVIRONMENT} composer self-update
+    APP_ENV=${APP_ENVIRONMENT} composer install
     php bin/console doctrine:database:drop --full-database --force --env=${APP_ENVIRONMENT}
     php bin/console doctrine:database:create --no-interaction --env=${APP_ENVIRONMENT}
     php bin/console doctrine:schema:update --force --env=${APP_ENVIRONMENT}
     php bin/console hautelook:fixtures:load --no-interaction --env=${APP_ENVIRONMENT}
 else
-    SYMFONY_ENV=${APP_ENVIRONMENT} composer self-update
-    SYMFONY_ENV=${APP_ENVIRONMENT} composer install --optimize-autoloader
-    SYMFONY_ENV=${APP_ENVIRONMENT} composer dump-autoload --optimize
+    APP_ENV=${APP_ENVIRONMENT} composer self-update
+    APP_ENV=${APP_ENVIRONMENT} composer install --optimize-autoloader
+    APP_ENV=${APP_ENVIRONMENT} composer dump-autoload --optimize
     php bin/console cache:clear --env=${APP_ENVIRONMENT} --no-debug
     php bin/console cache:warmup --env=${APP_ENVIRONMENT} --no-debug
     php bin/console doctrine:database:create --if-not-exists --no-interaction --env=${APP_ENVIRONMENT}

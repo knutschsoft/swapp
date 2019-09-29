@@ -6,5 +6,4 @@ parameters:
     paths:
         - %currentWorkingDirectory%/src
     excludes_analyse:
-#        - %currentWorkingDirectory%/src/Migrations/Version*.php # sf4
-        - %currentWorkingDirectory%/app/DoctrineMigrations/Version*.php # sf3
+        - %currentWorkingDirectory%/src/Migrations/Version*.php

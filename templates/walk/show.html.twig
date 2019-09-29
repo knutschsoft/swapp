@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <div class="card">
@@ -33,7 +33,7 @@
 
             <hr>
 
-            {{ include (':WayPoint:wayPointOverview.html.twig', { 'wayPoints': walk.getWayPoints }, with_context = false) }}
+            {{ include ('way_point/wayPointOverview.html.twig', { 'wayPoints': walk.getWayPoints }, with_context = false) }}
         </div>
     </div>
 

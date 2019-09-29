@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'waypoint.create.headline'|trans }}{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h5 mb-0">
+                {{ 'waypoint.create.headline'|trans({'%walk%': walk.name}) }}
+            </h1>
+        </div>
+        <div class="card-body pl-1 pr-1 pb-2">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.locationName) }}
+            {{ form_row(form.ageGroups) }}
+            {{ form_row(form.imageFile) }}
+            {{ form_row(form.note) }}
+            {{ form_row(form.wayPointTags) }}
+            {{ form_row(form.isMeeting) }}
+            {{ form_row(form.createWayPoint) }}
+            {{ form_row(form.createWalk) }}
+            {{ form_end(form) }}
+            <hr>
+
+            {{ include ('way_point/wayPointOverview.html.twig', {'key': 'waypoints', 'value': wayPoints }) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,4 +1,4 @@
-FROM composer:1.8 as composer
+FROM composer:1.9 as composer
 FROM php:7.3-apache
 
 ENV MYSQL_HOST=${MYSQL_HOST}
@@ -84,18 +84,12 @@ RUN echo "xdebug.remote_host=172.17.0.1"                                        
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /home/docker/.composer
 # contains dev-mode packages
-RUN composer global require "hirak/prestissimo:^0.3" "sllh/composer-versions-check:^2.0" "pyrech/composer-changelogs:^1.5" --prefer-dist --no-progress --no-suggest --classmap-authoritative
+RUN composer global require "hirak/prestissimo:^0.3" "sllh/composer-versions-check:^2.0" "pyrech/composer-changelogs:^1.6" --prefer-dist --no-progress --no-suggest --classmap-authoritative
 
-#use uncommented lines for flex
-#COPY composer.json composer.lock symfony.lock /var/www/html/
-COPY composer.json composer.lock /var/www/html/
-#COPY src/Kernel.php /var/www/html/src/
+COPY .docker /
 
-# remove for flex
-WORKDIR /var/www/html
-COPY . /var/www/html
-COPY app/config/parameters.yml.dist app/config/parameters.yml
-# end remove for flex
+COPY composer.json composer.lock symfony.lock /var/www/html/
+COPY src/Kernel.php /var/www/html/src/
 
 RUN cd /var/www/html
 RUN composer install --no-scripts --optimize-autoloader
@@ -103,14 +97,11 @@ RUN composer install --no-scripts --optimize-autoloader
 COPY package.json yarn.lock /var/www/html/
 RUN yarn install
 
-# use for flex
-#WORKDIR /var/www/html
-#COPY . /var/www/html
-# end use for flex
+WORKDIR /var/www/html
+COPY . /var/www/html
 
 ARG APP_ENVIRONMENT=prod
 ENV APP_ENVIRONMENT=${APP_ENVIRONMENT}
-ENV APACHE_LOG_NAME=${PROJECT_NAME_DOCKER}_${APP_ENVIRONMENT}
 
 RUN if [ "$APP_ENVIRONMENT" != "dev" ]; then \
         node_modules/.bin/encore production; \
