@@ -1,9 +1,18 @@
 SWAPP
 ========================
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5/big.png)](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5)
-[![build status of swapp](https://travis-ci.org/knutschsoft/swapp.svg)](https://travis-ci.org/knutschsoft/swapp)
-[![StyleCi](https://styleci.io/repos/34905820/shield?branch=master)](https://styleci.io/repos/34905820)
+[![build status of swapp](https://img.shields.io/travis/knutschsoft/swapp/master?style=flat-square&logo=travis)](https://travis-ci.org/knutschsoft/swapp)
+[![StyleCi](https://styleci.io/repos/34905820/shield?branch=master&style=plasti)](https://styleci.io/repos/34905820)
+[![Docker build](https://img.shields.io/docker/automated/knutschsoft/swapp?style=flat-square)](https://hub.docker.com/r/knutschsoft/swapp)
+[![Docker build](https://img.shields.io/docker/build/knutschsoft/swapp?style=flat-square)](https://hub.docker.com/r/knutschsoft/swapp)
+[![SensioLabsInsight](https://img.shields.io/symfony/i/grade/09942345-a55b-410a-ab4c-809f382688d5?style=flat-square09942345-a55b-410a-ab4c-809f382688d5/big.png)](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5)
+[![SensioLabsInsight](https://img.shields.io/symfony/i/violations/09942345-a55b-410a-ab4c-809f382688d5?style=flat-square09942345-a55b-410a-ab4c-809f382688d5/big.png)](https://insight.sensiolabs.com/projects/09942345-a55b-410a-ab4c-809f382688d5)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+![PHP7 Compatible](https://img.shields.io/travis/php-v/knutschsoft/swapp/master?style=flat-square)
+[![Open Issues](https://img.shields.io/github/issues-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues?q=is%3Aissue+is%3Aclosed)
+[![Contributors](https://img.shields.io/github/contributors/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/graphs/contributors)
+![Contributors](https://img.shields.io/maintenance/yes/2020?style=flat-square)
 
 # Entrance:
 
