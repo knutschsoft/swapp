@@ -100,8 +100,8 @@ class BaseWebTestCase extends WebTestCase
             $session = self::$container->get('session');
             $firewallName = 'main';
 
-            /* @var UserInterface|null $user */
             try {
+                /** @var UserInterface|null $user */
                 $user = self::$container
                     ->get(UserProvider::class)
                     ->loadUserByUsername($username);
