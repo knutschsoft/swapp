@@ -9,6 +9,7 @@ SWAPP
 [![SensioLabsInsight](https://img.shields.io/symfony/i/violations/43846aa7-7ce4-4e33-95f4-115bf9a7e23e?style=flat-square)](https://insight.sensiolabs.com/projects/43846aa7-7ce4-4e33-95f4-115bf9a7e23e)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 ![PHP7 Compatible](https://img.shields.io/travis/php-v/knutschsoft/swapp/master?style=flat-square)
+[![Greenkeeper badge](https://badges.greenkeeper.io/knutschsoft/swapp.svg)](https://greenkeeper.io/)
 [![Open Issues](https://img.shields.io/github/issues-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues?q=is%3Aissue+is%3Aclosed)
 [![Contributors](https://img.shields.io/github/contributors/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/graphs/contributors)
