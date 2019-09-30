@@ -11,7 +11,7 @@ SWAPP
 ![PHP7 Compatible](https://img.shields.io/travis/php-v/knutschsoft/swapp/master?style=flat-square)
 [![Open Issues](https://img.shields.io/github/issues-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues?q=is%3Aissue+is%3Aclosed)
-[![Contributors](https://img.shields.io/github/contributors/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/graphs/contributors) [![Greenkeeper badge](https://badges.greenkeeper.io/knutschsoft/swapp.svg)](https://greenkeeper.io/)
 ![Contributors](https://img.shields.io/maintenance/yes/2020?style=flat-square)
 
 # Entrance:
