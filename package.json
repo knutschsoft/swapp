@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "street worker app ===",
   "dependencies": {
-    "@symfony/webpack-encore": "^0.28.0",
+    "@symfony/webpack-encore": "^0.28.2",
     "bootstrap": "^4.3",
     "ionicons": "^4.6",
     "jquery": "^3.4.1",
