@@ -13,7 +13,7 @@
     "sass-loader": "^8.0.0",
     "vue": "^2.6.11",
     "vue-loader": "^15.7",
-    "vue-template-compiler": "^2.6",
+    "vue-template-compiler": "^2.6.11",
     "webpack-notifier": "^1.8"
   },
   "scripts": {
