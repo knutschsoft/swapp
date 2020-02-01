@@ -1,3 +1,5 @@
+php_version: 7.3
+
 global_exclude_dirs:
     - vendor
     - vendors

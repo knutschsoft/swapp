@@ -23,7 +23,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.3",
         "doctrine/orm": "^2.6",
         "doctrine/doctrine-bundle": "^1.11",
         "doctrine/doctrine-migrations-bundle": "^2.0",

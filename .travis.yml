@@ -9,7 +9,6 @@ dist: trusty
 sudo: required
 
 php:
-  - 7.2
   - 7.3
 
 env:
