@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Value\AgeGroup;
+use App\Value\AgeRange;
 use App\Value\Gender;
 use App\Value\PeopleCount;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -170,6 +171,54 @@ class WayPoint
         $sum = 0;
         foreach ($this->getAgeGroups() as $ageGroup) {
             if (!$ageGroup->gender()->isQueer()) {
+                continue;
+            }
+            $sum += $ageGroup->peopleCount()->count();
+        }
+
+        return $sum;
+    }
+
+    public function getFemalesCountForAgeRange(AgeRange $ageRange): int
+    {
+        $sum = 0;
+        foreach ($this->getAgeGroups() as $ageGroup) {
+            if (!$ageGroup->gender()->isFemale()) {
+                continue;
+            }
+            if (!$ageGroup->ageRange->equal($ageRange)) {
+                continue;
+            }
+            $sum += $ageGroup->peopleCount()->count();
+        }
+
+        return $sum;
+    }
+
+    public function getMalesCountForAgeRange(AgeRange $ageRange): int
+    {
+        $sum = 0;
+        foreach ($this->getAgeGroups() as $ageGroup) {
+            if (!$ageGroup->gender()->isMale()) {
+                continue;
+            }
+            if (!$ageGroup->ageRange->equal($ageRange)) {
+                continue;
+            }
+            $sum += $ageGroup->peopleCount()->count();
+        }
+
+        return $sum;
+    }
+
+    public function getQueerCountForAgeRange(AgeRange $ageRange): int
+    {
+        $sum = 0;
+        foreach ($this->getAgeGroups() as $ageGroup) {
+            if (!$ageGroup->gender()->isQueer()) {
+                continue;
+            }
+            if (!$ageGroup->ageRange->equal($ageRange)) {
                 continue;
             }
             $sum += $ageGroup->peopleCount()->count();

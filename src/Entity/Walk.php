@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Fields\AgeRangeField;
+use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -333,34 +334,6 @@ class Walk
         $this->guests = $guests;
     }
 
-    public function toArray(): array
-    {
-        return [
-            $this->id,
-            $this->name,
-            $this->startTime->format('d.m.Y H:i:s'),
-            $this->endTime->format('d.m.Y H:i:s'),
-            $this->walkReflection,
-            $this->rating,
-            $this->systemicQuestion,
-            $this->systemicAnswer,
-            $this->insights,
-            $this->commitments,
-            $this->isResubmission,
-            $this->weather,
-            $this->holidays,
-            $this->conceptOfDay,
-            $this->getMalesCount(),
-            $this->getFemalesCount(),
-            $this->teamName,
-//            $this->walkTeamMembers,
-//            $this->guests,
-        ];
-    }
-
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return \sprintf(
@@ -582,6 +555,36 @@ class Walk
         $count = 0;
         foreach ($this->getWayPoints() as $wayPoint) {
             $count += $wayPoint->getQueerCount();
+        }
+
+        return $count;
+    }
+
+    public function getFemalesCountForAgeRange(AgeRange $ageRange): int
+    {
+        $count = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $count += $wayPoint->getFemalesCountForAgeRange($ageRange);
+        }
+
+        return $count;
+    }
+
+    public function getMalesCountForAgeRange(AgeRange $ageRange): int
+    {
+        $count = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $count += $wayPoint->getMalesCountForAgeRange($ageRange);
+        }
+
+        return $count;
+    }
+
+    public function getQueerCountForAgeRange(AgeRange $ageRange): int
+    {
+        $count = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $count += $wayPoint->getQueerCountForAgeRange($ageRange);
         }
 
         return $count;

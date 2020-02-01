@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
@@ -233,67 +232,5 @@ class WalkController
         Assert::notNull($url);
 
         return new RedirectResponse($url);
-    }
-
-    /**
-     * @Route("walkexport", name="walk_export")
-     *
-     * @return StreamedResponse
-     */
-    public function exportAction(): StreamedResponse
-    {
-        // get the service container to pass to the closure
-        $walkRepository = $this->walkRepository;
-
-        $response = new StreamedResponse(
-            static function () use ($walkRepository): void {
-                // The getExportQuery method returns a query that is used to retrieve
-                // all the objects (lines of your csv file) you need. The iterate method
-                // is used to limit the memory consumption
-                $results = $walkRepository->getFindAllQuery()->iterate();
-                $handle = \fopen('php://output', 'r+');
-
-                $header = [
-                    'Id',
-                    'Name',
-                    'Beginn',
-                    'Ende',
-                    'Reflexion',
-                    'Bewertung',
-                    'systemische Frage',
-                    'systemische Antwort',
-                    'Erkenntnisse, Überlegungen, Zielsetzungen',
-                    'Termine, Besorgungen, Verabredungen',
-                    'Wiedervorlage Dienstberatung',
-                    'Wetter',
-                    'Ferien',
-                    'Tageskonzept',
-                    'angetroffene Männer',
-                    'angetroffene Frauen',
-                    'Teamname',
-                    //                    'TeamMitglieder',
-                    //                    'Gäste',
-                ];
-
-                Assert::resource($handle);
-                \fputcsv($handle, $header);
-
-                while (false !== ($row = $results->next())) {
-                    // add a line in the csv file. You need to implement a toArray() method
-                    // to transform your object into an array
-                    //                dump($row[0]->toArray());
-                    \fputcsv($handle, $row[0]->toArray());
-                    // used to limit the memory consumption
-                    //                $em->detach($row[0]);
-                }
-
-                \fclose($handle);
-            }
-        );
-
-        $response->headers->set('Content-Type', 'application/force-download');
-        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
-
-        return $response;
     }
 }
