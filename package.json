@@ -10,7 +10,7 @@
     "jquery-ui": "^1.12",
     "node-sass": "^4.12",
     "popper.js": "^1.15.0",
-    "sass-loader": "^8.0.0",
+    "sass-loader": "^7.0.1",
     "vue": "^2.6",
     "vue-loader": "^15.7",
     "vue-template-compiler": "^2.6",
