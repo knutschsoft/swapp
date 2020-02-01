@@ -95,10 +95,8 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
 
         $forms = \iterator_to_array($forms);
 
-        $ageGroups = [];
         foreach ($forms as $childName => $form) {
             $ageGroup = $this->getAgeGroupFromChildName($childName, $form);
-            $ageGroups[] = $ageGroup;
 
             /** @var AgeGroup $ageGroupData */
             foreach ($data as $ageGroupData) {
