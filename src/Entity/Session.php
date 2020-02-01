@@ -50,7 +50,10 @@ class Session
         $this->sessId = $sessId;
     }
 
-    public function getSessData(): object
+    /**
+     * @return object|mixed
+     */
+    public function getSessData()
     {
         return $this->sessData;
     }
