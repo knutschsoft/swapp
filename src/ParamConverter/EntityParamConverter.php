@@ -64,20 +64,11 @@ class EntityParamConverter implements ParamConverterInterface
 
                 break;
             default:
-                throw new \InvalidArgumentException(
-                    \sprintf('Wrong configuration "%s" in "%s"', $configuration->getName(), self::class)
-                );
+                throw new \InvalidArgumentException(\sprintf('Wrong configuration "%s" in "%s"', $configuration->getName(), self::class));
         }
 
         if (!$resource && !$configuration->isOptional()) {
-            throw new NotFoundHttpException(
-                \sprintf(
-                    'No %s not found for id "%s" in %s',
-                    $configuration->getName(),
-                    $id,
-                    self::class
-                )
-            );
+            throw new NotFoundHttpException(\sprintf('No %s not found for id "%s" in %s', $configuration->getName(), $id, self::class));
         }
 
         $param = $configuration->getName();
