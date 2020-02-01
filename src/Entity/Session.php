@@ -22,7 +22,7 @@ class Session
     /**
      * @ORM\Column(name="sess_data",type="blob", nullable=false)
      *
-     * @var object
+     * @var object|mixed
      */
     protected $sessData;
 
@@ -55,7 +55,10 @@ class Session
         return $this->sessData;
     }
 
-    public function setSessData(object $sessData): void
+    /**
+     * @param object|mixed $sessData
+     */
+    public function setSessData($sessData): void
     {
         $this->sessData = $sessData;
     }
