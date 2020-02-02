@@ -100,7 +100,6 @@
             "php bin/console doctrine:database:create",
             "php bin/console doctrine:migrations:diff"
         ],
-        "post-autoload-dump": "vendor/bin/captainhook install -f -s",
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",

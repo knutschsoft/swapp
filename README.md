@@ -155,3 +155,17 @@ Start tests:
 ```BASH
 $ docker-compose exec web vendor/bin/phpunit
 ```
+
+Add git hooks
+=============
+
+Execute once:
+```vendor/bin/captainhook install -f -s```
+
+E.g. a hook file will look like:  
+```
+docker@e5b8a0355c16:/var/www/html$ cat .git/hooks/commit-msg
+#!/usr/bin/env bash
+docker-compose exec --user=docker -T web ./vendor/bin/captainhook hook:commit-msg "$@"
+
+```
