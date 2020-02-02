@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "220b9b03078834acfc28f62ad8da50d7",
+    "content-hash": "8896331ec4416e33df67a49590a94a2e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -6284,57 +6284,6 @@
                 "prepare-commit-msg"
             ],
             "time": "2020-01-24T19:09:57+00:00"
-        },
-        {
-            "name": "captainhook/plugin-composer",
-            "version": "5.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/CaptainHookPhp/plugin-composer.git",
-                "reference": "5690b1de316643488426d4266937380fae09c8f1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/CaptainHookPhp/plugin-composer/zipball/5690b1de316643488426d4266937380fae09c8f1",
-                "reference": "5690b1de316643488426d4266937380fae09c8f1",
-                "shasum": ""
-            },
-            "require": {
-                "captainhook/captainhook": "^5.0",
-                "composer-plugin-api": "^1.1",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "composer/composer": "*"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "CaptainHook\\Plugin\\Composer\\ComposerPlugin",
-                "branch-alias": {
-                    "dev-fluffy_hedgehog": "5.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CaptainHook\\Plugin\\Composer\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Heigl",
-                    "email": "andreas@heigl.org"
-                },
-                {
-                    "name": "Sebastian Feldmann",
-                    "email": "sf@sebastian-feldmann.info"
-                }
-            ],
-            "description": "Composer-Plugin handling your git-hooks",
-            "time": "2020-01-31T09:33:19+00:00"
         },
         {
             "name": "composer/xdebug-handler",
