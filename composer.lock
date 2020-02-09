@@ -7501,22 +7501,22 @@
     "packages-dev": [
         {
             "name": "captainhook/captainhook",
-            "version": "5.1.0",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CaptainHookPhp/captainhook.git",
-                "reference": "9975ea441791c1b0f39dc44345fb9e8ac73ab816"
+                "reference": "ab31353df4ef739a744891fe800338848c5d51c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CaptainHookPhp/captainhook/zipball/9975ea441791c1b0f39dc44345fb9e8ac73ab816",
-                "reference": "9975ea441791c1b0f39dc44345fb9e8ac73ab816",
+                "url": "https://api.github.com/repos/CaptainHookPhp/captainhook/zipball/ab31353df4ef739a744891fe800338848c5d51c0",
+                "reference": "ab31353df4ef739a744891fe800338848c5d51c0",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "ext-simplexml": "*",
                 "ext-spl": "*",
+                "ext-xml": "*",
                 "php": "^7.2",
                 "sebastianfeldmann/camino": "^0.9.2",
                 "sebastianfeldmann/cli": "^3.0",
@@ -7535,9 +7535,11 @@
             ],
             "type": "library",
             "extra": {
-                "captainhook-config": "captainhook.json",
                 "branch-alias": {
-                    "dev-master": "5.0.x-dev"
+                    "dev-master": "6.0.x-dev"
+                },
+                "captainhook": {
+                    "config": "captainhook.json"
                 }
             },
             "autoload": {
@@ -7561,11 +7563,12 @@
                 "commit-msg",
                 "git",
                 "hooks",
+                "post-merge",
                 "pre-commit",
                 "pre-push",
                 "prepare-commit-msg"
             ],
-            "time": "2020-01-24T19:09:57+00:00"
+            "time": "2020-02-06T16:33:29+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -8931,26 +8934,23 @@
         },
         {
             "name": "sebastianfeldmann/git",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianfeldmann/git.git",
-                "reference": "cf2aafb8d897ee2ca2d35b988fff021e46f84b87"
+                "reference": "e7a939afe33eb1a8f9af478b9e9fe9f15410709d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/cf2aafb8d897ee2ca2d35b988fff021e46f84b87",
-                "reference": "cf2aafb8d897ee2ca2d35b988fff021e46f84b87",
+                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/e7a939afe33eb1a8f9af478b9e9fe9f15410709d",
+                "reference": "e7a939afe33eb1a8f9af478b9e9fe9f15410709d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-xml": "*",
                 "php": "^7.1",
-                "sebastianfeldmann/cli": "^3.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5"
+                "sebastianfeldmann/cli": "^3.0"
             },
             "type": "library",
             "extra": {
@@ -8978,7 +8978,7 @@
             "keywords": [
                 "git"
             ],
-            "time": "2020-01-23T14:31:38+00:00"
+            "time": "2020-02-07T11:47:04+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
