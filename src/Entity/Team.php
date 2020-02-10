@@ -33,7 +33,7 @@ class Team
      *
      * @var string
      */
-    private $name;
+    private $name = '';
 
     /**
      * @var User[]|Collection
