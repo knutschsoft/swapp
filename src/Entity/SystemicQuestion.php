@@ -23,14 +23,14 @@ class SystemicQuestion
      *
      * @var int
      */
-    private $id;
+    private $id = 0;
 
     /**
      * @ORM\Column(type="string", length=4096)
      *
      * @var string
      */
-    private $question;
+    private $question = '';
 
     /**
      * @ORM\OneToMany(targetEntity="Walk", mappedBy="systemicQuestion")
