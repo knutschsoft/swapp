@@ -23,6 +23,7 @@ done
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     APP_ENV=${APP_ENVIRONMENT} composer self-update
     APP_ENV=${APP_ENVIRONMENT} composer install
+    php bin/console assets:install --env=${APP_ENVIRONMENT}
     ##############################################################
     # fix permission problems
     ##############################################################
@@ -39,6 +40,7 @@ elif [ "${APP_ENVIRONMENT}" = "test" ]; then
     php bin/console doctrine:database:drop --full-database --force --env=${APP_ENVIRONMENT}
     php bin/console doctrine:database:create --no-interaction --env=${APP_ENVIRONMENT}
     php bin/console doctrine:schema:update --force --env=${APP_ENVIRONMENT}
+    php bin/console assets:install --env=${APP_ENVIRONMENT}
     php bin/console hautelook:fixtures:load --no-interaction --env=${APP_ENVIRONMENT}
 else
     APP_ENV=${APP_ENVIRONMENT} composer self-update
@@ -48,6 +50,7 @@ else
     php bin/console cache:warmup --env=${APP_ENVIRONMENT} --no-debug
     php bin/console doctrine:database:create --if-not-exists --no-interaction --env=${APP_ENVIRONMENT}
     php bin/console doctrine:migrations:migrate --no-interaction --env=${APP_ENVIRONMENT}
+    php bin/console assets:install --env=${APP_ENVIRONMENT}
 fi
 
 if [ "${APP_ENVIRONMENT}" != "dev" ]; then
