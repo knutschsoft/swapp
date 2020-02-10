@@ -144,6 +144,5 @@ easy_admin:
                 title: eadmin.systemic-question.list.title
             form:
                 fields:
-                    - 'id'
                     - { property: 'question', type: 'textarea' }
                     - 'walks'
