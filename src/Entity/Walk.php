@@ -97,9 +97,9 @@ class Walk
     private $rating;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SystemicQuestion", inversedBy="walks")
+     * @ORM\Column(type="string", length=4096)
      *
-     * @var SystemicQuestion
+     * @var string
      */
     private $systemicQuestion;
 
@@ -195,7 +195,7 @@ class Walk
         $instance->setEndTime(new \DateTime());
         $instance->setRating(1);
         $instance->setSystemicAnswer('');
-        $instance->setSystemicQuestion($systemicQuestion);
+        $instance->setSystemicQuestion($systemicQuestion->getQuestion());
         $instance->setWalkReflection('');
         $instance->setWeather('');
         $instance->setIsResubmission(false);
@@ -270,18 +270,12 @@ class Walk
         $this->isResubmission = $isResubmission;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSystemicQuestion()
+    public function getSystemicQuestion(): string
     {
         return $this->systemicQuestion;
     }
 
-    /**
-     * @param mixed $systemicQuestion
-     */
-    public function setSystemicQuestion($systemicQuestion): void
+    public function setSystemicQuestion(string $systemicQuestion): void
     {
         $this->systemicQuestion = $systemicQuestion;
     }

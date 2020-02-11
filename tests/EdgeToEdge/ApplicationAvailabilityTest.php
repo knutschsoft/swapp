@@ -32,8 +32,6 @@ class ApplicationAvailabilityTest extends BaseWebTestCase
             ['/eadmin/?action=list&entity=Tag'],
             ['/eadmin/?action=list&entity=User'],
             ['/eadmin/?action=list&entity=Guest'],
-            ['/eadmin/?action=list&entity=SystemicQuestion'],
-            ['/eadmin/?entity=SystemicQuestion&action=new&menuIndex=6&submenuIndex=-1&sortField=id&sortDirection=DESC&page=1'],
             // ...
         ];
     }

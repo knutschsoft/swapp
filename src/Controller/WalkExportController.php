@@ -109,7 +109,7 @@ class WalkExportController
             $walk->getEndTime()->format('d.m.Y H:i:s'),
             $walk->getWalkReflection(),
             $walk->getRating(),
-            $walk->getSystemicQuestion(),
+            $walk->getSystemicQuestion() ? $walk->getSystemicQuestion() : '',
             $walk->getSystemicAnswer(),
             $walk->getInsights(),
             $walk->getCommitments(),

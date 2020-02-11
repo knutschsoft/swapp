@@ -12,11 +12,9 @@ app:
         show:
             title: Gast '%entity_id%' anzeigen
     systemic-question:
-        menu: Fragen
+        menu: Systemische Fragen
         list:
-            title: Fragen
-        show:
-            title: Frage '%entity_id%' anzeigen
+            title: Systemische Fragen
     tag:
         menu: Tags
         list:

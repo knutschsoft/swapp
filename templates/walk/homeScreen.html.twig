@@ -151,11 +151,22 @@
             <hr/>
             <a class="input-group input-group-sm" href="{{ path('team_list') }}">
                 <div class="btn btn-block btn-primary form-control">
-                    {{ 'teams.manage.button'|trans}}
+                    {{ 'team.list.manage_button'|trans}}
                 </div>
                 <div class="input-group-append">
                     <span class="input-group-text"><i class="ion ion-md-list"></i></span>
                     <span class="input-group-text"><i class="ion ion-md-people"></i></span>
+                </div>
+            </a>
+
+            <hr/>
+            <a class="input-group input-group-sm" href="{{ path('systemic_question_list') }}">
+                <div class="btn btn-block btn-primary form-control">
+                    {{ 'systemic_question.list.manage_button'|trans}}
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="ion ion-md-list"></i></span>
+                    <span class="input-group-text"><i class="ion ion-md-help-circle-outline"></i></span>
                 </div>
             </a>
         </div>

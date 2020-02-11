@@ -40,10 +40,6 @@ tags:
     manage:
         button: Tags verwalten
 
-teams:
-  manage:
-    button: Teams verwalten
-
 tag:
     create:
         title: Neuen Tag erstellen
@@ -68,7 +64,28 @@ team:
   list:
     headline: 'Teams verwalten'
     title: 'Teams verwalten'
+    manage_button: 'Teams verwalten'
   create:
     title: 'Team anlegen/bearbeiten'
     headline: 'Team anlegen/bearbeiten'
     save: 'Team speichern'
+systemic_question:
+  list:
+    headline: 'Systemische Fragen verwalten'
+    explanation: |
+        Beim Abschluss jeder Runde gibt es ein Reflexionsprotokoll mit
+        systemischen Reflexionsfragen welche u.a. einen
+        "psychohygienschen" Beitrag zum Abschluss der Streetwork leisten.
+        Dazu wird bei Abschluss einer Runde zufällig eine dieser Fragen der Runde zugeordnet und sollte beantwortet werden.
+        Sie werden direkt an der Runde gespeichert, so dass eine Änderung der systemischen Fragen sich nicht
+        auf bestehende Runden auswirkt.
+    title: 'Systemische Fragen verwalten'
+    manage_button: 'Systemische Fragen verwalten'
+  create:
+    title: 'Systemische Frage anlegen'
+    headline: 'Systemische Frage anlegen'
+    save: 'Systemische Frage speichern'
+  edit:
+    title: 'Systemische Frage bearbeiten'
+    headline: 'Systemische Frage bearbeiten'
+    save: 'Systemische Frage speichern'

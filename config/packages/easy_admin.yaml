@@ -139,10 +139,7 @@ easy_admin:
                 title: eadmin.guest.list.title
         SystemicQuestion:
             class: App\Entity\SystemicQuestion
+            disabled_actions: ['new', 'edit']
             label: eadmin.systemic-question.label
             list:
                 title: eadmin.systemic-question.list.title
-            form:
-                fields:
-                    - { property: 'question', type: 'textarea' }
-                    - 'walks'
