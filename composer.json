@@ -32,7 +32,7 @@
         "easycorp/easyadmin-bundle": "~2.3",
         "league/csv": "^9.5",
         "ninsuo/symfony-collection": "^2.1",
-        "phpunit/phpunit": "8.5.2",
+        "phpunit/phpunit": "8.5.3",
         "rotexsoft/versatile-collections": "^2.0",
         "sensio/framework-extra-bundle": "^5.2",
         "stof/doctrine-extensions-bundle": "^1.3",
