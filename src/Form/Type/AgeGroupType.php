@@ -18,10 +18,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AgeGroupType extends AbstractType implements DataMapperInterface
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $ageGroups = $options['data'];

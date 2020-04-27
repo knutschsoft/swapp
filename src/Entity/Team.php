@@ -18,24 +18,6 @@ class Team
     use AgeRangeField;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    private $name = '';
-
-    /**
      * @var User[]|Collection
      *
      * @ORM\ManyToMany(
@@ -44,15 +26,24 @@ class Team
      */
     public $users;
 
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private int $id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank()
+     */
+    private string $name = '';
+
     public function __construct()
     {
         $this->ageRanges = [];
         $this->users = new ArrayCollection();
-    }
-
-    public function __toString(): string
-    {
-        return $this->name;
     }
 
     public function getId(): int
@@ -75,9 +66,7 @@ class Team
         $this->name = $name;
     }
 
-    /**
-     * @return User[]|Collection
-     */
+    /** @return User[]|Collection */
     public function getUsers()
     {
         return $this->users;
@@ -99,9 +88,7 @@ class Team
         }
     }
 
-    /**
-     * @param User[]|Collection $users
-     */
+    /** @param User[]|Collection $users */
     public function setUsers($users): void
     {
         $this->users = $users;
@@ -111,5 +98,10 @@ class Team
         // foreach ($users as $user) {
         //     $user->addTeam($this);
         // }
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

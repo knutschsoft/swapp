@@ -7,11 +7,9 @@ use Webmozart\Assert\Assert;
 
 final class AgeRange
 {
-    /** @var int */
-    public $rangeStart;
+    public int $rangeStart;
 
-    /** @var int */
-    public $rangeEnd;
+    public int $rangeEnd;
 
     /**
      * @param mixed $rangeStart

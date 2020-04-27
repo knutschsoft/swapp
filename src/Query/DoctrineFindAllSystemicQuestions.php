@@ -9,8 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineFindAllSystemicQuestions implements FindAllSystemicQuestions
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

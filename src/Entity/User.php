@@ -18,46 +18,36 @@ class User implements UserInterface
 
     private const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    protected $email;
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    protected $enabled;
+    /** @ORM\Column(type="string", length=180, unique=true) */
+    protected string $email;
+
+    /** @ORM\Column(type="boolean") */
+    protected bool $enabled;
+
     /**
      * The salt to use for hashing.
      *
-     * @var string
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $salt;
+    protected ?string $salt = null;
+
     /**
      * Encrypted password. Must be persisted.
      *
-     * @var string
-     *
      * @ORM\Column(type="string")
      */
-    protected $password;
+    protected string $password;
+
     /**
      * Plain password. Used for model validation. Must not be persisted.
      *
      * @var ?string
      */
-    protected $plainPassword;
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", name="last_login", nullable=true)
-     */
-    protected $lastLogin;
+    protected ?string $plainPassword = null;
+
+    /** @ORM\Column(type="datetime", name="last_login", nullable=true) */
+    protected ?\DateTime $lastLogin = null;
+
     /**
      * Random string sent to the user email address in order to verify it.
      *
@@ -65,33 +55,28 @@ class User implements UserInterface
      *
      * @ORM\Column(type="string", length=180, unique=true, name="confirmation_token", nullable=true)
      */
-    protected $confirmationToken;
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", name="password_requested_at", nullable=true)
-     */
-    protected $passwordRequestedAt;
+    protected ?string $confirmationToken = null;
+
+    /** @ORM\Column(type="datetime", name="password_requested_at", nullable=true) */
+    protected ?\DateTime $passwordRequestedAt = null;
+
     /**
      * @var string[]
      *
      * @ORM\Column(type="array")
      */
-    protected $roles;
+    protected array $roles;
+
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $username;
+    private int $id;
+
+    /** @ORM\Column(type="string", length=180, unique=true) */
+    private string $username;
+
     /**
      * @var Walk[]|Collection
      *
@@ -109,38 +94,41 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->username = '';
+        $this->email = '';
         $this->enabled = false;
         $this->roles = [];
         $this->walks = new ArrayCollection();
         $this->teams = new ArrayCollection();
     }
 
-    /**
-     * @return Team[]|Collection
-     */
+    public static function createEmpty(): self
+    {
+        $instance = new self();
+        $instance->username = '';
+        $instance->email = '';
+        $instance->enabled = false;
+        $instance->roles = [];
+        $instance->walks = new ArrayCollection();
+        $instance->teams = new ArrayCollection();
+        $instance->id = 0;
+
+        return $instance;
+    }
+
+    /** @return Team[]|Collection */
     public function getTeams(): Collection
     {
         return $this->teams;
     }
 
-    /**
-     * @param Team[]|Collection $teams
-     */
+    /** @param Team[]|Collection $teams */
     public function setTeams($teams): void
     {
         $this->teams = $teams;
         foreach ($teams as $team) {
             $team->addUser($this);
         }
-    }
-
-    public function __toString(): string
-    {
-        return \sprintf(
-            '%s (%s)',
-            $this->getUsername(),
-            $this->getEmail()
-        );
     }
 
     public function getId(): int
@@ -153,17 +141,13 @@ class User implements UserInterface
         $this->id = $id;
     }
 
-    /**
-     * @return Walk[]|Collection
-     */
+    /** @return Walk[]|Collection */
     public function getWalks(): Collection
     {
         return $this->walks;
     }
 
-    /**
-     * @param Walk[]|Collection $walks
-     */
+    /** @param Walk[]|Collection $walks */
     public function setWalks($walks): void
     {
         $this->walks = $walks;
@@ -295,7 +279,7 @@ class User implements UserInterface
         return (string) $this->plainPassword;
     }
 
-    public function setPlainPassword(string $password): void
+    public function setPlainPassword(?string $password): void
     {
         $this->plainPassword = $password;
     }
@@ -320,9 +304,7 @@ class User implements UserInterface
         $this->confirmationToken = $confirmationToken;
     }
 
-    /**
-     * @return string[]
-     */
+    /** @return string[] */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -394,5 +376,14 @@ class User implements UserInterface
     {
         return $this->getPasswordRequestedAt() instanceof \DateTime &&
             $this->getPasswordRequestedAt()->getTimestamp() + $ttl > \time();
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(
+            '%s (%s)',
+            $this->getUsername(),
+            $this->getEmail()
+        );
     }
 }

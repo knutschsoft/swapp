@@ -15,22 +15,11 @@ class SystemicQuestion
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=4096)
-     *
-     * @var string
-     */
-    private $question = '';
-
-    public function __toString(): string
-    {
-        return $this->question;
-    }
+    /** @ORM\Column(type="string", length=4096) */
+    private string $question = '';
 
     public function getId(): int
     {
@@ -50,5 +39,10 @@ class SystemicQuestion
     public function setQuestion(string $question): void
     {
         $this->question = $question;
+    }
+
+    public function __toString(): string
+    {
+        return $this->question;
     }
 }

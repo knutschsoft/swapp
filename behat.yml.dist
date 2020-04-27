@@ -1,0 +1,38 @@
+default:
+    suites:
+        default:
+            contexts:
+                - DatabaseContext:
+                    kernel: '@kernel'
+                - FeatureContext:
+                    kernel: '@kernel'
+
+    extensions:
+        FailAid\Extension:
+            screenshot:
+                directory: /var/www/html/public/screenshots/
+                # mode: default
+                autoClean: true
+                # size: 1444x1280
+#        Bex\Behat\ScreenshotExtension:
+#            active_image_drivers: url
+#            image_drivers:
+#                url:
+#                    screenshot_directory: "/var/www/html/public/screenshots"
+#                    screenshot_url: "http://swapp:8082/screenshots"
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: features/bootstrap/bootstrap.php
+                class: App\Kernel
+        Robertfausk\Behat\PantherExtension: ~
+        Behat\MinkExtension:
+            files_path: "features/files/"
+            base_url: "http://localhost"
+            javascript_session: javascript
+            default_session: javascript # symfony2
+            sessions:
+                javascript:
+#                    panther: ~
+                    panther:
+                        options:
+                            external_base_uri: http://localhost # same as base_url of mink

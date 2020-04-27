@@ -9,12 +9,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TagListController
 {
-    /** @var TagRepository */
-    private $tagRepository;
+    private TagRepository $tagRepository;
 
-    public function __construct(
-        TagRepository $tagRepository
-    ) {
+    public function __construct(TagRepository $tagRepository)
+    {
         $this->tagRepository = $tagRepository;
     }
 

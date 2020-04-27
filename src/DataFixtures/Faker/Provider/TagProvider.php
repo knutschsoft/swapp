@@ -7,10 +7,10 @@ use Faker\Provider\Base;
 
 class TagProvider extends Base
 {
-    /** @var int */
-    private static $position = 0;
+    private static int $position = 0;
+
     /** @var string[] */
-    private static $tagNames = [
+    private static array $tagNames = [
         'Gewalt (körperlich)',
         'Gewalt (verbal)',
         'Drogen',

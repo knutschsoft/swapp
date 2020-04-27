@@ -32,8 +32,8 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     chown -R $HOST_UID:$HOST_GID $PWD
     chown -R $CONTAINER_USER:$CONTAINER_GROUP /home/$CONTAINER_USER
 
-    setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
-    setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var web/images
+    setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images public/screenshots
+    setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images public/screenshots
 elif [ "${APP_ENVIRONMENT}" = "test" ]; then
     APP_ENV=${APP_ENVIRONMENT} composer self-update
     APP_ENV=${APP_ENVIRONMENT} composer install
@@ -54,9 +54,9 @@ else
 fi
 
 if [ "${APP_ENVIRONMENT}" != "dev" ]; then
-    #setfacl -R -m u:www-data:rwx -m m:rwx var web/uploads
-    #setfacl -dR -m u:www-data:rwx -m m:rwx var web/uploads
-    chown -R www-data:www-data var web/images
+    #setfacl -R -m u:www-data:rwx -m m:rwx var public/uploads
+    #setfacl -dR -m u:www-data:rwx -m m:rwx var public/uploads
+    chown -R www-data:www-data var public/images public/screenshots
 fi
 
 ##############################################################

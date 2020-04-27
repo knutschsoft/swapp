@@ -17,10 +17,9 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 class BaseWebTestCase extends WebTestCase
 {
-    /** @var KernelBrowser */
-    protected $client;
-    /** @var LoaderInterface */
-    private $loader;
+    protected KernelBrowser $client;
+
+    private LoaderInterface $loader;
 
     public function setUp(): void
     {
@@ -64,11 +63,6 @@ class BaseWebTestCase extends WebTestCase
         return self::$container->get('doctrine')->getManager();
     }
 
-    protected static function getClient(string $user = 'anonymous'): KernelBrowser
-    {
-        return self::createAppClient($user);
-    }
-
     protected function assertStatusCode(
         int $expectedStatusCode,
         KernelBrowser $client,
@@ -87,9 +81,16 @@ class BaseWebTestCase extends WebTestCase
                 $crawler->filter('h1.exception-message')->count() ? \trim(
                     $crawler->filter('h1.exception-message')->text()
                 ) : 'empty',
-                302 === $client->getResponse()->getStatusCode() ? ' It wants to redirect to '.$client->followRedirect()->getUri() : ''
+                302 === $client->getResponse()->getStatusCode() ?
+                    ' It wants to redirect to '.$client->followRedirect()->getUri()
+                    : ''
             )
         );
+    }
+
+    protected static function getClient(string $user = 'anonymous'): KernelBrowser
+    {
+        return self::createAppClient($user);
     }
 
     private static function createAppClient(string $username): KernelBrowser
@@ -101,10 +102,10 @@ class BaseWebTestCase extends WebTestCase
             $firewallName = 'main';
 
             try {
-                /** @var UserInterface|null $user */
                 $user = self::$container
                     ->get(UserProvider::class)
                     ->loadUserByUsername($username);
+                \assert($user instanceof UserInterface || $user === null);
             } catch (UsernameNotFoundException $e) {
                 $user = null;
             }
@@ -124,7 +125,7 @@ class BaseWebTestCase extends WebTestCase
 
     private function getLoader(): LoaderInterface
     {
-        if (!$this->loader) {
+        if (empty($this->loader)) {
             self::bootKernel();
             $this->loader = self::$container->get('fidry_alice_data_fixtures.loader.doctrine');
         }

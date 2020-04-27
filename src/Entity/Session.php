@@ -14,10 +14,8 @@ class Session
     /**
      * @ORM\Id()
      * @ORM\Column(name="sess_id",type="string", length=128, nullable=false)
-     *
-     * @var string
      */
-    protected $sessId;
+    protected string $sessId;
 
     /**
      * @ORM\Column(name="sess_data",type="blob", nullable=false)
@@ -26,19 +24,11 @@ class Session
      */
     protected $sessData;
 
-    /**
-     * @ORM\Column(name="sess_time",type="integer", nullable=false, options={"unsigned": false})
-     *
-     * @var int
-     */
-    protected $sessTime;
+    /** @ORM\Column(name="sess_time",type="integer", nullable=false, options={"unsigned": false}) */
+    protected int $sessTime;
 
-    /**
-     * @ORM\Column(name="sess_lifetime",type="integer", nullable=false)
-     *
-     * @var int
-     */
-    protected $sessLifetime;
+    /** @ORM\Column(name="sess_lifetime",type="integer", nullable=false) */
+    protected int $sessLifetime;
 
     public function getSessId(): string
     {
@@ -50,17 +40,13 @@ class Session
         $this->sessId = $sessId;
     }
 
-    /**
-     * @return object|mixed
-     */
+    /** @return object|mixed */
     public function getSessData()
     {
         return $this->sessData;
     }
 
-    /**
-     * @param object|mixed $sessData
-     */
+    /** @param object|mixed $sessData */
     public function setSessData($sessData): void
     {
         $this->sessData = $sessData;

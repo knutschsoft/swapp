@@ -11,12 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WalkExportController
 {
-    /** @var WalkRepository */
-    private $walkRepository;
+    private WalkRepository $walkRepository;
 
-    public function __construct(
-        WalkRepository $walkRepository
-    ) {
+    public function __construct(WalkRepository $walkRepository)
+    {
         $this->walkRepository = $walkRepository;
     }
 
@@ -24,6 +22,8 @@ class WalkExportController
      * @Route("walkexport", name="walk_export")
      *
      * @return Response
+     *
+     * @throws \League\Csv\CannotInsertRecord
      */
     public function __invoke(): Response
     {
@@ -48,16 +48,16 @@ class WalkExportController
         ];
 
         $ageHeaders = [];
-        /** @var Walk $walk */
         foreach ($walks as $walk) {
+            \assert($walk instanceof Walk);
             $ageHeaders = \array_merge($ageHeaders, $this->getCsvAgeHeaders($walk));
         }
         $headers = \array_merge($headers, $ageHeaders);
 
         $csv->insertOne($headers);
 
-        /** @var Walk $walk */
         foreach ($walks as $walk) {
+            \assert($walk instanceof Walk);
             $csv->insertOne($this->getCsvContentCells($walk, $ageHeaders));
         }
 

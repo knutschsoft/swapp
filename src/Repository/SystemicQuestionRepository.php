@@ -7,13 +7,7 @@ use App\Entity\SystemicQuestion;
 
 interface SystemicQuestionRepository
 {
-    /**
-     * @param SystemicQuestion $systemicQuestion
-     */
     public function save(SystemicQuestion $systemicQuestion): void;
 
-    /**
-     * @return SystemicQuestion
-     */
     public function getRandom(): SystemicQuestion;
 }

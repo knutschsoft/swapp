@@ -17,12 +17,11 @@ use Webmozart\Assert\Assert;
 
 class TagCreateController
 {
-    /** @var TagRepository */
-    private $tagRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var RouterInterface */
-    private $router;
+    private TagRepository $tagRepository;
+
+    private FormFactoryInterface $formFactory;
+
+    private RouterInterface $router;
 
     public function __construct(
         TagRepository $tagRepository,
@@ -53,8 +52,8 @@ class TagCreateController
             return ['form' => $form->createView()];
         }
 
-        /** @var Tag $tag */
         $tag = $form->getData();
+        \assert($tag instanceof Tag);
 
         $this->tagRepository->save($tag);
         $flash->add(

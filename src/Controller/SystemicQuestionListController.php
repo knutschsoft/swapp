@@ -9,8 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SystemicQuestionListController
 {
-    /** @var FindAllSystemicQuestions */
-    private $findAllSystemicQuestions;
+    private FindAllSystemicQuestions $findAllSystemicQuestions;
 
     public function __construct(FindAllSystemicQuestions $findAllTeams)
     {

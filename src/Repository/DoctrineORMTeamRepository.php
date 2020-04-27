@@ -14,9 +14,7 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
         parent::__construct($registry, Team::class);
     }
 
-    /**
-     * @return Team[]
-     */
+    /** @return Team[] */
     public function findAll(): array
     {
         $queryBuilder = $this->createQueryBuilder('team')
@@ -33,8 +31,8 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
      */
     public function findOneById($id): ?Team
     {
-        /** @var Team|null $team */
         $team = parent::findOneBy(['id' => $id]);
+        \assert($team instanceof Team || $team === null);
 
         return $team;
     }

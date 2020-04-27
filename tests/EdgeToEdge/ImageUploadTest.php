@@ -41,10 +41,10 @@ class ImageUploadTest extends BaseWebTestCase
      */
     public function testSubmittingEmptyFormRedirectsToForm(array $args): void
     {
-        /** @var KernelBrowser $client */
         $client = $args[0];
-        /** @var Crawler $crawler */
+        \assert($client instanceof KernelBrowser);
         $crawler = $args[1];
+        \assert($crawler instanceof Crawler);
 
         $form = $crawler->selectButton('speichern')->form();
         $crawler = $client->submit($form);
@@ -65,10 +65,10 @@ class ImageUploadTest extends BaseWebTestCase
      */
     public function testSubmittingValidImageSavesImage(array $args): void
     {
-        /** @var KernelBrowser $client */
         $client = $args[0];
-        /** @var Crawler $crawler */
+        \assert($client instanceof KernelBrowser);
         $crawler = $args[1];
+        \assert($crawler instanceof Crawler);
 
         $form = $crawler->selectButton('speichern')->form();
         $fileLocation = $client->getKernel()->getProjectDir();
@@ -97,10 +97,10 @@ class ImageUploadTest extends BaseWebTestCase
      */
     public function testUploadingImageExcceedingMaxFileSizeRendersFormErrors(array $args): void
     {
-        /** @var KernelBrowser $client */
         $client = $args[0];
-        /** @var Crawler $crawler */
+        \assert($client instanceof KernelBrowser);
         $crawler = $args[1];
+        \assert($crawler instanceof Crawler);
 
         $fileName = 'test_image_42MB.png';
         $fileLocation = $client->getKernel()->getProjectDir();
@@ -123,9 +123,7 @@ class ImageUploadTest extends BaseWebTestCase
         );
     }
 
-    /**
-     * @return \Doctrine\Common\DataFixtures\Executor\AbstractExecutor|void|null
-     */
+    /** @return \Doctrine\Common\DataFixtures\Executor\AbstractExecutor|void|null */
     private function loadAllFixtures()
     {
         $this->loadFixtureFiles(

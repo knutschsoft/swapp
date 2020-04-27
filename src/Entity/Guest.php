@@ -16,44 +16,25 @@ class Guest
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $email;
+    private string $email;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Walk", inversedBy="guests")
-     *
-     * @var Walk
-     */
-    private $walk;
-
-    public function __toString(): string
-    {
-        return \sprintf(
-            '%s (%s)',
-            $this->getName(),
-            $this->getEmail()
-        );
-    }
+    /** @ORM\ManyToOne(targetEntity="Walk", inversedBy="guests") */
+    private Walk $walk;
 
     public function getWalk(): Walk
     {
@@ -93,5 +74,14 @@ class Guest
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(
+            '%s (%s)',
+            $this->getName(),
+            $this->getEmail()
+        );
     }
 }

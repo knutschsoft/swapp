@@ -5,12 +5,11 @@ namespace App\Value;
 
 final class AgeGroup
 {
-    /** @var AgeRange */
-    public $ageRange;
-    /** @var Gender */
-    public $gender;
-    /** @var PeopleCount */
-    public $peopleCount;
+    public AgeRange $ageRange;
+
+    public Gender $gender;
+
+    public PeopleCount $peopleCount;
 
     public function __construct(AgeRange $ageRange, Gender $gender, PeopleCount $peopleCount)
     {

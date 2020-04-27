@@ -18,19 +18,15 @@ class Tag
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
@@ -50,10 +46,8 @@ class Tag
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $color;
+    private string $color;
 
     public function __construct()
     {
@@ -61,15 +55,6 @@ class Tag
         $this->walks = new ArrayCollection();
         $this->color = '';
         $this->name = '';
-    }
-
-    public function __toString(): string
-    {
-        return \sprintf(
-            '%s (%s)',
-            $this->getName(),
-            $this->getColor()
-        );
     }
 
     public function getName(): string
@@ -116,17 +101,13 @@ class Tag
         }
     }
 
-    /**
-     * @return Collection|Walk[]
-     */
+    /** @return Collection|Walk[] */
     public function getWalks()
     {
         return $this->walks;
     }
 
-    /**
-     * @param Walk[]|Collection $walks
-     */
+    /** @param Walk[]|Collection $walks */
     public function setWalks($walks): void
     {
         $this->walks = $walks;
@@ -146,19 +127,24 @@ class Tag
         }
     }
 
-    /**
-     * @return Collection|WayPoint[]
-     */
+    /** @return Collection|WayPoint[] */
     public function getWayPoints()
     {
         return $this->wayPoints;
     }
 
-    /**
-     * @param Collection|WayPoint[] $wayPoints
-     */
+    /** @param Collection|WayPoint[] $wayPoints */
     public function setWayPoints($wayPoints): void
     {
         $this->wayPoints = $wayPoints;
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(
+            '%s (%s)',
+            $this->getName(),
+            $this->getColor()
+        );
     }
 }

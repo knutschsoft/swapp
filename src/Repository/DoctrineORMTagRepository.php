@@ -26,9 +26,7 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
         $this->_em->flush();
     }
 
-    /**
-     * @return Tag[]
-     */
+    /** @return Tag[] */
     public function getTags(): array
     {
         $queryBuilder = $this->createQueryBuilder('tag')->select();
@@ -44,9 +42,7 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
         return $tagList;
     }
 
-    /**
-     * @return Tag[]
-     */
+    /** @return Tag[] */
     public function findAll(): array
     {
         $queryBuilder = $this->createQueryBuilder('tag')

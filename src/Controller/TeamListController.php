@@ -9,8 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TeamListController
 {
-    /** @var FindAllTeams */
-    private $findAllTeams;
+    private FindAllTeams $findAllTeams;
 
     public function __construct(FindAllTeams $findAllTeams)
     {

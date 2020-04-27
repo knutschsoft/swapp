@@ -113,7 +113,6 @@ easy_admin:
                     - { property: 'plainPassword', type: 'text', type_options: { required: false } }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
                     - teams
-                    - walks
             new:
                 fields:
                     - username
@@ -122,7 +121,6 @@ easy_admin:
                     - { property: 'plainPassword', type: 'text', type_options: { required: true } }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
                     - teams
-                    - walks
             show:
                 fields:
                     - username

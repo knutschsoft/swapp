@@ -16,12 +16,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EntityParamConverter implements ParamConverterInterface
 {
-    /** @var WalkRepository */
-    private $walkRepository;
-    /** @var TeamRepository */
-    private $teamRepository;
-    /** @var WayPointRepository */
-    private $wayPointRepository;
+    private WalkRepository $walkRepository;
+
+    private TeamRepository $teamRepository;
+
+    private WayPointRepository $wayPointRepository;
 
     public function __construct(
         TeamRepository $teamRepository,

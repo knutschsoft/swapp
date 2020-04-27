@@ -9,9 +9,7 @@ use Doctrine\ORM\AbstractQuery;
 
 interface WalkRepository
 {
-    /**
-     * @return Walk[]
-     */
+    /** @return Walk[] */
     public function findAll(): array;
 
     /**
@@ -31,11 +29,7 @@ interface WalkRepository
 
     public function getFindAllQuery(): AbstractQuery;
 
-    /**
-     * @param int|string $id
-     *
-     * @return Walk|null
-     */
+    /** @param int|string $id */
     public function findOneById($id): ?Walk;
 
     public function save(Walk $walk): void;

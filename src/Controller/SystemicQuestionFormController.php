@@ -17,12 +17,11 @@ use Webmozart\Assert\Assert;
 
 class SystemicQuestionFormController
 {
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var SystemicQuestionRepository */
-    private $systemicQuestionRepository;
-    /** @var RouterInterface */
-    private $router;
+    private FormFactoryInterface $formFactory;
+
+    private SystemicQuestionRepository $systemicQuestionRepository;
+
+    private RouterInterface $router;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -58,8 +57,8 @@ class SystemicQuestionFormController
             ];
         }
 
-        /** @var SystemicQuestion $systemicQuestion */
         $systemicQuestion = $form->getData();
+        \assert($systemicQuestion instanceof SystemicQuestion);
         $this->systemicQuestionRepository->save($systemicQuestion);
 
         if ($isCreateNew) {

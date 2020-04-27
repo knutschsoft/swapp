@@ -9,5 +9,6 @@
     <arg name="extensions" value="php"/>
 
     <rule ref="vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/ruleset.xml">
+        <exclude name="SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable" />
     </rule>
 </ruleset>

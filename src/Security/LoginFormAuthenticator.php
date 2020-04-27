@@ -25,14 +25,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
-    /** @var UserPasswordEncoderInterface */
-    private $passwordEncoder;
+    private EntityManagerInterface $entityManager;
+
+    private UrlGeneratorInterface $urlGenerator;
+
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -92,10 +91,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
+        // dump($credentials);
+
         Assert::isArray($credentials);
         /** @var User $appUser */
         $appUser = $user;
-
+        \assert($appUser instanceof User);
+// dump($credentials);
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']) && $appUser->isEnabled();
     }
 
@@ -104,6 +106,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {
+        // dump('$credentials');
+
         $session = $request->getSession();
         Assert::isInstanceOf($session, SessionInterface::class);
 

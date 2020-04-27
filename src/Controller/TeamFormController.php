@@ -17,12 +17,11 @@ use Webmozart\Assert\Assert;
 
 class TeamFormController
 {
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var TeamRepository */
-    private $teamRepository;
-    /** @var RouterInterface */
-    private $router;
+    private FormFactoryInterface $formFactory;
+
+    private TeamRepository $teamRepository;
+
+    private RouterInterface $router;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -56,8 +55,8 @@ class TeamFormController
             ];
         }
 
-        /** @var Team $team */
         $team = $form->getData();
+        \assert($team instanceof Team);
         $this->teamRepository->save($team);
 
         $flash->add('notice', 'Team erfolgreich erstellt/bearbeitet.');

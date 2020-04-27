@@ -7,17 +7,11 @@ use App\Entity\WayPoint;
 
 interface WayPointRepository
 {
-    /**
-     * @param mixed $id
-     *
-     * @return WayPoint|null
-     */
+    /** @param mixed $id */
     public function findOneById($id): ?WayPoint;
 
     public function save(WayPoint $wayPoint): void;
 
-    /**
-     * @return WayPoint[]
-     */
+    /** @return WayPoint[] */
     public function findAll(): array;
 }

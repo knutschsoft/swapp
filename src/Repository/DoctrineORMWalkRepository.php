@@ -82,8 +82,8 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
      */
     public function findOneById($id): ?Walk
     {
-        /** @var Walk|null $walk */
         $walk = parent::findOneBy(['id' => $id]);
+        \assert($walk instanceof Walk || $walk === null);
 
         return $walk;
     }

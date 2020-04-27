@@ -35,6 +35,12 @@ services:
         arguments:
             - '%kernel.logs_dir%/%kernel.environment%.log'
 
+    App\Session\Storage\BehatAndFunctionalSessionStorage:
+        arguments:
+            - '@session.storage.native'
+            - '@session.storage.mock_file'
+            - '%env(STORAGE_ID_FOR_TEST_ENV)%'
+
 #    templating.engine.twig:
 #        class: Symfony\Bundle\TwigBundle\TwigEngine
 

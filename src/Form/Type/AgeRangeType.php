@@ -15,10 +15,6 @@ use Webmozart\Assert\Assert;
 
 class AgeRangeType extends AbstractType implements DataMapperInterface
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -39,9 +35,6 @@ class AgeRangeType extends AbstractType implements DataMapperInterface
         $builder->setDataMapper($this);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

@@ -13,11 +13,9 @@ trait AgeRangeField
      *
      * @var AgeRange[]
      */
-    private $ageRanges;
+    private array $ageRanges;
 
-    /**
-     * @return AgeRange[]
-     */
+    /** @return AgeRange[] */
     public function getAgeRanges(): array
     {
         return $this->ageRanges;

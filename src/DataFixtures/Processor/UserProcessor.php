@@ -10,8 +10,7 @@ use Webmozart\Assert\Assert;
 
 class UserProcessor implements ProcessorInterface
 {
-    /** @var UserPasswordEncoderInterface */
-    private $encoder;
+    private UserPasswordEncoderInterface $encoder;
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
@@ -28,8 +27,8 @@ class UserProcessor implements ProcessorInterface
         }
         Assert::isInstanceOf($object, User::class);
 
-        /** @var User $user */
         $user = $object;
+        \assert($user instanceof User);
 
         $user->setPassword($this->encoder->encodePassword($user, $user->getPlainPassword()));
     }

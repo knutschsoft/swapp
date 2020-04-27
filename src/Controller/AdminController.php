@@ -5,15 +5,21 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use App\Entity\User;
-use App\Repository\UserRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
-use Webmozart\Assert\Assert;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AdminController extends BaseAdminController
+class AdminController extends EasyAdminController
 {
+    private UserPasswordEncoderInterface $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function createNewUserEntity(): User
     {
-        return new User();
+        return User::createEmpty();
     }
 
     public function createNewTeamEntity(): Team
@@ -21,37 +27,29 @@ class AdminController extends BaseAdminController
         return new Team();
     }
 
-    public function prePersistUserEntity(User $user): void
+    public function persistUserEntity(User $user): void
     {
-        $this->getUserRepository()->save($user);
+        $user->setPassword($this->encoder->encodePassword($user, $user->getPlainPassword()));
+
+        parent::persistEntity($user);
     }
 
-    public function preUpdateUserEntity(User $user): void
+    public function updateUserEntity(User $user): void
     {
-        $teams = $user->getTeams();
-        $user->setTeams($teams);
-        $this->getUserRepository()->save($user);
+        if ($user->getPlainPassword()) {
+            $user->setPassword($this->encoder->encodePassword($user, $user->getPlainPassword()));
+        }
+
+        parent::updateEntity($user);
     }
 
-    public function prePersistTeamEntity(Team $team): void
+    public function persistTeamEntity(Team $team): void
     {
         $users = $team->getUsers();
         foreach ($users as $user) {
             $user->addTeam($team);
         }
-    }
 
-    public function preUpdateTeamEntity(Team $team): void
-    {
-        $users = $team->getUsers();
-        $team->setUsers($users);
-    }
-
-    private function getUserRepository(): UserRepository
-    {
-        $userRepository = $this->get(UserRepository::class);
-        Assert::isInstanceOf($userRepository, UserRepository::class);
-
-        return $userRepository;
+        parent::persistEntity($team);
     }
 }
