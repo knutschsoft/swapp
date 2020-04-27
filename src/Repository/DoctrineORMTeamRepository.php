@@ -32,7 +32,7 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
     public function findOneById($id): ?Team
     {
         $team = parent::findOneBy(['id' => $id]);
-        \assert($team instanceof Team || $team === null);
+        \assert($team instanceof Team || null === $team);
 
         return $team;
     }

@@ -97,7 +97,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         /** @var User $appUser */
         $appUser = $user;
         \assert($appUser instanceof User);
-// dump($credentials);
+        // dump($credentials);
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']) && $appUser->isEnabled();
     }
 

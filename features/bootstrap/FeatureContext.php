@@ -35,7 +35,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
         $this->passwordEncoder = $serviceContainer->get(UserPasswordEncoderInterface::class);
     }
 
-
     /**
      * @Given /^the following users exists:$/
      *
@@ -62,7 +61,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
         }
         $this->em->flush();
     }
-
 
     /**
      * @When /^I click on text "([^"]*)"$/
@@ -94,7 +92,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
         $element->click();
     }
 
-
     private function getNodeElement(string $locator, ?int $tries = 25): NodeElement
     {
         return $this->spin(
@@ -120,7 +117,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function theResponseShouldBeReceived()
     {
-        if ($this->response === null) {
+        if (null === $this->response) {
             throw new \RuntimeException('No response received');
         }
     }
@@ -134,7 +131,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
         $this->fillField('username', $username);
         $this->fillField('password', $username);
         $this->pressButton('Anmelden');
-        $this->iWaitForTextToAppear(sprintf("Logout (%s)", $username));
+        $this->iWaitForTextToAppear(sprintf('Logout (%s)', $username));
     }
 
     /**
@@ -180,7 +177,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
 
     public function spin(\Closure $closure, ?int $tries = 25)
     {
-        for ($i = 0; $i <= $tries; $i++) {
+        for ($i = 0; $i <= $tries; ++$i) {
             try {
                 return $closure();
             } catch (\Throwable $e) {
