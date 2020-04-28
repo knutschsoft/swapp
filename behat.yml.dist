@@ -27,7 +27,9 @@ default:
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
             files_path: "features/files/"
-            base_url: "http://localhost"
+            # use this for local behat.yml
+            # base_url: "http://localhost"
+            base_url: "http://localhost:9080" # use web server of panther
             javascript_session: javascript
             default_session: javascript # symfony2
             sessions:
@@ -35,4 +37,6 @@ default:
 #                    panther: ~
                     panther:
                         options:
-                            external_base_uri: http://localhost # same as base_url of mink
+                            # use this for local behat.yml
+                            # external_base_uri: http://localhost # same as base_url of mink
+                            external_base_uri: http://localhost:9080 # same as base_url of mink
