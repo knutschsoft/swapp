@@ -43,6 +43,7 @@
         "vich/uploader-bundle": "^1.10"
     },
     "require-dev": {
+        "ext-zip": "*",
         "behat/mink": "^1.7",
         "behat/symfony2-extension": "^2.1",
         "captainhook/captainhook": "^5.0",
