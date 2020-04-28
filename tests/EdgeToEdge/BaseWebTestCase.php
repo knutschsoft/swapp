@@ -105,7 +105,7 @@ class BaseWebTestCase extends WebTestCase
                 $user = self::$container
                     ->get(UserProvider::class)
                     ->loadUserByUsername($username);
-                \assert($user instanceof UserInterface || $user === null);
+                \assert($user instanceof UserInterface || null === $user);
             } catch (UsernameNotFoundException $e) {
                 $user = null;
             }
