@@ -34,9 +34,8 @@ default:
             default_session: javascript # symfony2
             sessions:
                 javascript:
-#                    panther: ~
-                    panther:
-                        options:
-                            # use this for local behat.yml
-                            # external_base_uri: http://localhost # same as base_url of mink
-                            external_base_uri: http://localhost:9080 # same as base_url of mink
+                    panther: ~
+                    # use this for local behat.yml
+                    # panther:
+                    #    options:
+                    #        # external_base_uri: http://localhost # same as base_url of mink
