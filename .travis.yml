@@ -14,7 +14,7 @@ addons:
 env:
   - TRAVIS_NODE_VERSION="12.8.0"
 
-before_install: pecl install zip
+before_install: echo "extension = libzip.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 before_script:
   - cp .env.travis .env
