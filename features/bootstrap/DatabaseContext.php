@@ -67,6 +67,7 @@ final class DatabaseContext implements KernelAwareContext
     {
         // $this->doctrine->getConnection()->rollBack();
     }
+
     /**
      * @BeforeScenario
      */
