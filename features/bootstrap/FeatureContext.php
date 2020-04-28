@@ -54,7 +54,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
-            $user->setEnabled($row['enabled'] ? (bool) $row['enabled'] : true);
+            $user->setEnabled(isset($row['enabled']) ? (bool) $row['enabled'] : true);
             $user->setRoles($roles);
 
             $this->userRepository->save($user);
