@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace App\Value;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
-final class AgeRange
+/**
+ * @ApiResource()
+ */
+class AgeRange
 {
     public int $rangeStart;
 
@@ -36,11 +41,21 @@ final class AgeRange
         return new self($start, $end);
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read", "team:read"})
+     */
     public function getRangeStart(): int
     {
         return $this->rangeStart;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read", "team:read"})
+     */
     public function getRangeEnd(): int
     {
         return $this->rangeEnd;

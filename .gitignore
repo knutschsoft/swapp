@@ -65,10 +65,13 @@ yarn-error.log
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
-
-###> behat/symfony2-extension ###
-behat.yml
-###< behat/symfony2-extension ###
-
 /public/screenshots/
 !public/screenshots/.gitkeep
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+###> friends-of-behat/symfony-extension ###
+/behat.yml
+###< friends-of-behat/symfony-extension ###

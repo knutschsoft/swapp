@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\Walk;
 use App\Form\Type\WalkPrologueType;
@@ -11,17 +10,15 @@ use App\Form\Type\WalkType;
 use App\Repository\SystemicQuestionRepository;
 use App\Repository\UserRepository;
 use App\Repository\WalkRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Webmozart\Assert\Assert;
 
-class WalkController
+class WalkController extends AbstractController
 {
     /** @var WalkRepository */
     private $walkRepository;
@@ -128,109 +125,65 @@ class WalkController
     }
 
     /**
-     * @param Team    $team
+     * @param Walk    $walk
      * @param Request $request
      *
-     * @Route("/startWalkPrologueWithTeam/{teamId}", name="start_walk_with_walk_prologue")
+     * @Route("/form/walk-prologue/{walkId}", name="walk_start")
      *
-     * @Template(template="walk/createWalkPrologueForm.html.twig")
-     *
-     * @return array
+     * @return JsonResponse
      */
-    public function createWalkPrologueFormAction(Team $team, Request $request): array
-    {
-        $systemicQuestion = $this->systemicQuestionRepository->getRandom();
-        $walk = Walk::prologue($team, $systemicQuestion);
-
-        $this->walkRepository->save($walk);
-        foreach ($team->getUsers() as $user) {
-            $user->setWalks(new ArrayCollection([$walk]));
-            $this->userRepository->save($user);
-        }
-
-        $form = $this->formFactory->create(
-            WalkPrologueType::class,
-            $walk,
-            [
-                'action' => $this->router->generate('walk_start', ['walkId' => $walk->getId()]),
-            ]
-        );
-        $form->handleRequest($request);
-
-        return [
-            'form' => $form->createView(),
-        ];
-    }
-
-    /**
-     * @param FlashBagInterface $flash
-     * @param Walk              $walk
-     * @param Request           $request
-     *
-     * @Route("/walkstarted/{walkId}", name="walk_start")
-     *
-     * @Template(template="walk/createWalkPrologue.html.twig")
-     *
-     * @return array|RedirectResponse
-     */
-    public function createWalkPrologueAction(FlashBagInterface $flash, Walk $walk, Request $request)
+    public function createWalkPrologueAction(Walk $walk, Request $request)
     {
         $form = $this->formFactory->create(WalkPrologueType::class, $walk);
         $form->handleRequest($request);
         if (!$form->isSubmitted() || !$form->isValid()) {
-            return [
-                'form' => $form->createView(),
-            ];
+            $view = $this->renderView('walk/createWalkPrologueForm.html.twig', ['form' => $form->createView()]);
+
+            return $this->json(
+                [
+                    'form' => $view,
+                ]
+            );
         }
 
         $walk = $form->getData();
         $this->walkRepository->update($walk);
-        $flash->add(
-            'notice',
-            'Runde wurde erfolgreich gestartet.'
-        );
 
-        $url = $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getId()]);
-        Assert::notNull($url);
-
-        return new RedirectResponse($url);
+        return new JsonResponse();
     }
 
     /**
-     * @param FlashBagInterface $flash
-     * @param Walk              $walk
-     * @param Request           $request
+     * @param Walk    $walk
+     * @param Request $request
      *
-     * @Route("walkcreated", name="walk_create")
+     * @Route("form/walk-epilogue/{walkId}", name="walk_create")
      *
-     * @Template(template="walk/createWalk.html.twig")
-     *
-     * @return array|RedirectResponse
+     * @return JsonResponse
      */
-    public function createWalkAction(FlashBagInterface $flash, Walk $walk, Request $request)
+    public function createWalkAction(Walk $walk, Request $request)
     {
         $form = $this->formFactory->create(WalkType::class, $walk);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            return [
-                'walk' => $walk,
-                'wayPoints' => $walk->getWayPoints(),
-                'form' => $form->createView(),
-            ];
+            $view = $this->renderView(
+                'walk/createWalkForm.html.twig',
+                [
+                    'walk' => $walk,
+                    'form' => $form->createView(),
+                ]
+            );
+
+            return $this->json(
+                [
+                    'form' => $view,
+                ]
+            );
         }
 
         $walk = $form->getData();
         $this->walkRepository->update($walk);
 
-        $flash->add(
-            'notice',
-            'Runde wurde erfolgreich erstellt.'
-        );
-
-        $url = $this->router->generate('walk_home_screen');
-        Assert::notNull($url);
-
-        return new RedirectResponse($url);
+        return new JsonResponse();
     }
 }

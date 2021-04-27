@@ -7,18 +7,18 @@ use App\Entity\Walk;
 use App\Entity\WayPoint;
 use App\Form\Type\WayPointType;
 use App\Repository\WayPointRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Webmozart\Assert\Assert;
 
-class WayPointController
+class WayPointController extends AbstractController
 {
     /** @var EngineInterface */
     private $templateEngine;
@@ -90,7 +90,7 @@ class WayPointController
     /**
      * @param Walk $walk
      *
-     * @Route("addWayPointToWalk/{walkId}", name="update_walk_with_way_point")
+     * @Route("form/addWayPointToWalk/{walkId}", name="update_walk_with_way_point")
      *
      * @return Response
      */
@@ -106,14 +106,16 @@ class WayPointController
             ]
         );
 
-        return $this->templateEngine->renderResponse(
-            'way_point/wayPointForm.html.twig',
-            [
-                'walk' => $walk,
-                'form' => $form->createView(),
-                'wayPoints' => $walk->getWayPoints(),
-            ]
-        );
+        return $this->json([
+            'form' => $this->renderView(
+                'way_point/wayPointForm.html.twig',
+                [
+                    'walk' => $walk,
+                    'form' => $form->createView(),
+                    'wayPoints' => $walk->getWayPoints(),
+                ]
+            )
+        ]);
     }
 
     /**
@@ -121,7 +123,7 @@ class WayPointController
      * @param Walk              $walk
      * @param Request           $request
      *
-     * @Route("waypointcreated/{walkId}", name="way_point_create")
+     * @Route("form/waypointcreated/{walkId}", name="way_point_create")
      *
      * @return RedirectResponse|Response
      */
@@ -148,29 +150,18 @@ class WayPointController
                 )
             );
 
-            $createWaypointForm = $form->get('createWayPoint');
-            $createWalkForm = $form->get('createWalk');
-            Assert::isInstanceOf($createWaypointForm, ClickableInterface::class);
-            Assert::isInstanceOf($createWalkForm, ClickableInterface::class);
-            if ($createWaypointForm->isClicked()) {
-                $url = $this->router->generate('update_walk_with_way_point', ['walkId' => $walk->getid()]);
-            } elseif ($createWalkForm->isClicked()) {
-                $url = $this->router->generate('walk_create_form', ['walkId' => $walk->getId()]);
-            } else {
-                throw new \RuntimeException('Invalid submit button used or no button clicked.');
-            }
-            Assert::notNull($url);
-
-            return new RedirectResponse($url);
+            return new JsonResponse();
         }
 
-        return $this->templateEngine->renderResponse(
-            'way_point/wayPointForm.html.twig',
-            [
-                'form' => $form->createView(),
-                'wayPoints' => $walk->getWayPoints(),
-                'walk' => $walk,
-            ]
-        );
+        return $this->json([
+            'form' => $this->renderView(
+                'way_point/wayPointForm.html.twig',
+                [
+                    'form' => $form->createView(),
+                    'wayPoints' => $walk->getWayPoints(),
+                    'walk' => $walk,
+                ]
+            )
+        ]);
     }
 }

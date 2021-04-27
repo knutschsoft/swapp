@@ -1,4 +1,4 @@
-FROM composer:latest as composer
+FROM composer:1.8 as composer
 FROM php:7.4-apache
 
 ENV MYSQL_HOST=${MYSQL_HOST}
@@ -121,6 +121,11 @@ RUN if [ "$APP_ENVIRONMENT" != "prod" ]; then \
         apt-get update && apt-get install -y libzip-dev zlib1g-dev chromium && docker-php-ext-install zip; \
     fi
 ENV PANTHER_NO_SANDBOX 1
+
+### adjust panther ChromeDriver to installed chromium version
+RUN  if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
+        vendor/bin/bdi detect drivers; \
+    fi
 
 COPY ./init-project.sh /init-project.sh
 

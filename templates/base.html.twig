@@ -6,76 +6,19 @@
         <title>{% block title %}Swapp!{% endblock %}</title>
         {% block meta_description %}{% endblock %}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_link_tags('global') }}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        {% block body %}
+        {% endblock body %}
+
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+            <script>
+                {{ nelmio_js_error_logger('ERROR', false) }}
+                {{ nelmio_js_logger('nelmioLog', false) }}
+            </script>
         {% endblock %}
-
-        {% for flashMessage in app.session.flashbag.get('notice') %}
-            <div class="alert alert-info" role="alert">
-                {{ flashMessage }}
-            </div>
-        {% endfor %}
-
-        <div class="ml-1 mr-1 mt-1">
-            {% block content %}
-
-            {% endblock %}
-        </div>
-
-        <footer class="footer fixed-bottom">
-
-            <div class="d-flex">
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-
-                    {% if block('footer_back_href') is not empty %}
-                        <div class="mr-auto p-2 ml-1">
-                            <a class="input-group input-group-sm" href="{% block footer_back_href %}{% endblock %}">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text"><i class="ion ion-md-arrow-back"></i></div>
-                                </div>
-
-                                <div class="btn btn-primary form-control">
-                                    {{ 'global.navigation.back'|trans }}
-                                </div>
-                            </a>
-                        </div>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <div class="p-2">
-
-                            <a class="input-group input-group-sm" href="{{ path('easyadmin') }}">
-
-                                <div class="btn btn-primary form-control">
-                                    Backend
-                                </div>
-                                <div class="input-group-append">
-                                    <div class="input-group-text"><i class="ion ion-md-cog"></i></div>
-                                </div>
-                            </a>
-                        </div>
-                    {% endif %}
-                    <div class="p-2">
-                        <a class="input-group input-group-sm" href="{{ logout_path('main') }}">
-                            <button class="btn btn-primary form-control">
-                                Logout ({{ app.getUser.getUsername }})
-                            </button>
-                            <div class="input-group-append">
-                                <div class="input-group-text"><i class="ion ion-md-log-out"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                {% endif %}
-                {#<div class="col-sm-auto my-1 small">#}
-                    {#<span class="">Copyright &copy; {{ 'now'|date('Y') }}</span> swapp - Die StreetWorkAPP#}
-                {#</div>#}
-            </div>
-        </footer>
-
     </body>
 </html>

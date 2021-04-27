@@ -3,6 +3,12 @@ declare(strict_types=1);
 
 namespace App\Value;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+/**
+ * @ApiResource()
+ */
 final class AgeGroup
 {
     public AgeRange $ageRange;
@@ -23,23 +29,38 @@ final class AgeGroup
         return new self($range, $gender, $peopleCount);
     }
 
-    public function ageRange(): AgeRange
+    /**
+     * @return AgeRange
+     *
+     * @Groups({"walk:read"})
+     */
+    public function getAgeRange(): AgeRange
     {
         return $this->ageRange;
     }
 
-    public function gender(): Gender
+    /**
+     * @return Gender
+     *
+     * @Groups({"walk:read"})
+     */
+    public function getGender(): Gender
     {
         return $this->gender;
     }
 
-    public function peopleCount(): PeopleCount
+    /**
+     * @return PeopleCount
+     *
+     * @Groups({"walk:read"})
+     */
+    public function getPeopleCount(): PeopleCount
     {
         return $this->peopleCount;
     }
 
     public function equalType(self $ageGroup): bool
     {
-        return $this->ageRange->equal($ageGroup->ageRange()) && $this->gender->equal($ageGroup->gender());
+        return $this->ageRange->equal($ageGroup->getAgeRange()) && $this->gender->equal($ageGroup->getGender());
     }
 }

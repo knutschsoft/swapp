@@ -1,6 +1,4 @@
 framework:
     test: true
     session:
-        # handler_id set to null will use default session handler from php.ini
-#        handler_id:  ~
-        storage_id: 'App\Session\Storage\BehatAndFunctionalSessionStorage'
+        storage_id: session.storage.mock_file

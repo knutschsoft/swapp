@@ -54,11 +54,19 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
                 [
                     'choices' => $choices,
                     'required' => true,
+                    'attr' => [
+                        'class' => 'd-inline-block',
+                        'style' => 'width: calc(100% - 70px);'
+                    ],
+                    'label_attr' =>[
+                        'class' => '',
+                        'style' => 'width: 70px;'
+                    ],
                     'label' => \sprintf(
                         '%s - %s %s',
-                        $ageGroup->ageRange()->getRangeStart(),
-                        $ageGroup->ageRange()->getRangeEnd(),
-                        $ageGroup->gender()->gender
+                        $ageGroup->getAgeRange()->getRangeStart(),
+                        $ageGroup->getAgeRange()->getRangeEnd(),
+                        $ageGroup->getGender()->gender
                     ),
                 ]
             );
@@ -97,7 +105,7 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
             /** @var AgeGroup $ageGroupData */
             foreach ($data as $ageGroupData) {
                 if ($ageGroupData->equalType($ageGroup)) {
-                    $form->setData($ageGroupData->peopleCount()->count());
+                    $form->setData($ageGroupData->getPeopleCount()->getCount());
                 }
             }
         }
@@ -129,7 +137,7 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
 
     private function getChildName(AgeGroup $ageGroup): string
     {
-        return $ageGroup->gender()->gender().$ageGroup->ageRange()->getRangeStart().'to'.$ageGroup->ageRange()->getRangeEnd();
+        return $ageGroup->getGender()->getGender().$ageGroup->getAgeRange()->getRangeStart().'to'.$ageGroup->getAgeRange()->getRangeEnd();
     }
 
     private function getAgeGroupFromChildName(string $childName, Form $form): AgeGroup

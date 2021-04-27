@@ -5,20 +5,25 @@ namespace App\Entity\Fields;
 
 use App\Value\AgeRange;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait AgeRangeField
 {
     /**
      * @ORM\Column(type="json_document", options={"jsonb": true})
      *
-     * @var AgeRange[]
+     * @var \App\Value\AgeRange[]
      */
     private array $ageRanges;
 
-    /** @return AgeRange[] */
+    /**
+     * @return AgeRange[]
+     *
+     * @Groups({"team:read"})
+     */
     public function getAgeRanges(): array
     {
-        return $this->ageRanges;
+        return \array_values($this->ageRanges);
     }
 
     public function setAgeRanges(array $ageRanges): void

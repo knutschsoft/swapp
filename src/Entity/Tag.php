@@ -3,12 +3,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMTagRepository")
  * @ORM\Table(name="tag")
  */
@@ -57,6 +61,11 @@ class Tag
         $this->name = '';
     }
 
+    /**
+     * @return string
+     *
+     * @Groups({"walk:read"})
+     */
     public function getName(): string
     {
         return $this->name;
@@ -67,6 +76,11 @@ class Tag
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     *
+     * @Groups({"walk:read"})
+     */
     public function getColor(): string
     {
         return $this->color;

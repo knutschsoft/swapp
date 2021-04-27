@@ -1,27 +1,10 @@
-    {% extends 'base.html.twig' %}
-{% block title %}Runde erstellen{% endblock %}
-{% block content %}
-    <div class="card">
-        <div class="card-header">
-            <h1 class="h5 mb-0">
-                Runde erstellen
-            </h1>
-        </div>
-        <div class="card-body pl-1 pr-1 pb-2">
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
 
-            {{ form_row(form.name) }}
-            {{ form_row(form.conceptOfDay) }}
-            {{ form_row(form.startTime) }}
-            {{ form_row(form.holidays) }}
-            {{ form_row(form.weather) }}
-            {{ form_row(form.create) }}
-            {{ form_end(form) }}
-        </div>
-    </div>
-{% endblock %}
-
-{% block footer_back_href %}
-    {{- path('home') -}}
-{% endblock %}
+{{ form_row(form.name) }}
+{{ form_row(form.conceptOfDay) }}
+{{ form_row(form.startTime) }}
+{{ form_row(form.holidays) }}
+{{ form_row(form.weather) }}
+{{ form_row(form.create) }}
+{{ form_end(form) }}

@@ -3,12 +3,28 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     itemOperations={"get"},
+ *     collectionOperations={"post", "get"},
+ *     attributes={"pagination_items_per_page"=10},
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"groups"={}}
+ * )
+ *
+ * @ApiFilter(OrderFilter::class, properties={"name", "rating", "teamName", "startTime", "endTime", "isResubmission"})
+ *
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
@@ -102,6 +118,27 @@ class User implements UserInterface
         $this->teams = new ArrayCollection();
     }
 
+    public static function fromRegisterUserRequest(RegisterUserRequest $registerUserRequest, UserPasswordEncoderInterface $passwordEncoder): self
+    {
+        $instance = new self();
+        $instance->email = strtolower($registerUserRequest->email);
+        $instance->username = strtolower($registerUserRequest->username);
+        $instance->changePassword($registerUserRequest->password, $passwordEncoder);
+        $instance->addRole('ROLE_USER');
+        $instance->disable();
+        $instance->confirmationToken = Uuid::uuid4()->toString();
+
+        return $instance;
+    }
+
+
+    public function changePassword(string $password, UserPasswordEncoderInterface $passwordEncoder): void
+    {
+        $this->password = $passwordEncoder->encodePassword($this, $password);
+        $this->confirmationToken = null;
+    }
+
+
     public static function createEmpty(): self
     {
         $instance = new self();
@@ -116,7 +153,11 @@ class User implements UserInterface
         return $instance;
     }
 
-    /** @return Team[]|Collection */
+    /**
+     * @return Team[]|Collection
+     *
+     * @Groups({"user:read"})
+     */
     public function getTeams(): Collection
     {
         return $this->teams;
@@ -131,9 +172,14 @@ class User implements UserInterface
         }
     }
 
-    public function getId(): int
+    /**
+     * @return string
+     *
+     * @Groups({"user:read", "team:read"})
+     */
+    public function getId(): string
     {
-        return $this->id;
+        return (string) $this->id;
     }
 
     public function setId(int $id): void
@@ -141,7 +187,11 @@ class User implements UserInterface
         $this->id = $id;
     }
 
-    /** @return Walk[]|Collection */
+    /**
+     * @return Walk[]|Collection
+     *
+     * @Groups({"user:read"})
+     */
     public function getWalks(): Collection
     {
         return $this->walks;
@@ -191,49 +241,16 @@ class User implements UserInterface
         }
     }
 
-    public function serialize(): string
-    {
-        return \serialize(
-            [
-                $this->password,
-                $this->salt,
-                $this->username,
-                $this->enabled,
-                $this->id,
-                $this->email,
-            ]
-        );
-    }
-
-    public function unserialize(string $serialized): void
-    {
-        $data = \unserialize($serialized);
-
-        if (13 === \count($data)) {
-            // Unserializing a User object from 1.3.x
-            unset($data[4], $data[5], $data[6], $data[9], $data[10]);
-            $data = \array_values($data);
-        } elseif (11 === \count($data)) {
-            // Unserializing a User from a dev version somewhere between 2.0-alpha3 and 2.0-beta1
-            unset($data[4], $data[7], $data[8]);
-            $data = \array_values($data);
-        }
-
-        [
-            $this->password,
-            $this->salt,
-            $this->username,
-            $this->enabled,
-            $this->id,
-            $this->email,
-            ] = $data;
-    }
-
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }
 
+    /**
+     * @return string
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function getUsername(): string
     {
         return $this->username;
@@ -254,6 +271,11 @@ class User implements UserInterface
         $this->salt = $salt;
     }
 
+    /**
+     * @return string
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function getEmail(): string
     {
         return $this->email;
@@ -284,6 +306,11 @@ class User implements UserInterface
         $this->plainPassword = $password;
     }
 
+    /**
+     * @return \DateTime|null
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function getLastLogin(): ?\DateTime
     {
         return $this->lastLogin;
@@ -304,7 +331,11 @@ class User implements UserInterface
         $this->confirmationToken = $confirmationToken;
     }
 
-    /** @return string[] */
+    /**
+     * @return string[]
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -329,6 +360,11 @@ class User implements UserInterface
         return \in_array(\strtoupper($role), $this->getRoles(), true);
     }
 
+    /**
+     * @return bool
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function isEnabled(): bool
     {
         return $this->enabled;
@@ -339,6 +375,21 @@ class User implements UserInterface
         $this->enabled = (bool) $boolean;
     }
 
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
+    }
+
+    /**
+     * @return bool
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function isSuperAdmin(): bool
     {
         return $this->hasRole(static::ROLE_SUPER_ADMIN);

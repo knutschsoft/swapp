@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Value;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
 final class Gender
@@ -26,21 +27,41 @@ final class Gender
         return new self($gender);
     }
 
-    public function gender(): string
+    /**
+     * @return string
+     *
+     * @Groups({"walk:read"})
+     */
+    public function getGender(): string
     {
         return $this->gender;
     }
 
+    /**
+     * @return bool
+     *
+     * @Groups({"walk:read"})
+     */
     public function isMale(): bool
     {
         return self::GENDER_MALE === $this->gender;
     }
 
+    /**
+     * @return bool
+     *
+     * @Groups({"walk:read"})
+     */
     public function isFemale(): bool
     {
         return self::GENDER_FEMALE === $this->gender;
     }
 
+    /**
+     * @return bool
+     *
+     * @Groups({"walk:read"})
+     */
     public function isQueer(): bool
     {
         return self::GENDER_QUEER === $this->gender;
@@ -48,6 +69,6 @@ final class Gender
 
     public function equal(self $gender): bool
     {
-        return $this->gender() === $gender->gender();
+        return $this->getGender() === $gender->getGender();
     }
 }

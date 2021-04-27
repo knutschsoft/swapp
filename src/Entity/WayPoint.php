@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Gender;
@@ -12,10 +13,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
+ * @ApiResource(itemOperations={"get"}, collectionOperations={"post", "get"})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWayPointRepository")
  * @ORM\Table(name="way_point")
  *
@@ -56,6 +61,8 @@ class WayPoint
      * @ORM\ManyToOne(targetEntity="Walk", inversedBy="wayPoints")
      *
      * @var Walk
+     *
+     * @MaxDepth(2)
      */
     private $walk;
 
@@ -121,6 +128,8 @@ class WayPoint
 
     /**
      * @return AgeGroup[]
+     *
+     * @Groups({"walk:read"})
      */
     public function getAgeGroups(): array
     {
@@ -140,40 +149,55 @@ class WayPoint
         $this->ageGroups[] = $ageGroup;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
     public function getFemalesCount(): int
     {
         $sum = 0;
         foreach ($this->getAgeGroups() as $ageGroup) {
-            if (!$ageGroup->gender()->isFemale()) {
+            if (!$ageGroup->getGender()->isFemale()) {
                 continue;
             }
-            $sum += $ageGroup->peopleCount()->count();
+            $sum += $ageGroup->getPeopleCount()->getCount();
         }
 
         return $sum;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
     public function getMalesCount(): int
     {
         $sum = 0;
         foreach ($this->getAgeGroups() as $ageGroup) {
-            if (!$ageGroup->gender()->isMale()) {
+            if (!$ageGroup->getGender()->isMale()) {
                 continue;
             }
-            $sum += $ageGroup->peopleCount()->count();
+            $sum += $ageGroup->getPeopleCount()->getCount();
         }
 
         return $sum;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
     public function getQueerCount(): int
     {
         $sum = 0;
         foreach ($this->getAgeGroups() as $ageGroup) {
-            if (!$ageGroup->gender()->isQueer()) {
+            if (!$ageGroup->getGender()->isQueer()) {
                 continue;
             }
-            $sum += $ageGroup->peopleCount()->count();
+            $sum += $ageGroup->getPeopleCount()->getCount();
         }
 
         return $sum;
@@ -183,13 +207,13 @@ class WayPoint
     {
         $sum = 0;
         foreach ($this->getAgeGroups() as $ageGroup) {
-            if (!$ageGroup->gender()->isFemale()) {
+            if (!$ageGroup->getGender()->isFemale()) {
                 continue;
             }
             if (!$ageGroup->ageRange->equal($ageRange)) {
                 continue;
             }
-            $sum += $ageGroup->peopleCount()->count();
+            $sum += $ageGroup->getPeopleCount()->getCount();
         }
 
         return $sum;
@@ -199,13 +223,13 @@ class WayPoint
     {
         $sum = 0;
         foreach ($this->getAgeGroups() as $ageGroup) {
-            if (!$ageGroup->gender()->isMale()) {
+            if (!$ageGroup->getGender()->isMale()) {
                 continue;
             }
             if (!$ageGroup->ageRange->equal($ageRange)) {
                 continue;
             }
-            $sum += $ageGroup->peopleCount()->count();
+            $sum += $ageGroup->getPeopleCount()->getCount();
         }
 
         return $sum;
@@ -215,13 +239,13 @@ class WayPoint
     {
         $sum = 0;
         foreach ($this->getAgeGroups() as $ageGroup) {
-            if (!$ageGroup->gender()->isQueer()) {
+            if (!$ageGroup->getGender()->isQueer()) {
                 continue;
             }
             if (!$ageGroup->ageRange->equal($ageRange)) {
                 continue;
             }
-            $sum += $ageGroup->peopleCount()->count();
+            $sum += $ageGroup->getPeopleCount()->getCount();
         }
 
         return $sum;
@@ -229,6 +253,8 @@ class WayPoint
 
     /**
      * @return bool
+     *
+     * @Groups({"walk:read"})
      */
     public function getIsMeeting(): bool
     {
@@ -251,6 +277,11 @@ class WayPoint
         );
     }
 
+    /**
+     * @return string
+     *
+     * @Groups({"walk:read"})
+     */
     public function getLocationName(): string
     {
         return $this->locationName;
@@ -261,6 +292,11 @@ class WayPoint
         $this->locationName = (string) $locationName;
     }
 
+    /**
+     * @return File|null
+     *
+     * @Groups({"walk:read"})
+     */
     public function getImageFile(): ?File
     {
         return $this->imageFile;
@@ -286,6 +322,11 @@ class WayPoint
         }
     }
 
+    /**
+     * @return string|null
+     *
+     * @Groups({"walk:read"})
+     */
     public function getImageName(): ?string
     {
         return $this->imageName;
@@ -296,6 +337,11 @@ class WayPoint
         $this->imageName = $imageName;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
     public function getId(): int
     {
         return $this->id;
@@ -306,6 +352,11 @@ class WayPoint
         $this->id = $id;
     }
 
+    /**
+     * @return string|null
+     *
+     * @Groups({"walk:read"})
+     */
     public function getNote(): ?string
     {
         return $this->note;
@@ -328,6 +379,8 @@ class WayPoint
 
     /**
      * @return Collection|Tag[]
+     *
+     * @Groups({"walk:read"})
      */
     public function getWayPointTags()
     {

@@ -3,19 +3,56 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use App\Controller\CreateWalkPrologueController;
+use App\Controller\WalksUnfishedController;
 use App\Entity\Fields\AgeRangeField;
 use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     itemOperations={
+ *          "get",
+ *     },
+ *     collectionOperations={
+ *          "post_prologue"={
+ *              "method"="POST",
+ *              "path"="/walk/create-prologue",
+ *             "requirements"={"teamId"="\d+"},
+ *             "options"={"teamId"="teamId"},
+ *             "defaults"={"color"="brown"},
+ *              "controller"=CreateWalkPrologueController::class,
+ *              "normalization_context"={"groups"={"walk:read"}},
+ *                  "swagger_definition_name": "Read",
+ *                  "openapi_context": {"summary": "init a walk"},
+ *          },
+ *          "get",
+ *          "get_unfinished"={
+ *              "method"="GET",
+ *              "path"="/walks-unfished",
+ *              "defaults"={"color"="brown"},
+ *              "controller"=WalksUnfishedController::class,
+ *              "normalization_context"={"groups"={"walk:read"}},
+ *              "swagger_definition_name": "Read",
+ *              "openapi_context": {"summary": "Get unfished walks"},
+ *          },
+ *     },
+ *     attributes={"pagination_items_per_page"=5},
+ *     normalizationContext={"groups"={"walk:read"}},
+ *     denormalizationContext={"groups"={}}
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"name", "rating", "teamName", "startTime", "endTime", "isResubmission"})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWalkRepository")
  * @ORM\Table(name="walk")
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  **/
 class Walk
 {
@@ -75,6 +112,8 @@ class Walk
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
+     *
+     * @MaxDepth(1)
      *
      * @var Collection|User[]
      */
@@ -189,6 +228,7 @@ class Walk
     {
         $instance = new self();
 
+        // CreateWalkPrologueController::class;
         $instance->setTeamName($team->getName());
         $instance->setName('');
         $instance->setStartTime(new \DateTime());
@@ -210,15 +250,13 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getConceptOfDay()
     {
         return $this->conceptOfDay;
     }
-
-    /**
-     * @return mixed
-     */
 
     /**
      * @param mixed $conceptOfDay
@@ -228,6 +266,11 @@ class Walk
         $this->conceptOfDay = $conceptOfDay;
     }
 
+    /**
+     * @return string|null
+     *
+     * @Groups({"walk:read"})
+     */
     public function getInsights(): ?string
     {
         return $this->insights;
@@ -240,6 +283,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getCommitments()
     {
@@ -256,6 +301,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getIsResubmission()
     {
@@ -270,6 +317,11 @@ class Walk
         $this->isResubmission = $isResubmission;
     }
 
+    /**
+     * @return string
+     *
+     * @Groups({"walk:read"})
+     */
     public function getSystemicQuestion(): string
     {
         return $this->systemicQuestion;
@@ -282,6 +334,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getWeather()
     {
@@ -298,6 +352,8 @@ class Walk
 
     /**
      * @return bool
+     *
+     * @Groups({"walk:read"})
      */
     public function getHolidays(): bool
     {
@@ -314,6 +370,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getGuests()
     {
@@ -338,6 +396,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getName()
     {
@@ -354,6 +414,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getEndTime()
     {
@@ -370,6 +432,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getId()
     {
@@ -386,6 +450,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getRating()
     {
@@ -402,6 +468,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getStartTime()
     {
@@ -418,6 +486,8 @@ class Walk
 
     /**
      * @return string
+     *
+     * @Groups({"walk:read"})
      */
     public function getSystemicAnswer(): string
     {
@@ -446,6 +516,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getWalkTags()
     {
@@ -462,6 +534,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getWalkReflection()
     {
@@ -478,6 +552,8 @@ class Walk
 
     /**
      * @return mixed
+     *
+     * @Groups({"walk:read"})
      */
     public function getWalkTeamMembers()
     {
@@ -494,6 +570,8 @@ class Walk
 
     /**
      * @return WayPoint[]|Collection
+     *
+     * @Groups({"walk:read"})
      */
     public function getWayPoints(): Collection
     {
@@ -510,6 +588,8 @@ class Walk
 
     /**
      * @return string
+     *
+     * @Groups({"walk:read"})
      */
     public function getTeamName(): string
     {
@@ -524,6 +604,11 @@ class Walk
         $this->teamName = $teamName;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
     public function getFemalesCount(): int
     {
         $count = 0;
@@ -534,6 +619,11 @@ class Walk
         return $count;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
     public function getMalesCount(): int
     {
         $count = 0;
@@ -544,6 +634,11 @@ class Walk
         return $count;
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
     public function getQueerCount(): int
     {
         $count = 0;
@@ -628,5 +723,15 @@ class Walk
     public function removeGuest(Guest $guest): void
     {
         $this->guests->removeElement($guest);
+    }
+
+    /**
+     * @return bool
+     *
+     * @Groups({"walk:read"})
+     */
+    public function getIsUnfinished(): bool
+    {
+        return ''=== $this->getSystemicAnswer();
     }
 }

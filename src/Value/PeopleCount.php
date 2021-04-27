@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Value;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
 final class PeopleCount
@@ -25,7 +26,12 @@ final class PeopleCount
         return new self(0);
     }
 
-    public function count(): int
+    /**
+     * @return int
+     *
+     * @Groups({"walk:read"})
+     */
+    public function getCount(): int
     {
         return $this->count;
     }

@@ -79,21 +79,10 @@ class WayPointType extends AbstractType
             'createWayPoint',
             SubmitType::class,
             [
-                'label' => 'speichern',
+                'label' => 'Wegpunkt speichern',
                 'attr' => [
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn-secondary mb-0 btn-block',
                     'data-test' => 'save-way-point',
-                ],
-            ]
-        );
-        $builder->add(
-            'createWalk',
-            SubmitType::class,
-            [
-                'label' => 'speichern, Runde abschließen',
-                'attr' => [
-                    'class' => 'btn btn-primary',
-                    'data-test' => 'save-and-finish-way-point',
                 ],
             ]
         );

@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Repository\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -42,5 +45,49 @@ class DoctrineORMUserRepository extends ServiceEntityRepository implements UserR
             ->setParameter('query', $username)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findByIdAndConfirmationToken(string $userId, string $confirmationToken): User
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('user')
+            ->select('user')
+            ->where('user.id = :userId')
+            ->andWhere('user.confirmationToken.token = :confirmationToken')
+            ->setParameter('userId', $userId)
+            ->setParameter('confirmationToken', $confirmationToken);
+
+        return $this->oneOrException($queryBuilder);
+    }
+
+    public function findOneByEmailOrUsername(string $emailOrUsername): User
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('user')
+            ->select('user')
+            ->where('user.username = :username')
+            ->orWhere('user.email = :email')
+            ->setParameter('username', $emailOrUsername)
+            ->setParameter('email', $emailOrUsername);
+
+        return $this->oneOrException($queryBuilder);
+    }
+
+    protected function oneOrException(QueryBuilder $queryBuilder): User
+    {
+        try {
+            $model = $queryBuilder
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            throw new NotFoundException();
+        }
+
+        if (null === $model) {
+            throw new NotFoundException();
+        }
+        \assert($model instanceof User);
+
+        return $model;
     }
 }

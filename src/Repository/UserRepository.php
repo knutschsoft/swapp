@@ -17,4 +17,8 @@ interface UserRepository extends UserLoaderInterface
     public function refresh(User $user): void;
 
     public function save(User $user): void;
+
+    public function findByIdAndConfirmationToken(string $userId, string $confirmationToken): User;
+
+    public function findOneByEmailOrUsername(string $emailOrUsername): User;
 }

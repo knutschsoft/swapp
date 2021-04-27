@@ -3,13 +3,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Fields\AgeRangeField;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(itemOperations={"get"}, collectionOperations={"post", "get"},
+ *     normalizationContext={"groups"={"team:read"}},
+ *     denormalizationContext={"groups"={}}
+ * )
+ *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMTeamRepository")
  * @ORM\Table(name="team")
  */
@@ -46,6 +53,11 @@ class Team
         $this->users = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function getId(): int
     {
         return $this->id;
@@ -56,6 +68,11 @@ class Team
         $this->id = $id;
     }
 
+    /**
+     * @return string
+     *
+     * @Groups({"user:read", "team:read"})
+     */
     public function getName(): string
     {
         return $this->name;
@@ -66,7 +83,11 @@ class Team
         $this->name = $name;
     }
 
-    /** @return User[]|Collection */
+    /**
+     * @return User[]|Collection
+     *
+     * @Groups({"team:read"})
+     */
     public function getUsers()
     {
         return $this->users;

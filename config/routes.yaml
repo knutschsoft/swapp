@@ -5,3 +5,11 @@ home:
         route: walk_home_screen
         permanent: false
         ignoreAttributes: true
+
+gesdinet_jwt_refresh_token:
+    path:       /api/token/refresh
+    controller: gesdinet.jwtrefreshtoken::refresh
+
+NelmioJsLoggerBundle:
+    resource: "@NelmioJsLoggerBundle/Resources/config/routing.xml"
+    prefix:   /js-logger

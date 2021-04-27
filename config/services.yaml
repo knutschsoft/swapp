@@ -35,38 +35,32 @@ services:
         arguments:
             - '%kernel.logs_dir%/%kernel.environment%.log'
 
-    App\Session\Storage\BehatAndFunctionalSessionStorage:
-        arguments:
-            - '@session.storage.native'
-            - '@session.storage.mock_file'
-            - '%env(STORAGE_ID_FOR_TEST_ENV)%'
+    App\Security\EventListener\JWTCreatedListener:
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
-#    templating.engine.twig:
-#        class: Symfony\Bundle\TwigBundle\TwigEngine
+    App\Security\EventListener\JWTDecodedListener:
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
 
-#    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
-#        autowire: true
-#        autoconfigure: true
-#        arguments:
-#            - 'mysql:dbname=%database_name%;host=%database_host%'
-#            - { db_table: 'sessions', db_username: '%database_user%', db_password: '%database_password%' }
+    App\Security\EventListener\JWTAuthenticatedListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_authenticated, method: onJWTAuthenticated }
 
-#    app.form.type.tag:
-#        class: App\Form\Type\TagType
-#        tags:
-#            - { name: form.type, alias: tag }
-#
-#    app.form.type.walk:
-#        class: App\Form\Type\WalkType
-#        tags:
-#            - { name: form.type, alias: walk }
-#
-#    app.form.type.walk.prologue:
-#        class: App\Form\Type\WalkPrologueType
-#        tags:
-#            - { name: form.type, alias: walk_prologue }
-#
-#    app.form.type.waypoint:
-#        class: App\Form\Type\WayPointType
-#        tags:
-#            - { name: form.type, alias: way_point }
+    App\Security\EventListener\JWTAuthenticationSuccessListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+    App\Security\EventListener\AuthenticationFailureListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_failure, method: onAuthenticationFailureResponse }
+
+    App\Security\EventListener\JWTInvalidListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_invalid, method: onJWTInvalid }
+
+    App\Security\EventListener\JWTNotFoundListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }

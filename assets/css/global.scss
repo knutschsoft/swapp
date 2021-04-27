@@ -1,0 +1,83 @@
+@import '~bootstrap';
+@import '~bootstrap-vue';
+@import '~font-awesome-animation/dist/font-awesome-animation.css';
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+}
+
+.nav-link.active.router-link-active {
+  background-color: lighten($secondary, 20);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.no-select {
+  user-select: none;
+}
+
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
+}
+
+
+@-webkit-keyframes blink {
+  50% {
+    opacity: 0.0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.0;
+  }
+}
+
+.faa-blink.animated,
+.faa-blink.animated-hover:hover,
+.faa-blink.animated-hover:hover > .faa-blink {
+  -webkit-animation: blink 2s step-start 0s infinite;
+  animation: blink 2s step-start 0s infinite;
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .75s ease;
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
+
+.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 576px) {  }
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {  }
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {  }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {  }

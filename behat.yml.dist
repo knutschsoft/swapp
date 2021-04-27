@@ -1,11 +1,20 @@
 default:
     suites:
-        default:
+        acceptance:
+            paths:
+                - '%paths.base%/tests/Acceptance'
             contexts:
-                - DatabaseContext:
-                    kernel: '@kernel'
-                - FeatureContext:
-                    kernel: '@kernel'
+                -  App\Tests\Context\DomainIntegrationContext:
+                       kernel: '@kernel'
+                #                - behatch:context:debug
+                #                - behatch:context:rest
+                #-   App\Tests\Context\DomainIntegrationContext:
+                #        kernel: '@kernel'
+                -  App\Tests\Context\DatabaseContext:
+                       kernel: '@kernel'
+                -  App\Tests\Context\AcceptanceContext:
+                       kernel: '@kernel'
+                # - FailAid\Context\FailureContext
 
     extensions:
         FailAid\Extension:
@@ -20,10 +29,7 @@ default:
 #                url:
 #                    screenshot_directory: "/var/www/html/public/screenshots"
 #                    screenshot_url: "http://swapp:8082/screenshots"
-        Behat\Symfony2Extension:
-            kernel:
-                bootstrap: features/bootstrap/bootstrap.php
-                class: App\Kernel
+        FriendsOfBehat\SymfonyExtension: ~
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
             files_path: "features/files/"
