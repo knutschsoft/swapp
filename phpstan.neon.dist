@@ -7,3 +7,5 @@ parameters:
         - %currentWorkingDirectory%/src
     excludes_analyse:
         - %currentWorkingDirectory%/src/Migrations/Version*.php
+    ignoreErrors:
+        - '#Access to an undefined property Symfony\\Component\\Validator\\Constraint::\$message#'
