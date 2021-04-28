@@ -99,7 +99,8 @@
             "bin/console doctrine:schema:update --dump-sql --env=test --ansi",
             "bin/console doctrine:schema:update --force --env=test --ansi",
             "chmod +x var/cache/test/test.db",
-            "chmod 777 var/cache/test/test.db"
+            "chmod 777 var/cache/test/test.db",
+            "vendor/bin/bdi detect drivers"
         ],
         "qa": [
             "@cbf",
@@ -115,6 +116,7 @@
             "@qa"
         ],
         "qa-ci": [
+            "@compile-test",
             "vendor/bin/phpcs --colors src tests || true",
             "vendor/bin/phpstan analyse --no-progress --ansi",
             "vendor/bin/phpunit --colors || true",
