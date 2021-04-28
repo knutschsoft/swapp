@@ -109,10 +109,10 @@ class Team
         }
     }
 
-    /** @param User[]|Collection $users */
+    /** @param User[]|Collection|array $users */
     public function setUsers($users): void
     {
-        $this->users = $users instanceof Collection ?: new ArrayCollection($users);
+        $this->users = $users instanceof Collection ? $users : new ArrayCollection($users);
         foreach ($this->users as $user) {
             $user->removeTeam($this);
         }
