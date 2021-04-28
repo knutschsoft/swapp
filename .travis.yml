@@ -4,6 +4,7 @@ cache:
   yarn: true
   directories:
     - node_modules
+    - $HOME/.composer/cache/files
 
 php:
   - 7.4
@@ -21,9 +22,6 @@ before_script:
   - yarn install
   - composer install -vv
   - yarn encore production
-  - php bin/console doctrine:database:create --env=test
-  - php bin/console doctrine:schema:create --env=test
-  - php bin/console hautelook:fixtures:load --no-interaction --env=test
 
 script:
   - composer qa-ci
