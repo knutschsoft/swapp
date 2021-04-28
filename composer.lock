@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc1d7921409691887ff7ca4df6f4fb87",
+    "content-hash": "a086abd53fe1944e87b592ace4712475",
     "packages": [
         {
             "name": "api-platform/core",
@@ -13654,59 +13654,6 @@
             "time": "2021-04-10T08:31:02+00:00"
         },
         {
-            "name": "sensiolabs/security-checker",
-            "version": "v6.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "a576c01520d9761901f269c4934ba55448be4a54"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/a576c01520d9761901f269c4934ba55448be4a54",
-                "reference": "a576c01520d9761901f269c4934ba55448be4a54",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3",
-                "symfony/console": "^2.8|^3.4|^4.2|^5.0",
-                "symfony/http-client": "^4.3|^5.0",
-                "symfony/mime": "^4.3|^5.0",
-                "symfony/polyfill-ctype": "^1.11"
-            },
-            "bin": [
-                "security-checker"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "SensioLabs\\Security\\": "SensioLabs/Security"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien.potencier@gmail.com"
-                }
-            ],
-            "description": "A security checker for your composer.lock",
-            "support": {
-                "issues": "https://github.com/sensiolabs/security-checker/issues",
-                "source": "https://github.com/sensiolabs/security-checker/tree/master"
-            },
-            "abandoned": "https://github.com/fabpot/local-php-security-checker",
-            "time": "2019-11-01T13:20:14+00:00"
-        },
-        {
             "name": "slevomat/coding-standard",
             "version": "6.1.5",
             "source": {
@@ -14866,6 +14813,49 @@
                 }
             ],
             "time": "2020-07-12T23:59:07+00:00"
+        },
+        {
+            "name": "thibautselingue/local-php-security-checker-installer",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thislg/local-php-security-checker-installer.git",
+                "reference": "5dc58b19ba58827dc599bcd9188fb764d200db1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thislg/local-php-security-checker-installer/zipball/5dc58b19ba58827dc599bcd9188fb764d200db1d",
+                "reference": "5dc58b19ba58827dc599bcd9188fb764d200db1d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "bin": [
+                "bin/local-php-security-checker-installer"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.0.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thibaut Selingue",
+                    "email": "thibaut.selingue@gmail.com"
+                }
+            ],
+            "description": "Composer integration for local PHP security check",
+            "support": {
+                "issues": "https://github.com/thislg/local-php-security-checker-installer/issues",
+                "source": "https://github.com/thislg/local-php-security-checker-installer/tree/v1.0.3"
+            },
+            "time": "2021-02-22T18:10:31+00:00"
         }
     ],
     "aliases": [],

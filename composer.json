@@ -76,14 +76,14 @@
         "projektmotor/symfony-coding-standard": "^1.0.3",
         "robertfausk/behat-panther-extension": "^1.0",
         "robertfausk/behat-screenshot-image-driver-url": "^1.0",
-        "sensiolabs/security-checker": "^6.0",
         "soyuka/contexts": "^3.3",
         "symfony/browser-kit": "4.4.*",
         "symfony/css-selector": "4.4.*",
         "symfony/dotenv": "^4.4",
         "symfony/maker-bundle": "^1.13",
         "symfony/phpunit-bridge": "^4.4",
-        "symfony/profiler-pack": "^1.0"
+        "symfony/profiler-pack": "^1.0",
+        "thibautselingue/local-php-security-checker-installer": "^1.0"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -94,7 +94,7 @@
         "behat": "vendor/bin/behat --colors || true",
         "unit": "vendor/bin/phpunit --colors || true",
         "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
-        "security": "vendor/bin/security-checker security:check --ansi || true",
+        "security": "vendor/bin/local-php-security-checker || true",
         "compile-test": [
             "bin/console doctrine:database:create --env=test --no-interaction",
             "bin/console doctrine:schema:update --dump-sql --env=test --ansi",
@@ -120,7 +120,7 @@
             "vendor/bin/phpstan analyse --no-progress --ansi",
             "vendor/bin/phpunit --colors",
             "vendor/bin/behat --colors",
-            "vendor/bin/security-checker security:check --ansi"
+            "vendor/bin/local-php-security-checker"
         ],
         "create-jwt": [
             "mkdir -p config/jwt",
@@ -150,7 +150,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/"
+            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/",
+            "local-php-security-checker-installer"
         ],
         "post-update-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -163,8 +164,7 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     },
     "extra": {
