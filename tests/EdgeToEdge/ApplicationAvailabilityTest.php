@@ -26,12 +26,6 @@ class ApplicationAvailabilityTest extends BaseWebTestCase
             ['/walks'],
             ['/tag'],
             ['/createtag'],
-            ['/eadmin/?action=list&entity=Team'],
-            ['/eadmin/?action=list&entity=Walk'],
-            ['/eadmin/?action=list&entity=WayPoint'],
-            ['/eadmin/?action=list&entity=Tag'],
-            ['/eadmin/?action=list&entity=User'],
-            ['/eadmin/?action=list&entity=Guest'],
             // ...
         ];
     }

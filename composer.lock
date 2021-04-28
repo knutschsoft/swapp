@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a086abd53fe1944e87b592ace4712475",
+    "content-hash": "4bbd6b2fc407a301514103671fac6abc",
     "packages": [
         {
             "name": "api-platform/core",
@@ -1964,101 +1964,6 @@
             "time": "2019-10-24T07:13:31+00:00"
         },
         {
-            "name": "easycorp/easyadmin-bundle",
-            "version": "v2.3.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "a51b3e5eaa5bfafda9ed2791d2a2e0735c845893"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/a51b3e5eaa5bfafda9ed2791d2a2e0735c845893",
-                "reference": "a51b3e5eaa5bfafda9ed2791d2a2e0735c845893",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/common": "^2.8 || ^3.0",
-                "doctrine/doctrine-bundle": "^1.8|^2.0",
-                "doctrine/orm": "^2.6.3",
-                "doctrine/persistence": "^1.3.4 || ^2.0",
-                "pagerfanta/pagerfanta": "^1.0.1|^2.0",
-                "php": ">=7.1.3",
-                "symfony/asset": "^4.2|^5.0",
-                "symfony/cache": "^4.2|^5.0",
-                "symfony/config": "^4.2|^5.0",
-                "symfony/dependency-injection": "^4.2|^5.0",
-                "symfony/doctrine-bridge": "^4.2|^5.0",
-                "symfony/error-handler": "^4.4|^5.0",
-                "symfony/event-dispatcher": "^4.2|^5.0",
-                "symfony/expression-language": "^4.2|^5.0",
-                "symfony/finder": "^4.2|^5.0",
-                "symfony/form": "^4.2|^5.0",
-                "symfony/framework-bundle": "^4.2|^5.0",
-                "symfony/http-foundation": "^4.2|^5.0",
-                "symfony/http-kernel": "^4.3.7|^5.0",
-                "symfony/polyfill-mbstring": "^1.7",
-                "symfony/property-access": "^4.2|^5.0",
-                "symfony/security-bundle": "^4.2|^5.0",
-                "symfony/translation": "^4.2|^5.0",
-                "symfony/twig-bridge": "^4.2|^5.0",
-                "symfony/twig-bundle": "^4.2|^5.0",
-                "symfony/validator": "^4.2|^5.0",
-                "twig/twig": "^2.11.3|^3.0"
-            },
-            "require-dev": {
-                "doctrine/data-fixtures": "^1.3",
-                "doctrine/doctrine-fixtures-bundle": "^3.0",
-                "psr/log": "~1.0",
-                "symfony/browser-kit": "^4.2|^5.0",
-                "symfony/console": "^4.2|^5.0",
-                "symfony/css-selector": "^4.2|^5.0",
-                "symfony/dom-crawler": "^4.2|^5.0",
-                "symfony/phpunit-bridge": "^4.3.5|^5.0",
-                "symfony/var-dumper": "^4.2|^5.0",
-                "symfony/yaml": "^4.2|^5.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "EasyCorp\\Bundle\\EasyAdminBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Project Contributors",
-                    "homepage": "https://github.com/EasyCorp/EasyAdminBundle/blob/master/CONTRIBUTORS.md"
-                }
-            ],
-            "description": "Admin generator for Symfony applications",
-            "homepage": "https://github.com/EasyCorp/EasyAdminBundle",
-            "keywords": [
-                "admin",
-                "backend",
-                "generator"
-            ],
-            "support": {
-                "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v2.3.12"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/javiereguiluz",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-01-21T18:39:17+00:00"
-        },
-        {
             "name": "fig/link-util",
             "version": "1.1.2",
             "source": {
@@ -3317,99 +3222,6 @@
                 "source": "https://github.com/ninsuo/symfony-collection/tree/2.1.33"
             },
             "time": "2020-01-13T12:54:48+00:00"
-        },
-        {
-            "name": "pagerfanta/pagerfanta",
-            "version": "v2.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BabDev/Pagerfanta.git",
-                "reference": "630f38d57c86b67565b644db9d270ffb6d67123f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/BabDev/Pagerfanta/zipball/630f38d57c86b67565b644db9d270ffb6d67123f",
-                "reference": "630f38d57c86b67565b644db9d270ffb6d67123f",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^7.2 || ^8.0",
-                "symfony/deprecation-contracts": "^2.1"
-            },
-            "conflict": {
-                "twig/twig": "<1.35 || >=2.0,<2.5"
-            },
-            "replace": {
-                "pagerfanta/core": "self.version",
-                "pagerfanta/doctrine-collections-adapter": "self.version",
-                "pagerfanta/doctrine-dbal-adapter": "self.version",
-                "pagerfanta/doctrine-mongodb-odm-adapter": "self.version",
-                "pagerfanta/doctrine-orm-adapter": "self.version",
-                "pagerfanta/doctrine-phpcr-odm-adapter": "self.version",
-                "pagerfanta/elastica-adapter": "self.version",
-                "pagerfanta/solarium-adapter": "self.version",
-                "pagerfanta/twig": "self.version"
-            },
-            "require-dev": {
-                "dg/bypass-finals": "^1.2.2",
-                "doctrine/collections": "^1.4",
-                "doctrine/dbal": "^2.5 || ^3.0",
-                "doctrine/orm": "^2.5",
-                "doctrine/phpcr-odm": "^1.3",
-                "friendsofphp/php-cs-fixer": "^2.18.2",
-                "jackalope/jackalope-doctrine-dbal": "^1.3",
-                "mandango/mandango": "^1.0@dev",
-                "phpstan/extension-installer": "^1.0.4",
-                "phpstan/phpstan": "^0.12.79",
-                "phpstan/phpstan-phpunit": "^0.12.17",
-                "phpunit/phpunit": "^8.5 || ^9.0",
-                "propel/propel": "^2.0@dev",
-                "propel/propel1": "^1.7",
-                "ruflin/elastica": "^1.3 || ^2.0 || ^3.0 || ^5.0 || ^6.0 || ^7.0",
-                "solarium/solarium": "^2.3 || ^3.0 || ^4.0 || ^5.0 || ^6.0",
-                "twig/twig": "^1.35 || ^2.5 || ^3.0"
-            },
-            "suggest": {
-                "twig/twig": "To integrate Pagerfanta with Twig"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Pagerfanta\\": "lib/Core/",
-                    "Pagerfanta\\Adapter\\": "src/Adapter/",
-                    "Pagerfanta\\Doctrine\\Collections\\": "lib/Adapter/Doctrine/Collections/",
-                    "Pagerfanta\\Doctrine\\DBAL\\": "lib/Adapter/Doctrine/DBAL/",
-                    "Pagerfanta\\Doctrine\\MongoDBODM\\": "lib/Adapter/Doctrine/MongoDBODM/",
-                    "Pagerfanta\\Doctrine\\ORM\\": "lib/Adapter/Doctrine/ORM/",
-                    "Pagerfanta\\Doctrine\\PHPCRODM\\": "lib/Adapter/Doctrine/PHPCRODM/",
-                    "Pagerfanta\\Elastica\\": "lib/Adapter/Elastica/",
-                    "Pagerfanta\\Solarium\\": "lib/Adapter/Solarium/",
-                    "Pagerfanta\\Twig\\": "lib/Twig/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Pagination for PHP",
-            "keywords": [
-                "page",
-                "pagination",
-                "paginator",
-                "paging"
-            ],
-            "support": {
-                "issues": "https://github.com/BabDev/Pagerfanta/issues",
-                "source": "https://github.com/BabDev/Pagerfanta/tree/v2.7.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/mbabker",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-02-28T18:15:42+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -4905,73 +4717,6 @@
                 }
             ],
             "time": "2021-03-05T18:16:26+00:00"
-        },
-        {
-            "name": "symfony/deprecation-contracts",
-            "version": "v2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "5f38c8804a9e97d23e0c8d63341088cd8a22d627"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/5f38c8804a9e97d23e0c8d63341088cd8a22d627",
-                "reference": "5f38c8804a9e97d23e0c8d63341088cd8a22d627",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "2.4-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "function.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "A generic function and convention to trigger deprecation notices",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v2.4.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-03-23T23:28:01+00:00"
         },
         {
             "name": "symfony/doctrine-bridge",
@@ -8441,94 +8186,6 @@
                 }
             ],
             "time": "2021-03-17T17:12:15+00:00"
-        },
-        {
-            "name": "symfony/translation",
-            "version": "v4.4.21",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/translation.git",
-                "reference": "eb8f5428cc3b40d6dffe303b195b084f1c5fbd14"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/eb8f5428cc3b40d6dffe303b195b084f1c5fbd14",
-                "reference": "eb8f5428cc3b40d6dffe303b195b084f1c5fbd14",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3",
-                "symfony/polyfill-mbstring": "~1.0",
-                "symfony/translation-contracts": "^1.1.6|^2"
-            },
-            "conflict": {
-                "symfony/config": "<3.4",
-                "symfony/dependency-injection": "<3.4",
-                "symfony/http-kernel": "<4.4",
-                "symfony/yaml": "<3.4"
-            },
-            "provide": {
-                "symfony/translation-implementation": "1.0|2.0"
-            },
-            "require-dev": {
-                "psr/log": "~1.0",
-                "symfony/config": "^3.4|^4.0|^5.0",
-                "symfony/console": "^3.4|^4.0|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
-                "symfony/finder": "~2.8|~3.0|~4.0|^5.0",
-                "symfony/http-kernel": "^4.4",
-                "symfony/intl": "^3.4|^4.0|^5.0",
-                "symfony/service-contracts": "^1.1.2|^2",
-                "symfony/yaml": "^3.4|^4.0|^5.0"
-            },
-            "suggest": {
-                "psr/log-implementation": "To use logging capability in translator",
-                "symfony/config": "",
-                "symfony/yaml": ""
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Translation\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides tools to internationalize your application",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/translation/tree/v4.4.21"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-03-23T16:25:01+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -13951,6 +13608,73 @@
             "time": "2021-01-27T09:09:26+00:00"
         },
         {
+            "name": "symfony/deprecation-contracts",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/deprecation-contracts.git",
+                "reference": "5f38c8804a9e97d23e0c8d63341088cd8a22d627"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/5f38c8804a9e97d23e0c8d63341088cd8a22d627",
+                "reference": "5f38c8804a9e97d23e0c8d63341088cd8a22d627",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "2.4-dev"
+                },
+                "thanks": {
+                    "name": "symfony/contracts",
+                    "url": "https://github.com/symfony/contracts"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "function.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "A generic function and convention to trigger deprecation notices",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v2.4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-03-23T23:28:01+00:00"
+        },
+        {
             "name": "symfony/dom-crawler",
             "version": "v4.4.20",
             "source": {
@@ -14594,6 +14318,94 @@
                 }
             ],
             "time": "2021-01-27T09:09:26+00:00"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v4.4.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "eb8f5428cc3b40d6dffe303b195b084f1c5fbd14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/eb8f5428cc3b40d6dffe303b195b084f1c5fbd14",
+                "reference": "eb8f5428cc3b40d6dffe303b195b084f1c5fbd14",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3",
+                "symfony/polyfill-mbstring": "~1.0",
+                "symfony/translation-contracts": "^1.1.6|^2"
+            },
+            "conflict": {
+                "symfony/config": "<3.4",
+                "symfony/dependency-injection": "<3.4",
+                "symfony/http-kernel": "<4.4",
+                "symfony/yaml": "<3.4"
+            },
+            "provide": {
+                "symfony/translation-implementation": "1.0|2.0"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/config": "^3.4|^4.0|^5.0",
+                "symfony/console": "^3.4|^4.0|^5.0",
+                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
+                "symfony/finder": "~2.8|~3.0|~4.0|^5.0",
+                "symfony/http-kernel": "^4.4",
+                "symfony/intl": "^3.4|^4.0|^5.0",
+                "symfony/service-contracts": "^1.1.2|^2",
+                "symfony/yaml": "^3.4|^4.0|^5.0"
+            },
+            "suggest": {
+                "psr/log-implementation": "To use logging capability in translator",
+                "symfony/config": "",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Translation\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides tools to internationalize your application",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/translation/tree/v4.4.21"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-03-23T16:25:01+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",

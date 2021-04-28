@@ -5,10 +5,6 @@ namespace App\Tests\EdgeToEdge;
 
 class UserLoginTest extends BaseWebTestCase
 {
-    private const USERNAME = 'username';
-
-    private const PASSWORD = 'password';
-
     private const USERNAME_ADMIN = 'admin';
 
     private const PASSWORD_ADMIN = 'admin';
@@ -16,47 +12,6 @@ class UserLoginTest extends BaseWebTestCase
     private const DISABLED_NAME = 'inactiveuser';
 
     private const BAD_NAME = 'ashd73ddb';
-
-    public function testUserLoginBackendFailsWithWrongRole(): void
-    {
-        $this->loadUserFixtures();
-
-        $client = $this->getClient();
-
-        $client->followRedirects(true);
-        $crawler = $client->request('GET', '/eadmin');
-
-        $form = $crawler->selectButton('Anmelden')->form(
-            [
-                '_username' => self::USERNAME,
-                '_password' => self::PASSWORD,
-                '_remember_me' => 'on',
-            ]
-        );
-
-        $crawler = $client->submit($form);
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue(1 === $crawler->selectButton('Anmelden')->count(), 'Button "Anmelden" not found');
-    }
-
-    public function testUserLoginBackend(): void
-    {
-        $client = $this->getClient();
-        $client->followRedirects();
-        $crawler = $client->request('GET', '/eadmin');
-
-        $form = $crawler->selectButton('Anmelden')->form(
-            array(
-                '_username' => self::USERNAME_ADMIN,
-                '_password' => self::PASSWORD_ADMIN,
-                '_remember_me' => 'on',
-            )
-        );
-
-        $crawler = $client->submit($form);
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue(0 === $crawler->selectButton('Anmelden')->count(), 'Button "Anmelden" found');
-    }
 
     public function testUserLoginFrontend(): void
     {
@@ -136,13 +91,6 @@ class UserLoginTest extends BaseWebTestCase
             array('/walks'),
             array('/tag'),
             array('/createtag'),
-            array('/eadmin/?action=list&entity=Team'),
-            array('/eadmin/?action=list&entity=Walk'),
-            array('/eadmin/?action=list&entity=WayPoint'),
-            array('/eadmin/?action=list&entity=Tag'),
-            array('/eadmin/?action=list&entity=User'),
-            array('/eadmin/?action=list&entity=Guest'),
-            array('/eadmin/?action=list&entity=SystemicQuestion'),
             // ...
         );
     }

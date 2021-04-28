@@ -15,13 +15,7 @@ SWAPP
 
 # Entrance:
 
- http://swapp/eadmin
-
- http://swapp/walks
-
- http://swapp/app_dev.php/eadmin
-
- http://swapp/app_dev.php/walks
+ http://swapp/dashboard
 
 # If you want to use Docker
 
