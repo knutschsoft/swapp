@@ -7,7 +7,7 @@ default:
                 -  App\Tests\Context\DomainIntegrationContext:
                        kernel: '@kernel'
                 #                - behatch:context:debug
-                #                - behatch:context:rest
+                - behatch:context:rest
                 #-   App\Tests\Context\DomainIntegrationContext:
                 #        kernel: '@kernel'
                 -  App\Tests\Context\DatabaseContext:
@@ -17,6 +17,7 @@ default:
                 # - FailAid\Context\FailureContext
 
     extensions:
+        Behatch\Extension: ~
         FailAid\Extension:
             screenshot:
                 directory: /var/www/html/public/screenshots/
