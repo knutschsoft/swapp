@@ -1,10 +1,9 @@
 preset: symfony
 
-risky: true
+risky: false
 
 disabled:
     - blank_line_after_opening_tag
-    - property_separation
 
 finder:
     exclude:
