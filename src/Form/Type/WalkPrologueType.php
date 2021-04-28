@@ -29,6 +29,7 @@ class WalkPrologueType extends AbstractType
             [
                 'label' => 'Name',
                 'required' => true,
+                'attr' => ['data-test' => 'Name'],
             ]
         );
         $builder->add(
@@ -36,6 +37,7 @@ class WalkPrologueType extends AbstractType
             TextareaType::class,
             [
                 'label' => 'Tageskonzept',
+                'attr' => ['data-test' => 'Tageskonzept'],
             ]
         );
         $builder->add(
@@ -43,41 +45,45 @@ class WalkPrologueType extends AbstractType
             DateTimeType::class,
             [
                 'label' => 'Rundenstartzeit',
+                'attr' => ['data-test' => 'Rundenstartzeit'],
+                'help' => 'Die aktuelle Zeit ist vorausgewählt.',
             ]
         );
         $builder->add(
             'holidays',
             CheckboxType::class,
-            array(
+            [
                 'label' => 'Ferien',
                 'required' => false,
-            )
+                'attr' => ['data-test' => 'Ferien'],
+            ]
         );
         $builder->add(
             'weather',
             ChoiceType::class,
-            array(
-                'choices' => array(
+            [
+                'choices' => [
                     'Sonne' => 'Sonne',
                     'Wolken' => 'Wolken',
                     'Regen' => 'Regen',
                     'Schnee' => 'Schnee',
                     'Arschkalt' => 'Arschkalt',
-                ),
+                ],
                 'placeholder' => '---',
                 'label' => 'Wetter',
-            )
+                'attr' => ['data-test' => 'Wetter'],
+            ]
         );
         $builder->add(
             'create',
             SubmitType::class,
-            array(
+            [
                 'label' => 'Runde beginnen',
                 'attr' => [
-                        'class' => 'btn btn-secondary btn-block',
-                        'data-test' => 'create-way-point',
-                    ],
-            )
+                    'class' => 'btn btn-secondary btn-block',
+                    'data-test' => 'create-way-point',
+                ],
+            ]
         );
     }
 

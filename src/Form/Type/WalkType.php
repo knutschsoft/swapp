@@ -50,6 +50,7 @@ class WalkType extends AbstractType
             TextareaType::class,
             array(
                 'label' => 'Reflexion',
+                'attr' => ['data-test' => 'Reflexion'],
             )
         );
         $builder->add(
@@ -60,6 +61,7 @@ class WalkType extends AbstractType
                 'disabled' => true,
                 'attr' => [
                     'style' => 'width:100%;',
+                    'data-test' => 'Systemische Frage'
                 ],
             ]
         );
@@ -68,6 +70,7 @@ class WalkType extends AbstractType
             TextareaType::class,
             array(
                 'label' => 'Systemische Antwort',
+                'attr' => ['data-test' => 'Systemische Antwort'],
             )
         );
         $builder->add(
@@ -120,6 +123,7 @@ class WalkType extends AbstractType
             TextareaType::class,
             array(
                 'label' => 'Erkenntnisse, Überlegungen, Zielsetzungen',
+                'attr' => ['data-test' => 'insights'],
             )
         );
         $builder->add(
@@ -127,6 +131,7 @@ class WalkType extends AbstractType
             TextareaType::class,
             array(
                 'label' => 'Termine, Besorgungen, Verabredungen',
+                'attr' => ['data-test' => 'commitments'],
             )
         );
         $builder->add(

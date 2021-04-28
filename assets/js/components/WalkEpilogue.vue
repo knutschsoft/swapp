@@ -1,7 +1,8 @@
 <template>
     <div>
         <content-collapse
-            title="Runde abschliessen"
+            v-if="walk"
+            :title="`Runde &quot;${walk.name}&quot; abschließen`"
             collapse-key="walk-epilogue"
             is-visible-by-default
         >
@@ -43,13 +44,20 @@ export default {
         walks() {
             return this.$store.getters['walk/walks'];
         },
+        walk() {
+            return this.$store.getters["walk/getWalkById"](this.walkId);
+        },
     },
     watch: {},
     async mounted() {
+        await this.refreshWalk();
         let { data } = await this.axios.get(`/form/walk-epilogue/${this.walkId}`);
         this.$refs.forms.innerHTML = data.form;
     },
     methods: {
+        refreshWalk: async function() {
+            await this.$store.dispatch('walk/findById', this.walkId);
+        },
         onSubmit: async function (e) {
             let formData = new FormData(e.target);
             let result = await this.axios.post(`/form/walk-epilogue/${this.walkId}`, formData);

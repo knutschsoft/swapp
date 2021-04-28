@@ -3,6 +3,7 @@
         <b-table
             v-if="!isLoading"
             show-empty
+            emptyText="Für diese Runde gibt es keine Wegpunkte."
             small
             stacked="md"
             :items="walk.wayPoints"

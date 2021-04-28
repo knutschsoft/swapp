@@ -17,8 +17,8 @@ class AgeRange
     public int $rangeEnd;
 
     /**
-     * @param mixed $rangeStart
-     * @param mixed $rangeEnd
+     * @param int|string $rangeStart
+     * @param int|string $rangeEnd
      */
     public function __construct($rangeStart, $rangeEnd)
     {
@@ -39,6 +39,16 @@ class AgeRange
         $end = $count['end'] ?? ($count[1] ?? 0);
 
         return new self($start, $end);
+    }
+
+    public static function fromString(string $ageRangeString): self
+    {
+        $ageRangeString = \trim($ageRangeString);
+        Assert::contains($ageRangeString, '-', \sprintf('Invalid value given cause there is no "%s" in "%s"', '-', $ageRangeString));
+        $parts = \explode('-', $ageRangeString);
+        Assert::count($parts, 2, \sprintf('Too many parts after explode of "%s"', $ageRangeString));
+
+        return new self(\trim($parts[0]), \trim($parts[1]));
     }
 
     /**

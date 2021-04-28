@@ -35,10 +35,6 @@ final class AcceptanceContext extends MinkContext
      */
     public function iAmAuthenticatedAs(string $username): void
     {
-        $user = $this->getUserByEmail($username);
-        // $this->restContext->iAddHeaderEqualTo('Authorization', 'Bearer '.$token);
-        //
-        // $this->($username);
         $this->visit('/anmeldung');
         $this->fillField('username', $username);
         $this->fillField('password', $username);

@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace App\Tests\Context;
 
 use App\Entity\RegisterUserRequest;
+use App\Entity\SystemicQuestion;
+use App\Entity\Tag;
+use App\Entity\Team;
 use App\Entity\User;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
@@ -14,6 +17,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Webmozart\Assert\Assert;
 use Webmozart\Assert\Assert as Assertion;
 
 final class DomainIntegrationContext extends RawMinkContext
@@ -56,6 +60,7 @@ final class DomainIntegrationContext extends RawMinkContext
         $token = $this->jwtManager->create($user);
         $this->restContext->iAddHeaderEqualTo('Authorization', "Bearer $token");
     }
+
     /**
      * @Given /^the following users exists:$/
      *
@@ -83,6 +88,58 @@ final class DomainIntegrationContext extends RawMinkContext
             }
 
             $this->em->persist($user);
+        }
+        $this->em->flush();
+    }
+
+    /**
+     * @Given /^the following systemic questions exists:$/
+     *
+     * @param TableNode $table
+     */
+    public function theFollowingSystemicQuestionsExists(TableNode $table): void
+    {
+        foreach ($table as $row) {
+            Assert::keyExists($row, 'question');
+            $this->em->persist(SystemicQuestion::fromString($row['question']));
+        }
+        $this->em->flush();
+    }
+
+    /**
+     * @Given /^the following tags exists:$/
+     *
+     * @param TableNode $table
+     */
+    public function theFollowingTagsExists(TableNode $table): void
+    {
+        foreach ($table as $row) {
+            Assert::keyExists($row, 'name');
+            Assert::keyExists($row, 'color');
+            $tag = new Tag();
+            $tag->setName($row['name']);
+            $tag->setColor($row['color']);
+            $this->em->persist($tag);
+        }
+        $this->em->flush();
+    }
+
+    /**
+     * @Given /^the following teams exists:$/
+     *
+     * @param TableNode $table
+     */
+    public function theFollowingTeamsExists(TableNode $table): void
+    {
+        foreach ($table as $key => $row) {
+            $team = new Team();
+            $team->setName($row['name'] ?? 'Clari@narf.de'.$key);
+            $users = $this->getUsersFromString($row['users'] ?? '');
+            $team->setUsers($users);
+            $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '');
+            $team->setAgeRanges($ageRanges);
+
+            $this->em->persist($team);
         }
         $this->em->flush();
     }

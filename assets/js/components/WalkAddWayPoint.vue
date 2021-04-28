@@ -22,8 +22,8 @@
         </b-button>
 
         <content-collapse
-            :title="`Wegpunkt zur Runde ${walk.name} hinzufügen`"
-            collapse-key="walk-ad-waypoint"
+            :title="`Wegpunkt zur Runde &quot;${walk.name}&quot; hinzufügen`"
+            collapse-key="walk-add-waypoint"
             is-visible-by-default
         >
             <div
@@ -97,7 +97,7 @@
         },
         watch: {},
         async mounted() {
-            this.refreshWalk();
+            await this.refreshWalk();
             this.refreshForm();
         },
         methods: {

@@ -24,6 +24,7 @@ class WayPointType extends AbstractType
             TextType::class,
             [
                 'label' => 'Ort',
+                'attr' => ['data-test' => 'Ort'],
             ]
         );
         $builder->add(
@@ -53,6 +54,7 @@ class WayPointType extends AbstractType
             [
                 'label' => 'Beobachtung',
                 'required' => false,
+                'attr' => ['data-test' => 'Beobachtung'],
             ]
         );
         $builder->add(

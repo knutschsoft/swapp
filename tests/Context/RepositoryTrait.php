@@ -5,6 +5,7 @@ namespace App\Tests\Context;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Value\AgeRange;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -21,8 +22,13 @@ trait RepositoryTrait
         Assertion::notNull($serviceContainer);
         Assertion::isInstanceOf($serviceContainer, Container::class);
 
-        $this->userRepository = $serviceContainer->get(UserRepository::class);
-        $this->em = $serviceContainer->get('doctrine.orm.entity_manager');
+        $userRepository = $serviceContainer->get(UserRepository::class);
+        \assert($userRepository instanceof UserRepository);
+        $this->userRepository = $userRepository;
+
+        $em = $serviceContainer->get('doctrine.orm.entity_manager');
+        \assert($em instanceof EntityManagerInterface);
+        $this->em = $em;
     }
 
     protected function getUserByEmail(string $email): User
@@ -31,5 +37,38 @@ trait RepositoryTrait
         Assertion::notNull($user, \sprintf('User with email "%s" not found.', \trim($email)));
 
         return $user;
+    }
+
+    /**
+     * @param string $usersString
+     *
+     * @return User[]
+     */
+    protected function getUsersFromString(string $usersString): array
+    {
+        $userStrings = \explode(',', $usersString);
+        $users = [];
+        foreach ($userStrings as $userString) {
+            $users[] = $this->getUserByEmail($userString);
+        }
+
+        return $users;
+    }
+
+    /**
+     * @param string $ageRangesString
+     *
+     * @return AgeRange[]
+     */
+    protected function getAgeRangesFromString(string $ageRangesString): array
+    {
+        $ageRangeStrings = \explode(',', $ageRangesString);
+        $ageRanges = [];
+
+        foreach ($ageRangeStrings as $ageRangeString) {
+            $ageRanges[] = AgeRange::fromString($ageRangeString);
+        }
+
+        return $ageRanges;
     }
 }

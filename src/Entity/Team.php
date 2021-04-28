@@ -112,13 +112,13 @@ class Team
     /** @param User[]|Collection $users */
     public function setUsers($users): void
     {
-        $this->users = $users;
-        // foreach ($this->users as $user) {
-        //     $user->removeTeam($this);
-        // }
-        // foreach ($users as $user) {
-        //     $user->addTeam($this);
-        // }
+        $this->users = $users instanceof Collection ?: new ArrayCollection($users);
+        foreach ($this->users as $user) {
+            $user->removeTeam($this);
+        }
+        foreach ($users as $user) {
+            $user->addTeam($this);
+        }
     }
 
     public function __toString(): string
