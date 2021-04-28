@@ -29,8 +29,6 @@ final class AcceptanceContext extends MinkContext
     /**
      * @Given /^I am authenticated as "([^"]*)"$/
      *
-     * @param string $username
-     *
      * @throws \Throwable
      */
     public function iAmAuthenticatedAs(string $username): void
@@ -52,9 +50,6 @@ final class AcceptanceContext extends MinkContext
      *
      * @Then  I should see :text appear
      *
-     * @param string   $text
-     * @param int|null $tries
-     *
      * @throws \Throwable
      */
     public function iWaitForTextToAppear(string $text, ?int $tries = 25): void
@@ -73,9 +68,6 @@ final class AcceptanceContext extends MinkContext
      *
      * @Then  I should see :text disappear
      *
-     * @param string   $text
-     * @param int|null $tries
-     *
      * @throws \Throwable
      */
     public function iWaitForTextToDisappear(string $text, ?int $tries = 25): void
@@ -90,8 +82,6 @@ final class AcceptanceContext extends MinkContext
 
     /**
      * @When /^I click on text "([^"]*)"$/
-     *
-     * @param string $arg1
      *
      * @throws \Throwable
      */
@@ -120,7 +110,7 @@ final class AcceptanceContext extends MinkContext
 
     public function spin(\Closure $closure, ?int $tries = 25): ?NodeElement
     {
-        for ($i = 0; $i <= $tries; $i++) {
+        for ($i = 0; $i <= $tries; ++$i) {
             try {
                 return $closure();
             } catch (\Throwable $e) {
@@ -135,8 +125,6 @@ final class AcceptanceContext extends MinkContext
 
     /**
      * @Given I am on page passwort-aendern for :username
-     *
-     * @param string $username
      */
     public function iAmOnPagePasswortAendernFor(string $username): void
     {

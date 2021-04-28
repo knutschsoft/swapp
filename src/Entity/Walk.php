@@ -267,8 +267,6 @@ class Walk
     }
 
     /**
-     * @return string|null
-     *
      * @Groups({"walk:read"})
      */
     public function getInsights(): ?string
@@ -318,8 +316,6 @@ class Walk
     }
 
     /**
-     * @return string
-     *
      * @Groups({"walk:read"})
      */
     public function getSystemicQuestion(): string
@@ -351,8 +347,6 @@ class Walk
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"walk:read"})
      */
     public function getHolidays(): bool
@@ -360,9 +354,6 @@ class Walk
         return $this->holidays;
     }
 
-    /**
-     * @param bool $holidays
-     */
     public function setHolidays(bool $holidays): void
     {
         $this->holidays = $holidays;
@@ -485,8 +476,6 @@ class Walk
     }
 
     /**
-     * @return string
-     *
      * @Groups({"walk:read"})
      */
     public function getSystemicAnswer(): string
@@ -494,9 +483,6 @@ class Walk
         return $this->systemicAnswer;
     }
 
-    /**
-     * @param string $systemicAnswer
-     */
     public function setSystemicAnswer(string $systemicAnswer): void
     {
         $this->systemicAnswer = $systemicAnswer;
@@ -587,8 +573,6 @@ class Walk
     }
 
     /**
-     * @return string
-     *
      * @Groups({"walk:read"})
      */
     public function getTeamName(): string
@@ -596,17 +580,12 @@ class Walk
         return $this->teamName;
     }
 
-    /**
-     * @param string $teamName
-     */
     public function setTeamName(string $teamName): void
     {
         $this->teamName = $teamName;
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getFemalesCount(): int
@@ -620,8 +599,6 @@ class Walk
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getMalesCount(): int
@@ -635,8 +612,6 @@ class Walk
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getQueerCount(): int
@@ -726,12 +701,10 @@ class Walk
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"walk:read"})
      */
     public function getIsUnfinished(): bool
     {
-        return ''=== $this->getSystemicAnswer();
+        return '' === $this->getSystemicAnswer();
     }
 }

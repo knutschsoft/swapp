@@ -46,11 +46,11 @@ class UserLoginTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/eadmin');
 
         $form = $crawler->selectButton('Anmelden')->form(
-            array(
+            [
                 '_username' => self::USERNAME_ADMIN,
                 '_password' => self::PASSWORD_ADMIN,
                 '_remember_me' => 'on',
-            )
+            ]
         );
 
         $crawler = $client->submit($form);
@@ -67,11 +67,11 @@ class UserLoginTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/login');
 
         $form = $crawler->selectButton('Anmelden')->form(
-            array(
+            [
                 '_username' => self::USERNAME_ADMIN,
                 '_password' => self::PASSWORD_ADMIN,
                 '_remember_me' => 'on',
-            )
+            ]
         );
 
         $crawler = $client->submit($form);
@@ -81,8 +81,6 @@ class UserLoginTest extends BaseWebTestCase
     }
 
     /**
-     * @param string $url
-     *
      * @dataProvider urlProvider
      */
     public function testUserLoginFrontendWithBadCredentialsIsRedirected(string $url): void
@@ -98,8 +96,6 @@ class UserLoginTest extends BaseWebTestCase
     }
 
     /**
-     * @param string $url
-     *
      * @dataProvider urlProvider
      */
     public function testUserLoginFrontendDisabledAccountIsRedirected(string $url): void
@@ -115,8 +111,6 @@ class UserLoginTest extends BaseWebTestCase
     }
 
     /**
-     * @param string $url
-     *
      * @dataProvider urlProvider
      */
     public function testUserLoginFrontendAdminUserHasAccess(string $url): void
@@ -132,19 +126,19 @@ class UserLoginTest extends BaseWebTestCase
 
     public function urlProvider(): array
     {
-        return array(
-            array('/walks'),
-            array('/tag'),
-            array('/createtag'),
-            array('/eadmin/?action=list&entity=Team'),
-            array('/eadmin/?action=list&entity=Walk'),
-            array('/eadmin/?action=list&entity=WayPoint'),
-            array('/eadmin/?action=list&entity=Tag'),
-            array('/eadmin/?action=list&entity=User'),
-            array('/eadmin/?action=list&entity=Guest'),
-            array('/eadmin/?action=list&entity=SystemicQuestion'),
+        return [
+            ['/walks'],
+            ['/tag'],
+            ['/createtag'],
+            ['/eadmin/?action=list&entity=Team'],
+            ['/eadmin/?action=list&entity=Walk'],
+            ['/eadmin/?action=list&entity=WayPoint'],
+            ['/eadmin/?action=list&entity=Tag'],
+            ['/eadmin/?action=list&entity=User'],
+            ['/eadmin/?action=list&entity=Guest'],
+            ['/eadmin/?action=list&entity=SystemicQuestion'],
             // ...
-        );
+        ];
     }
 
     private function loadUserFixtures(): void

@@ -21,8 +21,6 @@ class WalkExportController
     /**
      * @Route("walkexport", name="walk_export")
      *
-     * @return Response
-     *
      * @throws \League\Csv\CannotInsertRecord
      */
     public function __invoke(): Response

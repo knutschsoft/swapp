@@ -20,8 +20,6 @@ class TeamListController
      * @Route("team/list", name="team_list")
      *
      * @Template(template="team/list.html.twig")
-     *
-     * @return array
      */
     public function __invoke(): array
     {

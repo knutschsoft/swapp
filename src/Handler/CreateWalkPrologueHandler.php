@@ -39,7 +39,7 @@ final class CreateWalkPrologueHandler implements MessageHandlerInterface
     {
         $team = $this->teamRepository->findOneById($createWalkPrologueRequest->teamId);
 
-        \assert($team !== null, 'team not found');
+        \assert(null !== $team, 'team not found');
 
         $systemicQuestion = $this->systemicQuestionRepository->getRandom();
         $walk = Walk::prologue($team, $systemicQuestion);

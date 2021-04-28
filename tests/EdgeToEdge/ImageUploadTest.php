@@ -36,8 +36,6 @@ class ImageUploadTest extends BaseWebTestCase
 
     /**
      * @depends testNavigateToCreateWaypointForm
-     *
-     * @param array $args
      */
     public function testSubmittingEmptyFormRedirectsToForm(array $args): void
     {
@@ -60,8 +58,6 @@ class ImageUploadTest extends BaseWebTestCase
 
     /**
      * @depends testNavigateToCreateWaypointForm
-     *
-     * @param array $args
      */
     public function testSubmittingValidImageSavesImage(array $args): void
     {
@@ -92,8 +88,6 @@ class ImageUploadTest extends BaseWebTestCase
 
     /**
      * @depends testNavigateToCreateWaypointForm
-     *
-     * @param array $args
      */
     public function testUploadingImageExcceedingMaxFileSizeRendersFormErrors(array $args): void
     {

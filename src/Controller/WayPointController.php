@@ -29,12 +29,6 @@ class WayPointController extends AbstractController
     /** @var FormFactoryInterface */
     private $formFactory;
 
-    /**
-     * @param EngineInterface      $templateEngine
-     * @param FormFactoryInterface $formFactory
-     * @param WayPointRepository   $wayPointRepository
-     * @param RouterInterface      $router
-     */
     public function __construct(
         EngineInterface $templateEngine,
         FormFactoryInterface $formFactory,
@@ -48,8 +42,6 @@ class WayPointController extends AbstractController
     }
 
     /**
-     * @return Response
-     *
      * @todo needed?
      */
     public function homeScreenAction(): Response
@@ -58,11 +50,7 @@ class WayPointController extends AbstractController
     }
 
     /**
-     * @param WayPoint $wayPoint
-     *
      * @Route("waypoint/{wayPointId}", name="way_point_show")
-     *
-     * @return Response
      */
     public function showAction(WayPoint $wayPoint): Response
     {
@@ -75,8 +63,6 @@ class WayPointController extends AbstractController
 
     /**
      * @Route("table/waypoint", name="data_table_way_point")
-     *
-     * @return Response
      */
     public function dataTableAction(): Response
     {
@@ -88,11 +74,7 @@ class WayPointController extends AbstractController
     }
 
     /**
-     * @param Walk $walk
-     *
      * @Route("form/addWayPointToWalk/{walkId}", name="update_walk_with_way_point")
-     *
-     * @return Response
      */
     public function updateWalkWithWayPointAction(Walk $walk): Response
     {
@@ -114,15 +96,11 @@ class WayPointController extends AbstractController
                     'form' => $form->createView(),
                     'wayPoints' => $walk->getWayPoints(),
                 ]
-            )
+            ),
         ]);
     }
 
     /**
-     * @param FlashBagInterface $flash
-     * @param Walk              $walk
-     * @param Request           $request
-     *
      * @Route("form/waypointcreated/{walkId}", name="way_point_create")
      *
      * @return RedirectResponse|Response
@@ -161,7 +139,7 @@ class WayPointController extends AbstractController
                     'wayPoints' => $walk->getWayPoints(),
                     'walk' => $walk,
                 ]
-            )
+            ),
         ]);
     }
 }

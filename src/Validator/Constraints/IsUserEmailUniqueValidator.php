@@ -17,8 +17,7 @@ class IsUserEmailUniqueValidator extends ConstraintValidator
     }
 
     /**
-     * @param string     $email
-     * @param Constraint $constraint
+     * @param string $email
      */
     public function validate($email, Constraint $constraint): void
     {
@@ -26,6 +25,6 @@ class IsUserEmailUniqueValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $email)
                 ->addViolation();
-        };
+        }
     }
 }

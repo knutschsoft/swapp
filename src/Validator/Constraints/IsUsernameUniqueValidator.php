@@ -17,8 +17,7 @@ class IsUsernameUniqueValidator extends ConstraintValidator
     }
 
     /**
-     * @param string     $username
-     * @param Constraint $constraint
+     * @param string $username
      */
     public function validate($username, Constraint $constraint): void
     {
@@ -26,6 +25,6 @@ class IsUsernameUniqueValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $username)
                 ->addViolation();
-        };
+        }
     }
 }

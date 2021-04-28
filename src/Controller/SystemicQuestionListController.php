@@ -20,8 +20,6 @@ class SystemicQuestionListController
      * @Route("systemic-question/list", name="systemic_question_list")
      *
      * @Template(template="systemic_question/list.html.twig")
-     *
-     * @return array
      */
     public function __invoke(): array
     {

@@ -38,10 +38,6 @@ class SystemicQuestionFormController
      *
      * @Template(template="systemic_question/form.html.twig")
      *
-     * @param Request               $request
-     * @param FlashBagInterface     $flash
-     * @param SystemicQuestion|null $systemicQuestion
-     *
      * @return array|RedirectResponse
      */
     public function __invoke(Request $request, FlashBagInterface $flash, ?SystemicQuestion $systemicQuestion = null)

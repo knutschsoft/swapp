@@ -10,8 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class SwappController extends AbstractController
 {
     /**
-     * @return Response
-     *
      * @Route("/{vueRouting}", requirements={"vueRouting"="^(?!pdf|api|js-logger|form|walkexport|_(profiler|wdt)).*"}, name="swapp_home")
      * @Route("/passwort-aendern/{userId}/{confirmationToken}", name="user_password_reset")
      * @Route("/", name="fallback")
@@ -21,7 +19,6 @@ class SwappController extends AbstractController
         return $this->render(
             'swapp/swapp.html.twig',
             [
-
             ]
         );
     }

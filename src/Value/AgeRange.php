@@ -42,8 +42,6 @@ class AgeRange
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read", "team:read"})
      */
     public function getRangeStart(): int
@@ -52,8 +50,6 @@ class AgeRange
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read", "team:read"})
      */
     public function getRangeEnd(): int

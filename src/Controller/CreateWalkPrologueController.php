@@ -28,10 +28,6 @@ final class CreateWalkPrologueController
     }
 
     /**
-     * @param Team $data
-     *
-     * @return Walk
-     *
      * @Route(
      *     name="create_walk_prologue",
      *     path="/api/walk/create-prologue",

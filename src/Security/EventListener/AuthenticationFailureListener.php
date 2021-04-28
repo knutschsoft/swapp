@@ -18,9 +18,6 @@ class AuthenticationFailureListener
         $this->logger = $logger;
     }
 
-    /**
-     * @param AuthenticationFailureEvent $event
-     */
     public function onAuthenticationFailureResponse(AuthenticationFailureEvent $event): void
     {
         $data = [

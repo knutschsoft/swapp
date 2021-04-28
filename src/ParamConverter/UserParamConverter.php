@@ -42,8 +42,6 @@ class UserParamConverter implements ParamConverterInterface
     /**
      * Checks if the object is supported.
      *
-     * @param ParamConverter $configuration
-     *
      * @return bool True if the object is supported, else false
      */
     public function supports(ParamConverter $configuration): bool

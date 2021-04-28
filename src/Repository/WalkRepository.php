@@ -13,16 +13,11 @@ interface WalkRepository
     public function findAll(): array;
 
     /**
-     * @param string $order
-     * @param string $sort
-     *
      * @return Walk[]
      */
     public function findAllOrderBy(string $order, string $sort): array;
 
     /**
-     * @param User $user
-     *
      * @return Walk[]
      */
     public function findAllUnfinishedByUser(User $user): array;

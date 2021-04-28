@@ -21,9 +21,6 @@ class JWTAuthenticationSuccessListener
         $this->iriConverter = $iriConverter;
     }
 
-    /**
-     * @param AuthenticationSuccessEvent $event
-     */
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event): void
     {
         $data = $event->getData();

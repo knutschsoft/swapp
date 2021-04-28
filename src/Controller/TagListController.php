@@ -20,8 +20,6 @@ class TagListController
      * @Route("tag", name="tag_home_screen")
      *
      * @Template(template="tag/homeScreen.html.twig")
-     *
-     * @return array
      */
     public function __invoke(): array
     {

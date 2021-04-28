@@ -62,8 +62,6 @@ class Tag
     }
 
     /**
-     * @return string
-     *
      * @Groups({"walk:read"})
      */
     public function getName(): string
@@ -77,8 +75,6 @@ class Tag
     }
 
     /**
-     * @return string
-     *
      * @Groups({"walk:read"})
      */
     public function getColor(): string

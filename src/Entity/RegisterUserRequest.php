@@ -27,24 +27,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RegisterUserRequest
 {
     /**
-     * @var string
-     *
      * @Assert\NotBlank
      * @Assert\Email()
      * @AppAssert\IsUserEmailUnique()
      */
     public string $email;
     /**
-     * @var string
-     *
      * @Assert\NotBlank
      * @Assert\Length(min="8", max="40")
      * @AppAssert\IsUsernameUnique()
      */
     public string $username;
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      * @Assert\Length(min="8", max="40")
      * @Assert\NotCompromisedPassword(message="user.password.not_compromised")

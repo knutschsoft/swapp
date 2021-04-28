@@ -31,13 +31,6 @@ class WalkController extends AbstractController
     /** @var FormFactoryInterface */
     private $formFactory;
 
-    /**
-     * @param WalkRepository             $walkRepository
-     * @param RouterInterface            $router
-     * @param FormFactoryInterface       $formFactory
-     * @param UserRepository             $userRepository
-     * @param SystemicQuestionRepository $systemicQuestionRepository
-     */
     public function __construct(
         WalkRepository $walkRepository,
         RouterInterface $router,
@@ -53,11 +46,6 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @param User    $user
-     * @param Request $request
-     *
-     * @return array
-     *
      * @Route("walks", name="walk_home_screen")
      *
      * @Template(template="walk/homeScreen.html.twig")
@@ -81,13 +69,9 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @param Walk $walk
-     *
      * @Route("walk/{walkId}", name="walk_show")
      *
      * @Template(template="walk/show.html.twig")
-     *
-     * @return array
      */
     public function showAction(Walk $walk): array
     {
@@ -97,14 +81,9 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @param Walk    $walk
-     * @param Request $request
-     *
      * @Route("createwalk/{walkId}", name="walk_create_form")
      *
      * @Template(template="walk/createWalkForm.html.twig")
-     *
-     * @return array
      */
     public function createWalkFormAction(Walk $walk, Request $request): array
     {
@@ -125,9 +104,6 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @param Walk    $walk
-     * @param Request $request
-     *
      * @Route("/form/walk-prologue/{walkId}", name="walk_start")
      *
      * @return JsonResponse
@@ -153,9 +129,6 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @param Walk    $walk
-     * @param Request $request
-     *
      * @Route("form/walk-epilogue/{walkId}", name="walk_create")
      *
      * @return JsonResponse

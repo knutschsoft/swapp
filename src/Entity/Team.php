@@ -54,8 +54,6 @@ class Team
     }
 
     /**
-     * @return int
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function getId(): int
@@ -69,8 +67,6 @@ class Team
     }
 
     /**
-     * @return string
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function getName(): string

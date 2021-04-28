@@ -13,10 +13,6 @@ class SecurityController
      * @Route("/login", name="login")
      *
      * @Template(template="security/login.html.twig")
-     *
-     * @param AuthenticationUtils $authenticationUtils
-     *
-     * @return array
      */
     public function __invoke(AuthenticationUtils $authenticationUtils): array
     {

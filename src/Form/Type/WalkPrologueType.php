@@ -48,36 +48,36 @@ class WalkPrologueType extends AbstractType
         $builder->add(
             'holidays',
             CheckboxType::class,
-            array(
+            [
                 'label' => 'Ferien',
                 'required' => false,
-            )
+            ]
         );
         $builder->add(
             'weather',
             ChoiceType::class,
-            array(
-                'choices' => array(
+            [
+                'choices' => [
                     'Sonne' => 'Sonne',
                     'Wolken' => 'Wolken',
                     'Regen' => 'Regen',
                     'Schnee' => 'Schnee',
                     'Arschkalt' => 'Arschkalt',
-                ),
+                ],
                 'placeholder' => '---',
                 'label' => 'Wetter',
-            )
+            ]
         );
         $builder->add(
             'create',
             SubmitType::class,
-            array(
+            [
                 'label' => 'Runde beginnen',
                 'attr' => [
                         'class' => 'btn btn-secondary btn-block',
                         'data-test' => 'create-way-point',
                     ],
-            )
+            ]
         );
     }
 

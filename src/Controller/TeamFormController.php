@@ -38,10 +38,6 @@ class TeamFormController
      *
      * @Template(template="team/form.html.twig")
      *
-     * @param Request           $request
-     * @param FlashBagInterface $flash
-     * @param Team|null         $team
-     *
      * @return array|RedirectResponse
      */
     public function __invoke(Request $request, FlashBagInterface $flash, ?Team $team = null)

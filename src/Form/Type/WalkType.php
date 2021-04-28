@@ -20,37 +20,37 @@ class WalkType extends AbstractType
         $builder->add(
             'name',
             TextType::class,
-            array(
+            [
                 'label' => 'Name',
-            )
+            ]
         );
         $builder->add(
             'conceptOfDay',
             TextareaType::class,
-            array(
+            [
                 'label' => 'Tageskonzept',
-            )
+            ]
         );
         $builder->add(
             'startTime',
             DateTimeType::class,
-            array(
+            [
                 'label' => 'Rundenstartzeit',
-            )
+            ]
         );
         $builder->add(
             'endTime',
             DateTimeType::class,
-            array(
+            [
                 'label' => 'Rundenendzeit',
-            )
+            ]
         );
         $builder->add(
             'walkReflection',
             TextareaType::class,
-            array(
+            [
                 'label' => 'Reflexion',
-            )
+            ]
         );
         $builder->add(
             'systemicQuestion',
@@ -66,39 +66,39 @@ class WalkType extends AbstractType
         $builder->add(
             'systemicAnswer',
             TextareaType::class,
-            array(
+            [
                 'label' => 'Systemische Antwort',
-            )
+            ]
         );
         $builder->add(
             'holidays',
             TextType::class,
-            array(
+            [
                 'label' => 'Ferien',
-            )
+            ]
         );
         $builder->add(
             'rating',
             ChoiceType::class,
-            array(
-                'choices' => array(
+            [
+                'choices' => [
                     '1' => '1',
                     '2' => '2',
                     '3' => '3',
                     '4' => '4',
                     '5' => '5',
-                ),
+                ],
                 'required' => true,
                 'label' => 'Rundenbewertung',
-            )
+            ]
         );
         $builder->add(
             'holidays',
             CheckboxType::class,
-            array(
+            [
                 'label' => 'Ferien',
                 'required' => false,
-            )
+            ]
         );
         $builder->add(
             'weather',
@@ -118,24 +118,24 @@ class WalkType extends AbstractType
         $builder->add(
             'insights',
             TextareaType::class,
-            array(
+            [
                 'label' => 'Erkenntnisse, Überlegungen, Zielsetzungen',
-            )
+            ]
         );
         $builder->add(
             'commitments',
             TextareaType::class,
-            array(
+            [
                 'label' => 'Termine, Besorgungen, Verabredungen',
-            )
+            ]
         );
         $builder->add(
             'isResubmission',
             CheckboxType::class,
-            array(
+            [
                 'label' => 'Wiedervorlage Dienstberatung',
                 'required' => false,
-            )
+            ]
         );
     }
 

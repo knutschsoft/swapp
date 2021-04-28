@@ -40,13 +40,11 @@ final class DomainIntegrationContext extends RawMinkContext
     public function gatherContexts(BeforeScenarioScope $scope): void
     {
         $environment = $scope->getEnvironment();
-         $this->restContext = $environment->getContext(RestContext::class);
+        $this->restContext = $environment->getContext(RestContext::class);
     }
 
     /**
      * @Given /^I am authenticated against api as "([^"]*)"$/
-     *
-     * @param string $email
      *
      * @throws \Throwable
      */
@@ -56,10 +54,9 @@ final class DomainIntegrationContext extends RawMinkContext
         $token = $this->jwtManager->create($user);
         $this->restContext->iAddHeaderEqualTo('Authorization', "Bearer $token");
     }
+
     /**
      * @Given /^the following users exists:$/
-     *
-     * @param TableNode $table
      */
     public function theFollowingUsersExists(TableNode $table): void
     {
@@ -89,8 +86,6 @@ final class DomainIntegrationContext extends RawMinkContext
 
     /**
      * @When /^I enable user "([^"]*)"$/
-     *
-     * @param string $email
      */
     public function iEnableUser(string $email): void
     {
@@ -102,8 +97,6 @@ final class DomainIntegrationContext extends RawMinkContext
 
     /**
      * @When /^I disable user "([^"]*)"$/
-     *
-     * @param string $email
      */
     public function iDisableUser(string $email): void
     {

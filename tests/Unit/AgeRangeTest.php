@@ -13,8 +13,6 @@ class AgeRangeTest extends TestCase
     private const END = 7;
 
     /**
-     * @param array $count
-     *
      * @dataProvider fromArrayProvider
      */
     public function test_from_array(array $count): void

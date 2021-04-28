@@ -56,11 +56,11 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
                     'required' => true,
                     'attr' => [
                         'class' => 'd-inline-block',
-                        'style' => 'width: calc(100% - 70px);'
+                        'style' => 'width: calc(100% - 70px);',
                     ],
-                    'label_attr' =>[
+                    'label_attr' => [
                         'class' => '',
-                        'style' => 'width: 70px;'
+                        'style' => 'width: 70px;',
                     ],
                     'label' => \sprintf(
                         '%s - %s %s',
@@ -75,9 +75,6 @@ class AgeGroupType extends AbstractType implements DataMapperInterface
         $builder->setDataMapper($this);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

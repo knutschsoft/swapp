@@ -7,8 +7,6 @@ class ApplicationAvailabilityTest extends BaseWebTestCase
 {
     /**
      * @dataProvider urlProvider
-     *
-     * @param string $url
      */
     public function testPageIsSuccessful(string $url): void
     {

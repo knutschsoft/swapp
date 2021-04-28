@@ -26,8 +26,6 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
 
     /**
      * @param int|string $id
-     *
-     * @return Team|null
      */
     public function findOneById($id): ?Team
     {

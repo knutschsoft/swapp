@@ -28,8 +28,6 @@ final class Gender
     }
 
     /**
-     * @return string
-     *
      * @Groups({"walk:read"})
      */
     public function getGender(): string
@@ -38,8 +36,6 @@ final class Gender
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"walk:read"})
      */
     public function isMale(): bool
@@ -48,8 +44,6 @@ final class Gender
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"walk:read"})
      */
     public function isFemale(): bool
@@ -58,8 +52,6 @@ final class Gender
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"walk:read"})
      */
     public function isQueer(): bool

@@ -42,8 +42,6 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
     }
 
     /**
-     * @param User $user
-     *
      * @return Walk[]
      */
     public function findAllUnfinishedByUser(User $user): array
@@ -77,8 +75,6 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
 
     /**
      * @param int|string $id
-     *
-     * @return Walk|null
      */
     public function findOneById($id): ?Walk
     {

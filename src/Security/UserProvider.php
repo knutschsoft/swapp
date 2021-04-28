@@ -44,10 +44,6 @@ class UserProvider implements UserProviderInterface
      * object can just be merged into some internal array of users / identity
      * map.
      *
-     * @param UserInterface $user
-     *
-     * @return UserInterface
-     *
      * @throws UnsupportedUserException if the user is not supported
      */
     public function refreshUser(UserInterface $user): UserInterface
@@ -66,8 +62,6 @@ class UserProvider implements UserProviderInterface
 
     /**
      * @param string|int $class
-     *
-     * @return bool
      */
     public function supportsClass($class): bool
     {

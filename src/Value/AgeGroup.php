@@ -30,8 +30,6 @@ final class AgeGroup
     }
 
     /**
-     * @return AgeRange
-     *
      * @Groups({"walk:read"})
      */
     public function getAgeRange(): AgeRange
@@ -40,8 +38,6 @@ final class AgeGroup
     }
 
     /**
-     * @return Gender
-     *
      * @Groups({"walk:read"})
      */
     public function getGender(): Gender
@@ -50,8 +46,6 @@ final class AgeGroup
     }
 
     /**
-     * @return PeopleCount
-     *
      * @Groups({"walk:read"})
      */
     public function getPeopleCount(): PeopleCount

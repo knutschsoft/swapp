@@ -27,8 +27,6 @@ final class PeopleCount
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getCount(): int

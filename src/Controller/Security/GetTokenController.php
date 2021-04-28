@@ -11,8 +11,6 @@ final class GetTokenController extends AbstractController
 {
     /**
      * @Route("/api/getToken", methods={"POST"})
-     *
-     * @return Response
      */
     public function getTokenAction(): Response
     {

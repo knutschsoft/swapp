@@ -33,7 +33,6 @@ final class WalksUnfishedController extends AbstractController
     }
 
     /**
-     *
      * @return Walk[]
      */
     public function __invoke(TokenStorageInterface $tokenStorage)

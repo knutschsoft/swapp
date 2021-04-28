@@ -131,13 +131,11 @@ class User implements UserInterface
         return $instance;
     }
 
-
     public function changePassword(string $password, UserPasswordEncoderInterface $passwordEncoder): void
     {
         $this->password = $passwordEncoder->encodePassword($this, $password);
         $this->confirmationToken = null;
     }
-
 
     public static function createEmpty(): self
     {
@@ -173,8 +171,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function getId(): string
@@ -247,8 +243,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function getUsername(): string
@@ -272,8 +266,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function getEmail(): string
@@ -307,8 +299,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return \DateTime|null
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function getLastLogin(): ?\DateTime
@@ -361,8 +351,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function isEnabled(): bool
@@ -386,8 +374,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"user:read", "team:read"})
      */
     public function isSuperAdmin(): bool

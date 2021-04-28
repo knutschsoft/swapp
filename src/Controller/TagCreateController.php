@@ -34,9 +34,6 @@ class TagCreateController
     }
 
     /**
-     * @param Request           $request
-     * @param FlashBagInterface $flash
-     *
      * @Route("createtag", name="tag_create")
      *
      * @Template("tag/createTag.html.twig")

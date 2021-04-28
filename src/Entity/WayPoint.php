@@ -150,8 +150,6 @@ class WayPoint
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getFemalesCount(): int
@@ -168,8 +166,6 @@ class WayPoint
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getMalesCount(): int
@@ -186,8 +182,6 @@ class WayPoint
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getQueerCount(): int
@@ -252,8 +246,6 @@ class WayPoint
     }
 
     /**
-     * @return bool
-     *
      * @Groups({"walk:read"})
      */
     public function getIsMeeting(): bool
@@ -266,9 +258,6 @@ class WayPoint
         $this->isMeeting = $isMeeting;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return \sprintf(
@@ -278,8 +267,6 @@ class WayPoint
     }
 
     /**
-     * @return string
-     *
      * @Groups({"walk:read"})
      */
     public function getLocationName(): string
@@ -293,8 +280,6 @@ class WayPoint
     }
 
     /**
-     * @return File|null
-     *
      * @Groups({"walk:read"})
      */
     public function getImageFile(): ?File
@@ -323,8 +308,6 @@ class WayPoint
     }
 
     /**
-     * @return string|null
-     *
      * @Groups({"walk:read"})
      */
     public function getImageName(): ?string
@@ -338,8 +321,6 @@ class WayPoint
     }
 
     /**
-     * @return int
-     *
      * @Groups({"walk:read"})
      */
     public function getId(): int
@@ -353,8 +334,6 @@ class WayPoint
     }
 
     /**
-     * @return string|null
-     *
      * @Groups({"walk:read"})
      */
     public function getNote(): ?string
