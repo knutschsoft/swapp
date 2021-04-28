@@ -70,7 +70,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $registerUserRequest->username = $row['username'] ?? $registerUserRequest->email;
             $user = User::fromRegisterUserRequest($registerUserRequest, $this->passwordEncoder);
 
-            $isEnabled = $row['username'] ?? true;
+            $isEnabled = $row['isEnabled'] ?? true;
             if ($isEnabled) {
                 $user->enable();
             } else {
