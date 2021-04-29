@@ -38,3 +38,4 @@ deploy:
   overwrite: true
   on:
     tags: false
+    all_branches: true
