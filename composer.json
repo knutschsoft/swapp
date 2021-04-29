@@ -120,7 +120,7 @@
             "vendor/bin/phpcs --colors src tests || true",
             "vendor/bin/phpstan analyse --no-progress --ansi",
             "vendor/bin/phpunit --colors || true",
-            "vendor/bin/behat --colors",
+            "vendor/bin/behat -c behat.yml.dist --colors",
             "vendor/bin/local-php-security-checker"
         ],
         "create-jwt": [
