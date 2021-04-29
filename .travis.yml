@@ -25,3 +25,16 @@ before_script:
 
 script:
   - composer qa-ci
+
+# get access to debug screenshots from ci
+deploy:
+  provider: releases
+  api_key:
+    secure: "XaVbbAp4PybuVYCPkadfGiwJHtS5XIAxTAYVfb6w6ibu+v00QXZlsx1rPB6XNkQJL1t/qQt4LhVf7QduGRz0u2JEFv1iLc4hHJpiE+LzsPWP2ub6+sN+/qir33Ybhk0rXksRAA9A8wKoKz6JOzTD90h97OLPvCrLIOrPFvSGMgsQ0fTN4DHLhFz+DqfDVghFwjXD8sXbBnSA7l5Jch+W55qemMaEkOikKGMUHZTfiz1a0LZcw4ACWVCm51sbxFEsBhfcsehXac/WjQQeA7mrVLzUlH7sYwP54xfTW5A12/97zVmE5LPzFq2jLYsSjExCHaq5w5WvtC8EaVChpDV+cqglkBE4upx0tnvZjboF0T9PXKua3ex9O7WZXtxZKycsdJJMws0wP/NpsHSOjtDmjidDLwXOaMcMpB1jpACicn/wOFOEk1x/7VSRXlkvkYp0icc/Tj8e3gRQneBrEkzBfHehrVPauWalF5wq1pC1blxcksYGZn3NMbl2252ed8d5vpKBArgaTPInMVxzpbhMzxrXTUHUE/eXsagz7LfFGIZ4yJFcO5AwgEd7PxKWj50NaeBmDHyJKC2ABxmUPEmFnK7ADrFDLCzpHgH9KLYk+DPA3MVwKmEOglHQRmaRMu8iGyfxzruXDFKXuUuUyDQr/RVggHi/5jr9Xff7xFCh+RY="
+  file_glob: true
+  file: public/screenshots/*
+  skip_cleanup: true
+  draft: true
+  overwrite: true
+  on:
+    tags: false

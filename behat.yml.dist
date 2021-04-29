@@ -1,4 +1,7 @@
 default:
+    gherkin:
+        filters:
+            tags: ~@ignore
     suites:
         acceptance:
             paths:
@@ -6,24 +9,25 @@ default:
             contexts:
                 -  App\Tests\Context\DomainIntegrationContext:
                        kernel: '@kernel'
-                #                - behatch:context:debug
+                - behatch:context:debug
                 - behatch:context:rest
-                #-   App\Tests\Context\DomainIntegrationContext:
-                #        kernel: '@kernel'
                 -  App\Tests\Context\DatabaseContext:
                        kernel: '@kernel'
                 -  App\Tests\Context\AcceptanceContext:
                        kernel: '@kernel'
-                # - FailAid\Context\FailureContext
+                - FailAid\Context\FailureContext
 
     extensions:
         Behatch\Extension: ~
         FailAid\Extension:
+            output:
+                screenshot: true
             screenshot:
-                directory: /var/www/html/public/screenshots/
-                # mode: default
+                directory: public/screenshots/
+                mode: default
                 autoClean: true
                 # size: 1444x1280
+                hostUrl: "http://swapp:8082/screenshots/"
 #        Bex\Behat\ScreenshotExtension:
 #            active_image_drivers: url
 #            image_drivers:
