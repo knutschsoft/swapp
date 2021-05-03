@@ -3,6 +3,19 @@ default:
         filters:
             tags: ~@ignore
     suites:
+        integration:
+            paths:
+                - '%paths.base%/tests/Integration'
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - App\Tests\Context\DomainIntegrationContext:
+                      kernel: '@kernel'
+                - behatch:context:debug
+                - behatch:context:system
+                - behatch:context:json
+                - behatch:context:rest
+                - App\Tests\Context\DatabaseContext:
+                      kernel: '@kernel'
         acceptance:
             paths:
                 - '%paths.base%/tests/Acceptance'
@@ -28,22 +41,17 @@ default:
                 autoClean: true
                 # size: 1444x1280
                 hostUrl: "http://swapp:8082/screenshots/"
-#        Bex\Behat\ScreenshotExtension:
-#            active_image_drivers: url
-#            image_drivers:
-#                url:
-#                    screenshot_directory: "/var/www/html/public/screenshots"
-#                    screenshot_url: "http://swapp:8082/screenshots"
         FriendsOfBehat\SymfonyExtension: ~
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
-            files_path: "features/files/"
-            # use this for local behat.yml
-            # base_url: "http://localhost"
-            base_url: "http://localhost:9080" # use web server of panther
+            files_path: "tests/"
+#            files_path: "features/files/"
+            base_url: "http://localhost"
             javascript_session: javascript
-            default_session: javascript # symfony2
+            default_session: symfony
             sessions:
+                symfony:
+                    symfony: ~
                 javascript:
                     panther: ~
                     # use this for local behat.yml

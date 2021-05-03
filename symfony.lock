@@ -34,23 +34,17 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
-    "bex/behat-extension-driver-locator": {
-        "version": "1.0.2"
-    },
-    "bex/behat-screenshot": {
-        "version": "1.2.8"
-    },
     "brick/math": {
         "version": "0.9.1"
     },
     "captainhook/captainhook": {
         "version": "4.5.2"
     },
-    "composer/xdebug-handler": {
-        "version": "1.3.3"
-    },
     "dbrekelmans/bdi": {
         "version": "0.3"
+    },
+    "dealerdirect/phpcodesniffer-composer-installer": {
+        "version": "v0.7.1"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -97,9 +91,6 @@
             "src/Repository/.gitignore"
         ]
     },
-    "doctrine/doctrine-cache-bundle": {
-        "version": "1.3.5"
-    },
     "doctrine/doctrine-migrations-bundle": {
         "version": "1.2",
         "recipe": {
@@ -134,8 +125,8 @@
     "doctrine/persistence": {
         "version": "1.1.1"
     },
-    "doctrine/reflection": {
-        "version": "v1.0.0"
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
     },
     "dunglas/doctrine-json-odm": {
         "version": "0.1",
@@ -169,6 +160,9 @@
     },
     "fig/link-util": {
         "version": "1.1.1"
+    },
+    "friends-of-behat/mink-browserkit-driver": {
+        "version": "v1.5.0"
     },
     "friends-of-behat/mink-extension": {
         "version": "2.3.1"
@@ -219,12 +213,6 @@
     },
     "instaclick/php-webdriver": {
         "version": "1.4.7"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
-    },
-    "jean85/pretty-package-versions": {
-        "version": "1.2"
     },
     "jms/metadata": {
         "version": "2.1.0"
@@ -298,30 +286,6 @@
     },
     "nelmio/js-logger-bundle": {
         "version": "1.6.0"
-    },
-    "nette/bootstrap": {
-        "version": "v3.0.0"
-    },
-    "nette/di": {
-        "version": "v3.0.1"
-    },
-    "nette/finder": {
-        "version": "v2.5.1"
-    },
-    "nette/neon": {
-        "version": "v3.0.0"
-    },
-    "nette/php-generator": {
-        "version": "v3.2.3"
-    },
-    "nette/robot-loader": {
-        "version": "v3.2.0"
-    },
-    "nette/schema": {
-        "version": "v1.0.0"
-    },
-    "nette/utils": {
-        "version": "v3.0.1"
     },
     "nikic/php-parser": {
         "version": "v4.2.4"
@@ -420,9 +384,6 @@
         "version": "4.1.1"
     },
     "robertfausk/behat-panther-extension": {
-        "version": "v1.0.0"
-    },
-    "robertfausk/behat-screenshot-image-driver-url": {
         "version": "v1.0.0"
     },
     "robertfausk/mink-panther-driver": {

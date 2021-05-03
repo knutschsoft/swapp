@@ -5,7 +5,6 @@ namespace App\Security\EventListener;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Webmozart\Assert\Assert;
 
 class JWTCreatedListener
 {
@@ -20,15 +19,10 @@ class JWTCreatedListener
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        Assert::notNull($request);
-        $payload = $event->getData();
-        $payload['ip'] = $request->getClientIp();
-
-        $event->setData($payload);
-
-        $header = $event->getHeader();
-        $header['cty'] = 'JWT';
-
-        $event->setHeader($header);
+        if ($request) {
+            $payload = $event->getData();
+            $payload['ip'] = $request->getClientIp();
+            $event->setData($payload);
+        }
     }
 }

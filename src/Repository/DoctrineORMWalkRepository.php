@@ -7,25 +7,19 @@ use App\Entity\User;
 use App\Entity\Walk;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @method Walk|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Walk|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Walk[]    findAll()
+ * @method Walk[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Walk::class);
-    }
-
-    /**
-     * @return Walk[]
-     */
-    public function findAll(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('walk')
-            ->select();
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
     }
 
     /**

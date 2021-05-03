@@ -9,9 +9,6 @@ use Doctrine\ORM\AbstractQuery;
 
 interface WalkRepository
 {
-    /** @return Walk[] */
-    public function findAll(): array;
-
     /**
      * @param string $order
      * @param string $sort

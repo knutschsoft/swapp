@@ -8,6 +8,8 @@ use App\Entity\SystemicQuestion;
 use App\Entity\Tag;
 use App\Entity\Team;
 use App\Entity\User;
+use App\Entity\Walk;
+use App\Entity\WayPoint;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -44,7 +46,7 @@ final class DomainIntegrationContext extends RawMinkContext
     public function gatherContexts(BeforeScenarioScope $scope): void
     {
         $environment = $scope->getEnvironment();
-         $this->restContext = $environment->getContext(RestContext::class);
+        $this->restContext = $environment->getContext(RestContext::class);
     }
 
     /**
@@ -119,6 +121,45 @@ final class DomainIntegrationContext extends RawMinkContext
             $tag = new Tag();
             $tag->setName($row['name']);
             $tag->setColor($row['color']);
+            $this->em->persist($tag);
+        }
+        $this->em->flush();
+    }
+
+    /**
+     * @Given /^the following walks exists:$/
+     *
+     * @param TableNode $table
+     */
+    public function theFollowingWalksExists(TableNode $table): void
+    {
+        foreach ($table as $row) {
+            Assert::keyExists($row, 'name');
+            Assert::keyExists($row, 'team');
+            $team = $this->getTeamByName($row['team']);
+            $systemicQuestion = SystemicQuestion::fromString($row['systemicQuestion'] ?? 'How are you?');
+            $tag = Walk::prologue($team, $systemicQuestion);
+            $tag->setName($row['name']);
+
+            $this->em->persist($tag);
+        }
+        $this->em->flush();
+    }
+
+    /**
+     * @Given /^the following way points exists:$/
+     *
+     * @param TableNode $table
+     */
+    public function theFollowingWayPointsExists(TableNode $table): void
+    {
+        foreach ($table as $row) {
+            Assert::keyExists($row, 'walkName');
+            Assert::keyExists($row, 'locationName');
+            $walk = $this->getWalkByName($row['walkName']);
+            $tag = WayPoint::fromWalk($walk);
+            $tag->setLocationName($row['locationName']);
+
             $this->em->persist($tag);
         }
         $this->em->flush();

@@ -5,11 +5,17 @@ namespace App\Repository;
 
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @method Tag|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Tag|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Tag[]    findAll()
+ * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
     }
@@ -40,15 +46,5 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
         }
 
         return $tagList;
-    }
-
-    /** @return Tag[] */
-    public function findAll(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('tag')
-            ->select();
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
     }
 }

@@ -26,6 +26,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @Vich\Uploadable
  */
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get'],
+    normalizationContext: ["groups" => ["wayPoint:read"]]
+)]
 class WayPoint
 {
     use TimestampableEntity;
@@ -129,7 +134,7 @@ class WayPoint
     /**
      * @return AgeGroup[]
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getAgeGroups(): array
     {
@@ -152,7 +157,7 @@ class WayPoint
     /**
      * @return int
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getFemalesCount(): int
     {
@@ -170,7 +175,7 @@ class WayPoint
     /**
      * @return int
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getMalesCount(): int
     {
@@ -188,7 +193,7 @@ class WayPoint
     /**
      * @return int
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getQueerCount(): int
     {
@@ -254,7 +259,7 @@ class WayPoint
     /**
      * @return bool
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getIsMeeting(): bool
     {
@@ -280,7 +285,7 @@ class WayPoint
     /**
      * @return string
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getLocationName(): string
     {
@@ -295,7 +300,7 @@ class WayPoint
     /**
      * @return File|null
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getImageFile(): ?File
     {
@@ -325,7 +330,7 @@ class WayPoint
     /**
      * @return string|null
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getImageName(): ?string
     {
@@ -340,7 +345,7 @@ class WayPoint
     /**
      * @return int
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getId(): int
     {
@@ -355,7 +360,7 @@ class WayPoint
     /**
      * @return string|null
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getNote(): ?string
     {
@@ -380,7 +385,7 @@ class WayPoint
     /**
      * @return Collection|Tag[]
      *
-     * @Groups({"walk:read"})
+     * @Groups({"wayPoint:read", "walk:read"})
      */
     public function getWayPointTags()
     {

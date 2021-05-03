@@ -11,11 +11,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
- *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMTagRepository")
  * @ORM\Table(name="tag")
  */
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get'],
+    normalizationContext: ["groups" => ["tag:read"]]
+)]
 class Tag
 {
     /**
@@ -64,7 +67,7 @@ class Tag
     /**
      * @return string
      *
-     * @Groups({"walk:read"})
+     * @Groups({"tag:read", "walk:read"})
      */
     public function getName(): string
     {
@@ -79,7 +82,7 @@ class Tag
     /**
      * @return string
      *
-     * @Groups({"walk:read"})
+     * @Groups({"tag:read", "walk:read"})
      */
     public function getColor(): string
     {
@@ -91,6 +94,12 @@ class Tag
         $this->color = $color;
     }
 
+    /**
+     * @Groups({"tag:read", "walk:read"})
+     *
+     * @return int
+     */
+    #[Groups(['tag' => 'read'])]
     public function getId(): int
     {
         return $this->id;

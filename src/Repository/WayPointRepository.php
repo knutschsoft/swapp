@@ -11,7 +11,4 @@ interface WayPointRepository
     public function findOneById($id): ?WayPoint;
 
     public function save(WayPoint $wayPoint): void;
-
-    /** @return WayPoint[] */
-    public function findAll(): array;
 }

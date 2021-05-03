@@ -3,13 +3,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMSystemicQuestionRepository")
  * @ORM\Table(name="systemic_question")
  */
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get'],
+    normalizationContext: ["groups" => ["systemicQuestion:read"]]
+)]
 class SystemicQuestion
 {
     /**
@@ -22,13 +29,16 @@ class SystemicQuestion
     /** @ORM\Column(type="string", length=4096) */
     private string $question = '';
 
-    public static function fromString(string $question): self
+    private function __construct(string $question)
     {
         Assert::minLength($question, 5);
-        $instance = new self();
-        $instance->setQuestion($question);
+        Assert::maxLength($question, 4096);
+        $this->question = $question;
+    }
 
-        return $instance;
+    public static function fromString(string $question): self
+    {
+        return new self($question);
     }
 
     public function getId(): int
@@ -41,6 +51,11 @@ class SystemicQuestion
         $this->id = $id;
     }
 
+    /**
+     * @Groups({"systemicQuestion:read"})
+     *
+     * @return string
+     */
     public function getQuestion(): string
     {
         return $this->question;

@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,19 +13,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     itemOperations={"get"},
- *     collectionOperations={"post", "get"},
- *     attributes={"pagination_items_per_page"=10},
- *     normalizationContext={"groups"={"user:read"}},
- *     denormalizationContext={"groups"={}}
- * )
- *
- * @ApiFilter(OrderFilter::class, properties={"name", "rating", "teamName", "startTime", "endTime", "isResubmission"})
- *
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
+#[ApiResource(
+    collectionOperations: ["get"],
+    itemOperations: ["get"],
+    normalizationContext: ["groups" => ["user:read"]]
+)]
 class User implements UserInterface
 {
     private const ROLE_DEFAULT = 'ROLE_USER';

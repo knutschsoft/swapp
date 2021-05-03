@@ -1,5 +1,4 @@
 import SecurityAPI from '../../api/security';
-import UserAPI from '../../api/user';
 import axios from 'axios';
 
 let token = localStorage.getItem('swapp-store-token');
@@ -159,9 +158,7 @@ export default {
             commit(AUTHENTICATING);
             try {
                 let response = await SecurityAPI.login(payload.username, payload.password);
-         console.log(response);
-         console.log(response.data);
-                const userResponse = await UserAPI.find(response.data['@id']);
+                const userResponse = await SecurityAPI.findUserWithToken(response.data['@id'], response.data.token);
                 response.data.user = userResponse.data;
                 commit(AUTHENTICATING_SUCCESS, response.data);
                 return response.data;

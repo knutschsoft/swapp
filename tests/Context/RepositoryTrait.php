@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Context;
 
+use App\Entity\Team;
 use App\Entity\User;
+use App\Entity\Walk;
+use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
+use App\Repository\WalkRepository;
 use App\Value\AgeRange;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -15,6 +19,8 @@ trait RepositoryTrait
 {
     private EntityManagerInterface $em;
     private UserRepository $userRepository;
+    private TeamRepository $teamRepository;
+    private WalkRepository $walkRepository;
 
     public function initRepositories(KernelInterface $kernel): void
     {
@@ -25,6 +31,12 @@ trait RepositoryTrait
         $userRepository = $serviceContainer->get(UserRepository::class);
         \assert($userRepository instanceof UserRepository);
         $this->userRepository = $userRepository;
+        $teamRepository = $serviceContainer->get(TeamRepository::class);
+        \assert($teamRepository instanceof TeamRepository);
+        $this->teamRepository = $teamRepository;
+        $walkRepository = $serviceContainer->get(WalkRepository::class);
+        \assert($walkRepository instanceof WalkRepository);
+        $this->walkRepository = $walkRepository;
 
         $em = $serviceContainer->get('doctrine.orm.entity_manager');
         \assert($em instanceof EntityManagerInterface);
@@ -39,6 +51,22 @@ trait RepositoryTrait
         return $user;
     }
 
+    protected function getTeamByName(string $name): Team
+    {
+        $team = $this->teamRepository->findOneBy(['name' => $name]);
+        Assertion::notNull($team, \sprintf('Team with name "%s" not found.', \trim($name)));
+
+        return $team;
+    }
+
+    protected function getWalkByName(string $name): Walk
+    {
+        $walk = $this->walkRepository->findOneBy(['name' => $name]);
+        Assertion::notNull($walk, \sprintf('Walk with name "%s" not found.', \trim($name)));
+
+        return $walk;
+    }
+
     /**
      * @param string $usersString
      *
@@ -46,8 +74,11 @@ trait RepositoryTrait
      */
     protected function getUsersFromString(string $usersString): array
     {
-        $userStrings = \explode(',', $usersString);
         $users = [];
+        if (!$usersString) {
+            return $users;
+        }
+        $userStrings = \explode(',', $usersString);
         foreach ($userStrings as $userString) {
             $users[] = $this->getUserByEmail($userString);
         }

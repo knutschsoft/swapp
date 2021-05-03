@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "status"=201,
  *             "openapi_context"={
  *                 "tags"={"User"},
- *                 "summary"={"Register a new User."}
+ *                 "summary"="Register a new User."
  *             },
  *         }
  *     },

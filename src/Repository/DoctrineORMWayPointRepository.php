@@ -5,23 +5,19 @@ namespace App\Repository;
 
 use App\Entity\WayPoint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @method WayPoint|null find($id, $lockMode = null, $lockVersion = null)
+ * @method WayPoint|null findOneBy(array $criteria, array $orderBy = null)
+ * @method WayPoint[]    findAll()
+ * @method WayPoint[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class DoctrineORMWayPointRepository extends ServiceEntityRepository implements WayPointRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, WayPoint::class);
-    }
-
-    /** @return WayPoint[] */
-    public function findAll(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('way_point')
-            ->select();
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
     }
 
     /**

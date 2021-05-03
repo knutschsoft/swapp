@@ -21,7 +21,7 @@ done
 
 
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
-    APP_ENV=${APP_ENVIRONMENT} composer self-update --1
+    APP_ENV=${APP_ENVIRONMENT} composer self-update --2
     APP_ENV=${APP_ENVIRONMENT} composer install
     php bin/console assets:install --env=${APP_ENVIRONMENT}
     ##############################################################
@@ -35,7 +35,7 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images public/screenshots
     setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images public/screenshots
 elif [ "${APP_ENVIRONMENT}" = "test" ]; then
-    APP_ENV=${APP_ENVIRONMENT} composer self-update --1
+    APP_ENV=${APP_ENVIRONMENT} composer self-update --2
     APP_ENV=${APP_ENVIRONMENT} composer install
     php bin/console doctrine:database:drop --full-database --force --env=${APP_ENVIRONMENT}
     php bin/console doctrine:database:create --no-interaction --env=${APP_ENVIRONMENT}
@@ -43,9 +43,10 @@ elif [ "${APP_ENVIRONMENT}" = "test" ]; then
     php bin/console assets:install --env=${APP_ENVIRONMENT}
     php bin/console hautelook:fixtures:load --no-interaction --env=${APP_ENVIRONMENT}
 else
-    APP_ENV=${APP_ENVIRONMENT} composer self-update --1
+    APP_ENV=${APP_ENVIRONMENT} composer self-update --2
     APP_ENV=${APP_ENVIRONMENT} composer install --optimize-autoloader
     APP_ENV=${APP_ENVIRONMENT} composer dump-autoload --optimize
+    php bin/console doctrine:migrations:sync-metadata-storage --env=${APP_ENVIRONMENT} --no-debug --no-interaction
     php bin/console cache:clear --env=${APP_ENVIRONMENT} --no-debug
     php bin/console cache:warmup --env=${APP_ENVIRONMENT} --no-debug
     php bin/console doctrine:database:create --if-not-exists --no-interaction --env=${APP_ENVIRONMENT}

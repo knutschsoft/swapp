@@ -12,14 +12,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(itemOperations={"get"}, collectionOperations={"post", "get"},
- *     normalizationContext={"groups"={"team:read"}},
- *     denormalizationContext={"groups"={}}
- * )
- *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMTeamRepository")
  * @ORM\Table(name="team")
  */
+#[ApiResource(
+    collectionOperations: ["get"],
+    itemOperations: ["get"],
+    normalizationContext: ["groups" => ["team:read"]]
+)]
 class Team
 {
     use AgeRangeField;

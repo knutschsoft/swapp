@@ -7,27 +7,25 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
-        nojwt:
+        confirmation-token:
             pattern: ^/api/security/is-confirmation-token-valid
             security: false
             anonymous: true
-        nojwt2:
+        chnage-password:
             pattern: ^/api/security/change-password
             security: false
             anonymous: true
-        nojwt3:
+        request-password-reset:
             pattern: ^/api/security/request-password-reset
             security: false
             anonymous: true
-
-        refreshtoken:
-            pattern:  ^/api/token/refresh
+        refresh:
+            pattern:  ^/refreshToken
             stateless: true
             anonymous: true
-
-        gettoken:
+        login:
             pattern:  ^/api/getToken
-#            stateless: true
+            stateless: true
             anonymous: true
             provider: app_user_provider
             json_login:
@@ -38,27 +36,14 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         main:
-            pattern:  ^/
-            #            provider: app_user_provider
-            anonymous:    true
-#            stateless: true
-            json_login:
-                check_path: /api/getToken
-                username_path: username
-                password_path: password
-#                success_handler: lexik_jwt_authentication.handler.authentication_success
-#                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-#        api:
-#            pattern:  ^/api
-#            provider: app_user_provider
-#            stateless: true
-#            anonymous: true
-#            provider: app_user_provider
-#            lexik_jwt: ~
-#            guard:
-#                authenticators:
-#                    - lexik_jwt_authentication.jwt_token_authenticator
+            pattern:  ^/api
+            stateless: true
+            anonymous: true
+            switch_user: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
     encoders:
         App\Entity\User:
@@ -76,7 +61,7 @@ security:
         - { path: ^/api/security/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/getToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 #        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
 
     role_hierarchy:

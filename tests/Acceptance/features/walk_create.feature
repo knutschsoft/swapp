@@ -26,7 +26,7 @@ Feature: A user can do a walk
     Then I wait for "Runde beginnen" to disappear
 
   @javascript
-  @walk
+  @walkCreate
   Scenario: I do a walk with on wayPoint
     Given I am authenticated as "karl@gmx.de"
     And I should be on "/dashboard"
