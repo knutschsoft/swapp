@@ -19,6 +19,17 @@ do
     MYSQL_UP=$(nc -z -v -w30 mysql 3306 2>/dev/null; echo $?);
 done
 
+if [ "$APP_ENVIRONMENT" != 'prod' ] && [ ! -f config/jwt/private.pem ]; then
+  jwt_passphrase=$(grep '^JWT_PASSPHRASE=' .env | cut -f 2 -d '=')
+  if ! echo "$jwt_passphrase" | openssl pkey -in config/jwt/private.pem -passin stdin -noout > /dev/null 2>&1; then
+    echo "Generating public / private keys for JWT"
+    mkdir -p config/jwt
+    echo "$jwt_passphrase" | openssl genpkey -out config/jwt/private.pem -pass stdin -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+    echo "$jwt_passphrase" | openssl pkey -in config/jwt/private.pem -passin stdin -out config/jwt/public.pem -pubout
+    setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
+    setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
+  fi
+fi
 
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     APP_ENV=${APP_ENVIRONMENT} composer self-update --2

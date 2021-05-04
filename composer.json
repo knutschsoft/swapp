@@ -117,6 +117,7 @@
         ],
         "qa-ci": [
             "@compile-test",
+            "bin/console lexik:jwt:generate-keypair --skip-if-exists --env=test",
             "vendor/bin/phpcs --colors src tests || true",
             "vendor/bin/phpstan analyse --no-progress --ansi || true",
             "vendor/bin/phpunit --colors || true",
