@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-input-group
-            v-if="hasUnfinishedWalks || true"
+            v-if="hasUnfinishedWalks"
             class="p-2"
         >
             <b-form-select
@@ -61,7 +61,7 @@
         </b-input-group>
         <div
             v-else
-            class="p-2"
+            class="p-2 text-muted"
         >
             Du bist aktuell keinem Team zugeordnet.
         </div>
@@ -103,12 +103,7 @@
                         if (user.id === this.currentUser.id) {
                             options.push({ text: `Team '${team.name}'`, value: team });
                         }
-                    })
-                    options.push({ text: `Team ${team.name}`, value: team });
-
-                    console.log(team);
-                    console.log(this.currentUser);
-                    // if ()
+                    });
                 });
 
                 return options;
@@ -138,7 +133,7 @@
         },
         methods: {
             handleWalkPrologue: async function () {
-                let result = await this.axios.post(`/api/create_walk_prologue_requests`, {teamId: this.selectedTeam.id});
+                let result = await this.axios.post(`/api/walks/prologue`, {team: this.selectedTeam['@id']});
                 let id = result.data.id;
                 this.$router.push({ name: 'WalkPrologue', params: {walkId: id} })
             }

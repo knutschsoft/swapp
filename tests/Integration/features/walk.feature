@@ -30,8 +30,8 @@ Feature: Testing way point resource
   Scenario: I can request /api/walks as a not authenticated user and an auth error will occur
     When I send a GET request to "/api/walks"
     Then the response should be in JSON
-    And the response status code should be 401
 #    And print last JSON response
+    And the response status code should be 401
     And the JSON nodes should be equal to:
       | code | 401 |
 

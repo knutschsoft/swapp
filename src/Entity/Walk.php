@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use App\Controller\CreateWalkPrologueController;
-use App\Controller\WalksUnfishedController;
+use App\Dto\WalkExportRequest;
+use App\Dto\WalkPrologueRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Security\Voter\TeamVoter;
 use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,42 +20,43 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     itemOperations={
- *          "get",
- *     },
- *     collectionOperations={
- *          "post_prologue"={
- *              "method"="POST",
- *              "path"="/walk/create-prologue",
- *             "requirements"={"teamId"="\d+"},
- *             "options"={"teamId"="teamId"},
- *             "defaults"={"color"="brown"},
- *              "controller"=CreateWalkPrologueController::class,
- *              "normalization_context"={"groups"={"walk:read"}},
- *                  "swagger_definition_name": "Read",
- *                  "openapi_context": {"summary": "init a walk"},
- *          },
- *          "get",
- *          "get_unfinished"={
- *              "method"="GET",
- *              "path"="/walks-unfished",
- *              "defaults"={"color"="brown"},
- *              "controller"=WalksUnfishedController::class,
- *              "normalization_context"={"groups"={"walk:read"}},
- *              "swagger_definition_name": "Read",
- *              "openapi_context": {"summary": "Get unfished walks"},
- *          },
- *     },
- *     attributes={"pagination_items_per_page"=5},
- *     normalizationContext={"groups"={"walk:read"}},
- *     denormalizationContext={"groups"={}}
- * )
- * @ApiFilter(OrderFilter::class, properties={"name", "rating", "teamName", "startTime", "endTime", "isResubmission"})
- *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWalkRepository")
  * @ORM\Table(name="walk")
  **/
+#[ApiFilter(OrderFilter::class, properties: ["name", "rating", "teamName", "startTime", "endTime", "isResubmission"])]
+#[ApiResource(
+    collectionOperations: [
+    "get",
+    "walk_export" => [
+        "messenger" => "input",
+        "input_formats" => [
+            "csv" => ["text/csv"],
+        ],
+        "openapi_context" => [
+            "summary" => "Exports all walks",
+        ],
+        "input" => WalkExportRequest::class,
+        "output" => false,
+        "status" => 200,
+        "method" => "post",
+        "path" => "/walks/export",
+    ],
+    "walk_prologue" => [
+        "messenger" => "input",
+        "input" => WalkPrologueRequest::class,
+        "output" => Walk::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/walks/prologue",
+        "security_post_denormalize" => '(is_granted("'.TeamVoter::TEAM_READ.'", object.team) and user.hasTeam(object.team))',
+    ],
+],
+    itemOperations: [
+    "get",
+],
+    attributes: ["pagination_items_per_page" => 5],
+    normalizationContext: ["groups" => ["walk:read"]]
+)]
 class Walk
 {
     use AgeRangeField;
@@ -65,6 +68,7 @@ class Walk
      *
      * @var int
      */
+    #[ApiProperty(identifier: true)]
     private $id;
 
     /**
@@ -732,6 +736,6 @@ class Walk
      */
     public function getIsUnfinished(): bool
     {
-        return ''=== $this->getSystemicAnswer();
+        return '' === $this->getSystemicAnswer();
     }
 }

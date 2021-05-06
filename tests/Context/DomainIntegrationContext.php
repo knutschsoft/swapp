@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behatch\Context\RestContext;
@@ -19,8 +20,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
 use Webmozart\Assert\Assert;
-use Webmozart\Assert\Assert as Assertion;
 
 final class DomainIntegrationContext extends RawMinkContext
 {
@@ -35,8 +36,8 @@ final class DomainIntegrationContext extends RawMinkContext
     {
         $this->initRepositories($kernel);
         $serviceContainer = $kernel->getContainer()->get('test.service_container');
-        Assertion::notNull($serviceContainer);
-        Assertion::isInstanceOf($serviceContainer, Container::class);
+        Assert::notNull($serviceContainer);
+        Assert::isInstanceOf($serviceContainer, Container::class);
         $this->em = $serviceContainer->get('doctrine.orm.entity_manager');
         $this->passwordEncoder = $serviceContainer->get(UserPasswordEncoderInterface::class);
         $this->jwtManager = $serviceContainer->get(JWTTokenManagerInterface::class);
@@ -61,6 +62,61 @@ final class DomainIntegrationContext extends RawMinkContext
         $user = $this->getUserByEmail($email);
         $token = $this->jwtManager->create($user);
         $this->restContext->iAddHeaderEqualTo('Authorization', "Bearer $token");
+    }
+
+
+    /**
+     * @Given I send an api platform :method request to :url with parameters:
+     *
+     * @param string    $method
+     * @param string    $url
+     * @param TableNode $data
+     *
+     * @return mixed
+     */
+    public function iSendAnApiPlatformRequestToWithParameters(string $method, string $url, TableNode $data)
+    {
+        $parameters = [];
+
+        foreach ($data->getHash() as $row) {
+            if (!isset($row['key']) || !isset($row['value'])) {
+                throw new \Exception("You must provide a 'key' and 'value' column in your table node.");
+            }
+
+            if (!\is_string($row['value'])) {
+                $parameters[$row['key']] = $row['value'];
+                continue;
+            }
+
+            $firstChar = \substr($row['value'], 0, 1);
+            $lastChar = \substr($row['value'], -1, 1);
+            if ('@' === $firstChar) {
+                $path = \sprintf(
+                    "%s%s%s",
+                    \rtrim($this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR),
+                    \DIRECTORY_SEPARATOR,
+                    \substr($row['value'], 1)
+                );
+                $parameters[$row['key']] = (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
+            } elseif (str_starts_with($row['value'],'teamIris<') && str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 9, -1);
+                $parameters[$row['key']] = [];
+                foreach ($this->getTeamsIdsFromTeamsString($value) as $teamId) {
+                    $parameters[$row['key']][] = \sprintf('/api/teams/%s', (string) $teamId);
+                }
+            } elseif (str_starts_with($row['value'],'teamIri<') && str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 8, -1);
+                $parameters[$row['key']] = \sprintf('/api/teams/%s', (string) $this->getTeamByName($value)->getId());
+            } else {
+                $parameters[$row['key']] = $row['value'];
+            }
+        }
+
+        $body = new PyStringNode([\json_encode($parameters)], 0);
+        $this->restContext->iAddHeaderEqualTo('content-type', 'application/ld+json');
+        $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
+
+        return $this->restContext->iSendARequestToWithBody($method, $this->locatePath($url), $body);
     }
 
     /**
@@ -164,6 +220,15 @@ final class DomainIntegrationContext extends RawMinkContext
         }
         $this->em->flush();
     }
+    /**
+     * @Given /^there are exactly (?P<code>\d+) walks in database$/
+     *
+     * @param string $count
+     */
+    public function thereAreExactlyWalksInDatabase(string $count): void
+    {
+        Assert::same(\count($this->walkRepository->getFindAllQuery()->getResult()), (int) $count);
+    }
 
     /**
      * @Given /^the following teams exists:$/
@@ -209,5 +274,19 @@ final class DomainIntegrationContext extends RawMinkContext
         $user->disable();
         $this->em->persist($user);
         $this->em->flush();
+    }
+
+    private function getTeamsIdsFromTeamsString(string $teamsString): array
+    {
+        $teamStringList = \explode(',', \trim($teamsString));
+        $teamIds = [];
+        foreach ($teamStringList as $teamString) {
+            if (!$teamString) {
+                continue;
+            }
+            $teamIds[] = $this->getTeamByName($teamString)->getId();
+        }
+
+        return $teamIds;
     }
 }

@@ -147,9 +147,9 @@ export default {
             localStorage.setItem('swapp-store-user', JSON.stringify(payload.user));
             localStorage.setItem('swapp-store-isAuthenticated', JSON.stringify(payload.isAuthenticated));
             if (payload.token) {
-                axios.defaults.headers.common = {'Authorization': 'Bearer ' + payload.token};
+                axios.defaults.headers.common.Authorization = 'Bearer ' + payload.token;
             } else {
-                axios.defaults.headers.common = {};
+                axios.defaults.headers.common.Authorization = null;
             }
         },
     },

@@ -196,6 +196,11 @@ class User implements UserInterface
         $this->walks = $walks;
     }
 
+    public function hasTeam(Team $team): bool
+    {
+        return $this->teams->contains($team);
+    }
+
     public function addTeam(Team $team): void
     {
         if (!$this->teams->contains($team)) {

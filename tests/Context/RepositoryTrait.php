@@ -45,24 +45,27 @@ trait RepositoryTrait
 
     protected function getUserByEmail(string $email): User
     {
+        $email = \trim($email);
         $user = $this->userRepository->findOneBy(['email' => $email]);
-        Assertion::notNull($user, \sprintf('User with email "%s" not found.', \trim($email)));
+        Assertion::notNull($user, \sprintf('User with email "%s" not found.', $email));
 
         return $user;
     }
 
     protected function getTeamByName(string $name): Team
     {
+        $name = \trim($name);
         $team = $this->teamRepository->findOneBy(['name' => $name]);
-        Assertion::notNull($team, \sprintf('Team with name "%s" not found.', \trim($name)));
+        Assertion::notNull($team, \sprintf('Team with name "%s" not found.', $name));
 
         return $team;
     }
 
     protected function getWalkByName(string $name): Walk
     {
+        $name = \trim($name);
         $walk = $this->walkRepository->findOneBy(['name' => $name]);
-        Assertion::notNull($walk, \sprintf('Walk with name "%s" not found.', \trim($name)));
+        Assertion::notNull($walk, \sprintf('Walk with name "%s" not found.', $name));
 
         return $walk;
     }

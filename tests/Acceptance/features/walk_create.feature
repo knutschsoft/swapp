@@ -27,7 +27,7 @@ Feature: A user can do a walk
 
   @javascript
   @walkCreate
-  Scenario: I do a walk with on wayPoint
+  Scenario: I do a walk with one wayPoint
     Given I am authenticated as "karl@gmx.de"
     And I should be on "/dashboard"
     Then I wait for "Team 'Westhang'" to appear

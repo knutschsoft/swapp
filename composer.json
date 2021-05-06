@@ -89,7 +89,7 @@
     "scripts": {
         "cbf": "vendor/bin/phpcbf --colors src tests || true",
         "cs": "vendor/bin/phpcs -s src tests || true",
-        "behat": "vendor/bin/behat --colors || true",
+        "behat": "vendor/bin/behat --colors --format=progress || true",
         "unit": "vendor/bin/phpunit --colors || true",
         "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
         "security": "vendor/bin/local-php-security-checker || true",
