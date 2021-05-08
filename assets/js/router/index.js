@@ -59,15 +59,15 @@ router.beforeEach((to, from, next) => {
     } else if (to.matched.some(record => record.meta.requiresAdmin)) {
         if (isAuthenticated && isAdmin) {
             next();
-        } else if (to.name === "Login" && isAuthenticated && isAdmin) {
+        } else if (to.name === "Login" && isAuthenticated) {
             next({name: 'Dashboard'});
         } else {
             next({name: 'Login'});
         }
     } else if (to.matched.some(record => record.meta.requiresSuperAdmin)) {
-        if (isAuthenticated && isAdmin) {
+        if (isAuthenticated && isSuperAdmin) {
             next();
-        } else if (to.name === "Login" && isAuthenticated && isSuperAdmin) {
+        } else if (to.name === "Login" && isAuthenticated) {
             next({name: 'Dashboard'});
         } else {
             next({name: 'Login'});

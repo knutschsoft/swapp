@@ -85,6 +85,14 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When /^I click on element "([^"]*)"$/
+     */
+    public function iClickOnElement(string $dataTestSelector): void
+    {
+        $this->getTestElement($dataTestSelector)->click();
+    }
+
+    /**
      * @When /^I click on text "([^"]*)"$/
      *
      * @param string $arg1
@@ -112,6 +120,33 @@ final class AcceptanceContext extends MinkContext
             $element = $this->getNodeElement('[role="button"]:contains("'.$arg1.'")');
         }
         $element->click();
+    }
+
+    /**
+     * @Then the element :dataTestSelector should be disabled
+     */
+    public function theElementShouldBeDisabled(string $dataTestSelector): void
+    {
+        $testElement = $this->getTestElement($dataTestSelector);
+        $this->spin(
+            function () use ($testElement, $dataTestSelector): void {
+                Assert::true($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not disabled.', $dataTestSelector));
+            }
+        );
+        Assert::true($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not disabled.', $dataTestSelector));
+    }
+    /**
+     * @Then the element :dataTestSelector should be enabled
+     */
+    public function theElementShouldBeEnabled(string $dataTestSelector): void
+    {
+        $testElement = $this->getTestElement($dataTestSelector);
+        $this->spin(
+            function () use ($testElement, $dataTestSelector): void {
+                Assert::false($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not enabled.', $dataTestSelector));
+            }
+        );
+        Assert::false($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not enabled.', $dataTestSelector));
     }
 
     public function spin(\Closure $closure, ?int $tries = 25): ?NodeElement

@@ -15,7 +15,6 @@ const state = {
 
 const getters = {
     wayPoints(state) {
-        console.log(state.wayPoints);
         return state.wayPoints;
     },
     getWayPointById(state) {

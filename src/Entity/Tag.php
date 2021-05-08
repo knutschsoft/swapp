@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Dto\TagCreateRequest;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,12 +16,91 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="tag")
  */
 #[ApiResource(
-    collectionOperations: ['get'],
+    collectionOperations: [
+    'get',
+    'tag_create' => [
+        "messenger" => "input",
+        "input" => TagCreateRequest::class,
+        "output" => Tag::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/tags/create",
+        "security" => 'is_granted("ROLE_SUPER_ADMIN")',
+    ],
+],
     itemOperations: ['get'],
     normalizationContext: ["groups" => ["tag:read"]]
 )]
 class Tag
 {
+    public const COLORS = [
+        "Navy",
+        "MediumBlue",
+        "Blue",
+        "Indigo ",
+        "Maroon",
+        "DarkSlateBlue",
+        "Lime",
+        "Purple",
+        "SaddleBrown",
+        "DarkTurquoise",
+        "Brown",
+        "RoyalBlue",
+        "FireBrick",
+        "DeepSkyBlue",
+        "Olive",
+        "SteelBlue",
+        "SlateBlue",
+        "Crimson",
+        "CadetBlue",
+        "DarkOrchid",
+        "Aqua",
+        "MediumSlateBlue",
+        "CornflowerBlue",
+        "Turquoise",
+        "Chocolate",
+        "MediumAquaMarine",
+        "Chartreuse",
+        "MediumOrchid",
+        "Peru",
+        "DeepPink",
+        "RosyBrown",
+        "GoldenRod",
+        "Fuchsia",
+        "Tomato",
+        "DarkOrange",
+        "SkyBlue",
+        "Orchid",
+        "Orange",
+        "Coral",
+        "Aquamarine",
+        "Salmon",
+        "DarkSalmon",
+        "Tan",
+        "LightSteelBlue",
+        "Silver",
+        "SandyBrown",
+        "Gold",
+        "Plum",
+        "PowderBlue",
+        "LightSalmon",
+        "Thistle",
+        "Yellow",
+        "Khaki",
+        "LightPink",
+        "PaleGoldenRod",
+        "Wheat",
+        "Lavender",
+        "Bisque",
+        "Beige",
+        "MistyRose",
+        "Linen",
+        "LemonChiffon",
+        "Azure",
+        "LavenderBlush",
+        "Ivory",
+    ];
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -62,6 +142,22 @@ class Tag
         $this->walks = new ArrayCollection();
         $this->color = '';
         $this->name = '';
+    }
+
+    public static function fromTagCreateRequest(TagCreateRequest $request): self
+    {
+        $instance = new self();
+
+        $color = \trim($request->color);
+        \Webmozart\Assert\Assert::inArray($request->color, self::COLORS);
+        $instance->color = $color;
+
+        $name = \trim($request->name);
+        \Webmozart\Assert\Assert::minLength($name, 3);
+        \Webmozart\Assert\Assert::maxLength($name, 100);
+        $instance->name = $name;
+
+        return $instance;
     }
 
     /**

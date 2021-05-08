@@ -39,7 +39,7 @@
                     class="w-100"
                 >
                     <b-nav-item
-                        v-if="isAdmin"
+                        v-if="isAuthenticated"
                         :to="{ name: 'Dashboard' }"
                         :link-classes="linkClasses"
                         exact
@@ -78,7 +78,10 @@
 
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto pl-2 pl-lg-0">
-                    <b-nav-item-dropdown right>
+                    <b-nav-item-dropdown
+                        right
+                        :toggle-class="isUserMenuActive ? 'active router-link-active' : ''"
+                    >
                         <!-- Using 'button-content' slot -->
                         <template v-slot:button-content >
                             <b-icon-person-fill />
@@ -92,26 +95,27 @@
                             v-if="!isAuthenticated"
                             :to="{ name: 'Login'}"
                             router-tag="button"
-                            link-classes="btn btn-sm btn-outline-secondary"
-                            href="#"
+                            :active="$route.name === 'Login'"
                         >
                             Login
                         </b-dropdown-item>
                         <b-dropdown-item
+                            v-if="!isAuthenticated"
+                            :to="{ name: 'PasswordReset'}"
+                            :active="$route.name === 'PasswordReset'"
+                        >
+                            Passwort vergessen?
+                        </b-dropdown-item>
+                        <b-dropdown-item
                             v-if="isAuthenticated"
                             :to="{ name: 'PasswordChangeRequest'}"
-                            router-tag="button"
-                            link-classes="btn btn-sm btn-outline-secondary"
-                            href="#"
+                            :active="$route.name === 'PasswordChangeRequest'"
                         >
                             Passwort ändern
                         </b-dropdown-item>
                         <b-dropdown-item
                             v-if="isAuthenticated"
                             :to="{ name: 'Logout'}"
-                            router-tag="button"
-                            link-classes="btn btn-sm btn-outline-secondary"
-                            href="#"
                         >
                             Abmelden
                         </b-dropdown-item>
@@ -154,6 +158,9 @@
             currentUser() {
                 return this.$store.getters['security/currentUser'];
             },
+            isUserMenuActive() {
+                return -1 !== ['PasswordChangeRequest', 'Login', 'PasswordReset'].indexOf(this.$route.name);
+            }
         },
         created() {
         },

@@ -13,8 +13,11 @@
             <b-input
                 v-model="name"
                 required
+                minlength="3"
+                maxlength="100"
                 placeholder="Name des Tags"
                 :state="nameState"
+                data-test="name"
             />
         </b-form-group>
         <b-form-group
@@ -35,6 +38,7 @@
                 class="check-boxes d-flex flex-row flex-wrap justify-content-start"
                 buttons
                 placeholder="Farbe des Tags"
+                data-test="farbe"
                 :state="colorState"
                 button-variant="secondary rounded-0 mt-1 mr-1 px-4"
                 required
@@ -53,15 +57,46 @@
                 </b-form-radio>
             </b-form-radio-group>
         </b-form-group>
-        <b-button
-            type="submit"
-            variant="primary"
-            block
-            class="col-12"
-            :disabled="isSubmitDisabled"
+        <div :id="createButtonId">
+            <b-button
+                type="submit"
+                variant="secondary"
+                data-test="button-tag-create"
+                block
+                class="col-12"
+                :tabindex="isFormInvalid ? '-1' : ''"
+            >
+                Neuen Tag erstellen
+            </b-button>
+        </div>
+        <b-popover
+            v-if="isFormInvalid"
+            :target="createButtonId"
+            triggers="hover"
+            placement="top"
         >
-            Neuen Tag erstellen
-        </b-button>
+            <template #title>Name und Farbe</template>
+            Bitte erst Name und Farbe wählen bevor ein neuer Tag erstellt werden kann.
+        </b-popover>
+        <b-alert
+            :show="hasError"
+            variant="danger"
+            class="mt-3 mb-0"
+        >
+            <ul class="mb-0">
+                <li
+                    v-for="(validationError, name) in validationErrors"
+                    :key="name"
+                >
+                    <b
+                        v-if="name !== 'global'"
+                        v-text="`${name}:`"
+                        class="text-capitalize"
+                    />
+                    {{ validationError }}
+                </li>
+            </ul>
+        </b-alert>
     </b-form>
 </template>
 
@@ -77,6 +112,7 @@ export default {
         return {
             name: null,
             color: null,
+            createButtonId: 'tag-create-submit',
         };
     },
     computed: {
@@ -103,11 +139,33 @@ export default {
         isLoading() {
             return this.$store.getters['tag/isLoading'];
         },
-        isSubmitDisabled() {
+        isFormInvalid() {
             return !this.name || !this.color || !this.colorState || !this.nameState || this.isLoading;
         },
         error() {
-            return this.$store.getters['tag/error'];
+            return this.$store.getters['tag/createTagError'];
+        },
+        hasError() {
+            return !!this.error;
+        },
+        validationErrors() {
+            const errors = {};
+            if (!this.hasError) {
+                return errors;
+            }
+            const error = this.error;
+            if (error && error.data.violations) {
+                error.data.violations.forEach((violation) => {
+                    const key = violation.propertyPath ? violation.propertyPath : 'global';
+                    errors[key] = violation.message;
+                });
+                return errors;
+            }
+            if (error.data && error.data["hydra:description"]) {
+                errors.global = error.data["hydra:description"];
+            }
+
+            return errors;
         },
         availableColors() {
             return html.filter(htmlColor => (-1 === this.colors.indexOf(htmlColor.name)
@@ -149,34 +207,53 @@ export default {
                 && !htmlColor.name.toLowerCase().includes('cornsilk')
                 && !htmlColor.name.toLowerCase().includes('honeydew')
             )).sort(function(a, b) {
-                console.log(a);
-                console.log(Math.sqrt(Math.pow(a.rgb.r - b.rgb.r, 2) + Math.pow(a.rgb.g - b.rgb.g, 2) + Math.pow(a.rgb.b - b.rgb.b, 2)));
-                // return Math.sqrt(Math.pow(a.rgb.r - b.rgb.r, 2) + Math.pow(a.rgb.g - b.rgb.g, 2) + Math.pow(a.rgb.b - b.rgb.b, 2));
                 return 3 * a.rgb.r - 3 * b.rgb.r + 2 * a.rgb.g - 2 * b.rgb.g + a.rgb.b - b.rgb.b > 0 ? 1 : -1;
             });
         },
     },
-    async created() {
-        await Promise.all([
-            this.$store.dispatch('tag/findAll'),
-        ]);
+    created() {
     },
     methods: {
-        getFormattedWayPoint: function (id) {
-            let wayPoint = this.$store.getters['wayPoint/getWayPointById'](id);
-
-            return `${wayPoint.name} - ${wayPoint.id}`;
-        },
-        getFormattedWalk: function (id) {
-            let walk = this.$store.getters['walk/getWalkById'](id);
-
-            return `${walk.name} - ${walk.id}`;
-        },
         toggleEnabled: function (tagId, isEnabled) {
             if (isEnabled) {
                 this.$store.dispatch('tag/disable', tagId);
             } else {
                 this.$store.dispatch('tag/enable', tagId);
+            }
+        },
+        async handleSubmit() {
+            if (this.isFormInvalid) {
+                this.$root.$emit('bv::show::popover', this.createButtonId)
+                window.setTimeout(() => { this.$root.$emit('bv::hide::popover', this.createButtonId) }, 2000);
+                return false;
+            }
+            let payload = {
+                name: this.name,
+                color: this.color,
+            };
+
+            const tag = await this.$store.dispatch('tag/create', payload);
+            if (tag) {
+                const message = `Der Tag ${tag.name} (${tag.color}) wurde erfolgreich erstellt.`;
+                this.$bvToast.toast(message, {
+                    title: 'Tag erstellt',
+                    toaster: 'b-toaster-top-right',
+                    autoHideDelay: 10000,
+                    appendToast: true,
+                });
+
+                this.$store.dispatch('tag/findAll');
+
+                this.name = null;
+                this.color = null;
+            } else {
+                this.$bvToast.toast('Upps! :-(', {
+                    title: 'Tag erstellen fehlgeschlagen',
+                    toaster: 'b-toaster-top-right',
+                    autoHideDelay: 10000,
+                    variant: 'danger',
+                    appendToast: true,
+                });
             }
         },
     },

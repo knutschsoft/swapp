@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Tag;
+use App\Repository\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -46,5 +47,25 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
         }
 
         return $tagList;
+    }
+
+    public function findOneByColor(string $color): Tag
+    {
+        $tag = $this->findOneBy(['color' => $color]);
+        if (!$tag) {
+            throw new NotFoundException(\sprintf('Tag with color "%s" not found.', $color));
+        }
+
+        return $tag;
+    }
+
+    public function findOneByName(string $name): Tag
+    {
+        $tag = $this->findOneBy(['name' => $name]);
+        if (!$tag) {
+            throw new NotFoundException(\sprintf('Tag with name "%s" not found.', $name));
+        }
+
+        return $tag;
     }
 }

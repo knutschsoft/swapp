@@ -10,26 +10,6 @@
             class="mb-0"
             stacked="md"
         >
-            <template v-slot:cell(wayPoints)="data">
-                <b-badge
-                    class="font-weight-bold"
-                    variant="info"
-                    pill
-                    font-scale="2"
-                >
-                    {{ data.item.wayPoints.length }}
-                </b-badge>
-            </template>
-            <template v-slot:cell(walks)="data">
-                <b-badge
-                    class="font-weight-bold"
-                    variant="info"
-                    pill
-                    font-scale="2"
-                >
-                    {{ data.item.walks.length }}
-                </b-badge>
-            </template>
             <template v-slot:cell(color)="data">
                 <color-badge
                     :color="data.item.color"
@@ -81,14 +61,6 @@ export default {
                     key: 'color',
                     label: 'Farbe',
                     sortable: true,
-                },
-                {
-                    key: 'walks',
-                    sortable: false,
-                },
-                {
-                    key: 'wayPoints',
-                    sortable: false,
                 },
                 // { key: 'actions', label: 'Aktionen' },
             ],

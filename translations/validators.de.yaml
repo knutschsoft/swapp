@@ -1,0 +1,3 @@
+tag:
+  color-is-not-unique: Ein Tag mit der Farbe "{{ value }}" existiert bereits.
+  name-is-not-unique: Ein Tag mit dem Namen "{{ value }}" existiert bereits.

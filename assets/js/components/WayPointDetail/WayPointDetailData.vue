@@ -168,7 +168,6 @@
             if (!this.wayPoint || !this.walk) {
                 console.error('route to 404');
             }
-            console.log(this.wayPoint);
         },
         methods: {
             formatDate: function(dateString) {

@@ -177,7 +177,7 @@
                 if (typeof redirect !== "undefined") {
                     this.$router.push({path: redirect});
                 } else {
-                    this.$router.push({name: "Lehrbericht"});
+                    this.$router.push({name: "Dashboard"});
                 }
             }
         },

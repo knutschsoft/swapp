@@ -9,6 +9,7 @@
         </content-collapse>
         <content-collapse
             title="Neuen Tag erstellen"
+            data-test="header-tag-create"
             collapse-key="tag-create"
         >
             <tag-create />

@@ -17,7 +17,7 @@ Feature: A user can do a walk
       | Drogen | Blue  |
 
   @javascript
-  @walkIgnore @ignore
+  @walkCreate
   Scenario: I can not start a walk as an user without a group
     Given I am authenticated as "lonely@gmx.de"
     And I should be on "/dashboard"

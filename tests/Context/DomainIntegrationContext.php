@@ -87,6 +87,10 @@ final class DomainIntegrationContext extends RawMinkContext
                 $parameters[$row['key']] = $row['value'];
                 continue;
             }
+            if ($row['value'] === '<null>') {
+                $parameters[$row['key']] = null;
+                continue;
+            }
 
             $firstChar = \substr($row['value'], 0, 1);
             $lastChar = \substr($row['value'], -1, 1);
@@ -108,7 +112,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 $value = \substr($row['value'], 8, -1);
                 $parameters[$row['key']] = \sprintf('/api/teams/%s', (string) $this->getTeamByName($value)->getId());
             } else {
-                $parameters[$row['key']] = $row['value'];
+                $parameters[$row['key']] = \trim($row['value']);
             }
         }
 
