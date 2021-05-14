@@ -1,65 +1,52 @@
 <template>
     <div>
-        <ModulHeader
-            v-if="wayPoint"
-            v-b-toggle="getCollapseId"
-            :title="title"
-        />
-        <b-collapse
-            v-if="wayPoint"
-            :id="getCollapseId"
-            :visible="isVisible"
+        <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            Runde:
+        </div>
+        <div
+            class="d-inline-flex p-2 bd-highlight"
+        >
+            <router-link
+                :to="{name: 'WalkDetail', params: { walkId: walk.id}}"
+            >
+                {{ walk.name }}
+            </router-link>
+        </div>
+        <div
+            v-for="(field, index2) in fields"
+            :key="index2"
+            :class="{'text-muted': field.isAgeGroup && !field.value}"
         >
             <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
-                Runde:
+                {{ field.name }}:
             </div>
             <div
                 class="d-inline-flex p-2 bd-highlight"
             >
-                <router-link
-                    :to="{name: 'WalkDetail', params: { walkId: walk.id}}"
+                <location-link
+                    v-if="field.name === 'Ort'"
+                    :value="field.value"
+                />
+                <template
+                    v-else-if="field.name === 'Bild'"
                 >
-                    {{ walk.name }}
-                </router-link>
-            </div>
-            <div
-                v-for="(field, index2) in fields"
-                :key="index2"
-                :class="{'text-muted': field.isAgeGroup && !field.value}"
-            >
-                <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
-                    {{ field.name }}:
-                </div>
-                <div
-                    class="d-inline-flex p-2 bd-highlight"
-                >
-                    <location-link
-                        v-if="field.name === 'Ort'"
-                        :value="field.value"
+                    <b-img
+                        v-if="field.value"
+                        :src="`/images/way_points/${field.value}`"
+                        :alt="field.value"
+                        :title="field.value"
+                        fluid
+                        class=""
                     />
-                    <template
-                        v-else-if="field.name === 'Bild'"
-                        :value="field.value"
-                    >
-                        <b-img
-                            v-if="field.value"
-                            :src="`/images/way_points/${field.value}`"
-                            :alt="field.value"
-                            :title="field.value"
-                            fluid
-                            class=""
-                        />
-                        <template v-else>
-                            kein Bild hochgeladen
-                        </template>
-                    </template>
                     <template v-else>
-                        {{ field.value }}
+                        kein Bild hochgeladen
                     </template>
-                </div>
+                </template>
+                <template v-else>
+                    {{ field.value }}
+                </template>
             </div>
-
-        </b-collapse>
+        </div>
     </div>
 </template>
 
@@ -121,22 +108,10 @@
 
                 return foundWayPoint;
             },
-            title() {
-                return `Wegpunkt: ${this.wayPoint.locationName} <small>vom ${(new Date(this.walk.startTime)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
-            },
-            getCollapseId() {
-                return 'collapse-wayPoint-detail';
-            },
-            isVisible() {
-                return this.$localStorage.get(
-                    this.getCollapseId,
-                    false
-                );
-            },
-            personCount() {
-                return this.wayPoint.malesCount + this.wayPoint.femalesCount + this.wayPoint.queerCount;
-            },
             fields() {
+                if (!this.wayPoint) {
+                    return [];
+                }
                 let ageGroups = [];
                 let ageGroupsSorted = [];
                 this.wayPoint.ageGroups.forEach(ageGroup => {
@@ -153,7 +128,7 @@
                 return [
                     {name: 'Ort', value: this.wayPoint.locationName},
                     {name: 'Beobachtung', value: this.wayPoint.note},
-                    {name: 'Bild', value: this.wayPoint.imageName ? this.wayPoint.imageName : 'kein Bild hochgeladen'},
+                    {name: 'Bild', value: this.wayPoint.imageName},
                     {name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein'},
                 ].concat(ageGroups);
             },

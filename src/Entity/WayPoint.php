@@ -113,12 +113,14 @@ class WayPoint
         $this->ageGroups = [];
         $this->locationName = '';
         $this->isMeeting = false;
+        $this->note = '';
     }
 
     public static function fromWalk(Walk $walk): self
     {
         $instance = new self();
 
+        $instance->setWalk($walk);
         foreach ($walk->getAgeRanges() as $ageRange) {
             $ageGroup = AgeGroup::fromRangeGenderAndCount($ageRange, Gender::fromString('m'), PeopleCount::none());
             $instance->addAgeGroup($ageGroup);

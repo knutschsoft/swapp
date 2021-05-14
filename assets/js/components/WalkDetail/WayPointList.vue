@@ -18,6 +18,7 @@
             <template v-slot:cell(actions)="row">
                 <router-link
                     :to="{name: 'WayPointDetail', params: { walkId: walk.id, wayPointId: row.item.id}}"
+                    :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
                 >
                     <b-button size="sm">
                         Wegpunkt ansehen

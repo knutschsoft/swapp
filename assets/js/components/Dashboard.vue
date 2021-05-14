@@ -1,5 +1,15 @@
 <template>
     <div>
+        <b-alert
+            :show="!!redirect"
+            class="position-fixed fixed-top m-0 rounded-0"
+            style="z-index: 2000;"
+            variant="warning"
+            fade
+            dismissible
+        >
+            {{ redirect }}
+        </b-alert>
         <content-collapse
             title="Neue Streetwork-Runde"
             collapse-key="walk-start"
@@ -30,7 +40,12 @@
             StartWalk,
             WalkList,
         },
-        props: {},
+        props: {
+            redirect: {
+                type: String,
+                required: false,
+            },
+        },
         data: function () {
             return {
             }

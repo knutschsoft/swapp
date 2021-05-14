@@ -1,29 +1,29 @@
 <template>
-    <div class="row mx-auto mb-4">
-        <div
-            class="col-lg-10 offset-lg-1 col-12 pl-1 pr-1 pl-sm-2 pr-sm-2 d-flex flex-column align-items-center"
+    <div>
+        <content-collapse
+            v-if="walk && wayPoint"
+            :title="title"
+            collapse-key="way-point--detail-data"
+            is-visible-by-default
         >
             <WayPointDetailData
-                :class="cardClass"
                 :walk-id="walkId"
                 :way-point-id="wayPointId"
             />
-        </div>
+        </content-collapse>
     </div>
 </template>
 
 <script>
     "use strict";
-    import Error from './Error';
-    import ModulHeader from './ModulHeader';
     import WayPointDetailData from './WayPointDetail/WayPointDetailData';
+    import ContentCollapse from './ContentCollapse.vue';
 
     export default {
         name: "WalkDetail",
         components: {
+            ContentCollapse,
             WayPointDetailData,
-            ModulHeader,
-            Error,
         },
         props: {
             walkId: {
@@ -35,10 +35,31 @@
         },
         data: function () {
             return {
-                cardClass: 'w-100 border border-dark p-0 mt-3 flex-shrink-1',
-            }
+                redirectToastId: 'way-point-detail-redirect-toast',
+            };
         },
         computed: {
+            walk() {
+                return this.$store.getters["walk/getWalkById"](this.walkId);
+            },
+            wayPoint() {
+                if (!this.walk) {
+                    return false;
+                }
+
+                let foundWayPoint = false;
+
+                this.walk.wayPoints.forEach(wayPoint => {
+                    if (String(wayPoint.id) === String(this.wayPointId)) {
+                        foundWayPoint = wayPoint;
+                    }
+                })
+
+                return foundWayPoint;
+            },
+            title() {
+                return `Wegpunkt: ${this.wayPoint.locationName} <small>vom ${(new Date(this.walk.startTime)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
+            },
             isLoading() {
                 return this.$store.getters["studiengang/isLoading"] || this.$store.getters["walk/isLoading"];
             },
@@ -54,18 +75,15 @@
             walks() {
                 return this.$store.getters["walk/walks"];
             },
-            getCollapseId() {
-                return 'collapse-way-point-detail';
-            },
-            isVisible() {
-                return this.$localStorage.get(
-                    this.getCollapseId,
-                    false
-                );
-            },
         },
         watch: {},
-        mounted() {
+        async mounted() {
+            if (!this.walk) {
+                await this.$store.dispatch('walk/findById', this.walkId);
+            }
+            if (!this.walk || !this.wayPoint) {
+                this.$router.push({ name: 'Dashboard', params: { redirect: 'Dieser Wegpunkt oder diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+            }
         },
         methods: {
         },

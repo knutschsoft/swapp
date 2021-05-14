@@ -6,9 +6,11 @@ namespace App\Tests\Context;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\Walk;
+use App\Entity\WayPoint;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use App\Repository\WalkRepository;
+use App\Repository\WayPointRepository;
 use App\Value\AgeRange;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -21,6 +23,7 @@ trait RepositoryTrait
     private UserRepository $userRepository;
     private TeamRepository $teamRepository;
     private WalkRepository $walkRepository;
+    private WayPointRepository $wayPointRepository;
 
     public function initRepositories(KernelInterface $kernel): void
     {
@@ -37,6 +40,9 @@ trait RepositoryTrait
         $walkRepository = $serviceContainer->get(WalkRepository::class);
         \assert($walkRepository instanceof WalkRepository);
         $this->walkRepository = $walkRepository;
+        $wayPointRepository = $serviceContainer->get(WayPointRepository::class);
+        \assert($wayPointRepository instanceof WayPointRepository);
+        $this->wayPointRepository = $wayPointRepository;
 
         $em = $serviceContainer->get('doctrine.orm.entity_manager');
         \assert($em instanceof EntityManagerInterface);
@@ -68,6 +74,15 @@ trait RepositoryTrait
         Assertion::notNull($walk, \sprintf('Walk with name "%s" not found.', $name));
 
         return $walk;
+    }
+
+    protected function getWayPointByLocationName(string $locationName): WayPoint
+    {
+        $locationName = \trim($locationName);
+        $wayPoint = $this->wayPointRepository->findOneBy(['locationName' => $locationName]);
+        Assertion::notNull($wayPoint, \sprintf('WayPoint with locationName "%s" not found.', $locationName));
+
+        return $wayPoint;
     }
 
     /**

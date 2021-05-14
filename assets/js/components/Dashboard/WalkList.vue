@@ -53,6 +53,7 @@
             <template v-slot:cell(actions)="row">
                 <router-link
                     :to="{name: 'WalkDetail', params: { walkId: row.item.id}}"
+                    :data-test="`button-runde-ansehen-${ row.item.name }`"
                 >
                     <b-button
                         size="sm"

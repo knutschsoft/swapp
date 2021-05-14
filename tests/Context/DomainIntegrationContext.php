@@ -217,10 +217,11 @@ final class DomainIntegrationContext extends RawMinkContext
             Assert::keyExists($row, 'walkName');
             Assert::keyExists($row, 'locationName');
             $walk = $this->getWalkByName($row['walkName']);
-            $tag = WayPoint::fromWalk($walk);
-            $tag->setLocationName($row['locationName']);
+            $wayPoint = WayPoint::fromWalk($walk);
+            $wayPoint->setLocationName($row['locationName']);
+            $wayPoint->setNote($row['beobachtung'] ?? 'null');
 
-            $this->em->persist($tag);
+            $this->em->persist($wayPoint);
         }
         $this->em->flush();
     }
