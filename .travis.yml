@@ -11,12 +11,13 @@ php:
 
 addons:
   firefox: latest
-  chrome: false
+  chrome: null
 
 env:
-  - TRAVIS_NODE_VERSION="12.8.0"
-  - PANTHER_NO_SANDBOX=1
-  - MOZ_HEADLESS=1
+  global:
+    - TRAVIS_NODE_VERSION="12.8.0"
+    - PANTHER_NO_SANDBOX=1
+    - MOZ_HEADLESS=1
 
 before_script:
   - cp .env.travis .env
