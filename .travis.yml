@@ -11,9 +11,12 @@ php:
 
 addons:
   firefox: latest
+  chrome: false
 
 env:
   - TRAVIS_NODE_VERSION="12.8.0"
+  - PANTHER_NO_SANDBOX=1
+  - MOZ_HEADLESS=1
 
 before_script:
   - cp .env.travis .env
@@ -22,7 +25,6 @@ before_script:
   - yarn install
   - composer install -vv
   - yarn encore production
-  - export PANTHER_NO_SANDBOX=1
 
 script:
   - composer qa-ci || true
