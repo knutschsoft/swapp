@@ -117,13 +117,11 @@ RUN openssl rsa -passin pass:x -in /etc/ssl/private/swapp.pass.key -out /etc/ssl
 RUN openssl req -new -key /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.csr -batch
 RUN openssl x509 -req -days 365 -in /etc/ssl/private/swapp.csr -signkey /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.crt
 
-RUN if [ "$APP_ENVIRONMENT" != "prod" ]; then \
-        apt-get update && apt-get install -y libzip-dev zlib1g-dev chromium && docker-php-ext-install zip; \
-    fi
 ENV PANTHER_NO_SANDBOX 1
 
 ### adjust panther ChromeDriver to installed chromium version
 RUN  if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
+        apt-get update && apt-get install -y libzip-dev zlib1g-dev chromium && docker-php-ext-install zip; \
         vendor/bin/bdi detect drivers; \
     fi
 
