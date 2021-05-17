@@ -4,7 +4,6 @@ services:
 before_script:
   - cp .env.travis .env
   - cp .env.docker.dist .env.docker
-  - rm docker-compose.override.yml
   - docker-compose up
 
 script:
