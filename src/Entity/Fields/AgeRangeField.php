@@ -12,14 +12,14 @@ trait AgeRangeField
     /**
      * @ORM\Column(type="json_document", options={"jsonb": true})
      *
-     * @var \App\Value\AgeRange[]
+     * @var AgeRange[]
      */
     private array $ageRanges;
 
     /**
      * @return AgeRange[]
      *
-     * @Groups({"team:read"})
+     * @Groups({"team:read", "walk:read"})
      */
     public function getAgeRanges(): array
     {

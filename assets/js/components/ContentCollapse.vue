@@ -4,7 +4,13 @@
             v-b-toggle="getCollapseId"
             class="bg-dark text-white p-2 font-weight-bold d-flex cursor-pointer no-select"
         >
+            <b-skeleton
+                v-if="isLoading"
+                :width="titleWidth"
+            />
             <div
+                v-else
+                ref="title"
                 class="my-auto"
                 v-html="title"
             />
@@ -41,10 +47,18 @@ export default {
             required: false,
             default: false,
         },
+        isLoading: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
     },
     computed: {
         getCollapseId() {
             return `collapse-${this.collapseKey}`;
+        },
+        getTitleLengthId() {
+            return `${this.getCollapseId}-title-width-in-px`;
         },
         isVisible() {
             return this.$localStorage.get(
@@ -52,6 +66,24 @@ export default {
                 this.isVisibleByDefault
             );
         },
+        titleWidth() {
+            return this.$localStorage.get(
+                this.getTitleLengthId,
+                '100px'
+            );
+        },
     },
+    watch: {
+        isLoading() {
+            if (!this.isLoading) {
+                this.$nextTick(() => {
+                    this.$localStorage.set(
+                        this.getTitleLengthId,
+                        `${this.$refs.title.getBoundingClientRect().width}px`
+                    );
+                });
+            }
+        },
+    }
 };
 </script>

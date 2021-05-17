@@ -217,7 +217,18 @@ final class AcceptanceContext extends MinkContext
     public function iEnterInField(string $value, string $dataTestLocator): void
     {
         $element = $this->getTestElement($dataTestLocator);
-        $element->setValue($value);
+        if (\str_starts_with($value, '@')) {
+            $path = \sprintf(
+                "%s%s%s",
+                \rtrim($this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR),
+                \DIRECTORY_SEPARATOR,
+                \substr($value, 1)
+            );
+            //$value = (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
+            $element->attachFile($path);
+        } else {
+            $element->setValue($value);
+        }
     }
 
     private function getNodeElement(string $locator, ?int $tries = 25): NodeElement

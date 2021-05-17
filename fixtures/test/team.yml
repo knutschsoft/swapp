@@ -1,7 +1,0 @@
-App\Entity\Team:
-    team_{1..5}:
-        name: Team <company()>
-        users: <numberBetween(1, 5)>x @user_*
-    team_admin:
-        name: Team <company()>
-        users: ['@user_admin', '@user_1','@user_waldi_beta']

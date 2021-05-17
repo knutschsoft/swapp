@@ -1,5 +1,16 @@
 <template>
     <div>
+        <b-alert
+            :show="!!successMessage"
+            variant="success"
+            class="mt-1 mt-sm-2 mt-lg-3 mb-0"
+        >
+            <mdicon
+                name="check-circle-outline"
+                class="mr-2"
+            />
+            {{ successMessage }}
+        </b-alert>
         <content-collapse
             v-if="walk"
             :title="`Runde &quot;${walk.name}&quot; abschließen`"
@@ -28,6 +39,11 @@ export default {
     props: {
         walkId: {
             required: true,
+        },
+        successMessage: {
+            required: false,
+            type: String,
+            default: '',
         },
     },
     data: function () {

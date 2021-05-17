@@ -44,8 +44,7 @@ default:
         FriendsOfBehat\SymfonyExtension: ~
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
-            files_path: "tests/"
-#            files_path: "features/files/"
+            files_path: "tests/fixtures/"
             base_url: "http://localhost"
             javascript_session: javascript
             default_session: symfony

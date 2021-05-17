@@ -59,6 +59,16 @@ final class AgeGroup
         return $this->peopleCount;
     }
 
+    /**
+     * @Groups({"walk:read"})
+     *
+     * @return string
+     */
+    public function getFrontendLabel(): string
+    {
+        return \sprintf('%d - %d %s', $this->ageRange->rangeStart, $this->ageRange->rangeEnd, $this->gender->getGender());
+    }
+
     public function equalType(self $ageGroup): bool
     {
         return $this->ageRange->equal($ageGroup->getAgeRange()) && $this->gender->equal($ageGroup->getGender());

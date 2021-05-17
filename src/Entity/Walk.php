@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Dto\WalkExportRequest;
 use App\Dto\WalkPrologueRequest;
+use App\Dto\WayPointAddRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Security\Voter\TeamVoter;
 use App\Value\AgeRange;
@@ -49,6 +50,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         "status" => 200,
         "path" => "/walks/prologue",
         "security_post_denormalize" => '(is_granted("'.TeamVoter::TEAM_READ.'", object.team) and user.hasTeam(object.team))',
+    ],
+    "add_way_point" => [
+        "messenger" => "input",
+        "input" => WayPointAddRequest::class,
+        "output" => Walk::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/walks/add-way-point",
     ],
 ],
     itemOperations: [
@@ -226,6 +235,7 @@ class Walk
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
         $this->wayPoints = new ArrayCollection();
+        $this->holidays = false;
     }
 
     public static function prologue(Team $team, SystemicQuestion $systemicQuestion): self

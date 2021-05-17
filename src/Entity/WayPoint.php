@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Dto\WayPointAddRequest;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Gender;
@@ -12,19 +13,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ApiResource(itemOperations={"get"}, collectionOperations={"post", "get"})
- *
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWayPointRepository")
  * @ORM\Table(name="way_point")
- *
- * @Vich\Uploadable
  */
 #[ApiResource(
     collectionOperations: ['get'],
@@ -43,17 +38,6 @@ class WayPoint
      * @var int
      */
     private $id;
-
-    /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     *
-     * @Vich\UploadableField(mapping="way_point_image", fileNameProperty="imageName")
-     *
-     * @Assert\File(maxSize = "10240k")
-     *
-     * @var File|null
-     */
-    private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, name="image_name", nullable=true)
@@ -128,6 +112,22 @@ class WayPoint
             $instance->addAgeGroup($ageGroup);
             $ageGroup = AgeGroup::fromRangeGenderAndCount($ageRange, Gender::fromString('x'), PeopleCount::none());
             $instance->addAgeGroup($ageGroup);
+        }
+
+        return $instance;
+    }
+
+    public static function fromWayPointAddRequest(WayPointAddRequest $request): self
+    {
+        $instance = new self();
+
+        $instance->setWalk($request->walk);
+        $instance->ageGroups = $request->ageGroups;
+        $instance->wayPointTags = $request->tags;
+        $instance->setNote($request->note);
+        $instance->setLocationName($request->locationName);
+        if ($request->imageFileName) {
+            $instance->setImageName($request->imageFileName);
         }
 
         return $instance;
@@ -297,36 +297,6 @@ class WayPoint
     public function setLocationName(?string $locationName): void
     {
         $this->locationName = (string) $locationName;
-    }
-
-    /**
-     * @return File|null
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the  update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
-     */
-    public function setImageFile(?File $image = null): void
-    {
-        $this->imageFile = $image;
-
-        if ($image) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTime('now');
-        }
     }
 
     /**

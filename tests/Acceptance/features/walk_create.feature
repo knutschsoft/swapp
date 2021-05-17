@@ -55,13 +55,14 @@ Feature: A user can do a walk
     Then I wait for "Tags" to appear
     Then I wait for "Gewalt" to appear
     Then I wait for "Drogen" to appear
+    Then the element "Ort" should be enabled
     When I enter "Assieck" in "Ort" field
     When I enter "Straßenbahnen sind blockiert" in "Beobachtung" field
-    And I set browser window size to "800" x "1800"
+    And I set browser window size to "1000" x "1800"
     And I click on text "Wegpunkt speichern und Runde abschließen"
 
     Then I wait for 'Runde "Mein erster Lauf" abschließen' to appear
-#    Then I wait for 'Wegpunkt "Assieck" wurde erfolgreich zur Runde "Mein erster Lauf" hinzugefügt.' to appear
+    Then I wait for 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
 
     When I enter "38" in "Systemische Antwort" field
     When I enter "Nice day!" in "Reflexion" field

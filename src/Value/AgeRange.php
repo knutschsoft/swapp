@@ -75,4 +75,14 @@ class AgeRange
     {
         return $this->getRangeStart() === $ageRange->getRangeStart() && $this->getRangeEnd() === $ageRange->getRangeEnd();
     }
+
+    /**
+     * @Groups({"team:read", "walk:read"})
+     *
+     * @return string
+     */
+    public function getFrontendLabel(): string
+    {
+        return \sprintf('%d - %d', $this->rangeStart, $this->rangeEnd);
+    }
 }

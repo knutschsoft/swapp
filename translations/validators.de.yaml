@@ -1,3 +1,6 @@
 tag:
   color-is-not-unique: Ein Tag mit der Farbe "{{ value }}" existiert bereits.
   name-is-not-unique: Ein Tag mit dem Namen "{{ value }}" existiert bereits.
+way-point-add:
+  file:
+    max-size: Das Bild ist mit {{ size }} {{ suffix }} größer als die maximal erlaubten {{ limit }} {{ suffix }}.

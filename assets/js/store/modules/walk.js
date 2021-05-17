@@ -1,19 +1,23 @@
-"use strict";
+'use strict';
 import WalkAPI from '../../api/walk';
 
 const
-    FETCHING_WALKS = "FETCHING_WALKS",
-    FETCHING_WALKS_SUCCESS = "FETCHING_WALKS_SUCCESS",
-    FETCHING_WALKS_ERROR = "FETCHING_WALKS_ERROR",
-    FETCHING_WALK = "FETCHING_WALK",
-    FETCHING_WALK_SUCCESS = "FETCHING_WALK_SUCCESS",
-    FETCHING_WALK_ERROR = "FETCHING_WALK_ERROR"
+    FETCHING_WALKS = 'FETCHING_WALKS',
+    FETCHING_WALKS_SUCCESS = 'FETCHING_WALKS_SUCCESS',
+    FETCHING_WALKS_ERROR = 'FETCHING_WALKS_ERROR',
+    FETCHING_WALK = 'FETCHING_WALK',
+    FETCHING_WALK_SUCCESS = 'FETCHING_WALK_SUCCESS',
+    FETCHING_WALK_ERROR = 'FETCHING_WALK_ERROR',
+    ADDING_WAY_POINT = 'ADDING_WAY_POINT',
+    ADDING_WAY_POINT_SUCCESS = 'ADDING_WAY_POINT_SUCCESS',
+    ADDING_WAY_POINT_ERROR = 'ADDING_WAY_POINT_ERROR'
 ;
 
 const state = {
     walks: [],
     totalWalks: 0,
     error: null,
+    addWayPointError: null,
     isLoading: false,
 };
 
@@ -29,11 +33,11 @@ const getters = {
                     if (String(walk.id) === String(walkId)) {
                         foundWalk = walk;
                     }
-                }
+                },
             );
 
             return foundWalk;
-        }
+        };
     },
     hasWalks(state) {
         return state.walks.length > 0;
@@ -44,9 +48,12 @@ const getters = {
     error(state) {
         return state.error;
     },
+    addWayPointError(state) {
+        return state.addWayPointError;
+    },
     isLoading(state) {
         return state.isLoading;
-    }
+    },
 };
 
 const mutations = {
@@ -78,16 +85,36 @@ const mutations = {
             }
         });
 
-        state.walks = [ ...state.walks, fetchedWalk ];
+        state.walks = [...state.walks, fetchedWalk];
     },
     [FETCHING_WALK_ERROR](state, error) {
         state.error = error;
         state.isLoading = false;
     },
+    [ADDING_WAY_POINT](state) {
+        state.isLoading = true;
+        state.addWayPointError = null;
+    },
+    [ADDING_WAY_POINT_SUCCESS](state, walk) {
+        state.addWayPointError = null;
+        state.isLoading = false;
+        let fetchedWalk = walk;
+        state.walks.forEach((walk, index) => {
+            if (String(fetchedWalk.id) === String(walk.id)) {
+                state.walks.splice(index, 1);
+            }
+        });
+
+        state.walks = [...state.walks, fetchedWalk];
+    },
+    [ADDING_WAY_POINT_ERROR](state, error) {
+        state.addWayPointError = error;
+        state.isLoading = false;
+    },
 };
 
 const actions = {
-    async find({commit}, payload) {
+    async find({ commit }, payload) {
         commit(FETCHING_WALKS);
         try {
             let response = await WalkAPI.find(payload);
@@ -98,13 +125,23 @@ const actions = {
             return [];
         }
     },
-    async findById({commit}, walkId) {
+    async findById({ commit }, walkId) {
         commit(FETCHING_WALK);
         try {
             let response = await WalkAPI.findOneById(walkId);
             commit(FETCHING_WALK_SUCCESS, response.data);
         } catch (error) {
             commit(FETCHING_WALK_ERROR, error);
+        }
+    },
+    async addWayPoint({ commit }, payload) {
+        commit(ADDING_WAY_POINT);
+        try {
+            let response = await WalkAPI.addWayPoint(payload);
+            commit(ADDING_WAY_POINT_SUCCESS, response.data);
+            return response.data;
+        } catch (error) {
+            commit(ADDING_WAY_POINT_ERROR, error);
         }
     },
 };
@@ -114,5 +151,5 @@ export default {
     state,
     getters,
     actions,
-    mutations
-}
+    mutations,
+};
