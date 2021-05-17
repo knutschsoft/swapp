@@ -4,15 +4,10 @@ services:
 before_script:
   - cp .env.travis .env
   - cp .env.docker.dist .env.docker
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
-  - node -v
-  - yarn install
-  - composer install -vv
-  - yarn encore production
   - rm docker-compose.override.yml
+  - docker-compose up
 
 script:
-  - docker-compose up
   - docker-compose exec web composer qa-ci || true
 
 # get access to debug screenshots from ci
