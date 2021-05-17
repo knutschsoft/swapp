@@ -4,10 +4,10 @@ services:
 before_script:
   - cp .env.travis .env
   - cp .env.docker.dist .env.docker
-  - docker-compose up
+  - docker-compose --file docker-compose.travis.yml up -d
 
 script:
-  - docker-compose exec web composer qa-ci || true
+  - docker-compose --file docker-compose.travis.yml exec web composer qa-ci || true
 
 # get access to debug screenshots from ci
 deploy:

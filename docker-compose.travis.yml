@@ -1,0 +1,29 @@
+version: "3"
+services:
+
+  web:
+    networks:
+      - swapp
+    command: /init-project.sh
+    restart: "always"
+    tty: true
+    env_file: .env.docker
+    build:
+      context: .
+    volumes:
+      - ${WAYPOINTS_IMAGES_DIR}:/var/www/html/public/images/way_points
+      - ./data/screenshots:/var/www/html/public/screenshots
+      - ./data/apache-log:/var/log/apache2/
+      - ./data/php-log:/var/www/html/var/logs/
+    ports:
+      - 8082:80
+      - 8083:8083
+    environment:
+      HOST_UID: ${HOST_UID} # set in ~/.bashrc
+      HOST_GID: ${HOST_GID} # set in ~/.bashrc
+      CONTAINER_USER: docker
+      CONTAINER_GROUP: docker
+
+networks:
+  swapp:
+    driver: bridge

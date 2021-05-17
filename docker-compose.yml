@@ -9,9 +9,6 @@ services:
     tty: true
     volumes:
       - ${WAYPOINTS_IMAGES_DIR}:/var/www/html/public/images/way_points
-      - ./data/screenshots:/var/www/html/public/screenshots
-      - ./data/apache-log:/var/log/apache2/
-      - ./data/php-log:/var/www/html/var/logs/
     depends_on:
       - mysql
 
