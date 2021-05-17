@@ -9,15 +9,15 @@ cache:
 php:
   - 8.0
 
+dist: xenial
+
 addons:
-  firefox: latest
-  chrome: null
+  chrome: stable
 
 env:
   global:
     - TRAVIS_NODE_VERSION="12.8.0"
     - PANTHER_NO_SANDBOX=1
-    - MOZ_HEADLESS=1
 
 before_script:
   - cp .env.travis .env
