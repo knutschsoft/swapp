@@ -1,107 +1,156 @@
-SWAPP
-========================
+Swapp - Die Streetwork-App
+==========================
 
-[![build status of swapp](https://img.shields.io/travis/knutschsoft/swapp/master?style=flat-square&logo=travis)](https://travis-ci.org/knutschsoft/swapp)
-[![StyleCi](https://styleci.io/repos/34905820/shield?branch=master&style=plasti)](https://styleci.io/repos/34905820)
-[![Docker build](https://img.shields.io/docker/automated/knutschsoft/swapp?style=flat-square)](https://hub.docker.com/r/knutschsoft/swapp)
-[![Docker build](https://img.shields.io/docker/build/knutschsoft/swapp?style=flat-square)](https://hub.docker.com/r/knutschsoft/swapp)
+[![build status of swapp](https://img.shields.io/travis/knutschsoft/swapp/develop?style=flat-square&logo=travis)](https://travis-ci.org/knutschsoft/swapp)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-![PHP7 Compatible](https://img.shields.io/travis/php-v/knutschsoft/swapp/master?style=flat-square)
-[![Greenkeeper badge](https://badges.greenkeeper.io/knutschsoft/swapp.svg)](https://greenkeeper.io/)
+![PHP Compatible](https://img.shields.io/packagist/php-v/knutschsoft/swapp?style=flat-square)
+[![Known Vulnerabilities](https://snyk.io/test/github/knutschsoft/swapp/badge.svg)](https://snyk.io/test/github/knutschsoft/swapp)
 [![Open Issues](https://img.shields.io/github/issues-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues?q=is%3Aissue+is%3Aclosed)
 [![Contributors](https://img.shields.io/github/contributors/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/graphs/contributors)
-![Contributors](https://img.shields.io/maintenance/yes/2020?style=flat-square)
+![Contributors](https://img.shields.io/maintenance/yes/2022?style=flat-square)
 
-# Entrance:
+Swapp is a project to ease documentation of streetworkers which are on their way.
 
- http://swapp/dashboard
+Have a look at **https://streetworkapp.de/** for more information.
 
-# If you want to use Docker
+### How to start local dev?
 
-## Prepare host (initial setup)
+1. ##### Setup a proxy with nginx (which includes docker-gen)
+   Place the following ```docker-compose.yml``` in the folder of your choice, e.g. ```/var/apps/nginx-proxy/``` or ```/<your-home-dir>/workspace/nginx-proxy/```.
+    ```yaml
+    version: "3.4"
 
-* extend `/etc/hosts`
-    ```bash
-    $ sudo vi /etc/hosts 
-  
-    ...
-    127.0.0.1 swapp
-    ```
-     
-* copy docker .env file
-
-    ```bash
-    $ copy .env.docker.dist .env.docker 
-    ```
+    services:
+        nginx-proxy:
+            image: jwilder/nginx-proxy:alpine
+            container_name: nginx-proxy
+            ports:
+                - target: 80
+                  published: 80
+                  protocol: tcp
+                - target: 443
+                  published: 443
+                  protocol: tcp
+            volumes:
+                - /var/run/docker.sock:/tmp/docker.sock:ro
+                - ./certs:/etc/nginx/certs
+                - ./vhosts:/etc/nginx/conf.d
+            networks:
+                - swapp 
     
-* build container once and start container immediately
+    networks:
+        swapp:
+           external: true
+    ```
+2. ##### Install local ssl certificates
+   The following could be automated with own Dockerfile
+   including jwilder/nginx-proxy and mkCert - alike to dev-tls docker file. <br>
 
+   First you have to settle on a domain to use for swapp.
+   We will use `swapp.local` in the following expamples.
+   Using only `swapp` would be troubling for certificates since most browsers
+   do not accept wildcard certificates for second-level domains:
+   e.g. browser will not accept certs created with `*.swapp` for subdomain `api.swapp`
+
+   ###### install [mkCert](https://github.com/FiloSottile/mkcert)
+    ```BASH
+    # linux
+    wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.1/mkcert-v1.4.1-linux-amd64
+    sudo mv mkcert-v1.4.1-linux-amd64 /usr/local/bin/mkcert
+    sudo chmod +x /usr/local/bin/mkcert
+    ```
+    ```BASH
+    # macOS
+    brew install mkcert
+    brew install nss # if you use Firefox
+    ```
+   ###### Install rootCA
+   This automatically adds mkcert's rootCA to your systems trusted CAs so you no longer will be bugged by untrusted certificate notifications in your local browser.
+    ```BASH
+    mkcert --install
+    ```
+   ###### create Certs
+   Navigate to the nginx-proxy certs volume e.g. `cd /var/apps/nginx-proxy/certs` or ```/<your-home-dir>/workspace/nginx-proxy/certs```
+   ```BASH
+   mkcert -key-file swapp.local.key -cert-file swapp.local.crt swapp.local *.swapp.local    
+   ```
+   This generates a certificate for all subdomains of `swapp.local`
+3.  ##### setup dns
+    ```BASH
+    # /etc/hosts
+    127.0.0.1	swapp.local
+    ```
+4. ##### start nginx-proxy
+
+    ```BASH
+    # this need to be run only once 
+    docker network create swapp
+    ```
+
+    ```BASH
+    # /var/apps/nginx-proxy/ or /<your-home-dir>/workspace/nginx-proxy/
+    docker-compose up -d    
+    ```
+
+5. ##### create .env
+   ```BASH
+   #<yourWorkSpace>/swapp
+   cp .env.dist .env
+   ```
+   Adjust sensible vars like e.g. `JWT_KEY` and `DB_PASSWORD` as needed.
+   Make sure the `DOMAIN_NAME` matches the one used when creating certificates.
+
+6. ##### add in your ```.bashrc``` (or ```.zshrc```)
     ```bash
-    $ docker-compose up --build web
-    ```
-    
-## Development with docker containers
+    $ vi ~/.bashrc
 
-* All commands have to be executed in workspace (symfony project root)
-* Start all containers in background
-    ```bash
-    $ docker-compose up -d web
-    ```
-* Install vendors, execute migrations and load fixtures (only at first time) 
-    * Install vendors
-        ```bash
-        $ docker-compose exec web php composer.phar install
-        ```
-    * Execute migrations
-        ```bash
-        $ docker-compose exec web php bin/console doctrine:migrations:migrate -n
-        ```
-    * Load fixtures
-        ```bash
-        $ docker-compose exec web php bin/console hautelook_alice:doctrine:fixtures:load -n
-        ```
-## If you want to use XDebug
-
-* Activate XDebug in `.env.docker`:
-    ```
     ...
-    PHP_XDEBUG_ENABLED: 1
-    ...
+    export HOST_UID=$(id -u)      # UID is now available for docker-compose.yml
+    export HOST_GID=$(id -g)      # GID is now available for docker-compose.yml
+
+7. ##### start swapp stack
+    ```BASH
+    docker-compose up -d
     ```
-* PHPStorm setup:
-    * Settings... -> Languages & Frameworks -> PHP -> Servers: Add
-        * name: has to be same as PHP_IDE_CONFIG value
-        * port: 80
-        * path-mapping: path of project root in host system 
-    * Setting -> Languages & Frameworks -> PHP -> Debug -> DBGp Proxy:
-        * `Port`: 9000
-* Start containers:
-    ```bash
-    $ docker-compose up -d web
+   nginx-proxy will create a vhost entry for each of swapp's services which has an environment variable `VIRTUAL_HOST` set.
+   You can check the created hosts in a volume:
+    ```BASH
+    cat path-to-nginx-proxy/vhosts/default.conf
     ```
-* After clicking "Start Listening for PHP Debug Connections" in PHPStorm you can jump to web and cli breakpoints.
-* To activate/deactivate XDebug simply adjust ENV-Variable `PHP_XDEBUG_ENABLED` in `docker-compose.yml`
-and restart containers (`docker-compose down && docker-compose up -d`) 
 
-### create your own JWT token
+8. ##### access swapp
+   ###### via domain names with self signed certificates
+   Advantage: There is no need to accept insecure certs on every first website request.
+    * https://swapp.local
+    * https://swapp.local/api/docs
 
-```bash
-mkdir -p config/jwt
-openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
-```
-```bash
-openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
-```
+   To access with your mobile devices in your local WAN you have to replace 'swapp.local' with your local ip address:
+    * Find local ip address in Windows 7 [[1]](https://www.groovypost.com/howto/microsoft/windows-7/find-your-local-ip-address-windows-7-cmd/)
+    * Find local ip address in Ubuntu [[1]](https://help.ubuntu.com/stable/ubuntu-help/net-findip.html.en) [[2]](https://itsfoss.com/check-ip-address-ubuntu/)
 
-### Setting the max_uploaded_filesize
+9. ##### optional: use XDebug
 
-* head to ./init-container.sh
-* in section `Prepare PHP` change the line
-    `sh -c "echo 'upload_max_filesize = 10M'` according to your needs
-* if you want to allow bigger image files you have to adjust this php.ini setting as well as the `File` constraint's `maxSize` option on the imageFile property in `WayPoint.php`
-    
-### Cheat Sheet
+    * Activate XDebug in `.env`:
+        ```
+        PHP_XDEBUG_ENABLED=1
+        ```
+    * PHPStorm setup:
+        * Settings... -> Languages & Frameworks -> PHP -> Servers: Add
+            * name: has to be same as PHP_IDE_CONFIG value
+            * port: 80
+            * path-mapping: path of project root in host system 
+        * Setting -> Languages & Frameworks -> PHP -> Debug -> DBGp Proxy:
+            * `Port`: 9000
+    * Start containers:
+        ```bash
+        $ docker-compose up -d
+        ```
+    * After clicking "Start Listening for PHP Debug Connections" in PHPStorm you can jump to web and cli breakpoints.
+    * To activate/deactivate XDebug simply adjust ENV-Variable `PHP_XDEBUG_ENABLED` in `docker-compose.yml`
+    and restart containers (`docker-compose down && docker-compose up -d`) 
+
+#### Cheat Sheet
 
 * Execute symfony command
     ```bash
@@ -121,7 +170,7 @@ openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
     ```
 * CLI connection to MySQL:
     ```bash
-    $ mysql -u surveythor_demo -p
+    $ mysql -u swapp -p -hmysql
     ```
 * Stop services/container
     ```bash
@@ -131,43 +180,3 @@ openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
     ```bash
     $ docker-compose down
     ```
-
-How to run EndToEnd-Tests
-==========================
-
-After booting container you can start EndToEnd-Tests with:
-```BASH
-$ docker-compose exec web vendor/bin/phpunit --filter EndToEnd
-```
-If you want to watch EndToEnd-Tests then you have to start a vnc viewer and connect to 0.0.0.0:5900 for firefox 
-and 0.0.0.0:5901 for chrome. Maybe you have to set color depth to at least 15 bit.
-
-Use Sauce Labs locally
-----------------------
-
-Install:
-https://wiki.saucelabs.com/display/DOCS/Basic+Sauce+Connect+Proxy+Setup
-
-After download and extraction start sauce labs from outside of docker (currently there is no docker container support):
-```BASH
-$ sc-4.4.8-linux/bin/sc -u username -k api_key -i my-tun2 --se-port 4446
-```
-
-Start tests:
-```BASH
-$ docker-compose exec web vendor/bin/phpunit
-```
-
-Add git hooks
-=============
-
-Execute once:
-```vendor/bin/captainhook install -f -s```
-
-E.g. a hook file will look like:  
-```
-docker@e5b8a0355c16:/var/www/html$ cat .git/hooks/commit-msg
-#!/usr/bin/env bash
-docker-compose exec --user=docker -T web ./vendor/bin/captainhook hook:commit-msg "$@"
-
-```

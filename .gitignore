@@ -1,77 +1,8 @@
 #phpstorm IDEA config
 /.idea/
 
-# Cache and logs (Symfony3)
-/var/cache/*
-/var/log/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
 
 # docker
+/.env
 docker-compose.override.yml
-
-# Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
-.env.docker
-
-# Managed by Composer
-/var/bootstrap.php.cache
-!bin/console
-!bin/symfony_requirements
-/vendor/
-
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
-/web/images/
-/web/build/
-
-# npm
-/node_modules/
-
-# phpstan
-/phpstan.neon
-
-# PHPUnit
-/phpunit.xml
-
-# Composer PHAR
-/composer.phar
-
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/public/bundles/
-/var/
-/vendor/
-###< symfony/framework-bundle ###
-
-###> symfony/webpack-encore-bundle ###
-/node_modules/
-/public/build/
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-bundle ###
-
-###> symfony/phpunit-bridge ###
-.phpunit
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
-/public/screenshots/
-!public/screenshots/.gitkeep
-
-###> lexik/jwt-authentication-bundle ###
-/config/jwt/*.pem
-###< lexik/jwt-authentication-bundle ###
-
-###> friends-of-behat/symfony-extension ###
-/behat.yml
-###< friends-of-behat/symfony-extension ###
+/volumes

@@ -4,11 +4,16 @@
 # wait for es services to be available
 ##############################################################
 
-# enable/disable xdebug according to docker environment var
-if [ "$PHP_XDEBUG_ENABLED" -eq "0" ]; then
-    sed -i -e 's/zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/xdebug.ini
+# enable/disable xdebug:
+# - only enable in dev environment
+# - only enable if PHP_XDEBUG_ENABLED is set to 1
+if [ "${APP_ENVIRONMENT}" != "dev" ] || [ "$PHP_XDEBUG_ENABLED" != "1" ]; then
+    sed -i -e 's/zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 else
-    sed -i -e "s/xdebug\.remote_host.*/xdebug.remote_host=$PHP_XDEBUG_REMOTE_HOST/g" /usr/local/etc/php/conf.d/xdebug.ini
+    PHP_XDEBUG_REMOTE_HOST=$(hostname --ip-address | awk -F '.' '{printf "%d.%d.%d.1",$1,$2,$3}')
+
+    sed -i -e "s/xdebug\.remote_host.*/xdebug.remote_host=$PHP_XDEBUG_REMOTE_HOST/g" /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    sed -i -e 's/;zend_extension/zend_extension/g'                                   /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
 MYSQL_UP=$(nc -z -v -w30 mysql 3306 2>/dev/null; echo $?);
@@ -32,9 +37,10 @@ if [ "$APP_ENVIRONMENT" != 'prod' ] && [ ! -f config/jwt/private.pem ]; then
 fi
 
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
-    APP_ENV=${APP_ENVIRONMENT} composer self-update --2
-    APP_ENV=${APP_ENVIRONMENT} composer install
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} composer self-update --2
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} composer install
     php bin/console assets:install --env=${APP_ENVIRONMENT}
+    vendor/bin/bdi detect drivers
     ##############################################################
     # fix permission problems
     ##############################################################
@@ -43,20 +49,15 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     chown -R $HOST_UID:$HOST_GID $PWD
     chown -R $CONTAINER_USER:$CONTAINER_GROUP /home/$CONTAINER_USER
 
-    setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images public/screenshots
-    setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images public/screenshots
+    setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
+    setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
 elif [ "${APP_ENVIRONMENT}" = "test" ]; then
-    APP_ENV=${APP_ENVIRONMENT} composer self-update --2
-    APP_ENV=${APP_ENVIRONMENT} composer install
-    php bin/console doctrine:database:drop --full-database --force --env=${APP_ENVIRONMENT}
-    php bin/console doctrine:database:create --no-interaction --env=${APP_ENVIRONMENT}
-    php bin/console doctrine:schema:update --force --env=${APP_ENVIRONMENT}
-    php bin/console assets:install --env=${APP_ENVIRONMENT}
-    php bin/console hautelook:fixtures:load --no-interaction --env=${APP_ENVIRONMENT}
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} composer self-update --2
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} composer install
 else
-    APP_ENV=${APP_ENVIRONMENT} composer self-update --2
-    APP_ENV=${APP_ENVIRONMENT} composer install --optimize-autoloader
-    APP_ENV=${APP_ENVIRONMENT} composer dump-autoload --optimize
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} composer self-update --2
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} composer install --optimize-autoloader
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} composer dump-autoload --optimize
     php bin/console doctrine:migrations:sync-metadata-storage --env=${APP_ENVIRONMENT} --no-debug --no-interaction
     php bin/console cache:clear --env=${APP_ENVIRONMENT} --no-debug
     php bin/console cache:warmup --env=${APP_ENVIRONMENT} --no-debug
@@ -68,7 +69,7 @@ fi
 if [ "${APP_ENVIRONMENT}" != "dev" ]; then
     #setfacl -R -m u:www-data:rwx -m m:rwx var public/uploads
     #setfacl -dR -m u:www-data:rwx -m m:rwx var public/uploads
-    chown -R www-data:www-data var public/images public/screenshots
+    chown -R www-data:www-data var public/images
 fi
 
 ##############################################################

@@ -134,18 +134,7 @@
         "database-init": [
             "php bin/console doctrine:database:drop --no-interaction --force --if-exists",
             "php bin/console doctrine:database:create --if-not-exists",
-            "php bin/console doctrine:migrations:migrate --no-interaction",
-            "php bin/console hautelook_alice:doctrine:fixtures:load --no-interaction"
-        ],
-        "database-prototype": [
-            "php bin/console doctrine:generate:entities AppBundle",
-            "php bin/console doctrine:migrations:diff --no-interaction",
             "php bin/console doctrine:migrations:migrate --no-interaction"
-        ],
-        "database-migrations-diff": [
-            "php bin/console doctrine:database:drop --no-interaction --force --if-exists",
-            "php bin/console doctrine:database:create",
-            "php bin/console doctrine:migrations:diff"
         ],
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

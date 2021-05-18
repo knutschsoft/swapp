@@ -36,12 +36,18 @@ default:
             output:
                 screenshot: true
             screenshot:
-                directory: public/screenshots/
+                directory: public/images/screenshots/
                 mode: default
                 autoClean: true
                 # size: 1444x1280
-                hostUrl: "http://swapp:8082/screenshots/"
-        FriendsOfBehat\SymfonyExtension: ~
+                hostUrl: "https://swapp.local/images/screenshots/"
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: ~
+            kernel:
+                class: ~
+                path: ~
+                environment: ~
+                debug: ~
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
             files_path: "tests/fixtures/"

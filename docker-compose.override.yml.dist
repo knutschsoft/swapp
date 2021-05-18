@@ -1,0 +1,19 @@
+# use this file for building the docker image
+# and for running the development environment
+version: '3.4'
+
+services:
+  web:
+    build:
+      context: ./web
+      args:
+        APP_ENVIRONMENT: 'dev'
+    volumes:
+      - ./web/:/var/www/html
+      - ./.git:/var/www/html/.git
+    restart: "no"
+
+  mysql:
+    restart: "no"
+    ports:
+      - 8875:3306 # adjust your own port here

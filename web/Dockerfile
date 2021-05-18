@@ -1,11 +1,12 @@
 FROM composer:2.0 as composer
 FROM php:8.0-apache
 
-ENV MYSQL_HOST=${MYSQL_HOST}
-ENV MYSQL_USER=${MYSQL_USER}
-ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
-ENV MYSQL_DATABASE=${MYSQL_DATABASE}
-ENV PROJECT_NAME_DOCKER=swapp
+ARG APP_ENVIRONMENT
+ARG HOST_UID
+ARG HOST_GID
+ARG CONTAINER_USER
+ARG CONTAINER_GROUP
+ENV PANTHER_NO_SANDBOX 1
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
@@ -71,14 +72,29 @@ RUN docker-php-ext-configure opcache --enable-opcache && \
         docker-php-ext-install intl
 
 COPY .docker/web/etc/php/php.ini /usr/local/etc/php/
-RUN pecl install zip
-RUN pecl install xdebug
+RUN docker-php-ext-install zip
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 
-RUN echo "extension=zip.so"  >> /usr/local/etc/php/conf.d/zip.ini
-RUN echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)"  >  /usr/local/etc/php/conf.d/xdebug.ini
-RUN echo "xdebug.remote_enable=1"                                                 >> /usr/local/etc/php/conf.d/xdebug.ini
-RUN echo "xdebug.remote_autostart=1"                                              >> /usr/local/etc/php/conf.d/xdebug.ini
-RUN echo "xdebug.remote_host=172.17.0.1"                                          >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN sh -c "echo 'xdebug.remote_enable=1' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini" && \
+    sh -c "echo 'xdebug.remote_autostart=1' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini" && \
+    sh -c "echo 'xdebug.remote_host=172.17.0.1' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini" && \
+    sed -i -e 's/zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini                                     >> /usr/local/etc/php/conf.d/xdebug.ini
+
+### adjust panther ChromeDriver to installed chromium version
+RUN  if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
+        apt-get update && apt-get install -y libzip-dev zlib1g-dev chromium; \
+    fi
+
+COPY .docker/web/etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/
+RUN a2enmod rewrite
+RUN a2enmod headers
+RUN a2enmod ssl
+RUN a2enmod remoteip
+
+RUN openssl genrsa -passout pass:x -out /etc/ssl/private/swapp.pass.key 2048
+RUN openssl rsa -passin pass:x -in /etc/ssl/private/swapp.pass.key -out /etc/ssl/private/swapp.key
+RUN openssl req -new -key /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.csr -batch
+RUN openssl x509 -req -days 365 -in /etc/ssl/private/swapp.csr -signkey /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.crt
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -100,34 +116,17 @@ RUN yarn install
 WORKDIR /var/www/html
 COPY . /var/www/html
 
-ARG APP_ENVIRONMENT=prod
-ENV APP_ENVIRONMENT=${APP_ENVIRONMENT}
-
 RUN if [ "$APP_ENVIRONMENT" != "dev" ]; then \
         node_modules/.bin/encore production; \
     fi
 
-COPY .docker/web/etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/
-RUN a2enmod rewrite
-RUN a2enmod headers
-RUN a2enmod ssl
+# clear apt-cache for smaller docker images
+RUN apt-get clean -y
 
-RUN openssl genrsa -passout pass:x -out /etc/ssl/private/swapp.pass.key 2048
-RUN openssl rsa -passin pass:x -in /etc/ssl/private/swapp.pass.key -out /etc/ssl/private/swapp.key
-RUN openssl req -new -key /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.csr -batch
-RUN openssl x509 -req -days 365 -in /etc/ssl/private/swapp.csr -signkey /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.crt
+COPY ./.docker/start-project.sh /start-project.sh
 
-ENV PANTHER_NO_SANDBOX 1
-
-### adjust panther ChromeDriver to installed chromium version
-RUN  if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
-        apt-get update && apt-get install -y libzip-dev zlib1g-dev chromium && docker-php-ext-install zip; \
-        vendor/bin/bdi detect drivers; \
-    fi
-
-COPY ./init-project.sh /init-project.sh
-
-EXPOSE 80
 EXPOSE 443
 
-ENTRYPOINT /init-project.sh
+WORKDIR /var/www/html
+RUN chmod 777 /start-project.sh
+ENTRYPOINT /start-project.sh
