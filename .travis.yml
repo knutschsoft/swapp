@@ -4,6 +4,7 @@ services:
 before_script:
   - cp .env.dist .env
   - cp docker-compose.override.yml.dist docker-compose.override.yml
+  - docker network create swapp
   - docker-compose up -d
 
 script:
