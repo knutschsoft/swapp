@@ -117,6 +117,7 @@
             "@qa"
         ],
         "qa-ci": [
+            "composer install",
             "@compile-test",
             "bin/console lexik:jwt:generate-keypair --skip-if-exists --env=test",
             "vendor/bin/phpcs --colors src tests || true",
