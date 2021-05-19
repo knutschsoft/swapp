@@ -118,6 +118,7 @@
         ],
         "qa-ci": [
             "composer install",
+            "yarn install",
             "@compile-test",
             "yarn encore production --colors",
             "bin/console lexik:jwt:generate-keypair --overwrite --no-interaction --env=test",
