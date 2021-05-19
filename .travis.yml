@@ -20,6 +20,8 @@ script:
   - ls -la
   - ls -la volumes/*
   - ls -la volumes/web/*
+  - docker-compose exec web printenv || true
+  - docker-compose logs web || true
   - docker-compose exec web composer qa-ci || true
   - ls -la
   - ls -la volumes/*
