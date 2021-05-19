@@ -6,6 +6,11 @@ os: linux
 language: php
 
 before_script:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose --version
   - cp .env.dist .env
   - cp docker-compose.override.yml.dist docker-compose.override.yml
   - docker network create swapp
@@ -30,3 +35,7 @@ deploy:
   on:
     tags: false
     all_branches: true
+
+after_failure:
+  - docker images
+  - docker ps -a
