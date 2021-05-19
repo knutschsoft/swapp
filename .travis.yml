@@ -37,5 +37,6 @@ deploy:
     all_branches: true
 
 after_failure:
-  - docker images
-  - docker ps -a
+  - ls -la
+  - ls -la volumes/*
+  - ls -la volumes/web/*
