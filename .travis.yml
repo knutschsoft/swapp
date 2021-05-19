@@ -4,7 +4,6 @@ services:
 dist: xenial
 os: linux
 language: php
-sudo: true
 
 before_script:
   - sudo rm /usr/local/bin/docker-compose
@@ -30,7 +29,7 @@ deploy:
     - volumes/web/images/screenshots/*
     - volumes/web/apache-logs/*
     - volumes/web/symfony-logs/*
-  cleanup: false
+  skip_cleanup: true
   draft: true
   overwrite: true
   on:
