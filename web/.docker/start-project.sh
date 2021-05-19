@@ -24,6 +24,9 @@ do
     MYSQL_UP=$(nc -z -v -w30 mysql 3306 2>/dev/null; echo $?);
 done
 
+bin/set_owner.sh
+bin/set_acl.sh ${CONTAINER_USER}
+
 if [ "$APP_ENVIRONMENT" != 'prod' ] && [ ! -f config/jwt/private.pem ]; then
   jwt_passphrase=$(grep '^JWT_PASSPHRASE=' .env | cut -f 2 -d '=')
   if ! echo "$jwt_passphrase" | openssl pkey -in config/jwt/private.pem -passin stdin -noout > /dev/null 2>&1; then

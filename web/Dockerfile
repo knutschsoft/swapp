@@ -56,6 +56,7 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libssl-dev \
         git-core \
+        gosu \
         acl \
         unzip \
         default-mysql-client
@@ -108,16 +109,16 @@ COPY composer.json composer.lock symfony.lock /var/www/html/
 COPY src/Kernel.php /var/www/html/src/
 
 RUN cd /var/www/html
-RUN composer install --no-scripts --optimize-autoloader
+RUN gosu ${CONTAINER_USER} composer install --no-scripts --optimize-autoloader
 
 COPY package.json yarn.lock /var/www/html/
-RUN yarn install
+RUN gosu ${CONTAINER_USER} yarn install
 
 WORKDIR /var/www/html
 COPY . /var/www/html
 
 RUN if [ "$APP_ENVIRONMENT" != "dev" ]; then \
-        node_modules/.bin/encore production; \
+        gosu ${CONTAINER_USER} node_modules/.bin/encore production; \
     fi
 
 # clear apt-cache for smaller docker images
