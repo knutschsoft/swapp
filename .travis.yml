@@ -33,7 +33,8 @@ deploy:
   file_glob: true
   file:
     - volumes/web/images/screenshots/*
-    - volumes/web/apache-logs/*
+    - volumes/web/apache-logs/access.log
+    - volumes/web/apache-logs/error.log
     - volumes/web/symfony-logs/*
   skip_cleanup: true
   draft: true
