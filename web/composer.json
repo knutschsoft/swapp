@@ -119,7 +119,7 @@
         "qa-ci": [
             "composer install",
             "@compile-test",
-            "bin/console lexik:jwt:generate-keypair --overwrite --env=test",
+            "bin/console lexik:jwt:generate-keypair --overwrite --no-interaction --env=test",
             "vendor/bin/phpcs --colors src tests || true",
             "vendor/bin/phpstan analyse --no-progress --ansi || true",
             "vendor/bin/phpunit --colors || true",
