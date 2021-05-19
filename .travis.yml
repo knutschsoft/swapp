@@ -17,7 +17,13 @@ before_script:
   - docker-compose up -d --build
 
 script:
+  - ls -la
+  - ls -la volumes/*
+  - ls -la volumes/web/*
   - docker-compose exec web composer qa-ci || true
+  - ls -la
+  - ls -la volumes/*
+  - ls -la volumes/web/*
 
 # get access to debug screenshots from ci
 deploy:
