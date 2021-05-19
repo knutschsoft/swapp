@@ -21,9 +21,9 @@ script:
   - ls -la volumes/*
   - ls -la volumes/web/*
   - sleep 100
-  - docker-compose exec web printenv || true
+  - docker-compose exec --user=docker web printenv || true
   - docker-compose logs web || true
-  - docker-compose exec web composer qa-ci || true
+  - docker-compose exec --user=docker web composer qa-ci || true
   - ls -la
   - ls -la volumes/*
   - ls -la volumes/web/*
