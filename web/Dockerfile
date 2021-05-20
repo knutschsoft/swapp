@@ -113,6 +113,8 @@ RUN groupadd --gid ${HOST_GID} ${CONTAINER_GROUP} && \
 # contains dev-mode packages
 RUN gosu ${CONTAINER_USER} composer global require "pyrech/composer-changelogs:^1.6" --prefer-dist --no-progress --no-suggest --classmap-authoritative
 
+RUN chown www-data:www-data /var/www
+
 COPY .docker /
 
 COPY composer.json composer.lock symfony.lock /var/www/html/
