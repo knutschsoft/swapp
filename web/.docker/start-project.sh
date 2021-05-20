@@ -31,7 +31,6 @@ if [ "$APP_ENVIRONMENT" != 'prod' ] && [ ! -f config/jwt/private.pem ]; then
   jwt_passphrase=${JWT_PASSPHRASE}
   if ! echo "$jwt_passphrase" | openssl pkey -in config/jwt/private.pem -passin stdin -noout > /dev/null 2>&1; then
     echo "Generating public / private keys for JWT"
-    gosu ${CONTAINER_USER} mkdir -p config/jwt
     gosu ${CONTAINER_USER} echo "$jwt_passphrase" | gosu ${CONTAINER_USER} openssl genpkey -out config/jwt/private.pem -pass stdin -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
     gosu ${CONTAINER_USER} echo "$jwt_passphrase" | gosu ${CONTAINER_USER} openssl pkey -in config/jwt/private.pem -passin stdin -out config/jwt/public.pem -pubout
     setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
