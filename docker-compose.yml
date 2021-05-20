@@ -29,6 +29,7 @@ services:
       - DB_NAME=${DB_NAME:?DB_NAME is not set or empty}
       - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is not set or empty}
       - DB_USER=${DB_USER:?DB_USER is not set or empty}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
     restart: "always"
     depends_on:
       - mysql
