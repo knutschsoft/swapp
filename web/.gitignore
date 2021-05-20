@@ -13,12 +13,6 @@
 !bin/symfony_requirements
 /vendor/
 
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
-/web/images/
-/web/build/
-
 # npm
 /node_modules/
 
@@ -42,7 +36,8 @@
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-/public/build/
+/public/build/*
+!public/build/.gitkeep
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
