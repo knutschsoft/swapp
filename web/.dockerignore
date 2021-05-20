@@ -21,6 +21,8 @@
 .php_cs.cache
 bin/*
 !bin/console
+!bin/set_acl.sh
+!bin/set_owner.sh
 build/
 var/
 vendor/

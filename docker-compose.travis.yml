@@ -1,0 +1,10 @@
+# use this file for building the docker image
+# and for running the development environment
+version: '3.4'
+
+services:
+  web:
+    build:
+      context: ./web
+      args:
+        APP_ENVIRONMENT: 'test'
