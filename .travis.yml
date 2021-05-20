@@ -13,7 +13,7 @@ before_script:
   - docker-compose --version
   - cp .env.dist .env
   - cp docker-compose.override.yml.dist docker-compose.override.yml
-  - docker network create swapp
+  - docker network create swapp-test
   - docker-compose -f docker-compose.travis.yml -f docker-compose.yml build web
   - docker-compose -f docker-compose.travis.yml -f docker-compose.yml up --detach
 
