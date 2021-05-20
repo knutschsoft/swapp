@@ -27,17 +27,6 @@ done
 bin/set_owner.sh
 bin/set_acl.sh ${CONTAINER_USER}
 
-if [ "$APP_ENVIRONMENT" != 'prod' ] && [ ! -f config/jwt/private.pem ]; then
-  jwt_passphrase=${JWT_PASSPHRASE}
-  if ! echo "$jwt_passphrase" | openssl pkey -in config/jwt/private.pem -passin stdin -noout > /dev/null 2>&1; then
-    echo "Generating public / private keys for JWT"
-    gosu ${CONTAINER_USER} echo "$jwt_passphrase" | gosu ${CONTAINER_USER} openssl genpkey -out config/jwt/private.pem -pass stdin -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
-    gosu ${CONTAINER_USER} echo "$jwt_passphrase" | gosu ${CONTAINER_USER} openssl pkey -in config/jwt/private.pem -passin stdin -out config/jwt/public.pem -pubout
-    setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
-    setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
-  fi
-fi
-
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer self-update --2
     APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install

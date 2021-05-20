@@ -101,6 +101,7 @@
             "chmod +x var/cache/test/test.db",
             "chmod 777 var/cache/test/test.db",
             "bin/console assets:install --env=test",
+            "bin/console lexik:jwt:generate-keypair --overwrite --no-interaction --env=test",
             "vendor/bin/bdi detect drivers"
         ],
         "qa": [
@@ -117,11 +118,7 @@
             "@qa"
         ],
         "qa-ci": [
-            "composer install",
-            "yarn install",
             "@compile-test",
-            "yarn encore production --colors",
-            "bin/console lexik:jwt:generate-keypair --overwrite --no-interaction --env=test",
             "vendor/bin/phpcs --colors src tests || true",
             "vendor/bin/phpstan analyse --no-progress --ansi || true",
             "vendor/bin/phpunit --colors || true",
