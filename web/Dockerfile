@@ -104,15 +104,19 @@ RUN openssl req -new -key /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp
 RUN openssl x509 -req -days 365 -in /etc/ssl/private/swapp.csr -signkey /etc/ssl/private/swapp.key -out /etc/ssl/private/swapp.crt
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME /home/docker/.composer
+
+RUN groupadd --gid ${HOST_GID} ${CONTAINER_GROUP} && \
+    useradd --uid ${HOST_UID} --gid ${HOST_GID} -ms /bin/bash ${CONTAINER_USER} && \
+    usermod -a -G www-data ${CONTAINER_USER} && \
+    chown ${CONTAINER_USER}:${CONTAINER_GROUP} /usr/bin/composer
+
 # contains dev-mode packages
-RUN composer global require "pyrech/composer-changelogs:^1.6" --prefer-dist --no-progress --no-suggest --classmap-authoritative
+RUN gosu ${CONTAINER_USER} composer global require "pyrech/composer-changelogs:^1.6" --prefer-dist --no-progress --no-suggest --classmap-authoritative
 
 COPY .docker /
 
 COPY composer.json composer.lock symfony.lock /var/www/html/
-COPY src/Kernel.php /var/www/html/src/
+#COPY src/Kernel.php /var/www/html/src/
 
 RUN cd /var/www/html
 RUN gosu ${CONTAINER_USER} composer install --no-scripts --optimize-autoloader

@@ -40,27 +40,20 @@ if [ "$APP_ENVIRONMENT" != 'prod' ] && [ ! -f config/jwt/private.pem ]; then
 fi
 
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} composer self-update --2
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} composer install
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer self-update --2
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} vendor/bin/bdi detect drivers
-    ##############################################################
-    # fix permission problems
-    ##############################################################
-    groupadd --gid $HOST_GID $CONTAINER_GROUP
-    useradd --uid $HOST_UID --gid $HOST_GID -ms /bin/bash $CONTAINER_USER
-    chown -R $HOST_UID:$HOST_GID $PWD
-    chown -R $CONTAINER_USER:$CONTAINER_GROUP /home/$CONTAINER_USER
 
     setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
     setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
 elif [ "${APP_ENVIRONMENT}" = "test" ]; then
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} composer self-update --2
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} composer install
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer self-update --2
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install
 else
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} composer self-update --2
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} composer install --optimize-autoloader
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} composer dump-autoload --optimize
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer self-update --2
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install --optimize-autoloader
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer dump-autoload --optimize
     gosu ${CONTAINER_USER} php bin/console doctrine:migrations:sync-metadata-storage --env=${APP_ENVIRONMENT} --no-debug --no-interaction
     gosu ${CONTAINER_USER} php bin/console cache:clear --env=${APP_ENVIRONMENT} --no-debug
     gosu ${CONTAINER_USER} php bin/console cache:warmup --env=${APP_ENVIRONMENT} --no-debug
