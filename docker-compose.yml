@@ -55,4 +55,4 @@ services:
 networks:
   default:
     external:
-      name: swapp
+      name: swapp-${DEPLOY_ENV?:DEPLOY_ENV is not set or empty}

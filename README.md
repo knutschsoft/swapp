@@ -37,10 +37,10 @@ Have a look at **https://streetworkapp.de/** for more information.
                 - ./certs:/etc/nginx/certs
                 - ./vhosts:/etc/nginx/conf.d
             networks:
-                - swapp 
+                - swapp-dev
     
     networks:
-        swapp:
+        swapp-dev:
            external: true
     ```
 2. ##### Install local ssl certificates
@@ -85,7 +85,7 @@ Have a look at **https://streetworkapp.de/** for more information.
 
     ```BASH
     # this need to be run only once 
-    docker network create swapp
+    docker network create swapp-dev
     ```
 
     ```BASH
