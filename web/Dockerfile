@@ -113,24 +113,26 @@ RUN groupadd --gid ${HOST_GID} ${CONTAINER_GROUP} && \
 # contains dev-mode packages
 RUN gosu ${CONTAINER_USER} composer global require "pyrech/composer-changelogs:^1.6" --prefer-dist --no-progress --no-suggest --classmap-authoritative
 
-RUN chown www-data:www-data /var/www
-
 COPY .docker /
 
-COPY composer.json composer.lock symfony.lock /var/www/html/
-#COPY src/Kernel.php /var/www/html/src/
+# USE DOCKER CACHE FOR VENDORS:
+# 1st: copy composer-files & run composer install
+# 2nd: copy project sources => changing of project sources does'n break cache for previous step
+COPY composer.json composer.lock package.json yarn.lock symfony.lock /var/www/html/
+RUN if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
+        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html; \
+        cd /var/www/html; \
+        gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction; \
+        gosu ${CONTAINER_USER} yarn install; \
+    fi
 
-RUN cd /var/www/html
-RUN gosu ${CONTAINER_USER} composer install --no-scripts --optimize-autoloader
-
-COPY package.json yarn.lock /var/www/html/
-RUN gosu ${CONTAINER_USER} yarn install
-
-WORKDIR /var/www/html
 COPY . /var/www/html
-
-RUN if [ "$APP_ENVIRONMENT" != "dev" ]; then \
+RUN cd /var/www/html && \
+    if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
+        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html; \
+        bin/set_acl.sh ${CONTAINER_USER}; \
         gosu ${CONTAINER_USER} yarn encore production; \
+        gosu ${CONTAINER_USER} php bin/console cache:clear --env="${APP_ENVIRONMENT}" --no-debug; \
     fi
 
 # clear apt-cache for smaller docker images

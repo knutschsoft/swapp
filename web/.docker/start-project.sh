@@ -47,16 +47,8 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
 
     setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
     setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
-elif [ "${APP_ENVIRONMENT}" = "test" ]; then
-    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer self-update --2
-    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install
-else
-    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer self-update --2
-    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install --optimize-autoloader
-    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer dump-autoload --optimize
+elif [ "${APP_ENVIRONMENT}" = "prod" ]; then
     gosu ${CONTAINER_USER} php bin/console doctrine:migrations:sync-metadata-storage --env=${APP_ENVIRONMENT} --no-debug --no-interaction
-    gosu ${CONTAINER_USER} php bin/console cache:clear --env=${APP_ENVIRONMENT} --no-debug
-    gosu ${CONTAINER_USER} php bin/console cache:warmup --env=${APP_ENVIRONMENT} --no-debug
     gosu ${CONTAINER_USER} php bin/console doctrine:database:create --if-not-exists --no-interaction --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} php bin/console doctrine:migrations:migrate --no-interaction --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}
