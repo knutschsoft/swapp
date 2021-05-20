@@ -130,7 +130,7 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 
 RUN if [ "$APP_ENVIRONMENT" != "dev" ]; then \
-        gosu ${CONTAINER_USER} node_modules/.bin/encore production; \
+        gosu ${CONTAINER_USER} yarn encore production; \
     fi
 
 # clear apt-cache for smaller docker images
