@@ -6,6 +6,7 @@ services:
     image: ${IMAGE:?IMAGE is not set or empty}
     volumes:
       - ${VOLUME_DIR_WEB:?VOLUME_DIR_WEB is not set or empty}apache-logs/:/var/log/apache2/
+      - ${VOLUME_DIR_WEB:?VOLUME_DIR_WEB is not set or empty}config-jwt/:/var/www/html/config/jwt/
       - ${VOLUME_DIR_WEB:?VOLUME_DIR_WEB is not set or empty}symfony-logs/:/var/www/html/var/log/
       - ${VOLUME_DIR_WEB:?VOLUME_DIR_WEB is not set or empty}images/:/var/www/html/public/images/
     environment:
