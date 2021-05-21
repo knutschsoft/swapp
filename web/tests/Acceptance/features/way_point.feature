@@ -33,8 +33,8 @@ Feature: An user can request a non existing wayPoint and get redirected
     Then I wait for "Gorbitz" to appear
 
     When I click on element "button-runde-ansehen-Gorbitz"
-    Then I wait for "Streetwork-Runde: Gorbitz" to appear
-    Then I wait for "Wegpunkte dieser Runde" to appear
+    Then I wait for 'Streetwork-Runde: "Gorbitz"' to appear
+    Then I wait for 'Wegpunkte der Runde "Gorbitz"' to appear
     Then I wait for "Elbamare" to appear
     Then I wait for "Block17" to appear
     Then I wait for "Wegpunkt ansehen" to appear

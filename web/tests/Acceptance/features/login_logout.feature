@@ -51,8 +51,8 @@ Feature: A user can login
     When I click on text "Anmelden"
     Then I wait for "Dashboard" to appear
     Then I wait for "Teams" to appear
-    Then I wait for "Benutzer" to appear
-    Then I wait for "Tags" to appear
+    Then I wait for "Benutzer" to disappear
+    Then I wait for "Tags" to disappear
 
   @javascript
   @login

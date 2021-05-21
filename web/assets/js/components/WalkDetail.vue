@@ -19,17 +19,19 @@
         </b-alert>
         <content-collapse
             :title="title"
-            collapse-key="waypoints-of-round"
+            collapse-key="walk-detail"
             is-visible-by-default
+            :is-loading="!walk"
         >
             <WalkDetailData
                 :walk-id="walkId"
             />
         </content-collapse>
         <content-collapse
-            title="Wegpunkte dieser Runde"
+            :title="`Wegpunkte der Runde &quot;${walk.name}&quot;`"
             collapse-key="waypoints-of-round"
             is-visible-by-default
+            :is-loading="!walk"
         >
             <WayPointList
                 :walk-id="walkId"
@@ -79,7 +81,7 @@
                 return this.$store.getters["walk/walks"];
             },
             title() {
-                return `Streetwork-Runde: ${this.walk.name} <small>vom ${(new Date(this.walk.startTime)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
+                return `Streetwork-Runde: "${this.walk.name}" <small>von ${(new Date(this.walk.startTime)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
             },
             walk() {
                 return this.$store.getters["walk/getWalkById"](this.walkId);
