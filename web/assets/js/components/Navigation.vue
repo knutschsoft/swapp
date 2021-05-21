@@ -48,7 +48,7 @@
                         Dashboard
                     </b-nav-item>
                     <b-nav-item
-                        v-if="isAdmin"
+                        v-if="isSuperAdmin"
                         :to="{ name: 'Users' }"
                         :link-classes="linkClasses"
                         exact
@@ -66,7 +66,7 @@
                         Teams
                     </b-nav-item>
                     <b-nav-item
-                        v-if="isAdmin"
+                        v-if="isSuperAdmin"
                         :to="{ name: 'Tags' }"
                         :link-classes="linkClasses"
                         exact
