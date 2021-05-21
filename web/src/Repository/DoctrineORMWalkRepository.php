@@ -14,6 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Walk|null findOneBy(array $criteria, array $orderBy = null)
  * @method Walk[]    findAll()
  * @method Walk[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<Walk>
  */
 class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkRepository
 {
@@ -76,10 +78,7 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
      */
     public function findOneById($id): ?Walk
     {
-        $walk = parent::findOneBy(['id' => $id]);
-        \assert($walk instanceof Walk || null === $walk);
-
-        return $walk;
+        return parent::findOneBy(['id' => $id]);
     }
 
     public function save(Walk $walk): void

@@ -12,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Guest|null findOneBy(array $criteria, array $orderBy = null)
  * @method Guest[]    findAll()
  * @method Guest[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<Guest>
  */
 class DoctrineORMGuestRepository extends ServiceEntityRepository implements GuestRepository
 {

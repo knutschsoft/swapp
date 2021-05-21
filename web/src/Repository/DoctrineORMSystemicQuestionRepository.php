@@ -12,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method SystemicQuestion|null findOneBy(array $criteria, array $orderBy = null)
  * @method SystemicQuestion[]    findAll()
  * @method SystemicQuestion[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<SystemicQuestion>
  */
 class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository implements SystemicQuestionRepository
 {

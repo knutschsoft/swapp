@@ -12,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Team|null findOneBy(array $criteria, array $orderBy = null)
  * @method Team[]    findAll()
  * @method Team[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<Team>
  */
 class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamRepository
 {
@@ -27,10 +29,7 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
      */
     public function findOneById($id): ?Team
     {
-        $team = parent::findOneBy(['id' => $id]);
-        \assert($team instanceof Team || null === $team);
-
-        return $team;
+        return parent::findOneBy(['id' => $id]);
     }
 
     public function save(Team $team): void

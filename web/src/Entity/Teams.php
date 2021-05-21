@@ -6,6 +6,9 @@ namespace App\Entity;
 use VersatileCollections\StrictlyTypedCollectionInterface;
 use VersatileCollections\StrictlyTypedCollectionInterfaceImplementationTrait;
 
+/**
+ * @implements \IteratorAggregate<int, Team>
+ */
 class Teams implements StrictlyTypedCollectionInterface
 {
     use StrictlyTypedCollectionInterfaceImplementationTrait;

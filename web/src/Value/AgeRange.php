@@ -33,6 +33,11 @@ class AgeRange
         $this->rangeEnd = (int) $rangeEnd;
     }
 
+    /**
+     * @param array<int|string, int|string> $count
+     *
+     * @return self
+     */
     public static function fromArray(array $count = []): self
     {
         $start = $count['start'] ?? ($count[0] ?? 0);

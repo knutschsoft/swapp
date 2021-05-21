@@ -12,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method WayPoint|null findOneBy(array $criteria, array $orderBy = null)
  * @method WayPoint[]    findAll()
  * @method WayPoint[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<WayPoint>
  */
 class DoctrineORMWayPointRepository extends ServiceEntityRepository implements WayPointRepository
 {

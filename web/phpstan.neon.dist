@@ -9,3 +9,4 @@ parameters:
         - %currentWorkingDirectory%/src/Migrations/Version*.php
     ignoreErrors:
         - '#Access to an undefined property Symfony\\Component\\Validator\\Constraint::\$message#'
+        - '#Method App\\Serializer\\Normalizer\\Base64DataUriNormalizer::denormalize\(\) has parameter \$context with no value type specified in iterable type array.#'
