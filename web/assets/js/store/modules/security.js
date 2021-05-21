@@ -2,8 +2,13 @@ import SecurityAPI from '../../api/security';
 import axios from 'axios';
 
 let token = localStorage.getItem('swapp-store-token');
+const switchUser = localStorage.getItem('switch-user');
+
 if (token && token.length > 10) {
-    axios.defaults.headers.common = {'Authorization': 'Bearer ' + token};
+    axios.defaults.headers.common = {'Authorization': `Bearer ${token}`};
+    if (switchUser) {
+        axios.defaults.headers.common['-SWITCH-USER'] = switchUser;
+    }
 } else {
     token = false;
 }
@@ -49,6 +54,9 @@ export default {
     getters: {
         isLoading(state) {
             return state.isLoading;
+        },
+        isUserSwitched() {
+            return localStorage.getItem('switch-user');
         },
         hasError(state) {
             return state.error !== null;
@@ -202,6 +210,19 @@ export default {
                 commit(REQUEST_PASSWORD_RESET_ERROR, error);
                 return null;
             }
+        },
+        async switchUser(unused, user) {
+            const switchUser = await SecurityAPI.find(user['@id']);
+            localStorage.setItem('switch-user', user.username);
+            localStorage.setItem('origin-user', localStorage.getItem('swapp-store-user'));
+            localStorage.setItem('swapp-store-user', JSON.stringify(switchUser.data));
+            window.location.reload();
+        },
+        async exitSwitchUser() {
+            localStorage.setItem('swapp-store-user', localStorage.getItem('origin-user'));
+            localStorage.removeItem('switch-user');
+            localStorage.removeItem('origin-user');
+            window.location.reload();
         },
     }
 }

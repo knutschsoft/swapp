@@ -4,6 +4,9 @@ export default {
     findUserWithToken(id, token) {
         return axios.get(id, { headers: { Authorization: 'Bearer ' + token } });
     },
+    find(id) {
+        return axios.get(id);
+    },
     login(username, password) {
         return axios.post('/api/getToken', {
             username: username,

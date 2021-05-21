@@ -23,6 +23,44 @@
                 >
                     Account {{ row.item.enabled ? 'de' : '' }}aktivieren
                 </b-button>
+                <b-button
+                    v-if="isSuperAdmin && !isUserSwitched"
+                    size="sm"
+                    class="flex-item d-flex align-items-center mr-1"
+                    :data-test="`switch-user-${row.item.username}`"
+                    @click="switchUser(row.item)"
+                >
+                    <b-icon
+                        icon="people-fill"
+                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                        font-scale="1.5"
+                    />
+                    Nutzer wechseln
+                </b-button>
+                <b-button
+                    v-else-if="isSuperAdmin"
+                    size="sm"
+                    class="flex-item d-flex align-items-center mr-1"
+                    data-test="exit-switch-user"
+                    @click="exitSwitchUser()"
+                >
+                    <b-icon
+                        icon="person-fill"
+                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                        font-scale="1.5"
+                    />
+                    <b-icon
+                        icon="box-arrow-left"
+                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                        font-scale="1.5"
+                    />
+                    <b-icon
+                        icon="person-square"
+                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                        font-scale="1.5"
+                    />
+                    Nutzerwechsel beenden
+                </b-button>
             </template>
         </b-table>
     </div>
@@ -85,6 +123,12 @@
             }
         },
         computed: {
+            isUserSwitched() {
+                return this.$store.getters['security/isUserSwitched'];
+            },
+            isSuperAdmin() {
+                return this.$store.getters['security/isSuperAdmin'];
+            },
             users() {
                 return this.$store.getters['user/users'];
             },
@@ -121,7 +165,13 @@
                 } else {
                     this.$store.dispatch("user/enable", userId);
                 }
-            }
+            },
+            switchUser(user) {
+                this.$store.dispatch('security/switchUser', user);
+            },
+            exitSwitchUser() {
+                this.$store.dispatch('security/exitSwitchUser');
+            },
         }
     }
 </script>

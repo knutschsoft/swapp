@@ -26,6 +26,7 @@ class User implements UserInterface
     private const ROLE_DEFAULT = 'ROLE_USER';
 
     private const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    private const ROLE_ALLOWED_TO_SWITCH = 'ROLE_ALLOWED_TO_SWITCH';
 
     /** @ORM\Column(type="string", length=180, unique=true) */
     protected string $email;
@@ -233,6 +234,9 @@ class User implements UserInterface
         if (static::ROLE_DEFAULT === $role) {
             return;
         }
+        if (static::ROLE_SUPER_ADMIN === $role) {
+            $this->addRole(static::ROLE_ALLOWED_TO_SWITCH);
+        }
 
         if (!\in_array($role, $this->roles, true)) {
             $this->roles[] = $role;
@@ -340,6 +344,9 @@ class User implements UserInterface
 
         // we need to make sure to have at least one role
         $roles[] = static::ROLE_DEFAULT;
+        if (\in_array(\strtoupper(static::ROLE_SUPER_ADMIN), $roles, true)) {
+            $roles[] = static::ROLE_ALLOWED_TO_SWITCH;
+        }
 
         return \array_unique($roles);
     }

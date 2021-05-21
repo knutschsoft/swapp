@@ -81,6 +81,7 @@
                     <b-nav-item-dropdown
                         right
                         :toggle-class="isUserMenuActive ? 'active router-link-active' : ''"
+                        data-test="nav-user-item"
                     >
                         <!-- Using 'button-content' slot -->
                         <template v-slot:button-content >
@@ -88,7 +89,7 @@
                             <span
                                 v-if="isAuthenticated"
                             >
-                                {{ currentUser.email }}
+                                {{ currentUser.username }}
                             </span>
                         </template>
                         <b-dropdown-item
@@ -114,6 +115,15 @@
                             Passwort ändern
                         </b-dropdown-item>
                         <b-dropdown-item
+                            v-if="isUserSwitched"
+                            router-tag="button"
+                            :title="`Nutzerwechsel beenden`"
+                            data-test="exit-switch-user"
+                            @click="exitSwitchUser()"
+                        >
+                            Nutzerwechsel beenden
+                        </b-dropdown-item>
+                        <b-dropdown-item
                             v-if="isAuthenticated"
                             :to="{ name: 'Logout'}"
                         >
@@ -126,6 +136,45 @@
                         >
                             Was ist Swapp?
                         </b-dropdown-item>
+                        <b-dropdown-divider v-if="!isUserSwitched && isSuperAdmin" />
+                        <b-dropdown-form
+                            v-if="!isUserSwitched && isSuperAdmin"
+                        >
+                            <b-form-group
+                                label="Nutzerwechsel"
+                                label-for="nutzerwechsel-form-email"
+                                @submit.stop.prevent
+                            >
+                                <b-form-input
+                                    id="nutzerwechsel-form-email"
+                                    v-model="userFilter"
+                                    type="search"
+                                    trim
+                                    autocomplete="off"
+                                    size="sm"
+                                    placeholder="Benutzername"
+                                />
+                            </b-form-group>
+                            <b-dropdown-group
+                                v-if="!isUserSwitched && isSuperAdmin"
+                            >
+                                <b-dropdown-item-button
+                                    v-for="(user, key) in displayedUserList"
+                                    :key="key"
+                                    button-class="text-truncate"
+                                    style="font-size: 14px;"
+                                    @click="switchUser(user)"
+                                >
+                                    {{ user.username }}
+                                    ({{ Object.values(user.roles).map((currentRole) => {
+                                        return currentRole === 'ROLE_USER' ? '' : `${currentRole.substring(5)} `
+                                    }).join('')
+                                    }}{{ (user.teams.length && (user.roles.length > 1)) ? ' - ' : '' }}{{ Object.values(user.teams).map((currentTeam) => {
+                                        return currentTeam.name
+                                    }).join('') }})
+                                </b-dropdown-item-button>
+                            </b-dropdown-group>
+                        </b-dropdown-form>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-collapse>
@@ -141,7 +190,8 @@
     export default {
         name: "Navigation",
         data: () => ({
-            // user: false,
+            userFilter: '',
+            users: [],
             swappLogo: logo,
             linkClasses: 'text-left text-lg-center pl-2 pl-lg-0',
         }),
@@ -162,6 +212,20 @@
             isSuperAdmin() {
                 return this.$store.getters['security/isSuperAdmin'];
             },
+            isUserSwitched() {
+                return this.$store.getters['security/isUserSwitched'];
+            },
+            displayedUserList() {
+                if (!this.users || !this.users.length) {
+                    return [];
+                }
+
+                return this.users.slice(0).filter((user) => {
+                    return -1 !== user.username.toLowerCase().indexOf(this.userFilter.toLowerCase());
+                }).sort((a, b) => {
+                    return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1;
+                });
+            },
             currentUser() {
                 return this.$store.getters['security/currentUser'];
             },
@@ -169,10 +233,25 @@
                 return -1 !== ['PasswordChangeRequest', 'Login', 'PasswordReset'].indexOf(this.$route.name);
             }
         },
+        watch: {
+            userFilter() {
+                this.$localStorage.set('nav-user-filter', this.userFilter);
+            },
+        },
         created() {
         },
-        mounted: function () {
-        }
+        mounted: async function () {
+            this.userFilter = this.$localStorage.get('nav-user-filter', '');
+            this.users = await this.$store.dispatch('user/findAll');
+        },
+        methods: {
+            switchUser(user) {
+                this.$store.dispatch('security/switchUser', user);
+            },
+            exitSwitchUser() {
+                this.$store.dispatch('security/exitSwitchUser');
+            },
+        },
     }
 </script>
 

@@ -75,7 +75,7 @@ final class AcceptanceContext extends MinkContext
      *
      * @throws \Throwable
      */
-    public function iWaitForTextToAppear(string $text, ?int $tries = 25): void
+    public function iWaitForTextToAppear(string $text, ?int $tries = 50): void
     {
         $this->spin(
             function () use ($text): void {

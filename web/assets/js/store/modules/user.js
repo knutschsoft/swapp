@@ -90,6 +90,7 @@ const actions = {
         try {
             let response = await UserAPI.findAll();
             commit(FETCHING_USERS_SUCCESS, response.data['hydra:member']);
+            return response.data['hydra:member'];
         } catch (error) {
             commit(FETCHING_USERS_ERROR, error);
         }
