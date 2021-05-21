@@ -119,6 +119,13 @@
                         >
                             Abmelden
                         </b-dropdown-item>
+                        <b-dropdown-divider />
+                        <b-dropdown-item
+                            :to="{ name: 'About'}"
+                            :active="$route.name === 'About'"
+                        >
+                            Was ist Swapp?
+                        </b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-collapse>
