@@ -40,7 +40,6 @@
         "lexik/jwt-authentication-bundle": "~2.8",
         "nelmio/cors-bundle": "~2.1",
         "nelmio/js-logger-bundle": "~1.6",
-        "ninsuo/symfony-collection": "~2.1",
         "ramsey/uuid": "~4.1",
         "rotexsoft/versatile-collections": "~2.0",
         "sensio/framework-extra-bundle": "~5.2",

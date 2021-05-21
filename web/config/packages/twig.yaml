@@ -6,4 +6,3 @@ twig:
         - 'bootstrap_4_layout.html.twig'
     paths:
         - "%kernel.project_dir%/templates"
-        - "%kernel.project_dir%/vendor/ninsuo/symfony-collection"
