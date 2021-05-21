@@ -99,7 +99,7 @@
                         class="form-group input-group"
                     >
                         <b-button
-                            :disabled="username.length < 10 || password.length < -1 || isLoading"
+                            :disabled="username.length < 7 || password.length < -1 || isLoading"
                             block
                             variant="dark"
                             type="submit"
@@ -138,15 +138,18 @@
                     </b-input-group>
                 </b-form>
             </div>
+            <DemoInfo />
         </div>
     </div>
 </template>
 
 <script>
     "use strict";
+    import DemoInfo from './Demo/DemoInfo.vue';
 
     export default {
         name: "Login",
+        components: { DemoInfo },
         data: () => ({
             username: '',
             password: '',
