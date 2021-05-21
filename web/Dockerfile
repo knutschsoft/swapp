@@ -30,8 +30,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 12.8.0
-ENV NVM_VERSION 0.35.3
+ENV NODE_VERSION 16.2.0
+ENV NVM_VERSION 0.38.0
 RUN mkdir $NVM_DIR
 
 # install nvm
