@@ -11,7 +11,10 @@ services:
     volumes:
       - ./web/:/var/www/html
       - ./.git:/var/www/html/.git
+      - ../nginx-proxy/certs:/var/www/certs # adjust to the place of your nginx-proxy; just needed for webpack encore dev server
     restart: "no"
+    ports:
+      - 8080:8080 # adjust your own port for webpack encore here
 
   mysql:
     restart: "no"

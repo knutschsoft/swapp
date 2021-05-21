@@ -8,7 +8,7 @@ Encore
     .setOutputPath('public/build/')
 
     // what's the public path to this directory (relative to your project's document root dir)
-    .setPublicPath(Encore.isProduction() ? '/build' : 'http://swapp:8082/build/')
+    .setPublicPath(Encore.isProduction() ? '/build' : 'https://swapp.local:8080/build/')
 
     // .setOutputPath()
 
@@ -16,7 +16,6 @@ Encore
     .cleanupOutputBeforeBuild()
 
     // will output as web/build/app.js
-    .addEntry('global', assets_dir + '/js/pages/global.js')
     .addEntry('app', assets_dir + '/js/app.js')
 
     .addAliases(
@@ -38,7 +37,7 @@ Encore
     .enableSassLoader()
 
     // allow legacy applications to use $/jQuery as a global variable
-    .autoProvidejQuery()
+    // .autoProvidejQuery()
 
     .enableSourceMaps(!Encore.isProduction())
 
@@ -52,19 +51,17 @@ Encore
 
     .enablePostCssLoader()
     .enableEslintLoader()
+
+    .configureDevServerOptions(options => {
+        options.client.host = 'swapp.local';
+        options.firewall = false;
+        options.https = {
+            key: '/var/www/certs/swapp.local.key',
+            cert: '/var/www/certs/swapp.local.crt',
+        };
+        options.host = '0.0.0.0';
+        options.port = '8080';
+    })
 ;
 
-// export the final configuration
-config = Encore.getWebpackConfig();
-
-if (config.devServer) {
-    config.devServer.host = '0.0.0.0';
-    // config.devServer.https = Encore.isProduction();
-    config.devServer.port = '8083';
-    // config.devServer.public = "swapp:8083";
-    config.devServer.public = "swapp:8083";
-    config.devServer.publicPath = "/build/";
-    config.devServer.disableHostCheck = true;
-}
-
-module.exports = config;
+module.exports = Encore.getWebpackConfig();
