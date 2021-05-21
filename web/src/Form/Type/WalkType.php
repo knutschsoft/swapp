@@ -34,16 +34,18 @@ class WalkType extends AbstractType
         $builder->add(
             'startTime',
             DateTimeType::class,
-            array(
+            [
                 'label' => 'Rundenstartzeit',
-            )
+                'widget' => 'single_text',
+            ]
         );
         $builder->add(
             'endTime',
             DateTimeType::class,
-            array(
+            [
                 'label' => 'Rundenendzeit',
-            )
+                'widget' => 'single_text',
+            ]
         );
         $builder->add(
             'walkReflection',
