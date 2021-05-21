@@ -5,6 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 chown -R www-data:www-data \
   ${DIR}/../var/cache/ \
   ${DIR}/../var/log/ \
+  ${DIR}/../config/jwt/ \
   ${DIR}/../public/build/ \
   ${DIR}/../public/images/
 
