@@ -76,7 +76,7 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
      *
      * @return Walk|null
      */
-    public function findOneById($id): ?Walk
+    public function findOneById(int|string $id): ?Walk
     {
         return parent::findOneBy(['id' => $id]);
     }

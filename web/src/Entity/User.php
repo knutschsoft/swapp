@@ -48,11 +48,6 @@ class User implements UserInterface
      */
     protected string $password;
 
-    /**
-     * Plain password. Used for model validation. Must not be persisted.
-     *
-     * @var ?string
-     */
     protected ?string $plainPassword = null;
 
     /** @ORM\Column(type="datetime", name="last_login", nullable=true) */
@@ -60,8 +55,6 @@ class User implements UserInterface
 
     /**
      * Random string sent to the user email address in order to verify it.
-     *
-     * @var ?string
      *
      * @ORM\Column(type="string", length=180, unique=true, name="confirmation_token", nullable=true)
      */
@@ -88,19 +81,19 @@ class User implements UserInterface
     private string $username;
 
     /**
-     * @var Walk[]|Collection<int, Walk>
+     * @var Collection<int, Walk>
      *
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
      */
-    private $walks;
+    private Collection $walks;
 
     /**
-     * @var Team[]|Collection<int, Team>
+     * @var Collection<int, Team>
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="users")
      * @ORM\JoinTable(name="users_teams")
      */
-    private $teams;
+    private Collection $teams;
 
     public function __construct()
     {
@@ -115,8 +108,8 @@ class User implements UserInterface
     public static function fromRegisterUserRequest(RegisterUserRequest $registerUserRequest, UserPasswordEncoderInterface $passwordEncoder): self
     {
         $instance = new self();
-        $instance->email = strtolower($registerUserRequest->email);
-        $instance->username = strtolower($registerUserRequest->username);
+        $instance->email = \strtolower($registerUserRequest->email);
+        $instance->username = \strtolower($registerUserRequest->username);
         $instance->changePassword($registerUserRequest->password, $passwordEncoder);
         $instance->addRole('ROLE_USER');
         $instance->disable();
@@ -124,14 +117,6 @@ class User implements UserInterface
 
         return $instance;
     }
-
-
-    public function changePassword(string $password, UserPasswordEncoderInterface $passwordEncoder): void
-    {
-        $this->password = $passwordEncoder->encodePassword($this, $password);
-        $this->confirmationToken = null;
-    }
-
 
     public static function createEmpty(): self
     {
@@ -147,8 +132,14 @@ class User implements UserInterface
         return $instance;
     }
 
+    public function changePassword(string $password, UserPasswordEncoderInterface $passwordEncoder): void
+    {
+        $this->password = $passwordEncoder->encodePassword($this, $password);
+        $this->confirmationToken = null;
+    }
+
     /**
-     * @return Team[]|Collection<int, Team>
+     * @return Collection<int, Team>
      *
      * @Groups({"user:read"})
      */
@@ -157,8 +148,8 @@ class User implements UserInterface
         return $this->teams;
     }
 
-    /** @param Team[]|Collection<int,Team> $teams */
-    public function setTeams($teams): void
+    /** @param Collection<int,Team> $teams */
+    public function setTeams(Collection $teams): void
     {
         $this->teams = $teams;
         foreach ($teams as $team) {
@@ -167,13 +158,13 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
+     * @return int
      *
      * @Groups({"user:read", "team:read"})
      */
-    public function getId(): string
+    public function getId(): int
     {
-        return (string) $this->id;
+        return $this->id;
     }
 
     public function setId(int $id): void
@@ -182,7 +173,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Walk[]|Collection<int,Walk>
+     * @return Collection<int,Walk>
      *
      * @Groups({"user:read"})
      */
@@ -191,8 +182,8 @@ class User implements UserInterface
         return $this->walks;
     }
 
-    /** @param Walk[]|Collection<int, Walk> $walks */
-    public function setWalks($walks): void
+    /** @param Collection<int, Walk> $walks */
+    public function setWalks(Collection $walks): void
     {
         $this->walks = $walks;
     }
@@ -376,11 +367,6 @@ class User implements UserInterface
     public function isEnabled(): bool
     {
         return $this->enabled;
-    }
-
-    public function setEnabled(string $boolean): void
-    {
-        $this->enabled = (bool) $boolean;
     }
 
     public function enable(): void

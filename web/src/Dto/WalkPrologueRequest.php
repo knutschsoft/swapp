@@ -9,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class WalkPrologueRequest
 {
     /**
-     * @var Team
-     *
      * @Assert\NotBlank
      * @Assert\NotNull
      * @Assert\Type(type="App\Entity\Team")

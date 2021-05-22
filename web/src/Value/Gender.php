@@ -14,7 +14,7 @@ final class Gender
 
     public const GENDER_MALE = 'm';
 
-    public string $gender;
+    private string $gender;
 
     public function __construct(string $gender)
     {

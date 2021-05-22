@@ -6,16 +6,14 @@ namespace App\Value;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource()
- */
+#[ApiResource()]
 final class AgeGroup
 {
-    public AgeRange $ageRange;
+    private AgeRange $ageRange;
 
-    public Gender $gender;
+    private Gender $gender;
 
-    public PeopleCount $peopleCount;
+    private PeopleCount $peopleCount;
 
     public function __construct(AgeRange $ageRange, Gender $gender, PeopleCount $peopleCount)
     {
@@ -66,7 +64,7 @@ final class AgeGroup
      */
     public function getFrontendLabel(): string
     {
-        return \sprintf('%d - %d %s', $this->ageRange->rangeStart, $this->ageRange->rangeEnd, $this->gender->getGender());
+        return \sprintf('%d - %d %s', $this->ageRange->getRangeStart(), $this->ageRange->getRangeEnd(), $this->gender->getGender());
     }
 
     public function equalType(self $ageGroup): bool

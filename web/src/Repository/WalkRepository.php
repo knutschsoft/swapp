@@ -27,7 +27,7 @@ interface WalkRepository
     public function getFindAllQuery(): AbstractQuery;
 
     /** @param int|string $id */
-    public function findOneById($id): ?Walk;
+    public function findOneById(int|string $id): ?Walk;
 
     public function save(Walk $walk): void;
 

@@ -14,12 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class TagCreateRequest
 {
     /**
-     * @var string
-     *
      * @Assert\NotBlank
      * @Assert\NotNull
      * @Assert\Length(min="3", max="100", normalizer="trim")
      * @Assert\Type(type="string")
+     *
      * @AppAssert\IsTagNameUnique(groups="Second")
      */
     //#[Assert\NotBlank]
@@ -29,12 +28,11 @@ final class TagCreateRequest
     //#[AppAssert\IsTagNameUnique()]
     public string $name;
     /**
-     * @var string
-     *
      * @Assert\NotBlank
      * @Assert\NotNull
      * @Assert\Type(type="string")
      * @Assert\Choice(choices=\App\Entity\Tag::COLORS)
+     *
      * @AppAssert\IsTagColorUnique(groups="Second")
      */
     //#[AppAssert\IsTagColorUnique()]

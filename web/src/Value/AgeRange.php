@@ -7,20 +7,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
-/**
- * @ApiResource()
- */
+#[ApiResource()]
 class AgeRange
 {
-    public int $rangeStart;
+    private int $rangeStart;
 
-    public int $rangeEnd;
+    private int $rangeEnd;
 
-    /**
-     * @param int|string $rangeStart
-     * @param int|string $rangeEnd
-     */
-    public function __construct($rangeStart, $rangeEnd)
+    public function __construct(int|string $rangeStart, int|string $rangeEnd)
     {
         Assert::integerish($rangeStart);
         Assert::integerish($rangeEnd);

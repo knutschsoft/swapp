@@ -59,10 +59,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         "status" => 200,
         "path" => "/walks/add-way-point",
     ],
-],
+    ],
     itemOperations: [
     "get",
-],
+    ],
     attributes: ["pagination_items_per_page" => 5],
     normalizationContext: ["groups" => ["walk:read"]]
 )]
@@ -74,160 +74,128 @@ class Walk
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
     #[ApiProperty(identifier: true)]
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank(groups={"prologue", "registration"})
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="WayPoint", mappedBy="walk")
      *
-     * @var Collection<int, WayPoint>|WayPoint[]
+     * @var Collection<int, WayPoint>
      **/
-    private $wayPoints;
+    private Collection $wayPoints;
 
     /**
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank(groups={"prologue", "registration"})
-     *
-     * @var \DateTime
      */
-    private $startTime;
+    private \DateTime $startTime;
 
     /**
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank(groups={"registration"})
-     *
-     * @var \DateTime
      */
-    private $endTime;
+    private \DateTime $endTime;
 
     /**
      * @ORM\Column(type="string", length=4096)
      *
      * @Assert\NotBlank(groups={"registration"})
-     *
-     * @var string
      */
-    private $walkReflection;
+    private string $walkReflection;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
      *
      * @MaxDepth(1)
      *
-     * @var Collection<int, User>|User[]
+     * @var Collection<int, User>
      */
-    private $walkTeamMembers;
+    private Collection $walkTeamMembers;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
      *
-     * @var Collection<int, Tag>|Tag[]
+     * @var Collection<int, Tag>
      */
-    private $walkTags;
+    private Collection $walkTags;
 
     /**
      * @ORM\Column(type="smallint")
      *
      * @Assert\NotBlank(groups={"registration"})
-     *
-     * @var int
      */
-    private $rating;
+    private int $rating;
 
-    /**
-     * @ORM\Column(type="string", length=4096)
-     *
-     * @var string
-     */
-    private $systemicQuestion;
+    /** @ORM\Column(type="string", length=4096) */
+    private string $systemicQuestion;
 
     /**
      * @ORM\Column(type="string", length=4096)
      *
      * @Assert\NotBlank(groups={"registration"})
-     *
-     * @var string
      */
-    private $systemicAnswer;
+    private string $systemicAnswer;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @var ?string
      */
-    private $insights;
+    private ?string $insights = null;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @var ?string
      */
-    private $commitments;
+    private ?string $commitments = null;
 
-    /**
-     * @ORM\Column(type="boolean", length=255)
-     *
-     * @var bool
-     */
-    private $isResubmission;
+    /** @ORM\Column(type="boolean", length=255) */
+    private bool $isResubmission;
     /**
      * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
      *
-     * @var Collection<int, Guest>|Guest[]
+     * @var Collection<int, Guest>
      **/
-    private $guests;
+    private Collection $guests;
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank(groups={"prologue"})
-     *
-     * @var string
      */
-    private $weather;
-    /**
-     * @ORM\Column(type="boolean", length=255)
-     *
-     * @var bool
-     */
-    private $holidays;
+    private string $weather;
+    /** @ORM\Column(type="boolean", length=255) */
+    private bool $holidays;
     /**
      * @ORM\Column(type="string", length=4096)
      *
      * @Assert\NotBlank(groups={"prologue"})
-     *
-     * @var string
      */
-    private $conceptOfDay;
+    private string $conceptOfDay;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank(groups={"prologue"})
-     *
-     * @var string
      */
-    private $teamName;
+    private string $teamName;
 
     /**
      * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
      *
      * @var ?\DateTime
      */
-    private $deletedAt;
+    private ?\DateTime $deletedAt = null;
 
     public function __construct()
     {
@@ -235,7 +203,9 @@ class Walk
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
         $this->wayPoints = new ArrayCollection();
+        $this->guests = new ArrayCollection();
         $this->holidays = false;
+        $this->conceptOfDay = '';
     }
 
     public static function prologue(Team $team, SystemicQuestion $systemicQuestion): self
@@ -263,19 +233,16 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return string
      *
      * @Groups({"walk:read"})
      */
-    public function getConceptOfDay()
+    public function getConceptOfDay(): string
     {
         return $this->conceptOfDay;
     }
 
-    /**
-     * @param mixed $conceptOfDay
-     */
-    public function setConceptOfDay($conceptOfDay): void
+    public function setConceptOfDay(string $conceptOfDay): void
     {
         $this->conceptOfDay = $conceptOfDay;
     }
@@ -296,37 +263,34 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return ?string
      *
      * @Groups({"walk:read"})
      */
-    public function getCommitments()
+    public function getCommitments(): ?string
     {
         return $this->commitments;
     }
 
     /**
-     * @param mixed $commitments
+     * @param ?string $commitments
      */
-    public function setCommitments($commitments): void
+    public function setCommitments(?string $commitments): void
     {
         $this->commitments = $commitments;
     }
 
     /**
-     * @return mixed
+     * @return bool
      *
      * @Groups({"walk:read"})
      */
-    public function getIsResubmission()
+    public function getIsResubmission(): bool
     {
         return $this->isResubmission;
     }
 
-    /**
-     * @param mixed $isResubmission
-     */
-    public function setIsResubmission($isResubmission): void
+    public function setIsResubmission(bool $isResubmission): void
     {
         $this->isResubmission = $isResubmission;
     }
@@ -347,19 +311,16 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return string
      *
      * @Groups({"walk:read"})
      */
-    public function getWeather()
+    public function getWeather(): string
     {
         return $this->weather;
     }
 
-    /**
-     * @param mixed $weather
-     */
-    public function setWeather($weather): void
+    public function setWeather(string $weather): void
     {
         $this->weather = $weather;
     }
@@ -374,126 +335,100 @@ class Walk
         return $this->holidays;
     }
 
-    /**
-     * @param bool $holidays
-     */
     public function setHolidays(bool $holidays): void
     {
         $this->holidays = $holidays;
     }
 
     /**
-     * @return mixed
+     * @return Collection<int,Guest>
      *
      * @Groups({"walk:read"})
      */
-    public function getGuests()
+    public function getGuests(): Collection
     {
         return $this->guests;
     }
 
     /**
-     * @param mixed $guests
+     * @param Collection<int,Guest> $guests
      */
-    public function setGuests($guests): void
+    public function setGuests(Collection $guests): void
     {
         $this->guests = $guests;
     }
 
-    public function __toString(): string
-    {
-        return \sprintf(
-            '%s',
-            $this->getName()
-        );
-    }
-
     /**
-     * @return mixed
+     * @return string
      *
      * @Groups({"walk:read"})
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      *
      * @Groups({"walk:read"})
      */
-    public function getEndTime()
+    public function getEndTime(): \DateTime
     {
         return $this->endTime;
     }
 
-    /**
-     * @param mixed $endTime
-     */
-    public function setEndTime($endTime): void
+    public function setEndTime(\DateTime $endTime): void
     {
         $this->endTime = $endTime;
     }
 
     /**
-     * @return mixed
+     * @return int
      *
      * @Groups({"walk:read"})
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return int
      *
      * @Groups({"walk:read"})
      */
-    public function getRating()
+    public function getRating(): int
     {
         return $this->rating;
     }
 
-    /**
-     * @param mixed $rating
-     */
-    public function setRating($rating): void
+    public function setRating(int $rating): void
     {
         $this->rating = $rating;
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      *
      * @Groups({"walk:read"})
      */
-    public function getStartTime()
+    public function getStartTime(): \DateTime
     {
         return $this->startTime;
     }
 
-    /**
-     * @param mixed $startTime
-     */
-    public function setStartTime($startTime): void
+    public function setStartTime(\DateTime $startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -508,9 +443,6 @@ class Walk
         return $this->systemicAnswer;
     }
 
-    /**
-     * @param string $systemicAnswer
-     */
     public function setSystemicAnswer(string $systemicAnswer): void
     {
         $this->systemicAnswer = $systemicAnswer;
@@ -529,55 +461,52 @@ class Walk
     }
 
     /**
-     * @return mixed
+     * @return Collection<int,Tag>
      *
      * @Groups({"walk:read"})
      */
-    public function getWalkTags()
+    public function getWalkTags(): Collection
     {
         return $this->walkTags;
     }
 
     /**
-     * @param mixed $walkTags
+     * @param Collection<int,Tag> $walkTags
      */
-    public function setWalkTags($walkTags): void
+    public function setWalkTags(Collection $walkTags): void
     {
         $this->walkTags = $walkTags;
     }
 
     /**
-     * @return mixed
+     * @return string
      *
      * @Groups({"walk:read"})
      */
-    public function getWalkReflection()
+    public function getWalkReflection(): string
     {
         return $this->walkReflection;
     }
 
-    /**
-     * @param mixed $walkReflection
-     */
-    public function setWalkReflection($walkReflection): void
+    public function setWalkReflection(string $walkReflection): void
     {
         $this->walkReflection = $walkReflection;
     }
 
     /**
-     * @return mixed
+     * @return Collection<int,User>
      *
      * @Groups({"walk:read"})
      */
-    public function getWalkTeamMembers()
+    public function getWalkTeamMembers(): Collection
     {
         return $this->walkTeamMembers;
     }
 
     /**
-     * @param mixed $walkTeamMembers
+     * @param Collection<int,User> $walkTeamMembers
      */
-    public function setWalkTeamMembers($walkTeamMembers): void
+    public function setWalkTeamMembers(Collection $walkTeamMembers): void
     {
         $this->walkTeamMembers = $walkTeamMembers;
     }
@@ -610,9 +539,6 @@ class Walk
         return $this->teamName;
     }
 
-    /**
-     * @param string $teamName
-     */
     public function setTeamName(string $teamName): void
     {
         $this->teamName = $teamName;
@@ -747,5 +673,13 @@ class Walk
     public function getIsUnfinished(): bool
     {
         return '' === $this->getSystemicAnswer();
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(
+            '%s',
+            $this->getName()
+        );
     }
 }

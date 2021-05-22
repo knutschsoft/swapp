@@ -63,12 +63,14 @@ class TeamVoter extends Voter
                 if ($this->security->isGranted('ROLE_ADMIN')) {
                     return true;
                 }
+
                 return $user->getTeams()->contains($subject);
             case self::TEAM_DELETE:
             case self::TEAM_EDIT:
                 if (!$this->security->isGranted('ROLE_ADMIN')) {
                     return false;
                 }
+
                 return $user->getTeams()->contains($subject);
         }
 

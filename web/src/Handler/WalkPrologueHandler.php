@@ -16,7 +16,7 @@ final class WalkPrologueHandler implements MessageHandlerInterface
 
     public function __construct(
         WalkRepository $walkRepository,
-        SystemicQuestionRepository $systemicQuestionRepository,
+        SystemicQuestionRepository $systemicQuestionRepository
     ) {
         $this->walkRepository = $walkRepository;
         $this->systemicQuestionRepository = $systemicQuestionRepository;

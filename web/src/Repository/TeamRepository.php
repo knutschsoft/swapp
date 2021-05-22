@@ -8,7 +8,7 @@ use App\Entity\Team;
 interface TeamRepository
 {
     /** @param int|string $id */
-    public function findOneById($id): ?Team;
+    public function findOneById(int|string $id): ?Team;
 
     public function save(Team $team): void;
 }

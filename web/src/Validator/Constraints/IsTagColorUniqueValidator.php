@@ -28,7 +28,7 @@ class IsTagColorUniqueValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();
-        } catch (NotFoundException $e) {
+        } catch (NotFoundException) {
             // expected
         }
     }

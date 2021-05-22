@@ -14,9 +14,8 @@ final class WalkExportHandler implements MessageHandlerInterface
 {
     private WalkRepository $walkRepository;
 
-    public function __construct(
-        WalkRepository $walkRepository,
-    ) {
+    public function __construct(WalkRepository $walkRepository)
+    {
         $this->walkRepository = $walkRepository;
     }
 
@@ -69,7 +68,7 @@ final class WalkExportHandler implements MessageHandlerInterface
     /**
      * @param Walk $walk
      *
-     * @return array<string, string>
+     * @return array<int|string, bool|int|string|null>
      */
     private function getCsvAgeHeaders(Walk $walk): array
     {
@@ -101,27 +100,27 @@ final class WalkExportHandler implements MessageHandlerInterface
     }
 
     /**
-     * @param Walk                  $walk
-     * @param array<string, string> $ageHeaders
+     * @param Walk                                    $walk
+     * @param array<int|string, bool|int|string|null> $ageHeaders
      *
-     * @return array<string|int, string|int>
+     * @return array<int|string, string>
      */
     private function getCsvContentCells(Walk $walk, array $ageHeaders): array
     {
         $content = [
-            $walk->getId(),
+            (string) $walk->getId(),
             $walk->getName(),
             $walk->getStartTime()->format('d.m.Y H:i:s'),
             $walk->getEndTime()->format('d.m.Y H:i:s'),
             $walk->getWalkReflection(),
-            $walk->getRating(),
-            $walk->getSystemicQuestion() ? $walk->getSystemicQuestion() : '',
+            (string) $walk->getRating(),
+            $walk->getSystemicQuestion(),
             $walk->getSystemicAnswer(),
-            $walk->getInsights(),
-            $walk->getCommitments(),
-            $walk->getIsResubmission(),
+            (string) $walk->getInsights(),
+            (string) $walk->getCommitments(),
+            (string) $walk->getIsResubmission(),
             $walk->getWeather(),
-            $walk->getHolidays(),
+            (string) $walk->getHolidays(),
             $walk->getConceptOfDay(),
             $walk->getTeamName(),
         ];
@@ -132,7 +131,7 @@ final class WalkExportHandler implements MessageHandlerInterface
         foreach ($ageHeaders as $header) {
             foreach ($this->getCsvAgeCells($walk) as $label => $csvAgeCell) {
                 if ($label === $header) {
-                    $content[$header] = $csvAgeCell;
+                    $content[$header] = (string) $csvAgeCell;
                 }
             }
         }

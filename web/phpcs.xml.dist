@@ -9,19 +9,5 @@
     <arg name="extensions" value="php"/>
 
     <rule ref="vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/ruleset.xml">
-        <exclude name="SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable" />
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification">
-        <exclude-pattern>tests/**Test*.php</exclude-pattern>
-    </rule>
-    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
-        <exclude-pattern>tests/**Test*.php</exclude-pattern>
-    </rule>
-    <rule ref="Symfony.Commenting.FunctionComment.MissingParamTag">
-        <exclude-pattern>tests/Context/*Context.php</exclude-pattern>
-    </rule>
-    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix">
-        <exclude-pattern>*</exclude-pattern>
     </rule>
 </ruleset>

@@ -15,6 +15,7 @@ use Webmozart\Assert\Assert;
 
 class AgeRangeType extends AbstractType implements DataMapperInterface
 {
+    // @codingStandardsIgnoreStart
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -73,7 +74,7 @@ class AgeRangeType extends AbstractType implements DataMapperInterface
      *
      * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported
      */
-    public function mapFormsToData($forms, &$data): void
+    public function mapFormsToData($forms, &$data): void // @codingStandardsIgnoreLine
     {
         if (null === $data) {
             return;
@@ -92,4 +93,5 @@ class AgeRangeType extends AbstractType implements DataMapperInterface
     {
         return 'AgeRangeType';
     }
+    // @codingStandardsIgnoreEnd
 }

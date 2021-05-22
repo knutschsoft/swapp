@@ -22,10 +22,10 @@ class IsUsernameUniqueValidator extends ConstraintValidator
      */
     public function validate($username, Constraint $constraint): void
     {
-        if ((bool) $this->userRepository->findOneBy(['username' => strtolower($username)])) {
+        if ((bool) $this->userRepository->findOneBy(['username' => \strtolower($username)])) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $username)
                 ->addViolation();
-        };
+        }
     }
 }

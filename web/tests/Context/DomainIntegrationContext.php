@@ -15,6 +15,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behatch\Context\RestContext;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -64,7 +65,6 @@ final class DomainIntegrationContext extends RawMinkContext
         $this->restContext->iAddHeaderEqualTo('Authorization', "Bearer $token");
     }
 
-
     /**
      * @Given I send an api platform :method request to :url with parameters:
      *
@@ -72,9 +72,9 @@ final class DomainIntegrationContext extends RawMinkContext
      * @param string    $url
      * @param TableNode $data
      *
-     * @return mixed
+     * @return void
      */
-    public function iSendAnApiPlatformRequestToWithParameters(string $method, string $url, TableNode $data)
+    public function iSendAnApiPlatformRequestToWithParameters(string $method, string $url, TableNode $data): void
     {
         $parameters = [];
 
@@ -102,13 +102,13 @@ final class DomainIntegrationContext extends RawMinkContext
                     \substr($row['value'], 1)
                 );
                 $parameters[$row['key']] = (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
-            } elseif (str_starts_with($row['value'],'teamIris<') && str_ends_with($lastChar, '>')) {
+            } elseif (\str_starts_with($row['value'], 'teamIris<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 9, -1);
                 $parameters[$row['key']] = [];
                 foreach ($this->getTeamsIdsFromTeamsString($value) as $teamId) {
                     $parameters[$row['key']][] = \sprintf('/api/teams/%s', (string) $teamId);
                 }
-            } elseif (str_starts_with($row['value'],'teamIri<') && str_ends_with($lastChar, '>')) {
+            } elseif (\str_starts_with($row['value'], 'teamIri<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 8, -1);
                 $parameters[$row['key']] = \sprintf('/api/teams/%s', (string) $this->getTeamByName($value)->getId());
             } else {
@@ -120,7 +120,7 @@ final class DomainIntegrationContext extends RawMinkContext
         $this->restContext->iAddHeaderEqualTo('content-type', 'application/ld+json');
         $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
 
-        return $this->restContext->iSendARequestToWithBody($method, $this->locatePath($url), $body);
+        $this->restContext->iSendARequestToWithBody($method, $this->locatePath($url), $body);
     }
 
     /**
@@ -225,6 +225,7 @@ final class DomainIntegrationContext extends RawMinkContext
         }
         $this->em->flush();
     }
+
     /**
      * @Given /^there are exactly (?P<code>\d+) walks in database$/
      *
@@ -246,7 +247,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $team = new Team();
             $team->setName($row['name'] ?? 'Clari@narf.de'.$key);
             $users = $this->getUsersFromString($row['users'] ?? '');
-            $team->setUsers($users);
+            $team->setUsers(new ArrayCollection($users));
             $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '');
             $team->setAgeRanges($ageRanges);
 
@@ -281,6 +282,11 @@ final class DomainIntegrationContext extends RawMinkContext
         $this->em->flush();
     }
 
+    /**
+     * @param string $teamsString
+     *
+     * @return string[]
+     */
     private function getTeamsIdsFromTeamsString(string $teamsString): array
     {
         $teamStringList = \explode(',', \trim($teamsString));

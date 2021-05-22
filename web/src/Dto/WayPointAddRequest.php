@@ -13,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class WayPointAddRequest
 {
     /**
-     * @var Walk
-     *
      * @Assert\NotBlank
      * @Assert\NotNull
      * @Assert\Type(type="App\Entity\Walk")
@@ -22,8 +20,6 @@ final class WayPointAddRequest
     public Walk $walk;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank
      * @Assert\NotNull
      * @Assert\Length(min="3", max="300")
@@ -31,17 +27,13 @@ final class WayPointAddRequest
     public string $locationName;
 
     /**
-     * @var string
-     *
      * @Assert\NotNull
      * @Assert\Length(min="0", max="2500")
      */
     public string $note;
 
     public ?string $imageFileData;
-    /**
-     * @Assert\Length(min="5", max="200")
-     */
+    /** @Assert\Length(min="5", max="200") */
     public ?string $imageFileName;
     /**
      * @var AgeGroup[]

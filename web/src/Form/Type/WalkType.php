@@ -17,20 +17,8 @@ class WalkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'name',
-            TextType::class,
-            array(
-                'label' => 'Name',
-            )
-        );
-        $builder->add(
-            'conceptOfDay',
-            TextareaType::class,
-            array(
-                'label' => 'Tageskonzept',
-            )
-        );
+        $builder->add('name', TextType::class, array('label' => 'Name'));
+        $builder->add('conceptOfDay', TextareaType::class, array('label' => 'Tageskonzept'));
         $builder->add(
             'startTime',
             DateTimeType::class,
@@ -63,7 +51,7 @@ class WalkType extends AbstractType
                 'disabled' => true,
                 'attr' => [
                     'style' => 'width:100%;',
-                    'data-test' => 'Systemische Frage'
+                    'data-test' => 'Systemische Frage',
                 ],
             ]
         );
@@ -75,13 +63,7 @@ class WalkType extends AbstractType
                 'attr' => ['data-test' => 'Systemische Antwort'],
             )
         );
-        $builder->add(
-            'holidays',
-            TextType::class,
-            array(
-                'label' => 'Ferien',
-            )
-        );
+        $builder->add('holidays', TextType::class, array('label' => 'Ferien'));
         $builder->add(
             'rating',
             ChoiceType::class,
@@ -97,14 +79,7 @@ class WalkType extends AbstractType
                 'label' => 'Rundenbewertung',
             )
         );
-        $builder->add(
-            'holidays',
-            CheckboxType::class,
-            array(
-                'label' => 'Ferien',
-                'required' => false,
-            )
-        );
+        $builder->add('holidays', CheckboxType::class, array('label' => 'Ferien', 'required' => false));
         $builder->add(
             'weather',
             ChoiceType::class,

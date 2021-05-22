@@ -81,7 +81,7 @@ final class AcceptanceContext extends MinkContext
             function () use ($text): void {
                 $this->assertPageContainsText($text);
             },
-            $tries
+            $tries,
         );
         $this->assertPageContainsText($text);
     }
@@ -151,12 +151,13 @@ final class AcceptanceContext extends MinkContext
     {
         $testElement = $this->getTestElement($dataTestSelector);
         $this->spin(
-            function () use ($testElement, $dataTestSelector): void {
+            static function () use ($testElement, $dataTestSelector): void {
                 Assert::true($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not disabled.', $dataTestSelector));
             }
         );
         Assert::true($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not disabled.', $dataTestSelector));
     }
+
     /**
      * @Then the element :dataTestSelector should be enabled
      */
@@ -164,7 +165,7 @@ final class AcceptanceContext extends MinkContext
     {
         $testElement = $this->getTestElement($dataTestSelector);
         $this->spin(
-            function () use ($testElement, $dataTestSelector): void {
+            static function () use ($testElement, $dataTestSelector): void {
                 Assert::false($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not enabled.', $dataTestSelector));
             }
         );

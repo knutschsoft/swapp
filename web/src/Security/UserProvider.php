@@ -53,7 +53,7 @@ class UserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(\sprintf('Expected an instance of %s, but got "%s".', User::class, \get_class($user)));
+            throw new UnsupportedUserException(\sprintf('Expected an instance of %s, but got "%s".', User::class, $user::class));
         }
 
         $reloadedUser = $this->userRepository->findOneBy(['id' => $user->getId()]);
@@ -65,7 +65,7 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * @param string|int $class
+     * @param string $class
      *
      * @return bool
      */

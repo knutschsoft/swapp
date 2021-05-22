@@ -20,8 +20,12 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         $this->security = $security;
     }
 
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
-    {
+    public function applyToCollection(
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        ?string $operationName = null
+    ): void {
         $this->addWhere($queryBuilder, $resourceClass);
     }
 
@@ -30,15 +34,16 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        string $operationName = null,
+        ?string $operationName = null,
         array $context = []
-    ) {
+    ): void {
         $this->addWhere($queryBuilder, $resourceClass);
     }
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (null === $user = $this->security->getUser()) {
+        $user = $this->security->getUser();
+        if (null === $user) {
             return;
         }
         \assert($user instanceof User);

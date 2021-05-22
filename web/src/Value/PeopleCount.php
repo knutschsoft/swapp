@@ -8,7 +8,7 @@ use Webmozart\Assert\Assert;
 
 final class PeopleCount
 {
-    public int $count;
+    private int $count;
 
     public function __construct(int $count)
     {

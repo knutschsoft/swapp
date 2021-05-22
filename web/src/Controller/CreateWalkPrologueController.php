@@ -28,7 +28,8 @@ final class CreateWalkPrologueController
     }
 
     /**
-     * @param Team $data
+     * @param Team    $data
+     * @param ?string $teamId
      *
      * @return Walk
      *

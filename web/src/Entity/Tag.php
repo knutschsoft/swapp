@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         "path" => "/tags/create",
         "security" => 'is_granted("ROLE_SUPER_ADMIN")',
     ],
-],
+    ],
     itemOperations: ['get'],
     normalizationContext: ["groups" => ["tag:read"]]
 )]
@@ -118,16 +118,16 @@ class Tag
     /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
      *
-     * @var Collection<int, Walk>|Walk[]
+     * @var Collection<int, Walk>
      */
-    private $walks;
+    private Collection $walks;
 
     /**
      * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="wayPointTags")
      *
-     * @var Collection<int, WayPoint>|WayPoint[]
+     * @var Collection<int, WayPoint>
      */
-    private $wayPoints;
+    private Collection $wayPoints;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -219,14 +219,14 @@ class Tag
         }
     }
 
-    /** @return Collection<int, Walk>|Walk[] */
-    public function getWalks()
+    /** @return Collection<int, Walk> */
+    public function getWalks(): Collection
     {
         return $this->walks;
     }
 
-    /** @param Walk[]|Collection<int, Walk> $walks */
-    public function setWalks($walks): void
+    /** @param Collection<int, Walk> $walks */
+    public function setWalks(Collection $walks): void
     {
         $this->walks = $walks;
     }
@@ -245,14 +245,14 @@ class Tag
         }
     }
 
-    /** @return Collection<int, WayPoint>|WayPoint[] */
-    public function getWayPoints()
+    /** @return Collection<int, WayPoint> */
+    public function getWayPoints(): Collection
     {
         return $this->wayPoints;
     }
 
-    /** @param Collection<int, WayPoint>|WayPoint[] $wayPoints */
-    public function setWayPoints($wayPoints): void
+    /** @param Collection<int, WayPoint> $wayPoints */
+    public function setWayPoints(Collection $wayPoints): void
     {
         $this->wayPoints = $wayPoints;
     }

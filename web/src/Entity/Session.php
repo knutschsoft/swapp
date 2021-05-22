@@ -17,12 +17,8 @@ class Session
      */
     protected string $sessId;
 
-    /**
-     * @ORM\Column(name="sess_data",type="blob", nullable=false)
-     *
-     * @var object|mixed
-     */
-    protected $sessData;
+    /** @ORM\Column(name="sess_data",type="blob", nullable=false) */
+    protected mixed $sessData;
 
     /** @ORM\Column(name="sess_time",type="integer", nullable=false, options={"unsigned": false}) */
     protected int $sessTime;
@@ -40,14 +36,14 @@ class Session
         $this->sessId = $sessId;
     }
 
-    /** @return object|mixed */
-    public function getSessData()
+    /** @return mixed */
+    public function getSessData(): mixed
     {
         return $this->sessData;
     }
 
-    /** @param object|mixed $sessData */
-    public function setSessData($sessData): void
+    /** @param mixed $sessData */
+    public function setSessData(mixed $sessData): void
     {
         $this->sessData = $sessData;
     }

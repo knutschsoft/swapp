@@ -18,15 +18,16 @@ class OpenApiFactory implements OpenApiFactoryInterface
         $this->decorated = $decorated;
     }
 
+    /**
+     * @param array<mixed> $context
+     *
+     * @return OpenApi
+     */
     public function __invoke(array $context = []): OpenApi
     {
         $openApi = $this->decorated->__invoke($context);
 
-        $info = new Model\Info(
-            'Swapp',
-            'v1',
-            'Description of streetworkapp API'
-        );
+        $info = new Model\Info('Swapp', 'v1', 'Description of streetworkapp API');
         Assert::isInstanceOf($info, Info::class);
 
         return $openApi->withInfo($info);

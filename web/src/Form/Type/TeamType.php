@@ -43,7 +43,9 @@ class TeamType extends AbstractType
             EntityType::class,
             [
                 'class' => User::class,
-                'choice_label' => static fn (User $user) => $user->getUsername(),
+                'choice_label' => static function (User $user): string {
+                    return $user->getUsername();
+                },
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Mitglieder',

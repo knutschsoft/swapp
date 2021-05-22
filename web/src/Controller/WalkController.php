@@ -3,12 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Walk;
 use App\Form\Type\WalkPrologueType;
 use App\Form\Type\WalkType;
-use App\Repository\SystemicQuestionRepository;
-use App\Repository\UserRepository;
 use App\Repository\WalkRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,35 +17,17 @@ use Symfony\Component\Routing\RouterInterface;
 
 class WalkController extends AbstractController
 {
-    /** @var WalkRepository */
-    private $walkRepository;
-    /** @var RouterInterface */
-    private $router;
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var SystemicQuestionRepository */
-    private $systemicQuestionRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
+    private WalkRepository $walkRepository;
+    private RouterInterface $router;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @param WalkRepository             $walkRepository
-     * @param RouterInterface            $router
-     * @param FormFactoryInterface       $formFactory
-     * @param UserRepository             $userRepository
-     * @param SystemicQuestionRepository $systemicQuestionRepository
-     */
     public function __construct(
         WalkRepository $walkRepository,
         RouterInterface $router,
-        FormFactoryInterface $formFactory,
-        UserRepository $userRepository,
-        SystemicQuestionRepository $systemicQuestionRepository
+        FormFactoryInterface $formFactory
     ) {
         $this->walkRepository = $walkRepository;
         $this->router = $router;
-        $this->userRepository = $userRepository;
-        $this->systemicQuestionRepository = $systemicQuestionRepository;
         $this->formFactory = $formFactory;
     }
 
@@ -88,7 +67,7 @@ class WalkController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function createWalkPrologueAction(Walk $walk, Request $request)
+    public function createWalkPrologueAction(Walk $walk, Request $request): JsonResponse
     {
         $form = $this->formFactory->create(WalkPrologueType::class, $walk);
         $form->handleRequest($request);
@@ -116,7 +95,7 @@ class WalkController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function createWalkAction(Walk $walk, Request $request)
+    public function createWalkAction(Walk $walk, Request $request): JsonResponse
     {
         $form = $this->formFactory->create(WalkType::class, $walk);
         $form->handleRequest($request);

@@ -34,62 +34,52 @@ class WayPoint
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, name="image_name", nullable=true)
      *
      * @var ?string
      */
-    private $imageName;
+    private ?string $imageName = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Walk", inversedBy="wayPoints")
      *
-     * @var Walk
-     *
      * @MaxDepth(2)
      */
-    private $walk;
+    private Walk $walk;
 
     /**
      * @ORM\Column(type="string", length=4096)
      *
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $locationName;
+    private string $locationName;
 
     /**
      * @ORM\Column(type="json_document", options={"jsonb": true})
      *
      * @var AgeGroup[]
      */
-    private $ageGroups;
+    private array $ageGroups;
     /**
      * @ORM\Column(type="string", nullable=true, length=4096)
      *
      * @var ?string
      */
-    private $note;
+    private ?string $note = null;
 
-    /**
-     * @ORM\Column(type="boolean", length=255)
-     *
-     * @var bool
-     */
-    private $isMeeting;
+    /** @ORM\Column(type="boolean", length=255) */
+    private bool $isMeeting;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="wayPoints")
      *
-     * @var Tag[]|Collection<int, Tag>
+     * @var Collection<int, Tag>
      */
-    private $wayPointTags;
+    private Collection $wayPointTags;
 
     public function __construct()
     {
@@ -217,7 +207,7 @@ class WayPoint
             if (!$ageGroup->getGender()->isFemale()) {
                 continue;
             }
-            if (!$ageGroup->ageRange->equal($ageRange)) {
+            if (!$ageGroup->getAgeRange()->equal($ageRange)) {
                 continue;
             }
             $sum += $ageGroup->getPeopleCount()->getCount();
@@ -233,7 +223,7 @@ class WayPoint
             if (!$ageGroup->getGender()->isMale()) {
                 continue;
             }
-            if (!$ageGroup->ageRange->equal($ageRange)) {
+            if (!$ageGroup->getAgeRange()->equal($ageRange)) {
                 continue;
             }
             $sum += $ageGroup->getPeopleCount()->getCount();
@@ -249,7 +239,7 @@ class WayPoint
             if (!$ageGroup->getGender()->isQueer()) {
                 continue;
             }
-            if (!$ageGroup->ageRange->equal($ageRange)) {
+            if (!$ageGroup->getAgeRange()->equal($ageRange)) {
                 continue;
             }
             $sum += $ageGroup->getPeopleCount()->getCount();
@@ -271,17 +261,6 @@ class WayPoint
     public function setIsMeeting(bool $isMeeting): void
     {
         $this->isMeeting = $isMeeting;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return \sprintf(
-            '%s',
-            $this->getLocationName()
-        );
     }
 
     /**
@@ -355,19 +334,19 @@ class WayPoint
     }
 
     /**
-     * @return Collection<int, Tag>|Tag[]
+     * @return Collection<int, Tag>
      *
      * @Groups({"wayPoint:read", "walk:read"})
      */
-    public function getWayPointTags()
+    public function getWayPointTags(): Collection
     {
         return $this->wayPointTags;
     }
 
     /**
-     * @param Collection<int, Tag>|Tag[] $wayPointTags
+     * @param Collection<int, Tag> $wayPointTags
      */
-    public function setWayPointTags($wayPointTags): void
+    public function setWayPointTags(Collection $wayPointTags): void
     {
         $this->wayPointTags = $wayPointTags;
     }
@@ -382,5 +361,13 @@ class WayPoint
     {
         $tag->removeWayPoint($this);
         $this->wayPointTags->removeElement($tag);
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(
+            '%s',
+            $this->getLocationName()
+        );
     }
 }

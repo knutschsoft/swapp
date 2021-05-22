@@ -41,7 +41,7 @@ final class DatabaseContext implements Context
      */
     public function resetSequences(): void
     {
-        $connection = $this->doctrine->getConnection();
+        //$connection = $this->doctrine->getConnection();
 
         // If you are using auto-increment IDs, you might want to reset them. It is usually better to purge/reset
         // things at the beginning of a test so that in case of a failure, you are not ending up in a broken state.

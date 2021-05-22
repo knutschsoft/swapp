@@ -81,7 +81,7 @@ class DoctrineORMUserRepository extends ServiceEntityRepository implements UserR
             $model = $queryBuilder
                 ->getQuery()
                 ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
+        } catch (NonUniqueResultException) {
             throw new NotFoundException();
         }
 

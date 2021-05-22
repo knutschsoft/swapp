@@ -25,13 +25,13 @@ class Team
     use AgeRangeField;
 
     /**
-     * @var User[]|Collection<int, User>
+     * @var Collection<int, User>
      *
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\User",
      *     mappedBy="teams")
      */
-    public $users;
+    private Collection $users;
 
     /**
      * @ORM\Id
@@ -84,11 +84,11 @@ class Team
     }
 
     /**
-     * @return User[]|Collection<int, User>
+     * @return Collection<int, User>
      *
      * @Groups({"team:read"})
      */
-    public function getUsers()
+    public function getUsers(): Collection
     {
         return $this->users;
     }
@@ -109,10 +109,10 @@ class Team
         }
     }
 
-    /** @param User[]|Collection<int, User>|array $users */
-    public function setUsers($users): void
+    /** @param Collection<int, User> $users */
+    public function setUsers(Collection $users): void
     {
-        $this->users = $users instanceof Collection ? $users : new ArrayCollection($users);
+        $this->users = $users;
         foreach ($this->users as $user) {
             $user->removeTeam($this);
         }

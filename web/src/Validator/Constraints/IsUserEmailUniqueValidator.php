@@ -22,10 +22,10 @@ class IsUserEmailUniqueValidator extends ConstraintValidator
      */
     public function validate($email, Constraint $constraint): void
     {
-        if ((bool) $this->userRepository->findOneBy(['email' => strtolower($email)])) {
+        if ((bool) $this->userRepository->findOneBy(['email' => \strtolower($email)])) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $email)
                 ->addViolation();
-        };
+        }
     }
 }

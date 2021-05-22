@@ -27,7 +27,7 @@ class DoctrineORMWayPointRepository extends ServiceEntityRepository implements W
      *
      * @return WayPoint|null
      */
-    public function findOneById($id): ?WayPoint
+    public function findOneById(mixed $id): ?WayPoint
     {
         /** @var WayPoint|null $wayPoint */
         $wayPoint = parent::findOneBy(['id' => $id]);

@@ -85,6 +85,6 @@ class EntityParamConverter implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration): bool
     {
-        return \in_array($configuration->getClass(), [Team::class, Walk::class, WayPoint::class]);
+        return \in_array($configuration->getClass(), [Team::class, Walk::class, WayPoint::class], true);
     }
 }

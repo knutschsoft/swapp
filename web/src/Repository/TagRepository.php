@@ -16,5 +16,5 @@ interface TagRepository
 
     public function findOneByColor(string $color): Tag;
 
-    public function findOneByName(string $name): tag;
+    public function findOneByName(string $name): Tag;
 }
