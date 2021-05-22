@@ -149,16 +149,6 @@
             resetEditModalRolle() {
                 this.editModalRolle.title = ''
             },
-            getFormattedFakultaet: function (id) {
-                let fakultaet = this.$store.getters["fakultaet/getFakultaetById"](id);
-
-                return `${fakultaet.kurzName} - ${fakultaet.name}`;
-            },
-            getFormattedStudiengang: function (id) {
-                let studiengang = this.$store.getters["studiengang/getStudiengangById"](id);
-
-                return `${studiengang.kurzName} - ${studiengang.name}`;
-            },
             toggleEnabled: function (userId, isEnabled) {
                 if (isEnabled) {
                     this.$store.dispatch("user/disable", userId);

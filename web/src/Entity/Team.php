@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Dto\TeamChangeRequest;
 use App\Entity\Fields\AgeRangeField;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,7 +17,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="team")
  */
 #[ApiResource(
-    collectionOperations: ["get"],
+    collectionOperations: [
+    "get",
+    "team_change" => [
+        "messenger" => "input",
+        "input" => TeamChangeRequest::class,
+        "output" => Team::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/teams/change",
+        "security" => 'is_granted("ROLE_ADMIN")',
+    ],
+    ],
     itemOperations: ["get"],
     normalizationContext: ["groups" => ["team:read"]]
 )]

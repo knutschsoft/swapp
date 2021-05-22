@@ -86,7 +86,6 @@ const actions = {
 
             return response.data;
         } catch (error) {
-            console.log(error)
             commit(CREATE_TAG_ERROR, error);
         }
     },

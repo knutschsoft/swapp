@@ -66,13 +66,13 @@
         },
         computed: {
             isLoading() {
-                return this.$store.getters["studiengang/isLoading"] || this.$store.getters["walk/isLoading"];
+                return this.$store.getters["walk/isLoading"];
             },
             hasError() {
-                return this.$store.getters["studiengang/hasError"] || this.$store.getters["walk/hasError"];
+                return this.$store.getters["walk/hasError"];
             },
             error() {
-                return this.$store.getters["studiengang/error"] || this.$store.getters["walk/error"];
+                return this.$store.getters["walk/error"];
             },
             hasWalks() {
                 return this.$store.getters["walk/hasWalks"];

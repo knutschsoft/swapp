@@ -19,7 +19,7 @@
             <template v-slot:cell(actions)="row">
                 <b-button
                     size="sm"
-                    @click="editTeam(row.item)"
+                    @click="openEditModal(row.item)"
                 >
                     Team bearbeiten
                     <b-icon-pencil />
@@ -28,17 +28,45 @@
         </b-table>
 
         <b-modal
-            :id="editModalTeam.id"
-            :title="editModalTeam.title"
+            id="edit-modal-team"
+            :title="`Team &quot;${editTeam ? editTeam.name : ''}&quot; bearbeiten`"
             size="lg"
-            @hide="resetEditModalTeam"
+            cancel-title="Abbrechen"
+            ok-title="Team speichern"
+            :cancel-disabled="isDisabled"
+            :ok-disabled="isDisabled"
+            @ok="saveTeam"
         >
-            Teamname
-            <b-input v-model="editModalTeam.name" />
-            Benutzer
-            <b-select v-model="editModalTeam.users" />
-            Altersgruppen
-            <b-select v-model="editModalTeam.ageGroups" />
+            <b-form-group
+                label="Teamname"
+                v-slot="{ ariaDescribedby }"
+            >
+                <b-input
+                    v-model="editModalTeam.name"
+                    :aria-describedby="ariaDescribedby"
+                    :disabled="isDisabled"
+                />
+            </b-form-group>
+
+            <b-form-group
+                label="Benutzer"
+                v-slot="{ ariaDescribedby }"
+            >
+                <b-form-checkbox-group
+                    v-model="editModalTeam.users"
+                    class="check-boxes d-flex flex-row flex-wrap justify-content-start"
+                    switch
+                    data-test="users"
+                    button-variant="secondary rounded-0 mt-1 mr-1 px-4"
+                    :options="users"
+                    :aria-describedby="ariaDescribedby"
+                    name="users"
+                    :disabled="isDisabled"
+                    value-field="@id"
+                    text-field="username"
+                >
+                </b-form-checkbox-group>
+            </b-form-group>
         </b-modal>
     </div>
 </template>
@@ -100,17 +128,24 @@
                     {key: 'actions', label: 'Aktionen', class: 'text-center',}
                 ],
                 editModalTeam: {
-                    id: 'edit-modal-team',
-                    title: '',
-                    ageGroups: [],
+                    team: '',
                     name: '',
                     users: [],
+                    ageRanges: [],
                 },
+                editTeam: null,
             }
         },
         computed: {
             teams() {
                 return this.$store.getters['team/teams'];
+            },
+            users() {
+                return this.$store.getters['user/users']
+                    .slice(0)
+                    .sort((a, b) => {
+                        return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1;
+                    });
             },
             isLoading() {
                 return this.$store.getters["team/isLoading"];
@@ -118,21 +153,28 @@
             error() {
                 return this.$store.getters["team/error"];
             },
+            isDisabled() {
+                return this.$store.getters["teram/changeTeamIsLoading"];
+            },
         },
-        created() {
-            this.$store.dispatch('team/findAll');
+        async created() {
+            await Promise.all([
+                this.$store.dispatch('team/findAll'),
+                this.$store.dispatch('user/findAll'),
+            ]);
         },
         methods: {
-            editTeam(team) {
-                // this.editModalTeam.id = String(team.id);
-                this.editModalTeam.title = `${team.name} bearbeiten`;
-                this.editModalTeam.ageGroups = team.ageGroups;
-                this.editModalTeam.users = team.users;
+            openEditModal(team) {
+                this.editTeam = team;
+                console.log(team);
+                this.editModalTeam.team = team['@id'];
+                this.editModalTeam.ageRanges = team.ageRanges;
+                this.editModalTeam.users = team.users.map(user => user['@id']);
                 this.editModalTeam.name = team.name;
-                this.$root.$emit('bv::show::modal', this.editModalTeam.id);
+                this.$root.$emit('bv::show::modal', 'edit-modal-team');
             },
-            resetEditModalTeam() {
-                this.editModalTeam.title = ''
+            async saveTeam() {
+                await this.$store.dispatch('team/change', this.editModalTeam);
             },
         }
     }

@@ -102,15 +102,33 @@ final class DomainIntegrationContext extends RawMinkContext
                     \substr($row['value'], 1)
                 );
                 $parameters[$row['key']] = (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
+            } elseif (\str_starts_with($row['value'], 'ageRanges<') && \str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 10, -1);
+                $parameters[$row['key']] = [];
+                foreach ($this->getAgeRangesFromString($value) as $ageRange) {
+                    $parameters[$row['key']][] = [
+                        'rangeStart' => $ageRange->getRangeStart(),
+                        'rangeEnd' => $ageRange->getRangeEnd(),
+                    ];
+                }
             } elseif (\str_starts_with($row['value'], 'teamIris<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 9, -1);
                 $parameters[$row['key']] = [];
-                foreach ($this->getTeamsIdsFromTeamsString($value) as $teamId) {
-                    $parameters[$row['key']][] = \sprintf('/api/teams/%s', (string) $teamId);
+                foreach ($this->getTeamIdsFromTeamsString($value) as $teamId) {
+                    $parameters[$row['key']][] = \sprintf('/api/teams/%s', $teamId);
                 }
             } elseif (\str_starts_with($row['value'], 'teamIri<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 8, -1);
                 $parameters[$row['key']] = \sprintf('/api/teams/%s', (string) $this->getTeamByName($value)->getId());
+            } elseif (\str_starts_with($row['value'], 'userIris<') && \str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 9, -1);
+                $parameters[$row['key']] = [];
+                foreach ($this->getUserIdsFromUsernamesString($value) as $userId) {
+                    $parameters[$row['key']][] = \sprintf('/api/users/%s', $userId);
+                }
+            } elseif (\str_starts_with($row['value'], 'userIri<') && \str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 8, -1);
+                $parameters[$row['key']] = \sprintf('/api/users/%s', (string) $this->getUserByEmail($value)->getId());
             } else {
                 $parameters[$row['key']] = \trim($row['value']);
             }
@@ -287,7 +305,7 @@ final class DomainIntegrationContext extends RawMinkContext
      *
      * @return string[]
      */
-    private function getTeamsIdsFromTeamsString(string $teamsString): array
+    private function getTeamIdsFromTeamsString(string $teamsString): array
     {
         $teamStringList = \explode(',', \trim($teamsString));
         $teamIds = [];
@@ -295,9 +313,27 @@ final class DomainIntegrationContext extends RawMinkContext
             if (!$teamString) {
                 continue;
             }
-            $teamIds[] = $this->getTeamByName($teamString)->getId();
+            $teamIds[] = (string) $this->getTeamByName($teamString)->getId();
         }
 
         return $teamIds;
+    }
+    /**
+     * @param string $usersString
+     *
+     * @return string[]
+     */
+    private function getUserIdsFromUsernamesString(string $usersString): array
+    {
+        $userStringList = \explode(',', \trim($usersString));
+        $userIds = [];
+        foreach ($userStringList as $usernameString) {
+            if (!$usernameString) {
+                continue;
+            }
+            $userIds[] = (string) $this->getUserByEmail($usernameString)->getId();
+        }
+
+        return $userIds;
     }
 }

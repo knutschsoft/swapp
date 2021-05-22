@@ -4,13 +4,18 @@ import TeamAPI from '../../api/team';
 const
     FETCHING_TEAMS = "FETCHING_TEAMS",
     FETCHING_TEAMS_SUCCESS = "FETCHING_TEAMS_SUCCESS",
-    FETCHING_TEAMS_ERROR = "FETCHING_TEAMS_ERROR"
+    FETCHING_TEAMS_ERROR = "FETCHING_TEAMS_ERROR",
+    CHANGING_TEAMS = "CHANGING_TEAMS",
+    CHANGING_TEAMS_SUCCESS = "CHANGING_TEAMS_SUCCESS",
+    CHANGING_TEAMS_ERROR = "CHANGING_TEAMS_ERROR"
 ;
 
 const state = {
     teams: [],
     error: null,
+    changeTeamError: null,
     isLoading: false,
+    changeTeamIsLoading: false,
 };
 
 const getters = {
@@ -23,9 +28,15 @@ const getters = {
     error(state) {
         return state.error;
     },
+    changeTeamError(state) {
+        return state.changeTeamError;
+    },
     isLoading(state) {
         return state.isLoading;
-    }
+    },
+    changeTeamIsLoading(state) {
+        return state.changeTeamIsLoading;
+    },
 };
 
 const mutations = {
@@ -42,9 +53,25 @@ const mutations = {
         state.error = error;
         state.isLoading = false;
     },
+    [CHANGING_TEAMS](state) {
+        state.changeTeamIsLoading = true;
+        state.changeTeamError = null;
+    },
+    [CHANGING_TEAMS_SUCCESS](state, changedTeam) {
+        state.changeTeamError = null;
+        state.changeTeamIsLoading = false;
+        state.teams.forEach((team, index) => {
+            if (String(changedTeam.id) === String(team.id)) {
+                state.teams.splice(index, 1, changedTeam);
+            }
+        });
+    },
+    [CHANGING_TEAMS_ERROR](state, error) {
+        state.changeTeamError = error;
+        state.changeTeamIsLoading = false;
+    },
 };
 
-// actions
 const actions = {
     async findAll({commit}) {
         commit(FETCHING_TEAMS);
@@ -53,6 +80,17 @@ const actions = {
             commit(FETCHING_TEAMS_SUCCESS, response.data['hydra:member']);
         } catch (error) {
             commit(FETCHING_TEAMS_ERROR, error);
+        }
+    },
+    async change({commit}, payload) {
+        commit(CHANGING_TEAMS);
+        try {
+            let response = await TeamAPI.change(payload);
+            commit(CHANGING_TEAMS_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(CHANGING_TEAMS_ERROR, error);
         }
     },
 };
