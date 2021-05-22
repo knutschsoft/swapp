@@ -49,7 +49,7 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         \assert($user instanceof User);
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        if (Team::class === $resourceClass && !$this->security->isGranted('ROLE_SUPER_ADMIN')) {
+        if (Team::class === $resourceClass && !$this->security->isGranted('ROLE_ADMIN')) {
             $queryBuilder->andWhere(\sprintf(':currentUser MEMBER OF %s.users', $rootAlias));
             $queryBuilder->setParameter('currentUser', $user->getId());
         }

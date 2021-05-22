@@ -12,6 +12,7 @@ Feature: Testing team resource
       | name     | users                  | ageRanges          |
       | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 |
       | CA       | two@pac.de             | 1-10,3-12, 13 - 90 |
+      | Empties  |                        |                    |
 
   @api @team
   Scenario: I can request /api/teams as a not authenticated user and an auth error will occur
@@ -20,7 +21,7 @@ Feature: Testing team resource
     And the response status code should be 401
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | code    | 401                 |
+      | code | 401 |
 
   @api @team
   Scenario: I can request /api/teams as authenticated user and get a restricted result
@@ -57,11 +58,11 @@ Feature: Testing team resource
     Then the response should be in JSON
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | hydra:totalItems | 0 |
+      | hydra:totalItems | 3 |
 
     Given I am authenticated against api as "superadmin@gmx.de"
     When I send a GET request to "/api/teams"
     Then the response should be in JSON
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | hydra:totalItems | 2 |
+      | hydra:totalItems | 3 |

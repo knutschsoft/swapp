@@ -113,6 +113,9 @@ trait RepositoryTrait
     {
         $ageRangeStrings = \explode(',', $ageRangesString);
         $ageRanges = [];
+        if (!$ageRangesString) {
+            return $ageRanges;
+        }
 
         foreach ($ageRangeStrings as $ageRangeString) {
             $ageRanges[] = AgeRange::fromString($ageRangeString);
