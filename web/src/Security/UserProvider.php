@@ -19,10 +19,7 @@ class UserProvider implements UserProviderInterface
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function loadUserByUsername($usernameOrEmail): UserInterface
+    public function loadUserByUsername(string $usernameOrEmail): UserInterface
     {
         $user = $this->userRepository->loadUserByUsername($usernameOrEmail);
         if (\is_null($user)) {

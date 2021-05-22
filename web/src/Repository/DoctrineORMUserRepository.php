@@ -37,10 +37,7 @@ class DoctrineORMUserRepository extends ServiceEntityRepository implements UserR
         $this->_em->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function loadUserByUsername($username): ?UserInterface
+    public function loadUserByUsername(string $username): ?UserInterface
     {
         return $this->createQueryBuilder('u')
             ->where('u.username = :query OR u.email = :query')

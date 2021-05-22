@@ -41,17 +41,11 @@ default:
                 autoClean: true
                 # size: 1444x1280
                 hostUrl: "https://swapp.local/images/screenshots/"
-        FriendsOfBehat\SymfonyExtension:
-            bootstrap: ~
-            kernel:
-                class: ~
-                path: ~
-                environment: ~
-                debug: ~
+        FriendsOfBehat\SymfonyExtension: ~
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
             files_path: "tests/fixtures/"
-            base_url: "http://localhost"
+            base_url: "http://localhost/"
             javascript_session: javascript
             default_session: symfony
             sessions:
