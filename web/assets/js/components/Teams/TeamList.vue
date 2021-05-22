@@ -45,6 +45,7 @@
                     v-model="editModalTeam.name"
                     :aria-describedby="ariaDescribedby"
                     :disabled="isDisabled"
+                    trim
                 />
             </b-form-group>
 
@@ -66,6 +67,72 @@
                     text-field="username"
                 >
                 </b-form-checkbox-group>
+            </b-form-group>
+
+            <b-form-group
+                label="Altersgruppen"
+                v-slot="{ ariaDescribedby }"
+            >
+                <b-row
+                    v-for="(ageRange, i) in editModalTeam.ageRanges"
+                    :key="i"
+                >
+                    <b-col cols="12">
+                        {{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre
+                    </b-col>
+                    <b-col cols="4">
+                        <b-input
+                            v-model="editModalTeam.ageRanges[i].rangeStart"
+                            :aria-describedby="ariaDescribedby"
+                            :disabled="isDisabled"
+                            type="number"
+                            min="0"
+                            max="120"
+                            trim
+                            number
+                            step="1"
+                            required
+                            placeholder="von"
+                        />
+                    </b-col>
+                    <b-col cols="4">
+                        <b-input
+                            v-model="editModalTeam.ageRanges[i].rangeEnd"
+                            :aria-describedby="ariaDescribedby"
+                            :disabled="isDisabled"
+                            type="number"
+                            min="0"
+                            max="120"
+                            trim
+                            number
+                            step="1"
+                            required
+                            placeholder="bis"
+                        />
+                    </b-col>
+                    <b-col cols="3">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="removeAgeRange(i)"
+                        >
+                            <mdicon
+                                name="DeleteCircleOutline"
+                            />
+                        </div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="12">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="addAgeRange()"
+                        >
+                            <mdicon
+                                name="PlusCircleOutline"
+                            />
+                        </div>
+                    </b-col>
+                </b-row>
             </b-form-group>
         </b-modal>
     </div>
@@ -164,17 +231,35 @@
             ]);
         },
         methods: {
-            openEditModal(team) {
+            openEditModal: function (team) {
                 this.editTeam = team;
-                console.log(team);
                 this.editModalTeam.team = team['@id'];
-                this.editModalTeam.ageRanges = team.ageRanges;
+                this.editModalTeam.ageRanges = team.ageRanges
+                    .map(ageRange => {
+                        return {
+                            'rangeStart': ageRange.rangeStart,
+                            'rangeEnd': ageRange.rangeEnd,
+                        };
+                    })
+                    .sort((a, b) => {
+                        return (a.rangeStart > b.rangeStart) ? 1 : -1;
+                    })
+                ;
                 this.editModalTeam.users = team.users.map(user => user['@id']);
                 this.editModalTeam.name = team.name;
                 this.$root.$emit('bv::show::modal', 'edit-modal-team');
             },
             async saveTeam() {
+                this.editModalTeam.ageRanges.sort((a, b) => {
+                    return (a.rangeStart > b.rangeStart) ? 1 : -1;
+                });
                 await this.$store.dispatch('team/change', this.editModalTeam);
+            },
+            removeAgeRange(index) {
+                this.editModalTeam.ageRanges.splice(index, 1);
+            },
+            addAgeRange(index) {
+                this.editModalTeam.ageRanges = [ ...this.editModalTeam.ageRanges, { rangeStart: '', rangeEnd: '' } ];
             },
         }
     }
