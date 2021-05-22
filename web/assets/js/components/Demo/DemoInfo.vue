@@ -65,8 +65,7 @@
                 /><b>BITTE NUR MIT UNSENSIBLEN DATEN TESTEN!</b>
             </p>
             <p>
-                Auch andere Interessenten an Swapp bekommen diesen Demo-Zugang und sehen ggf.
-                ihre Inhalte.
+                Auch andere Interessenten an Swapp bekommen diesen Demo-Zugang und sehen die gleichen Inhalte.
             </p>
         </b-alert>
     </div>
