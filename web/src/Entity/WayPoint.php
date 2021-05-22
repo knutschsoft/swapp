@@ -87,7 +87,7 @@ class WayPoint
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="wayPoints")
      *
-     * @var Collection|Tag[]
+     * @var Tag[]|Collection<int, Tag>
      */
     private $wayPointTags;
 
@@ -123,7 +123,7 @@ class WayPoint
 
         $instance->setWalk($request->walk);
         $instance->ageGroups = $request->ageGroups;
-        $instance->wayPointTags = $request->tags;
+        $instance->wayPointTags = new ArrayCollection($request->tags);
         $instance->setNote($request->note);
         $instance->setLocationName($request->locationName);
         if ($request->imageFileName) {
@@ -355,7 +355,7 @@ class WayPoint
     }
 
     /**
-     * @return Collection|Tag[]
+     * @return Collection<int, Tag>|Tag[]
      *
      * @Groups({"wayPoint:read", "walk:read"})
      */
@@ -365,7 +365,7 @@ class WayPoint
     }
 
     /**
-     * @param Collection|Tag[] $wayPointTags
+     * @param Collection<int, Tag>|Tag[] $wayPointTags
      */
     public function setWayPointTags($wayPointTags): void
     {

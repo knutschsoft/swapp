@@ -53,50 +53,6 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @param User    $user
-     * @param Request $request
-     *
-     * @return array
-     *
-     * @Route("walks", name="walk_home_screen")
-     *
-     * @Template(template="walk/homeScreen.html.twig")
-     */
-    public function homeScreenAction(User $user, Request $request): array
-    {
-        $order = $request->query->get('order', 'startTime');
-        $sort = $request->query->get('sort', 'desc');
-
-        $walks = $this->walkRepository->findAllOrderBy('walk.'.$order, $sort);
-        $unfinishedWalks = $this->walkRepository->findAllUnfinishedByUser($user);
-        $teams = $user->getTeams();
-
-        return [
-            'unfinishedWalks' => $unfinishedWalks,
-            'walks' => $walks,
-            'teams' => $teams,
-            'order' => $order,
-            'sort' => $sort,
-        ];
-    }
-
-    /**
-     * @param Walk $walk
-     *
-     * @Route("walk/{walkId}", name="walk_show")
-     *
-     * @Template(template="walk/show.html.twig")
-     *
-     * @return array
-     */
-    public function showAction(Walk $walk): array
-    {
-        return [
-            'walk' => $walk,
-        ];
-    }
-
-    /**
      * @param Walk    $walk
      * @param Request $request
      *
@@ -104,7 +60,7 @@ class WalkController extends AbstractController
      *
      * @Template(template="walk/createWalkForm.html.twig")
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function createWalkFormAction(Walk $walk, Request $request): array
     {

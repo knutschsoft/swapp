@@ -28,10 +28,11 @@ final class WayPointAddHandler implements MessageHandlerInterface
     {
         $wayPoint = WayPoint::fromWayPointAddRequest($request);
         $tmpFile = $request->getDecodedImageData();
-        if ($tmpFile && $wayPoint->getImageName()) {
+        $imageName = $wayPoint->getImageName();
+        if ($tmpFile && $imageName) {
             $contents = \file_get_contents(\sprintf("%s%s%s", $tmpFile->getPath(), DIRECTORY_SEPARATOR, $tmpFile->getFilename()));
             Assert::string($contents);
-            $this->wayPointImageStorage->write($wayPoint->getImageName(), $contents);
+            $this->wayPointImageStorage->write($imageName, $contents);
         }
         $this->wayPointRepository->save($wayPoint);
 

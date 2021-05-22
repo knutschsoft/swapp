@@ -92,7 +92,7 @@ class Walk
     /**
      * @ORM\OneToMany(targetEntity="WayPoint", mappedBy="walk")
      *
-     * @var Collection|WayPoint[]
+     * @var Collection<int, WayPoint>|WayPoint[]
      **/
     private $wayPoints;
 
@@ -128,14 +128,14 @@ class Walk
      *
      * @MaxDepth(1)
      *
-     * @var Collection|User[]
+     * @var Collection<int, User>|User[]
      */
     private $walkTeamMembers;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
      *
-     * @var ArrayCollection|Tag[]
+     * @var Collection<int, Tag>|Tag[]
      */
     private $walkTags;
 
@@ -187,7 +187,7 @@ class Walk
     /**
      * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
      *
-     * @var ArrayCollection|Guest[]
+     * @var Collection<int, Guest>|Guest[]
      **/
     private $guests;
     /**
@@ -583,7 +583,7 @@ class Walk
     }
 
     /**
-     * @return WayPoint[]|Collection
+     * @return Collection<int, WayPoint>
      *
      * @Groups({"walk:read"})
      */
@@ -593,7 +593,7 @@ class Walk
     }
 
     /**
-     * @param WayPoint[]|Collection $wayPoints
+     * @param Collection<int, WayPoint> $wayPoints
      */
     public function setWayPoints(Collection $wayPoints): void
     {

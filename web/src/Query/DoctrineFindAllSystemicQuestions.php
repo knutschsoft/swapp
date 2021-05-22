@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Query;
 
 use App\Entity\SystemicQuestion;
-use App\Entity\SystemicQuestions;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineFindAllSystemicQuestions implements FindAllSystemicQuestions
@@ -16,8 +15,11 @@ class DoctrineFindAllSystemicQuestions implements FindAllSystemicQuestions
         $this->entityManager = $entityManager;
     }
 
-    public function __invoke(): SystemicQuestions
+    /**
+     * @return SystemicQuestion[]
+     */
+    public function __invoke(): array
     {
-        return new SystemicQuestions(...$this->entityManager->getRepository(SystemicQuestion::class)->findAll());
+        return $this->entityManager->getRepository(SystemicQuestion::class)->findAll();
     }
 }

@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace App\Query;
 
-use App\Entity\SystemicQuestions;
+use App\Entity\SystemicQuestion;
 
 interface FindAllSystemicQuestions
 {
-    public function __invoke(): SystemicQuestions;
+    /**
+     * @return SystemicQuestion[]
+     */
+    public function __invoke(): array;
 }

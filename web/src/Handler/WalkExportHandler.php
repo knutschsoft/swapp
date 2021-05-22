@@ -66,7 +66,11 @@ final class WalkExportHandler implements MessageHandlerInterface
         );
     }
 
-
+    /**
+     * @param Walk $walk
+     *
+     * @return array<string, string>
+     */
     private function getCsvAgeHeaders(Walk $walk): array
     {
         $ageHeaders = [];
@@ -96,6 +100,12 @@ final class WalkExportHandler implements MessageHandlerInterface
         return $ageHeaders;
     }
 
+    /**
+     * @param Walk                  $walk
+     * @param array<string, string> $ageHeaders
+     *
+     * @return array<string|int, string|int>
+     */
     private function getCsvContentCells(Walk $walk, array $ageHeaders): array
     {
         $content = [
@@ -130,6 +140,11 @@ final class WalkExportHandler implements MessageHandlerInterface
         return $content;
     }
 
+    /**
+     * @param Walk $walk
+     *
+     * @return array<string, int>
+     */
     private function getCsvAgeCells(Walk $walk): array
     {
         $ageHeaders = [];

@@ -88,14 +88,14 @@ class User implements UserInterface
     private string $username;
 
     /**
-     * @var Walk[]|Collection
+     * @var Walk[]|Collection<int, Walk>
      *
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
      */
     private $walks;
 
     /**
-     * @var Team[]|Collection
+     * @var Team[]|Collection<int, Team>
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="users")
      * @ORM\JoinTable(name="users_teams")
@@ -148,7 +148,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Team[]|Collection
+     * @return Team[]|Collection<int, Team>
      *
      * @Groups({"user:read"})
      */
@@ -157,7 +157,7 @@ class User implements UserInterface
         return $this->teams;
     }
 
-    /** @param Team[]|Collection $teams */
+    /** @param Team[]|Collection<int,Team> $teams */
     public function setTeams($teams): void
     {
         $this->teams = $teams;
@@ -182,7 +182,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Walk[]|Collection
+     * @return Walk[]|Collection<int,Walk>
      *
      * @Groups({"user:read"})
      */
@@ -191,7 +191,7 @@ class User implements UserInterface
         return $this->walks;
     }
 
-    /** @param Walk[]|Collection $walks */
+    /** @param Walk[]|Collection<int, Walk> $walks */
     public function setWalks($walks): void
     {
         $this->walks = $walks;
@@ -351,6 +351,9 @@ class User implements UserInterface
         return \array_unique($roles);
     }
 
+    /**
+     * @param string[] $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = [];

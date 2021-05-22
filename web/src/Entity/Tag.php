@@ -118,14 +118,14 @@ class Tag
     /**
      * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
      *
-     * @var Collection|Walk[]
+     * @var Collection<int, Walk>|Walk[]
      */
     private $walks;
 
     /**
      * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="wayPointTags")
      *
-     * @var Collection|WayPoint[]
+     * @var Collection<int, WayPoint>|WayPoint[]
      */
     private $wayPoints;
 
@@ -195,7 +195,6 @@ class Tag
      *
      * @return int
      */
-    #[Groups(['tag' => 'read'])]
     public function getId(): int
     {
         return $this->id;
@@ -220,13 +219,13 @@ class Tag
         }
     }
 
-    /** @return Collection|Walk[] */
+    /** @return Collection<int, Walk>|Walk[] */
     public function getWalks()
     {
         return $this->walks;
     }
 
-    /** @param Walk[]|Collection $walks */
+    /** @param Walk[]|Collection<int, Walk> $walks */
     public function setWalks($walks): void
     {
         $this->walks = $walks;
@@ -246,13 +245,13 @@ class Tag
         }
     }
 
-    /** @return Collection|WayPoint[] */
+    /** @return Collection<int, WayPoint>|WayPoint[] */
     public function getWayPoints()
     {
         return $this->wayPoints;
     }
 
-    /** @param Collection|WayPoint[] $wayPoints */
+    /** @param Collection<int, WayPoint>|WayPoint[] $wayPoints */
     public function setWayPoints($wayPoints): void
     {
         $this->wayPoints = $wayPoints;

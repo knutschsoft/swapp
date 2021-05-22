@@ -375,9 +375,6 @@
     "robertfausk/mink-panther-driver": {
         "version": "v1.0.1"
     },
-    "rotexsoft/versatile-collections": {
-        "version": "2.1.4"
-    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },

@@ -26,6 +26,9 @@ trait AgeRangeField
         return \array_values($this->ageRanges);
     }
 
+    /**
+     * @param AgeRange[] $ageRanges
+     */
     public function setAgeRanges(array $ageRanges): void
     {
         $this->ageRanges = $ageRanges;

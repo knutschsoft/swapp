@@ -42,7 +42,7 @@ class TeamFormController
      * @param FlashBagInterface $flash
      * @param Team|null         $team
      *
-     * @return array|RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      */
     public function __invoke(Request $request, FlashBagInterface $flash, ?Team $team = null)
     {

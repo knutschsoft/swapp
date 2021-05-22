@@ -42,7 +42,7 @@ class SystemicQuestionFormController
      * @param FlashBagInterface     $flash
      * @param SystemicQuestion|null $systemicQuestion
      *
-     * @return array|RedirectResponse
+     * @return array<string,mixed>|RedirectResponse
      */
     public function __invoke(Request $request, FlashBagInterface $flash, ?SystemicQuestion $systemicQuestion = null)
     {
