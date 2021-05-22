@@ -127,6 +127,7 @@
                         </b-form-text>
                     </b-input-group>
                     <b-input-group
+                        v-if="false"
                         class="form-group input-group mb-0"
                     >
                         <router-link
