@@ -14,53 +14,59 @@
             v-show="!isLoading && users.length"
             :items="users"
             :fields="fields"
+            small
+            striped
             class="mb-0"
+            stacked="md"
         >
             <template v-slot:cell(actions)="row">
-                <b-button
-                    size="sm"
-                    @click="toggleEnabled(row.item.userId, row.item.enabled)"
-                >
-                    Account {{ row.item.enabled ? 'de' : '' }}aktivieren
-                </b-button>
-                <b-button
-                    v-if="isSuperAdmin && !isUserSwitched"
-                    size="sm"
-                    class="flex-item d-flex align-items-center mr-1"
-                    :data-test="`switch-user-${row.item.username}`"
-                    @click="switchUser(row.item)"
-                >
-                    <b-icon
-                        icon="people-fill"
-                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                        font-scale="1.5"
-                    />
-                    Nutzer wechseln
-                </b-button>
-                <b-button
-                    v-else-if="isSuperAdmin"
-                    size="sm"
-                    class="flex-item d-flex align-items-center mr-1"
-                    data-test="exit-switch-user"
-                    @click="exitSwitchUser()"
-                >
-                    <b-icon
-                        icon="person-fill"
-                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                        font-scale="1.5"
-                    />
-                    <b-icon
-                        icon="box-arrow-left"
-                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                        font-scale="1.5"
-                    />
-                    <b-icon
-                        icon="person-square"
-                        class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                        font-scale="1.5"
-                    />
-                    Nutzerwechsel beenden
-                </b-button>
+                <div class="d-flex justify-content-around">
+                    <b-button
+                        size="sm"
+                        class="mr-2"
+                        @click="toggleEnabled(row.item.userId, row.item.enabled)"
+                    >
+                        Account {{ row.item.enabled ? 'de' : '' }}aktivieren
+                    </b-button>
+                    <b-button
+                        v-if="isSuperAdmin && !isUserSwitched"
+                        size="sm"
+                        class="flex-item d-flex align-items-center mr-1"
+                        :data-test="`switch-user-${row.item.username}`"
+                        @click="switchUser(row.item)"
+                    >
+                        <b-icon
+                            icon="people-fill"
+                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                            font-scale="1.5"
+                        />
+                        Nutzer wechseln
+                    </b-button>
+                    <b-button
+                        v-else-if="isSuperAdmin"
+                        size="sm"
+                        class="flex-item d-flex align-items-center mr-1"
+                        data-test="exit-switch-user"
+                        @click="exitSwitchUser()"
+                    >
+                        <b-icon
+                            icon="person-fill"
+                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                            font-scale="1.5"
+                        />
+                        <b-icon
+                            icon="box-arrow-left"
+                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                            font-scale="1.5"
+                        />
+                        <b-icon
+                            icon="person-square"
+                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
+                            font-scale="1.5"
+                        />
+                        Nutzerwechsel beenden
+                    </b-button>
+                </div>
             </template>
         </b-table>
     </div>

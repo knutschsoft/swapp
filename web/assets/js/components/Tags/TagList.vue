@@ -7,8 +7,10 @@
             v-show="!isLoading && tags.length"
             :items="tags"
             :fields="fields"
+            small
+            striped
             class="mb-0"
-            stacked="md"
+            stacked="sm"
         >
             <template v-slot:cell(color)="data">
                 <color-badge

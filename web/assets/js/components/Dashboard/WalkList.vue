@@ -51,24 +51,50 @@
             :sort-direction="sortDirection"
         >
             <template v-slot:cell(actions)="row">
-                <router-link
-                    :to="{name: 'WalkDetail', params: { walkId: row.item.id}}"
-                    :data-test="`button-runde-ansehen-${ row.item.name }`"
-                >
-                    <b-button
-                        size="sm"
-                        :disabled="isLoading"
+                <div class="d-flex justify-content-around">
+                    <router-link
+                        :to="{name: 'WalkDetail', params: { walkId: row.item.id}}"
+                        :data-test="`button-runde-ansehen-${ row.item.name }`"
                     >
-                        Runde Ansehen
-                        <span class="text-nowrap">
-                            <font-awesome-icon
-                                icon="walking"
-                                class="bg-secondary ml-2"
-                            />
-                            <font-awesome-icon icon="eye" class="ml-2"/>
-                        </span>
-                    </b-button>
-                </router-link>
+                        <b-button
+                            size="sm"
+                            :disabled="isLoading"
+                        >
+                            Runde Ansehen
+                            <span class="text-nowrap">
+                                <font-awesome-icon
+                                    icon="walking"
+                                    class="bg-secondary ml-2"
+                                />
+                                <font-awesome-icon icon="eye" class="ml-2"/>
+                            </span>
+                        </b-button>
+                    </router-link>
+                    <router-link
+                        v-if="row.item.isUnfinished"
+                        :to="{name: 'WalkAddWayPoint', params: { walkId: row.item.id}}"
+                        :data-test="`button-runde-fortsetzen-${ row.item.name }`"
+                        class="mt-ml-0 ml-1"
+                    >
+                        <b-button
+                            size="sm"
+                            :disabled="isLoading"
+                        >
+                            Runde fortsetzen
+                            <span class="text-nowrap">
+                                <font-awesome-icon
+                                    icon="walking"
+                                    class="bg-secondary ml-2"
+                                />
+                                <font-awesome-layers>
+                                    <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" size="xs" transform="shrink-8 down-7" flip="vertical"/>
+                                    <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" style="animation-delay: 1s;" size="xs"
+                                                       transform="shrink-8 down-7"/>
+                                </font-awesome-layers>
+                            </span>
+                        </b-button>
+                    </router-link>
+                </div>
             </template>
         </b-table>
     </div>

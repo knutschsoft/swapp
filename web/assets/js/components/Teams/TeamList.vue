@@ -14,6 +14,9 @@
             v-show="!isLoading && teams.length"
             :items="teams"
             :fields="fields"
+            small
+            striped
+            stacked="md"
             class="mb-0"
         >
             <template v-slot:cell(actions)="row">
