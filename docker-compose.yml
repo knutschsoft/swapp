@@ -21,7 +21,7 @@ services:
       - CONTAINER_GROUP=docker
       - PHP_XDEBUG_ENABLED=${PHP_XDEBUG_ENABLED:?PHP_XDEBUG_ENABLED is not set or empty}
       - DEPLOY_ENV=${DEPLOY_ENV:?DEPLOY_ENV is not set or empty}
-      - VIRTUAL_HOST=${DOMAIN_NAME:?DOMAIN_NAME is not set or empty}
+      - VIRTUAL_HOST=${VIRTUAL_HOST:?VIRTUAL_HOST is not set or empty}
       - VIRTUAL_PORT=443
       - VIRTUAL_PROTO=https
       - BUGSNAG_APP_VERSION=${BUGSNAG_APP_VERSION:?BUGSNAG_APP_VERSION is not set or empty}
