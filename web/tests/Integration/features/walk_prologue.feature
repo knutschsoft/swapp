@@ -102,7 +102,7 @@ Feature: Testing walk prologue resource
       | key  | value             |
       | team | teamIri<Westhang> |
 #    And print last response
-    Then the response status code should be 400
+    Then the response status code should be 403
     And the JSON nodes should be equal to:
       | @type       | hydra:Error       |
       | hydra:title | An error occurred |
