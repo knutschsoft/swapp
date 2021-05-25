@@ -242,7 +242,9 @@
         },
         mounted: async function () {
             this.userFilter = this.$localStorage.get('nav-user-filter', '');
-            this.users = await this.$store.dispatch('user/findAll');
+            if (this.isSuperAdmin) {
+                this.users = await this.$store.dispatch('user/findAll');
+            }
         },
         methods: {
             switchUser(user) {
