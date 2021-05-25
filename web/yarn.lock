@@ -2269,6 +2269,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+dayjs@^1.10.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.4.tgz#8e544a9b8683f61783f570980a8a80eaf54ab1e2"
+  integrity sha512-RI/Hh4kqRc1UKLOAf/T5zdMMX5DQIlDxwUe3wSyMMnEbGunnpENCdbUgM+dW7kXidZqCttBrmw7BhN4TMddkCw==
+
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -6189,7 +6194,14 @@ vue-web-storage@^4.0.2:
   resolved "https://registry.yarnpkg.com/vue-web-storage/-/vue-web-storage-4.0.3.tgz#36936263f5d1619ecc68fc8e6a3c90709b1bad66"
   integrity sha512-FFF0DKGJqLOPSgAwyR/mo/sTz7FnwjlNuB8TTPTSBalni1tDwrKSo4GRvGSorcLPdFwiY3dbSarUEHPZdn7fxA==
 
-vue@^2.6, vue@^2.6.11:
+vue2-daterange-picker@^0.6.5:
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/vue2-daterange-picker/-/vue2-daterange-picker-0.6.5.tgz#bd02141f88a9b86c12a638ac566e13d229f3b522"
+  integrity sha512-8gXvbqMF8LpfArlCaeG/pveoM/Q+DQzfG4gt++NZqLabs859ch7zbuvjvvcMvchGp9yOIsBqw+jwpL/v5kr31A==
+  dependencies:
+    vue "^2.6.10"
+
+vue@^2.6, vue@^2.6.10, vue@^2.6.11:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==

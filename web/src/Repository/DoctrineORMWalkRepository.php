@@ -72,6 +72,30 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
     }
 
     /**
+     * @inheritDoc
+     */
+    public function findForExport(?\DateTime $startTimeFrom, ?\DateTime $startTimeTo): array
+    {
+        $queryBuilder = $this->createQueryBuilder('walk')
+            ->select();
+
+        if ($startTimeFrom) {
+            $startTimeFrom->setTime(0, 0, 0);
+            $queryBuilder
+                ->where('walk.startTime > :startTimeFrom')
+                ->setParameter('startTimeFrom', $startTimeFrom);
+        }
+        if ($startTimeTo) {
+            $startTimeTo->setTime(23, 59, 59);
+            $queryBuilder
+                ->where('walk.startTimeTo < :')
+                ->setParameter('startTimeTo', $startTimeTo);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int|string $id
      *
      * @return Walk|null

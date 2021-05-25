@@ -32,4 +32,12 @@ interface WalkRepository
     public function save(Walk $walk): void;
 
     public function update(Walk $walk): void;
+
+    /**
+     * @param ?\DateTime $startTimeFrom
+     * @param ?\DateTime $startTimeTo
+     *
+     * @return Walk[]
+     */
+    public function findForExport(?\DateTime $startTimeFrom, ?\DateTime $startTimeTo): array;
 }

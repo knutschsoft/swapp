@@ -24,6 +24,13 @@
         >
             <WalkList />
         </content-collapse>
+        <content-collapse
+            title="Streetwork-Runden exportieren"
+            collapse-key="export-walks"
+            is-visible-by-default
+        >
+            <WalkExport />
+        </content-collapse>
     </div>
 </template>
 
@@ -32,6 +39,7 @@
     import StartWalk from './Dashboard/StartWalk';
     import WalkList from './Dashboard/WalkList';
     import ContentCollapse from './ContentCollapse.vue';
+    import WalkExport from './Walk/WalkExport.vue';
 
     export default {
         name: "Dashboard",
@@ -39,6 +47,7 @@
             ContentCollapse,
             StartWalk,
             WalkList,
+            WalkExport,
         },
         props: {
             redirect: {
