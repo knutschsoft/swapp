@@ -14,6 +14,8 @@ Swapp is a project to ease documentation of streetworkers which are on their way
 
 Have a look at **https://streetworkapp.de/** for more information.
 
+See **https://swapp.demo.streetworkapp.de** for a full working demo of Swapp.
+
 ![Was ist Swapp? What is Swapp?](web/assets/images/swapp-info.png?raw=true "Was ist Swapp? What is Swapp?")
 
 ### How to start local dev?
