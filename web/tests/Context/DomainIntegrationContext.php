@@ -318,6 +318,7 @@ final class DomainIntegrationContext extends RawMinkContext
 
         return $teamIds;
     }
+
     /**
      * @param string $usersString
      *
