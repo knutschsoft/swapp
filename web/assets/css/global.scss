@@ -8,6 +8,17 @@ body {
   font-size: 14px;
 }
 
+.box-datetime {
+  select {
+    padding-right: 0;
+    width: 19% !important;
+
+    &:nth-child(0n + 5) {
+      width: calc(24% - 5px) !important;
+    }
+  }
+}
+
 .nav-link.active.router-link-active {
   background-color: lighten($secondary, 20);
 }

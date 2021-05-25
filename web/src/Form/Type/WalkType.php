@@ -24,7 +24,9 @@ class WalkType extends AbstractType
             DateTimeType::class,
             [
                 'label' => 'Rundenstartzeit',
-                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'box-datetime',
+                ],
             ]
         );
         $builder->add(
@@ -32,7 +34,9 @@ class WalkType extends AbstractType
             DateTimeType::class,
             [
                 'label' => 'Rundenendzeit',
-                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'box-datetime',
+                ],
             ]
         );
         $builder->add(

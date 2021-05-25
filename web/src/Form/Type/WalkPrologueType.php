@@ -42,9 +42,11 @@ class WalkPrologueType extends AbstractType
             DateTimeType::class,
             [
                 'label' => 'Rundenstartzeit',
-                'attr' => ['data-test' => 'Rundenstartzeit'],
+                'attr' => [
+                    'data-test' => 'Rundenstartzeit',
+                    'class' => 'box-datetime',
+                ],
                 'help' => 'Die aktuelle Zeit ist vorausgewählt.',
-                'widget' => 'single_text',
             ]
         );
         $builder->add(
