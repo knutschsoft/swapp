@@ -25,12 +25,13 @@
             ContentCollapse,
         },
         props: {
-            walkId: {
+            teamId: {
                 required: true,
             }
         },
         data: function () {
             return {
+                walkId: false,
                 isFormLoading: false,
             }
         },
@@ -48,7 +49,7 @@
         watch: {},
         async mounted() {
             this.isFormLoading = true;
-            let {data} = await this.axios.get(`/form/walk-prologue/${this.walkId}`);
+            let {data} = await this.axios.get(`/form/walk-prologue/${this.teamId}`);
             this.isFormLoading = false;
             this.$refs.forms.innerHTML = data.form;
         },
@@ -56,7 +57,7 @@
             onSubmit: async function (e) {
                 let formData = new FormData(e.target);
                 this.isFormLoading = true;
-                let result = await this.axios.post(`/form/walk-prologue/${this.walkId}`, formData);
+                let result = await this.axios.post(`/form/walk-prologue/${this.teamId}`, formData);
                 this.isFormLoading = false;
                 window.scrollTo({
                     top: 0,
@@ -65,9 +66,9 @@
                 });
                 if (200 === result.status && result.data.form) {
                     this.$refs.forms.innerHTML = result.data.form;
-                } else if (200 === result.status && result.data.form === undefined) {
-                    await this.$store.dispatch('walk/findById', this.walkId);
-                    this.$router.push({ name: 'WalkAddWayPoint', params: {walkId: this.walkId} })
+                } else if (200 === result.status && result.data.walkId !== undefined) {
+                    await this.$store.dispatch('walk/findById', result.data.walkId);
+                    this.$router.push({ name: 'WalkAddWayPoint', params: {walkId: result.data.walkId} })
                 }
             }
         },

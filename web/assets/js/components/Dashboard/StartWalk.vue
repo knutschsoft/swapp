@@ -133,9 +133,7 @@
         },
         methods: {
             handleWalkPrologue: async function () {
-                let result = await this.axios.post(`/api/walks/prologue`, {team: this.selectedTeam['@id']});
-                let id = result.data.id;
-                this.$router.push({ name: 'WalkPrologue', params: {walkId: id} })
+                this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam.id} })
             }
         }
     }

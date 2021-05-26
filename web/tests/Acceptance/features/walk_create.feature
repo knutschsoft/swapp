@@ -27,6 +27,19 @@ Feature: A user can do a walk
 
   @javascript
   @walkCreate
+  Scenario: I select a team to start a walk but there will not be a walk created yet
+    Given there are exactly 0 walks in database
+    Given I am authenticated as "karl@gmx.de"
+    And I should be on "/dashboard"
+    Then I wait for "Team 'Westhang'" to appear
+    When I click on text "Runde beginnen"
+    Then I wait for "Name" to appear
+    Then I wait for "Tageskonzept" to appear
+    Then I wait for "Rundenstartzeit" to appear
+    And there are exactly 0 walks in database
+
+  @javascript
+  @walkCreate
   Scenario: I do a walk with one wayPoint
     Given I am authenticated as "karl@gmx.de"
     And I should be on "/dashboard"
@@ -60,6 +73,7 @@ Feature: A user can do a walk
     When I enter "Straßenbahnen sind blockiert" in "Beobachtung" field
     And I set browser window size to "1000" x "1800"
     And I click on text "Wegpunkt speichern und Runde abschließen"
+    And there are exactly 1 walks in database
 
     Then I wait for 'Runde "Mein erster Lauf" abschließen' to appear
     Then I wait for 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
@@ -76,3 +90,4 @@ Feature: A user can do a walk
     Then I should be on "/dashboard"
     And I wait for "Mein erster Lauf" to appear
     And I wait for "Runde ansehen" to appear
+    And there are exactly 1 walks in database

@@ -45,16 +45,28 @@ class EntityParamConverter implements ParamConverterInterface
         switch ($configuration->getName()) {
             case 'walk':
                 $id = $request->get('walkId');
+                if (\is_null($id) && $configuration->isOptional()) {
+                    $resource = null;
+                    break;
+                }
                 $resource = $this->walkRepository->findOneById($id);
 
                 break;
             case 'wayPoint':
                 $id = $request->get('wayPointId');
+                if (\is_null($id) && $configuration->isOptional()) {
+                    $resource = null;
+                    break;
+                }
                 $resource = $this->wayPointRepository->findOneById($id);
 
                 break;
             case 'team':
                 $id = $request->get('teamId');
+                if (\is_null($id) && $configuration->isOptional()) {
+                    $resource = null;
+                    break;
+                }
                 $resource = $this->teamRepository->findOneById($id);
                 if (!$resource) {
                     $id = $request->get('id');

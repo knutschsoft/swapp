@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Team;
 use App\Entity\Walk;
 use App\Form\Type\WalkPrologueType;
 use App\Form\Type\WalkType;
+use App\Repository\SystemicQuestionRepository;
 use App\Repository\WalkRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,15 +22,18 @@ class WalkController extends AbstractController
     private WalkRepository $walkRepository;
     private RouterInterface $router;
     private FormFactoryInterface $formFactory;
+    private SystemicQuestionRepository $systemicQuestionRepository;
 
     public function __construct(
         WalkRepository $walkRepository,
+        SystemicQuestionRepository $systemicQuestionRepository,
         RouterInterface $router,
         FormFactoryInterface $formFactory
     ) {
         $this->walkRepository = $walkRepository;
         $this->router = $router;
         $this->formFactory = $formFactory;
+        $this->systemicQuestionRepository = $systemicQuestionRepository;
     }
 
     /**
@@ -60,16 +65,17 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @param Walk    $walk
+     * @param Team    $team
      * @param Request $request
      *
-     * @Route("/form/walk-prologue/{walkId}", name="walk_start")
+     * @Route("/form/walk-prologue/{teamId}", name="walk_start")
      *
      * @return JsonResponse
      */
-    public function createWalkPrologueAction(Walk $walk, Request $request): JsonResponse
+    public function createWalkPrologueAction(Team $team, Request $request): JsonResponse
     {
-        $form = $this->formFactory->create(WalkPrologueType::class, $walk);
+        $systemicQuestion = $this->systemicQuestionRepository->getRandom();
+        $form = $this->formFactory->create(WalkPrologueType::class, Walk::prologue($team, $systemicQuestion));
         $form->handleRequest($request);
         if (!$form->isSubmitted() || !$form->isValid()) {
             $view = $this->renderView('walk/createWalkPrologueForm.html.twig', ['form' => $form->createView()]);
@@ -81,10 +87,11 @@ class WalkController extends AbstractController
             );
         }
 
+        /** @var Walk $walk */
         $walk = $form->getData();
-        $this->walkRepository->update($walk);
+        $this->walkRepository->save($walk);
 
-        return new JsonResponse();
+        return new JsonResponse(['walkId' => $walk->getId()]);
     }
 
     /**

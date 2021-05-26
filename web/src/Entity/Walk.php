@@ -236,6 +236,20 @@ class Walk
         return $instance;
     }
 
+    public function newPrologue(Team $team, SystemicQuestion $systemicQuestion): void
+    {
+        $this->setTeamName($team->getName());
+        $this->setEndTime(new \DateTime());
+        $this->setRating(1);
+        $this->setSystemicAnswer('');
+        $this->setSystemicQuestion($systemicQuestion->getQuestion());
+        $this->setWalkReflection('');
+        $this->setIsResubmission(false);
+        $this->setCommitments('');
+        $this->setInsights('');
+        $this->setAgeRanges($team->getAgeRanges());
+    }
+
     /**
      * @return string
      *
