@@ -8,6 +8,11 @@ export default {
         if (params.sortBy) {
             sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
         }
+        for (const [key, value] of Object.entries(params.filter)) {
+            if (value !== null) {
+                sort += `&${key}=${value}`;
+            }
+        }
         return axios.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
     findOneById(walkId) {

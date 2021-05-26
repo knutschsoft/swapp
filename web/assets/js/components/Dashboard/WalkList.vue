@@ -3,17 +3,13 @@
         <b-row
             class="mx-0"
         >
-            <b-col sm="5" md="6" class="my-1">
-                <b-form-group
-                    label="pro Seite"
-                    label-cols-sm="6"
-                    label-cols-md="4"
-                    label-cols-lg="3"
-                    label-align-sm="right"
-                    label-size="sm"
-                    label-for="perPageSelect"
-                    class="mb-0"
-                >
+            <b-col
+                class="my-1"
+                xs="5"
+                sm="4"
+                md="3"
+            >
+                <b-input-group prepend="pro Seite" size="sm" class="">
                     <b-form-select
                         v-model="perPage"
                         id="perPageSelect"
@@ -21,10 +17,13 @@
                         :options="pageOptions"
                         @change="handlePerPageChange"
                     ></b-form-select>
-                </b-form-group>
+                </b-input-group>
             </b-col>
-
-            <b-col sm="7" md="6" class="my-1">
+            <b-col
+                sm="8"
+                md="9"
+                class="my-1"
+            >
                 <b-pagination
                     v-model="currentPage"
                     :total-rows="totalRows"
@@ -34,6 +33,42 @@
                     size="sm"
                     class="my-0"
                 ></b-pagination>
+            </b-col>
+            <hr class="d-block w-100 my-1" />
+            <b-col
+                class="my-1"
+                sm="4"
+                md="3"
+            >
+                <b-input-group prepend="WV DB?" size="sm" class="">
+                    <b-form-select
+                        v-model="filter.isResubmission"
+                        :options="isResubmissionOptions"
+                        @change="handleFilterChange"
+                    />
+                </b-input-group>
+            </b-col>
+            <b-col
+                class="my-1"
+                sm="8"
+                md="9"
+            >
+                <b-input-group prepend="Name" size="sm">
+                    <b-form-input
+                        v-model="filter.name"
+                        placeholder="Name"
+                        debounce="500"
+                        size="sm"
+                        @update="handleFilterChange"
+                    />
+                    <b-input-group-append>
+                        <b-button
+                            @click="filter.name = ''"
+                        >
+                            <mdicon name="CloseCircleOutline" size="20" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
             </b-col>
         </b-row>
         <b-table
@@ -110,6 +145,12 @@ export default {
     props: {},
     data: function () {
         return {
+            isResubmission: null,
+            isResubmissionOptions: [
+                { value: null, text: 'egal' },
+                { value: 1, text: 'ja' },
+                { value: 0, text: 'nein' },
+            ],
             fields: [
                 { key: 'name', label: 'Name', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
                 { key: 'rating', label: 'Bewertung', sortable: true, class: 'text-center align-middle', formatter: (value) => {return formatter.formatRating(value);} },
@@ -136,9 +177,10 @@ export default {
             sortBy: 'startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: null,
+            filter: { isResubmission: null, name: null },
             storagePerPageId: 'abgeschlossene-runden-per-page',
             storageCurrentPageId: 'abgeschlossene-runden-current-page',
+            storageFilterId: 'abgeschlossene-runden-filter',
             storageWalksId: 'abgeschlossene-runden-walks',
         };
     },
@@ -157,8 +199,9 @@ export default {
         },
     },
     async created() {
-        this.perPage = this.$localStorage.get(this.storagePerPageId, 10);
+        this.perPage = this.$localStorage.get(this.storagePerPageId, 5);
         this.currentPage = this.$localStorage.get(this.storageCurrentPageId, 1);
+        this.filter = this.$localStorage.get(this.storageFilterId, this.filter);
     },
     methods: {
         formatStartDate: function (dateString) {
@@ -185,6 +228,9 @@ export default {
         },
         handlePerPageChange(value) {
             this.$localStorage.set(this.storagePerPageId, value);
+        },
+        handleFilterChange() {
+            this.$localStorage.set(this.storageFilterId, this.filter);
         },
     },
 };

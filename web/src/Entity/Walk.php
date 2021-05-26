@@ -6,7 +6,9 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\WalkExportRequest;
 use App\Dto\WalkPrologueRequest;
 use App\Dto\WayPointAddRequest;
@@ -25,6 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="walk")
  **/
 #[ApiFilter(OrderFilter::class, properties: ["name", "rating", "teamName", "startTime", "endTime", "isResubmission"])]
+#[ApiFilter(BooleanFilter::class, properties: ["isResubmission"])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
 #[ApiResource(
     collectionOperations: [
     "get",
