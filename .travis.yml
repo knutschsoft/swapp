@@ -20,6 +20,7 @@ before_script:
 script:
   - sleep 30
   - docker-compose exec --user=docker web printenv || true
+  - docker-compose -f docker-compose.travis.yml -f docker-compose.yml exec --user=docker mkdir -p var/log/qa-report || true
   - docker-compose logs web || true
   - docker-compose -f docker-compose.travis.yml -f docker-compose.yml exec --user=docker web composer qa-ci || true
 
