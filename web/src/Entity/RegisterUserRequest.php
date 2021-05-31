@@ -35,7 +35,7 @@ final class RegisterUserRequest
     public string $email;
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min="8", max="40")
+     * @Assert\Length(min="4", max="40")
      *
      * @AppAssert\IsUsernameUnique()
      */

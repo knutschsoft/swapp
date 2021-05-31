@@ -22,7 +22,7 @@ final class WayPointAddRequest
     /**
      * @Assert\NotBlank
      * @Assert\NotNull
-     * @Assert\Length(min="3", max="300")
+     * @Assert\Length(min="2", max="300")
      */
     public string $locationName;
 
