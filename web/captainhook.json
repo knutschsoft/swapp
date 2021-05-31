@@ -17,8 +17,14 @@
         ]
     },
     "pre-push": {
-        "enabled": false,
-        "actions": []
+        "enabled": true,
+        "actions": [
+            {
+                "action": "vendor/bin/local-php-security-checker",
+                "options": [],
+                "conditions": []
+            }
+        ]
     },
     "pre-commit": {
         "enabled": true,
@@ -44,9 +50,16 @@
                 "conditions": []
             },
             {
-                "action": "vendor/bin/security-checker security:check --ansi",
+                "action": "vendor/bin/behat --colors --format=progress {$STAGED_FILES|of-type:feature|replace:web\tests|with:tests}",
                 "options": [],
-                "conditions": []
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                        "args": [
+                            "feature"
+                        ]
+                    }
+                ]
             }
         ]
     },
