@@ -120,7 +120,7 @@
             "vendor/bin/phpstan analyse --error-format=checkstyle --ansi --no-progress > ./var/log/qa-report/phpstan.xml || true",
             "vendor/bin/phpunit --colors --testdox-html ./var/log/qa-report/testdox.html --testdox-text ./var/log/qa-report/testdox.txt --log-junit ./var/log/qa-report/junit.xml || true",
             "mkdir -p public/images/screenshots",
-            "vendor/bin/behat -c behat.yml.dist --colors  --out std --format=junit --out ./var/log/qa-report/",
+            "vendor/bin/behat -c behat.yml.dist --colors  --out std --format=junit --out var/log/qa-report",
             "vendor/bin/local-php-security-checker"
         ],
         "create-jwt": [
