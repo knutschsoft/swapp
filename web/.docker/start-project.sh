@@ -32,6 +32,7 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} vendor/bin/bdi detect drivers
+    gosu ${CONTAINER_USER} vendor/bin/captainhook install -f
 
     setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
     setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
