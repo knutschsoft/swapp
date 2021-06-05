@@ -1,0 +1,60 @@
+default:
+    gherkin:
+        filters:
+            tags: ~@ignore
+    suites:
+        integration:
+            paths:
+                - '%paths.base%/tests/Integration'
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - App\Tests\Context\EmailContext
+                - App\Tests\Context\DomainIntegrationContext:
+                      kernel: '@kernel'
+                - behatch:context:debug
+                - behatch:context:system
+                - behatch:context:json
+                - behatch:context:rest
+                - App\Tests\Context\DatabaseContext:
+                      kernel: '@kernel'
+        acceptance:
+            paths:
+                - '%paths.base%/tests/Acceptance'
+            contexts:
+                -  App\Tests\Context\DomainIntegrationContext:
+                       kernel: '@kernel'
+                - behatch:context:debug
+                - behatch:context:rest
+                -  App\Tests\Context\DatabaseContext:
+                       kernel: '@kernel'
+                -  App\Tests\Context\AcceptanceContext:
+                       kernel: '@kernel'
+                - FailAid\Context\FailureContext
+
+    extensions:
+        Behatch\Extension: ~
+        FailAid\Extension:
+            output:
+                screenshot: true
+            screenshot:
+                directory: public/images/screenshots/
+                mode: default
+                autoClean: true
+                # size: 1444x1280
+                hostUrl: "https://swapp.local/images/screenshots/"
+        FriendsOfBehat\SymfonyExtension: ~
+        Robertfausk\Behat\PantherExtension: ~
+        Behat\MinkExtension:
+            files_path: "tests/fixtures/"
+            base_url: "http://localhost/"
+            javascript_session: javascript
+            default_session: symfony
+            sessions:
+                symfony:
+                    symfony: ~
+                javascript:
+                    panther: ~
+                    # use this for local behat.yml
+                    # panther:
+                    #    options:
+                    #        # external_base_uri: http://localhost # same as base_url of mink
