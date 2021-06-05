@@ -10,8 +10,8 @@ final class LogoutController extends AbstractController
     /**
      * @throws \RuntimeException
      *
-     * Rest\Route("/api/security/logout", name="logout")
-     * Rest\Route("/api/security/login_check", name="login_check")
+     * Rest\Route("/api/user/logout", name="logout")
+     * Rest\Route("/api/user/login_check", name="login_check")
      */
     public function __invoke(): void
     {

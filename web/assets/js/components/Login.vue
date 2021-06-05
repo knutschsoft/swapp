@@ -126,10 +126,7 @@
                             {{ 'Die Kombination aus E-Mail-Adresse und Passwort ist ungültig.' }}
                         </b-form-text>
                     </b-input-group>
-                    <b-input-group
-                        v-if="false"
-                        class="form-group input-group mb-0"
-                    >
+                    <b-input-group class="form-group input-group mb-0">
                         <router-link
                             class="btn btn-block btn-link"
                             :to="{ name: 'PasswordReset' }"

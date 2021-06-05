@@ -6,11 +6,7 @@ namespace App\Dto;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class TagCreateRequest
- *
- * @Assert\GroupSequence({"TagCreateRequest", "Second"})
- */
+#[Assert\GroupSequence(["TagCreateRequest", "SecondGroup"])]
 final class TagCreateRequest
 {
     /**
@@ -19,7 +15,7 @@ final class TagCreateRequest
      * @Assert\Length(min="3", max="100", normalizer="trim")
      * @Assert\Type(type="string")
      *
-     * @AppAssert\IsTagNameUnique(groups="Second")
+     * @AppAssert\IsTagNameUnique(groups="SecondGroup")
      */
     //#[Assert\NotBlank]
     //#[Assert\NotNull]
@@ -33,8 +29,8 @@ final class TagCreateRequest
      * @Assert\Type(type="string")
      * @Assert\Choice(choices=\App\Entity\Tag::COLORS)
      *
-     * @AppAssert\IsTagColorUnique(groups="Second")
+     * @AppAssert\IsTagColorUnique(groups="SecondGroup")
      */
-    //#[AppAssert\IsTagColorUnique()]
+    //#[AppAssert\IsTagColorUnique(["groups" => "SecondGroup"])]
     public string $color;
 }

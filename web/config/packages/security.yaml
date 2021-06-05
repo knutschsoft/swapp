@@ -8,28 +8,28 @@ security:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
         confirmation-token:
-            pattern: ^/api/security/is-confirmation-token-valid
+            pattern: ^/api/users/is-confirmation-token-valid
             security: false
             anonymous: true
         chnage-password:
-            pattern: ^/api/security/change-password
+            pattern: ^/api/users/change-password
             security: false
             anonymous: true
         request-password-reset:
-            pattern: ^/api/security/request-password-reset
+            pattern: ^/api/users/request-password-reset
             security: false
             anonymous: true
         refresh:
-            pattern:  ^/refreshToken
+            pattern:  ^/api/users/refreshToken
             stateless: true
             anonymous: true
         login:
-            pattern:  ^/api/getToken
+            pattern:  ^/api/users/getToken
             stateless: true
             anonymous: true
             provider: app_user_provider
             json_login:
-                check_path: /api/getToken
+                check_path: /api/users/getToken
                 username_path: username
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -53,14 +53,13 @@ security:
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/security/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/security/login-check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/security/is-confirmation-token-valid, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/security/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/getToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/login-check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/is-confirmation-token-valid, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/getToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 #        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
 

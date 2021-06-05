@@ -10,6 +10,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
+use App\Value\ConfirmationToken;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
@@ -129,6 +130,11 @@ final class DomainIntegrationContext extends RawMinkContext
             } elseif (\str_starts_with($row['value'], 'userIri<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 8, -1);
                 $parameters[$row['key']] = \sprintf('/api/users/%s', (string) $this->getUserByEmail($value)->getId());
+            } elseif (\str_starts_with($row['value'], 'confirmationToken<') && \str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 18, -1);
+                $parameters[$row['key']] = [
+                    'token' => ConfirmationToken::fromString($value)->getToken(),
+                ];
             } else {
                 $parameters[$row['key']] = \trim($row['value']);
             }
@@ -139,6 +145,30 @@ final class DomainIntegrationContext extends RawMinkContext
         $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
 
         $this->restContext->iSendARequestToWithBody($method, $this->locatePath($url), $body);
+    }
+
+    /**
+     * @Given there is a non empty confirmationToken for :username
+     *
+     * @param string $username
+     */
+    public function thereIsANonEmptyConfirmationTokenFor(string $username): void
+    {
+        $user = $this->getUserByEmail($username);
+        $this->em->refresh($user);
+        Assert::false($user->getConfirmationToken()->isEmpty(), 'ConfirmationToken is empty.');
+    }
+
+    /**
+     * @Given there is an empty confirmationToken for :username
+     *
+     * @param string $username
+     */
+    public function thereIsAnEmptyConfirmationTokenFor(string $username): void
+    {
+        $user = $this->getUserByEmail($username);
+        $this->em->refresh($user);
+        Assert::true($user->getConfirmationToken()->isEmpty(), 'ConfirmationToken is not empty.');
     }
 
     /**
@@ -165,6 +195,11 @@ final class DomainIntegrationContext extends RawMinkContext
             $roles = \explode(',', $rolesString);
             foreach ($roles as $role) {
                 $user->addRole($role);
+            }
+
+            if (isset($row['confirmationToken']) && $row['confirmationToken']) {
+                $confirmationToken = ConfirmationToken::fromString($row['confirmationToken']);
+                $user->setConfirmationToken($confirmationToken);
             }
 
             $this->em->persist($user);

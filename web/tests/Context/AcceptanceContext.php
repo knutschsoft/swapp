@@ -66,6 +66,26 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When  I wait for field :locator to be not disabled
+     *
+     * @param string   $locator
+     * @param int|null $tries
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForFieldToBeNotDisabled(string $locator, ?int $tries = 25): void
+    {
+        $element = $this->getTestElement($locator);
+        $this->spin(
+            static function () use ($element): void {
+                Assert::false($element->hasAttribute('disabled'));
+            },
+            $tries
+        );
+        Assert::false($element->hasAttribute('disabled'));
+    }
+
+    /**
      * @When  I wait for :text to appear
      *
      * @Then  I should see :text appear
@@ -198,7 +218,7 @@ final class AcceptanceContext extends MinkContext
         $user = $this->getUserByEmail($username);
         $url = $this->router->generate(
             'user_password_reset',
-            ['userId' => $user->getId()->toString(), 'requestPasswordResetToken' => $user->getRequestPasswordResetToken()],
+            ['userId' => $user->getId(), 'confirmationToken' => $user->getConfirmationToken()->getToken()],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
         $this->visit($url);

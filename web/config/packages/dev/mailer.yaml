@@ -1,0 +1,4 @@
+framework:
+  mailer:
+    envelope:
+      recipients: [ 'robertfreigang@gmx.de' ]

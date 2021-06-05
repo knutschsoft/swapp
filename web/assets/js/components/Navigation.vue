@@ -101,14 +101,14 @@
                             Login
                         </b-dropdown-item>
                         <b-dropdown-item
-                            v-if="!isAuthenticated && false"
+                            v-if="!isAuthenticated"
                             :to="{ name: 'PasswordReset'}"
                             :active="$route.name === 'PasswordReset'"
                         >
                             Passwort vergessen?
                         </b-dropdown-item>
                         <b-dropdown-item
-                            v-if="isAuthenticated && false"
+                            v-if="isAuthenticated"
                             :to="{ name: 'PasswordChangeRequest'}"
                             :active="$route.name === 'PasswordChangeRequest'"
                         >

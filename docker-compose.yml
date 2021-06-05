@@ -13,6 +13,7 @@ services:
       - APP_DEBUG=${APP_DEBUG:-0}
       - APP_ENVIRONMENT=${APP_ENVIRONMENT:-prod}
       - APP_SECRET=${APP_SECRET:?APP_SECRET is not set or empty}
+      - MAILER_DSN=${MAILER_DSN:?MAILER_DSN is not set or empty}
       - TRUSTED_HOSTS=^(localhost|((${SUBDOMAINS_LIST}\.)?${DOMAIN_NAME}))$$
       - CORS_ALLOW_ORIGIN=^https://(${SUBDOMAINS_LIST}\.)?${DOMAIN_NAME}$$
       - HOST_UID=${HOST_UID} # set in ~/.bashrc

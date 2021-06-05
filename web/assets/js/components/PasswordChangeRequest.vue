@@ -1,7 +1,7 @@
 <template>
     <div class="row m-auto pt-4 mt-4">
         <div
-            class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 offset-lg-3 col-lg-6 border border-dark p-4 mt-4"
+            class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 offset-lg-3 col-lg-6 border border-dark p-3 mt-3"
         >
             <h2
                 class="text-center"
@@ -10,13 +10,13 @@
             </h2>
             <ul class="text-left mt-3">
                 <li>
-                    Um Ihr Passwort zu ändern, drücken Sie bitte folgenden Knopf.
+                    Um dein Passwort zu ändern, drücke bitte folgenden Knopf.
                 </li>
                 <li>
-                    Sie bekommen dann eine E-Mail mit einem Link zugeschickt.
+                    Du bekommst dann eine E-Mail mit einem Link zugeschickt.
                 </li>
                 <li>
-                    Mit Hilfe dieses Links können Sie dann ein neues Passwort setzen.
+                    Mit Hilfe dieses Links kannst du dir dann ein neues Passwort setzen.
                 </li>
             </ul>
             <div>
@@ -40,28 +40,7 @@
                         Neues Passwort beantragen
                     </b-button>
                 </div>
-                <div
-                    v-if="hasError"
-                    class="mt-3"
-                >
-                    <div
-                        class="alert alert-danger w-100 mb-0"
-                        role="alert"
-                    >
-                        <p
-                            class="font-weight-bold"
-                        >
-                            Upps! Da ist etwas schief gelaufen!
-                        </p>
-                        <p class="mb-0">
-                            Bitte informieren Sie
-                            <a href="mailto:robertfreigang@gmx.de">
-                                robertfreigang@gmx.de
-                            </a>
-                            über das Problem.
-                        </p>
-                    </div>
-                </div>
+                <GeneralErrorAlert v-if="hasError" />
                 <div
                     v-if="isPasswordRequested && !hasError"
                     class="mt-3"
@@ -74,9 +53,9 @@
                             Herzlichen Glückwunsch!
                         </p>
                         <p class="mb-0">
-                            Sie sollten eine Mail bekommen haben.
+                            Du solltest eine Mail bekommen haben.
                             <br>
-                            Bitte schauen Sie ggfs. auch in ihrem Spam-Ordner nach.
+                            Bitte schaue ggfs. auch in deinem Spam-Ordner nach.
                             <br>
                             Alle weiteren Schritte stehen in der Mail.
                         </p>
@@ -88,10 +67,11 @@
 </template>
 <script>
     "use strict";
-    import * as EmailValidator from 'email-validator';
 
+    import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
     export default {
         name: "PasswordChangeRequest",
+        components: { GeneralErrorAlert },
         data: () => ({
             isPasswordRequested: false,
         }),
@@ -105,13 +85,6 @@
             error() {
                 return this.$store.getters["security/error"];
             },
-            validation() {
-                if (this.username.trim().length <= 20) {
-                    return null;
-                }
-
-                return EmailValidator.validate(this.username.trim());
-            },
             user() {
                 return this.$store.getters["security/currentUser"];
             },
@@ -121,10 +94,11 @@
         },
         methods: {
             async requestPasswordReset() {
-                this.isPasswordRequested = await this.$store.dispatch(
+                await this.$store.dispatch(
                     "security/requestPasswordReset",
-                    {email: this.user.email.email, honeypotEmail: ''}
+                    {email: this.user.email, honeypotEmail: ''}
                 );
+                this.isPasswordRequested = true;
             }
         },
     }

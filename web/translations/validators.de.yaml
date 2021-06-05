@@ -4,3 +4,6 @@ tag:
 way-point-add:
   file:
     max-size: Das Bild ist mit {{ size }} {{ suffix }} größer als die maximal erlaubten {{ limit }} {{ suffix }}.
+user:
+  not_found: Der Nutzer "{{ value }}" existiert nicht.
+  not_found_or_disabled: Der Nutzer "{{ value }}" existiert nicht oder sein Account ist inaktiv.

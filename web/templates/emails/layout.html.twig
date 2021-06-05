@@ -1,0 +1,50 @@
+<html>
+
+    <head></head>
+
+    <body>
+        {% apply inline_css %}
+
+            {% block style %}
+                <style>
+                    h1, h2, h3, h4 {
+                        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                    }
+
+                    h1 {
+                        font-size: 12px;
+                    }
+
+                    h2 {
+                        font-size: 12px;
+                    }
+
+                    h3 {
+                        font-size: 12px;
+                    }
+
+                    h4 {
+                        font-size: 12px;
+                    }
+
+                    p {
+                        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                        font-size: 12px;
+                    }
+                </style>
+            {% endblock %}
+
+            <h1>{% block title %}{% endblock %}</h1>
+
+            <p>{% block content %}{% endblock %}</p>
+
+            {% block footer_content %}
+                <p>
+                    Mit freundlichen Grüßen,<br />
+                    Dein Team von Swapp
+                </p>
+            {% endblock %}
+
+        {% endapply %}
+    </body>
+</html>

@@ -4,10 +4,13 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Dto\User\ChangePasswordRequest;
+use App\Dto\User\IsConfirmationTokenValidRequest;
+use App\Dto\User\RequestPasswordResetRequest;
+use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,7 +20,42 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="user")
  */
 #[ApiResource(
-    collectionOperations: ["get"],
+    collectionOperations: [
+        "get",
+        "request_password_reset" => [
+            "messenger" => "input",
+            "input" => RequestPasswordResetRequest::class,
+            "output" => false,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/request-password-reset",
+            "openapi_context" => [
+                "summary" => "An user requests a new password.",
+            ],
+        ],
+        "is_confirmation_token_valid" => [
+            "messenger" => "input",
+            "input" => IsConfirmationTokenValidRequest::class,
+            "output" => User::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/is-confirmation-token-valid",
+            "openapi_context" => [
+                "summary" => "Check if an user is allowed to perform a certain action.",
+            ],
+        ],
+        "change_password" => [
+            "messenger" => "input",
+            "input" => ChangePasswordRequest::class,
+            "output" => User::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/change-password",
+            "openapi_context" => [
+                "summary" => "Change password of an user.",
+            ],
+        ],
+    ],
     itemOperations: ["get"],
     normalizationContext: ["groups" => ["user:read"]]
 )]
@@ -56,9 +94,9 @@ class User implements UserInterface
     /**
      * Random string sent to the user email address in order to verify it.
      *
-     * @ORM\Column(type="string", length=180, unique=true, name="confirmation_token", nullable=true)
+     * @ORM\Embedded(class="App\Value\ConfirmationToken", columnPrefix=false)
      */
-    protected ?string $confirmationToken = null;
+    protected ConfirmationToken $confirmationToken;
 
     /** @ORM\Column(type="datetime", name="password_requested_at", nullable=true) */
     protected ?\DateTime $passwordRequestedAt = null;
@@ -103,6 +141,7 @@ class User implements UserInterface
         $this->roles = [];
         $this->walks = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->confirmationToken = ConfirmationToken::createEmpty();
     }
 
     public static function fromRegisterUserRequest(RegisterUserRequest $registerUserRequest, UserPasswordEncoderInterface $passwordEncoder): self
@@ -113,21 +152,6 @@ class User implements UserInterface
         $instance->changePassword($registerUserRequest->password, $passwordEncoder);
         $instance->addRole('ROLE_USER');
         $instance->disable();
-        $instance->confirmationToken = Uuid::uuid4()->toString();
-
-        return $instance;
-    }
-
-    public static function createEmpty(): self
-    {
-        $instance = new self();
-        $instance->username = '';
-        $instance->email = '';
-        $instance->enabled = false;
-        $instance->roles = [];
-        $instance->walks = new ArrayCollection();
-        $instance->teams = new ArrayCollection();
-        $instance->id = 0;
 
         return $instance;
     }
@@ -135,7 +159,8 @@ class User implements UserInterface
     public function changePassword(string $password, UserPasswordEncoderInterface $passwordEncoder): void
     {
         $this->password = $passwordEncoder->encodePassword($this, $password);
-        $this->confirmationToken = null;
+        $this->confirmationToken = ConfirmationToken::createEmpty();
+        $this->passwordRequestedAt = null;
     }
 
     /**
@@ -314,12 +339,12 @@ class User implements UserInterface
         $this->lastLogin = new \DateTime();
     }
 
-    public function getConfirmationToken(): ?string
+    public function getConfirmationToken(): ConfirmationToken
     {
         return $this->confirmationToken;
     }
 
-    public function setConfirmationToken(?string $confirmationToken): void
+    public function setConfirmationToken(ConfirmationToken $confirmationToken): void
     {
         $this->confirmationToken = $confirmationToken;
     }
@@ -430,5 +455,11 @@ class User implements UserInterface
             $this->getUsername(),
             $this->getEmail()
         );
+    }
+
+    public function requestPassword(): void
+    {
+        $this->setConfirmationToken(ConfirmationToken::create());
+        $this->passwordRequestedAt = new \DateTime();
     }
 }

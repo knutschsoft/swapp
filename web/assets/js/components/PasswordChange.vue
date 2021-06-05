@@ -4,16 +4,16 @@
             v-if="!isConfirmationTokenValid"
             class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 offset-lg-3 col-lg-6 border border-dark p-4 mt-4"
         >
-            Upps! Der von Ihnen genutzte Link ist nicht länger gültig.
+            Upps! Der von dir genutzte Link ist nicht länger gültig.
             <br>
-            Bitte schauen Sie nach, ob in Ihrem E-Mail-Postfach eine neuere E-Mail mit Link vorhanden ist oder beantragen Sie
+            Bitte schaue nach, ob in deinem E-Mail-Postfach eine neuere E-Mail mit Link vorhanden ist oder beantrage
             nochmal ein neues Passwort.
             <b-input-group
                 class="form-group input-group mb-0 mt-3"
             >
                 <router-link
                     class="btn btn-block btn-dark"
-                    :to="{ name: 'PasswordReset' }"
+                    :to="{ name: user ? 'PasswordChangeRequest' : 'PasswordReset' }"
                 >
                     Passwortänderung beantragen
                 </router-link>
@@ -126,6 +126,7 @@
                             block
                             variant="dark"
                             type="submit"
+                            data-test="btn-change-password"
                             @click="changePassword()"
                         >
                             <b-spinner
@@ -138,24 +139,7 @@
                             Passwort ändern
                         </b-button>
                     </b-input-group>
-                    <b-input-group
-                        v-if="hasError"
-                        class="form-group input-group"
-                    >
-                        <b-form-text
-                            class="alert alert-danger w-100 mb-0"
-                            role="alert"
-                        >
-                            <p
-                                class="font-weight-bold"
-                            >
-                                Upps! Da ist etwas schief gelaufen!
-                            </p>
-                            <p class="mb-0">
-                                Bitte informieren Sie den Administrator über das Problem.
-                            </p>
-                        </b-form-text>
-                    </b-input-group>
+                    <general-error-alert v-if="hasError && !validationErrors.password" />
                 </b-form>
                 <div
                     v-if="isPasswordChanged && !hasError"
@@ -169,12 +153,13 @@
                             Herzlichen Glückwunsch!
                         </p>
                         <p>
-                            Sie haben erfolgreich Ihr Passwort geändert.
+                            Du hast erfolgreich dein Passwort geändert.
                             <span
                                 v-if="!user"
                             >
                                 <br>
-                                Melden Sie sich jetzt an:
+                                <br>
+                                Melde dich jetzt an:
                             </span>
                         </p>
                         <router-link
@@ -192,8 +177,12 @@
 </template>
 <script>
     "use strict";
+    import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
+    import SecurityAPI from '../api/security';
+
     export default {
         name: "RequestPasswordChange",
+        components: { GeneralErrorAlert },
         props: {
             'userId': {
                 required: true,
@@ -208,9 +197,9 @@
             password: '',
             passwordRepeat: '',
             passwordHelp: '',
-            passwordRepeatHelp: 'Bitte geben Sie zwei Mal das gleiche Passwort ein um Tippfehler zu vermeiden.',
+            passwordRepeatHelp: 'Bitte gib zwei Mal das gleiche Passwort ein um Tippfehler zu vermeiden.',
             isConfirmationTokenValid: true,
-            passwordState: true,
+            passwordState: null,
             passwordInvalidText: '',
             passwordRepeatState: true,
             isPasswordChanged: false,
@@ -236,13 +225,40 @@
                 }
 
                 return this.password === this.passwordRepeat;
-            }
+            },
+            validationErrors() {
+                const errors = {};
+                if (!this.hasError) {
+                    return errors;
+                }
+                this.passwordState = false;
+                this.passwordRepeatState = null;
+                const error = this.error;
+                if (error && error.data.violations) {
+                    error.data.violations.forEach((violation) => {
+                        const key = violation.propertyPath ? violation.propertyPath : 'global';
+                        errors[key] = violation.message;
+                        this.passwordInvalidText = violation.message;
+                    });
+                    return errors;
+                }
+                if (error.data && error.data['hydra:description']) {
+                    errors.global = error.data['hydra:description'];
+                    this.passwordInvalidText = errors.global;
+                }
+
+                return errors;
+            },
         },
         async created() {
-            this.isConfirmationTokenValid = await this.$store.dispatch(
-                "security/isConfirmationTokenValid",
-                {userId: this.userId, confirmationToken: this.confirmationToken}
-            );
+            try {
+                this.isConfirmationTokenValid = await SecurityAPI.isConfirmationTokenValid(
+                    `/api/users/${this.userId}`,
+                    this.confirmationToken
+                );
+            } catch (e) {
+                this.isConfirmationTokenValid = false;
+            }
         },
         methods: {
             passwordValidation(value) {
@@ -250,10 +266,10 @@
                 if (value.length < 1) {
                     this.passwordState = null;
                 } else if (!regex.test(value)) {
-                    this.passwordInvalidText = 'Ihr Passwort darf nur aus Buchstaben, Ziffern und folgenden Sonderzeichen _.*-+:#!?%{}|@[];=&$\\/,() bestehen.';
+                    this.passwordInvalidText = 'Dein Passwort darf nur aus Buchstaben, Ziffern und folgenden Sonderzeichen _.*-+:#!?%{}|@[];=&$\\/,() bestehen.';
                     this.passwordState = false;
                 } else if (value.trim().length < 7 || value.trim().length > 40) {
-                    this.passwordInvalidText = 'Ihr Passwort muss zwischen 7 und 40 Zeichen enthalten.';
+                    this.passwordInvalidText = 'Dein Passwort muss zwischen 7 und 40 Zeichen enthalten.';
                     this.passwordState = false;
                 } else {
                     this.passwordState = true;
@@ -266,7 +282,7 @@
                 }
                 let result = await this.$store.dispatch(
                     "security/changePassword",
-                    {userId: this.userId, password: this.password, confirmationToken: this.confirmationToken}
+                    {user: `/api/users/${this.userId}`, password: this.password, confirmationToken: this.confirmationToken}
                 );
 
                 if (result) {

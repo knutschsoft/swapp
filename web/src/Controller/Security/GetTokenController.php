@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class GetTokenController extends AbstractController
 {
     /**
-     * @Route("/api/getToken", methods={"POST"})
+     * @Route("/api/users/getToken", methods={"POST"})
      *
      * @return Response
      */

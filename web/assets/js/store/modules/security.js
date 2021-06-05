@@ -178,10 +178,10 @@ export default {
         onRefresh({commit}, payload) {
             commit(PROVIDING_DATA_ON_REFRESH_SUCCESS, payload);
         },
-        async isConfirmationTokenValid({commit}, {userId, confirmationToken}) {
+        async isConfirmationTokenValid({commit}, {user, confirmationToken}) {
             commit(IS_CONFIRMATION_TOKEN_VALID);
             try {
-                let response = await SecurityAPI.isConfirmationTokenValid(userId, confirmationToken);
+                let response = await SecurityAPI.isConfirmationTokenValid(user, confirmationToken);
                 commit(IS_CONFIRMATION_TOKEN_VALID_SUCCESS);
                 return response.data;
             } catch (error) {
@@ -189,10 +189,10 @@ export default {
                 return null;
             }
         },
-        async changePassword({commit}, {userId, password, confirmationToken}) {
+        async changePassword({commit}, {user, password, confirmationToken}) {
             commit(CHANGE_PASSWORD);
             try {
-                let response = await SecurityAPI.changePassword(userId, password, confirmationToken);
+                let response = await SecurityAPI.changePassword(user, password, confirmationToken);
                 commit(CHANGE_PASSWORD_SUCCESS);
                 return response.data;
             } catch (error) {

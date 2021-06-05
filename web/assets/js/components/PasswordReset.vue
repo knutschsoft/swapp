@@ -12,13 +12,13 @@
             </h2>
             <ul class="text-left mt-3">
                 <li>
-                    Um Ihr Passwort zu ändern, tragen Sie bitte Ihre E-Mail-Adresse ein und senden das Formular ab.
+                    Um dein Passwort zu ändern, trage bitte deine E-Mail-Adresse ein und sende das Formular ab.
                 </li>
                 <li>
-                    Sie bekommen dann eine E-Mail mit einem Link zugeschickt.
+                    Du bekommst dann eine E-Mail mit einem Link zugeschickt.
                 </li>
                 <li>
-                    Mit Hilfe dieses Links können Sie dann ein neues Passwort setzen.
+                    Mit Hilfe dieses Links kannst du dann ein neues Passwort setzen.
                 </li>
             </ul>
             <div>
@@ -41,6 +41,7 @@
                             id="username"
                             v-model="username"
                             :state="validation"
+                            :disabled="isPasswordRequested"
                             autofocus
                             type="text"
                             class="form-control"
@@ -56,9 +57,8 @@
                         />
                         <b-form-invalid-feedback
                             :state="validation"
-                        >
-                            Die E-Mail-Adresse muss eine valide E-Mail-Adresse sein.
-                        </b-form-invalid-feedback>
+                            v-text="usernameInvalidText"
+                        />
                         <b-form-valid-feedback
                             :state="validation"
                         >
@@ -96,24 +96,7 @@
                             Passwortänderung beantragen
                         </b-button>
                     </b-input-group>
-                    <b-input-group
-                        v-if="hasError"
-                        class="form-group input-group"
-                    >
-                        <b-form-text
-                            class="alert alert-danger w-100 mb-0"
-                            role="alert"
-                        >
-                            <p
-                                class="font-weight-bold"
-                            >
-                                Upps! Da ist etwas schief gelaufen!
-                            </p>
-                            <p class="mb-0">
-                                Bitte informieren Sie den Administrator über das Problem.
-                            </p>
-                        </b-form-text>
-                    </b-input-group>
+                    <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
                 </b-form>
                 <div
                     v-if="isPasswordRequested && !hasError"
@@ -127,9 +110,9 @@
                             Herzlichen Glückwunsch!
                         </p>
                         <p class="mb-0">
-                            Sie sollten eine Mail bekommen haben.
+                            Du solltest eine Mail bekommen haben.
                             <br>
-                            Bitte schauen Sie ggfs. auch in ihrem Spam-Ordner nach.
+                            Bitte schaue ggfs. auch in deinem Spam-Ordner nach.
                             <br>
                             Alle weiteren Schritte stehen in der Mail.
                         </p>
@@ -141,15 +124,16 @@
 </template>
 <script>
     "use strict";
-    import * as EmailValidator from 'email-validator';
+    import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
 
     export default {
         name: "PasswordReset",
+        components: { GeneralErrorAlert },
         data: () => ({
             username: '',
             honeypotEmail: '',
             usernameHelp: '',
-            state: null,
+            usernameInvalidText: '',
             isPasswordRequested: false,
         }),
         computed: {
@@ -163,12 +147,34 @@
                 return this.$store.getters["security/error"];
             },
             validation() {
-                if (this.username.trim().length <= 20) {
+                if (this.username.trim().length <= 4) {
                     return null;
                 }
 
-                return EmailValidator.validate(this.username.trim());
-            }
+                return !this.hasError;
+            },
+            validationErrors() {
+                const errors = {};
+                if (!this.hasError) {
+                    return errors;
+                }
+                this.state = false;
+                const error = this.error;
+                if (error && error.data.violations) {
+                    error.data.violations.forEach((violation) => {
+                        const key = violation.propertyPath ? violation.propertyPath : 'global';
+                        errors[key] = violation.message;
+                        this.usernameInvalidText = violation.message;
+                    });
+                    return errors;
+                }
+                if (error.data && error.data['hydra:description']) {
+                    errors.global = error.data['hydra:description'];
+                    this.usernameInvalidText = errors.global;
+                }
+
+                return errors;
+            },
         },
         created() {
             let redirect = this.$route.query.redirect;
@@ -183,13 +189,16 @@
         },
         methods: {
             async requestPasswordReset() {
-                this.isPasswordRequested = await this.$store.dispatch(
+                await this.$store.dispatch(
                     "security/requestPasswordReset",
                     {
                         email: this.username,
                         honeypotEmail: this.honeypotEmail
                     }
                 );
+                if (!this.hasError) {
+                    this.isPasswordRequested = true;
+                }
             }
         },
     }
