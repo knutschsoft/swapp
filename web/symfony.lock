@@ -31,9 +31,6 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
-    "brick/math": {
-        "version": "0.9.1"
-    },
     "captainhook/captainhook": {
         "version": "4.5.2"
     },
@@ -362,12 +359,6 @@
     },
     "psr/log": {
         "version": "1.1.0"
-    },
-    "ramsey/collection": {
-        "version": "1.1.1"
-    },
-    "ramsey/uuid": {
-        "version": "4.1.1"
     },
     "robertfausk/behat-panther-extension": {
         "version": "v1.0.0"
@@ -713,6 +704,9 @@
     "symfony/polyfill-util": {
         "version": "v1.17.0"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.23.0"
+    },
     "symfony/process": {
         "version": "v4.3.11"
     },
@@ -817,6 +811,9 @@
             "config/routes/dev/twig.yaml",
             "templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "v5.2.10"
     },
     "symfony/validator": {
         "version": "4.3",
