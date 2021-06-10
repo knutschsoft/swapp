@@ -1,10 +1,13 @@
 Feature: A user can get a new password on his own
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email             | roles            | isEnabled |
-      | old_karl@gmx.de   |                  | 0         |
-      | karl@gmx.de       |                  | 1         |
+      | email             | roles            | isEnabled |client        |
+      | old_karl@gmx.de   |                  | 0         |client@gmx.de |
+      | karl@gmx.de       |                  | 1         |client@gmx.de |
 
   @javascript @password_reset
   Scenario: I use "Passwort vergessen?" as a not authenticated user and can set a new password for me

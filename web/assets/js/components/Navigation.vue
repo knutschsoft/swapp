@@ -57,6 +57,15 @@
                         Benutzer
                     </b-nav-item>
                     <b-nav-item
+                        v-if="isSuperAdmin"
+                        :to="{ name: 'Clients' }"
+                        :link-classes="linkClasses"
+                        exact
+                        exact-active-class="active"
+                    >
+                        Klienten
+                    </b-nav-item>
+                    <b-nav-item
                         v-if="isAdmin"
                         :to="{ name: 'Teams' }"
                         :link-classes="linkClasses"
@@ -66,7 +75,7 @@
                         Teams
                     </b-nav-item>
                     <b-nav-item
-                        v-if="isSuperAdmin"
+                        v-if="isAdmin"
                         :to="{ name: 'Tags' }"
                         :link-classes="linkClasses"
                         exact
@@ -197,10 +206,12 @@
         }),
         computed: {
             isLoading() {
-                return this.$store.getters['security/isLoading']
+                return this.$store.getters['client/isLoading']
+                    || this.$store.getters['security/isLoading']
+                    || this.$store.getters['tag/isLoading']
+                    || this.$store.getters['team/isLoading']
                     || this.$store.getters['user/isLoading']
                     || this.$store.getters['walk/isLoading']
-                    || this.$store.getters['team/isLoading']
                     || this.$store.getters['wayPoint/isLoading'];
             },
             isAuthenticated() {

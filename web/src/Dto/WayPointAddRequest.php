@@ -10,62 +10,52 @@ use App\Value\AgeGroup;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\GroupSequence(['WayPointAddRequest', 'SecondGroup'])]
 final class WayPointAddRequest
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\NotNull
-     * @Assert\Type(type="App\Entity\Walk")
-     */
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
+    #[Assert\Type(type: Walk::class, groups: ['SecondGroup'])]
     public Walk $walk;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\NotNull
-     * @Assert\Length(min="2", max="300")
-     */
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
+    #[Assert\Length(min: 2, max: 300)]
     public string $locationName;
 
-    /**
-     * @Assert\NotNull
-     * @Assert\Length(min="0", max="2500")
-     */
+    #[Assert\NotNull]
+    #[Assert\Length(min: 0, max: 2500)]
     public string $note;
 
     public ?string $imageFileData;
-    /** @Assert\Length(min="5", max="200") */
+
+    #[Assert\Length(min: 5, max: 200)]
     public ?string $imageFileName;
+
     /**
      * @var AgeGroup[]
      *
-     * @Assert\NotNull
      * @Assert\All({
      *     @Assert\NotBlank,
      *     @Assert\NotNull,
      *     @Assert\Type(type="App\Value\AgeGroup")
      * })
      */
+    #[Assert\NotNull]
     public array $ageGroups;
     /**
      * @var Tag[]
      *
-     * @Assert\NotNull
      * @Assert\All({
      *     @Assert\NotBlank,
      *     @Assert\NotNull,
      *     @Assert\Type(type="App\Entity\Tag")
      * })
      */
+    #[Assert\NotNull]
     public array $tags;
 
-    /**
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     maxSizeMessage="way-point-add.file.max-size",
-     * )
-     *
-     * @return ?File
-     */
+    #[Assert\Image(maxSize: "5M", maxSizeMessage: 'way-point-add.file.max-size')]
     public function getDecodedImageData(): ?File
     {
         if (!$this->imageFileData) {

@@ -57,6 +57,25 @@
                 </b-form-radio>
             </b-form-radio-group>
         </b-form-group>
+        <b-form-group
+            v-if="isSuperAdmin"
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="8"
+            label-cols-lg="2"
+        >
+            <template slot="label" slot-scope="{ }">
+                Klient
+            </template>
+            <b-form-select
+                v-model="client"
+                data-test="client"
+                placeholder="Für welchen Klienten?"
+                :options="availableClients"
+                value-field="@id"
+                text-field="name"
+            />
+        </b-form-group>
         <div :id="createButtonId">
             <b-button
                 type="submit"
@@ -112,6 +131,7 @@ export default {
         return {
             name: null,
             color: null,
+            client: null,
             createButtonId: 'tag-create-submit',
         };
     },
@@ -139,6 +159,12 @@ export default {
         isLoading() {
             return this.$store.getters['tag/isLoading'];
         },
+        currentUser() {
+            return this.$store.getters['security/currentUser'];
+        },
+        isSuperAdmin() {
+            return this.$store.getters['security/isSuperAdmin'];
+        },
         isFormInvalid() {
             return !this.name || !this.color || !this.colorState || !this.nameState || this.isLoading;
         },
@@ -147,6 +173,9 @@ export default {
         },
         hasError() {
             return !!this.error;
+        },
+        availableClients() {
+          return this.$store.getters['client/clients']  ;
         },
         validationErrors() {
             const errors = {};
@@ -211,7 +240,9 @@ export default {
             });
         },
     },
-    created() {
+    async created() {
+        await this.$store.dispatch('client/findAll');
+        this.client = this.currentUser.client;
     },
     methods: {
         toggleEnabled: function (tagId, isEnabled) {
@@ -230,6 +261,7 @@ export default {
             let payload = {
                 name: this.name,
                 color: this.color,
+                client: this.client,
             };
 
             const tag = await this.$store.dispatch('tag/create', payload);

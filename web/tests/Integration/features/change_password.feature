@@ -1,11 +1,14 @@
 Feature: Testing change password resource
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email          | confirmationToken                | isEnabled |
-      | karl@gmx.de    | 01234567890123456789012345678000 | 1         |
-      | lonely@gmx.de  | 01234567890123456789012345678444 | 0         |
-      | empty@token.de | 01234567890123456789012345678912 | 1         |
+      | email          | confirmationToken                | isEnabled | client        |
+      | karl@gmx.de    | 01234567890123456789012345678000 | 1         | client@gmx.de |
+      | lonely@gmx.de  | 01234567890123456789012345678444 | 0         | client@gmx.de |
+      | empty@token.de | 01234567890123456789012345678912 | 1         | client@gmx.de |
 
   @api @changePassword
   Scenario: I can request /api/users/change-password with an invalid token and get a violation

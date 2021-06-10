@@ -1,16 +1,19 @@
 Feature: An user can request a non existing wayPoint and get redirected
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email         | roles |
-      | lonely@gmx.de |       |
+      | email         | roles | client        |
+      | lonely@gmx.de |       | client@gmx.de |
     Given the following teams exists:
-      | name     | ageRanges |
-      | Westhang | 1-10      |
+      | name     | ageRanges | client        |
+      | Westhang | 1-10      | client@gmx.de |
     Given the following tags exists:
-      | name   | color |
-      | Gewalt | Green |
-      | Drogen | Blue  |
+      | name   | color     | client        |
+      | Gewalt | Chocolate | client@gmx.de |
+      | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
       | name    | team     |
       | Gorbitz | Westhang |

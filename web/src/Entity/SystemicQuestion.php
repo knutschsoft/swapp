@@ -14,7 +14,11 @@ use Webmozart\Assert\Assert;
  */
 #[ApiResource(
     collectionOperations: ['get'],
-    itemOperations: ['get'],
+    itemOperations: [
+    'get' => [
+        'security' => 'is_granted("SYSTEMIC_QUESTION_READ", object)',
+    ],
+    ],
     normalizationContext: ["groups" => ["systemicQuestion:read"]]
 )]
 class SystemicQuestion
@@ -29,16 +33,20 @@ class SystemicQuestion
     /** @ORM\Column(type="string", length=4096) */
     private string $question = '';
 
-    private function __construct(string $question)
+    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="systemicQuestions") */
+    private Client $client;
+
+    private function __construct(string $question, Client $client)
     {
         Assert::minLength($question, 5);
         Assert::maxLength($question, 4096);
         $this->question = $question;
+        $this->client = $client;
     }
 
-    public static function fromString(string $question): self
+    public static function fromString(string $question, Client $client): self
     {
-        return new self($question);
+        return new self($question, $client);
     }
 
     public function getId(): int
@@ -64,6 +72,16 @@ class SystemicQuestion
     public function setQuestion(string $question): void
     {
         $this->question = $question;
+    }
+
+    public function getClient(): Client
+    {
+        return $this->client;
+    }
+
+    public function updateClient(Client $client): void
+    {
+        $this->client = $client;
     }
 
     public function __toString(): string

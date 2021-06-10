@@ -1,10 +1,13 @@
 Feature: Testing request password reset resource
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email         | isEnabled |
-      | karl@gmx.de   | 1         |
-      | lonely@gmx.de | 0         |
+      | email         | isEnabled | client        |
+      | karl@gmx.de   | 1         | client@gmx.de |
+      | lonely@gmx.de | 0         | client@gmx.de |
 
   @api @requestPasswordReset
   Scenario: I can request /api/users/request-password-reset with an invalid user and get a violation

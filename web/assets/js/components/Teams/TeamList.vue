@@ -195,6 +195,14 @@
                         sortable: true,
                         class: 'text-center',
                     },
+                    {
+                        key: 'client',
+                        label: 'Klient',
+                        sortable: true,
+                        sortByFormatted: true,
+                        class: !this.isSuperAdmin ? 'd-none' : '',
+                        formatter: this.clientFormatter,
+                    },
                     {key: 'actions', label: 'Aktionen', class: 'text-center',}
                 ],
                 editModalTeam: {
@@ -226,6 +234,9 @@
             isDisabled() {
                 return this.$store.getters["teram/changeTeamIsLoading"];
             },
+            isSuperAdmin() {
+                return this.$store.getters['security/isSuperAdmin'];
+            },
         },
         async created() {
             await Promise.all([
@@ -234,6 +245,14 @@
             ]);
         },
         methods: {
+            clientFormatter(value) {
+                return this.getClientByIri(value).name;
+            },
+            getClientByIri(iri) {
+                const id = iri.replace('/api/clients/', '');
+
+                return this.$store.getters['client/getClientById'](id);
+            },
             openEditModal: function (team) {
                 this.editTeam = team;
                 this.editModalTeam.team = team['@id'];

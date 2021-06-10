@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Client;
 use App\Entity\User;
 use App\Entity\Walk;
 use Doctrine\ORM\AbstractQuery;
@@ -34,10 +35,11 @@ interface WalkRepository
     public function update(Walk $walk): void;
 
     /**
+     * @param Client     $client
      * @param ?\DateTime $startTimeFrom
      * @param ?\DateTime $startTimeTo
      *
      * @return Walk[]
      */
-    public function findForExport(?\DateTime $startTimeFrom, ?\DateTime $startTimeTo): array;
+    public function findForExport(Client $client, ?\DateTime $startTimeFrom, ?\DateTime $startTimeTo): array;
 }

@@ -84,6 +84,7 @@
             if (!this.walk || !this.wayPoint) {
                 this.$router.push({ name: 'Dashboard', params: { redirect: 'Dieser Wegpunkt oder diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
             }
+            await this.$store.dispatch('wayPoint/findAll');
         },
         methods: {
         },

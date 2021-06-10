@@ -24,7 +24,7 @@ final class WalkPrologueHandler implements MessageHandlerInterface
 
     public function __invoke(WalkPrologueRequest $request): Walk
     {
-        $systemicQuestion = $this->systemicQuestionRepository->getRandom();
+        $systemicQuestion = $this->systemicQuestionRepository->getRandomForClient($request->team->getClient());
         $walk = Walk::prologue($request->team, $systemicQuestion);
         $this->walkRepository->save($walk);
 

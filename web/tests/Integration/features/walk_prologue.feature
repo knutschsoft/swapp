@@ -1,30 +1,40 @@
 Feature: Testing walk prologue resource
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
+      | gamer@gmx.de  |
+      | main@gmx.de   |
     Given the following users exists:
-      | email             | roles            |
-      | karl@gmx.de       |                  |
-      | lonely@gmx.de     |                  |
-      | two@pac.de        |                  |
-      | admin@gmx.de      | ROLE_ADMIN       |
-      | superadmin@gmx.de | ROLE_SUPER_ADMIN |
+      | email             | roles            | client        |
+      | karl@gmx.de       |                  | client@gmx.de |
+      | lonely@gmx.de     |                  | client@gmx.de |
+      | two@pac.de        |                  | client@gmx.de |
+      | karl@gamer.de     |                  | gamer@gmx.de  |
+      | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
+      | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following teams exists:
-      | name     | users                  | ageRanges          |
-      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 |
-      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 |
+      | name     | users                  | ageRanges          | client        |
+      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 | client@gmx.de |
+      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 | client@gmx.de |
+      | Gamers   | karl@gamer.de          |                    | gamer@gmx.de  |
     Given the following systemic questions exists:
-      | question       |
-      | Esta muy bien? |
+      | question       | client        |
+      | Esta muy bien? | client@gmx.de |
     Given the following tags exists:
-      | name   | color |
-      | Gewalt | Green |
-      | Drogen | Blue  |
+      | name   | color     | client        |
+      | Gewalt | Chocolate | client@gmx.de |
+      | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
-      | name        | team |
-      | Spaziergang | CA   |
+      | name        | team   |
+      | Spaziergang | CA     |
+      | Gamescon    | Gamers |
     Given the following way points exists:
       | locationName | walkName    |
       | Assieck      | Spaziergang |
+      | BOTW         | Gamescon    |
+      | BOTW2        | Gamescon    |
 
   @api @walkPrologue
   Scenario: I can request /api/walks/prologue as a not authenticated user and an auth error will occur
@@ -40,8 +50,8 @@ Feature: Testing walk prologue resource
   Scenario: I can request /api/walks/prologue as authenticated user and will see all way points
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/walks/prologue" with parameters:
-      | key  | value             |
-      | team | teamIri<Westhang> |
+      | key    | value                    |
+      | team   | teamIri<Westhang>        |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -118,4 +128,4 @@ Feature: Testing walk prologue resource
       | hydra:title       | An error occurred |
       | hydra:description | Access Denied.    |
 
-    And there are exactly 4 walks in database
+    And there are exactly 5 walks in database

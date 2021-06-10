@@ -1,12 +1,15 @@
 Feature: An superadmin can impersonate any user
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email             | roles            | isEnabled |
-      | old_karl@gmx.de   |                  | 0         |
-      | karl@gmx.de       |                  | 1         |
-      | admin@gmx.de      | ROLE_ADMIN       | 1         |
-      | superadmin@gmx.de | ROLE_SUPER_ADMIN | 1         |
+      | email             | roles            | isEnabled | client        |
+      | old_karl@gmx.de   |                  | 0         | client@gmx.de |
+      | karl@gmx.de       |                  | 1         | client@gmx.de |
+      | admin@gmx.de      | ROLE_ADMIN       | 1         | client@gmx.de |
+      | superadmin@gmx.de | ROLE_SUPER_ADMIN | 1         | client@gmx.de |
 
   @javascript
   @switchUser

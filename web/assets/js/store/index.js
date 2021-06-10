@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexReset from '@ianwalter/vuex-reset';
+import Client from './modules/client';
 import Security from './modules/security';
 import User from './modules/user';
 import Walk from './modules/walk';
@@ -15,6 +16,7 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
     modules: {
+        client: Client,
         user: User,
         security: Security,
         tag: Tag,

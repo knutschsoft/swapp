@@ -74,7 +74,7 @@ class WalkController extends AbstractController
      */
     public function createWalkPrologueAction(Team $team, Request $request): JsonResponse
     {
-        $systemicQuestion = $this->systemicQuestionRepository->getRandom();
+        $systemicQuestion = $this->systemicQuestionRepository->getRandomForClient($team->getClient());
         $form = $this->formFactory->create(WalkPrologueType::class, Walk::prologue($team, $systemicQuestion));
         $form->handleRequest($request);
         if (!$form->isSubmitted() || !$form->isValid()) {

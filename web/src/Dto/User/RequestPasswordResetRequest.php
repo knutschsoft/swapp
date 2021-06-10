@@ -9,8 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestPasswordResetRequest
 {
     #[Assert\NotBlank]
-    #[AppAssert\NotAnUser(['message' => 'user.not_found'])]
-    #[AppAssert\NotAnEnabledUser(['message' => 'user.not_found_or_disabled'])]
+    #[AppAssert\NotAnUser]
+    #[AppAssert\NotAnEnabledUser]
     public string $username;
 
     /**

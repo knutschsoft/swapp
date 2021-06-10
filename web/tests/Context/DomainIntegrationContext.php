@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Context;
 
-use App\Entity\RegisterUserRequest;
+use App\Dto\Client\ClientInitRequest;
+use App\Dto\TagCreateRequest;
+use App\Dto\User\UserRegisterRequest;
+use App\Entity\Client;
 use App\Entity\SystemicQuestion;
 use App\Entity\Tag;
 use App\Entity\Team;
@@ -130,6 +133,9 @@ final class DomainIntegrationContext extends RawMinkContext
             } elseif (\str_starts_with($row['value'], 'userIri<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 8, -1);
                 $parameters[$row['key']] = \sprintf('/api/users/%s', (string) $this->getUserByEmail($value)->getId());
+            } elseif (\str_starts_with($row['value'], 'clientIri<') && \str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 10, -1);
+                $parameters[$row['key']] = \sprintf('/api/clients/%s', (string) $this->getClientByEmail($value)->getId());
             } elseif (\str_starts_with($row['value'], 'confirmationToken<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 18, -1);
                 $parameters[$row['key']] = [
@@ -141,8 +147,16 @@ final class DomainIntegrationContext extends RawMinkContext
         }
 
         $body = new PyStringNode([\json_encode($parameters)], 0);
+        //if ($url === '/api/walks/export') {
+        //    $this->restContext->iAddHeaderEqualTo('content-type', 'text/csv');
+        //    $this->restContext->iAddHeaderEqualTo('accept', 'text/csv');
+        //    $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
+        //
+        //
+        //} else {
         $this->restContext->iAddHeaderEqualTo('content-type', 'application/ld+json');
         $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
+        //}
 
         $this->restContext->iSendARequestToWithBody($method, $this->locatePath($url), $body);
     }
@@ -172,6 +186,32 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the following clients exists:$/
+     *
+     * @param TableNode $table
+     */
+    public function theFollowingClientsExists(TableNode $table): void
+    {
+        foreach ($table as $key => $row) {
+            $clientInitRequest = new ClientInitRequest();
+            $clientInitRequest->email = $row['email'] ?? 'Client@narf.de'.$key;
+            $clientInitRequest->name = $row['name'] ?? $clientInitRequest->email;
+            $clientInitRequest->description = $row['description'] ?? '';
+            $client = Client::fromClientInitRequest($clientInitRequest);
+
+            if (isset($row['users'])) {
+                $users = $this->getUsersFromString($row['users']);
+                foreach ($users as $user) {
+                    $client->addUser($user);
+                }
+            }
+
+            $this->em->persist($client);
+        }
+        $this->em->flush();
+    }
+
+    /**
      * @Given /^the following users exists:$/
      *
      * @param TableNode $table
@@ -179,10 +219,12 @@ final class DomainIntegrationContext extends RawMinkContext
     public function theFollowingUsersExists(TableNode $table): void
     {
         foreach ($table as $key => $row) {
-            $registerUserRequest = new RegisterUserRequest();
+            Assert::keyExists($row, 'client');
+            $registerUserRequest = new UserRegisterRequest();
             $registerUserRequest->email = $row['email'] ?? 'Clari@narf.de'.$key;
             $registerUserRequest->password = $row['password'] ?? $registerUserRequest->email;
             $registerUserRequest->username = $row['username'] ?? $registerUserRequest->email;
+            $registerUserRequest->client = $this->getClientByEmail($row['client']);
             $user = User::fromRegisterUserRequest($registerUserRequest, $this->passwordEncoder);
 
             $isEnabled = $row['isEnabled'] ?? true;
@@ -216,7 +258,8 @@ final class DomainIntegrationContext extends RawMinkContext
     {
         foreach ($table as $row) {
             Assert::keyExists($row, 'question');
-            $this->em->persist(SystemicQuestion::fromString($row['question']));
+            Assert::keyExists($row, 'client');
+            $this->em->persist(SystemicQuestion::fromString($row['question'], $this->getClientByEmail($row['client'])));
         }
         $this->em->flush();
     }
@@ -231,9 +274,12 @@ final class DomainIntegrationContext extends RawMinkContext
         foreach ($table as $row) {
             Assert::keyExists($row, 'name');
             Assert::keyExists($row, 'color');
-            $tag = new Tag();
-            $tag->setName($row['name']);
-            $tag->setColor($row['color']);
+            Assert::keyExists($row, 'client');
+            $request = new TagCreateRequest();
+            $request->name = $row['name'];
+            $request->color = $row['color'];
+            $request->client = $this->getClientByEmail($row['client']);
+            $tag = Tag::fromTagCreateRequest($request);
             $this->em->persist($tag);
         }
         $this->em->flush();
@@ -250,7 +296,10 @@ final class DomainIntegrationContext extends RawMinkContext
             Assert::keyExists($row, 'name');
             Assert::keyExists($row, 'team');
             $team = $this->getTeamByName($row['team']);
-            $systemicQuestion = SystemicQuestion::fromString($row['systemicQuestion'] ?? 'How are you?');
+            $systemicQuestion = SystemicQuestion::fromString(
+                $row['systemicQuestion'] ?? 'How are you?',
+                $team->getClient()
+            );
             $tag = Walk::prologue($team, $systemicQuestion);
             $tag->setName($row['name']);
 
@@ -297,12 +346,14 @@ final class DomainIntegrationContext extends RawMinkContext
     public function theFollowingTeamsExists(TableNode $table): void
     {
         foreach ($table as $key => $row) {
+            Assert::keyExists($row, 'client');
             $team = new Team();
             $team->setName($row['name'] ?? 'Clari@narf.de'.$key);
             $users = $this->getUsersFromString($row['users'] ?? '');
             $team->setUsers(new ArrayCollection($users));
             $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '');
             $team->setAgeRanges($ageRanges);
+            $team->updateClient($this->getClientByEmail($row['client']));
 
             $this->em->persist($team);
         }

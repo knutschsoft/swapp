@@ -5,12 +5,10 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class IsUserEmailUnique extends Constraint
 {
-    public string $message = '{{ value }} is already used.';
+    public string $message = 'user.email-is-not-unique';
 
     public function validatedBy(): string
     {

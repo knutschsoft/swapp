@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\User\ChangePasswordRequest;
 use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Dto\User\RequestPasswordResetRequest;
+use App\Dto\User\UserRegisterRequest;
 use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -62,9 +63,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class User implements UserInterface
 {
     private const ROLE_DEFAULT = 'ROLE_USER';
-
-    private const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-    private const ROLE_ALLOWED_TO_SWITCH = 'ROLE_ALLOWED_TO_SWITCH';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    public const ROLE_ALLOWED_TO_SWITCH = 'ROLE_ALLOWED_TO_SWITCH';
 
     /** @ORM\Column(type="string", length=180, unique=true) */
     protected string $email;
@@ -133,6 +134,9 @@ class User implements UserInterface
      */
     private Collection $teams;
 
+    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="users") */
+    private Client $client;
+
     public function __construct()
     {
         $this->username = '';
@@ -144,12 +148,13 @@ class User implements UserInterface
         $this->confirmationToken = ConfirmationToken::createEmpty();
     }
 
-    public static function fromRegisterUserRequest(RegisterUserRequest $registerUserRequest, UserPasswordEncoderInterface $passwordEncoder): self
+    public static function fromRegisterUserRequest(UserRegisterRequest $request, UserPasswordEncoderInterface $passwordEncoder): self
     {
         $instance = new self();
-        $instance->email = \strtolower($registerUserRequest->email);
-        $instance->username = \strtolower($registerUserRequest->username);
-        $instance->changePassword($registerUserRequest->password, $passwordEncoder);
+        $instance->email = \strtolower($request->email);
+        $instance->username = \strtolower($request->username);
+        $instance->changePassword($request->password, $passwordEncoder);
+        $instance->client = $request->client;
         $instance->addRole('ROLE_USER');
         $instance->disable();
 
@@ -446,6 +451,17 @@ class User implements UserInterface
     {
         return $this->getPasswordRequestedAt() instanceof \DateTime &&
             $this->getPasswordRequestedAt()->getTimestamp() + $ttl > \time();
+    }
+
+    #[Groups(['user:read', 'team:read'])]
+    public function getClient(): Client
+    {
+        return $this->client;
+    }
+
+    public function updateClient(Client $client): void
+    {
+        $this->client = $client;
     }
 
     public function __toString(): string

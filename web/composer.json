@@ -95,6 +95,7 @@
         "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
         "security": "vendor/bin/local-php-security-checker || true",
         "compile-test": [
+            "rm -rf var/cache/test/test.db",
             "bin/console doctrine:database:create --env=test --no-interaction",
             "bin/console doctrine:schema:update --dump-sql --env=test --ansi",
             "bin/console doctrine:schema:update --force --env=test --ansi",

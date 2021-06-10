@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Client;
 use App\Entity\Tag;
 
 interface TagRepository
@@ -14,7 +15,5 @@ interface TagRepository
 
     public function updateTag(Tag $tag): void;
 
-    public function findOneByColor(string $color): Tag;
-
-    public function findOneByName(string $name): Tag;
+    public function findOneByColorAndNameAndClient(string $color, string $name, Client $client): Tag;
 }

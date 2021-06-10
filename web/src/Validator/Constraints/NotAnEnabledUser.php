@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class NotAnEnabledUser extends Constraint
 {
-    public string $message = 'User "{{ value }}" is not enabled or does not exist at all.';
+    public string $message = 'user.not_found_or_disabled';
 
     public function validatedBy(): string
     {

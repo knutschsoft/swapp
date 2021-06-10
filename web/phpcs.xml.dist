@@ -11,6 +11,10 @@
     <rule ref="vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/ruleset.xml">
     </rule>
 
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
+        <exclude-pattern>src/Security/Voter/*Voter.php</exclude-pattern>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue.NullabilityTypeMissing">
         <exclude-pattern>src/Notifier/*Notification.php</exclude-pattern>
     </rule>

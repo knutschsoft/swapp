@@ -18,6 +18,7 @@ use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,17 +35,15 @@ use Symfony\Component\Validator\Constraints as Assert;
     "get",
     "walk_export" => [
         "messenger" => "input",
-        "input_formats" => [
-            "csv" => ["text/csv"],
-        ],
         "openapi_context" => [
             "summary" => "Exports all walks",
         ],
         "input" => WalkExportRequest::class,
-        "output" => false,
+        "output" => Response::class,
         "status" => 200,
         "method" => "post",
         "path" => "/walks/export",
+        "security_post_denormalize" => "is_granted('CLIENT_READ', object.client)",
     ],
     "walk_prologue" => [
         "messenger" => "input",
@@ -53,7 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/walks/prologue",
-        "security_post_denormalize" => '(is_granted("'.TeamVoter::TEAM_READ.'", object.team) and user.hasTeam(object.team))',
+        "security_post_denormalize" => "is_granted('".TeamVoter::TEAM_READ."', object.team) and user.hasTeam(object.team)",
     ],
     "add_way_point" => [
         "messenger" => "input",
@@ -201,6 +200,9 @@ class Walk
      */
     private ?\DateTime $deletedAt = null;
 
+    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="walks") */
+    private Client $client;
+
     public function __construct()
     {
         $this->ageRanges = [];
@@ -216,8 +218,8 @@ class Walk
     {
         $instance = new self();
 
-        // CreateWalkPrologueController::class;
         $instance->setTeamName($team->getName());
+        $instance->updateClient($team->getClient());
         $instance->setName('');
         $instance->setStartTime(new \DateTime());
         $instance->setEndTime(new \DateTime());
@@ -691,6 +693,16 @@ class Walk
     public function getIsUnfinished(): bool
     {
         return '' === $this->getSystemicAnswer();
+    }
+
+    public function getClient(): Client
+    {
+        return $this->client;
+    }
+
+    public function updateClient(Client $client): void
+    {
+        $this->client = $client;
     }
 
     public function __toString(): string

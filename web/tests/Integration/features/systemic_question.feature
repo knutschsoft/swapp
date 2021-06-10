@@ -1,14 +1,21 @@
 Feature: Testing systemic question resource
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
+      | gamer@gmx.de  |
+      | main@gmx.de   |
     Given the following users exists:
-      | email             | roles            |
-      | karl@gmx.de       |                  |
-      | admin@gmx.de      | ROLE_ADMIN       |
-      | superadmin@gmx.de | ROLE_SUPER_ADMIN |
+      | email             | roles            | client        |
+      | karl@gmx.de       |                  | client@gmx.de |
+      | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
+      | karl@gamer.de     |                  | gamer@gmx.de  |
+      | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following systemic questions exists:
-      | question       |
-      | Esta muy bien? |
+      | question       | client        |
+      | Esta muy bien? | client@gmx.de |
+      | Esta muy bien? | gamer@gmx.de  |
 
   @api @systemicQuestion
   Scenario: I can request /api/systemic_questions as a not authenticated user and an auth error will occur
@@ -30,6 +37,13 @@ Feature: Testing systemic question resource
       | hydra:member[0].@type    | SystemicQuestion |
       | hydra:member[0].question | Esta muy bien?   |
 
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send a GET request to "/api/systemic_questions"
+    Then the response should be in JSON
+#    And print last JSON response
+    And the JSON nodes should be equal to:
+      | hydra:totalItems | 1 |
+
     Given I am authenticated against api as "admin@gmx.de"
     When I send a GET request to "/api/systemic_questions"
     Then the response should be in JSON
@@ -42,4 +56,4 @@ Feature: Testing systemic question resource
     Then the response should be in JSON
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | hydra:totalItems | 1 |
+      | hydra:totalItems | 2 |

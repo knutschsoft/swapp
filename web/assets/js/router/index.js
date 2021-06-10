@@ -4,6 +4,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '../store';
 
+import Clients from '../components/Clients';
 import Users from '../components/Users';
 import Login from '../components/Login';
 import Logout from '../components/Logout';
@@ -23,6 +24,7 @@ import WalkEpilogue from '../components/WalkEpilogue';
 Vue.use(VueRouter);
 
 let routes = [
+    { id: 1, path: '/klienten', component: Clients, name: 'Clients', meta: { requiresSuperAdmin: true } },
     {id: 2, path: "/benutzer", component: Users, name: "Users", meta: {requiresSuperAdmin: true}},
     {id: 3, path: "/anmeldung", component: Login, name: "Login"},
     {id: 4, path: "/dashboard", component: Dashboard, name: "Dashboard", meta: {requiresAuth: true}, props: true},
@@ -37,7 +39,7 @@ let routes = [
     {id: 10, path: "/passwort-aenderung-beantragen", component: PasswordChangeRequest, name: "PasswordChangeRequest", meta: {requiresAuth: true}},
     {id: 11, path: "/passwort-aendern/:userId/:confirmationToken", component: PasswordChange, name: "PasswordChange", props: true},
     {id: 20, path: "/teams", component: Teams, name: "Teams", meta: {requiresAdmin: true}},
-    {id: 21, path: "/tags", component: Tags, name: "Tags", meta: {requiresSuperAdmin: true}},
+    {id: 21, path: "/tags", component: Tags, name: "Tags", meta: {requiresAdmin: true}},
     {id: 0, path: "*", redirect: { name: "Dashboard" }, name: "default"}
 ];
 

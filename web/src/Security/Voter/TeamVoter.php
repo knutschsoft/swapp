@@ -53,25 +53,31 @@ class TeamVoter extends Voter
             return true;
         }
 
+        /** @var Team $team */
+        $team = $subject;
+
         switch ($attribute) {
-            case self::TEAM_CREATE:
-                if ($this->security->isGranted('ROLE_ADMIN')) {
+            case self::TEAM_READ:
+                if ($team->getUsers()->contains($user)) {
                     return true;
                 }
-                break;
-            case self::TEAM_READ:
-                if ($this->security->isGranted('ROLE_ADMIN')) {
-                    return true;
+                if (!$this->security->isGranted('ROLE_ADMIN')) {
+                    return false;
+                }
+
+                if ($team->getClient() !== $user->getClient()) {
+                    return false;
                 }
 
                 return $user->getTeams()->contains($subject);
+            case self::TEAM_CREATE:
             case self::TEAM_DELETE:
             case self::TEAM_EDIT:
                 if (!$this->security->isGranted('ROLE_ADMIN')) {
                     return false;
                 }
 
-                return $user->getTeams()->contains($subject);
+                return $team->getClient() === $user->getClient();
         }
 
         return false;

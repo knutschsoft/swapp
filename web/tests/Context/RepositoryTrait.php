@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Context;
 
+use App\Entity\Client;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
+use App\Repository\ClientRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use App\Repository\WalkRepository;
@@ -20,6 +22,7 @@ use Webmozart\Assert\Assert as Assertion;
 trait RepositoryTrait
 {
     private EntityManagerInterface $em;
+    private ClientRepository $clientRepository;
     private UserRepository $userRepository;
     private TeamRepository $teamRepository;
     private WalkRepository $walkRepository;
@@ -31,6 +34,9 @@ trait RepositoryTrait
         Assertion::notNull($serviceContainer);
         Assertion::isInstanceOf($serviceContainer, Container::class);
 
+        $clientRepository = $serviceContainer->get(ClientRepository::class);
+        \assert($clientRepository instanceof ClientRepository);
+        $this->clientRepository = $clientRepository;
         $userRepository = $serviceContainer->get(UserRepository::class);
         \assert($userRepository instanceof UserRepository);
         $this->userRepository = $userRepository;
@@ -47,6 +53,11 @@ trait RepositoryTrait
         $em = $serviceContainer->get('doctrine.orm.entity_manager');
         \assert($em instanceof EntityManagerInterface);
         $this->em = $em;
+    }
+
+    protected function getClientByEmail(string $email): Client
+    {
+        return $this->clientRepository->findOneByEmail($email);
     }
 
     protected function getUserByEmail(string $email): User

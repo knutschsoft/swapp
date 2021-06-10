@@ -49,7 +49,11 @@ export default {
             dateRange: false,
         };
     },
-    computed: {},
+    computed: {
+        currentUser() {
+            return this.$store.getters['security/currentUser'];
+        },
+    },
     watch: {},
     mounted() {
     },
@@ -64,8 +68,11 @@ export default {
         },
         exportWalks: async function () {
             this.isLoading = true;
-            const now = new Date();
-            const response = await WalkAPI.export({});
+            const response = await WalkAPI.export({
+                // startTimeFrom: '20.12.2020',
+                // startTimeTo: '20.12.2021',
+                client: this.currentUser.client
+            });
             const title = `${dayjs().format('YYYYMMDD_HHmmss')}_streetworkrunden_export.csv`;
             this.forceFileDownload(response, title);
             this.isLoading = false;

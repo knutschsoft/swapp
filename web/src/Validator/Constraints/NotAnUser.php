@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class NotAnUser extends Constraint
 {
-    public string $message = 'User "{{ value }}" is not an user.';
+    public string $message = 'user.not_found';
 
     public function validatedBy(): string
     {

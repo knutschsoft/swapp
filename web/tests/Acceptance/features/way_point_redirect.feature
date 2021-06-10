@@ -1,9 +1,12 @@
 Feature: An user can request a non existing wayPoint and get redirected
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email             | roles            |
-      | lonely@gmx.de     |                  |
+      | email         | roles | client        |
+      | lonely@gmx.de |       | client@gmx.de |
 
   @javascript
   @wayPointRedirect

@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Client;
 use App\Entity\SystemicQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -29,15 +32,19 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
     }
 
     /**
+     * @param Client $client
+     *
      * @return SystemicQuestion
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function getRandom(): SystemicQuestion
+    public function getRandomForClient(Client $client): SystemicQuestion
     {
         $count = $this->createQueryBuilder('u')
             ->select('COUNT(u)')
+            ->where('u.client = :client')
+            ->setParameter('client', $client)
             ->getQuery()
             ->getSingleScalarResult();
 

@@ -25,10 +25,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/tags/create",
-        "security" => 'is_granted("ROLE_SUPER_ADMIN")',
+        "security_post_denormalize" => 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.client)',
     ],
     ],
-    itemOperations: ['get'],
+    itemOperations: [
+        'get' => [
+            'security' => 'is_granted("TAG_READ", object)',
+        ],
+    ],
     normalizationContext: ["groups" => ["tag:read"]]
 )]
 class Tag
@@ -144,6 +148,9 @@ class Tag
         $this->name = '';
     }
 
+    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="tags") */
+    private Client $client;
+
     public static function fromTagCreateRequest(TagCreateRequest $request): self
     {
         $instance = new self();
@@ -156,6 +163,7 @@ class Tag
         \Webmozart\Assert\Assert::minLength($name, 3);
         \Webmozart\Assert\Assert::maxLength($name, 100);
         $instance->name = $name;
+        $instance->client = $request->client;
 
         return $instance;
     }
@@ -255,6 +263,17 @@ class Tag
     public function setWayPoints(Collection $wayPoints): void
     {
         $this->wayPoints = $wayPoints;
+    }
+
+    #[Groups(['tag:read'])]
+    public function getClient(): Client
+    {
+        return $this->client;
+    }
+
+    public function updateClient(Client $client): void
+    {
+        $this->client = $client;
     }
 
     public function __toString(): string

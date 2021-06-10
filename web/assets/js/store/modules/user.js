@@ -23,6 +23,20 @@ const getters = {
     users(state) {
         return state.users;
     },
+    getUserById(state) {
+        return userId => {
+            let foundUser = false;
+            state.users.forEach(
+                (user) => {
+                    if (String(user.id) === String(userId)) {
+                        foundUser = user;
+                    }
+                }
+            );
+
+            return foundUser;
+        }
+    },
     error(state) {
         return state.error;
     },
@@ -85,10 +99,10 @@ const mutations = {
 };
 
 const actions = {
-    async findAll({commit}) {
+    async findAll({commit}, params) {
         commit(FETCHING_USERS);
         try {
-            let response = await UserAPI.findAll();
+            let response = await UserAPI.findAll(params);
             commit(FETCHING_USERS_SUCCESS, response.data['hydra:member']);
             return response.data['hydra:member'];
         } catch (error) {

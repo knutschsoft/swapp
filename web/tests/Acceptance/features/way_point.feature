@@ -1,22 +1,25 @@
 Feature: An user can request a non existing wayPoint and get redirected
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email             | roles            |
-      | karl@gmx.de       |                  |
-      | lonely@gmx.de     |                  |
-      | admin@gmx.de      | ROLE_ADMIN       |
-      | superadmin@gmx.de | ROLE_SUPER_ADMIN |
+      | email             | roles            | client        |
+      | karl@gmx.de       |                  | client@gmx.de |
+      | lonely@gmx.de     |                  | client@gmx.de |
+      | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
+      | superadmin@gmx.de | ROLE_SUPER_ADMIN | client@gmx.de |
     Given the following teams exists:
-      | name     | users       | ageRanges          |
-      | Westhang | karl@gmx.de | 1-10,3-12, 13 - 90 |
+      | name     | users       | ageRanges          | client        |
+      | Westhang | karl@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de |
     Given the following systemic questions exists:
-      | question |
-      | How old? |
+      | question | client        |
+      | How old? | client@gmx.de |
     Given the following tags exists:
-      | name   | color |
-      | Gewalt | Green |
-      | Drogen | Blue  |
+      | name   | color     | client        |
+      | Gewalt | Chocolate | client@gmx.de |
+      | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
       | name    | team     |
       | Gorbitz | Westhang |

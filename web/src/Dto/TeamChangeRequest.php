@@ -8,13 +8,12 @@ use App\Entity\User;
 use App\Value\AgeRange;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Assert\GroupSequence({"TeamChangeRequest", "Second"})
- */
+#[Assert\GroupSequence(["TeamChangeRequest", "SecondGroup"])]
 final class TeamChangeRequest
 {
     #[Assert\NotNull]
-    #[Assert\Type(type: Team::class)]
+    #[Assert\NotBlank]
+    #[Assert\Type(type: Team::class, groups: ['SecondGroup'])]
     public Team $team;
 
     #[Assert\NotBlank]

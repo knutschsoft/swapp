@@ -1,9 +1,9 @@
 tag:
-  color-is-not-unique: Ein Tag mit der Farbe "{{ value }}" existiert bereits.
-  name-is-not-unique: Ein Tag mit dem Namen "{{ value }}" existiert bereits.
+ is_not_unique: Ein Tag mit dem Namen "{{ name }}" und der Farbe "{{ color }}" existiert bereits.
 way-point-add:
   file:
     max-size: Das Bild ist mit {{ size }} {{ suffix }} größer als die maximal erlaubten {{ limit }} {{ suffix }}.
 user:
   not_found: Der Nutzer "{{ value }}" existiert nicht.
   not_found_or_disabled: Der Nutzer "{{ value }}" existiert nicht oder sein Account ist inaktiv.
+  password_not_compromised: Dieses Passwort war Teil eines Datenlecks und gewährleistet keine sichere Nutzung. Bitte wähle ein sicheres Passwort.

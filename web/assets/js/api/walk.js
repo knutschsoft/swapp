@@ -22,6 +22,6 @@ export default {
         return axios.post('/api/walks/add-way-point', payload);
     },
     export(payload) {
-        return axios.post('/api/walks/export', payload, { headers: { 'Content-Type': 'text/csv' } });
+        return axios.post('/api/walks/export', payload);
     },
 };

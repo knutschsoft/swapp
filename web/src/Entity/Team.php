@@ -26,10 +26,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/teams/change",
-        "security" => 'is_granted("ROLE_ADMIN")',
+        "security_post_denormalize" => 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.team.getClient())',
     ],
     ],
-    itemOperations: ["get"],
+    itemOperations: [
+    'get' => [
+        'security' => 'is_granted("TEAM_READ", object)',
+    ],
+    ],
     normalizationContext: ["groups" => ["team:read"]]
 )]
 class Team
@@ -58,6 +62,9 @@ class Team
      * @Assert\NotBlank()
      */
     private string $name = '';
+
+    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="teams") */
+    private Client $client;
 
     public function __construct()
     {
@@ -131,6 +138,16 @@ class Team
         foreach ($users as $user) {
             $user->addTeam($this);
         }
+    }
+
+    public function getClient(): Client
+    {
+        return $this->client;
+    }
+
+    public function updateClient(Client $client): void
+    {
+        $this->client = $client;
     }
 
     public function __toString(): string

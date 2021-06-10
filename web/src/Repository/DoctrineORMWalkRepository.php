@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Client;
 use App\Entity\User;
 use App\Entity\Walk;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -74,21 +75,23 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
     /**
      * @inheritDoc
      */
-    public function findForExport(?\DateTime $startTimeFrom, ?\DateTime $startTimeTo): array
+    public function findForExport(Client $client, ?\DateTime $startTimeFrom, ?\DateTime $startTimeTo): array
     {
         $queryBuilder = $this->createQueryBuilder('walk')
-            ->select();
+            ->select()
+            ->where('walk.client = :client')
+            ->setParameter('client', $client);
 
         if ($startTimeFrom) {
             $startTimeFrom->setTime(0, 0, 0);
             $queryBuilder
-                ->where('walk.startTime > :startTimeFrom')
+                ->andWhere('walk.startTime > :startTimeFrom')
                 ->setParameter('startTimeFrom', $startTimeFrom);
         }
         if ($startTimeTo) {
             $startTimeTo->setTime(23, 59, 59);
             $queryBuilder
-                ->where('walk.startTimeTo < :')
+                ->andWhere('walk.startTimeTo < :')
                 ->setParameter('startTimeTo', $startTimeTo);
         }
 

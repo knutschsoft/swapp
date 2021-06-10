@@ -1,12 +1,15 @@
 Feature: A user can login
 
   Background:
+    Given the following clients exists:
+      | email         |
+      | client@gmx.de |
     Given the following users exists:
-      | email             | roles            | isEnabled |
-      | old_karl@gmx.de   |                  | 0         |
-      | karl@gmx.de       |                  | 1         |
-      | admin@gmx.de      | ROLE_ADMIN       | 1         |
-      | superadmin@gmx.de | ROLE_SUPER_ADMIN | 1         |
+      | email             | roles            | isEnabled | client        |
+      | old_karl@gmx.de   |                  | 0         | client@gmx.de |
+      | karl@gmx.de       |                  | 1         | client@gmx.de |
+      | admin@gmx.de      | ROLE_ADMIN       | 1         | client@gmx.de |
+      | superadmin@gmx.de | ROLE_SUPER_ADMIN | 1         | client@gmx.de |
 
   @javascript
   @login
@@ -52,7 +55,7 @@ Feature: A user can login
     Then I wait for "Dashboard" to appear
     Then I wait for "Teams" to appear
     Then I wait for "Benutzer" to disappear
-    Then I wait for "Tags" to disappear
+    Then I wait for "Tags" to appear
 
   @javascript
   @login
