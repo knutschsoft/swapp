@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use App\Repository\ClientRepository;
 use App\Repository\Exception\NotFoundException;
-use App\Repository\TagRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class IsTagNameUniqueValidator extends ConstraintValidator
+class IsClientEmailUniqueValidator extends ConstraintValidator
 {
-    private TagRepository $tagRepository;
+    private ClientRepository $clientRepository;
 
-    public function __construct(TagRepository $tagRepository)
+    public function __construct(ClientRepository $clientRepository)
     {
-        $this->tagRepository = $tagRepository;
+        $this->clientRepository = $clientRepository;
     }
 
     /**
@@ -24,7 +24,7 @@ class IsTagNameUniqueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint): void
     {
         try {
-            $this->tagRepository->findOneByName($value);
+            $this->clientRepository->findOneByEmail($value);
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();
