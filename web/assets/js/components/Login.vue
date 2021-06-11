@@ -9,7 +9,7 @@
                 Login
             </h2>
             <p class="text-center">
-                Bitte melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem selbst gewählten Passwort an.
+                Bitte melde dich mit deiner E-Mail-Adresse (oder deinem Benutzername) und deinem selbst gewählten Passwort an.
             </p>
             <div>
                 <b-form
@@ -46,11 +46,6 @@
                             id="username-help-block"
                             v-text="usernameHelp"
                         />
-                        <b-form-invalid-feedback
-                            :state="validation"
-                        >
-                            Ihr Benutzername muss ein valide E-Mail-Adresse sein.
-                        </b-form-invalid-feedback>
                         <b-form-valid-feedback
                             :state="validation"
                         >

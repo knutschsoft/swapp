@@ -84,7 +84,7 @@ export default {
             let message = '';
             let isProd = process.env.NODE_ENV === 'production';
             if (isProd) {
-                message = `Wenden Sie sich bitte an robertfreigang@gmx.de`;
+                message = `Wende dich bitte an info@streetworkapp.de`;
             } else {
                 message = `
                     Fehlermeldung: ${error.message}
@@ -100,7 +100,7 @@ export default {
                     variant: 'danger',
                 };
                 if (isProd) {
-                    options.href = 'mailto:robertfreigang@gmx.de';
+                    options.href = 'mailto:info@streetworkapp.de';
                 }
                 this.$bvToast.toast(message, options);
             }

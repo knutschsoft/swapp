@@ -29,7 +29,7 @@ export default {
     properties: {
     },
     data: () => ({
-        email: 'robertfreigang@gmx.de',
+        email: 'info@streetworkapp.de',
         subject: encodeURIComponent('Nutzermeldung zu einem Fehler in Swapp'),
     }),
     methods: {

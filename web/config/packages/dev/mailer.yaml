@@ -1,4 +1,4 @@
 framework:
   mailer:
     envelope:
-      recipients: [ 'robertfreigang@gmx.de' ]
+      recipients: [ 'info@streetworkapp.de' ]
