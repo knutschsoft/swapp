@@ -72,11 +72,7 @@ class Team
         $this->users = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read', 'team:read'])]
     public function getId(): int
     {
         return $this->id;
@@ -87,11 +83,7 @@ class Team
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read', 'team:read'])]
     public function getName(): string
     {
         return $this->name;
@@ -104,9 +96,8 @@ class Team
 
     /**
      * @return Collection<int, User>
-     *
-     * @Groups({"team:read"})
      */
+    #[Groups(['team:read'])]
     public function getUsers(): Collection
     {
         return $this->users;
@@ -140,6 +131,7 @@ class Team
         }
     }
 
+    #[Groups(['team:read'])]
     public function getClient(): Client
     {
         return $this->client;
