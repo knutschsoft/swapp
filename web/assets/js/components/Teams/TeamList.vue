@@ -246,7 +246,6 @@
         },
         methods: {
             clientFormatter(value) {
-                console.log(value);
                 return this.getClientByIri(value).name;
             },
             getClientByIri(iri) {
