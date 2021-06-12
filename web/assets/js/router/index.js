@@ -15,6 +15,7 @@ import Dashboard from '../components/Dashboard';
 import About from '../components/About';
 import WalkDetail from '../components/WalkDetail';
 import WayPointDetail from '../components/WayPointDetail';
+import SystemicQuestions from '../components/SystemicQuestions';
 import Teams from '../components/Teams';
 import Tags from '../components/Tags';
 import WalkPrologue from '../components/WalkPrologue';
@@ -38,6 +39,7 @@ let routes = [
     {id: 9, path: "/abmeldung", component: Logout, name: "Logout", meta: {requiresAuth: true}},
     {id: 10, path: "/passwort-aenderung-beantragen", component: PasswordChangeRequest, name: "PasswordChangeRequest", meta: {requiresAuth: true}},
     {id: 11, path: "/passwort-aendern/:userId/:confirmationToken", component: PasswordChange, name: "PasswordChange", props: true},
+    {id: 20, path: "/systemische-fragen", component: SystemicQuestions, name: "SystemicQuestions", meta: {requiresAdmin: true}},
     {id: 20, path: "/teams", component: Teams, name: "Teams", meta: {requiresAdmin: true}},
     {id: 21, path: "/tags", component: Tags, name: "Tags", meta: {requiresAdmin: true}},
     {id: 0, path: "*", redirect: { name: "Dashboard" }, name: "default"}

@@ -40,7 +40,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
         'security' => 'is_granted("CLIENT_READ", object)',
     ],
     ],
-    //normalizationContext: ["groups" => ["client:read"]],
 )]
 class Client
 {

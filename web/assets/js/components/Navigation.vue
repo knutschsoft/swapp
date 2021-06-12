@@ -76,6 +76,15 @@
                     </b-nav-item>
                     <b-nav-item
                         v-if="isAdmin"
+                        :to="{ name: 'SystemicQuestions' }"
+                        :link-classes="linkClasses"
+                        exact
+                        exact-active-class="active"
+                    >
+                        Systemische Fragen
+                    </b-nav-item>
+                    <b-nav-item
+                        v-if="isAdmin"
                         :to="{ name: 'Tags' }"
                         :link-classes="linkClasses"
                         exact
@@ -208,6 +217,7 @@
             isLoading() {
                 return this.$store.getters['client/isLoading']
                     || this.$store.getters['security/isLoading']
+                    || this.$store.getters['systemicQuestion/isLoading']
                     || this.$store.getters['tag/isLoading']
                     || this.$store.getters['team/isLoading']
                     || this.$store.getters['user/isLoading']

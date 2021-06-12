@@ -97,25 +97,9 @@
             <template #title>Name und Farbe</template>
             Bitte erst Name und Farbe wählen bevor ein neuer Tag erstellt werden kann.
         </b-popover>
-        <b-alert
-            :show="hasError"
-            variant="danger"
-            class="mt-3 mb-0"
-        >
-            <ul class="mb-0">
-                <li
-                    v-for="(validationError, name) in validationErrors"
-                    :key="name"
-                >
-                    <b
-                        v-if="name !== 'global'"
-                        v-text="`${name}:`"
-                        class="text-capitalize"
-                    />
-                    {{ validationError }}
-                </li>
-            </ul>
-        </b-alert>
+        <form-error
+            :error="error"
+        />
     </b-form>
 </template>
 
@@ -123,10 +107,14 @@
 'use strict';
 import ColorBadge from './ColorBadge.vue';
 import { html } from 'color_library';
+import FormError from '../Common/FormError.vue';
 
 export default {
     name: 'TagCreate',
-    components: { ColorBadge },
+    components: {
+        FormError,
+        ColorBadge,
+    },
     data: function () {
         return {
             name: null,
@@ -171,30 +159,8 @@ export default {
         error() {
             return this.$store.getters['tag/createTagError'];
         },
-        hasError() {
-            return !!this.error;
-        },
         availableClients() {
           return this.$store.getters['client/clients']  ;
-        },
-        validationErrors() {
-            const errors = {};
-            if (!this.hasError) {
-                return errors;
-            }
-            const error = this.error;
-            if (error && error.data.violations) {
-                error.data.violations.forEach((violation) => {
-                    const key = violation.propertyPath ? violation.propertyPath : 'global';
-                    errors[key] = violation.message;
-                });
-                return errors;
-            }
-            if (error.data && error.data["hydra:description"]) {
-                errors.global = error.data["hydra:description"];
-            }
-
-            return errors;
         },
         availableColors() {
             return html.filter(htmlColor => (-1 === this.colors.indexOf(htmlColor.name)
@@ -245,13 +211,6 @@ export default {
         this.client = this.currentUser.client;
     },
     methods: {
-        toggleEnabled: function (tagId, isEnabled) {
-            if (isEnabled) {
-                this.$store.dispatch('tag/disable', tagId);
-            } else {
-                this.$store.dispatch('tag/enable', tagId);
-            }
-        },
         async handleSubmit() {
             if (this.isFormInvalid) {
                 this.$root.$emit('bv::show::popover', this.createButtonId)

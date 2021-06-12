@@ -6,6 +6,7 @@ import Client from './modules/client';
 import Security from './modules/security';
 import User from './modules/user';
 import Walk from './modules/walk';
+import SystemicQuestion from './modules/systemic-question';
 import Tag from './modules/tag';
 import Team from './modules/team';
 import WayPoint from './modules/way-point';
@@ -19,6 +20,7 @@ export default new Vuex.Store({
         client: Client,
         user: User,
         security: Security,
+        'systemicQuestion': SystemicQuestion,
         tag: Tag,
         team: Team,
         'walk': Walk,

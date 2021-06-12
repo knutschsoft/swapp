@@ -2,7 +2,7 @@
     <div>
         <content-collapse
             title="Liste der Teams"
-            collapse-key="waypoints-of-round"
+            collapse-key="list-of-teams"
             is-visible-by-default
         >
             <team-list />
