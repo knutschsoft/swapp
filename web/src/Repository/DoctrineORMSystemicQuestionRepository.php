@@ -45,6 +45,8 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
             ->select('COUNT(u)')
             ->where('u.client = :client')
             ->setParameter('client', $client)
+            ->where('u.isEnabled = :isEnabled')
+            ->setParameter('isEnabled', true)
             ->getQuery()
             ->getSingleScalarResult();
 
