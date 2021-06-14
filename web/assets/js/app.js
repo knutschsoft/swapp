@@ -27,10 +27,12 @@ import VueAxios from 'vue-axios';
 import mdiVue from 'mdi-vue';
 import * as mdijs from '@mdi/js';
 import VuePageTransition from 'vue-page-transition';
+import Nl2br from 'vue-nl2br';
 import Swapp from './Swapp';
 
 library.add(faWalking, faShoePrints, faEye, faMapSigns)
 
+Vue.component('nl2br', Nl2br);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
 Vue.use(Storage, {
@@ -70,12 +72,8 @@ const vueApp = (params) => {
             this.$root.$on('bv::collapse::state', (collapseId, isJustShown) => {
                 this.$localStorage.set(collapseId, isJustShown);
             });
-            // await this.$store.dispatch("walk/findAll");
-            // await this.$store.dispatch("team/findAll");
         },
         async created() {
-            // await this.$store.dispatch("team/findAll");
-            // await this.$store.dispatch("wayPoint/findAll");
         },
         render: h => h(Swapp),
         router: router,

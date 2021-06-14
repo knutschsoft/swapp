@@ -27,41 +27,25 @@ final class AgeGroup
         return new self($range, $gender, $peopleCount);
     }
 
-    /**
-     * @return AgeRange
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getAgeRange(): AgeRange
     {
         return $this->ageRange;
     }
 
-    /**
-     * @return Gender
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getGender(): Gender
     {
         return $this->gender;
     }
 
-    /**
-     * @return PeopleCount
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getPeopleCount(): PeopleCount
     {
         return $this->peopleCount;
     }
 
-    /**
-     * @Groups({"walk:read"})
-     *
-     * @return string
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getFrontendLabel(): string
     {
         return \sprintf('%d - %d %s', $this->ageRange->getRangeStart(), $this->ageRange->getRangeEnd(), $this->gender->getGender());

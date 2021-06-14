@@ -27,6 +27,11 @@
                     v-if="field.name === 'Ort'"
                     :value="field.value"
                 />
+                <div
+                    v-else-if="field.name === 'Beobachtung'"
+                    class="text-left"
+                    style="white-space: pre;"
+                >{{ field.value }}</div>
                 <template
                     v-else-if="field.name === 'Bild'"
                 >

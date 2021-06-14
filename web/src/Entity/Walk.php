@@ -252,11 +252,7 @@ class Walk
         $this->setAgeRanges($team->getAgeRanges());
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getConceptOfDay(): string
     {
         return $this->conceptOfDay;
@@ -267,11 +263,7 @@ class Walk
         $this->conceptOfDay = $conceptOfDay;
     }
 
-    /**
-     * @return string|null
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getInsights(): ?string
     {
         return $this->insights;
@@ -282,29 +274,19 @@ class Walk
         $this->insights = $insights;
     }
 
-    /**
-     * @return ?string
-     *
-     * @Groups({"walk:read"})
-     */
+    //#[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['walk:read'])]
     public function getCommitments(): ?string
     {
         return $this->commitments;
     }
 
-    /**
-     * @param ?string $commitments
-     */
     public function setCommitments(?string $commitments): void
     {
         $this->commitments = $commitments;
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getIsResubmission(): bool
     {
         return $this->isResubmission;
@@ -315,11 +297,7 @@ class Walk
         $this->isResubmission = $isResubmission;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getSystemicQuestion(): string
     {
         return $this->systemicQuestion;
@@ -330,11 +308,7 @@ class Walk
         $this->systemicQuestion = $systemicQuestion;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getWeather(): string
     {
         return $this->weather;
@@ -345,11 +319,7 @@ class Walk
         $this->weather = $weather;
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getHolidays(): bool
     {
         return $this->holidays;
@@ -362,9 +332,8 @@ class Walk
 
     /**
      * @return Collection<int,Guest>
-     *
-     * @Groups({"walk:read"})
      */
+    #[Groups(['walk:read'])]
     public function getGuests(): Collection
     {
         return $this->guests;
@@ -378,11 +347,8 @@ class Walk
         $this->guests = $guests;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    //#[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['walk:read'])]
     public function getName(): string
     {
         return $this->name;
@@ -393,11 +359,7 @@ class Walk
         $this->name = $name;
     }
 
-    /**
-     * @return \DateTime
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getEndTime(): \DateTime
     {
         return $this->endTime;
@@ -408,11 +370,7 @@ class Walk
         $this->endTime = $endTime;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getId(): int
     {
         return $this->id;
@@ -423,11 +381,7 @@ class Walk
         $this->id = $id;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getRating(): int
     {
         return $this->rating;
@@ -438,11 +392,7 @@ class Walk
         $this->rating = $rating;
     }
 
-    /**
-     * @return \DateTime
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getStartTime(): \DateTime
     {
         return $this->startTime;
@@ -453,11 +403,7 @@ class Walk
         $this->startTime = $startTime;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getSystemicAnswer(): string
     {
         return $this->systemicAnswer;
@@ -482,9 +428,8 @@ class Walk
 
     /**
      * @return Collection<int,Tag>
-     *
-     * @Groups({"walk:read"})
      */
+    #[Groups(['walk:read'])]
     public function getWalkTags(): Collection
     {
         return $this->walkTags;
@@ -498,11 +443,7 @@ class Walk
         $this->walkTags = $walkTags;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getWalkReflection(): string
     {
         return $this->walkReflection;
@@ -515,9 +456,8 @@ class Walk
 
     /**
      * @return Collection<int,User>
-     *
-     * @Groups({"walk:read"})
      */
+    #[Groups(['walk:read'])]
     public function getWalkTeamMembers(): Collection
     {
         return $this->walkTeamMembers;
@@ -533,9 +473,8 @@ class Walk
 
     /**
      * @return Collection<int, WayPoint>
-     *
-     * @Groups({"walk:read"})
      */
+    #[Groups(['walk:read'])]
     public function getWayPoints(): Collection
     {
         return $this->wayPoints;
@@ -549,11 +488,7 @@ class Walk
         $this->wayPoints = $wayPoints;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getTeamName(): string
     {
         return $this->teamName;
@@ -564,11 +499,7 @@ class Walk
         $this->teamName = $teamName;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getFemalesCount(): int
     {
         $count = 0;
@@ -579,11 +510,7 @@ class Walk
         return $count;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getMalesCount(): int
     {
         $count = 0;
@@ -594,11 +521,7 @@ class Walk
         return $count;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getQueerCount(): int
     {
         $count = 0;
@@ -639,6 +562,7 @@ class Walk
         return $count;
     }
 
+    #[Groups(['walk:read'])]
     public function getDeletedAt(): ?\DateTime
     {
         return $this->deletedAt;
@@ -685,16 +609,13 @@ class Walk
         $this->guests->removeElement($guest);
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read'])]
     public function getIsUnfinished(): bool
     {
         return '' === $this->getSystemicAnswer();
     }
 
+    #[Groups(['walk:read'])]
     public function getClient(): Client
     {
         return $this->client;

@@ -95,7 +95,7 @@
                             size="sm"
                             :disabled="isLoading"
                         >
-                            Runde Ansehen
+                            Runde ansehen
                             <span class="text-nowrap">
                                 <font-awesome-icon
                                     icon="walking"
@@ -138,6 +138,7 @@
 <script>
 'use strict';
 import formatter from '../../utils/formatter.js';
+import WalkAPI from '../../api/walk.js';
 
 export default {
     name: 'WalkList',
@@ -217,8 +218,9 @@ export default {
             return this.formatStartDate(dateString);
         },
         async itemProvider(ctx) {
-            let walks = await this.$store.dispatch('walk/find', ctx);
-            this.totalRows = this.totalWalks;
+            const result = await WalkAPI.find(ctx);
+            const walks = result.data['hydra:member']
+            this.totalRows = result['hydra:totalItems'];
             this.$localStorage.set(this.storageWalksId, walks);
 
             return walks;

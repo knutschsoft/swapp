@@ -11,6 +11,7 @@ const state = {
     wayPoints: [],
     error: null,
     isLoading: false,
+    totalWayPoints: 0,
 };
 
 const getters = {
@@ -31,6 +32,9 @@ const getters = {
             return foundWayPoint;
         }
     },
+    totalWayPoints() {
+        return state.totalWayPoints;
+    },
     hasWayPoints(state) {
         return state.wayPoints.length > 0;
     },
@@ -50,7 +54,8 @@ const mutations = {
     [FETCHING_WAY_POINTS_SUCCESS](state, wayPoints) {
         state.error = null;
         state.isLoading = false;
-        state.wayPoints = wayPoints;
+        state.wayPoints = wayPoints['hydra:member'];
+        state.totalWayPoints = wayPoints['hydra:totalItems'];
     },
     [FETCHING_WAY_POINTS_ERROR](state, error) {
         state.error = error;
@@ -64,6 +69,16 @@ const actions = {
         try {
             let response = await WayPointAPI.findAll();
             commit(FETCHING_WAY_POINTS_SUCCESS, response.data['hydra:member']);
+        } catch (error) {
+            commit(FETCHING_WAY_POINTS_ERROR, error);
+        }
+    },
+    async find({commit}, payload) {
+        commit(FETCHING_WAY_POINTS);
+        try {
+            let response = await WayPointAPI.find(payload);
+            commit(FETCHING_WAY_POINTS_SUCCESS, response.data);
+            return response.data['hydra:member'];
         } catch (error) {
             commit(FETCHING_WAY_POINTS_ERROR, error);
         }

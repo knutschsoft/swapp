@@ -22,6 +22,20 @@ const getters = {
     tags(state) {
         return state.tags;
     },
+    getTagById(state) {
+        return tagId => {
+            let foundTag = false;
+            state.tags.forEach(
+                (tag) => {
+                    if (String(tag.id) === String(tagId)) {
+                        foundTag = tag;
+                    }
+                },
+            );
+
+            return foundTag;
+        };
+    },
     hasTags(state) {
         return state.tags.length > 0;
     },

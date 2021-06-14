@@ -100,7 +100,6 @@ export default {
     async created() {
         await Promise.all([
             this.$store.dispatch('tag/findAll'),
-            // this.$store.dispatch('wayPoint/findAll'),
         ]);
     },
     methods: {

@@ -31,6 +31,15 @@
         >
             <WalkExport />
         </content-collapse>
+        <content-collapse
+            :title="`Liste aller Wegpunkte ${ totalWayPoints ? `(${ totalWayPoints })` : '' }`"
+            collapse-key="all-way-point-list"
+            is-visible-by-default
+        >
+            <WayPointList
+                @refreshtotalwaypoints="updateTotalWayPoints"
+            />
+        </content-collapse>
     </div>
 </template>
 
@@ -38,6 +47,7 @@
     "use strict";
     import StartWalk from './Dashboard/StartWalk';
     import WalkList from './Dashboard/WalkList';
+    import WayPointList from './Dashboard/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
     import WalkExport from './Walk/WalkExport.vue';
 
@@ -48,6 +58,7 @@
             StartWalk,
             WalkList,
             WalkExport,
+            WayPointList,
         },
         props: {
             redirect: {
@@ -57,6 +68,7 @@
         },
         data: function () {
             return {
+                totalWayPoints: 0,
             }
         },
         computed: {
@@ -80,7 +92,10 @@
         mounted() {
         },
         methods: {
-        }
+            updateTotalWayPoints(totalWayPoints) {
+                this.totalWayPoints = totalWayPoints;
+            },
+        },
     }
 </script>
 

@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\WayPointAddRequest;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
@@ -21,6 +25,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWayPointRepository")
  * @ORM\Table(name="way_point")
  */
+#[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "note", "walk.startTime", "walk.teamName"])]
+#[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
+#[ApiFilter(SearchFilter::class, properties: ['locationName' => 'partial', 'note' => 'partial', 'wayPointTags' => 'exact'])]
 #[ApiResource(
     collectionOperations: ['get'],
     itemOperations: ['get'],
@@ -125,9 +132,8 @@ class WayPoint
 
     /**
      * @return AgeGroup[]
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
      */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getAgeGroups(): array
     {
         return $this->ageGroups;
@@ -146,11 +152,7 @@ class WayPoint
         $this->ageGroups[] = $ageGroup;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getFemalesCount(): int
     {
         $sum = 0;
@@ -164,11 +166,7 @@ class WayPoint
         return $sum;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getMalesCount(): int
     {
         $sum = 0;
@@ -182,11 +180,7 @@ class WayPoint
         return $sum;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getQueerCount(): int
     {
         $sum = 0;
@@ -248,11 +242,7 @@ class WayPoint
         return $sum;
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getIsMeeting(): bool
     {
         return $this->isMeeting;
@@ -263,11 +253,7 @@ class WayPoint
         $this->isMeeting = $isMeeting;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getLocationName(): string
     {
         return $this->locationName;
@@ -278,11 +264,7 @@ class WayPoint
         $this->locationName = (string) $locationName;
     }
 
-    /**
-     * @return string|null
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getImageName(): ?string
     {
         return $this->imageName;
@@ -293,11 +275,7 @@ class WayPoint
         $this->imageName = $imageName;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getId(): int
     {
         return $this->id;
@@ -308,11 +286,7 @@ class WayPoint
         $this->id = $id;
     }
 
-    /**
-     * @return string|null
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getNote(): ?string
     {
         return $this->note;
@@ -323,6 +297,7 @@ class WayPoint
         $this->note = $note;
     }
 
+    #[Groups(['wayPoint:read'])]
     public function getWalk(): Walk
     {
         return $this->walk;
@@ -335,9 +310,8 @@ class WayPoint
 
     /**
      * @return Collection<int, Tag>
-     *
-     * @Groups({"wayPoint:read", "walk:read"})
      */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getWayPointTags(): Collection
     {
         return $this->wayPointTags;
@@ -361,6 +335,18 @@ class WayPoint
     {
         $tag->removeWayPoint($this);
         $this->wayPointTags->removeElement($tag);
+    }
+
+    #[Groups(['wayPoint:read'])]
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    #[Groups(['wayPoint:read'])]
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
     }
 
     public function __toString(): string

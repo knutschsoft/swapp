@@ -2,8 +2,8 @@ export default {
     formatRating: function (rating) {
         let formattedRating = '';
         let i;
-        for(i = 1; i <= 5; i++){
-            if (i<= rating) {
+        for (i = 1; i <= 5; i++) {
+            if (i <= rating) {
                 formattedRating += '★';
             } else {
                 formattedRating += '☆';
@@ -11,5 +11,5 @@ export default {
         }
 
         return formattedRating;
-    }
+    },
 };
