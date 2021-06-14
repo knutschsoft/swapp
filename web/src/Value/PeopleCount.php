@@ -26,11 +26,7 @@ final class PeopleCount
         return new self(0);
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getCount(): int
     {
         return $this->count;

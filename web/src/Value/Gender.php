@@ -27,41 +27,25 @@ final class Gender
         return new self($gender);
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function getGender(): string
     {
         return $this->gender;
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function isMale(): bool
     {
         return self::GENDER_MALE === $this->gender;
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function isFemale(): bool
     {
         return self::GENDER_FEMALE === $this->gender;
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"walk:read"})
-     */
+    #[Groups(['walk:read', 'wayPoint:read'])]
     public function isQueer(): bool
     {
         return self::GENDER_QUEER === $this->gender;

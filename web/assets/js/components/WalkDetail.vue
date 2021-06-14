@@ -88,13 +88,33 @@
             },
         },
         watch: {},
-        mounted() {
-            if (this.walk) {
-                return;
+        async mounted() {
+            if (!this.walk) {
+                await this.$store.dispatch('walk/findById', this.walkId);
             }
-            this.$store.dispatch('walk/findById', this.walkId);
+            if (!this.walk) {
+                // return 404
+            }
+
+            let wayPointPromises = [];
+            let wayPointPromiseIds = [];
+            this.walk.wayPoints.forEach(wayPointIri => {
+                if (!this.getWayPointByIri(wayPointIri)) {
+                    const id = wayPointIri.replace('/api/way_points/', '');
+                    if (!wayPointPromiseIds.includes(id)) {
+                        wayPointPromises.push(this.$store.dispatch('wayPoint/findById', id));
+                        wayPointPromiseIds.push(id);
+                    }
+                }
+            });
+            await Promise.all(wayPointPromises);
         },
         methods: {
+            getWayPointByIri(iri) {
+                const id = iri.replace('/api/way_points/', '');
+
+                return this.$store.getters['wayPoint/getWayPointById'](id);
+            },
         },
     }
 </script>

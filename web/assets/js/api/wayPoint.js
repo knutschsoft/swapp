@@ -21,6 +21,9 @@ export default {
 
         return axios.get(`/api/way_points?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
+    findById(id) {
+        return axios.get(`/api/way_points/${id}`);
+    },
     findAll() {
         return axios.get("/api/way_points");
     },

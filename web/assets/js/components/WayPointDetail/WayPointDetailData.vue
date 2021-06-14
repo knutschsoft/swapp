@@ -99,19 +99,7 @@
                 return this.$store.getters["walk/getWalkById"](this.walkId);
             },
             wayPoint() {
-                if (!this.walk) {
-                    return false;
-                }
-
-                let foundWayPoint = false;
-
-                this.walk.wayPoints.forEach(wayPoint => {
-                    if (String(wayPoint.id) === String(this.wayPointId)) {
-                        foundWayPoint = wayPoint;
-                    }
-                })
-
-                return foundWayPoint;
+                return this.$store.getters["wayPoint/getWayPointById"](this.wayPointId);
             },
             fields() {
                 if (!this.wayPoint) {
@@ -140,9 +128,14 @@
         },
         watch: {},
         async mounted() {
+            const promises = [];
             if (!this.walk) {
-                await this.$store.dispatch('walk/findById', this.walkId);
+                promises.push(this.$store.dispatch('walk/findById', this.walkId));
             }
+            if (!this.wayPoint) {
+                promises.push(this.$store.dispatch('wayPoint/findById', this.wayPointId));
+            }
+            await Promise.all(promises);
         },
         created() {
             if (!this.wayPoint || !this.walk) {

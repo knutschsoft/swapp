@@ -6,7 +6,7 @@
             emptyText="Für diese Runde gibt es keine Wegpunkte."
             small
             stacked="md"
-            :items="walk.wayPoints"
+            :items="wayPoints"
             :fields="fields"
             class="mb-0"
         >
@@ -39,6 +39,7 @@
     "use strict";
 
     import LocationLink from '../LocationLink.vue';
+    import wayPoint from '../../api/wayPoint.js';
 
     export default {
         name: "WayPointList",
@@ -76,12 +77,6 @@
             isLoading() {
                 return this.$store.getters["walk/isLoading"] || this.$store.getters["wayPoint/isLoading"];
             },
-            hasWalks() {
-                return this.$store.getters["walk/hasWalks"];
-            },
-            walks() {
-                return this.$store.getters["walk/walks"];
-            },
             walk() {
                 return this.$store.getters["walk/getWalkById"](this.walkId);
             },
@@ -89,13 +84,30 @@
                 return this.$store.getters["wayPoint/hasWayPoints"];
             },
             wayPoints() {
-                return this.$store.getters["wayPoint/wayPoints"];
+                const wayPoints = [];
+                if (!this.walk) {
+                    return wayPoints;
+                }
+                this.walk.wayPoints.forEach(iri => {
+                    const wayPoint = this.getWayPointByIri(iri);
+                    if (wayPoint) {
+                        wayPoints.push(wayPoint);
+                    }
+                });
+
+                return wayPoints;
             },
         },
         watch: {},
         mounted() {
         },
-        methods: {},
+        methods: {
+            getWayPointByIri(iri) {
+                const id = iri.replace('/api/way_points/', '');
+
+                return this.$store.getters['wayPoint/getWayPointById'](id);
+            },
+        },
     }
 </script>
 

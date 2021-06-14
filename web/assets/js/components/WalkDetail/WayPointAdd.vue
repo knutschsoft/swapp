@@ -381,12 +381,29 @@ export default {
                 reader.readAsDataURL(file);
             });
         },
+        getWayPointByIri(iri) {
+            const id = iri.replace('/api/way_points/', '');
+
+            return this.$store.getters['wayPoint/getWayPointById'](id);
+        },
         onSubmit: async function (e) {
-            console.log(e.submitter.dataset);
-            console.log(e.submitter.dataset.withFinish);
             this.isFormLoading = true;
             this.showSuccess = false;
             const walk = await this.$store.dispatch('walk/addWayPoint', this.form);
+
+            let wayPointPromises = [];
+            let wayPointPromiseIds = [];
+            this.walk.wayPoints.forEach(wayPointIri => {
+                if (!this.getWayPointByIri(wayPointIri)) {
+                    const id = wayPointIri.replace('/api/way_points/', '');
+                    if (!wayPointPromiseIds.includes(id)) {
+                        wayPointPromises.push(this.$store.dispatch('wayPoint/findById', id));
+                        wayPointPromiseIds.push(id);
+                    }
+                }
+            });
+            await Promise.all(wayPointPromises);
+
 
             // TODO remove controller and template and form etc
             // let result = await this.axios.post(`/form/waypointcreated/${this.walkId}`, formData);

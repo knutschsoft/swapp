@@ -50,21 +50,13 @@ class AgeRange
         return new self(\trim($parts[0]), \trim($parts[1]));
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read", "team:read"})
-     */
+    #[Groups(['walk:read', 'team:read', 'wayPoint:read'])]
     public function getRangeStart(): int
     {
         return $this->rangeStart;
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"walk:read", "team:read"})
-     */
+    #[Groups(['walk:read', 'team:read', 'wayPoint:read'])]
     public function getRangeEnd(): int
     {
         return $this->rangeEnd;
@@ -75,11 +67,7 @@ class AgeRange
         return $this->getRangeStart() === $ageRange->getRangeStart() && $this->getRangeEnd() === $ageRange->getRangeEnd();
     }
 
-    /**
-     * @Groups({"team:read", "walk:read"})
-     *
-     * @return string
-     */
+    #[Groups(['walk:read', 'team:read', 'wayPoint:read'])]
     public function getFrontendLabel(): string
     {
         return \sprintf('%d - %d', $this->rangeStart, $this->rangeEnd);

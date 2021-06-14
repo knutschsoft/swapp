@@ -133,7 +133,7 @@ class WayPoint
     /**
      * @return AgeGroup[]
      */
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getAgeGroups(): array
     {
         return $this->ageGroups;
@@ -152,7 +152,7 @@ class WayPoint
         $this->ageGroups[] = $ageGroup;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getFemalesCount(): int
     {
         $sum = 0;
@@ -166,7 +166,7 @@ class WayPoint
         return $sum;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getMalesCount(): int
     {
         $sum = 0;
@@ -180,7 +180,7 @@ class WayPoint
         return $sum;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getQueerCount(): int
     {
         $sum = 0;
@@ -242,7 +242,7 @@ class WayPoint
         return $sum;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getIsMeeting(): bool
     {
         return $this->isMeeting;
@@ -253,7 +253,7 @@ class WayPoint
         $this->isMeeting = $isMeeting;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getLocationName(): string
     {
         return $this->locationName;
@@ -264,7 +264,7 @@ class WayPoint
         $this->locationName = (string) $locationName;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getImageName(): ?string
     {
         return $this->imageName;
@@ -275,7 +275,7 @@ class WayPoint
         $this->imageName = $imageName;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getId(): int
     {
         return $this->id;
@@ -286,7 +286,7 @@ class WayPoint
         $this->id = $id;
     }
 
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getNote(): ?string
     {
         return $this->note;
@@ -311,7 +311,7 @@ class WayPoint
     /**
      * @return Collection<int, Tag>
      */
-    #[Groups(['walk:read', 'wayPoint:read'])]
+    #[Groups(['wayPoint:read'])]
     public function getWayPointTags(): Collection
     {
         return $this->wayPointTags;

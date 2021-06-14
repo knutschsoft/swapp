@@ -20,7 +20,7 @@
     import ContentCollapse from './ContentCollapse.vue';
 
     export default {
-        name: "WalkDetail",
+        name: "WayPointDetail",
         components: {
             ContentCollapse,
             WayPointDetailData,
@@ -43,19 +43,7 @@
                 return this.$store.getters["walk/getWalkById"](this.walkId);
             },
             wayPoint() {
-                if (!this.walk) {
-                    return false;
-                }
-
-                let foundWayPoint = false;
-
-                this.walk.wayPoints.forEach(wayPoint => {
-                    if (String(wayPoint.id) === String(this.wayPointId)) {
-                        foundWayPoint = wayPoint;
-                    }
-                })
-
-                return foundWayPoint;
+                return this.$store.getters["wayPoint/getWayPointById"](this.wayPointId);
             },
             title() {
                 return `Wegpunkt: ${this.wayPoint.locationName} <small>vom ${(new Date(this.walk.startTime)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
@@ -78,13 +66,17 @@
         },
         watch: {},
         async mounted() {
+            const promises = [];
             if (!this.walk) {
-                await this.$store.dispatch('walk/findById', this.walkId);
+                promises.push(this.$store.dispatch('walk/findById', this.walkId));
             }
+            if (!this.wayPoint) {
+                promises.push(this.$store.dispatch('wayPoint/findById', this.wayPointId));
+            }
+            await Promise.all(promises);
             if (!this.walk || !this.wayPoint) {
                 this.$router.push({ name: 'Dashboard', params: { redirect: 'Dieser Wegpunkt oder diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
             }
-            await this.$store.dispatch('wayPoint/findAll');
         },
         methods: {
         },

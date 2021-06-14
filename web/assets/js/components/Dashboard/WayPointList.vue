@@ -55,7 +55,7 @@
                 sm="6"
                 md="6"
             >
-                <b-input-group prepend="Name" size="sm">
+                <b-input-group prepend="Ort" size="sm">
                     <b-form-input
                         v-model="filter.locationName"
                         placeholder="Ort"
@@ -215,9 +215,6 @@ export default {
         tags() {
             return this.$store.getters['tag/tags'].slice(0).sort((tagA, tagB) => tagA.name > tagB.name ? 1 : -1);
         },
-        totalWayPoints() {
-            return this.$store.getters['wayPoint/totalWayPoints'];
-        },
         isLoading() {
             return this.$store.getters['wayPoint/isLoading'];
         },
@@ -261,10 +258,14 @@ export default {
             const wayPoints = result.data['hydra:member'];
 
             let walkPromises = [];
+            let walkPromiseIds = [];
             wayPoints.forEach(wayPoint => {
                 if (!this.getWalkByIri(wayPoint.walk)) {
                     const id = wayPoint.walk.replace('/api/walks/', '');
-                    walkPromises.push(this.$store.dispatch('walk/findById', id));
+                    if (!walkPromiseIds.includes(id)) {
+                        walkPromises.push(this.$store.dispatch('walk/findById', id));
+                        walkPromiseIds.push(id);
+                    }
                 }
             });
             await Promise.all(walkPromises);
