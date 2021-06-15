@@ -120,7 +120,7 @@ export default {
                     },
                     class: 'text-center',
                 },
-                { key: 'actions', label: 'Aktionen', class: 'text-center' },
+                // { key: 'actions', label: 'Aktionen', class: 'text-center' },
             ],
             editModalRolle: {
                 id: 'edit-modal-rolle',

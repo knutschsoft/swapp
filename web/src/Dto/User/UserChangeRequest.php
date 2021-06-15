@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Dto\User;
 
+use App\Entity\Client;
 use App\Entity\User;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,6 +35,10 @@ final class UserChangeRequest
     #[Assert\NotNull]
     #[Assert\Type(type: User::class, groups: ['SecondGroup'])]
     public User $user;
+
+    #[Assert\NotNull]
+    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    public Client $client;
 
     public function superAdminRightsNeeded(): bool
     {

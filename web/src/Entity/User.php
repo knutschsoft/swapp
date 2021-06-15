@@ -81,8 +81,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "openapi_context" => [
                 "summary" => "Change attributes of an user.",
             ],
-            "security_post_denormalize"
-                => "is_granted('".UserVoter::EDIT."', object.user) and (is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded())",
+            "security_post_denormalize" =>
+                "is_granted('".UserVoter::EDIT."', object.user) and ".
+                "(is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded()) and ".
+                "is_granted('".ClientVoter::READ."', object.client)",
         ],
         "create_user" => [
             "messenger" => "input",

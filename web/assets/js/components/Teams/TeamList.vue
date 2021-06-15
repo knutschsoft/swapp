@@ -149,11 +149,6 @@
             return {
                 fields: [
                     {
-                        key: 'id',
-                        label: 'ID',
-                        class: 'text-center',
-                    },
-                    {
                         key: 'name',
                         sortable: true,
                         class: 'text-center',

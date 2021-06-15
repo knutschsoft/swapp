@@ -24,6 +24,7 @@ final class UserChangeHandler implements MessageHandlerInterface
         $user->setUsername($request->username);
         $user->setEmail($request->email);
         $user->setRoles($request->roles);
+        $user->updateClient($request->client);
         $this->userRepository->save($request->user);
 
         return $request->user;

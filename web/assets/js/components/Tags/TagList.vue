@@ -61,10 +61,6 @@ export default {
         fields() {
             return [
                 {
-                    key: 'id',
-                    label: 'ID',
-                },
-                {
                     key: 'name',
                     sortable: true,
                 },
