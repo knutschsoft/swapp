@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Context;
 
-use App\Dto\Client\ClientInitRequest;
+use App\Dto\Client\ClientCreateRequest;
 use App\Dto\TagCreateRequest;
 use App\Dto\User\UserCreateRequest;
 use App\Entity\Client;
@@ -193,7 +193,7 @@ final class DomainIntegrationContext extends RawMinkContext
     public function theFollowingClientsExists(TableNode $table): void
     {
         foreach ($table as $key => $row) {
-            $clientInitRequest = new ClientInitRequest();
+            $clientInitRequest = new ClientCreateRequest();
             $clientInitRequest->email = $row['email'] ?? 'Client@narf.de'.$key;
             $clientInitRequest->name = $row['name'] ?? $clientInitRequest->email;
             $clientInitRequest->description = $row['description'] ?? '';

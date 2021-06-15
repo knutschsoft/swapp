@@ -7,11 +7,19 @@
         >
             <client-list />
         </content-collapse>
+        <content-collapse
+            title="Neuen Klienten erstellen"
+            collapse-key="client-list"
+            is-visible-by-default
+        >
+            <client-create />
+        </content-collapse>
     </div>
 </template>
 
 <script>
     "use strict";
+    import ClientCreate from './Clients/ClientCreate';
     import ClientList from './Clients/ClientList';
     import ContentCollapse from './ContentCollapse.vue';
 
@@ -19,7 +27,8 @@
         name: "Clients",
         components: {
             ContentCollapse,
-            ClientList
+            ClientCreate,
+            ClientList,
         },
         mounted() {
         }

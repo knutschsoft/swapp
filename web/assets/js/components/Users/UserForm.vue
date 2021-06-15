@@ -76,7 +76,7 @@
             type="submit"
             variant="secondary"
             :disabled="isFormInvalid"
-            data-test="button-systemic-question-submit"
+            data-test="button-user-submit"
             block
             class="col-12"
             :tabindex="isFormInvalid ? '-1' : ''"

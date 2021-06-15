@@ -1,7 +1,7 @@
 <template>
-    <user-form
+    <client-form
         submit-button-text="Neuen Benutzer erstellen"
-        :initial-user="{ client: initialClient, user: ['ROLE_USER'] }"
+        :initial-client="{}"
         @submit="handleSubmit"
     />
 </template>
@@ -9,11 +9,11 @@
 <script>
 'use strict';
 
-import UserForm from './UserForm.vue';
+import ClientForm from './ClientForm.vue';
 export default {
-    name: 'UserCreate',
+    name: 'ClientCreate',
     components: {
-        UserForm,
+        ClientForm,
     },
     data: function () {
         return {
@@ -31,11 +31,11 @@ export default {
     },
     methods: {
         async handleSubmit(payload) {
-            const user = await this.$store.dispatch('user/create', payload);
-            if (user) {
-                const message = `Der Benutzer "${user.username}" wurde erfolgreich erstellt. Er hat eine E-Mail an "${user.email}" mit seinen Kontoinformationen erhalten.`;
+            const client = await this.$store.dispatch('client/create', payload);
+            if (client) {
+                const message = `Der Klient "${client.name}" wurde erfolgreich erstellt.`;
                 this.$bvToast.toast(message, {
-                    title: 'Benutzer erstellt',
+                    title: 'Klient erstellt',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     appendToast: true,
@@ -43,7 +43,7 @@ export default {
                 });
             } else {
                 this.$bvToast.toast('Upps! :-(', {
-                    title: 'Benutzer erstellen fehlgeschlagen',
+                    title: 'Klient erstellen fehlgeschlagen',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     variant: 'danger',

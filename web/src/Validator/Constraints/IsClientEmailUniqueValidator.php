@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use App\Dto\Client\ClientChangeRequest;
+use App\Dto\Client\ClientCreateRequest;
 use App\Repository\ClientRepository;
 use App\Repository\Exception\NotFoundException;
 use Symfony\Component\Validator\Constraint;
@@ -18,15 +20,19 @@ class IsClientEmailUniqueValidator extends ConstraintValidator
     }
 
     /**
-     * @param string     $value
-     * @param Constraint $constraint
+     * @param ClientCreateRequest|ClientChangeRequest $request
+     * @param Constraint                              $constraint
      */
-    public function validate($value, Constraint $constraint): void
+    public function validate($request, Constraint $constraint): void
     {
+        if (isset($request->client) && \strtolower($request->client->getEmail()) === \strtolower($request->email)) {
+            return;
+        }
         try {
-            $this->clientRepository->findOneByEmail($value);
+            $this->clientRepository->findOneByEmail($request->email);
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
+                ->setParameter('{{ value }}', $request->email)
+                ->atPath('email')
                 ->addViolation();
         } catch (NotFoundException) {
             // expected

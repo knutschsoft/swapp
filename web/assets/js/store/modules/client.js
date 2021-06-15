@@ -20,9 +20,9 @@ const state = {
     clients: [],
     totalClients: 0,
     error: null,
-    addClientError: null,
     changeClientError: null,
     isLoading: false,
+    isLoadingChange: false,
 };
 
 const getters = {
@@ -51,9 +51,6 @@ const getters = {
     },
     error(state) {
         return state.error;
-    },
-    addClientError(state) {
-        return state.addClientError;
     },
     changeClientError(state) {
         return state.changeClientError;
@@ -100,12 +97,12 @@ const mutations = {
         state.isLoading = false;
     },
     [ADDING_CLIENT](state) {
-        state.isLoading = true;
-        state.addClientError = null;
+        state.isLoadingChange = true;
+        state.changeClientError = null;
     },
     [ADDING_CLIENT_SUCCESS](state, client) {
-        state.addClientError = null;
-        state.isLoading = false;
+        state.changeClientError = null;
+        state.isLoadingChange = false;
         let fetchedClient = client;
         state.clients.forEach((client, index) => {
             if (String(fetchedClient.id) === String(client.id)) {
@@ -116,16 +113,16 @@ const mutations = {
         state.clients = [...state.clients, fetchedClient];
     },
     [ADDING_CLIENT_ERROR](state, error) {
-        state.addClientError = error;
-        state.isLoading = false;
+        state.changeClientError = error;
+        state.isLoadingChange = false;
     },
     [CHANGING_CLIENT](state) {
-        state.isLoading = true;
+        state.isLoadingChange = true;
         state.changeClientError = null;
     },
     [CHANGING_CLIENT_SUCCESS](state, client) {
         state.changeClientError = null;
-        state.isLoading = false;
+        state.isLoadingChange = false;
         let fetchedClient = client;
         state.clients.forEach((client, index) => {
             if (String(fetchedClient.id) === String(client.id)) {
@@ -137,7 +134,7 @@ const mutations = {
     },
     [CHANGING_CLIENT_ERROR](state, error) {
         state.changeClientError = error;
-        state.isLoading = false;
+        state.isLoadingChange = false;
     },
 };
 
@@ -162,20 +159,20 @@ const actions = {
             commit(FETCHING_CLIENT_ERROR, error);
         }
     },
-    async addClient({ commit }, payload) {
+    async create({ commit }, payload) {
         commit(ADDING_CLIENT);
         try {
-            let response = await ClientAPI.addClient(payload);
+            let response = await ClientAPI.create(payload);
             commit(ADDING_CLIENT_SUCCESS, response.data);
             return response.data;
         } catch (error) {
             commit(ADDING_CLIENT_ERROR, error);
         }
     },
-    async changeClient({ commit }, payload) {
+    async change({ commit }, payload) {
         commit(CHANGING_CLIENT);
         try {
-            let response = await ClientAPI.changeClient(payload);
+            let response = await ClientAPI.change(payload);
             commit(CHANGING_CLIENT_SUCCESS, response.data);
             return response.data;
         } catch (error) {

@@ -5,7 +5,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\Client\ClientChangeRequest;
-use App\Dto\Client\ClientInitRequest;
+use App\Dto\Client\ClientCreateRequest;
+use App\Security\Voter\ClientVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,14 +26,16 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
         "method" => "post",
         "status" => 200,
         "path" => "/clients/change",
+        "security_post_denormalize" => "is_granted('".ClientVoter::EDIT."', object.client)",
     ],
     "add_client" => [
         "messenger" => "input",
-        "input" => ClientInitRequest::class,
+        "input" => ClientCreateRequest::class,
         "output" => Client::class,
         "method" => "post",
         "status" => 200,
-        "path" => "/clients/init",
+        "path" => "/clients/create",
+        "security_post_denormalize" => "is_granted('".User::ROLE_SUPER_ADMIN."')",
     ],
     ],
     itemOperations: [
@@ -105,7 +108,7 @@ class Client
         $this->walks = new ArrayCollection();
     }
 
-    public static function fromClientInitRequest(ClientInitRequest $request): self
+    public static function fromClientInitRequest(ClientCreateRequest $request): self
     {
         $instance = new self();
         $instance->name = \trim($request->name);
@@ -120,8 +123,6 @@ class Client
         $this->name = \trim($request->name);
         $this->email = \trim($request->email);
         $this->description = \trim($request->description);
-        $this->users = new ArrayCollection($request->users);
-        $this->teams = new ArrayCollection($request->teams);
     }
 
     public function getId(): int

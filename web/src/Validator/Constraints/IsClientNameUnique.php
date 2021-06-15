@@ -5,7 +5,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class IsClientNameUnique extends Constraint
 {
     public string $message = 'client.name_is_not_unique';
@@ -13,5 +13,10 @@ class IsClientNameUnique extends Constraint
     public function validatedBy(): string
     {
         return IsClientNameUniqueValidator::class;
+    }
+
+    public function getTargets(): string
+    {
+        return self::CLASS_CONSTRAINT;
     }
 }

@@ -27,10 +27,10 @@ export default {
     findOneById(clientId) {
         return axios.get('/api/clients/' + clientId);
     },
-    addClient(payload) {
-        return axios.post('/api/clients/init', payload);
+    create(payload) {
+        return axios.post('/api/clients/create', payload);
     },
-    changeClient(payload) {
+    change(payload) {
         return axios.post('/api/clients/change', payload);
     },
 };
