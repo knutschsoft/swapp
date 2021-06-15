@@ -57,6 +57,7 @@ security:
         - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/login-check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/is-confirmation-token-valid, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/user-email-confirm, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/getToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }

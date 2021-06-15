@@ -8,7 +8,9 @@ use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Dto\User\PasswordChangeRequest;
 use App\Dto\User\RequestPasswordResetRequest;
 use App\Dto\User\UserChangeRequest;
-use App\Dto\User\UserRegisterRequest;
+use App\Dto\User\UserCreateRequest;
+use App\Dto\User\UserEmailConfirmRequest;
+use App\Security\Voter\ClientVoter;
 use App\Security\Voter\UserVoter;
 use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,6 +49,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 "summary" => "Check if an user is allowed to perform a certain action.",
             ],
         ],
+        "user_email_confirm" => [
+            "messenger" => "input",
+            "input" => UserEmailConfirmRequest::class,
+            "output" => User::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/user-email-confirm",
+            "openapi_context" => [
+                "summary" => "Enables an user and sends password request notification.",
+            ],
+        ],
         "change_password" => [
             "messenger" => "input",
             "input" => PasswordChangeRequest::class,
@@ -70,6 +83,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ],
             "security_post_denormalize"
                 => "is_granted('".UserVoter::EDIT."', object.user) and (is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded())",
+        ],
+        "create_user" => [
+            "messenger" => "input",
+            "input" => UserCreateRequest::class,
+            "output" => User::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/create",
+            "openapi_context" => [
+                "summary" => "Create an user which is initially disabled. Will send notification with further instructions.",
+            ],
+            "security_post_denormalize" =>
+                "(is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded()) and ".
+                 "is_granted('".ClientVoter::READ."', object.client)"
+            ,
         ],
     ],
     itemOperations: ["get"],
@@ -169,14 +197,15 @@ class User implements UserInterface
         $this->confirmationToken = ConfirmationToken::createEmpty();
     }
 
-    public static function fromRegisterUserRequest(UserRegisterRequest $request, UserPasswordEncoderInterface $passwordEncoder): self
+    public static function fromUserCreateRequest(UserCreateRequest $request, UserPasswordEncoderInterface $passwordEncoder): self
     {
         $instance = new self();
         $instance->email = \strtolower($request->email);
         $instance->username = \strtolower($request->username);
-        $instance->changePassword($request->password, $passwordEncoder);
+        $instance->changePassword(\md5((string) \time(), false), $passwordEncoder);
         $instance->client = $request->client;
-        $instance->addRole('ROLE_USER');
+        $instance->refreshConfirmationToken();
+        $instance->setRoles($request->roles);
         $instance->disable();
 
         return $instance;
@@ -375,6 +404,12 @@ class User implements UserInterface
         $this->confirmationToken = $confirmationToken;
     }
 
+    public function refreshConfirmationToken(): void
+    {
+        $this->confirmationToken = ConfirmationToken::create();
+        ConfirmationToken::create();
+    }
+
     /**
      * @return string[]
      *
@@ -497,7 +532,7 @@ class User implements UserInterface
 
     public function requestPassword(): void
     {
-        $this->setConfirmationToken(ConfirmationToken::create());
+        $this->refreshConfirmationToken();
         $this->passwordRequestedAt = new \DateTime();
     }
 }

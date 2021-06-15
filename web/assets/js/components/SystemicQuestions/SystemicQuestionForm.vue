@@ -110,7 +110,7 @@ export default {
             return this.$store.getters['systemicQuestion/createSystemicQuestionError'];
         },
         availableClients() {
-          return this.$store.getters['client/clients']  ;
+            return this.$store.getters['client/clients'];
         },
     },
     async created() {

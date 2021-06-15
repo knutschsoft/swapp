@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Validator\Constraints;
 
 use App\Dto\User\UserChangeRequest;
-use App\Dto\User\UserRegisterRequest;
+use App\Dto\User\UserCreateRequest;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -19,8 +19,8 @@ class IsUserEmailUniqueValidator extends ConstraintValidator
     }
 
     /**
-     * @param UserRegisterRequest|UserChangeRequest $request
-     * @param Constraint                            $constraint
+     * @param UserCreateRequest|UserChangeRequest $request
+     * @param Constraint                          $constraint
      */
     public function validate($request, Constraint $constraint): void
     {

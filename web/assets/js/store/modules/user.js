@@ -5,6 +5,9 @@ const
     FETCHING_USERS = "FETCHING_USERS",
     FETCHING_USERS_SUCCESS = "FETCHING_USERS_SUCCESS",
     FETCHING_USERS_ERROR = "FETCHING_USERS_ERROR",
+    CREATE = "CREATE",
+    CREATE_SUCCESS = "CREATE_SUCCESS",
+    CREATE_ERROR = "CREATE_ERROR",
     CHANGE = "CHANGE",
     CHANGE_SUCCESS = "CHANGE_SUCCESS",
     CHANGE_ERROR = "CHANGE_ERROR",
@@ -80,6 +83,19 @@ const mutations = {
         state.error = error;
         state.isLoading = false;
     },
+    [CREATE](state) {
+        state.isLoadingChange = true;
+        state.changeUserError = null;
+    },
+    [CREATE_SUCCESS](state, user) {
+        state.changeUserError = null;
+        state.isLoadingChange = false;
+        replaceObjectInState(state, user);
+    },
+    [CREATE_ERROR](state, error) {
+        state.changeUserError = error;
+        state.isLoadingChange = false;
+    },
     [CHANGE](state) {
         state.isLoadingChange = true;
         state.changeUserError = null;
@@ -130,6 +146,17 @@ const actions = {
             return response.data['hydra:member'];
         } catch (error) {
             commit(FETCHING_USERS_ERROR, error);
+        }
+    },
+    async create({commit}, userId) {
+        commit(CREATE);
+        try {
+            let response = await UserAPI.create(userId);
+            commit(CREATE_SUCCESS, response.data);
+            return response.data;
+        } catch (error) {
+            commit(CREATE_ERROR, error);
+            return null;
         }
     },
     async change({commit}, userId) {

@@ -30,6 +30,14 @@ export default {
             },
         }, { headers: { Authorization: '' } });
     },
+    userEmailConfirm(user, confirmationToken) {
+        return axios.post('/api/users/user-email-confirm', {
+            user,
+            confirmationToken: {
+                token: confirmationToken,
+            },
+        }, { headers: { Authorization: '' } });
+    },
     requestPasswordReset(username, honeypotEmail) {
         return axios.post('/api/users/request-password-reset', {
             username: username,

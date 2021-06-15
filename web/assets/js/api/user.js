@@ -26,6 +26,9 @@ export default {
 
         return axios.get(`/api/users?page=${params.page}&itemsPerPage=${params.itemsPerPage}` + sort);
     },
+    create(user) {
+        return axios.post('/api/users/create', user);
+    },
     change(user) {
         return axios.post('/api/users/change', user);
     },

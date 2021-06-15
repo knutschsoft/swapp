@@ -53,6 +53,25 @@
                 :aria-describedby="ariaDescribedby"
             />
         </b-form-group>
+        <b-form-group
+            v-if="isSuperAdmin"
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="8"
+            label-cols-lg="2"
+        >
+            <template slot="label" slot-scope="{ }">
+                Klient
+            </template>
+            <b-form-select
+                v-model="user.client"
+                data-test="client"
+                placeholder="Für welchen Klienten?"
+                :options="availableClients"
+                value-field="@id"
+                text-field="name"
+            />
+        </b-form-group>
         <b-button
             type="submit"
             variant="secondary"
@@ -72,7 +91,7 @@
 
 <script>
 'use strict';
-
+import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
 
 export default {
@@ -93,7 +112,12 @@ export default {
     },
     data: function () {
         return {
-            user: {},
+            user: {
+                username: null,
+                email: null,
+                roles: null,
+                client: null,
+            },
         };
     },
     computed: {
@@ -109,7 +133,7 @@ export default {
                 return;
             }
 
-            return this.user.email.length >= 4 && this.user.email.length <= 100;
+            return this.user.email.length >= 4 && this.user.email.length <= 100 && EmailValidator.validate(this.user.email);
         },
         isLoading() {
             return this.$store.getters['user/isLoadingChange'];
@@ -126,6 +150,9 @@ export default {
         error() {
             return this.$store.getters['user/changeUserError'];
         },
+        availableClients() {
+            return this.$store.getters['client/clients'];
+        },
         availableRoles() {
             const roles = [{ text: 'Administrator', value: 'ROLE_ADMIN' }];
             if (this.isSuperAdmin) {
@@ -140,6 +167,7 @@ export default {
         this.user.username = this.initialUser.username;
         this.user.email = this.initialUser.email;
         this.user.roles = this.initialUser.roles;
+        this.user.client = this.initialUser.client;
     },
     methods: {
         async handleSubmit() {

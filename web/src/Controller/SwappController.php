@@ -14,6 +14,7 @@ class SwappController extends AbstractController
      *
      * @Route("/{vueRouting}", requirements={"vueRouting"="^(?!pdf|api|js-logger|form|walkexport|_(profiler|wdt)).*"}, name="swapp_home")
      * @Route("/passwort-aendern/{userId}/{confirmationToken}", name="user_password_reset")
+     * @Route("/email-bestaetigen/{userId}/{confirmationToken}", name="user_email_confirm")
      * @Route("/", name="fallback")
      */
     public function __invoke(): Response

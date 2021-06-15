@@ -55,7 +55,7 @@ final class WayPointAddRequest
     #[Assert\NotNull]
     public array $tags;
 
-    #[Assert\Image(maxSize: "5M", maxSizeMessage: 'way-point-add.file.max-size')]
+    #[Assert\Image(maxSize: "5M", maxSizeMessage: 'way_point.file.max-size')]
     public function getDecodedImageData(): ?File
     {
         if (!$this->imageFileData) {

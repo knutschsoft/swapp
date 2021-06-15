@@ -5,7 +5,7 @@ namespace App\Tests\Context;
 
 use App\Dto\Client\ClientInitRequest;
 use App\Dto\TagCreateRequest;
-use App\Dto\User\UserRegisterRequest;
+use App\Dto\User\UserCreateRequest;
 use App\Entity\Client;
 use App\Entity\SystemicQuestion;
 use App\Entity\Tag;
@@ -220,12 +220,13 @@ final class DomainIntegrationContext extends RawMinkContext
     {
         foreach ($table as $key => $row) {
             Assert::keyExists($row, 'client');
-            $registerUserRequest = new UserRegisterRequest();
+            $registerUserRequest = new UserCreateRequest();
             $registerUserRequest->email = $row['email'] ?? 'Clari@narf.de'.$key;
-            $registerUserRequest->password = $row['password'] ?? $registerUserRequest->email;
             $registerUserRequest->username = $row['username'] ?? $registerUserRequest->email;
+            $registerUserRequest->roles = [];
             $registerUserRequest->client = $this->getClientByEmail($row['client']);
-            $user = User::fromRegisterUserRequest($registerUserRequest, $this->passwordEncoder);
+            $user = User::fromUserCreateRequest($registerUserRequest, $this->passwordEncoder);
+            $user->changePassword($row['password'] ?? $registerUserRequest->email, $this->passwordEncoder);
 
             $isEnabled = $row['isEnabled'] ?? true;
             if ($isEnabled) {

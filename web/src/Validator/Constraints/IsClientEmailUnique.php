@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class IsClientEmailUnique extends Constraint
 {
-    public string $message = 'client.name-is-not-unique';
+    public string $message = 'client.email_is_not_unique';
 
     public function validatedBy(): string
     {

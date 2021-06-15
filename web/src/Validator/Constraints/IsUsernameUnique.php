@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class IsUsernameUnique extends Constraint
 {
-    public string $message = 'user.username-is-not-unique';
+    public string $message = 'user.username_is_not_unique';
 
     public function validatedBy(): string
     {

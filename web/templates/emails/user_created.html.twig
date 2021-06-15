@@ -1,0 +1,21 @@
+{# user \App\Entity\User #}
+{% extends 'emails/layout.html.twig' %}
+
+{% block title %}Hallo {{ user.username }}!{% endblock %}
+
+{% block content %}
+
+    <p>
+        Dein Account wurde soeben von einem Administrator erstellt.
+        Mit Hilfe des folgenden Links kannst Du Deine E-Mail-Adresse bestätigen und Dir ein Passwort generieren:
+    </p>
+
+    <p>
+        <a href="{{ url('user_email_confirm', {'userId': user.id, 'confirmationToken' : user.confirmationToken.token }) }}">{{ url('user_email_confirm', {'userId': user.id, 'confirmationToken' : user.confirmationToken.token }) }}</a>
+    </p>
+
+    <p>
+        <strong>Du hast die Anfrage nicht ausgelöst?</strong>
+        Dann kannst Du diese Mail ignorieren und löschen.
+    </p>
+{% endblock %}

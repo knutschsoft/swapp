@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\Security;
 
 class ClientVoter extends Voter
 {
-    private const CLIENT_READ = 'CLIENT_READ';
-    private const CLIENT_EDIT = 'CLIENT_EDIT';
+    public const READ = 'CLIENT_READ';
+    public const EDIT = 'CLIENT_EDIT';
 
     private Security $security;
 
@@ -23,7 +23,7 @@ class ClientVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return \in_array($attribute, [self::CLIENT_READ, self::CLIENT_EDIT], true)
+        return \in_array($attribute, [self::READ, self::EDIT], true)
             && $subject instanceof Client;
     }
 
@@ -43,9 +43,9 @@ class ClientVoter extends Voter
         $client = $subject;
 
         switch ($attribute) {
-            case self::CLIENT_READ:
+            case self::READ:
                 return $client->getUsers()->contains($user);
-            case self::CLIENT_EDIT:
+            case self::EDIT:
                 return false;
         }
 

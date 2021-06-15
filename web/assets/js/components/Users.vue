@@ -7,11 +7,19 @@
         >
             <user-list />
         </content-collapse>
+        <content-collapse
+            title="Neuen Benutzer erstellen"
+            collapse-key="user-create"
+            is-visible-by-default
+        >
+            <user-create />
+        </content-collapse>
     </div>
 </template>
 
 <script>
     "use strict";
+    import UserCreate from './Users/UserCreate';
     import UserList from './Users/UserList';
     import ContentCollapse from './ContentCollapse.vue';
 
@@ -19,7 +27,8 @@
         name: "Users",
         components: {
             ContentCollapse,
-            UserList
+            UserCreate,
+            UserList,
         },
         async mounted() {
             await this.$store.dispatch('client/findAll');

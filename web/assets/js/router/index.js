@@ -10,6 +10,7 @@ import Login from '../components/Login';
 import Logout from '../components/Logout';
 import PasswordChangeRequest from '../components/PasswordChangeRequest';
 import PasswordChange from '../components/PasswordChange';
+import UserEmailConfirm from '../components/UserEmailConfirm';
 import PasswordReset from '../components/PasswordReset';
 import Dashboard from '../components/Dashboard';
 import About from '../components/About';
@@ -39,6 +40,7 @@ let routes = [
     {id: 9, path: "/abmeldung", component: Logout, name: "Logout", meta: {requiresAuth: true}},
     {id: 10, path: "/passwort-aenderung-beantragen", component: PasswordChangeRequest, name: "PasswordChangeRequest", meta: {requiresAuth: true}},
     {id: 11, path: "/passwort-aendern/:userId/:confirmationToken", component: PasswordChange, name: "PasswordChange", props: true},
+    {id: 11, path: "/email-bestaetigen/:userId/:confirmationToken", component: UserEmailConfirm, name: "UserEmailConfirm", props: true},
     {id: 20, path: "/systemische-fragen", component: SystemicQuestions, name: "SystemicQuestions", meta: {requiresAdmin: true}},
     {id: 20, path: "/teams", component: Teams, name: "Teams", meta: {requiresAdmin: true}},
     {id: 21, path: "/tags", component: Tags, name: "Tags", meta: {requiresAdmin: true}},
