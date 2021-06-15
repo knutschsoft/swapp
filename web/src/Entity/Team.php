@@ -122,11 +122,11 @@ class Team
     /** @param Collection<int, User> $users */
     public function setUsers(Collection $users): void
     {
-        $this->users = $users;
         foreach ($this->users as $user) {
             $user->removeTeam($this);
         }
-        foreach ($users as $user) {
+        $this->users = $users;
+        foreach ($this->users as $user) {
             $user->addTeam($this);
         }
     }
