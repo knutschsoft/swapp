@@ -155,6 +155,7 @@
 
 <script>
 'use strict';
+import dayjs from 'dayjs';
 import WayPointAPI from '../../api/wayPoint';
 
 export default {
@@ -250,8 +251,7 @@ export default {
             return formattedTags;
         },
         formatStartDate: function (dateString) {
-            let date = new Date(dateString);
-            return date.toLocaleDateString('de-DE', { weekday: 'short', hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit' });
+            return dayjs(dateString).format('dd, DD.MM.YYYY HH:mm:ss');
         },
         async itemProvider(ctx) {
             const result = await WayPointAPI.find(ctx);
