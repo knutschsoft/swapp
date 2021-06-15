@@ -20,7 +20,7 @@ const state = {
 
 const getters = {
     tags(state) {
-        return state.tags;
+        return state.tags.slice(0).sort((a, b) => a.name > b.name ? 1 : -1);
     },
     getTagById(state) {
         return tagId => {
