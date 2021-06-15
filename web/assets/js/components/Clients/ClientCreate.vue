@@ -1,6 +1,6 @@
 <template>
     <client-form
-        submit-button-text="Neuen Benutzer erstellen"
+        submit-button-text="Neuen Klienten erstellen"
         :initial-client="{}"
         @submit="handleSubmit"
     />
