@@ -166,7 +166,7 @@ export default {
     async created() {
         this.user.username = this.initialUser.username;
         this.user.email = this.initialUser.email;
-        this.user.roles = this.initialUser.roles;
+        this.user.roles = this.initialUser.roles || ['ROLE_USER'];
         this.user.client = this.initialUser.client;
     },
     methods: {
