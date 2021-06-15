@@ -126,7 +126,7 @@ export default {
                 return;
             }
 
-            return this.user.username.length >= 4 && this.user.username.length <= 100;
+            return this.user.username.length >= 3 && this.user.username.length <= 100;
         },
         emailState() {
             if (null === this.user.email || '' === this.user.email || undefined === this.user.email) {
