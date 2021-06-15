@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Dto\User\ChangePasswordRequest;
 use App\Dto\User\IsConfirmationTokenValidRequest;
+use App\Dto\User\PasswordChangeRequest;
 use App\Dto\User\RequestPasswordResetRequest;
+use App\Dto\User\UserChangeRequest;
 use App\Dto\User\UserRegisterRequest;
+use App\Security\Voter\UserVoter;
 use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,7 +49,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ],
         "change_password" => [
             "messenger" => "input",
-            "input" => ChangePasswordRequest::class,
+            "input" => PasswordChangeRequest::class,
             "output" => User::class,
             "method" => "post",
             "status" => 200,
@@ -55,6 +57,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "openapi_context" => [
                 "summary" => "Change password of an user.",
             ],
+        ],
+        "change_user" => [
+            "messenger" => "input",
+            "input" => UserChangeRequest::class,
+            "output" => User::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/change",
+            "openapi_context" => [
+                "summary" => "Change attributes of an user.",
+            ],
+            "security_post_denormalize"
+                => "is_granted('".UserVoter::EDIT."', object.user) and (is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded())",
         ],
     ],
     itemOperations: ["get"],
@@ -66,6 +81,12 @@ class User implements UserInterface
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     public const ROLE_ALLOWED_TO_SWITCH = 'ROLE_ALLOWED_TO_SWITCH';
+    public const ROLES = [
+        self::ROLE_DEFAULT,
+        self::ROLE_ADMIN,
+        self::ROLE_SUPER_ADMIN,
+        self::ROLE_ALLOWED_TO_SWITCH,
+    ];
 
     /** @ORM\Column(type="string", length=180, unique=true) */
     protected string $email;
@@ -382,6 +403,7 @@ class User implements UserInterface
         foreach ($roles as $role) {
             $this->addRole($role);
         }
+        $this->addRole(static::ROLE_DEFAULT);
     }
 
     public function hasRole(string $role): bool

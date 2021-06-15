@@ -45,7 +45,7 @@
                 "conditions": []
             },
             {
-                "action": "vendor/bin/behat --colors --format=progress {$STAGED_FILES|of-type:feature|replace:web\tests|with:tests}",
+                "action": "vendor/bin/behat --colors --format=progress {$STAGED_FILES|of-type:feature|replace:web/tests|with:tests}",
                 "options": [],
                 "conditions": [
                     {

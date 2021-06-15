@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Handler\User;
 
-use App\Dto\User\ChangePasswordRequest;
+use App\Dto\User\PasswordChangeRequest;
 use App\Entity\User;
 use App\Notifier\ChangePasswordNotification;
 use App\Repository\UserRepository;
@@ -12,7 +12,7 @@ use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-final class ChangePasswordHandler implements MessageHandlerInterface
+final class PasswordChangeHandler implements MessageHandlerInterface
 {
     private UserPasswordEncoderInterface $userPasswordEncoder;
     private UserRepository $userRepository;
@@ -28,7 +28,7 @@ final class ChangePasswordHandler implements MessageHandlerInterface
         $this->notifier = $notifier;
     }
 
-    public function __invoke(ChangePasswordRequest $request): User
+    public function __invoke(PasswordChangeRequest $request): User
     {
         $request->user->changePassword($request->password, $this->userPasswordEncoder);
         $this->userRepository->save($request->user);

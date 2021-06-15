@@ -13,6 +13,7 @@ parameters:
 #        - '#Method [a-zA-Z0-9\\_]+OpenApiFactory::__invoke\(\) has parameter \$context with no value type specified in iterable type array.#'
         - '#Method [a-zA-Z0-9\\_]+Type::buildForm\(\) has parameter \$options with no value type specified in iterable type array.#'
         - '#Method [a-zA-Z0-9\\_]+Type::buildForm\(\) has parameter \$builder with no value type specified in iterable type Symfony\\Component\\Form\\FormBuilderInterface.#'
+        - '#Method [a-zA-Z0-9\\_]+Requirements::getConstraints\(\) has parameter \$options with no value type specified in iterable type array.#'
 #        - '#Method [a-zA-Z0-9\\_]+Extension::applyToCollection\(\) has no return typehint specified.#'
 #        - '#Method [a-zA-Z0-9\\_]+Extension::applyToItem\(\) has no return typehint specified.#'
         - '#Method [a-zA-Z0-9\\_]+Extension::applyToItem\(\) has parameter \$[a-zA-Z0-9\\_]+ with no value type specified in iterable type array.#'

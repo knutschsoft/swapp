@@ -5,6 +5,9 @@ const
     FETCHING_USERS = "FETCHING_USERS",
     FETCHING_USERS_SUCCESS = "FETCHING_USERS_SUCCESS",
     FETCHING_USERS_ERROR = "FETCHING_USERS_ERROR",
+    CHANGE = "CHANGE",
+    CHANGE_SUCCESS = "CHANGE_SUCCESS",
+    CHANGE_ERROR = "CHANGE_ERROR",
     ENABLE = "ENABLE",
     ENABLE_SUCCESS = "ENABLE_SUCCESS",
     ENABLE_ERROR = "ENABLE_ERROR",
@@ -16,7 +19,9 @@ const
 const state = {
     users: [],
     error: null,
+    changeUserError: null,
     isLoading: false,
+    isLoadingChange: false,
 };
 
 const getters = {
@@ -40,20 +45,25 @@ const getters = {
     error(state) {
         return state.error;
     },
+    changeUserError(state) {
+        return state.changeUserError;
+    },
     isLoading(state) {
         return state.isLoading;
-    }
+    },
+    isLoadingChange(state) {
+        return state.isLoadingChange;
+    },
 };
 
 function replaceObjectInState(state, object) {
     state.users.forEach(function (oldObject, key) {
-        if (oldObject.userId === object.userId) {
+        if (oldObject['@id'] === object['@id']) {
             // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
-            state.users.splice(key, 1, object);
+            state.users.splice(key, 1);
         }
-
-        state.users = [ ...state.users, object ];
     });
+    state.users = [ ...state.users, object ];
 }
 
 const mutations = {
@@ -70,31 +80,44 @@ const mutations = {
         state.error = error;
         state.isLoading = false;
     },
+    [CHANGE](state) {
+        state.isLoadingChange = true;
+        state.changeUserError = null;
+    },
+    [CHANGE_SUCCESS](state, user) {
+        state.changeUserError = null;
+        state.isLoadingChange = false;
+        replaceObjectInState(state, user);
+    },
+    [CHANGE_ERROR](state, error) {
+        state.changeUserError = error;
+        state.isLoadingChange = false;
+    },
     [ENABLE](state) {
-        state.isLoading = true;
-        state.error = null;
+        state.isLoadingChange = true;
+        state.changeUserError = null;
     },
     [ENABLE_SUCCESS](state, user) {
-        state.error = null;
-        state.isLoading = false;
+        state.changeUserError = null;
+        state.isLoadingChange = false;
         replaceObjectInState(state, user);
     },
     [ENABLE_ERROR](state, error) {
-        state.error = error;
-        state.isLoading = false;
+        state.changeUserError = error;
+        state.isLoadingChange = false;
     },
     [DISABLE](state) {
-        state.isLoading = true;
-        state.error = null;
+        state.isLoadingChange = true;
+        state.changeUserError = null;
     },
     [DISABLE_SUCCESS](state, user) {
-        state.error = null;
-        state.isLoading = false;
+        state.changeUserError = null;
+        state.isLoadingChange = false;
         replaceObjectInState(state, user);
     },
     [DISABLE_ERROR](state, error) {
-        state.error = error;
-        state.isLoading = false;
+        state.changeUserError = error;
+        state.isLoadingChange = false;
     },
 };
 
@@ -107,6 +130,17 @@ const actions = {
             return response.data['hydra:member'];
         } catch (error) {
             commit(FETCHING_USERS_ERROR, error);
+        }
+    },
+    async change({commit}, userId) {
+        commit(CHANGE);
+        try {
+            let response = await UserAPI.change(userId);
+            commit(CHANGE_SUCCESS, response.data);
+            return response.data;
+        } catch (error) {
+            commit(CHANGE_ERROR, error);
+            return null;
         }
     },
     async enable({commit}, userId) {

@@ -22,6 +22,11 @@ Feature: A user can login
     When I click on text "Anmelden"
     Then I wait for "Neue Streetwork-Runde" to appear
     And I should be on "/dashboard"
+    Then I wait for "Dashboard" to appear
+    Then I wait for "Benutzer" to disappear
+    Then I wait for "Klienten" to disappear
+    Then I wait for "Teams" to disappear
+    Then I wait for "Systemische Fragen" to disappear
 
   @javascript
   @login
@@ -53,8 +58,10 @@ Feature: A user can login
     When I enter "admin@gmx.de" in "password" field
     When I click on text "Anmelden"
     Then I wait for "Dashboard" to appear
+    Then I wait for "Benutzer" to appear
+    Then I wait for "Klienten" to disappear
     Then I wait for "Teams" to appear
-    Then I wait for "Benutzer" to disappear
+    Then I wait for "Systemische Fragen" to appear
     Then I wait for "Tags" to appear
 
   @javascript
@@ -66,6 +73,8 @@ Feature: A user can login
     When I enter "superadmin@gmx.de" in "password" field
     When I click on text "Anmelden"
     Then I wait for "Dashboard" to appear
-    Then I wait for "Teams" to appear
     Then I wait for "Benutzer" to appear
+    Then I wait for "Klienten" to appear
+    Then I wait for "Teams" to appear
+    Then I wait for "Systemische Fragen" to appear
     Then I wait for "Tags" to appear

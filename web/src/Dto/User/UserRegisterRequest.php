@@ -7,21 +7,17 @@ use App\Entity\Client;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\GroupSequence(['UserRegisterRequest', 'SecondGroup'])]
 final class UserRegisterRequest
 {
-    use PasswordRequest;
+    #[AppAssert\UsernameRequirements]
+    public string $username;
 
-    #[Assert\NotNull]
-    #[Assert\Length(['min' => 4, 'max' => 100])]
-    #[Assert\Type(['type' => 'string'])]
-    #[AppAssert\IsUserEmailUnique]
+    #[AppAssert\EmailRequirements]
     public string $email;
 
-    #[Assert\NotNull]
-    #[Assert\Length(['min' => 4, 'max' => 100])]
-    #[Assert\Type(['type' => 'string'])]
-    #[AppAssert\IsUsernameUnique]
-    public string $username;
+    #[AppAssert\PasswordRequirements]
+    public string $password;
 
     #[Assert\NotNull]
     #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]

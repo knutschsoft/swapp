@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 import axios from 'axios';
 
 export default {
@@ -26,10 +26,13 @@ export default {
 
         return axios.get(`/api/users?page=${params.page}&itemsPerPage=${params.itemsPerPage}` + sort);
     },
-    enable (userId) {
-        return axios.put('/api/users/enable', {'userId': userId});
+    change(user) {
+        return axios.post('/api/users/change', user);
+    },
+    enable(userId) {
+        return axios.put('/api/users/enable', { 'userId': userId });
     },
     disable(userId) {
-        return axios.put('/api/users/disable', {'userId': userId});
+        return axios.put('/api/users/disable', { 'userId': userId });
     },
 };

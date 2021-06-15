@@ -5,7 +5,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class IsUserEmailUnique extends Constraint
 {
     public string $message = 'user.email-is-not-unique';
@@ -13,5 +13,10 @@ class IsUserEmailUnique extends Constraint
     public function validatedBy(): string
     {
         return IsUserEmailUniqueValidator::class;
+    }
+
+    public function getTargets(): string
+    {
+        return self::CLASS_CONSTRAINT;
     }
 }

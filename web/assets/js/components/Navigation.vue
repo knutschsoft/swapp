@@ -48,7 +48,7 @@
                         Dashboard
                     </b-nav-item>
                     <b-nav-item
-                        v-if="isSuperAdmin"
+                        v-if="isAdmin"
                         :to="{ name: 'Users' }"
                         :link-classes="linkClasses"
                         exact
@@ -221,6 +221,7 @@
                     || this.$store.getters['tag/isLoading']
                     || this.$store.getters['team/isLoading']
                     || this.$store.getters['user/isLoading']
+                    || this.$store.getters['user/isLoadingChange']
                     || this.$store.getters['walk/isLoading']
                     || this.$store.getters['wayPoint/isLoading'];
             },

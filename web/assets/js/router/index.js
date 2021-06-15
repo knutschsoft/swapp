@@ -26,7 +26,7 @@ Vue.use(VueRouter);
 
 let routes = [
     { id: 1, path: '/klienten', component: Clients, name: 'Clients', meta: { requiresSuperAdmin: true } },
-    {id: 2, path: "/benutzer", component: Users, name: "Users", meta: {requiresSuperAdmin: true}},
+    {id: 2, path: "/benutzer", component: Users, name: "Users", meta: {requiresAdmin: true}},
     {id: 3, path: "/anmeldung", component: Login, name: "Login"},
     {id: 4, path: "/dashboard", component: Dashboard, name: "Dashboard", meta: {requiresAuth: true}, props: true},
     {id: 5, path: "/was-ist-swapp-die-streetworkapp", component: About, name: "About", meta: {requiresAuth: false}, props: false},

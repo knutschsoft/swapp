@@ -4,13 +4,15 @@ declare(strict_types=1);
 namespace App\Dto\User;
 
 use App\Entity\User;
+use App\Validator\Constraints as AppAssert;
 use App\Value\ConfirmationToken;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(['ChangePasswordRequest', 'SecondGroup', 'ThirdGroup'])]
-final class ChangePasswordRequest
+#[Assert\GroupSequence(['PasswordChangeRequest', 'SecondGroup', 'ThirdGroup'])]
+final class PasswordChangeRequest
 {
-    use PasswordRequest;
+    #[AppAssert\PasswordRequirements]
+    public string $password;
 
     #[Assert\NotNull]
     #[Assert\Type(type: User::class, groups: ['SecondGroup'])]

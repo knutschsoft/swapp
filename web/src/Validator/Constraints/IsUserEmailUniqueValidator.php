@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use App\Dto\User\UserChangeRequest;
+use App\Dto\User\UserRegisterRequest;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -17,14 +19,18 @@ class IsUserEmailUniqueValidator extends ConstraintValidator
     }
 
     /**
-     * @param string     $email
-     * @param Constraint $constraint
+     * @param UserRegisterRequest|UserChangeRequest $request
+     * @param Constraint                            $constraint
      */
-    public function validate($email, Constraint $constraint): void
+    public function validate($request, Constraint $constraint): void
     {
-        if ((bool) $this->userRepository->findOneBy(['email' => \strtolower($email)])) {
+        if (isset($request->user) && \strtolower($request->user->getEmail()) === \strtolower($request->email)) {
+            return;
+        }
+        if ($this->userRepository->findOneBy(['email' => \strtolower($request->email)])) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $email)
+                ->setParameter('{{ value }}', $request->email)
+                ->atPath('email')
                 ->addViolation();
         }
     }

@@ -21,8 +21,9 @@
             ContentCollapse,
             UserList
         },
-        mounted() {
-        }
+        async mounted() {
+            await this.$store.dispatch('client/findAll');
+        },
     }
 </script>
 
