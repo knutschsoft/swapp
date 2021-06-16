@@ -36,6 +36,9 @@ const getters = {
             return foundTag;
         };
     },
+    getTagByIri(state, getters) {
+        return tagIri => getters.getTagById(tagIri.replace('/api/tags/', ''));
+    },
     hasTags(state) {
         return state.tags.length > 0;
     },

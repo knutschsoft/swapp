@@ -342,7 +342,15 @@ class WayPoint
      */
     public function setWayPointTags(Collection $wayPointTags): void
     {
+        /** @var Tag $wayPointTag */
+        foreach ($this->wayPointTags as $wayPointTag) {
+            $wayPointTag->removeWayPoint($this);
+        }
         $this->wayPointTags = $wayPointTags;
+        /** @var Tag $wayPointTag */
+        foreach ($this->wayPointTags as $wayPointTag) {
+            $wayPointTag->addWayPoint($this);
+        }
     }
 
     public function addWayPointTag(Tag $tag): void

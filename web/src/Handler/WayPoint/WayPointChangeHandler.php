@@ -32,7 +32,7 @@ final class WayPointChangeHandler implements MessageHandlerInterface
         $wayPoint->setNote($request->note);
         $wayPoint->setImageName((string) $request->imageFileName);
         $wayPoint->setIsMeeting($request->isMeeting);
-        $wayPoint->setWayPointTags(new ArrayCollection($request->tags));
+        $wayPoint->setWayPointTags(new ArrayCollection($request->wayPointTags));
 
         $tmpFile = $request->getDecodedImageData();
         $imageName = $wayPoint->getImageName();

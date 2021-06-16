@@ -225,9 +225,7 @@ export default {
     },
     methods: {
         getTagByIri(iri) {
-            const id = iri.replace('/api/tags/', '');
-
-            return this.$store.getters['tag/getTagById'](id);
+            return this.$store.getters['tag/getTagByIri'](iri);
         },
         getWalkByIri(iri) {
             const id = iri.replace('/api/walks/', '');

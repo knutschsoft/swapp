@@ -124,7 +124,7 @@
         >
             <b-form-checkbox-group
                 id="input-Tag"
-                v-model="wayPoint.tags"
+                v-model="wayPoint.wayPointTags"
                 :disabled="isLoading"
                 class="row"
             >
@@ -206,8 +206,8 @@ export default {
                 isMeeting: null,
                 note: '',
                 wayPointTags: [],
-                imageFileData: '',
-                imageFileName: '',
+                imageFileData: null,
+                imageFileName: null,
             },
             file: null,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),

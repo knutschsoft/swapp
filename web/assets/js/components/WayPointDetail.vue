@@ -114,8 +114,6 @@
                         appendToast: true,
                         solid: true,
                     });
-
-                    this.resetEditModal();
                 } else {
                     this.$bvToast.toast('Upps! :-(', {
                         title: 'Wegpunkt ändern fehlgeschlagen',

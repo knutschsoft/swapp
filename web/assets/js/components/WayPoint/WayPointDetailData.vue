@@ -27,11 +27,26 @@
                     v-if="field.name === 'Ort'"
                     :value="field.value"
                 />
-                <div
+                <nl2br
                     v-else-if="field.name === 'Beobachtung'"
+                    tag="div"
+                    :text="field.value.trim()"
+                    class-name="text-left"
+                />
+                <div
+                    v-else-if="field.name === 'Tags'"
                     class="text-left"
-                    style="white-space: pre;"
-                >{{ field.value }}</div>
+                >
+                    <template
+                        v-for="tag in field.value"
+                    >
+                        {{ tag.name }}
+                        <color-badge
+                            :color="tag.color"
+                            class="mr-2"
+                        />
+                    </template>
+                </div>
                 <template
                     v-else-if="field.name === 'Bild'"
                 >
@@ -59,10 +74,12 @@
     "use strict";
     import ModulHeader from './../ModulHeader';
     import LocationLink from '../LocationLink.vue';
+    import ColorBadge from '../Tags/ColorBadge.vue';
 
     export default {
         name: "WayPointDetailData",
         components: {
+            ColorBadge,
             LocationLink,
             ModulHeader,
             Error,
@@ -101,6 +118,14 @@
             wayPoint() {
                 return this.$store.getters["wayPoint/getWayPointById"](this.wayPointId);
             },
+            wayPointTags() {
+                let wayPointTags = [];
+                this.wayPoint.wayPointTags.forEach(iri => {
+                    wayPointTags.push(this.getTagByIri(iri));
+                })
+
+                return wayPointTags.sort((a, b) => a.name > b.name ? 1 : -1);
+            },
             fields() {
                 if (!this.wayPoint) {
                     return [];
@@ -118,11 +143,13 @@
                         isAgeGroup: true,
                     })
                 });
+
                 return [
-                    {name: 'Ort', value: this.wayPoint.locationName},
-                    {name: 'Beobachtung', value: this.wayPoint.note},
-                    {name: 'Bild', value: this.wayPoint.imageName},
-                    {name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein'},
+                    { name: 'Ort', value: this.wayPoint.locationName },
+                    { name: 'Beobachtung', value: this.wayPoint.note },
+                    { name: 'Bild', value: this.wayPoint.imageName },
+                    { name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein' },
+                    { name: 'Tags', value: this.wayPointTags },
                 ].concat(ageGroups);
             },
         },
@@ -143,9 +170,8 @@
             }
         },
         methods: {
-            formatDate: function(dateString) {
-                let date = new Date(dateString);
-                return date.toLocaleDateString('de-DE', { weekday: 'short', hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit' })
+            getTagByIri(iri) {
+                return this.$store.getters['tag/getTagByIri'](iri);
             },
         },
     }
