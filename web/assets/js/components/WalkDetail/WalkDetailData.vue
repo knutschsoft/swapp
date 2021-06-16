@@ -46,6 +46,9 @@
             },
             walkTeamMembers() {
                 let users = [];
+                if (!this.walk) {
+                    return users;
+                }
                 this.walk.walkTeamMembers.forEach(iri => {
                     users.push(this.getUserByIri(iri).username);
                 })
@@ -71,6 +74,7 @@
                     {name: 'Termine, Besorgungen, Verabredungen', value: this.walk.commitments},
                     {name: 'Erkenntnisse, Überlegungen, Zielsetzungen', value: this.walk.insights},
                     {name: 'Wiedervorlage Dienstberatung', value: this.walk.isResubmission ? 'ja' : 'nein'},
+                    { name: 'Team:', value: this.walk.teamName },
                     {name: 'Teilnehmer', value: this.walkTeamMembers.length ? this.walkTeamMembers.join(', ') : 'keine Teilnehmer'},
                     {name: 'Gäste', value: this.walk.guests && this.walk.guests.length ? this.walk.guests.join(', ') : 'keine Gäste'},
                 ]
