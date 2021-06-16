@@ -145,8 +145,7 @@ export default {
     },
     methods: {
         getUserByIri(userIri) {
-            const userId = userIri.replace('/api/users/', '');
-            return this.$store.getters['user/getUserById'](userId);
+            return this.$store.getters['user/getUserByIri'](userIri);
         },
         editRolle(rolle, client) {
             this.$root.$emit('bv::show::modal', this.editModalRolle.id);

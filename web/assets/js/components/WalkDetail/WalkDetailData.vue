@@ -44,6 +44,14 @@
             personCount() {
                 return this.walk.malesCount + this.walk.femalesCount + this.walk.queerCount;
             },
+            walkTeamMembers() {
+                let users = [];
+                this.walk.walkTeamMembers.forEach(iri => {
+                    users.push(this.getUserByIri(iri).username);
+                })
+
+                return users.sort((a, b) => a > b ? 1 : -1);
+            },
             fields() {
                 return [
                     {name: 'Name', value: this.walk.name},
@@ -63,7 +71,7 @@
                     {name: 'Termine, Besorgungen, Verabredungen', value: this.walk.commitments},
                     {name: 'Erkenntnisse, Überlegungen, Zielsetzungen', value: this.walk.insights},
                     {name: 'Wiedervorlage Dienstberatung', value: this.walk.isResubmission ? 'ja' : 'nein'},
-                    {name: 'Teilnehmer', value: this.walk.walkTeamMembers && this.walk.walkTeamMembers.length ? this.walk.walkTeamMembers.join(', ') : 'keine Teilnehmer'},
+                    {name: 'Teilnehmer', value: this.walkTeamMembers.length ? this.walkTeamMembers.join(', ') : 'keine Teilnehmer'},
                     {name: 'Gäste', value: this.walk.guests && this.walk.guests.length ? this.walk.guests.join(', ') : 'keine Gäste'},
                 ]
             },
@@ -72,6 +80,9 @@
         mounted() {
         },
         methods: {
+            getUserByIri(userIri) {
+                return this.$store.getters['user/getUserByIri'](userIri);
+            },
             formatDate: function(dateString) {
                 let date = new Date(dateString);
                 return date.toLocaleDateString('de-DE', { weekday: 'short', hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit' })

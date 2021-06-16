@@ -107,6 +107,7 @@
                     }
                 }
             });
+            wayPointPromises.push(this.$store.dispatch('user/findAll'));
             await Promise.all(wayPointPromises);
         },
         methods: {

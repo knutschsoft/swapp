@@ -45,6 +45,9 @@ const getters = {
             return foundUser;
         }
     },
+    getUserByIri(state, getters) {
+        return iri => getters.getUserById(iri.replace('/api/users/', ''));
+    },
     error(state) {
         return state.error;
     },
