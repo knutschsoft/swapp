@@ -13,8 +13,8 @@
             <b-input
                 v-model="wayPoint.locationName"
                 required
-                minlength="4"
-                maxlength="100"
+                minlength="2"
+                maxlength="300"
                 placeholder="Ort"
                 :state="locationNameState"
                 data-test="locationName"
@@ -106,8 +106,8 @@
         >
             <b-textarea
                 v-model="wayPoint.note"
-                minlength="4"
-                maxlength="100000"
+                minlength="0"
+                maxlength="2500"
                 placeholder="Beobachtung"
                 :state="noteState"
                 data-test="note"
@@ -219,14 +219,14 @@ export default {
                 return;
             }
 
-            return this.wayPoint.locationName.length >= 2 && this.wayPoint.locationName.length <= 2500;
+            return this.wayPoint.locationName.length >= 2 && this.wayPoint.locationName.length <= 300;
         },
         noteState() {
             if (null === this.wayPoint.note || undefined === this.wayPoint.note) {
                 return;
             }
 
-            return this.wayPoint.note.length >= 0 && this.wayPoint.note.length <= 10000;
+            return this.wayPoint.note.length >= 0 && this.wayPoint.note.length <= 2500;
         },
         imageState() {
             if (!this.wayPoint.imageFileData) {
@@ -265,7 +265,7 @@ export default {
             return errors;
         },
         isLoading() {
-            return this.$store.getters['user/isLoadingChange'];
+            return this.$store.getters['wayPoint/isLoadingChange'];
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];

@@ -37,19 +37,34 @@
                 :walk-id="walkId"
             />
         </content-collapse>
+        <content-collapse
+            v-if="isAdmin && walk"
+            :title="`Wegpunkte der Runde &quot;${walk.name}&quot;`"
+            collapse-key="waypoints-of-round"
+            is-visible-by-default
+            :is-loading="!walk"
+        >
+            <walk-form
+                submit-button-text="Runde speichern"
+                :initial-walk="walk"
+                @submit="handleSubmit"
+            />
+        </content-collapse>
     </div>
 </template>
 
 <script>
     "use strict";
     import Error from './Error';
-    import WalkDetailData from './WalkDetail/WalkDetailData';
-    import WayPointList from './WalkDetail/WayPointList';
+    import WalkDetailData from './Walk/WalkDetailData';
+    import WayPointList from './Walk/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
+    import WalkForm from './Walk/WalkForm.vue';
 
     export default {
         name: "WalkDetail",
         components: {
+            WalkForm,
             ContentCollapse,
             WayPointList,
             WalkDetailData,
@@ -65,6 +80,9 @@
             }
         },
         computed: {
+            isAdmin() {
+                return this.$store.getters['security/isAdmin'];
+            },
             isLoading() {
                 return this.$store.getters["walk/isLoading"];
             },
@@ -112,9 +130,30 @@
         },
         methods: {
             getWayPointByIri(iri) {
-                const id = iri.replace('/api/way_points/', '');
-
-                return this.$store.getters['wayPoint/getWayPointById'](id);
+                return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+            },
+            async handleSubmit(payload) {
+                payload.walk = this.walk['@id'];
+                const walk = await this.$store.dispatch('walk/change', payload);
+                if (walk) {
+                    const message = `Die Runde "${walk.name}" wurde erfolgreich geändert.`;
+                    this.$bvToast.toast(message, {
+                        title: 'Runde geändert',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        appendToast: true,
+                        solid: true,
+                    });
+                } else {
+                    this.$bvToast.toast('Upps! :-(', {
+                        title: 'Runde ändern fehlgeschlagen',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        variant: 'danger',
+                        appendToast: true,
+                        solid: true,
+                    });
+                }
             },
         },
     }

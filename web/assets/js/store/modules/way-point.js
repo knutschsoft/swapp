@@ -43,6 +43,10 @@ const getters = {
             return foundWayPoint;
         }
     },
+    getWayPointByIri(state, getters) {
+        return iri => getters.getWayPointById(iri.replace('/api/way_points/', ''));
+
+    },
     hasWayPoints(state) {
         return state.wayPoints.length > 0;
     },

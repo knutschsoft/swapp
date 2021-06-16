@@ -102,9 +102,7 @@
         },
         methods: {
             getWayPointByIri(iri) {
-                const id = iri.replace('/api/way_points/', '');
-
-                return this.$store.getters['wayPoint/getWayPointById'](id);
+                return this.$store.getters['wayPoint/getWayPointByIri'](iri);
             },
         },
     }

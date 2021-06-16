@@ -37,9 +37,9 @@
 
 <script>
     "use strict";
-    import WayPointList from './WalkDetail/WayPointList';
+    import WayPointList from './Walk/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
-    import WayPointAdd from './WalkDetail/WayPointAdd.vue';
+    import WayPointAdd from './Walk/WayPointAdd.vue';
 
     export default {
         name: "WalkAddWayPoint",

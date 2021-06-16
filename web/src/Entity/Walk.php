@@ -9,10 +9,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\WalkExportRequest;
 use App\Dto\WalkPrologueRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Security\Voter\TeamVoter;
+use App\Security\Voter\WalkVoter;
 use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -52,6 +54,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         "status" => 200,
         "path" => "/walks/prologue",
         "security_post_denormalize" => "is_granted('".TeamVoter::TEAM_READ."', object.team) and user.hasTeam(object.team)",
+    ],
+    "walk_change" => [
+        "messenger" => "input",
+        "input" => WalkChangeRequest::class,
+        "output" => Walk::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/walks/change",
+        "security_post_denormalize" => "is_granted('".WalkVoter::EDIT."', object.walk)",
     ],
     ],
     itemOperations: [
