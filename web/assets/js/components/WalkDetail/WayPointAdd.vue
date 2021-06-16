@@ -117,7 +117,7 @@
                     :disabled="isLoading"
                     placeholder=""
                     rows="3"
-                    max-rows="7"
+                    max-rows="15"
                 ></b-form-textarea>
             </b-form-group>
             <b-form-group id="input-group-Tag" label="Tags" label-for="input-Tag">
@@ -212,20 +212,22 @@ export default {
             imageFileName: null,
             note: '',
             tags: [],
-            isMeeting: null,
+            isMeeting: false,
         };
         return {
             showSuccess: false,
             form: emptyForm,
             emptyForm,
             file: null,
-            isFormLoading: false,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),
         };
     },
     computed: {
         isLoading() {
             return this.$store.getters['walk/isLoading'] || this.$store.getters['wayPoint/isLoading'] || this.isFormLoading;
+        },
+        isFormLoading() {
+            return this.$store.getters['wayPoint/isLoadingChange'];
         },
         hasWalks() {
             return this.$store.getters['walk/hasWalks'];
@@ -243,7 +245,7 @@ export default {
             return this.$store.getters['tag/tags'];
         },
         error() {
-            return this.$store.getters['walk/addWayPointError'];
+            return this.$store.getters['wayPoint/errorChange'];
         },
         hasError() {
             return !!this.error;
@@ -387,41 +389,23 @@ export default {
             return this.$store.getters['wayPoint/getWayPointById'](id);
         },
         onSubmit: async function (e) {
-            this.isFormLoading = true;
             this.showSuccess = false;
-            const walk = await this.$store.dispatch('walk/addWayPoint', this.form);
+            const wayPoint = await this.$store.dispatch('wayPoint/create', this.form);
 
-            let wayPointPromises = [];
-            let wayPointPromiseIds = [];
-            this.walk.wayPoints.forEach(wayPointIri => {
-                if (!this.getWayPointByIri(wayPointIri)) {
-                    const id = wayPointIri.replace('/api/way_points/', '');
-                    if (!wayPointPromiseIds.includes(id)) {
-                        wayPointPromises.push(this.$store.dispatch('wayPoint/findById', id));
-                        wayPointPromiseIds.push(id);
-                    }
-                }
-            });
-            await Promise.all(wayPointPromises);
-
-
-            // TODO remove controller and template and form etc
-            // let result = await this.axios.post(`/form/waypointcreated/${this.walkId}`, formData);
-            // let { data } = await this.axios.get(`/form/addWayPointToWalk/${this.walkId}`);
-            this.isFormLoading = false;
             window.scrollTo({
                 top: 0,
                 left: 0,
                 behavior: 'smooth',
             });
-            if (walk) {
+            if (wayPoint) {
+                await this.$store.dispatch('walk/findByIri', wayPoint.walk);
                 this.showSuccess = true;
                 this.form = JSON.parse(JSON.stringify(this.emptyForm));
                 this.file = null;
                 if (undefined !== e.submitter.dataset.withFinish) {
                     this.$router.push({
                         name: 'WalkEpilogue',
-                        params: { walkId: walk.id, successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
+                        params: { walkId: this.walk.id, successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
                     });
                 }
             } else {

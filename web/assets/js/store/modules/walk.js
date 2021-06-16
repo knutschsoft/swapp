@@ -7,17 +7,13 @@ const
     FETCHING_WALKS_ERROR = 'FETCHING_WALKS_ERROR',
     FETCHING_WALK = 'FETCHING_WALK',
     FETCHING_WALK_SUCCESS = 'FETCHING_WALK_SUCCESS',
-    FETCHING_WALK_ERROR = 'FETCHING_WALK_ERROR',
-    ADDING_WAY_POINT = 'ADDING_WAY_POINT',
-    ADDING_WAY_POINT_SUCCESS = 'ADDING_WAY_POINT_SUCCESS',
-    ADDING_WAY_POINT_ERROR = 'ADDING_WAY_POINT_ERROR'
+    FETCHING_WALK_ERROR = 'FETCHING_WALK_ERROR'
 ;
 
 const state = {
     walks: [],
     totalWalks: 0,
     error: null,
-    addWayPointError: null,
     isLoading: false,
 };
 
@@ -47,9 +43,6 @@ const getters = {
     },
     error(state) {
         return state.error;
-    },
-    addWayPointError(state) {
-        return state.addWayPointError;
     },
     isLoading(state) {
         return state.isLoading;
@@ -91,26 +84,6 @@ const mutations = {
         state.error = error;
         state.isLoading = false;
     },
-    [ADDING_WAY_POINT](state) {
-        state.isLoading = true;
-        state.addWayPointError = null;
-    },
-    [ADDING_WAY_POINT_SUCCESS](state, walk) {
-        state.addWayPointError = null;
-        state.isLoading = false;
-        let fetchedWalk = walk;
-        state.walks.forEach((walk, index) => {
-            if (String(fetchedWalk.id) === String(walk.id)) {
-                state.walks.splice(index, 1);
-            }
-        });
-
-        state.walks = [...state.walks, fetchedWalk];
-    },
-    [ADDING_WAY_POINT_ERROR](state, error) {
-        state.addWayPointError = error;
-        state.isLoading = false;
-    },
 };
 
 const actions = {
@@ -133,6 +106,9 @@ const actions = {
         } catch (error) {
             commit(FETCHING_WALK_ERROR, error);
         }
+    },
+    async findByIri({ commit, dispatch }, walkIri) {
+        dispatch('findById', walkIri.replace('/api/walks/', ''));
     },
     async addWayPoint({ commit }, payload) {
         commit(ADDING_WAY_POINT);

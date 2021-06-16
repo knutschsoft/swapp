@@ -39,7 +39,6 @@
     "use strict";
 
     import LocationLink from '../LocationLink.vue';
-    import wayPoint from '../../api/wayPoint.js';
 
     export default {
         name: "WayPointList",

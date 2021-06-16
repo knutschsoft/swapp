@@ -7,13 +7,21 @@ const
     FETCHING_WAY_POINTS_ERROR = "FETCHING_WAY_POINTS_ERROR",
     FETCHING_WAY_POINT = "FETCHING_WAY_POINT",
     FETCHING_WAY_POINT_SUCCESS = "FETCHING_WAY_POINT_SUCCESS",
-    FETCHING_WAY_POINT_ERROR = "FETCHING_WAY_POINT_ERROR"
+    FETCHING_WAY_POINT_ERROR = "FETCHING_WAY_POINT_ERROR",
+    CHANGE_WAY_POINT = "CHANGE_WAY_POINT",
+    CHANGE_WAY_POINT_SUCCESS = "CHANGE_WAY_POINT_SUCCESS",
+    CHANGE_WAY_POINT_ERROR = "FETCHING_WAY_POINT_ERROR",
+    CREATE_WAY_POINT = 'CREATE_WAY_POINT',
+    CREATE_WAY_POINT_SUCCESS = 'CREATE_WAY_POINT_SUCCESS',
+    CREATE_WAY_POINT_ERROR = 'CREATE_WAY_POINT_ERROR'
 ;
 
 const state = {
     wayPoints: [],
     error: null,
+    errorChange: null,
     isLoading: false,
+    isLoadingChange: false,
     totalWayPoints: 0,
 };
 
@@ -41,9 +49,15 @@ const getters = {
     error(state) {
         return state.error;
     },
+    errorChange(state) {
+        return state.errorChange;
+    },
     isLoading(state) {
         return state.isLoading;
-    }
+    },
+    isLoadingChange(state) {
+        return state.isLoadingChange;
+    },
 };
 
 const mutations = {
@@ -80,6 +94,39 @@ const mutations = {
         state.error = error;
         state.isLoading = false;
     },
+    [CHANGE_WAY_POINT](state) {
+        state.isLoadingChange = true;
+        state.errorChange = null;
+    },
+    [CHANGE_WAY_POINT_SUCCESS](state, wayPoint) {
+        state.errorChange = null;
+        state.isLoadingChange = false;
+        let fetchedWayPoint = wayPoint;
+        state.wayPoints.forEach((wayPoint, index) => {
+            if (String(fetchedWayPoint.id) === String(wayPoint.id)) {
+                state.wayPoints.splice(index, 1);
+            }
+        });
+
+        state.wayPoints = [...state.wayPoints, fetchedWayPoint];
+    },
+    [CHANGE_WAY_POINT_ERROR](state, error) {
+        state.errorChange = error;
+        state.isLoadingChange = false;
+    },
+    [CREATE_WAY_POINT](state) {
+        state.isLoadingChange = true;
+        state.errorChange = null;
+    },
+    [CREATE_WAY_POINT_SUCCESS](state, wayPoint) {
+        state.errorChange = null;
+        state.isLoadingChange = false;
+        state.wayPoints = [...state.wayPoints, wayPoint];
+    },
+    [CREATE_WAY_POINT_ERROR](state, error) {
+        state.errorChange = error;
+        state.isLoadingChange = false;
+    },
 };
 
 const actions = {
@@ -110,6 +157,30 @@ const actions = {
             return response.data;
         } catch (error) {
             commit(FETCHING_WAY_POINT_ERROR, error);
+        }
+    },
+    async change({commit, dispatch}, payload) {
+        commit(CHANGE_WAY_POINT);
+        try {
+            let response = await WayPointAPI.change(payload);
+            commit(CHANGE_WAY_POINT_SUCCESS, response.data);
+            dispatch('walk/findByIri', response.data.walk, { root: true });
+
+            return response.data;
+        } catch (error) {
+            commit(CHANGE_WAY_POINT_ERROR, error);
+        }
+    },
+    async create({commit, dispatch}, payload) {
+        commit(CREATE_WAY_POINT);
+        try {
+            let response = await WayPointAPI.create(payload);
+            commit(CREATE_WAY_POINT_SUCCESS, response.data);
+            dispatch('walk/findByIri', response.data.walk, { root: true });
+
+            return response.data;
+        } catch (error) {
+            commit(CREATE_WAY_POINT_ERROR, error);
         }
     },
 };

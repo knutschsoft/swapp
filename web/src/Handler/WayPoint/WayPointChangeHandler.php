@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Handler\WayPoint;
 
-use App\Dto\WayPointAddRequest;
-use App\Entity\Walk;
+use App\Dto\WayPoint\WayPointChangeRequest;
 use App\Entity\WayPoint;
 use App\Repository\WayPointRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
-final class WayPointAddHandler implements MessageHandlerInterface
+final class WayPointChangeHandler implements MessageHandlerInterface
 {
     private WayPointRepository $wayPointRepository;
     private FilesystemOperator $wayPointImageStorage;
@@ -24,9 +24,16 @@ final class WayPointAddHandler implements MessageHandlerInterface
         $this->wayPointImageStorage = $wayPointImageStorage;
     }
 
-    public function __invoke(WayPointAddRequest $request): Walk
+    public function __invoke(WayPointChangeRequest $request): WayPoint
     {
-        $wayPoint = WayPoint::fromWayPointAddRequest($request);
+        $wayPoint = $request->wayPoint;
+        $wayPoint->setLocationName($request->locationName);
+        $wayPoint->setAgeGroups($request->ageGroups);
+        $wayPoint->setNote($request->note);
+        $wayPoint->setImageName((string) $request->imageFileName);
+        $wayPoint->setIsMeeting($request->isMeeting);
+        $wayPoint->setWayPointTags(new ArrayCollection($request->tags));
+
         $tmpFile = $request->getDecodedImageData();
         $imageName = $wayPoint->getImageName();
         if ($tmpFile && $imageName) {
@@ -36,6 +43,6 @@ final class WayPointAddHandler implements MessageHandlerInterface
         }
         $this->wayPointRepository->save($wayPoint);
 
-        return $wayPoint->getWalk();
+        return $wayPoint;
     }
 }

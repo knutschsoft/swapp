@@ -8,7 +8,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Dto\WayPointAddRequest;
+use App\Dto\WayPoint\WayPointChangeRequest;
+use App\Dto\WayPointCreateRequest;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Gender;
@@ -29,7 +30,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
 #[ApiFilter(SearchFilter::class, properties: ['locationName' => 'partial', 'note' => 'partial', 'wayPointTags' => 'exact'])]
 #[ApiResource(
-    collectionOperations: ['get'],
+    collectionOperations: [
+    'get',
+    "way_point_change" => [
+        "messenger" => "input",
+        "input" => WayPointChangeRequest::class,
+        "output" => WayPoint::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/way_points/change",
+    ],
+    "way_point_create" => [
+        "messenger" => "input",
+        "input" => WayPointCreateRequest::class,
+        "output" => WayPoint::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/way_points/create",
+    ],
+    ],
     itemOperations: ['get'],
     normalizationContext: ["groups" => ["wayPoint:read"]]
 )]
@@ -114,7 +133,7 @@ class WayPoint
         return $instance;
     }
 
-    public static function fromWayPointAddRequest(WayPointAddRequest $request): self
+    public static function fromWayPointCreateRequest(WayPointCreateRequest $request): self
     {
         $instance = new self();
 
@@ -126,6 +145,7 @@ class WayPoint
         if ($request->imageFileName) {
             $instance->setImageName($request->imageFileName);
         }
+        $instance->setIsMeeting($request->isMeeting);
 
         return $instance;
     }

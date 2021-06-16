@@ -10,8 +10,8 @@ use App\Value\AgeGroup;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(['WayPointAddRequest', 'SecondGroup'])]
-final class WayPointAddRequest
+#[Assert\GroupSequence(['WayPointCreateRequest', 'SecondGroup'])]
+final class WayPointCreateRequest
 {
     #[Assert\NotBlank]
     #[Assert\NotNull]
@@ -31,6 +31,8 @@ final class WayPointAddRequest
 
     #[Assert\Length(min: 5, max: 200)]
     public ?string $imageFileName;
+
+    public bool $isMeeting;
 
     /**
      * @var AgeGroup[]
