@@ -3,11 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Team;
 use App\Entity\Walk;
-use App\Form\Type\WalkPrologueType;
 use App\Form\Type\WalkType;
-use App\Repository\SystemicQuestionRepository;
 use App\Repository\WalkRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,18 +19,15 @@ class WalkController extends AbstractController
     private WalkRepository $walkRepository;
     private RouterInterface $router;
     private FormFactoryInterface $formFactory;
-    private SystemicQuestionRepository $systemicQuestionRepository;
 
     public function __construct(
         WalkRepository $walkRepository,
-        SystemicQuestionRepository $systemicQuestionRepository,
         RouterInterface $router,
         FormFactoryInterface $formFactory
     ) {
         $this->walkRepository = $walkRepository;
         $this->router = $router;
         $this->formFactory = $formFactory;
-        $this->systemicQuestionRepository = $systemicQuestionRepository;
     }
 
     /**
@@ -62,36 +56,6 @@ class WalkController extends AbstractController
             'form' => $form->createView(),
             'wayPoints' => $walk->getWayPoints(),
         ];
-    }
-
-    /**
-     * @param Team    $team
-     * @param Request $request
-     *
-     * @Route("/form/walk-prologue/{teamId}", name="walk_start")
-     *
-     * @return JsonResponse
-     */
-    public function createWalkPrologueAction(Team $team, Request $request): JsonResponse
-    {
-        $systemicQuestion = $this->systemicQuestionRepository->getRandomForClient($team->getClient());
-        $form = $this->formFactory->create(WalkPrologueType::class, Walk::prologue($team, $systemicQuestion));
-        $form->handleRequest($request);
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            $view = $this->renderView('walk/createWalkPrologueForm.html.twig', ['form' => $form->createView()]);
-
-            return $this->json(
-                [
-                    'form' => $view,
-                ]
-            );
-        }
-
-        /** @var Walk $walk */
-        $walk = $form->getData();
-        $this->walkRepository->save($walk);
-
-        return new JsonResponse(['walkId' => $walk->getId()]);
     }
 
     /**

@@ -68,7 +68,7 @@ Feature: Testing team change resource
       | ageRanges[0].rangeStart    | 1          |
       | ageRanges[0].rangeEnd      | 3          |
       | ageRanges[0].frontendLabel | 1 - 3      |
-      | users[0].email             | two@pac.de |
+#      |users[0]                | userIri<two@pac.de> |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an superadmin and change a team
@@ -88,7 +88,7 @@ Feature: Testing team change resource
       | ageRanges[0].rangeStart    | 1          |
       | ageRanges[0].rangeEnd      | 3          |
       | ageRanges[0].frontendLabel | 1 - 3      |
-      | users[0].email             | two@pac.de |
+#      |users[0]                | userIri<two@pac.de> |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an superadmin and will get a validation error

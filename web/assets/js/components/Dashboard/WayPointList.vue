@@ -80,7 +80,7 @@
                 <b-input-group prepend="Beobachtung" size="sm">
                     <b-form-input
                         v-model="filter.note"
-                        placeholder="Ort"
+                        placeholder="Beobachtung"
                         debounce="500"
                         size="sm"
                         @update="handleFilterChange"

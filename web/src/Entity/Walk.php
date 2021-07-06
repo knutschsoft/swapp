@@ -10,8 +10,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\Walk\WalkChangeRequest;
+use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\WalkExportRequest;
-use App\Dto\WalkPrologueRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
@@ -21,7 +21,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -46,15 +45,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         "path" => "/walks/export",
         "security_post_denormalize" => "is_granted('CLIENT_READ', object.client)",
     ],
-    "walk_prologue" => [
-        "messenger" => "input",
-        "input" => WalkPrologueRequest::class,
-        "output" => Walk::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/walks/prologue",
-        "security_post_denormalize" => "is_granted('".TeamVoter::TEAM_READ."', object.team) and user.hasTeam(object.team)",
-    ],
     "walk_change" => [
         "messenger" => "input",
         "input" => WalkChangeRequest::class,
@@ -63,6 +53,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         "status" => 200,
         "path" => "/walks/change",
         "security_post_denormalize" => "is_granted('".WalkVoter::EDIT."', object.walk)",
+    ],
+    "walk_create" => [
+        "messenger" => "input",
+        "input" => WalkCreateRequest::class,
+        "output" => Walk::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/walks/create",
+        "security_post_denormalize" => "is_granted('".TeamVoter::TEAM_READ."', object.team) and user.hasTeam(object.team)",
     ],
     ],
     itemOperations: [
@@ -86,7 +85,7 @@ class Walk
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Assert\NotBlank(groups={"prologue", "registration"})
+     * @Assert\NotBlank(groups={"registration"})
      */
     private string $name;
 
@@ -100,7 +99,7 @@ class Walk
     /**
      * @ORM\Column(type="datetime")
      *
-     * @Assert\NotBlank(groups={"prologue", "registration"})
+     * @Assert\NotBlank(groups={"registration"})
      */
     private \DateTime $startTime;
 
@@ -120,8 +119,7 @@ class Walk
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
-     *
-     * @MaxDepth(1)
+     * @ORM\OrderBy({"username" = "ASC"})
      *
      * @var Collection<int, User>
      */
@@ -173,26 +171,14 @@ class Walk
      * @var Collection<int, Guest>
      **/
     private Collection $guests;
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank(groups={"prologue"})
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $weather;
     /** @ORM\Column(type="boolean", length=255) */
     private bool $holidays;
-    /**
-     * @ORM\Column(type="string", length=4096)
-     *
-     * @Assert\NotBlank(groups={"prologue"})
-     */
+    /** @ORM\Column(type="string", length=4096) */
     private string $conceptOfDay;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank(groups={"prologue"})
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $teamName;
 
     /**
@@ -202,7 +188,10 @@ class Walk
      */
     private ?\DateTime $deletedAt = null;
 
-    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="walks") */
+    /**
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="walks")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
     private Client $client;
 
     public function __construct()
@@ -216,42 +205,30 @@ class Walk
         $this->conceptOfDay = '';
     }
 
-    public static function prologue(Team $team, SystemicQuestion $systemicQuestion): self
+    public static function fromWalkCreateRequest(WalkCreateRequest $request, SystemicQuestion $systemicQuestion): self
     {
         $instance = new self();
+        $team = $request->team;
 
+        $instance->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
         $instance->setTeamName($team->getName());
         $instance->updateClient($team->getClient());
-        $instance->setName('');
-        $instance->setStartTime(new \DateTime());
-        $instance->setEndTime(new \DateTime());
+        $instance->setName($request->name);
+        $instance->setStartTime($request->startTime);
+        $instance->setEndTime($request->startTime);
         $instance->setRating(1);
         $instance->setSystemicAnswer('');
         $instance->setSystemicQuestion($systemicQuestion->getQuestion());
         $instance->setWalkReflection('');
-        $instance->setWeather('');
+        $instance->setWeather($request->weather);
         $instance->setIsResubmission(false);
-        $instance->setHolidays(false);
+        $instance->setHolidays($request->holidays);
         $instance->setCommitments('');
         $instance->setInsights('');
-        $instance->setConceptOfDay('');
+        $instance->setConceptOfDay($request->conceptOfDay);
         $instance->setAgeRanges($team->getAgeRanges());
 
         return $instance;
-    }
-
-    public function newPrologue(Team $team, SystemicQuestion $systemicQuestion): void
-    {
-        $this->setTeamName($team->getName());
-        $this->setEndTime(new \DateTime());
-        $this->setRating(1);
-        $this->setSystemicAnswer('');
-        $this->setSystemicQuestion($systemicQuestion->getQuestion());
-        $this->setWalkReflection('');
-        $this->setIsResubmission(false);
-        $this->setCommitments('');
-        $this->setInsights('');
-        $this->setAgeRanges($team->getAgeRanges());
     }
 
     #[Groups(['walk:read'])]

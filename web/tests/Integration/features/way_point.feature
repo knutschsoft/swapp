@@ -48,7 +48,7 @@ Feature: Testing way point resource
     And the JSON nodes should be equal to:
       | code | 401 |
 
-  @api @wayPoint @suw
+  @api @wayPoint
   Scenario: I can request /api/way_points as authenticated user and will see all way points
     Given I am authenticated against api as "karl@gmx.de"
     When I send a GET request to "/api/way_points"

@@ -18,6 +18,9 @@ export default {
     findOneById(walkId) {
         return axios.get('/api/walks/' + walkId);
     },
+    create(payload) {
+        return axios.post(`/api/walks/create`, payload);
+    },
     change(payload) {
         return axios.post(`/api/walks/change`, payload);
     },

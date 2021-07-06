@@ -239,11 +239,7 @@ class User implements UserInterface
         }
     }
 
-    /**
-     * @return int
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read'])]
     public function getId(): int
     {
         return $this->id;
@@ -254,11 +250,8 @@ class User implements UserInterface
         $this->id = $id;
     }
 
-    /**
-     * @return Collection<int,Walk>
-     *
-     * @Groups({"user:read"})
-     */
+    /** @return Collection<int,Walk> */
+    #[Groups(['user:read'])]
     public function getWalks(): Collection
     {
         return $this->walks;
@@ -321,11 +314,7 @@ class User implements UserInterface
         $this->plainPassword = null;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read'])]
     public function getUsername(): string
     {
         return $this->username;
@@ -346,11 +335,7 @@ class User implements UserInterface
         $this->salt = $salt;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read'])]
     public function getEmail(): string
     {
         return $this->email;
@@ -381,11 +366,7 @@ class User implements UserInterface
         $this->plainPassword = $password;
     }
 
-    /**
-     * @return \DateTime|null
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read'])]
     public function getLastLogin(): ?\DateTime
     {
         return $this->lastLogin;
@@ -412,11 +393,8 @@ class User implements UserInterface
         ConfirmationToken::create();
     }
 
-    /**
-     * @return string[]
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    /** @return string[] */
+    #[Groups(['user:read'])]
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -448,11 +426,7 @@ class User implements UserInterface
         return \in_array(\strtoupper($role), $this->getRoles(), true);
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read'])]
     public function isEnabled(): bool
     {
         return $this->enabled;
@@ -468,11 +442,7 @@ class User implements UserInterface
         $this->enabled = false;
     }
 
-    /**
-     * @return bool
-     *
-     * @Groups({"user:read", "team:read"})
-     */
+    #[Groups(['user:read'])]
     public function isSuperAdmin(): bool
     {
         return $this->hasRole(static::ROLE_SUPER_ADMIN);
@@ -512,7 +482,7 @@ class User implements UserInterface
             $this->getPasswordRequestedAt()->getTimestamp() + $ttl > \time();
     }
 
-    #[Groups(['user:read', 'team:read'])]
+    #[Groups(['user:read'])]
     public function getClient(): Client
     {
         return $this->client;

@@ -99,8 +99,8 @@
             selectableTeams() {
                 let options = [];
                 this.teams.forEach((team) => {
-                    team.users.forEach(user => {
-                        if (user.id === this.currentUser.id) {
+                    team.users.forEach(userIri => {
+                        if (userIri === this.currentUser['@id']) {
                             options.push({ text: `Team '${team.name}'`, value: team });
                         }
                     });

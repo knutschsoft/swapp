@@ -54,14 +54,16 @@
                 :disabled="isLoading"
                 :state="endTimeState"
                 data-test="endTimeTime"
+                class="mt-2"
             />
         </form-group>
-        <form-group label="">
+        <form-group label="Ferien">
             <b-form-checkbox
                 v-model="walk.holidays"
                 :disabled="isLoading"
+                class="mt-lg-1 pt-lg-1"
             >
-                Ferien
+                js, es sind Ferien
             </b-form-checkbox>
         </form-group>
         <form-group label="Wetter">

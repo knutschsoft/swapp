@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default {
     find(id) {
-        return axios.get(id);
+        return axios.get(`/api/users/${id}`);
     },
     findAll(params) {
         if (params === undefined) {

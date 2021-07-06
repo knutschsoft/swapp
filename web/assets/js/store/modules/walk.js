@@ -10,7 +10,10 @@ const
     FETCHING_WALK_ERROR = 'FETCHING_WALK_ERROR',
     CHANGE_WALK = 'CHANGE_WALK',
     CHANGE_WALK_SUCCESS = 'CHANGE_WALK_SUCCESS',
-    CHANGE_WALK_ERROR = 'FETCHING_WALK_ERROR'
+    CHANGE_WALK_ERROR = 'CHANGE_WALK_ERROR',
+    CREATE_WALK = 'CREATE_WALK',
+    CREATE_WALK_SUCCESS = 'CREATE_WALK_SUCCESS',
+    CREATE_WALK_ERROR = 'CREATE_WALK_ERROR'
 ;
 
 const state = {
@@ -18,8 +21,10 @@ const state = {
     totalWalks: 0,
     error: null,
     errorChange: null,
+    errorCreate: null,
     isLoading: false,
     isLoadingChange: false,
+    isLoadingCreate: false,
 };
 
 const getters = {
@@ -56,11 +61,17 @@ const getters = {
     errorChange(state) {
         return state.errorChange;
     },
+    errorCreate(state) {
+        return state.errorCreate;
+    },
     isLoading(state) {
         return state.isLoading;
     },
     isLoadingChange(state) {
         return state.isLoadingChange;
+    },
+    isLoadingCreate(state) {
+        return state.isLoadingCreate;
     },
 };
 
@@ -118,6 +129,20 @@ const mutations = {
         state.errorChange = error;
         state.isLoadingChange = false;
     },
+    [CREATE_WALK](state) {
+        state.isLoadingCreate = true;
+        state.errorCreate = null;
+    },
+    [CREATE_WALK_SUCCESS](state, walk) {
+        state.errorCreate = null;
+        state.isLoadingCreate = false;
+
+        state.walks = [...state.walks, walk];
+    },
+    [CREATE_WALK_ERROR](state, error) {
+        state.errorCreate = error;
+        state.isLoadingCreate = false;
+    },
 };
 
 const actions = {
@@ -153,6 +178,17 @@ const actions = {
             return response.data;
         } catch (error) {
             commit(CHANGE_WALK_ERROR, error);
+        }
+    },
+    async create({ commit }, payload) {
+        commit(CREATE_WALK);
+        try {
+            let response = await WalkAPI.create(payload);
+            commit(CREATE_WALK_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(CREATE_WALK_ERROR, error);
         }
     },
 };

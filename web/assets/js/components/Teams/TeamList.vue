@@ -156,10 +156,10 @@
                     {
                         key: 'users',
                         sortable: true,
-                        formatter: (value, key, item) => {
+                        formatter: (userIris, key, item) => {
                             let usernames = [];
-                            value.forEach(user => {
-                                usernames.push(user.username)
+                            userIris.forEach(userIri => {
+                                usernames.push(this.getUserByIri(userIri).username)
                             })
 
                             if (usernames.length) {
@@ -248,6 +248,9 @@
 
                 return this.$store.getters['client/getClientById'](id);
             },
+            getUserByIri(userIri) {
+                return this.$store.getters['user/getUserByIri'](userIri);
+            },
             openEditModal: function (team) {
                 this.editTeam = team;
                 this.editModalTeam.team = team['@id'];
@@ -262,7 +265,7 @@
                         return (a.rangeStart > b.rangeStart) ? 1 : -1;
                     })
                 ;
-                this.editModalTeam.users = team.users.map(user => user['@id']);
+                this.editModalTeam.users = team.users;
                 this.editModalTeam.name = team.name;
                 this.$root.$emit('bv::show::modal', 'edit-modal-team');
             },

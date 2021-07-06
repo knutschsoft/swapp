@@ -22,6 +22,23 @@ const getters = {
     teams(state) {
         return state.teams;
     },
+    getTeamById(state) {
+        return teamId => {
+            let foundTeam = false;
+            state.teams.forEach(
+                (team) => {
+                    if (String(team.id) === String(teamId)) {
+                        foundTeam = team;
+                    }
+                },
+            );
+
+            return foundTeam;
+        };
+    },
+    getTeamByIri(state, getters) {
+        return iri => getters.getTeamById(iri.replace('/api/teams/', ''));
+    },
     hasTeams(state) {
         return state.teams.length > 0;
     },

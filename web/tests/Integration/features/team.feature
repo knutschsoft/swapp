@@ -44,7 +44,7 @@ Feature: Testing team resource
       | hydra:member[0].ageRanges[0].rangeEnd   | 10          |
       | hydra:member[0].ageRanges[2].rangeEnd   | 13          |
       | hydra:member[0].ageRanges[2].rangeEnd   | 90          |
-      | hydra:member[0].users[0].email          | karl@gmx.de |
+#      | hydra:member[0].users[0]                | userIri<karl@gmx.de> |
 
     Given I am authenticated against api as "lonely@gmx.de"
     When I send a GET request to "/api/teams"

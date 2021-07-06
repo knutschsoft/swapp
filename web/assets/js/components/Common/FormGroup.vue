@@ -5,6 +5,9 @@
         content-cols-lg="10"
         label-cols-lg="2"
         :label="label"
+        :description="description"
+        :state="state"
+        :invalid-feedback="invalidFeedback"
     >
         <slot />
     </b-form-group>
@@ -19,6 +22,19 @@ export default {
         label: {
             required: true,
             type: String,
+        },
+        description: {
+            required: false,
+            type: String,
+            default: '',
+        },
+        state: {
+            required: false,
+            default: null,
+        },
+        invalidFeedback: {
+            required: false,
+            default: '',
         },
     },
     components: {

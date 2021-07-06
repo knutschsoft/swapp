@@ -2,6 +2,9 @@
 import UserAPI from '../../api/user';
 
 const
+    FETCHING_USER = "FETCHING_USER",
+    FETCHING_USER_SUCCESS = "FETCHING_USER_SUCCESS",
+    FETCHING_USER_ERROR = "FETCHING_USER_ERROR",
     FETCHING_USERS = "FETCHING_USERS",
     FETCHING_USERS_SUCCESS = "FETCHING_USERS_SUCCESS",
     FETCHING_USERS_ERROR = "FETCHING_USERS_ERROR",
@@ -73,6 +76,19 @@ function replaceObjectInState(state, object) {
 }
 
 const mutations = {
+    [FETCHING_USER](state) {
+        state.isLoading = true;
+        state.error = null;
+    },
+    [FETCHING_USER_SUCCESS](state, user) {
+        state.error = null;
+        state.isLoading = false;
+        replaceObjectInState(state, user);
+    },
+    [FETCHING_USER_ERROR](state, error) {
+        state.error = error;
+        state.isLoading = false;
+    },
     [FETCHING_USERS](state) {
         state.isLoading = true;
         state.error = null;
@@ -149,6 +165,17 @@ const actions = {
             return response.data['hydra:member'];
         } catch (error) {
             commit(FETCHING_USERS_ERROR, error);
+        }
+    },
+    async findByIri({commit}, userIri) {
+        commit(FETCHING_USER);
+        try {
+            let response = await UserAPI.find(userIri.replace('/api/users/', ''));
+            commit(FETCHING_USER_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(FETCHING_USER_ERROR, error);
         }
     },
     async create({commit}, userId) {

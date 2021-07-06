@@ -6,6 +6,7 @@ namespace App\Tests\Context;
 use App\Dto\Client\ClientCreateRequest;
 use App\Dto\TagCreateRequest;
 use App\Dto\User\UserCreateRequest;
+use App\Dto\Walk\WalkCreateRequest;
 use App\Entity\Client;
 use App\Entity\SystemicQuestion;
 use App\Entity\Tag;
@@ -93,6 +94,14 @@ final class DomainIntegrationContext extends RawMinkContext
             }
             if ($row['value'] === '<null>') {
                 $parameters[$row['key']] = null;
+                continue;
+            }
+            if ($row['value'] === '<false>') {
+                $parameters[$row['key']] = false;
+                continue;
+            }
+            if ($row['value'] === '<true>') {
+                $parameters[$row['key']] = true;
                 continue;
             }
 
@@ -301,10 +310,17 @@ final class DomainIntegrationContext extends RawMinkContext
                 $row['systemicQuestion'] ?? 'How are you?',
                 $team->getClient()
             );
-            $tag = Walk::prologue($team, $systemicQuestion);
-            $tag->setName($row['name']);
+            $request = new WalkCreateRequest();
+            $request->team = $team;
+            $request->name = $row['name'];
+            $request->startTime = isset($row['startTime']) ? new \DateTime($row['startTime']) : new \DateTime();
+            $request->weather = $row['weather'] ?? 'Arschkalt';
+            $request->holidays = isset($row['holidays']) ? (bool) $row['holidays'] : false;
+            $request->conceptOfDay = $row['conceptOfDay'] ?? 'My daily concept.';
+            $request->walkTeamMembers = $team->getUsers()->toArray();
+            $walk = Walk::fromWalkCreateRequest($request, $systemicQuestion);
 
-            $this->em->persist($tag);
+            $this->em->persist($walk);
         }
         $this->em->flush();
     }
