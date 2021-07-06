@@ -39,8 +39,8 @@
         </content-collapse>
         <content-collapse
             v-if="isAdmin && walk"
-            :title="`Wegpunkte der Runde &quot;${walk.name}&quot;`"
-            collapse-key="waypoints-of-round"
+            :title="`Runde &quot;${walk.name}&quot; ändern`"
+            collapse-key="walk-edit"
             is-visible-by-default
             :is-loading="!walk"
         >
