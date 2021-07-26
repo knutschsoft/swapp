@@ -3,6 +3,7 @@
         <div
             v-b-toggle="getCollapseId"
             class="bg-dark text-white p-2 font-weight-bold d-flex cursor-pointer no-select"
+            :data-test="getCollapseId"
         >
             <b-skeleton
                 v-if="isLoading"

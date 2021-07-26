@@ -133,6 +133,11 @@ final class DomainIntegrationContext extends RawMinkContext
             } elseif (\str_starts_with($row['value'], 'teamIri<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 8, -1);
                 $parameters[$row['key']] = \sprintf('/api/teams/%s', (string) $this->getTeamByName($value)->getId());
+            } elseif (\str_starts_with($row['value'], 'walkIri<') && \str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 8, -1);
+                $parameters[$row['key']] = \sprintf('/api/walks/%s', (string) $this->getWalkByName($value)->getId());
+            } elseif (\str_starts_with($row['value'], 'int<') && \str_ends_with($lastChar, '>')) {
+                $parameters[$row['key']] = (int) \substr($row['value'], 4, -1);
             } elseif (\str_starts_with($row['value'], 'userIris<') && \str_ends_with($lastChar, '>')) {
                 $value = \substr($row['value'], 9, -1);
                 $parameters[$row['key']] = [];
@@ -320,6 +325,22 @@ final class DomainIntegrationContext extends RawMinkContext
             $request->walkTeamMembers = $team->getUsers()->toArray();
             $walk = Walk::fromWalkCreateRequest($request, $systemicQuestion);
 
+            if (isset($row['endTime'])) {
+                $walk->setEndTime(new \DateTime($row['endTime']));
+            }
+            if (isset($row['systemicAnswer'])) {
+                $walk->setSystemicAnswer($row['systemicAnswer']);
+            }
+            if (isset($row['reflection'])) {
+                $walk->setWalkReflection($row['reflection']);
+            }
+            if (isset($row['commitments'])) {
+                $walk->setCommitments($row['commitments']);
+            }
+            if (isset($row['insights'])) {
+                $walk->setInsights($row['insights']);
+            }
+
             $this->em->persist($walk);
         }
         $this->em->flush();
@@ -353,6 +374,29 @@ final class DomainIntegrationContext extends RawMinkContext
     public function thereAreExactlyWalksInDatabase(string $count): void
     {
         Assert::same(\count($this->walkRepository->getFindAllQuery()->getResult()), (int) $count);
+    }
+
+    /**
+     * @Given /^I can find the following walks in database:$/
+     *
+     * @param TableNode $table
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function iCanFindTheFollowingWalksInDatabase(TableNode $table): void
+    {
+        $this->em->clear();
+        foreach ($table as $row) {
+            $walk = $this->getWalkByName($row['name']);
+            if (isset($row['startTime'])) {
+                Assert::eq($walk->getStartTime(), new \DateTime($row['startTime']));
+            }
+            if (isset($row['endTime'])) {
+                Assert::eq($walk->getEndTime(), new \DateTime($row['endTime']));
+            }
+        }
     }
 
     /**

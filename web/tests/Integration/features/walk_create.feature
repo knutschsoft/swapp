@@ -68,7 +68,7 @@ Feature: Testing walk create resource
       | violations[5].propertyPath | walkTeamMembers                     |
       | violations[5].message      | Dieser Wert sollte nicht null sein. |
 
-  @api @walkCreate @suw
+  @api @walkCreate
   Scenario: I can request /api/walks/create as authenticated user and will create a new walk
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:

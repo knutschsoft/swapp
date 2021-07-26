@@ -31,30 +31,38 @@
         <form-group label="Rundenstartzeit">
             <b-datepicker
                 v-model="startTimeDate"
+                v-bind="dateLabels['de']"
                 :disabled="isLoading"
                 :state="startTimeState"
                 data-test="startTimeDate"
+                locale="de"
             />
             <b-timepicker
                 v-model="startTimeTime"
+                v-bind="timeLabels['de']"
                 :disabled="isLoading"
                 :state="startTimeState"
                 data-test="startTimeTime"
+                locale="de"
             />
         </form-group>
         <form-group label="Rundenendzeit">
             <b-datepicker
                 v-model="endTimeDate"
+                v-bind="dateLabels['de']"
                 :disabled="isLoading"
                 :state="endTimeState"
                 data-test="endTimeDate"
+                locale="de"
             />
             <b-timepicker
                 v-model="endTimeTime"
+                v-bind="timeLabels['de']"
                 :disabled="isLoading"
                 :state="endTimeState"
                 data-test="endTimeTime"
                 class="mt-2"
+                locale="de"
             />
         </form-group>
         <form-group label="Ferien">
@@ -63,7 +71,7 @@
                 :disabled="isLoading"
                 class="mt-lg-1 pt-lg-1"
             >
-                js, es sind Ferien
+                ja, es sind Ferien
             </b-form-checkbox>
         </form-group>
         <form-group label="Wetter">
@@ -208,6 +216,35 @@ export default {
                 walkReflection: null,
                 weather: null,
             },
+            dateLabels: {
+                de: {
+                    labelPrevDecade: 'Vorheriges Jahrzehnt',
+                    labelPrevYear: 'Vorheriges Jahr',
+                    labelPrevMonth: 'Vorheriger Monat',
+                    labelCurrentMonth: 'Aktueller Monat',
+                    labelNextMonth: 'Nächster Monat',
+                    labelNextYear: 'Nächstes Jahr',
+                    labelNextDecade: 'Nächstes Jahrzehnt',
+                    labelToday: 'Heute',
+                    labelSelected: 'Ausgewähltes Datum',
+                    labelNoDateSelected: 'Kein Datum gewählt',
+                    labelCalendar: 'Kalender',
+                    labelNav: 'Kalendernavigation',
+                    labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren'
+                },
+            },
+            timeLabels: {
+                de: {
+                    labelHours: 'Stunden',
+                    labelMinutes: 'Minuten',
+                    labelSeconds: 'Sekunden',
+                    labelIncrement: 'Erhöhen',
+                    labelDecrement: 'Verringern',
+                    labelSelected: 'Ausgewählte Zeit',
+                    labelNoTimeSelected: 'Keine Zeit ausgewählt',
+                    labelCloseButton: 'Schließen'
+                },
+            },
         };
     },
     computed: {
@@ -319,7 +356,7 @@ export default {
             let startTime = dayjs(this.walk.startTime);
             startTime = startTime.hour(Number(values[0]));
             startTime = startTime.minute(Number(values[1]));
-            this.walk.startTime = startTime.toISOString();
+            this.walk.startTime = startTime.format();
         },
         startTimeDate(startTimeDate) {
             const startTimeDateValue = dayjs(startTimeDate);
@@ -327,7 +364,7 @@ export default {
             startTime = startTime.date(startTimeDateValue.date());
             startTime = startTime.month(startTimeDateValue.month());
             startTime = startTime.year(startTimeDateValue.year());
-            this.walk.startTime = startTime.toISOString();
+            this.walk.startTime = startTime.format();
         },
         endTimeTime(endTimeTime) {
             const values = endTimeTime.split(':');
@@ -337,7 +374,7 @@ export default {
             let endTime = dayjs(this.walk.endTime);
             endTime = endTime.hour(Number(values[0]));
             endTime = endTime.minute(Number(values[1]));
-            this.walk.endTime = endTime.toISOString();
+            this.walk.endTime = endTime.format();
         },
         endTimeDate(endTimeDate) {
             const endTimeDateValue = dayjs(endTimeDate);
@@ -345,7 +382,7 @@ export default {
             endTime = endTime.date(endTimeDateValue.date());
             endTime = endTime.month(endTimeDateValue.month());
             endTime = endTime.year(endTimeDateValue.year());
-            this.walk.endTime = endTime.toISOString();
+            this.walk.endTime = endTime.format();
         },
     },
     async created() {

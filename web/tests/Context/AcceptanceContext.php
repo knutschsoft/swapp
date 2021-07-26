@@ -135,6 +135,23 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When /^I click on aria label "([^"]*)"$/
+     *
+     * @param string $arg1
+     *
+     * @throws \Throwable
+     */
+    public function iClickOnAriaLabel(string $arg1): void
+    {
+        $locator = '[aria-label="'.$arg1.'"]';
+        $element = $this->getSession()->getPage()->find('css', $locator);
+        if (!$element) {
+            Assert::false(true, \sprintf('Element with aria label selector "%s" could not be found.', $locator));
+        }
+        $element->click();
+    }
+
+    /**
      * @When /^I click on text "([^"]*)"$/
      *
      * @param string $arg1

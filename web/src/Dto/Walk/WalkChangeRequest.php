@@ -55,8 +55,10 @@ final class WalkChangeRequest
     #[Assert\Type(type: \DateTime::class, groups: ['SecondGroup'])]
     public \DateTime $endTime;
 
+    #[Assert\NotNull]
     public bool $holidays;
 
+    #[Assert\NotNull]
     public bool $isResubmission;
 
     #[Assert\IsTrue(groups: ['ThirdGroup'])]
