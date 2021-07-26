@@ -14,7 +14,7 @@
                     class="pt-2 px-2"
                 >
                     <form-group
-                        :label="`Teilnehmer des Teams &quot;${form.teamName}&quot;`"
+                        :label="`Teilnehmer des Teams &quot;${team.name}&quot;`"
                         description="Wer ist heute mit dabei?"
                     >
                         <b-form-checkbox-group
@@ -159,7 +159,6 @@
             return {
                 startTimeTime: null,
                 startTimeDate: null,
-                teamName: '',
                 form: {
                     name: '',
                     team: null,
@@ -338,7 +337,6 @@
             }
             this.team.users.forEach((userIri) => {
                 if (!this.getUserByIri(userIri)) {
-                    console.log(userIri);
                     this.$store.dispatch('user/findByIri', userIri);
                 }
             });
