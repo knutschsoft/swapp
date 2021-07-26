@@ -65,7 +65,7 @@
                     />
                     <b-input-group-append>
                         <b-button
-                            @click="filter.locationName = ''"
+                            @click="unsetFilterLocationName"
                         >
                             <mdicon name="CloseCircleOutline" size="20"/>
                         </b-button>
@@ -87,7 +87,7 @@
                     />
                     <b-input-group-append>
                         <b-button
-                            @click="filter.note = ''"
+                            @click="unsetFilterNote"
                         >
                             <mdicon name="CloseCircleOutline" size="20"/>
                         </b-button>
@@ -282,6 +282,14 @@ export default {
         },
         handleFilterChange() {
             this.$localStorage.set(this.storageFilterId, this.filter);
+        },
+        unsetFilterLocationName() {
+            this.filter.locationName = '';
+            this.handleFilterChange();
+        },
+        unsetFilterNote() {
+            this.filter.note = '';
+            this.handleFilterChange();
         },
     },
 };

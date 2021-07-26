@@ -63,7 +63,7 @@
                     />
                     <b-input-group-append>
                         <b-button
-                            @click="filter.name = ''"
+                            @click="unsetFilterName"
                         >
                             <mdicon name="CloseCircleOutline" size="20" />
                         </b-button>
@@ -233,6 +233,10 @@ export default {
         },
         handleFilterChange() {
             this.$localStorage.set(this.storageFilterId, this.filter);
+        },
+        unsetFilterName() {
+            this.filter.name = '';
+            this.handleFilterChange();
         },
     },
 };
