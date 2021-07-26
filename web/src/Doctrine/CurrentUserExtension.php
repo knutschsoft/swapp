@@ -31,7 +31,7 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         string $resourceClass,
         ?string $operationName = null
     ): void {
-        $this->addWhere($queryBuilder, $resourceClass);
+        $this->addWhere($queryBuilder, $resourceClass, $operationName);
     }
 
     public function applyToItem(
@@ -42,10 +42,10 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         ?string $operationName = null,
         array $context = []
     ): void {
-        $this->addWhere($queryBuilder, $resourceClass);
+        $this->addWhere($queryBuilder, $resourceClass, $operationName);
     }
 
-    private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
+    private function addWhere(QueryBuilder $queryBuilder, string $resourceClass, ?string $operationName = null): void
     {
         $user = $this->security->getUser();
         if (null === $user) {
@@ -102,6 +102,16 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->leftJoin(\sprintf('%s.walk', $rootAlias), 'walk');
                 $queryBuilder->andWhere(':client = walk.client');
                 $queryBuilder->setParameter('client', $user->getClient());
+            }
+            if ('get_location_names' === $operationName) {
+                //$queryBuilder->select(\sprintf('%s.locationName, %s.id', $rootAlias, $rootAlias));
+                $queryBuilder->select(\sprintf('%s.locationName', $rootAlias));
+                //$queryBuilder->distinct(true);
+                //$queryBuilder->orderBy(\sprintf('%s.locationName', $rootAlias));
+                $queryBuilder->groupBy(\sprintf('%s.locationName', $rootAlias));
+                //$queryBuilder->groupBy(\sprintf('%s.id', $rootAlias));
+                //$queryBuilder->setMaxResults(100);
+                $queryBuilder->andWhere(\sprintf('LENGTH(%s.locationName) > 1', $rootAlias));
             }
         }
 

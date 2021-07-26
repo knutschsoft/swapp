@@ -28,10 +28,15 @@
                     type="text"
                     :state="locationNameState"
                     :disabled="isLoading"
+                    list="location-name-list"
                     placeholder="Wo seid ihr gerade?"
                     data-test="Ort"
+                    autocomplete="off"
                     required
                 ></b-form-input>
+                <datalist id="location-name-list">
+                    <option v-for="locationName in locationNames">{{ locationName }}</option>
+                </datalist>
             </b-form-group>
 
             <b-form-group id="input-group-Altersgruppen" label="Altersgruppen" label-for="input-Altersgruppen">
@@ -190,6 +195,7 @@
 
 import LocationLink from '../LocationLink.vue';
 import ColorBadge from '../Tags/ColorBadge.vue';
+import WayPointApi from '../../api/wayPoint.js';
 
 export default {
     name: 'WayPointAdd',
@@ -220,9 +226,18 @@ export default {
             emptyForm,
             file: null,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),
+            allLocationNames: [],
         };
     },
     computed: {
+        locationNames() {
+            if (this.form.locationName.length < 1) {
+                return [];
+            }
+            return this.allLocationNames.filter((locationName) => {
+               return locationName.locationName.toLowerCase().startsWith(this.form.locationName.toLowerCase());
+            }).map((locationName) => locationName.locationName);
+        },
         isLoading() {
             return this.$store.getters['walk/isLoading'] || this.$store.getters['wayPoint/isLoading'] || this.isFormLoading;
         },
@@ -365,6 +380,10 @@ export default {
             });
         this.form.ageGroups = ageGroups;
         this.emptyForm = JSON.parse(JSON.stringify(this.form));
+
+        const allLocationNames = await WayPointApi.findAllLocationNames();
+        console.log(allLocationNames);
+        this.allLocationNames = allLocationNames.data['hydra:member'];
     },
     methods: {
         updateFile: async function (file) {
