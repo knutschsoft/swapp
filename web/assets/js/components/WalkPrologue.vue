@@ -78,16 +78,20 @@
                     >
                         <b-datepicker
                             v-model="startTimeDate"
+                            v-bind="dateLabels['de']"
                             :disabled="isLoading"
                             :state="startTimeState"
                             data-test="startTimeDate"
+                            locale="de"
                         />
                         <b-timepicker
                             v-model="startTimeTime"
+                            v-bind="timeLabels['de']"
                             :disabled="isLoading"
                             :state="startTimeState"
                             data-test="startTimeTime"
                             class="mt-2"
+                            locale="de"
                         />
                     </form-group>
 
@@ -161,13 +165,42 @@
                     team: null,
                     walkTeamMembers: [],
                     conceptOfDay: '',
-                    startTime: false,
+                    startTime: dayjs().format(),
                     holidays: false,
                     weather: '',
                 },
                 walkId: false,
                 isFormLoading: false,
                 weatherOptions: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'],
+                dateLabels: {
+                    de: {
+                        labelPrevDecade: 'Vorheriges Jahrzehnt',
+                        labelPrevYear: 'Vorheriges Jahr',
+                        labelPrevMonth: 'Vorheriger Monat',
+                        labelCurrentMonth: 'Aktueller Monat',
+                        labelNextMonth: 'Nächster Monat',
+                        labelNextYear: 'Nächstes Jahr',
+                        labelNextDecade: 'Nächstes Jahrzehnt',
+                        labelToday: 'Heute',
+                        labelSelected: 'Ausgewähltes Datum',
+                        labelNoDateSelected: 'Kein Datum gewählt',
+                        labelCalendar: 'Kalender',
+                        labelNav: 'Kalendernavigation',
+                        labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren'
+                    },
+                },
+                timeLabels: {
+                    de: {
+                        labelHours: 'Stunden',
+                        labelMinutes: 'Minuten',
+                        labelSeconds: 'Sekunden',
+                        labelIncrement: 'Erhöhen',
+                        labelDecrement: 'Verringern',
+                        labelSelected: 'Ausgewählte Zeit',
+                        labelNoTimeSelected: 'Keine Zeit ausgewählt',
+                        labelCloseButton: 'Schließen'
+                    },
+                },
             }
         },
         computed: {
@@ -288,7 +321,7 @@
                 let startTime = dayjs(this.form.startTime);
                 startTime = startTime.hour(Number(values[0]));
                 startTime = startTime.minute(Number(values[1]));
-                this.form.startTime = startTime.toISOString();
+                this.form.startTime = startTime.format();
             },
             startTimeDate(startTimeDate) {
                 const startTimeDateValue = dayjs(startTimeDate);
@@ -296,14 +329,13 @@
                 startTime = startTime.date(startTimeDateValue.date());
                 startTime = startTime.month(startTimeDateValue.month());
                 startTime = startTime.year(startTimeDateValue.year());
-                this.form.startTime = startTime.toISOString();
+                this.form.startTime = startTime.format();
             },
         },
-        async mounted() {
+        async created() {
             if (!this.team) {
                 await this.$store.dispatch('team/findAll');
             }
-            console.log(this.team);
             this.team.users.forEach((userIri) => {
                 if (!this.getUserByIri(userIri)) {
                     console.log(userIri);
