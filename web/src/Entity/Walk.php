@@ -448,6 +448,10 @@ class Walk
     public function setWalkTeamMembers(Collection $walkTeamMembers): void
     {
         $this->walkTeamMembers = $walkTeamMembers;
+        /** @var User $walkTeamMember */
+        foreach ($walkTeamMembers as $walkTeamMember) {
+            $walkTeamMember->addWalk($this);
+        }
     }
 
     /**

@@ -80,7 +80,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
-    And print last response
+#    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
       | @type            | Walk            |
@@ -178,3 +178,21 @@ Feature: Testing walk create resource
       | hydra:description | Access Denied.    |
 
     And there are exactly 5 walks in database
+
+  @api @walkCreate
+  Scenario: I can request /api/walks/create as authenticated user and will create a new walk with walkTeamMembers assigned
+    Given I am authenticated against api as "karl@gmx.de"
+    When I send an api platform "POST" request to "/api/walks/create" with parameters:
+      | key             | value                 |
+      | team            | teamIri<Westhang>     |
+      | name            | This is my Walk       |
+      | conceptOfDay    | High and out.         |
+      | weather         | Arschkalt             |
+      | startTime       | 01.01.2020            |
+      | walkTeamMembers | userIris<karl@gmx.de> |
+      | holidays        | <false>               |
+#    And print last response
+    Then the response status code should be 200
+    And I can find the following walks in database:
+      | name            | walkTeamMembers |
+      | This is my Walk | karl@gmx.de     |

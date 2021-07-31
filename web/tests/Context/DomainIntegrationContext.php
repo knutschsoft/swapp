@@ -396,6 +396,14 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['endTime'])) {
                 Assert::eq($walk->getEndTime(), new \DateTime($row['endTime']));
             }
+            if (isset($row['walkTeamMembers'])) {
+                $expectedUsers = $this->getUsersFromString($row['walkTeamMembers']);
+                $walkUsers = $walk->getWalkTeamMembers();
+                foreach ($expectedUsers as $expectedUser) {
+                    Assert::inArray($expectedUser, $walkUsers->toArray());
+                }
+                Assert::count($walkUsers, \count($expectedUsers));
+            }
         }
     }
 

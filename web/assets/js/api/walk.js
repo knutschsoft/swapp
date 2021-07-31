@@ -8,12 +8,24 @@ export default {
         if (params.sortBy) {
             sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
         }
-        for (const [key, value] of Object.entries(params.filter)) {
-            if (value !== null) {
-                sort += `&${key}=${value}`;
+        if (params.filter) {
+            for (const [key, value] of Object.entries(params.filter)) {
+                if (value !== null) {
+                    sort += `&${key}=${value}`;
+                }
             }
         }
+
         return axios.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
+    },
+    findLastWalkByTeamIri(teamIri) {
+        return this.find({
+            sortBy: 'startTime',
+            sortDesc: true,
+            team: teamIri,
+            currentPage: 1,
+            perPage: 1,
+        });
     },
     findOneById(walkId) {
         return axios.get('/api/walks/' + walkId);

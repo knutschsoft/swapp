@@ -30,6 +30,7 @@
                                 <b-form-checkbox
                                     :value="walkTeamMember"
                                     :disabled="currentUser['@id'] === walkTeamMember"
+                                    :data-test="`walkTeamMember-${getUserByIri(walkTeamMember).username}`"
                                 >
                                     {{ getUserByIri(walkTeamMember).username }}
                                     <template v-if="currentUser['@id'] === walkTeamMember">(Rundenersteller)</template>
@@ -142,6 +143,7 @@
     "use strict";
     import FormGroup from './Common/FormGroup.vue';
     import ContentCollapse from './ContentCollapse.vue';
+    import WalkAPI from '../api/walk.js';
     import dayjs from 'dayjs';
 
     export default {
@@ -340,12 +342,28 @@
                     this.$store.dispatch('user/findByIri', userIri);
                 }
             });
-            this.form.walkTeamMembers = this.team.users;
+            this.form.walkTeamMembers = await this.getWalkTeamMembersOfLastWalkOfTeam(this.team);
             this.form.team = this.team['@id'];
             this.startTimeTime = dayjs().format('HH:mm');
             this.startTimeDate = dayjs().format('YYYY-MM-DD');
         },
         methods: {
+            async getWalkTeamMembersOfLastWalkOfTeam(team) {
+                const response = await WalkAPI.findLastWalkByTeamIri(team['@id']);
+                const hits = response.data['hydra:totalItems'];
+                let result;
+                if (hits) {
+                    result = response.data['hydra:member'][0].walkTeamMembers.slice();
+                } else {
+                    result = team.users;
+                }
+
+                if (-1 === result.indexOf(this.currentUser['@id'])) {
+                    result.push(this.currentUser['@id']);
+                }
+
+                return result;
+            },
             getUserByIri(userIri) {
                 return this.$store.getters['user/getUserByIri'](userIri);
             },
