@@ -3,6 +3,29 @@
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
+        <form-group
+            :label="`Teilnehmer der Runde`"
+            description="Wer war mit dabei?"
+        >
+            <b-form-checkbox-group
+                v-model="walk.walkTeamMembers"
+                :disabled="isLoading"
+                class="row mt-lg-1 pt-lg-1"
+            >
+                <div
+                    v-for="walkTeamMember in users"
+                    :key="walkTeamMember['@id']"
+                    class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
+                >
+                    <b-form-checkbox
+                        :value="walkTeamMember['@id']"
+                        :data-test="`walkTeamMember-${walkTeamMember.username}`"
+                    >
+                        {{ walkTeamMember.username }}
+                    </b-form-checkbox>
+                </div>
+            </b-form-checkbox-group>
+        </form-group>
         <form-group label="Ort">
             <b-input
                 v-model="walk.name"
@@ -201,6 +224,7 @@ export default {
             startTimeTime: null,
             endTimeDate: null,
             endTimeTime: null,
+            team: null,
             walk: {
                 name: null,
                 commitments: null,
@@ -215,6 +239,7 @@ export default {
                 systemicQuestion: null,
                 walkReflection: null,
                 weather: null,
+                walkTeamMembers: [],
             },
             dateLabels: {
                 de: {
@@ -329,6 +354,9 @@ export default {
         currentUser() {
             return this.$store.getters['security/currentUser'];
         },
+        users() {
+            return this.$store.getters['user/users'];
+        },
         isSuperAdmin() {
             return this.$store.getters['security/isSuperAdmin'];
         },
@@ -399,6 +427,11 @@ export default {
         this.walk.systemicQuestion = this.initialWalk.systemicQuestion;
         this.walk.walkReflection = this.initialWalk.walkReflection;
         this.walk.weather = this.initialWalk.weather;
+        this.walk.walkTeamMembers = this.initialWalk.walkTeamMembers.slice();
+
+        if (!this.users.length) {
+            await this.$store.dispatch('user/findAll');
+        }
 
         this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');
         this.startTimeDate = dayjs(this.walk.startTime).format('YYYY-MM-DD');

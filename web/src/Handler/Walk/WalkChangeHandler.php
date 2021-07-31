@@ -6,6 +6,7 @@ namespace App\Handler\Walk;
 use App\Dto\Walk\WalkChangeRequest;
 use App\Entity\Walk;
 use App\Repository\WalkRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class WalkChangeHandler implements MessageHandlerInterface
@@ -33,6 +34,7 @@ final class WalkChangeHandler implements MessageHandlerInterface
         $walk->setHolidays($request->holidays);
         $walk->setIsResubmission($request->isResubmission);
         $walk->setRating($request->rating);
+        $walk->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
 
         $this->walkRepository->save($walk);
 

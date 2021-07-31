@@ -286,7 +286,9 @@ class User implements UserInterface
 
     public function addWalk(Walk $walk): void
     {
-        $this->walks->add($walk);
+        if (!$this->walks->contains($walk)) {
+            $this->walks->add($walk);
+        }
     }
 
     public function removeWalk(Walk $walk): void

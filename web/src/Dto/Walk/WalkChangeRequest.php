@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Dto\Walk;
 
+use App\Entity\User;
 use App\Entity\Walk;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,4 +67,16 @@ final class WalkChangeRequest
     {
         return $this->startTime < $this->endTime;
     }
+
+    /**
+     * @var User[]
+     *
+     * @Assert\All({
+     *     @Assert\NotBlank,
+     *     @Assert\NotNull,
+     *     @Assert\Type(type="App\Entity\User", groups="{'SecondGroup'}")
+     * })
+     */
+    #[Assert\NotNull]
+    public array $walkTeamMembers;
 }
