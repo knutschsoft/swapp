@@ -447,6 +447,10 @@ class Walk
      */
     public function setWalkTeamMembers(Collection $walkTeamMembers): void
     {
+        /** @var User $walkTeamMember */
+        foreach ($this->walkTeamMembers as $walkTeamMember) {
+            $walkTeamMember->removeWalk($this);
+        }
         $this->walkTeamMembers = $walkTeamMembers;
         /** @var User $walkTeamMember */
         foreach ($walkTeamMembers as $walkTeamMember) {

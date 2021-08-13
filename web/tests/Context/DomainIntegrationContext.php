@@ -402,7 +402,16 @@ final class DomainIntegrationContext extends RawMinkContext
                 foreach ($expectedUsers as $expectedUser) {
                     Assert::inArray($expectedUser, $walkUsers->toArray());
                 }
-                Assert::count($walkUsers, \count($expectedUsers));
+                Assert::count(
+                    $walkUsers,
+                    \count($expectedUsers),
+                    \sprintf(
+                        'Wrong number of walkTeamMembers in walk "%s". Expected %d. Got %d.',
+                        $walk->getName(),
+                        \count($expectedUsers),
+                        \count($walkUsers)
+                    )
+                );
             }
         }
     }

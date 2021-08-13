@@ -60,13 +60,13 @@ Feature: Testing walk change resource
 
 
   @api @walkChange
-  Scenario: I can request /api/walks/change as authenticated user and will change a new walk
+  Scenario: I can request /api/walks/change as authenticated user and will try to change a walk
     Given I am authenticated against api as "admin@gamer.de"
     When I send an api platform "POST" request to "/api/walks/change" with parameters:
       | key  | value             |
       | walk | walkIri<Gamescon> |
       | team | teamIri<Westhang> |
-#    And print last response
+    And print last response
     Then the response status code should be 422
     And the JSON nodes should be equal to:
       | violations[0].propertyPath  | name                                |
@@ -95,11 +95,11 @@ Feature: Testing walk change resource
       | violations[11].message      | Dieser Wert sollte nicht null sein. |
       | violations[12].propertyPath | isResubmission                      |
       | violations[12].message      | Dieser Wert sollte nicht null sein. |
-#      | violations[12].propertyPath | walkTeamMembers                     |
-#      | violations[12].message      | Dieser Wert sollte nicht null sein. |
+      | violations[13].propertyPath | walkTeamMembers                     |
+      | violations[13].message      | Dieser Wert sollte nicht null sein. |
 
   @api @walkChange
-  Scenario: I can request /api/walks/change as authenticated user and will change a new walk
+  Scenario: I can request /api/walks/change as authenticated user and will change a walk
     Given I am authenticated against api as "admin@gamer.de"
     When I send an api platform "POST" request to "/api/walks/change" with parameters:
       | key             | value                     |
@@ -107,7 +107,7 @@ Feature: Testing walk change resource
       | name            | This is my Walk           |
       | conceptOfDay    | High and out.             |
       | weather         | Sonne                     |
-      | walkTeamMembers | userIris<karl@gmx.de>     |
+      | walkTeamMembers | userIris<karl@gamer.de>   |
       | isResubmission  | <false>                   |
       | holidays        | <false>                   |
       | commitments     | narf                      |

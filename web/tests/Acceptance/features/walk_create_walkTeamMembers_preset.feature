@@ -21,7 +21,7 @@ Feature: A user can do a walk with preset walkTeamMembers
       | Drogen | Blue      | client@gmx.de |
 
   @javascript
-  @walkCreate @suw
+  @walkCreate
   Scenario: I do a walk with one wayPoint
     Given I am authenticated as "karl@gmx.de"
     And I should be on "/dashboard"
