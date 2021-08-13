@@ -34,6 +34,7 @@ Feature: A user can do a walk
 
     # open
     And I click on element "header-tag-create"
+    Then I wait for "Name" to appear
 
     Then the element "button-tag-create" should be enabled
     When I enter "Religion" in "name" field

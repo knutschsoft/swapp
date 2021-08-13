@@ -569,9 +569,6 @@
     "symfony/http-kernel": {
         "version": "v4.3.4"
     },
-    "symfony/intl": {
-        "version": "v4.4.22"
-    },
     "symfony/mailer": {
         "version": "4.3",
         "recipe": {
@@ -645,6 +642,9 @@
     },
     "symfony/panther": {
         "version": "v0.6.1"
+    },
+    "symfony/password-hasher": {
+        "version": "v5.3.4"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",

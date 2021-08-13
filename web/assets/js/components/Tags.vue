@@ -2,6 +2,7 @@
     <div>
         <content-collapse
             title="Liste der Tags"
+            data-test="header-tag-list"
             collapse-key="tag-list"
             is-visible-by-default
         >
