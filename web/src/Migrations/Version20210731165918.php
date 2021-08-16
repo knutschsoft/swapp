@@ -46,6 +46,9 @@ final class Version20210731165918 extends AbstractMigration implements Container
         $count = 0;
         foreach ($walks as $walk) {
             $team = $teamRepository->findOneBy(['name' => $walk->getTeamName()]);
+            if (!$team) {
+                continue;
+            }
             $walk->setWalkTeamMembers($team->getUsers());
             $count++;
             if ($count % 100 === 0) {
