@@ -19,27 +19,67 @@
             class="mb-0"
             stacked="md"
         >
+            <template v-slot:cell(enabled)="row">
+                <mdicon
+                    v-if="isLoadingToggleUserState"
+                    name="loading"
+                />
+                <div
+                    v-else
+                    @click="toggleEnabled(row.item, row.item.enabled)"
+                    :title="`Account ${ row.item.enabled ? 'de' : '' }aktivieren`"
+                    class="cursor-pointer"
+                >
+                    <mdicon
+                        v-if="row.item.enabled"
+                        name="check"
+                        class="text-success"
+                    />
+                    <mdicon
+                        v-else
+                        name="AccountOff"
+                        class="text-info"
+                    />
+                </div>
+            </template>
             <template v-slot:cell(actions)="row">
                 <div class="d-flex justify-content-around">
-                    <b-button
-                        size="sm"
-                        class="mr-2"
-                        @click="editUser(row.item)"
+                    <b-dropdown
+                        text="Aktionen"
                     >
-                        Benutzer bearbeiten
-                    </b-button>
-                    <b-button
-                        v-if="isSuperAdmin && false"
-                        size="sm"
-                        class="mr-2"
-                        @click="toggleEnabled(row.item.userId, row.item.enabled)"
-                    >
-                        Account {{ row.item.enabled ? 'de' : '' }}aktivieren
-                    </b-button>
+                        <b-dropdown-item-button
+                            size="sm"
+                            @click="editUser(row.item)"
+                        >
+                            Account bearbeiten
+                        </b-dropdown-item-button>
+                        <b-dropdown-item-button
+                            v-if="isAdmin"
+                            size="sm"
+                            class="mr-2"
+                            @click="toggleEnabled(row.item.userId, row.item.enabled)"
+                        >
+                            Account {{ row.item.enabled ? 'de' : '' }}aktivieren
+                        </b-dropdown-item-button>
+                        <b-dropdown-divider
+                            v-if="isSuperAdmin && false"
+                        />
+                        <b-dropdown-item-button
+                            v-if="isSuperAdmin && false"
+                            @click="editUser(row.item)"
+                            size="sm"
+                            variant="danger"
+                        >
+                            <mdicon
+                                name="AlertDecagramOutline"
+                            />
+                            Löschen
+                        </b-dropdown-item-button>
+                    </b-dropdown>
                     <b-button
                         v-if="isSuperAdmin && !isUserSwitched"
                         size="sm"
-                        class="flex-item d-flex align-items-center mr-1"
+                        class="flex-item d-flex align-items-center ml-2"
                         :data-test="`switch-user-${row.item.username}`"
                         @click="switchUser(row.item)"
                     >
@@ -53,7 +93,7 @@
                     <b-button
                         v-else-if="isSuperAdmin"
                         size="sm"
-                        class="flex-item d-flex align-items-center mr-1"
+                        class="flex-item d-flex align-items-center ml-2"
                         data-test="exit-switch-user"
                         @click="exitSwitchUser()"
                     >
@@ -172,6 +212,12 @@ export default {
                     class: 'text-center',
                 },
                 {
+                    key: 'enabled',
+                    label: 'Account aktiviert?',
+                    sortable: true,
+                    class: 'text-center',
+                },
+                {
                     key: 'client',
                     label: 'Klient',
                     sortable: true,
@@ -188,11 +234,17 @@ export default {
         isSuperAdmin() {
             return this.$store.getters['security/isSuperAdmin'];
         },
+        isAdmin() {
+            return this.$store.getters['security/isAdmin'];
+        },
         users() {
             return this.$store.getters['user/users'];
         },
         isLoading() {
             return this.$store.getters['user/isLoading'];
+        },
+        isLoadingToggleUserState() {
+            return this.$store.getters['user/isLoadingToggleUserState'];
         },
         error() {
             return this.$store.getters['user/error'];
@@ -244,11 +296,11 @@ export default {
                 });
             }
         },
-        toggleEnabled: function (userId, isEnabled) {
+        toggleEnabled: function (user, isEnabled) {
             if (isEnabled) {
-                this.$store.dispatch('user/disable', userId);
+                this.$store.dispatch('user/disable', user['@id']);
             } else {
-                this.$store.dispatch('user/enable', userId);
+                this.$store.dispatch('user/enable', user['@id']);
             }
         },
         switchUser(user) {

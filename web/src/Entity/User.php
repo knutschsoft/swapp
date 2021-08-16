@@ -9,7 +9,9 @@ use App\Dto\User\PasswordChangeRequest;
 use App\Dto\User\RequestPasswordResetRequest;
 use App\Dto\User\UserChangeRequest;
 use App\Dto\User\UserCreateRequest;
+use App\Dto\User\UserDisableRequest;
 use App\Dto\User\UserEmailConfirmRequest;
+use App\Dto\User\UserEnableRequest;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\UserVoter;
 use App\Value\ConfirmationToken;
@@ -85,6 +87,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 "is_granted('".UserVoter::EDIT."', object.user) and ".
                 "(is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded()) and ".
                 "is_granted('".ClientVoter::READ."', object.client)",
+        ],
+        "disable_user" => [
+            "messenger" => "input",
+            "input" => UserDisableRequest::class,
+            "output" => User::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/disable",
+            "openapi_context" => [
+                "summary" => "Disables an user. A disabled user will not be able to login.",
+            ],
+            "security_post_denormalize" => "is_granted('".UserVoter::EDIT."', object.user)",
+        ],
+        "enable_user" => [
+            "messenger" => "input",
+            "input" => UserEnableRequest::class,
+            "output" => User::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/users/enable",
+            "openapi_context" => [
+                "summary" => "Enables an user. An enabled user will be able to login.",
+            ],
+            "security_post_denormalize" => "is_granted('".UserVoter::EDIT."', object.user)",
         ],
         "create_user" => [
             "messenger" => "input",

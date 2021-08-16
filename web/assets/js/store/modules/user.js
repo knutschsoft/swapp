@@ -26,8 +26,10 @@ const state = {
     users: [],
     error: null,
     changeUserError: null,
+    isLoadingToggleUserState: null,
     isLoading: false,
     isLoadingChange: false,
+    toggleUserStateError: false,
 };
 
 const getters = {
@@ -62,6 +64,9 @@ const getters = {
     },
     isLoadingChange(state) {
         return state.isLoadingChange;
+    },
+    isLoadingToggleUserState(state) {
+        return state.isLoadingToggleUserState;
     },
 };
 
@@ -129,30 +134,30 @@ const mutations = {
         state.isLoadingChange = false;
     },
     [ENABLE](state) {
-        state.isLoadingChange = true;
-        state.changeUserError = null;
+        state.isLoadingToggleUserState = true;
+        state.toggleUserStateError = null;
     },
     [ENABLE_SUCCESS](state, user) {
-        state.changeUserError = null;
-        state.isLoadingChange = false;
+        state.toggleUserStateError = null;
+        state.isLoadingToggleUserState = false;
         replaceObjectInState(state, user);
     },
     [ENABLE_ERROR](state, error) {
-        state.changeUserError = error;
-        state.isLoadingChange = false;
+        state.toggleUserStateError = error;
+        state.isLoadingToggleUserState = false;
     },
     [DISABLE](state) {
-        state.isLoadingChange = true;
-        state.changeUserError = null;
+        state.isLoadingToggleUserState = true;
+        state.toggleUserStateError = null;
     },
     [DISABLE_SUCCESS](state, user) {
-        state.changeUserError = null;
-        state.isLoadingChange = false;
+        state.toggleUserStateError = null;
+        state.isLoadingToggleUserState = false;
         replaceObjectInState(state, user);
     },
     [DISABLE_ERROR](state, error) {
-        state.changeUserError = error;
-        state.isLoadingChange = false;
+        state.toggleUserStateError = error;
+        state.isLoadingToggleUserState = false;
     },
 };
 
@@ -200,10 +205,10 @@ const actions = {
             return null;
         }
     },
-    async enable({commit}, userId) {
+    async enable({commit}, userIri) {
         commit(ENABLE);
         try {
-            let response = await UserAPI.enable(userId);
+            let response = await UserAPI.enable(userIri);
             commit(ENABLE_SUCCESS, response.data);
             return response.data;
         } catch (error) {
@@ -211,10 +216,10 @@ const actions = {
             return null;
         }
     },
-    async disable({commit}, userId) {
+    async disable({commit}, userIri) {
         commit(DISABLE);
         try {
-            let response = await UserAPI.disable(userId);
+            let response = await UserAPI.disable(userIri);
             commit(DISABLE_SUCCESS, response.data);
             return response.data;
         } catch (error) {

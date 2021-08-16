@@ -32,10 +32,10 @@ export default {
     change(user) {
         return axios.post('/api/users/change', user);
     },
-    enable(userId) {
-        return axios.put('/api/users/enable', { 'userId': userId });
+    enable(userIri) {
+        return axios.post('/api/users/enable', { 'user': userIri });
     },
-    disable(userId) {
-        return axios.put('/api/users/disable', { 'userId': userId });
+    disable(userIri) {
+        return axios.post('/api/users/disable', { 'user': userIri });
     },
 };
