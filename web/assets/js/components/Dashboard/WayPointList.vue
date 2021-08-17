@@ -52,8 +52,30 @@
             </b-col>
             <b-col
                 class="my-1"
+                sm="12"
+                md="4"
+            >
+                <b-input-group prepend="Beobachtung" size="sm">
+                    <b-form-input
+                        v-model="filter.note"
+                        placeholder="Beobachtung"
+                        debounce="500"
+                        size="sm"
+                        @update="handleFilterChange"
+                    />
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterNote"
+                        >
+                            <mdicon name="CloseCircleOutline" size="20"/>
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+            <b-col
+                class="my-1"
                 sm="6"
-                md="6"
+                md="4"
             >
                 <b-input-group prepend="Ort" size="sm">
                     <b-form-input
@@ -75,21 +97,28 @@
             <b-col
                 class="my-1"
                 sm="6"
-                md="6"
+                md="4"
             >
-                <b-input-group prepend="Beobachtung" size="sm">
+                <b-input-group prepend="Team" size="sm">
                     <b-form-input
-                        v-model="filter.note"
-                        placeholder="Beobachtung"
+                        v-model="filter.teamName"
+                        type="text"
+                        list="team-name-for-wayPoint-list"
+                        placeholder="Teamname"
+                        data-test="filter-team-wayPoint"
+                        autocomplete="off"
                         debounce="500"
                         size="sm"
                         @update="handleFilterChange"
-                    />
+                    ></b-form-input>
+                    <datalist id="team-name-for-wayPoint-list">
+                        <option v-for="teamName in teamNames">{{ teamName }}</option>
+                    </datalist>
                     <b-input-group-append>
                         <b-button
-                            @click="unsetFilterNote"
+                            @click="unsetFilterTeamName"
                         >
-                            <mdicon name="CloseCircleOutline" size="20"/>
+                            <mdicon name="CloseCircleOutline" size="20" />
                         </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -157,6 +186,7 @@
 'use strict';
 import dayjs from 'dayjs';
 import WayPointAPI from '../../api/wayPoint';
+import WalkAPI from '../../api/walk.js';
 
 export default {
     name: 'WayPointList',
@@ -192,6 +222,7 @@ export default {
                 },
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
             ],
+            allTeamNames: [],
             totalRows: 10000,
             currentPage: this.$localStorage.get('alle-wegpunkte-current-page', 1),
             perPage: this.$localStorage.get('alle-wegpunkte-per-page', 5),
@@ -199,7 +230,7 @@ export default {
             sortBy: 'walk.startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: this.$localStorage.get('alle-wegpunkte-filter', { wayPointTags: [], locationName: '', note: '' }),
+            filter: this.$localStorage.get('alle-wegpunkte-filter', { wayPointTags: [], locationName: '', note: '', teamName: '' }),
             storagePerPageId: 'alle-wegpunkte-per-page',
             storageCurrentPageId: 'alle-wegpunkte-current-page',
             storageFilterId: 'alle-wegpunkte-filter',
@@ -207,6 +238,12 @@ export default {
         };
     },
     computed: {
+        teamNames() {
+            const filterTeamName = this.filter.teamName ? this.filter.teamName.toLowerCase() : '';
+            return this.allTeamNames.filter((teamName) => {
+                return teamName.teamName.toLowerCase().startsWith(filterTeamName);
+            }).map((teamName) => teamName.teamName);
+        },
         hasWayPoints() {
             return this.$store.getters['wayPoint/hasWayPoints'];
         },
@@ -220,8 +257,10 @@ export default {
             return this.$store.getters['wayPoint/isLoading'];
         },
     },
-    mounted() {
+    async mounted() {
         this.$store.dispatch('tag/findAll');
+        const allTeamNames = await WalkAPI.findAllTeamNames();
+        this.allTeamNames = allTeamNames.data['hydra:member'];
     },
     methods: {
         getTagByIri(iri) {
@@ -289,6 +328,10 @@ export default {
         },
         unsetFilterNote() {
             this.filter.note = '';
+            this.handleFilterChange();
+        },
+        unsetFilterTeamName() {
+            this.filter.teamName = '';
             this.handleFilterChange();
         },
     },

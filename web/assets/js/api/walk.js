@@ -39,4 +39,7 @@ export default {
     export(payload) {
         return axios.post('/api/walks/export', payload);
     },
+    findAllTeamNames() {
+        return axios.get("/api/walks/team_names");
+    },
 };

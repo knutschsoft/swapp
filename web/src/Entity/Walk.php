@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Dto\TeamName;
 use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\WalkExportRequest;
@@ -29,10 +30,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  **/
 #[ApiFilter(OrderFilter::class, properties: ["name", "rating", "teamName", "startTime", "endTime", "isResubmission"])]
 #[ApiFilter(BooleanFilter::class, properties: ["isResubmission"])]
-#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
 #[ApiResource(
     collectionOperations: [
     "get",
+    "get_team_names" => [
+        "method" => "get",
+        "path" => "/walks/team_names",
+        "output" => TeamName::class,
+        "pagination_enabled" => false,
+        "normalization_context" => ["groups" => ["teamName:read"]],
+    ],
     "walk_export" => [
         "messenger" => "input",
         "openapi_context" => [
@@ -67,7 +75,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: [
     "get",
     ],
-    attributes: ["pagination_items_per_page" => 5],
+    attributes: [
+        "pagination_items_per_page" => 5,
+        "order" => ["teamName" => "ASC"],
+    ],
     normalizationContext: ["groups" => ["walk:read"]]
 )]
 class Walk

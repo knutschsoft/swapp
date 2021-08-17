@@ -382,7 +382,6 @@ export default {
         this.emptyForm = JSON.parse(JSON.stringify(this.form));
 
         const allLocationNames = await WayPointApi.findAllLocationNames();
-        console.log(allLocationNames);
         this.allLocationNames = allLocationNames.data['hydra:member'];
     },
     methods: {

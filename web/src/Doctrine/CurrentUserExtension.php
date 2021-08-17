@@ -93,6 +93,11 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->andWhere(\sprintf(':client = %s.client', $rootAlias));
                 $queryBuilder->setParameter('client', $user->getClient());
             }
+            if ('get_team_names' === $operationName) {
+                $queryBuilder->select(\sprintf('%s.teamName', $rootAlias));
+                $queryBuilder->groupBy(\sprintf('%s.teamName', $rootAlias));
+                $queryBuilder->andWhere(\sprintf('LENGTH(%s.teamName) > 1', $rootAlias));
+            }
         }
 
         // a normal user only sees wayPoints of his client
@@ -104,13 +109,8 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->setParameter('client', $user->getClient());
             }
             if ('get_location_names' === $operationName) {
-                //$queryBuilder->select(\sprintf('%s.locationName, %s.id', $rootAlias, $rootAlias));
                 $queryBuilder->select(\sprintf('%s.locationName', $rootAlias));
-                //$queryBuilder->distinct(true);
-                //$queryBuilder->orderBy(\sprintf('%s.locationName', $rootAlias));
                 $queryBuilder->groupBy(\sprintf('%s.locationName', $rootAlias));
-                //$queryBuilder->groupBy(\sprintf('%s.id', $rootAlias));
-                //$queryBuilder->setMaxResults(100);
                 $queryBuilder->andWhere(\sprintf('LENGTH(%s.locationName) > 1', $rootAlias));
             }
         }

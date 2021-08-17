@@ -14,6 +14,8 @@ export default {
                 value.forEach(iri => {
                     sort += `&${key}[]=${iri}`;
                 });
+            } else if ('teamName' === key) {
+                sort += `&walk.${key}=${value}`;
             } else {
                 sort += `&${key}=${value}`;
             }

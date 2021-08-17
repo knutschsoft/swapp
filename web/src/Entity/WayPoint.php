@@ -29,7 +29,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "note", "walk.startTime", "walk.teamName"])]
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
-#[ApiFilter(SearchFilter::class, properties: ['locationName' => 'partial', 'note' => 'partial', 'wayPointTags' => 'exact'])]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: ['locationName' => 'partial', 'note' => 'partial', 'wayPointTags' => 'exact', 'walk.teamName' => 'partial']
+)]
 #[ApiResource(
     collectionOperations: [
     'get',

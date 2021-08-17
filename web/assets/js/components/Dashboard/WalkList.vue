@@ -38,7 +38,7 @@
             <b-col
                 class="my-1"
                 sm="4"
-                md="3"
+                md="4"
             >
                 <b-input-group prepend="WV DB?" size="sm" class="">
                     <b-form-select
@@ -50,8 +50,8 @@
             </b-col>
             <b-col
                 class="my-1"
-                sm="8"
-                md="9"
+                sm="4"
+                md="4"
             >
                 <b-input-group prepend="Name" size="sm">
                     <b-form-input
@@ -64,6 +64,35 @@
                     <b-input-group-append>
                         <b-button
                             @click="unsetFilterName"
+                        >
+                            <mdicon name="CloseCircleOutline" size="20" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+            <b-col
+                class="my-1"
+                sm="4"
+                md="4"
+            >
+                <b-input-group prepend="Team" size="sm">
+                    <b-form-input
+                        v-model="filter.teamName"
+                        type="text"
+                        list="team-name-for-walk-list"
+                        placeholder="Teamname"
+                        data-test="filter-team-walk"
+                        autocomplete="off"
+                        debounce="500"
+                        size="sm"
+                        @update="handleFilterChange"
+                    ></b-form-input>
+                    <datalist id="team-name-for-walk-list">
+                        <option v-for="teamName in teamNames">{{ teamName }}</option>
+                    </datalist>
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterTeamName"
                         >
                             <mdicon name="CloseCircleOutline" size="20" />
                         </b-button>
@@ -171,6 +200,7 @@ export default {
                 },
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
             ],
+            allTeamNames: [],
             totalRows: 10000,
             currentPage: null,
             perPage: null,
@@ -178,7 +208,7 @@ export default {
             sortBy: 'startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: { isResubmission: null, name: null },
+            filter: { isResubmission: null, name: null, teamName: '' },
             storagePerPageId: 'abgeschlossene-runden-per-page',
             storageCurrentPageId: 'abgeschlossene-runden-current-page',
             storageFilterId: 'abgeschlossene-runden-filter',
@@ -186,6 +216,12 @@ export default {
         };
     },
     computed: {
+        teamNames() {
+            const filterTeamName = this.filter.teamName ? this.filter.teamName.toLowerCase() : '';
+            return this.allTeamNames.filter((teamName) => {
+                return teamName.teamName.toLowerCase().startsWith(filterTeamName);
+            }).map((teamName) => teamName.teamName);
+        },
         hasWalks() {
             return this.$store.getters['walk/hasWalks'];
         },
@@ -203,6 +239,8 @@ export default {
         this.perPage = this.$localStorage.get(this.storagePerPageId, 5);
         this.currentPage = this.$localStorage.get(this.storageCurrentPageId, 1);
         this.filter = this.$localStorage.get(this.storageFilterId, this.filter);
+        const allTeamNames = await WalkAPI.findAllTeamNames();
+        this.allTeamNames = allTeamNames.data['hydra:member'];
     },
     methods: {
         formatStartDate: function (dateString) {
@@ -236,6 +274,10 @@ export default {
         },
         unsetFilterName() {
             this.filter.name = '';
+            this.handleFilterChange();
+        },
+        unsetFilterTeamName() {
+            this.filter.teamName = '';
             this.handleFilterChange();
         },
     },
