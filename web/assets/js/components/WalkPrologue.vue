@@ -349,11 +349,15 @@
         },
         methods: {
             async getWalkTeamMembersOfLastWalkOfTeam(team) {
-                const response = await WalkAPI.findLastWalkByTeamIri(team['@id']);
+                const response = await WalkAPI.findLastWalkByTeam(team);
                 const hits = response.data['hydra:totalItems'];
-                let result;
+                let result = [];
                 if (hits) {
-                    result = response.data['hydra:member'][0].walkTeamMembers.slice();
+                    response.data['hydra:member'][0].walkTeamMembers.forEach((userIri) => {
+                        if (-1 !== team.users.indexOf(userIri)) {
+                            result.push(userIri);
+                        }
+                    });
                 } else {
                     result = team.users;
                 }

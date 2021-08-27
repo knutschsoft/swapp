@@ -18,11 +18,13 @@ export default {
 
         return axios.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
-    findLastWalkByTeamIri(teamIri) {
+    findLastWalkByTeam(team) {
         return this.find({
             sortBy: 'startTime',
             sortDesc: true,
-            team: teamIri,
+            filter: {
+                teamName: team.name,
+            },
             currentPage: 1,
             perPage: 1,
         });
