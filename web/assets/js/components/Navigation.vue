@@ -154,6 +154,12 @@
                         >
                             Was ist Swapp?
                         </b-dropdown-item>
+                        <b-dropdown-item
+                            :to="{ name: 'Changelog'}"
+                            :active="$route.name === 'Changelog'"
+                        >
+                            Changelog
+                        </b-dropdown-item>
                         <b-dropdown-divider v-if="!isUserSwitched && isSuperAdmin" />
                         <b-dropdown-form
                             v-if="!isUserSwitched && isSuperAdmin"

@@ -14,6 +14,7 @@ import UserEmailConfirm from '../components/UserEmailConfirm';
 import PasswordReset from '../components/PasswordReset';
 import Dashboard from '../components/Dashboard';
 import About from '../components/About';
+import Changelog from '../components/Changelog';
 import WalkDetail from '../components/WalkDetail';
 import WayPointDetail from '../components/WayPointDetail';
 import SystemicQuestions from '../components/SystemicQuestions';
@@ -31,6 +32,7 @@ let routes = [
     {id: 3, path: "/anmeldung", component: Login, name: "Login"},
     {id: 4, path: "/dashboard", component: Dashboard, name: "Dashboard", meta: {requiresAuth: true}, props: true},
     {id: 5, path: "/was-ist-swapp-die-streetworkapp", component: About, name: "About", meta: {requiresAuth: false}, props: false},
+    {id: 6, path: "/changelog", component: Changelog, name: "Changelog", meta: {requiresAuth: false}, props: false},
     {id: 50, path: "/runde/:walkId/detail", component: WalkDetail, name: "WalkDetail", props: true},
     {id: 51, path: "/runde/:teamId/beginnen", component: WalkPrologue, name: "WalkPrologue", props: true},
     {id: 51, path: "/runde/:walkId/wegpunkt-hinzufuegen", component: WalkAddWayPoint, name: "WalkAddWayPoint", props: true},
