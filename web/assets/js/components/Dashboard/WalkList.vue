@@ -258,8 +258,9 @@ export default {
         async itemProvider(ctx) {
             const result = await WalkAPI.find(ctx);
             const walks = result.data['hydra:member']
-            this.totalRows = result['hydra:totalItems'];
+            this.totalRows = result.data['hydra:totalItems'];
             this.$localStorage.set(this.storageWalksId, walks);
+            await this.$emit('refresh-total-walks', this.totalRows);
 
             return walks;
         },

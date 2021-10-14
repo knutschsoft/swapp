@@ -308,8 +308,8 @@ export default {
             await Promise.all(walkPromises);
 
             this.totalRows = result.data['hydra:totalItems'];
-            await this.$localStorage.set(this.storageWayPointsId, wayPoints);
-            await this.$emit('refreshtotalwaypoints', this.totalRows);
+            this.$localStorage.set(this.storageWayPointsId, wayPoints);
+            await this.$emit('refresh-total-way-points', this.totalRows);
 
             return wayPoints;
         },

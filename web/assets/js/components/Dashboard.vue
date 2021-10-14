@@ -18,11 +18,13 @@
             <StartWalk />
         </content-collapse>
         <content-collapse
-            title="Abgeschlossene Streetwork-Runden"
+            :title="`Abgeschlossene Streetwork-Runden  ${ totalWalks ? `(${ totalWalks })` : '' }`"
             collapse-key="finished-walk-list"
             is-visible-by-default
         >
-            <WalkList />
+            <WalkList
+                @refresh-total-walks="updateTotalWalks"
+            />
         </content-collapse>
         <content-collapse
             title="Streetwork-Runden exportieren"
@@ -37,7 +39,7 @@
             is-visible-by-default
         >
             <WayPointList
-                @refreshtotalwaypoints="updateTotalWayPoints"
+                @refresh-total-way-points="updateTotalWayPoints"
             />
         </content-collapse>
     </div>
@@ -69,6 +71,7 @@
         data: function () {
             return {
                 totalWayPoints: 0,
+                totalWalks: 0,
             }
         },
         computed: {
@@ -94,6 +97,9 @@
         methods: {
             updateTotalWayPoints(totalWayPoints) {
                 this.totalWayPoints = totalWayPoints;
+            },
+            updateTotalWalks(totalWalks) {
+                this.totalWalks = totalWalks;
             },
         },
     }
