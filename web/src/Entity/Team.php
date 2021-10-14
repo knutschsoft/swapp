@@ -6,6 +6,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\TeamChangeRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Security\Voter\ClientVoter;
+use App\Security\Voter\TeamVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,12 +28,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/teams/change",
-        "security_post_denormalize" => 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.team.getClient())',
+        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.team.getClient())',
     ],
     ],
     itemOperations: [
     'get' => [
-        'security' => 'is_granted("TEAM_READ", object)',
+        'security' => 'is_granted("'.TeamVoter::TEAM_READ.'", object)',
     ],
     ],
     normalizationContext: ["groups" => ["team:read"]]

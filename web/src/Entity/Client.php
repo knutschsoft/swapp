@@ -26,7 +26,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
         "method" => "post",
         "status" => 200,
         "path" => "/clients/change",
-        "security_post_denormalize" => "is_granted('".ClientVoter::EDIT."', object.client)",
+        "security_post_denormalize" => 'is_granted("'.ClientVoter::EDIT.'", object.client)',
     ],
     "add_client" => [
         "messenger" => "input",
@@ -35,12 +35,12 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
         "method" => "post",
         "status" => 200,
         "path" => "/clients/create",
-        "security_post_denormalize" => "is_granted('".User::ROLE_SUPER_ADMIN."')",
+        "security_post_denormalize" => 'is_granted("'.User::ROLE_SUPER_ADMIN.'")',
     ],
     ],
     itemOperations: [
     'get' => [
-        'security' => 'is_granted("CLIENT_READ", object)',
+        'security' => 'is_granted("'.ClientVoter::READ.'", object)',
     ],
     ],
 )]

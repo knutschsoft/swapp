@@ -77,11 +77,7 @@ class WayPoint
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, name="image_name", nullable=true)
-     *
-     * @var ?string
-     */
+    /** @ORM\Column(type="string", length=255, name="image_name", nullable=true) */
     private ?string $imageName = null;
 
     /**
@@ -104,11 +100,7 @@ class WayPoint
      * @var AgeGroup[]
      */
     private array $ageGroups;
-    /**
-     * @ORM\Column(type="string", nullable=true, length=4096)
-     *
-     * @var ?string
-     */
+    /** @ORM\Column(type="string", nullable=true, length=4096) */
     private ?string $note = null;
 
     /** @ORM\Column(type="boolean", length=255) */

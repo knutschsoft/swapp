@@ -81,7 +81,8 @@
         "symfony/dotenv": "~5.3",
         "symfony/maker-bundle": "~1.13",
         "symfony/phpunit-bridge": "~5.3",
-        "symfony/profiler-pack": "~1.0",
+        "symfony/stopwatch": "^5.3",
+        "symfony/web-profiler-bundle": "^5.3",
         "thibautselingue/local-php-security-checker-installer": "~1.0"
     },
     "conflict": {

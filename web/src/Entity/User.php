@@ -85,7 +85,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ],
             "security_post_denormalize" =>
                 "is_granted('".UserVoter::EDIT."', object.user) and ".
-                "(is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded()) and ".
+                '(is_granted("'.User::ROLE_SUPER_ADMIN.'") or not object.superAdminRightsNeeded()) and '.
                 "is_granted('".ClientVoter::READ."', object.client)",
         ],
         "disable_user" => [
@@ -123,7 +123,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 "summary" => "Create an user which is initially disabled. Will send notification with further instructions.",
             ],
             "security_post_denormalize" =>
-                "(is_granted('ROLE_SUPER_ADMIN') or not object.superAdminRightsNeeded()) and ".
+                "(is_granted('".User::ROLE_SUPER_ADMIN."') or not object.superAdminRightsNeeded()) and ".
                  "is_granted('".ClientVoter::READ."', object.client)"
             ,
         ],

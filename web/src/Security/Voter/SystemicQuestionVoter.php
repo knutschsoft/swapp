@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\Security;
 
 class SystemicQuestionVoter extends Voter
 {
-    private const READ = 'SYSTEMIC_QUESTION_READ';
-    private const EDIT = 'SYSTEMIC_QUESTION_EDIT';
+    public const READ = 'SYSTEMIC_QUESTION_READ';
+    public const EDIT = 'SYSTEMIC_QUESTION_EDIT';
 
     private Security $security;
 

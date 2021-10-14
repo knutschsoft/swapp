@@ -25,12 +25,14 @@ Feature: A user can do a walk
 
   @javascript
   @tagCreate
-  Scenario: I can create a new tag as an super admin user
+  Scenario: I can create a new tag as a super admin user
     Given I am authenticated as "superadmin@gmx.de"
     When I am on "tags"
     And I wait for "Liste der Tags" to appear
+    And I wait for "Drogen" to appear
+
     And I click on text "Liste der Tags"
-    And I wait for "ID" to disappear
+    And I wait for "Drogen" to disappear
 
     # open
     And I click on element "header-tag-create"

@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\Security;
 
 class TagVoter extends Voter
 {
-    private const TAG_READ = 'TAG_READ';
-    private const TAG_EDIT = 'TAG_EDIT';
+    public const READ = 'TAG_READ';
+    public const EDIT = 'TAG_EDIT';
 
     private Security $security;
 
@@ -23,7 +23,7 @@ class TagVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return \in_array($attribute, [self::TAG_EDIT, self::TAG_READ], true)
+        return \in_array($attribute, [self::EDIT, self::READ], true)
             && $subject instanceof Tag;
     }
 
@@ -43,13 +43,13 @@ class TagVoter extends Voter
         $tag = $subject;
 
         switch ($attribute) {
-            case self::TAG_EDIT:
+            case self::EDIT:
                 if (!$this->security->isGranted(User::ROLE_ADMIN)) {
                     return false;
                 }
 
                 return $tag->getClient()->getUsers()->contains($user);
-            case self::TAG_READ:
+            case self::READ:
                 return $tag->getClient()->getUsers()->contains($user);
         }
 

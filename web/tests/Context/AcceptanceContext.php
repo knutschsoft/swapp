@@ -107,6 +107,16 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @Then (I )wait :count second(s)
+     *
+     * @param string $count
+     */
+    public function iWaitSeconds(string $count): void
+    {
+        \usleep((int) $count * 1000000);
+    }
+
+    /**
      * @When  I wait for :text to disappear
      *
      * @Then  I should see :text disappear

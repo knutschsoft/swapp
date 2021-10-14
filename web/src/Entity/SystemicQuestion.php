@@ -8,6 +8,8 @@ use App\Dto\SystemicQuestion\SystemicQuestionChangeRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionCreateRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionDisableRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionEnableRequest;
+use App\Security\Voter\ClientVoter;
+use App\Security\Voter\SystemicQuestionVoter;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -27,7 +29,7 @@ use Webmozart\Assert\Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/systemic_questions/create",
-        "security_post_denormalize" => 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.client)',
+        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.client)',
     ],
     'systemic_question_change' => [
         "messenger" => "input",
@@ -36,7 +38,7 @@ use Webmozart\Assert\Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/systemic_questions/change",
-        "security_post_denormalize" => 'is_granted("SYSTEMIC_QUESTION_EDIT", object.systemicQuestion) && is_granted("CLIENT_READ", object.client)',
+        "security_post_denormalize" => 'is_granted("'.SystemicQuestionVoter::EDIT.'", object.systemicQuestion) && is_granted("'.ClientVoter::READ.'", object.client)',
     ],
     'systemic_question_enable' => [
         "messenger" => "input",
@@ -45,7 +47,7 @@ use Webmozart\Assert\Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/systemic_questions/enable",
-        "security_post_denormalize" => 'is_granted("ROLE_ADMIN") && is_granted("SYSTEMIC_QUESTION_EDIT", object.systemicQuestion)',
+        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.SystemicQuestionVoter::EDIT.'", object.systemicQuestion)',
     ],
     'systemic_question_disable' => [
         "messenger" => "input",
@@ -54,12 +56,12 @@ use Webmozart\Assert\Assert;
         "method" => "post",
         "status" => 200,
         "path" => "/systemic_questions/disable",
-        "security_post_denormalize" => 'is_granted("ROLE_ADMIN") && is_granted("SYSTEMIC_QUESTION_EDIT", object.systemicQuestion)',
+        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.SystemicQuestionVoter::EDIT.'", object.systemicQuestion)',
     ],
     ],
     itemOperations: [
     'get' => [
-        'security' => 'is_granted("SYSTEMIC_QUESTION_READ", object)',
+        'security' => 'is_granted("'.SystemicQuestionVoter::READ.'", object)',
     ],
     ],
     normalizationContext: ["groups" => ["systemicQuestion:read"]]

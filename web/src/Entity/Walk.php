@@ -14,6 +14,7 @@ use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\WalkExportRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
 use App\Value\AgeRange;
@@ -51,7 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         "status" => 200,
         "method" => "post",
         "path" => "/walks/export",
-        "security_post_denormalize" => "is_granted('CLIENT_READ', object.client)",
+        "security_post_denormalize" => 'is_granted("'.ClientVoter::READ.'", object.client)',
     ],
     "walk_change" => [
         "messenger" => "input",
@@ -160,18 +161,10 @@ class Walk
      */
     private string $systemicAnswer;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @var ?string
-     */
+    /** @ORM\Column(type="string", nullable=true) */
     private ?string $insights = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @var ?string
-     */
+    /** @ORM\Column(type="string", nullable=true) */
     private ?string $commitments = null;
 
     /** @ORM\Column(type="boolean", length=255) */
@@ -192,11 +185,7 @@ class Walk
     /** @ORM\Column(type="string", length=255) */
     private string $teamName;
 
-    /**
-     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
-     *
-     * @var ?\DateTime
-     */
+    /** @ORM\Column(name="deletedAt", type="datetime", nullable=true) */
     private ?\DateTime $deletedAt = null;
 
     /**
@@ -264,7 +253,6 @@ class Walk
         $this->insights = $insights;
     }
 
-    //#[Groups(['walk:read', 'wayPoint:read'])]
     #[Groups(['walk:read'])]
     public function getCommitments(): ?string
     {
@@ -337,7 +325,6 @@ class Walk
         $this->guests = $guests;
     }
 
-    //#[Groups(['walk:read', 'wayPoint:read'])]
     #[Groups(['walk:read'])]
     public function getName(): string
     {
