@@ -48,30 +48,31 @@
                         header: '15.10.2021',
                         avatarText: '🆕️🛠️',
                         entries: [
-                            'Fix: Paginierung der Wegpunkttabelle auf dem Dashboard funktionierte nicht',
-                            'Feature: Die Gesamtanzahl der Wegpunkte auf dem Dashboard wird im Header angezeigt',
-                            'Misc: Softwarebibliotheken geupdated',
+                            'Fix: Die Paginierung der Wegpunkttabelle auf dem Dashboard funktionierte nicht.',
+                            'Fix: In der Spalte "Ende" in der Wegpunkttabelle soll nur die Uhrzeit stehen, wenn der Tag gleich dem Tag von "Beginn" ist. Dies war jedoch auch bei gleichem Wochentag der Fall.',
+                            'Feature: Die Gesamtanzahl der Wegpunkte auf dem Dashboard wird im Header angezeigt.',
+                            'Misc: Softwarebibliotheken geupdated.',
                         ],
                     },
                     {
-                        header: '2017-2020',
+                        header: '2017 bis 2020',
                         avatarText: '🤓',
                         entries: [
-                            'Misc: Jede Menge Updates über die wir hier vielleicht noch berichten werden',
+                            'Misc: Es gab jede Menge Updates über die wir hier vielleicht noch berichten werden.',
                         ],
                     },
                     {
                         header: '21.06.2016',
                         avatarText: '🥳',
                         entries: [
-                            'Misc: Beginn der produktiven Nutzung von Swapp',
+                            'Misc: Beginn der produktiven Nutzung von Swapp.',
                         ],
                     },
                     {
                         header: '01.04.2016',
                         avatarText: '🧪',
                         entries: [
-                            'Misc: Erster Beta-Test zusammen mit der <a href="https://www.treberhilfe-dresden.de">treberhilfe-dresden.de</a>',
+                            'Misc: Erster Beta-Test zusammen mit der <a href="https://www.treberhilfe-dresden.de">treberhilfe-dresden.de</a>.',
                         ],
                     },
                     {

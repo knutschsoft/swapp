@@ -53,8 +53,9 @@ Vue.use(mdiVue, {
 Vue.config.errorHandler = function (err, vm, info) {
     let user = vm.$store.getters['security/currentUser'];
     let username = user ? user.email : 'anonymous';
-    nelmioLog('error', err.message, {info: info, location: window.location, user: username});
-    console.error(err);
+    let message = err.message ? err.message : JSON.stringify(err.data);
+    nelmioLog('error', message, {info: info, location: window.location, user: username});
+    console.error(message);
 };
 
 const vueApp = (params) => {

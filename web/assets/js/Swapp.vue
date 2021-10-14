@@ -72,8 +72,15 @@ export default {
     computed: {},
     created() {
         this.axios.interceptors.response.use(undefined, (err) => {
-            if (err.response.status && 403 === err.response.data.code && 'Your token is invalid, please login again to get a new one' === err.response.data.message) {
-                this.$router.push({name: "Logout"});
+            if (err.response && err.response.status && 403 === err.response.status && err.response.data) {
+                if ('Your token is invalid, please login again to get a new one' === err.response.data.message) {
+                    this.$router.push({name: "Logout"});
+                    return;
+                }
+                if ('Switch User failed: ' === err.response.data.detail) {
+                    this.$router.push({name: "Logout"});
+                    return;
+                }
             }
 
             return Promise.reject(err.response);

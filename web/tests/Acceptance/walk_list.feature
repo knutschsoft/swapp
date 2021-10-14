@@ -18,24 +18,31 @@ Feature: An administrator can change a walk
       | Gewalt | Chocolate | client@gmx.de |
       | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
-      | name    | team     | startTime       | endTime          | reflection | systemicAnswer | commitments | insights |
-      | Klippe1 | Westhang | 02.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
-      | Klippe2 | Westhang | 03.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
-      | Klippe3 | Westhang | 04.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
-      | Klippe4 | Westhang | 05.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
-      | Klippe5 | Westhang | 06.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
-      | Klippe6 | Westhang | 07.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | name     | team     | startTime       | endTime          | reflection | systemicAnswer | commitments | insights |
+      | Klippe1  | Westhang | 01.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe2  | Westhang | 02.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe3  | Westhang | 03.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe4  | Westhang | 04.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe5  | Westhang | 05.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe6  | Westhang | 06.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe7  | Westhang | 07.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe8  | Westhang | 08.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe9  | Westhang | 09.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe10 | Westhang | 10.01.2021 7:20 | 10.01.2021 09:10 | zorp       | zorp           | zorp        | zorp     |
 
   @javascript
   @walkList
   Scenario: I can see total items of filtered walk table
-    And there are exactly 6 walks in database
+    And there are exactly 10 walks in database
     Given I am authenticated as "karl@gmx.de"
-    Then I wait for 'Abgeschlossene Streetwork-Runden (6)' to appear
+    Then I wait for 'Abgeschlossene Streetwork-Runden (10)' to appear
 
     Then I wait for "Klippe6" to appear
-    Then I wait for "Klippe1" to disappear
+    Then I wait for "Klippe1 " to disappear
+    Then I wait for "So., 10.01.2021, 09:10" to disappear
+    Then I wait for "09:10" to appear
 
     When I click on aria label "Go to page 2"
     Then I wait for "Klippe6" to disappear
-    Then I wait for "Klippe1" to appear
+    Then I wait for "Klippe1 " to appear
+    Then I wait for "09:10" to disappear

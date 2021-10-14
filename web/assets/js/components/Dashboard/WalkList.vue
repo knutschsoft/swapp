@@ -168,6 +168,7 @@
 'use strict';
 import formatter from '../../utils/formatter.js';
 import WalkAPI from '../../api/walk.js';
+import dayjs from 'dayjs';
 
 export default {
     name: 'WalkList',
@@ -250,7 +251,7 @@ export default {
         formatEndDate: function (dateString, startDateString) {
             let date = new Date(dateString);
             let startDate = new Date(startDateString);
-            if (startDate.getDay() === date.getDay()) {
+            if (dayjs(dateString).isSame(dayjs(startDateString), 'day')) {
                 return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
             }
             return this.formatStartDate(dateString);
