@@ -7,7 +7,17 @@
         >
             <b-list-group>
                 <template v-for="item in items">
-                    <b-list-group-item variant="dark">{{ item.header }}</b-list-group-item>
+                    <b-list-group-item
+                        class="d-flex justify-content-between align-items-center"
+                        variant="dark"
+                    >
+                        {{ item.header }}
+                        <b-avatar
+                            v-if="item.avatarText"
+                            variant="light"
+                            :text="item.avatarText"
+                        />
+                    </b-list-group-item>
                     <b-list-group-item>
                         <ul>
                             <li
@@ -36,6 +46,7 @@
                 items: [
                     {
                         header: '15.10.2021',
+                        avatarText: '🆕️🛠️',
                         entries: [
                             'Fix: Paginierung der Wegpunkttabelle auf dem Dashboard funktionierte nicht',
                             'Feature: Die Gesamtanzahl der Wegpunkte auf dem Dashboard wird im Header angezeigt',
@@ -44,24 +55,28 @@
                     },
                     {
                         header: '2017-2020',
+                        avatarText: '🤓',
                         entries: [
                             'Misc: Jede Menge Updates über die wir hier vielleicht noch berichten werden',
                         ],
                     },
                     {
                         header: '21.06.2016',
+                        avatarText: '🥳',
                         entries: [
                             'Misc: Beginn der produktiven Nutzung von Swapp',
                         ],
                     },
                     {
                         header: '01.04.2016',
+                        avatarText: '🧪',
                         entries: [
                             'Misc: Erster Beta-Test zusammen mit der <a href="https://www.treberhilfe-dresden.de">treberhilfe-dresden.de</a>',
                         ],
                     },
                     {
                         header: '01.05.2015',
+                        avatarText: '👷',
                         entries: [
                             'Misc: Start der Entwicklung von Swapp',
                         ],
