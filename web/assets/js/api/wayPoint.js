@@ -35,7 +35,4 @@ export default {
     findAll() {
         return axios.get("/api/way_points");
     },
-    findAllLocationNames() {
-        return axios.get("/api/way_points/location_names");
-    },
 };

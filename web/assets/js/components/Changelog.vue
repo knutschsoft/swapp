@@ -45,12 +45,19 @@
             return {
                 items: [
                     {
+                        header: 'xx.10.2021',
+                        avatarText: '🆕️🛠️',
+                        entries: [
+                            'UX-Feature: Die Autocomplete-Vorschläge für den Ort eines Wegpunktes kann von einem Admin gruppenspezifisch definiert werden. Die vorherige Lösung mit allen Orten des Teams hatte zu viele Einträge und war zu unpraktikabel.',
+                        ],
+                    },
+                    {
                         header: '15.10.2021',
                         avatarText: '🆕️🛠️',
                         entries: [
                             'Fix: Die Paginierung der Wegpunkttabelle auf dem Dashboard funktionierte nicht.',
                             'Fix: In der Spalte "Ende" in der Wegpunkttabelle soll nur die Uhrzeit stehen, wenn der Tag gleich dem Tag von "Beginn" ist. Dies war jedoch auch bei gleichem Wochentag der Fall.',
-                            'Feature: Die Gesamtanzahl der Wegpunkte auf dem Dashboard wird im Header angezeigt.',
+                            'UX-Feature: Die Gesamtanzahl der Wegpunkte auf dem Dashboard wird im Header angezeigt.',
                             'Misc: Softwarebibliotheken geupdated.',
                         ],
                     },
@@ -72,7 +79,7 @@
                         header: '01.04.2016',
                         avatarText: '🧪',
                         entries: [
-                            'Misc: Erster Beta-Test zusammen mit der <a href="https://www.treberhilfe-dresden.de">treberhilfe-dresden.de</a>.',
+                            'Misc: Erster Beta-Test zusammen mit der <a target="_blank" href="https://www.treberhilfe-dresden.de">treberhilfe-dresden.de</a>.',
                         ],
                     },
                     {

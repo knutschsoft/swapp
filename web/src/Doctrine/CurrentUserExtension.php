@@ -108,11 +108,6 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->andWhere(':client = walk.client');
                 $queryBuilder->setParameter('client', $user->getClient());
             }
-            if ('get_location_names' === $operationName) {
-                $queryBuilder->select(\sprintf('%s.locationName', $rootAlias));
-                $queryBuilder->groupBy(\sprintf('%s.locationName', $rootAlias));
-                $queryBuilder->andWhere(\sprintf('LENGTH(%s.locationName) > 1', $rootAlias));
-            }
         }
 
         // a normal user only sees tags of his client

@@ -21,6 +21,22 @@ final class TeamChangeRequest
     #[Assert\Length(min: 3, max: 100, normalizer: "trim")]
     #[Assert\Type(type: 'string')]
     public string $name;
+
+    /**
+     * @var string[]
+     *
+     * @Assert\All({
+     *     @Assert\NotBlank,
+     *     @Assert\NotNull,
+     *     @Assert\Length(min = 2, max = 300, normalizer="trim")
+     * })
+     */
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
+    #[Assert\Count(min: 0, max: 100)]
+    #[Assert\Type(type: 'array')]
+    public array $locationNames;
+
     /**
      * @var User[]
      *

@@ -8,7 +8,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Dto\LocationName;
 use App\Dto\WayPoint\WayPointChangeRequest;
 use App\Dto\WayPointCreateRequest;
 use App\Value\AgeGroup;
@@ -36,13 +35,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: [
     'get',
-    'get_location_names' => [
-        "method" => "get",
-        "path" => "/way_points/location_names",
-        "output" => LocationName::class,
-        "pagination_enabled" => false,
-        "normalization_context" => ["groups" => ["locationName:read"]],
-    ],
     "way_point_change" => [
         "messenger" => "input",
         "input" => WayPointChangeRequest::class,

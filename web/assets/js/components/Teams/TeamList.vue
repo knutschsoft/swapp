@@ -19,6 +19,15 @@
             stacked="md"
             class="mb-0"
         >
+            <template #cell(users)="data">
+                <b-spinner
+                    v-if="isUserLoading"
+                    small
+                    type="grow"
+                />
+                <span v-else>{{ data.value }}</span>
+            </template>
+
             <template v-slot:cell(actions)="row">
                 <b-button
                     size="sm"
@@ -72,6 +81,51 @@
                 </b-form-checkbox-group>
             </b-form-group>
 
+            <b-form-group
+                label="Autocomplete-Vorschläge für den Ort der Wegpunkte"
+                v-slot="{ ariaDescribedby }"
+            >
+                <b-row
+                    v-for="(locationName, i) in editModalTeam.locationNames"
+                    :key="i"
+                >
+                    <b-col cols="8">
+                        <b-input
+                            v-model="editModalTeam.locationNames[i]"
+                            :aria-describedby="ariaDescribedby"
+                            :disabled="isDisabled"
+                            type="text"
+                            min="2"
+                            max="300"
+                            trim
+                            required
+                            placeholder="neuer Ort..."
+                        />
+                    </b-col>
+                    <b-col cols="3">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="removeLocationName(i)"
+                        >
+                            <mdicon
+                                name="DeleteCircleOutline"
+                            />
+                        </div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="12">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="addLocationName()"
+                        >
+                            <mdicon
+                                name="PlusCircleOutline"
+                            />
+                        </div>
+                    </b-col>
+                </b-row>
+            </b-form-group>
             <b-form-group
                 label="Altersgruppen"
                 v-slot="{ ariaDescribedby }"
@@ -166,6 +220,20 @@
                                 return usernames.join(', ')
                             }
 
+                            return '-';
+                        },
+                        sortByFormatted: true,
+                        class: 'text-center',
+                    },
+                    {
+                        key: 'locationNames',
+                        label: 'Orte für Wegpunkte',
+                        sortable: true,
+                        formatter: (locationNames) => {
+                            if (locationNames.length) {
+                                return locationNames.join(', ')
+                            }
+
                             return '-'
                         },
                         sortByFormatted: true,
@@ -205,6 +273,7 @@
                     name: '',
                     users: [],
                     ageRanges: [],
+                    locationNames: [],
                 },
                 editTeam: null,
             }
@@ -222,6 +291,9 @@
             },
             isLoading() {
                 return this.$store.getters["team/isLoading"];
+            },
+            isUserLoading() {
+                return this.$store.getters["user/isLoading"];
             },
             error() {
                 return this.$store.getters["team/error"];
@@ -265,6 +337,7 @@
                         return (a.rangeStart > b.rangeStart) ? 1 : -1;
                     })
                 ;
+                this.editModalTeam.locationNames = team.locationNames;
                 this.editModalTeam.users = team.users;
                 this.editModalTeam.name = team.name;
                 this.$root.$emit('bv::show::modal', 'edit-modal-team');
@@ -280,6 +353,12 @@
             },
             addAgeRange(index) {
                 this.editModalTeam.ageRanges = [ ...this.editModalTeam.ageRanges, { rangeStart: '', rangeEnd: '' } ];
+            },
+            removeLocationName(index) {
+                this.editModalTeam.locationNames.splice(index, 1);
+            },
+            addLocationName(index) {
+                this.editModalTeam.locationNames = [ ...this.editModalTeam.locationNames, '' ];
             },
         }
     }

@@ -155,6 +155,9 @@ final class DomainIntegrationContext extends RawMinkContext
                 $parameters[$row['key']] = [
                     'token' => ConfirmationToken::fromString($value)->getToken(),
                 ];
+            } elseif (\str_starts_with($row['value'], 'array<') && \str_ends_with($lastChar, '>')) {
+                $value = \substr($row['value'], 6, -1);
+                $parameters[$row['key']] = \explode(',', $value);
             } else {
                 $parameters[$row['key']] = \trim($row['value']);
             }
@@ -431,6 +434,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $team->setUsers(new ArrayCollection($users));
             $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '');
             $team->setAgeRanges($ageRanges);
+            $team->setLocationNames(isset($row['locationNames']) && $row['locationNames'] ? \explode(',', $row['locationNames']) : []);
             $team->updateClient($this->getClientByEmail($row['client']));
 
             $this->em->persist($team);

@@ -5,6 +5,7 @@ namespace App\Tests\Context;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\MinkExtension\Context\MinkContext;
+use Facebook\WebDriver\WebDriverKeys;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -142,6 +143,21 @@ final class AcceptanceContext extends MinkContext
     public function iClickOnElement(string $dataTestSelector): void
     {
         $this->getTestElement($dataTestSelector)->click();
+    }
+
+    /**
+     * @When /^I press key "([^"]*)" on element "([^"]*)"$/
+     */
+    public function iPressOnKey(string $key, string $dataTestSelector): void
+    {
+        $key = \str_replace(
+            ['<down>', '<enter>'],
+            [WebDriverKeys::ARROW_DOWN, WebDriverKeys::ENTER],
+            $key
+        );
+        $xpath = $this->getTestElement($dataTestSelector)->getXpath();
+
+        $this->getSession()->getDriver()->keyPress($xpath, $key);
     }
 
     /**

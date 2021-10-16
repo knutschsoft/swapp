@@ -68,9 +68,17 @@ class Team
     /** @ORM\ManyToOne(targetEntity="Client", inversedBy="teams") */
     private Client $client;
 
+    /**
+     * @var string[]
+     *
+     * @ORM\Column(type="array")
+     */
+    private array $locationNames;
+
     public function __construct()
     {
         $this->ageRanges = [];
+        $this->locationNames = [];
         $this->users = new ArrayCollection();
     }
 
@@ -147,5 +155,22 @@ class Team
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    #[Groups(['team:read'])]
+    public function getLocationNames(): array
+    {
+        return $this->locationNames;
+    }
+
+    /**
+     * @param string[] $locationNames
+     */
+    public function setLocationNames(array $locationNames): void
+    {
+        $this->locationNames = \array_map('trim', $locationNames);
     }
 }

@@ -36,6 +36,20 @@ const getters = {
             return foundTeam;
         };
     },
+    getTeamByTeamName(state) {
+        return teamName => {
+            let foundTeam = false;
+            state.teams.forEach(
+                (team) => {
+                    if (String(team.name) === String(teamName)) {
+                        foundTeam = team;
+                    }
+                },
+            );
+
+            return foundTeam;
+        };
+    },
     getTeamByIri(state, getters) {
         return iri => getters.getTeamById(iri.replace('/api/teams/', ''));
     },

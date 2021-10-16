@@ -54,11 +54,12 @@ Feature: Testing team change resource
   Scenario: I can request /api/teams/change as an admin and change a team
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key       | value                |
-      | team      | teamIri<Empties>     |
-      | name      | Religion             |
-      | ageRanges | ageRanges<1-3>       |
-      | users     | userIris<two@pac.de> |
+      | key           | value                   |
+      | team          | teamIri<Empties>        |
+      | name          | Religion                |
+      | ageRanges     | ageRanges<1-3>          |
+      | users         | userIris<two@pac.de>    |
+      | locationNames | array<City, Spielplatz> |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -68,26 +69,31 @@ Feature: Testing team change resource
       | ageRanges[0].rangeStart    | 1          |
       | ageRanges[0].rangeEnd      | 3          |
       | ageRanges[0].frontendLabel | 1 - 3      |
+      | locationNames[0]           | City       |
+      | locationNames[1]           | Spielplatz |
 #      |users[0]                | userIri<two@pac.de> |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an superadmin and change a team
     Given I am authenticated against api as "superadmin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key       | value                |
-      | team      | teamIri<Empties>     |
-      | name      | Religion             |
-      | ageRanges | ageRanges<1-3>       |
-      | users     | userIris<two@pac.de> |
+      | key           | value                   |
+      | team          | teamIri<Empties>        |
+      | name          | Religion                |
+      | ageRanges     | ageRanges<1-3>          |
+      | users         | userIris<two@pac.de>    |
+      | locationNames | array<City, Spielplatz> |
     Then the response should be in JSON
-    And the response status code should be 200
 #    And print last JSON response
+    And the response status code should be 200
     And the JSON nodes should be equal to:
       | name                       | Religion   |
       | name                       | Religion   |
       | ageRanges[0].rangeStart    | 1          |
       | ageRanges[0].rangeEnd      | 3          |
       | ageRanges[0].frontendLabel | 1 - 3      |
+      | locationNames[0]           | City       |
+      | locationNames[1]           | Spielplatz |
 #      |users[0]                | userIri<two@pac.de> |
 
   @api @apiTeamChange
@@ -105,10 +111,14 @@ Feature: Testing team change resource
       | violations[0].message      | Dieser Wert sollte nicht leer sein.                                    |
       | violations[1].propertyPath | name                                                                   |
       | violations[1].message      | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 3 Zeichen haben. |
-      | violations[2].propertyPath | users                                                                  |
-      | violations[2].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[3].propertyPath | ageRanges                                                              |
+      | violations[2].propertyPath | locationNames                                                          |
+      | violations[2].message      | Dieser Wert sollte nicht leer sein.                                    |
+      | violations[3].propertyPath | locationNames                                                          |
       | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[4].propertyPath | users                                                                  |
+      | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[5].propertyPath | ageRanges                                                              |
+      | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin of another client/team and can not change a team

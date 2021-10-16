@@ -226,17 +226,19 @@ export default {
             emptyForm,
             file: null,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),
-            allLocationNames: [],
         };
     },
     computed: {
         locationNames() {
-            if (this.form.locationName.length < 1) {
+            if (!this.team) {
                 return [];
             }
-            return this.allLocationNames.filter((locationName) => {
-               return locationName.locationName.toLowerCase().startsWith(this.form.locationName.toLowerCase());
-            }).map((locationName) => locationName.locationName);
+            return this.team.locationNames.filter((locationName) => {
+               return locationName.toLowerCase().startsWith(this.form.locationName.toLowerCase());
+            }).map((locationName) => locationName);
+        },
+        team() {
+            return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);
         },
         isLoading() {
             return this.$store.getters['walk/isLoading'] || this.$store.getters['wayPoint/isLoading'] || this.isFormLoading;
@@ -341,6 +343,9 @@ export default {
         if (!this.tags.length) {
             await this.$store.dispatch('tag/findAll');
         }
+        if (!this.team) {
+            await this.$store.dispatch('team/findAll');
+        }
         let ageGroups = [];
         this.walk.ageRanges
             .slice()
@@ -380,9 +385,6 @@ export default {
             });
         this.form.ageGroups = ageGroups;
         this.emptyForm = JSON.parse(JSON.stringify(this.form));
-
-        const allLocationNames = await WayPointApi.findAllLocationNames();
-        this.allLocationNames = allLocationNames.data['hydra:member'];
     },
     methods: {
         updateFile: async function (file) {

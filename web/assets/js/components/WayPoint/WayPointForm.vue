@@ -18,7 +18,11 @@
                 placeholder="Ort"
                 :state="locationNameState"
                 data-test="locationName"
+                list="location-name-list"
             />
+            <datalist id="location-name-list">
+                <option v-for="locationName in locationNames">{{ locationName }}</option>
+            </datalist>
         </b-form-group>
         <b-form-group
             content-cols="12"
@@ -214,6 +218,20 @@ export default {
         };
     },
     computed: {
+        locationNames() {
+            if (!this.team) {
+                return [];
+            }
+            return this.team.locationNames.filter((locationName) => {
+                return locationName.toLowerCase().startsWith(this.wayPoint.locationName.toLowerCase());
+            }).map((locationName) => locationName);
+        },
+        team() {
+            return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);
+        },
+        walk() {
+            return this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
+        },
         locationNameState() {
             if (null === this.wayPoint.locationName || '' === this.wayPoint.locationName || undefined === this.wayPoint.locationName) {
                 return;
@@ -284,6 +302,12 @@ export default {
         },
     },
     async created() {
+        if (!this.walk) {
+            await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
+        }
+        if (!this.team) {
+            this.$store.dispatch('team/findAll');
+        }
         this.wayPoint.locationName = this.initialWayPoint.locationName;
         this.wayPoint.ageGroups = JSON.parse(JSON.stringify(this.initialWayPoint.ageGroups)) || [];
         this.wayPoint.imageName = this.initialWayPoint.imageName;
