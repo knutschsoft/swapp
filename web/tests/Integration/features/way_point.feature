@@ -23,21 +23,21 @@ Feature: Testing way point resource
       | question       | client        |
       | Esta muy bien? | client@gmx.de |
     Given the following tags exists:
-      | name   | color | client        |
+      | name   | color     | client        |
       | Gewalt | Chocolate | client@gmx.de |
-      | Drogen | Blue  | client@gmx.de |
+      | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
       | name        | team     |
       | Spaziergang | CA       |
       | Gorbitz     | Westhang |
       | Gamescon    | Gamers   |
     Given the following way points exists:
-      | locationName | walkName    |
-      | Assieck      | Spaziergang |
-      | Elbamare     | Gorbitz     |
-      | Block17      | Gorbitz     |
-      | BOTW         | Gamescon    |
-      | BOTW2        | Gamescon    |
+      | locationName | walkName    | beobachtung | einzelgespraech |
+      | Assieck      | Spaziergang | Bier!       | Gönnjamin       |
+      | Elbamare     | Gorbitz     |             |                 |
+      | Block17      | Gorbitz     |             |                 |
+      | BOTW         | Gamescon    |             |                 |
+      | BOTW2        | Gamescon    |             |                 |
 
   @api @wayPoint
   Scenario: I can request /api/way_points as a not authenticated user and an auth error will occur
@@ -72,3 +72,15 @@ Feature: Testing way point resource
 #    And print last JSON response
     And the JSON nodes should be equal to:
       | hydra:totalItems | 5 |
+
+  @api @wayPoint
+  Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will see all way points
+    Given I am authenticated against api as "karl@gmx.de"
+    When I send an api platform "GET" request to "/api/way_points/wayPointId<Assieck>" with parameters:
+      | key | value |
+    Then the response should be in JSON
+#    And print last JSON response
+    And the JSON nodes should be equal to:
+      | locationName      | Assieck   |
+      | note              | Bier!     |
+      | oneOnOneInterview | Gönnjamin |

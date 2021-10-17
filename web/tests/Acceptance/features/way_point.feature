@@ -24,9 +24,9 @@ Feature: An user can request a non existing wayPoint and get redirected
       | name    | team     |
       | Gorbitz | Westhang |
     Given the following way points exists:
-      | locationName | walkName | beobachtung             |
-      | Elbamare     | Gorbitz  | Nichts großartig neues. |
-      | Block17      | Gorbitz  |                         |
+      | locationName | walkName | beobachtung             | einzelgespraech |
+      | Elbamare     | Gorbitz  | Nichts großartig neues. | Jugo geht ab.   |
+      | Block17      | Gorbitz  |                         |                 |
 
   @javascript
   @wayPoint
@@ -47,6 +47,7 @@ Feature: An user can request a non existing wayPoint and get redirected
     Then I wait for "Runde: Gorbitz" to appear
     Then I wait for "Ort: Elbamare" to appear
     Then I wait for "Beobachtung: Nichts großartig neues." to appear
+    Then I wait for "Einzelgespräch: Jugo geht ab." to appear
     Then I wait for "Bild: kein Bild hochgeladen" to appear
     Then I wait for "1-10m: 0" to appear
     Then I wait for "1-10w: 0" to appear
@@ -64,6 +65,7 @@ Feature: An user can request a non existing wayPoint and get redirected
     Then I wait for "Runde: Gorbitz" to appear
     Then I wait for "Ort: Elbamare" to appear
     Then I wait for "Beobachtung: Nichts großartig neues." to appear
+    Then I wait for "Einzelgespräch: Jugo geht ab." to appear
     Then I wait for "Bild: kein Bild hochgeladen" to appear
     Then I wait for "1-10m: 0" to appear
     Then I wait for "1-10w: 0" to appear

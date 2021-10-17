@@ -125,6 +125,24 @@
                     max-rows="15"
                 ></b-form-textarea>
             </b-form-group>
+            <b-form-group
+                label="Einzelgespräch"
+                label-for="input-Einzelgespräch"
+                :state="noteState"
+                :invalid-feedback="invalidOneOnOneInterviewFeedback"
+                description=""
+            >
+                <b-form-textarea
+                    id="input-Einzelgespräch"
+                    v-model="form.oneOnOneInterview"
+                    data-test="Einzelgespräch"
+                    :state="oneOnOneInterviewState"
+                    :disabled="isLoading"
+                    placeholder=""
+                    rows="3"
+                    max-rows="15"
+                ></b-form-textarea>
+            </b-form-group>
             <b-form-group id="input-group-Tag" label="Tags" label-for="input-Tag">
                 <b-form-checkbox-group
                     id="input-Tag"
@@ -217,6 +235,7 @@ export default {
             imageFileData: null,
             imageFileName: null,
             note: '',
+            oneOnOneInterview: '',
             tags: [],
             isMeeting: false,
         };
@@ -291,9 +310,26 @@ export default {
 
             return undefined === this.validationErrors.note;
         },
+        oneOnOneInterviewState() {
+            if (!this.form.oneOnOneInterview) {
+                return null;
+            }
+
+            return undefined === this.validationErrors.oneOnOneInterview;
+        },
         invalidNoteFeedback() {
             let message = '';
             ['note'].forEach(key => {
+                if (this.validationErrors[key]) {
+                    message += ` ${this.validationErrors[key]}`;
+                }
+            });
+
+            return message;
+        },
+        invalidOneOnOneInterviewFeedback() {
+            let message = '';
+            ['oneOnOneInterview'].forEach(key => {
                 if (this.validationErrors[key]) {
                     message += ` ${this.validationErrors[key]}`;
                 }

@@ -1,8 +1,6 @@
 <template>
     <div class="p-2">
-        <b-row
-            class="mx-0"
-        >
+        <b-row>
             <b-col
                 class="my-1"
                 xs="5"
@@ -34,18 +32,36 @@
                     class="my-0"
                 ></b-pagination>
             </b-col>
-            <hr class="d-block w-100 my-1" />
+            <b-col cols="12">
+                <hr class="my-1" />
+            </b-col>
             <b-col
                 class="my-1"
                 sm="4"
                 md="4"
             >
-                <b-input-group prepend="WV DB?" size="sm" class="">
+                <b-input-group size="sm" class="">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            title="Wiedervorlage zur Dienstberatung?"
+                            :class="filter.isResubmission !== null ? 'font-weight-bold' : ''"
+                        >
+                            WV DB?
+                        </b-input-group-text>
+                    </b-input-group-prepend>
                     <b-form-select
                         v-model="filter.isResubmission"
                         :options="isResubmissionOptions"
                         @change="handleFilterChange"
                     />
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterIsResubmission"
+                            :disabled="filter.isResubmission === null"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
                 </b-input-group>
             </b-col>
             <b-col
@@ -53,7 +69,14 @@
                 sm="4"
                 md="4"
             >
-                <b-input-group prepend="Name" size="sm">
+                <b-input-group size="sm">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            :class="filter.name ? 'font-weight-bold' : ''"
+                        >
+                            Name
+                        </b-input-group-text>
+                    </b-input-group-prepend>
                     <b-form-input
                         v-model="filter.name"
                         placeholder="Name"
@@ -64,8 +87,9 @@
                     <b-input-group-append>
                         <b-button
                             @click="unsetFilterName"
+                            :disabled="!filter.name"
                         >
-                            <mdicon name="CloseCircleOutline" size="20" />
+                            <mdicon name="CloseCircleOutline" size="18" />
                         </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -75,7 +99,14 @@
                 sm="4"
                 md="4"
             >
-                <b-input-group prepend="Team" size="sm">
+                <b-input-group size="sm">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            :class="filter.teamName ? 'font-weight-bold' : ''"
+                        >
+                            Team
+                        </b-input-group-text>
+                    </b-input-group-prepend>
                     <b-form-input
                         v-model="filter.teamName"
                         type="text"
@@ -93,8 +124,9 @@
                     <b-input-group-append>
                         <b-button
                             @click="unsetFilterTeamName"
+                            :disabled="!filter.teamName"
                         >
-                            <mdicon name="CloseCircleOutline" size="20" />
+                            <mdicon name="CloseCircleOutline" size="18" />
                         </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -273,6 +305,10 @@ export default {
         },
         handleFilterChange() {
             this.$localStorage.set(this.storageFilterId, this.filter);
+        },
+        unsetFilterIsResubmission() {
+            this.filter.isResubmission = null;
+            this.handleFilterChange();
         },
         unsetFilterName() {
             this.filter.name = '';

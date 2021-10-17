@@ -74,6 +74,7 @@ Feature: A user can do a walk
     Then the element "Ort" should be enabled
     When I enter "Assieck" in "Ort" field
     When I enter "Straßenbahnen sind blockiert" in "Beobachtung" field
+    When I enter "Jugo geht ab" in "Einzelgespräch" field
     And I set browser window size to "1000" x "1800"
     And I click on text "Wegpunkt speichern und Runde abschließen"
     And there are exactly 1 walks in database

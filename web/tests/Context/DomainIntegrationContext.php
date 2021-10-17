@@ -26,7 +26,6 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
 use Webmozart\Assert\Assert;
 
 final class DomainIntegrationContext extends RawMinkContext
@@ -92,75 +91,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 $parameters[$row['key']] = $row['value'];
                 continue;
             }
-            if ($row['value'] === '<null>') {
-                $parameters[$row['key']] = null;
-                continue;
-            }
-            if ($row['value'] === '<false>') {
-                $parameters[$row['key']] = false;
-                continue;
-            }
-            if ($row['value'] === '<true>') {
-                $parameters[$row['key']] = true;
-                continue;
-            }
-
-            $firstChar = \substr($row['value'], 0, 1);
-            $lastChar = \substr($row['value'], -1, 1);
-            if ('@' === $firstChar) {
-                $path = \sprintf(
-                    "%s%s%s",
-                    \rtrim($this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR),
-                    \DIRECTORY_SEPARATOR,
-                    \substr($row['value'], 1)
-                );
-                $parameters[$row['key']] = (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
-            } elseif (\str_starts_with($row['value'], 'ageRanges<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 10, -1);
-                $parameters[$row['key']] = [];
-                foreach ($this->getAgeRangesFromString($value) as $ageRange) {
-                    $parameters[$row['key']][] = [
-                        'rangeStart' => $ageRange->getRangeStart(),
-                        'rangeEnd' => $ageRange->getRangeEnd(),
-                    ];
-                }
-            } elseif (\str_starts_with($row['value'], 'teamIris<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 9, -1);
-                $parameters[$row['key']] = [];
-                foreach ($this->getTeamIdsFromTeamsString($value) as $teamId) {
-                    $parameters[$row['key']][] = \sprintf('/api/teams/%s', $teamId);
-                }
-            } elseif (\str_starts_with($row['value'], 'teamIri<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 8, -1);
-                $parameters[$row['key']] = \sprintf('/api/teams/%s', (string) $this->getTeamByName($value)->getId());
-            } elseif (\str_starts_with($row['value'], 'walkIri<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 8, -1);
-                $parameters[$row['key']] = \sprintf('/api/walks/%s', (string) $this->getWalkByName($value)->getId());
-            } elseif (\str_starts_with($row['value'], 'int<') && \str_ends_with($lastChar, '>')) {
-                $parameters[$row['key']] = (int) \substr($row['value'], 4, -1);
-            } elseif (\str_starts_with($row['value'], 'userIris<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 9, -1);
-                $parameters[$row['key']] = [];
-                foreach ($this->getUserIdsFromUsernamesString($value) as $userId) {
-                    $parameters[$row['key']][] = \sprintf('/api/users/%s', $userId);
-                }
-            } elseif (\str_starts_with($row['value'], 'userIri<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 8, -1);
-                $parameters[$row['key']] = \sprintf('/api/users/%s', (string) $this->getUserByEmail($value)->getId());
-            } elseif (\str_starts_with($row['value'], 'clientIri<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 10, -1);
-                $parameters[$row['key']] = \sprintf('/api/clients/%s', (string) $this->getClientByEmail($value)->getId());
-            } elseif (\str_starts_with($row['value'], 'confirmationToken<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 18, -1);
-                $parameters[$row['key']] = [
-                    'token' => ConfirmationToken::fromString($value)->getToken(),
-                ];
-            } elseif (\str_starts_with($row['value'], 'array<') && \str_ends_with($lastChar, '>')) {
-                $value = \substr($row['value'], 6, -1);
-                $parameters[$row['key']] = \explode(',', $value);
-            } else {
-                $parameters[$row['key']] = \trim($row['value']);
-            }
+            $parameters[$row['key']] = $this->enrichText($row['value']);
         }
 
         $body = new PyStringNode([\json_encode($parameters)], 0);
@@ -175,7 +106,14 @@ final class DomainIntegrationContext extends RawMinkContext
         $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
         //}
 
-        $this->restContext->iSendARequestToWithBody($method, $this->locatePath($url), $body);
+        $urlItems = \explode('/', $url);
+        $newUrlItems = [];
+        foreach ($urlItems as $urlItem) {
+            $newUrlItems[] = $this->enrichText($urlItem);
+        }
+        $url = \implode('/', $newUrlItems);
+
+        $this->restContext->iSendARequestToWithBody($method, $this->locatePath($this->enrichText($url)), $body);
     }
 
     /**
@@ -363,6 +301,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $wayPoint = WayPoint::fromWalk($walk);
             $wayPoint->setLocationName($row['locationName']);
             $wayPoint->setNote($row['beobachtung'] ?? 'null');
+            $wayPoint->setOneOnOneInterview($row['einzelgespraech'] ?? 'null');
 
             $this->em->persist($wayPoint);
         }

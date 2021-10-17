@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
 #[ApiFilter(
     SearchFilter::class,
-    properties: ['locationName' => 'partial', 'note' => 'partial', 'wayPointTags' => 'exact', 'walk.teamName' => 'partial']
+    properties: ['locationName' => 'partial', 'note' => 'partial', 'oneOnOneInterview' => 'partial', 'wayPointTags' => 'exact', 'walk.teamName' => 'partial']
 )]
 #[ApiResource(
     collectionOperations: [
@@ -94,6 +94,8 @@ class WayPoint
     private array $ageGroups;
     /** @ORM\Column(type="string", nullable=true, length=4096) */
     private ?string $note = null;
+    /** @ORM\Column(type="string", length=4096) */
+    private string $oneOnOneInterview;
 
     /** @ORM\Column(type="boolean", length=255) */
     private bool $isMeeting;
@@ -112,6 +114,7 @@ class WayPoint
         $this->locationName = '';
         $this->isMeeting = false;
         $this->note = '';
+        $this->oneOnOneInterview = '';
     }
 
     public static function fromWalk(Walk $walk): self
@@ -139,6 +142,7 @@ class WayPoint
         $instance->ageGroups = $request->ageGroups;
         $instance->wayPointTags = new ArrayCollection($request->tags);
         $instance->setNote($request->note);
+        $instance->setOneOnOneInterview($request->oneOnOneInterview);
         $instance->setLocationName($request->locationName);
         if ($request->imageFileName) {
             $instance->setImageName($request->imageFileName);
@@ -313,6 +317,17 @@ class WayPoint
     public function setNote(?string $note): void
     {
         $this->note = $note;
+    }
+
+    #[Groups(['wayPoint:read'])]
+    public function getOneOnOneInterview(): string
+    {
+        return $this->oneOnOneInterview;
+    }
+
+    public function setOneOnOneInterview(string $oneOnOneInterview): void
+    {
+        $this->oneOnOneInterview = \trim($oneOnOneInterview);
     }
 
     #[Groups(['wayPoint:read'])]

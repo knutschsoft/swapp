@@ -11,6 +11,8 @@ default:
                 - App\Tests\Context\EmailContext
                 - App\Tests\Context\DomainIntegrationContext:
                       kernel: '@kernel'
+                - App\Tests\Context\JsonContext:
+                      kernel: '@kernel'
                 - behatch:context:debug
                 - behatch:context:system
                 - behatch:context:json

@@ -30,6 +30,7 @@ final class WayPointChangeHandler implements MessageHandlerInterface
         $wayPoint->setLocationName($request->locationName);
         $wayPoint->setAgeGroups($request->ageGroups);
         $wayPoint->setNote($request->note);
+        $wayPoint->setOneOnOneInterview($request->oneOnOneInterview);
         $wayPoint->setImageName((string) $request->imageFileName);
         $wayPoint->setIsMeeting($request->isMeeting);
         $wayPoint->setWayPointTags(new ArrayCollection($request->wayPointTags));

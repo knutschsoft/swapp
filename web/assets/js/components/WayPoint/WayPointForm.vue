@@ -124,6 +124,24 @@
             label-cols="12"
             content-cols-lg="10"
             label-cols-lg="2"
+            label="Einzelgespräch"
+        >
+            <b-textarea
+                v-model="wayPoint.oneOnOneInterview"
+                minlength="0"
+                maxlength="2500"
+                placeholder="Einzelgespräch"
+                :state="oneOnOneInterviewState"
+                data-test="oneOnOneInterview"
+                rows="3"
+                max-rows="15"
+            />
+        </b-form-group>
+        <b-form-group
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
             label="Tags"
         >
             <b-form-checkbox-group
@@ -209,6 +227,7 @@ export default {
                 imageName: null,
                 isMeeting: null,
                 note: '',
+                oneOnOneInterview: '',
                 wayPointTags: [],
                 imageFileData: null,
                 imageFileName: null,
@@ -245,6 +264,13 @@ export default {
             }
 
             return this.wayPoint.note.length >= 0 && this.wayPoint.note.length <= 2500;
+        },
+        oneOnOneInterviewState() {
+            if (null === this.wayPoint.oneOnOneInterview || undefined === this.wayPoint.oneOnOneInterview) {
+                return;
+            }
+
+            return this.wayPoint.oneOnOneInterview.length >= 0 && this.wayPoint.oneOnOneInterview.length <= 2500;
         },
         imageState() {
             if (!this.wayPoint.imageFileData) {
@@ -292,7 +318,7 @@ export default {
             return this.$store.getters['security/isSuperAdmin'];
         },
         isFormInvalid() {
-            return (!this.locationNameState || !this.noteState || this.isLoading) && this.imageState !== null;
+            return (!this.locationNameState || !this.noteState || !this.oneOnOneInterviewState || this.isLoading) && this.imageState !== null;
         },
         error() {
             return this.$store.getters['wayPoint/errorChange'];
@@ -313,6 +339,7 @@ export default {
         this.wayPoint.imageName = this.initialWayPoint.imageName;
         this.wayPoint.isMeeting = this.initialWayPoint.isMeeting || false;
         this.wayPoint.note = this.initialWayPoint.note;
+        this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;
         this.wayPoint.wayPointTags = JSON.parse(JSON.stringify(this.initialWayPoint.wayPointTags)) || [];
     },
     methods: {

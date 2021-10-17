@@ -1,8 +1,6 @@
 <template>
     <div class="p-2">
-        <b-row
-            class="mx-0"
-        >
+        <b-row>
             <b-col
                 class="my-1"
                 xs="5"
@@ -34,28 +32,53 @@
                     class="my-0"
                 ></b-pagination>
             </b-col>
-            <hr class="d-block w-100 my-1"/>
+            <b-col cols="12">
+                <hr class="my-1" />
+            </b-col>
             <b-col
                 class="my-1"
                 sm="12"
             >
-                <b-input-group prepend="Tags" size="sm" class="" style="flex-wrap: inherit;">
+                <b-input-group size="sm" class="" style="flex-wrap: inherit;">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            :class="filter.wayPointTags.length ? 'font-weight-bold' : ''"
+                        >
+                            Tags
+                        </b-input-group-text>
+                    </b-input-group-prepend>
                     <b-form-checkbox-group
                         v-model="filter.wayPointTags"
                         :options="tags"
                         value-field="@id"
                         text-field="name"
-                        class="ml-2"
+                        class="pl-2 border-top border-bottom"
                         @change="handleFilterChange"
                     />
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterWayPointTags"
+                            :disabled="!filter.wayPointTags.length"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
                 </b-input-group>
             </b-col>
             <b-col
                 class="my-1"
-                sm="12"
-                md="4"
+                sm="6"
+                md="6"
+                xl="4"
             >
-                <b-input-group prepend="Beobachtung" size="sm">
+                <b-input-group size="sm">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            :class="filter.note ? 'font-weight-bold' : ''"
+                        >
+                            Beobachtung
+                        </b-input-group-text>
+                    </b-input-group-prepend>
                     <b-form-input
                         v-model="filter.note"
                         placeholder="Beobachtung"
@@ -66,8 +89,9 @@
                     <b-input-group-append>
                         <b-button
                             @click="unsetFilterNote"
+                            :disabled="!filter.note"
                         >
-                            <mdicon name="CloseCircleOutline" size="20"/>
+                            <mdicon name="CloseCircleOutline" size="18"/>
                         </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -75,9 +99,48 @@
             <b-col
                 class="my-1"
                 sm="6"
-                md="4"
+                md="6"
+                xl="4"
             >
-                <b-input-group prepend="Ort" size="sm">
+                <b-input-group size="sm">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            :class="filter.oneOnOneInterview ? 'font-weight-bold' : ''"
+                        >
+                            Einzelgespräch
+                        </b-input-group-text>
+                    </b-input-group-prepend>
+                    <b-form-input
+                        v-model="filter.oneOnOneInterview"
+                        placeholder="Einzelgespräch"
+                        debounce="500"
+                        size="sm"
+                        @update="handleFilterChange"
+                    />
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterOneOnOneInterview"
+                            :disabled="!filter.oneOnOneInterview"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18"/>
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+            <b-col
+                class="my-1"
+                sm="6"
+                md="6"
+                xl="2"
+            >
+                <b-input-group size="sm">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            :class="filter.locationName ? 'font-weight-bold' : ''"
+                        >
+                            Ort
+                        </b-input-group-text>
+                    </b-input-group-prepend>
                     <b-form-input
                         v-model="filter.locationName"
                         placeholder="Ort"
@@ -88,8 +151,9 @@
                     <b-input-group-append>
                         <b-button
                             @click="unsetFilterLocationName"
+                            :disabled="!filter.locationName"
                         >
-                            <mdicon name="CloseCircleOutline" size="20"/>
+                            <mdicon name="CloseCircleOutline" size="18"/>
                         </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -97,9 +161,17 @@
             <b-col
                 class="my-1"
                 sm="6"
-                md="4"
+                md="6"
+                xl="2"
             >
-                <b-input-group prepend="Team" size="sm">
+                <b-input-group size="sm">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            :class="filter.teamName ? 'font-weight-bold' : ''"
+                        >
+                            Team
+                        </b-input-group-text>
+                    </b-input-group-prepend>
                     <b-form-input
                         v-model="filter.teamName"
                         type="text"
@@ -117,8 +189,9 @@
                     <b-input-group-append>
                         <b-button
                             @click="unsetFilterTeamName"
+                            :disabled="!filter.teamName"
                         >
-                            <mdicon name="CloseCircleOutline" size="20" />
+                            <mdicon name="CloseCircleOutline" size="18" />
                         </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -153,6 +226,24 @@
                     <nl2br
                         tag="div"
                         :text="row.item.note.trim()"
+                    />
+                </b-tooltip>
+            </template>
+            <template v-slot:cell(oneOnOneInterview)="row">
+                <div
+                    :id="`tooltip-target-oneOnOneInterview-${ row.item.id }`"
+                    class="mw-25"
+                >
+                    <nl2br
+                        tag="div"
+                        :text="row.item.oneOnOneInterview.trim()"
+                        class-name="text-truncate"
+                    />
+                </div>
+                <b-tooltip :target="`tooltip-oneOnOneInterview-note-${ row.item.id }`" triggers="hover click">
+                    <nl2br
+                        tag="div"
+                        :text="row.item.oneOnOneInterview.trim()"
                     />
                 </b-tooltip>
             </template>
@@ -200,6 +291,7 @@ export default {
                 { key: 'femalesCount', label: 'Frauen', sortable: false, sortDirection: 'desc', class: 'text-center align-middle' },
                 { key: 'queerCount', label: 'Andere', sortable: false, sortDirection: 'desc', class: 'text-center align-middle' },
                 { key: 'note', label: 'Beobachtung', sortable: true, class: 'text-left align-middle' },
+                { key: 'oneOnOneInterview', label: 'Einzelgespräch', sortable: true, class: 'text-left align-middle' },
                 { key: 'wayPointTags', label: 'Tags', sortable: false, class: 'text-center align-middle', formatter: (value) => {return this.formatTags(value);} },
                 {
                     key: 'walk.teamName', label: 'Team', sortable: true, class: 'text-center align-middle',
@@ -230,7 +322,7 @@ export default {
             sortBy: 'walk.startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: this.$localStorage.get('alle-wegpunkte-filter', { wayPointTags: [], locationName: '', note: '', teamName: '' }),
+            filter: this.$localStorage.get('alle-wegpunkte-filter', { wayPointTags: [], locationName: '', note: '', teamName: '', oneOnOneInterview: '' }),
             storagePerPageId: 'alle-wegpunkte-per-page',
             storageCurrentPageId: 'alle-wegpunkte-current-page',
             storageFilterId: 'alle-wegpunkte-filter',
@@ -322,12 +414,20 @@ export default {
         handleFilterChange() {
             this.$localStorage.set(this.storageFilterId, this.filter);
         },
+        unsetFilterWayPointTags() {
+            this.filter.wayPointTags = [];
+            this.handleFilterChange();
+        },
         unsetFilterLocationName() {
             this.filter.locationName = '';
             this.handleFilterChange();
         },
         unsetFilterNote() {
             this.filter.note = '';
+            this.handleFilterChange();
+        },
+        unsetFilterOneOnOneInterview() {
+            this.filter.oneOnOneInterview = '';
             this.handleFilterChange();
         },
         unsetFilterTeamName() {

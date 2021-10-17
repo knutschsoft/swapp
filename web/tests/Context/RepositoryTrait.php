@@ -14,9 +14,12 @@ use App\Repository\UserRepository;
 use App\Repository\WalkRepository;
 use App\Repository\WayPointRepository;
 use App\Value\AgeRange;
+use App\Value\ConfirmationToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
+use Webmozart\Assert\Assert;
 use Webmozart\Assert\Assert as Assertion;
 
 trait RepositoryTrait
@@ -133,5 +136,123 @@ trait RepositoryTrait
         }
 
         return $ageRanges;
+    }
+
+    private function enrichText(string $text): mixed
+    {
+        if ('<null>' === $text) {
+            return null;
+        }
+        if ('<false>' === $text) {
+            return false;
+        }
+        if ('<true>' === $text) {
+            return true;
+        }
+
+        if ('@' === \substr($text, 0, 1)) {
+            $path = \sprintf(
+                "%s%s%s",
+                \rtrim($this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR),
+                \DIRECTORY_SEPARATOR,
+                \substr($text, 1)
+            );
+
+            return (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
+        }
+
+        if (!\str_ends_with($text, '>')) {
+            return $text;
+        }
+        $referenceIdentifikator = $this->getReferenceIdentifikator($text);
+
+        if (\str_starts_with($text, 'ageRanges<')) {
+            $ageRanges = [];
+            foreach ($this->getAgeRangesFromString($referenceIdentifikator) as $ageRange) {
+                $ageRanges[] = [
+                    'rangeStart' => $ageRange->getRangeStart(),
+                    'rangeEnd' => $ageRange->getRangeEnd(),
+                ];
+            }
+
+            return $ageRanges;
+        }
+
+        if (\str_starts_with($text, 'teamIris<')) {
+            $teams = [];
+            foreach ($this->getTeamIdsFromTeamsString($referenceIdentifikator) as $teamId) {
+                $teams[] = \sprintf('/api/teams/%s', $teamId);
+            }
+
+            return $teams;
+        }
+
+        if (\str_starts_with($text, 'teamIri<')) {
+            return \sprintf('/api/teams/%s', (string) $this->getTeamByName($referenceIdentifikator)->getId());
+        }
+
+        if (\str_starts_with($text, 'walkIri<')) {
+            return \sprintf('/api/walks/%s', (string) $this->getWalkByName($referenceIdentifikator)->getId());
+        }
+
+        if (\str_starts_with($text, 'int<')) {
+            return (int) \substr($text, 4, -1);
+        }
+
+        if (\str_starts_with($text, 'userIris<')) {
+            $userIds = [];
+            foreach ($this->getUserIdsFromUsernamesString($referenceIdentifikator) as $userId) {
+                $userIds[] = \sprintf('/api/users/%s', $userId);
+            }
+
+            return $userIds;
+        }
+
+        if (\str_starts_with($text, 'userIri<')) {
+            return \sprintf('/api/users/%s', (string) $this->getUserByEmail($referenceIdentifikator)->getId());
+        }
+
+        if (\str_starts_with($text, 'userId<')) {
+            $user = $this->getUserByEmail($referenceIdentifikator);
+
+            return (string) $user->getId();
+        }
+
+        if (\str_starts_with($text, 'wayPointId<')) {
+            $wayPoint = $this->getWayPointByLocationName($referenceIdentifikator);
+
+            return (string) $wayPoint->getId();
+        }
+
+        if (\str_starts_with($text, 'walkId<')) {
+            $walk = $this->getWalkByName($referenceIdentifikator);
+
+            return (string) $walk->getId();
+        }
+
+        if (\str_starts_with($text, 'clientIri<')) {
+            return \sprintf('/api/clients/%s', (string) $this->getClientByEmail($referenceIdentifikator)->getId());
+        }
+
+        if (\str_starts_with($text, 'confirmationToken<')) {
+            return [
+                'token' => ConfirmationToken::fromString($referenceIdentifikator)->getToken(),
+            ];
+        }
+
+        if (\str_starts_with($text, 'array<')) {
+            return \explode(',', $referenceIdentifikator);
+        }
+
+        return \trim($text);
+    }
+
+    private function getReferenceIdentifikator(string $reference): string
+    {
+        Assert::endsWith($reference, '>');
+        Assert::same(\substr_count($reference, '>'), 1, \sprintf('$reference "%s" should only contain one > sign.', $reference));
+        Assert::same(\substr_count($reference, '<'), 1, \sprintf('$reference "%s" should only contain one < sign.', $reference));
+
+        return \substr($reference, \strpos($reference, "<") + 1, -1);
     }
 }

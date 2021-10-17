@@ -33,6 +33,12 @@
                     :text="field.value.trim()"
                     class-name="text-left"
                 />
+                <nl2br
+                    v-else-if="field.name === 'Einzelgespräch'"
+                    tag="div"
+                    :text="field.value.trim()"
+                    class-name="text-left"
+                />
                 <div
                     v-else-if="field.name === 'Tags'"
                     class="text-left"
@@ -147,6 +153,7 @@
                 return [
                     { name: 'Ort', value: this.wayPoint.locationName },
                     { name: 'Beobachtung', value: this.wayPoint.note },
+                    { name: 'Einzelgespräch', value: this.wayPoint.oneOnOneInterview },
                     { name: 'Bild', value: this.wayPoint.imageName },
                     { name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein' },
                     { name: 'Tags', value: this.wayPointTags },

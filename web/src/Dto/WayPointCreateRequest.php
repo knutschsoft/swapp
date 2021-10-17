@@ -27,6 +27,10 @@ final class WayPointCreateRequest
     #[Assert\Length(min: 0, max: 2500)]
     public string $note;
 
+    #[Assert\NotNull]
+    #[Assert\Length(min: 0, max: 2500)]
+    public string $oneOnOneInterview;
+
     public ?string $imageFileData;
 
     #[Assert\Length(min: 5, max: 200)]
