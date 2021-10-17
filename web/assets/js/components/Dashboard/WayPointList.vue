@@ -240,7 +240,7 @@
                         class-name="text-truncate"
                     />
                 </div>
-                <b-tooltip :target="`tooltip-oneOnOneInterview-note-${ row.item.id }`" triggers="hover click">
+                <b-tooltip :target="`tooltip-target-oneOnOneInterview-${ row.item.id }`" triggers="hover click">
                     <nl2br
                         tag="div"
                         :text="row.item.oneOnOneInterview.trim()"
