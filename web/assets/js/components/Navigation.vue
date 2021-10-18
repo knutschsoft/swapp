@@ -98,8 +98,10 @@
                 <b-navbar-nav class="ml-auto pl-2 pl-lg-0">
                     <b-nav-item-dropdown
                         right
+                        lazy
                         :toggle-class="isUserMenuActive ? 'active router-link-active' : ''"
                         data-test="nav-user-item"
+                        @show="showUserMenu()"
                     >
                         <!-- Using 'button-content' slot -->
                         <template v-slot:button-content >
@@ -187,6 +189,7 @@
                                     :key="key"
                                     button-class="text-truncate"
                                     style="font-size: 14px;"
+                                    :disabled="!user.enabled"
                                     @click="switchUser(user)"
                                 >
                                     {{ user.username }}
@@ -270,9 +273,6 @@
         },
         mounted: async function () {
             this.userFilter = this.$localStorage.get('nav-user-filter', '');
-            if (this.isSuperAdmin) {
-                this.users = await this.$store.dispatch('user/findAll');
-            }
         },
         methods: {
             switchUser(user) {
@@ -280,6 +280,11 @@
             },
             exitSwitchUser() {
                 this.$store.dispatch('security/exitSwitchUser');
+            },
+            async showUserMenu() {
+                if (this.isSuperAdmin && this.users.length <= 1) {
+                    this.users = await this.$store.dispatch('user/findAll');
+                }
             },
         },
     }

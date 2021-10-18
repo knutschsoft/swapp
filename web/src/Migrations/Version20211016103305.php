@@ -25,4 +25,9 @@ final class Version20211016103305 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE way_point DROP oneOnOneInterview');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

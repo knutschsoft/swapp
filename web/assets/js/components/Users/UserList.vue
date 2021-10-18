@@ -17,12 +17,14 @@
             small
             striped
             class="mb-0"
-            stacked="md"
+            :stacked="this.isSuperAdmin ? 'xl' : 'lg'"
         >
             <template v-slot:cell(enabled)="row">
                 <mdicon
-                    v-if="isLoadingToggleUserState"
+                    v-if="isLoadingToggleUserState(row.item['@id'])"
                     name="loading"
+                    class="text-muted"
+                    spin
                 />
                 <div
                     v-else
@@ -39,6 +41,7 @@
                         v-else
                         name="AccountOff"
                         class="text-info"
+                        disabled
                     />
                 </div>
             </template>
@@ -46,10 +49,12 @@
                 <div class="d-flex justify-content-around">
                     <b-dropdown
                         text="Aktionen"
+                        size="sm"
                     >
                         <b-dropdown-item-button
                             size="sm"
                             @click="editUser(row.item)"
+                            :disabled="isLoadingToggleUserState(row.item['@id'])"
                         >
                             Account bearbeiten
                         </b-dropdown-item-button>
@@ -57,7 +62,8 @@
                             v-if="isAdmin"
                             size="sm"
                             class="mr-2"
-                            @click="toggleEnabled(row.item.userId, row.item.enabled)"
+                            @click="toggleEnabled(row.item, row.item.enabled)"
+                            :disabled="isLoadingToggleUserState(row.item['@id'])"
                         >
                             Account {{ row.item.enabled ? 'de' : '' }}aktivieren
                         </b-dropdown-item-button>
@@ -69,6 +75,7 @@
                             @click="editUser(row.item)"
                             size="sm"
                             variant="danger"
+                            :disabled="isLoadingToggleUserState(row.item['@id'])"
                         >
                             <mdicon
                                 name="AlertDecagramOutline"
@@ -91,7 +98,7 @@
                         Nutzer wechseln
                     </b-button>
                     <b-button
-                        v-else-if="isSuperAdmin"
+                        v-else-if="isUserSwitched"
                         size="sm"
                         class="flex-item d-flex align-items-center ml-2"
                         data-test="exit-switch-user"
@@ -139,6 +146,7 @@
 <script>
 'use strict';
 import UserForm from './UserForm.vue';
+import dayjs from 'dayjs';
 
 export default {
     name: 'UserList',
@@ -222,8 +230,42 @@ export default {
                     label: 'Klient',
                     sortable: true,
                     sortByFormatted: true,
-                    class: !this.isSuperAdmin ? 'd-none' : '',
+                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
                     formatter: this.clientFormatter,
+                },
+                {
+                    key: 'createdAt',
+                    label: 'Erstellt am',
+                    sortable: true,
+                    sortByFormatted: false,
+                    formatter: (value, key, item) => {
+                        return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
+                    },
+                    class: 'text-center',
+                },
+                {
+                    key: 'updatedAt',
+                    label: 'Geändert am',
+                    sortable: true,
+                    sortByFormatted: false,
+                    formatter: (value, key, item) => {
+                        return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
+                    },
+                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
+                },
+                {
+                    key: 'createdBy',
+                    label: 'Erstellt von:',
+                    sortable: true,
+                    sortByFormatted: true,
+                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
+                },
+                {
+                    key: 'updatedBy',
+                    label: 'Geändert von:',
+                    sortable: true,
+                    sortByFormatted: true,
+                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
                 },
                 { key: 'actions', label: 'Aktionen', class: 'text-center' },
             ];
@@ -243,9 +285,6 @@ export default {
         isLoading() {
             return this.$store.getters['user/isLoading'];
         },
-        isLoadingToggleUserState() {
-            return this.$store.getters['user/isLoadingToggleUserState'];
-        },
         error() {
             return this.$store.getters['user/error'];
         },
@@ -254,6 +293,9 @@ export default {
         this.$store.dispatch('user/findAll');
     },
     methods: {
+        isLoadingToggleUserState(userUri) {
+            return this.$store.getters['user/isLoadingToggleUserState'](userUri);
+        },
         clientFormatter(value) {
             return this.getClientByIri(value).name;
         },

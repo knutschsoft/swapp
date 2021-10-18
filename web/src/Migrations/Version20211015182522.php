@@ -23,4 +23,9 @@ final class Version20211015182522 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE team DROP locationNames');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

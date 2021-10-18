@@ -26,7 +26,7 @@ const state = {
     users: [],
     error: null,
     changeUserError: null,
-    isLoadingToggleUserState: null,
+    isLoadingToggleUserState: [],
     isLoading: false,
     isLoadingChange: false,
     toggleUserStateError: false,
@@ -66,18 +66,31 @@ const getters = {
         return state.isLoadingChange;
     },
     isLoadingToggleUserState(state) {
-        return state.isLoadingToggleUserState;
+        return iri => state.isLoadingToggleUserState.includes(iri);
     },
 };
 
 function replaceObjectInState(state, object) {
+    let isReplaced = false;
     state.users.forEach(function (oldObject, key) {
         if (oldObject['@id'] === object['@id']) {
             // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
-            state.users.splice(key, 1);
+            state.users.splice(key, 1, object);
+            isReplaced = true;
         }
     });
-    state.users = [ ...state.users, object ];
+    if (!isReplaced) {
+        state.users = [ ...state.users, object ];
+    }
+}
+
+function removeStringValueFromStateProperty(stateProperty, stringValue) {
+    stateProperty.forEach(function (oldStringValue, key) {
+        if (oldStringValue === stringValue) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            stateProperty.splice(key, 1);
+        }
+    });
 }
 
 const mutations = {
@@ -133,31 +146,31 @@ const mutations = {
         state.changeUserError = error;
         state.isLoadingChange = false;
     },
-    [ENABLE](state) {
-        state.isLoadingToggleUserState = true;
+    [ENABLE](state, userIri) {
+        state.isLoadingToggleUserState = [ ...state.isLoadingToggleUserState, userIri ];
         state.toggleUserStateError = null;
     },
     [ENABLE_SUCCESS](state, user) {
         state.toggleUserStateError = null;
-        state.isLoadingToggleUserState = false;
+        removeStringValueFromStateProperty(state.isLoadingToggleUserState, user['@id']);
         replaceObjectInState(state, user);
     },
-    [ENABLE_ERROR](state, error) {
+    [ENABLE_ERROR](state, error, userIri) {
         state.toggleUserStateError = error;
-        state.isLoadingToggleUserState = false;
+        removeStringValueFromStateProperty(state.isLoadingToggleUserState, userIri);
     },
-    [DISABLE](state) {
-        state.isLoadingToggleUserState = true;
+    [DISABLE](state, userIri) {
+        state.isLoadingToggleUserState = [ ...state.isLoadingToggleUserState, userIri ];
         state.toggleUserStateError = null;
     },
     [DISABLE_SUCCESS](state, user) {
         state.toggleUserStateError = null;
-        state.isLoadingToggleUserState = false;
+        removeStringValueFromStateProperty(state.isLoadingToggleUserState, user['@id']);
         replaceObjectInState(state, user);
     },
-    [DISABLE_ERROR](state, error) {
+    [DISABLE_ERROR](state, error, userIri) {
         state.toggleUserStateError = error;
-        state.isLoadingToggleUserState = false;
+        removeStringValueFromStateProperty(state.isLoadingToggleUserState, userIri);
     },
 };
 
@@ -206,24 +219,24 @@ const actions = {
         }
     },
     async enable({commit}, userIri) {
-        commit(ENABLE);
+        commit(ENABLE, userIri);
         try {
             let response = await UserAPI.enable(userIri);
             commit(ENABLE_SUCCESS, response.data);
             return response.data;
         } catch (error) {
-            commit(ENABLE_ERROR, error);
+            commit(ENABLE_ERROR, error, userIri);
             return null;
         }
     },
     async disable({commit}, userIri) {
-        commit(DISABLE);
+        commit(DISABLE, userIri);
         try {
             let response = await UserAPI.disable(userIri);
             commit(DISABLE_SUCCESS, response.data);
             return response.data;
         } catch (error) {
-            commit(DISABLE_ERROR, error);
+            commit(DISABLE_ERROR, error, userIri);
             return null;
         }
     },

@@ -68,7 +68,7 @@ export default {
             return state.isAuthenticated;
         },
         isAdmin(state, getters) {
-            return getters.hasRole('ROLE_ADMIN');
+            return getters.hasRole('ROLE_ADMIN') || getters.isSuperAdmin;
         },
         isSuperAdmin(state, getters) {
             return getters.hasRole('ROLE_SUPER_ADMIN');

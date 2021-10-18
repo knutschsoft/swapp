@@ -18,6 +18,8 @@ use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -124,7 +126,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ],
             "security_post_denormalize" =>
                 "(is_granted('".User::ROLE_SUPER_ADMIN."') or not object.superAdminRightsNeeded()) and ".
-                 "is_granted('".ClientVoter::READ."', object.client)"
+                "is_granted('".ClientVoter::READ."', object.client)"
             ,
         ],
     ],
@@ -133,6 +135,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class User implements UserInterface
 {
+    use TimestampableEntity;
+    use BlameableEntity;
+
     private const ROLE_DEFAULT = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
@@ -248,9 +253,8 @@ class User implements UserInterface
 
     /**
      * @return Collection<int, Team>
-     *
-     * @Groups({"user:read"})
      */
+    #[Groups(['user:read'])]
     public function getTeams(): Collection
     {
         return $this->teams;
@@ -277,7 +281,6 @@ class User implements UserInterface
     }
 
     /** @return Collection<int,Walk> */
-    #[Groups(['user:read'])]
     public function getWalks(): Collection
     {
         return $this->walks;
@@ -534,5 +537,29 @@ class User implements UserInterface
     {
         $this->refreshConfirmationToken();
         $this->passwordRequestedAt = new \DateTime();
+    }
+
+    #[Groups(['user:read'])]
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    #[Groups(['user:read'])]
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    #[Groups(['user:read'])]
+    public function getCreatedBy(): string
+    {
+        return (string) $this->createdBy;
+    }
+
+    #[Groups(['user:read'])]
+    public function getUpdatedBy(): string
+    {
+        return (string) $this->updatedBy;
     }
 }

@@ -201,7 +201,7 @@
             small
             striped
             class="mb-0"
-            stacked="md"
+            stacked="lg"
             :items="itemProvider"
             :fields="fields"
             :current-page="currentPage"
@@ -309,7 +309,7 @@ export default {
                     formatter: (value, key, item) => {
                         const walk = this.getWalkByIri(item.walk);
 
-                        return this.formatStartDate(walk.startTime);
+                        return this.formatStartDate(walk.startTime) + ' (' + walk.name + ')';
                     },
                 },
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },

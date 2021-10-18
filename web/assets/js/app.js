@@ -30,6 +30,10 @@ import VuePageTransition from 'vue-page-transition';
 import Nl2br from 'vue-nl2br';
 import Swapp from './Swapp';
 
+import dayjs from 'dayjs';
+require('dayjs/locale/de');
+dayjs.locale('de');
+
 library.add(faWalking, faShoePrints, faEye, faMapSigns)
 
 Vue.component('nl2br', Nl2br);

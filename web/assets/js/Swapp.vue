@@ -16,7 +16,7 @@
             >
                 <vue-page-transition name="fade">
                     <router-view
-                        class="pb-3 absolute w-100 col-12 col-lg-10 offset-lg-1 px-1 px-sm-2"
+                        class="pb-3 absolute w-100 col-12 col-xl-10 offset-xl-1 px-1 px-sm-2"
                     />
                 </vue-page-transition>
             </div>
