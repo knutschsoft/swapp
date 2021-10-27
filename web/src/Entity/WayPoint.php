@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWayPointRepository")
  * @ORM\Table(name="way_point")
  */
-#[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "note", "walk.startTime", "walk.teamName"])]
+#[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "oneOnOneInterview", "note", "walk.startTime", "walk.teamName"])]
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
 #[ApiFilter(
     SearchFilter::class,
