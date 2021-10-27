@@ -171,6 +171,8 @@ class Team
      */
     public function setLocationNames(array $locationNames): void
     {
-        $this->locationNames = \array_map('trim', $locationNames);
+        $locationNames = \array_map('trim', $locationNames);
+        \natcasesort($locationNames);
+        $this->locationNames = \array_values($locationNames);
     }
 }
