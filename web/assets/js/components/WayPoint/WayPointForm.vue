@@ -10,19 +10,29 @@
             label-cols-lg="2"
             label="Ort"
         >
-            <b-input
-                v-model="wayPoint.locationName"
-                required
-                minlength="2"
-                maxlength="300"
-                placeholder="Ort"
-                :state="locationNameState"
-                data-test="locationName"
-                list="location-name-list"
-            />
-            <datalist id="location-name-list">
-                <option v-for="locationName in locationNames">{{ locationName }}</option>
-            </datalist>
+            <b-input-group>
+                <b-input
+                    v-model="wayPoint.locationName"
+                    required
+                    minlength="2"
+                    maxlength="300"
+                    placeholder="Ort"
+                    :state="locationNameState"
+                    data-test="locationName"
+                    list="location-name-list"
+                />
+                <datalist id="location-name-list">
+                    <option v-for="locationName in locationNames">{{ locationName }}</option>
+                </datalist>
+                <b-input-group-append>
+                    <b-button
+                        @click="wayPoint.locationName = ''"
+                        :disabled="wayPoint.locationName === ''"
+                    >
+                        <mdicon name="CloseCircleOutline" size="20" />
+                    </b-button>
+                </b-input-group-append>
+            </b-input-group>
         </b-form-group>
         <b-form-group
             content-cols="12"

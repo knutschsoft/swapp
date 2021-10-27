@@ -22,21 +22,31 @@
                 :invalid-feedback="invalidLocationNameFeedback"
                 description=""
             >
-                <b-form-input
-                    id="input-Ort"
-                    v-model="form.locationName"
-                    type="text"
-                    :state="locationNameState"
-                    :disabled="isLoading"
-                    list="location-name-list"
-                    placeholder="Wo seid ihr gerade?"
-                    data-test="Ort"
-                    autocomplete="off"
-                    required
-                ></b-form-input>
-                <datalist id="location-name-list">
-                    <option v-for="locationName in locationNames">{{ locationName }}</option>
-                </datalist>
+                <b-input-group>
+                    <b-form-input
+                        id="input-Ort"
+                        v-model="form.locationName"
+                        type="text"
+                        :state="locationNameState"
+                        :disabled="isLoading"
+                        list="location-name-list"
+                        placeholder="Wo seid ihr gerade?"
+                        data-test="Ort"
+                        autocomplete="off"
+                        required
+                    />
+                    <datalist id="location-name-list">
+                        <option v-for="locationName in locationNames">{{ locationName }}</option>
+                    </datalist>
+                    <b-input-group-append>
+                        <b-button
+                            @click="form.locationName = ''"
+                            :disabled="form.locationName === ''"
+                        >
+                            <mdicon name="CloseCircleOutline" size="20" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
             </b-form-group>
 
             <b-form-group id="input-group-Altersgruppen" label="Altersgruppen" label-for="input-Altersgruppen">
@@ -213,7 +223,6 @@
 
 import LocationLink from '../LocationLink.vue';
 import ColorBadge from '../Tags/ColorBadge.vue';
-import WayPointApi from '../../api/wayPoint.js';
 
 export default {
     name: 'WayPointAdd',
