@@ -95,10 +95,10 @@
                             :aria-describedby="ariaDescribedby"
                             :disabled="isDisabled"
                             type="text"
-                            min="2"
-                            max="300"
+                            :state="editModalTeam.locationNames[i] === '' ? null : (editModalTeam.locationNames[i].length > 1 && editModalTeam.locationNames[i].length <= 300)"
                             trim
                             required
+                            autocomplete="new-password"
                             placeholder="neuer Ort..."
                         />
                     </b-col>
