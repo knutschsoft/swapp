@@ -91,6 +91,7 @@
                             :disabled="isLoading"
                             :state="startTimeState"
                             data-test="startTimeTime"
+                            minutes-step="5"
                             class="mt-2"
                             locale="de"
                         />
@@ -172,7 +173,7 @@
                 },
                 walkId: false,
                 isFormLoading: false,
-                weatherOptions: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'],
+                weatherOptions: ['', 'Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'],
                 dateLabels: {
                     de: {
                         labelPrevDecade: 'Vorheriges Jahrzehnt',

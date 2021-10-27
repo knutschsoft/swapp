@@ -66,6 +66,7 @@
                 :disabled="isLoading"
                 :state="startTimeState"
                 data-test="startTimeTime"
+                minutes-step="5"
                 locale="de"
             />
         </form-group>
@@ -84,6 +85,7 @@
                 :disabled="isLoading"
                 :state="endTimeState"
                 data-test="endTimeTime"
+                minutes-step="5"
                 class="mt-2"
                 locale="de"
             />

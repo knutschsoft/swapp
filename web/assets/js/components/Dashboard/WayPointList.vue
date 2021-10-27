@@ -47,14 +47,25 @@
                             Tags
                         </b-input-group-text>
                     </b-input-group-prepend>
-                    <b-form-checkbox-group
-                        v-model="filter.wayPointTags"
-                        :options="tags"
-                        value-field="@id"
-                        text-field="name"
-                        class="pl-2 border-top border-bottom"
+                    <b-form-group
+                        v-slot="{ ariaDescribedby }"
+                        class="pl-2 border-top border-bottom mb-0"
                         @change="handleFilterChange"
-                    />
+                    >
+                        <div class="d-flex flex-wrap">
+                            <b-form-checkbox
+                                v-for="tag in tags"
+                                v-model="filter.wayPointTags"
+                                :key="tag['@id']"
+                                :value="tag['@id']"
+                                :aria-describedby="ariaDescribedby"
+                                name="tags"
+                                class="d-flex align-items-center flex-tags"
+                            >
+                                {{ tag.name }}
+                            </b-form-checkbox>
+                        </div>
+                    </b-form-group>
                     <b-input-group-append>
                         <b-button
                             @click="unsetFilterWayPointTags"
