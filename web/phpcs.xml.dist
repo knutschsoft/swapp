@@ -27,13 +27,16 @@
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
         <exclude-pattern>src/Security/Voter/*Voter.php</exclude-pattern>
         <exclude-pattern>src/DataTransformer/*.php</exclude-pattern>
+        <exclude-pattern>src/Filter/*Filter.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue.NullabilityTypeMissing">
         <exclude-pattern>src/Notifier/*Notification.php</exclude-pattern>
+        <exclude-pattern>src/Filter/*Filter.php</exclude-pattern>
     </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
         <exclude-pattern>tests/Context/EmailTrait.php</exclude-pattern>
         <exclude-pattern>src/DataTransformer/*.php</exclude-pattern>
+        <exclude-pattern>src/Filter/*Filter.php</exclude-pattern>
     </rule>
 </ruleset>

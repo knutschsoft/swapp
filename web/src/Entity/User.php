@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Dto\User\PasswordChangeRequest;
 use App\Dto\User\RequestPasswordResetRequest;
@@ -12,6 +14,7 @@ use App\Dto\User\UserCreateRequest;
 use App\Dto\User\UserDisableRequest;
 use App\Dto\User\UserEmailConfirmRequest;
 use App\Dto\User\UserEnableRequest;
+use App\Filter\WalksTimeRangeFilter;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\UserVoter;
 use App\Value\ConfirmationToken;
@@ -132,6 +135,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     itemOperations: ["get"],
     normalizationContext: ["groups" => ["user:read"]]
+)]
+#[ApiFilter(
+    WalksTimeRangeFilter::class,
+    properties: [
+        'timeRange' => DateFilter::EXCLUDE_NULL,
+    ],
 )]
 class User implements UserInterface
 {

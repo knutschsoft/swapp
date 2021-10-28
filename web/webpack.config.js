@@ -8,7 +8,7 @@ Encore
     .setOutputPath('public/build/')
 
     // what's the public path to this directory (relative to your project's document root dir)
-    .setPublicPath(Encore.isProduction() ? '/build' : 'https://swapp.local/build/')
+    .setPublicPath(Encore.isProduction() ? '/build' : '/build/')
 
     // .setOutputPath()
 
