@@ -72,9 +72,21 @@ export default {
     computed: {},
     created() {
         this.axios.interceptors.response.use(undefined, (err) => {
-            if (err.response && err.response.status && 403 === err.response.status && err.response.data) {
-                if ('Your token is invalid, please login again to get a new one' === err.response.data.message) {
-                    this.$router.push({name: "Logout"});
+            if (this.$route.name === 'Logout') {
+                return Promise.reject(err.response);
+            }
+            if (err.response && err.response.status && err.response.data) {
+                if (403 === err.response.status && 'Your token is invalid, please login again to get a new one' === err.response.data.message && this.$route.name !== 'Logout'
+                    || 401 === err.response.status && 'Expired JWT Token' === err.response.data.message) {
+                    let options = {
+                        title: 'Du wurdest automatisch abgemeldet.',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        appendToast: false,
+                        variant: 'info',
+                    };
+                    this.$bvToast.toast('Dies ist passiert, da deine letzte Anmeldung zu lange her ist. Bitte melde dich erneut an.', options);
+                    this.$router.push({ name: 'Logout' });
                     return;
                 }
                 if ('Switch User failed: ' === err.response.data.detail) {
@@ -88,10 +100,13 @@ export default {
     },
     methods: {
         showSnackbar(error) {
+            if (this.$route.name === 'Logout') {
+                return;
+            }
             let message = '';
             let isProd = process.env.NODE_ENV === 'production';
             if (isProd) {
-                message = `Wende dich bitte an info@streetworkapp.de`;
+                message = `Das hätte nicht passieren dürfen. Wende dich bitte mit einer Beschreibung zur Reproduktion des Fehlers an info@streetworkapp.de`;
             } else {
                 message = `
                     Fehlermeldung: ${error.message}
@@ -100,7 +115,7 @@ export default {
             }
             if (message !== this.oldToasterValue) {
                 let options = {
-                    title: 'Es ist ein unerwarteter Fehler aufgreten!',
+                    title: 'Upps! Es ist ein unerwarteter Fehler aufgetreten!',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     appendToast: false,

@@ -35,6 +35,7 @@
     "vue-loader": "^15.7",
     "vue-nl2br": "^0.1.2",
     "vue-page-transition": "^0.2.2",
+    "vue-picture-swipe": "^2.1.0",
     "vue-router": "^3.3.4",
     "vue-template-compiler": "^2.6",
     "vue-web-storage": "^4.0.2",

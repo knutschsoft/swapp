@@ -24,6 +24,7 @@ import { AlertPlugin, BootstrapVue, CollapsePlugin, IconsPlugin, NavbarPlugin } 
 import Storage from 'vue-web-storage';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import VuePictureSwipe from 'vue-picture-swipe';
 import mdiVue from 'mdi-vue';
 import * as mdijs from '@mdi/js';
 import VuePageTransition from 'vue-page-transition';
@@ -49,6 +50,7 @@ Vue.use(IconsPlugin);
 Vue.use(CollapsePlugin);
 Vue.use(AlertPlugin);
 Vue.use(NavbarPlugin);
+Vue.component('vue-picture-swipe', VuePictureSwipe);
 Vue.use(VuePageTransition);
 Vue.use(mdiVue, {
     icons: mdijs
@@ -57,7 +59,7 @@ Vue.use(mdiVue, {
 Vue.config.errorHandler = function (err, vm, info) {
     let user = vm.$store.getters['security/currentUser'];
     let username = user ? user.email : 'anonymous';
-    let message = err.message ? err.message : JSON.stringify(err.data);
+    let message = err.message ? err.message : JSON.stringify(err);
     nelmioLog('error', message, {info: info, location: window.location, user: username});
     console.error(message);
 };

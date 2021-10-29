@@ -4558,6 +4558,11 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
+photoswipe@^4.1.2:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-4.1.3.tgz#59f49494eeb9ddab5888d03392926a19bc197550"
+  integrity sha512-89Z43IRUyw7ycTolo+AaiDn3W1EEIfox54hERmm9bI12IB9cvRfHSHez3XhAyU8XW2EAFrC+2sKMhh7SJwn0bA==
+
 picocolors@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-0.2.1.tgz#570670f793646851d1ba135996962abad587859f"
@@ -6152,6 +6157,14 @@ vue-page-transition@^0.2.2:
   resolved "https://registry.yarnpkg.com/vue-page-transition/-/vue-page-transition-0.2.2.tgz#a7c607ccc8dc67e7c05e66a5a9d54bd27d252d56"
   integrity sha512-qOx+llJ28XX0VwJNJ4GVaeNBPRmPMZac2QQgrIHVUhpXyJx2CQ2XvoQOpGD1ge7QMY3PjZ6fwTbdBwZkA3I9qA==
 
+vue-picture-swipe@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vue-picture-swipe/-/vue-picture-swipe-2.1.0.tgz#5147d744e28a6a704a8e6df35d0c4578f3bf9089"
+  integrity sha512-LsEeIfBmaByQBIRKbr95a28m0FjcrQZMka2cgCtfPT637JfVYu53EvhL+H5zxh8n8ZWYI2rWJZiXVE0d+7J/9A==
+  dependencies:
+    photoswipe "^4.1.2"
+    vue "^2.5.16"
+
 vue-router@^3.3.4:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.5.2.tgz#5f55e3f251970e36c3e8d88a7cd2d67a350ade5c"
@@ -6190,7 +6203,7 @@ vue2-daterange-picker@^0.6.7:
   dependencies:
     vue "^2.6.10"
 
-vue@^2.6, vue@^2.6.10, vue@^2.6.11:
+vue@^2.5.16, vue@^2.6, vue@^2.6.10, vue@^2.6.11:
   version "2.6.14"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
