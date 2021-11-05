@@ -7,7 +7,10 @@ const
     FETCHING_TEAMS_ERROR = "FETCHING_TEAMS_ERROR",
     CHANGING_TEAMS = "CHANGING_TEAMS",
     CHANGING_TEAMS_SUCCESS = "CHANGING_TEAMS_SUCCESS",
-    CHANGING_TEAMS_ERROR = "CHANGING_TEAMS_ERROR"
+    CHANGING_TEAMS_ERROR = "CHANGING_TEAMS_ERROR",
+    CREATING_TEAMS = "CREATING_TEAMS",
+    CREATING_TEAMS_SUCCESS = "CREATING_TEAMS_SUCCESS",
+    CREATING_TEAMS_ERROR = "CREATING_TEAMS_ERROR"
 ;
 
 const state = {
@@ -101,6 +104,19 @@ const mutations = {
         state.changeTeamError = error;
         state.changeTeamIsLoading = false;
     },
+    [CREATING_TEAMS](state) {
+        state.changeTeamIsLoading = true;
+        state.changeTeamError = null;
+    },
+    [CREATING_TEAMS_SUCCESS](state, createdTeam) {
+        state.changeTeamError = null;
+        state.changeTeamIsLoading = false;
+        state.teams = [ ...state.teams, createdTeam ];
+    },
+    [CREATING_TEAMS_ERROR](state, error) {
+        state.changeTeamError = error;
+        state.changeTeamIsLoading = false;
+    },
 };
 
 const actions = {
@@ -122,6 +138,17 @@ const actions = {
             return response.data;
         } catch (error) {
             commit(CHANGING_TEAMS_ERROR, error);
+        }
+    },
+    async create({commit}, payload) {
+        commit(CREATING_TEAMS);
+        try {
+            let response = await TeamAPI.create(payload);
+            commit(CREATING_TEAMS_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(CREATING_TEAMS_ERROR, error);
         }
     },
 };

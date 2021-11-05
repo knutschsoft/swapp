@@ -9,4 +9,7 @@ export default {
     change(payload) {
         return axios.post("/api/teams/change", payload);
     },
+    create(payload) {
+        return axios.post("/api/teams/create", payload);
+    },
 };

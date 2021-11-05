@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dto;
+namespace App\Dto\Team;
 
-use App\Entity\Team;
+use App\Entity\Client;
 use App\Entity\User;
 use App\Value\AgeRange;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(["TeamChangeRequest", "SecondGroup"])]
-final class TeamChangeRequest
+#[Assert\GroupSequence(["TeamCreateRequest", "SecondGroup"])]
+final class TeamCreateRequest
 {
     #[Assert\NotNull]
     #[Assert\NotBlank]
-    #[Assert\Type(type: Team::class, groups: ['SecondGroup'])]
-    public Team $team;
+    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    public Client $client;
 
     #[Assert\NotBlank]
     #[Assert\NotNull]
@@ -31,7 +31,6 @@ final class TeamChangeRequest
      *     @Assert\Length(min = 2, max = 300, normalizer="trim")
      * })
      */
-    #[Assert\NotBlank]
     #[Assert\NotNull]
     #[Assert\Count(min: 0, max: 100)]
     #[Assert\Type(type: 'array')]
@@ -48,6 +47,7 @@ final class TeamChangeRequest
      */
     #[Assert\NotNull]
     public array $users;
+
     /**
      * @var AgeRange[]
      *

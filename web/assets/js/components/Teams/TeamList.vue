@@ -43,162 +43,25 @@
             id="edit-modal-team"
             :title="`Team &quot;${editTeam ? editTeam.name : ''}&quot; bearbeiten`"
             size="lg"
-            cancel-title="Abbrechen"
-            ok-title="Team speichern"
-            :cancel-disabled="isDisabled"
-            :ok-disabled="isDisabled"
-            @ok="saveTeam"
+            hide-footer
         >
-            <b-form-group
-                label="Teamname"
-                v-slot="{ ariaDescribedby }"
-            >
-                <b-input
-                    v-model="editModalTeam.name"
-                    :aria-describedby="ariaDescribedby"
-                    :disabled="isDisabled"
-                    trim
-                />
-            </b-form-group>
-
-            <b-form-group
-                label="Benutzer"
-                v-slot="{ ariaDescribedby }"
-            >
-                <b-form-checkbox-group
-                    v-model="editModalTeam.users"
-                    class="check-boxes d-flex flex-row flex-wrap justify-content-start"
-                    switch
-                    data-test="users"
-                    button-variant="secondary rounded-0 mt-1 mr-1 px-4"
-                    :options="users"
-                    :aria-describedby="ariaDescribedby"
-                    name="users"
-                    :disabled="isDisabled"
-                    value-field="@id"
-                    text-field="username"
-                >
-                </b-form-checkbox-group>
-            </b-form-group>
-
-            <b-form-group
-                label="Autocomplete-Vorschläge für den Ort der Wegpunkte"
-                v-slot="{ ariaDescribedby }"
-            >
-                <b-row
-                    v-for="(locationName, i) in editModalTeam.locationNames"
-                    :key="i"
-                >
-                    <b-col cols="8">
-                        <b-input
-                            v-model="editModalTeam.locationNames[i]"
-                            :aria-describedby="ariaDescribedby"
-                            :disabled="isDisabled"
-                            type="text"
-                            :state="editModalTeam.locationNames[i] === '' ? null : (editModalTeam.locationNames[i].length > 1 && editModalTeam.locationNames[i].length <= 300)"
-                            trim
-                            required
-                            autocomplete="new-password"
-                            placeholder="neuer Ort..."
-                        />
-                    </b-col>
-                    <b-col cols="3">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="removeLocationName(i)"
-                        >
-                            <mdicon
-                                name="DeleteCircleOutline"
-                            />
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col cols="12">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="addLocationName()"
-                        >
-                            <mdicon
-                                name="PlusCircleOutline"
-                            />
-                        </div>
-                    </b-col>
-                </b-row>
-            </b-form-group>
-            <b-form-group
-                label="Altersgruppen"
-                v-slot="{ ariaDescribedby }"
-            >
-                <b-row
-                    v-for="(ageRange, i) in editModalTeam.ageRanges"
-                    :key="i"
-                >
-                    <b-col cols="12">
-                        {{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre
-                    </b-col>
-                    <b-col cols="4">
-                        <b-input
-                            v-model="editModalTeam.ageRanges[i].rangeStart"
-                            :aria-describedby="ariaDescribedby"
-                            :disabled="isDisabled"
-                            type="number"
-                            min="0"
-                            max="120"
-                            trim
-                            number
-                            step="1"
-                            required
-                            placeholder="von"
-                        />
-                    </b-col>
-                    <b-col cols="4">
-                        <b-input
-                            v-model="editModalTeam.ageRanges[i].rangeEnd"
-                            :aria-describedby="ariaDescribedby"
-                            :disabled="isDisabled"
-                            type="number"
-                            min="0"
-                            max="120"
-                            trim
-                            number
-                            step="1"
-                            required
-                            placeholder="bis"
-                        />
-                    </b-col>
-                    <b-col cols="3">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="removeAgeRange(i)"
-                        >
-                            <mdicon
-                                name="DeleteCircleOutline"
-                            />
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col cols="12">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="addAgeRange()"
-                        >
-                            <mdicon
-                                name="PlusCircleOutline"
-                            />
-                        </div>
-                    </b-col>
-                </b-row>
-            </b-form-group>
+            <team-form
+                refs="teamForm"
+                :initial-team="editTeam"
+                @submit="handleSubmit"
+                button-label="Team speichern"
+            />
         </b-modal>
     </div>
 </template>
 
 <script>
     "use strict";
+    import TeamForm from './TeamForm.vue';
+
     export default {
         name: "TeamList",
+        components: { TeamForm },
         data: function () {
             return {
                 fields: [
@@ -268,17 +131,13 @@
                     },
                     {key: 'actions', label: 'Aktionen', class: 'text-center',}
                 ],
-                editModalTeam: {
-                    team: '',
-                    name: '',
-                    users: [],
-                    ageRanges: [],
-                    locationNames: [],
-                },
                 editTeam: null,
             }
         },
         computed: {
+            isDisabled() {
+                return this.$store.getters["team/changeTeamIsLoading"];
+            },
             teams() {
                 return this.$store.getters['team/teams'];
             },
@@ -298,9 +157,6 @@
             error() {
                 return this.$store.getters["team/error"];
             },
-            isDisabled() {
-                return this.$store.getters["teram/changeTeamIsLoading"];
-            },
             isSuperAdmin() {
                 return this.$store.getters['security/isSuperAdmin'];
             },
@@ -309,6 +165,7 @@
             await Promise.all([
                 this.$store.dispatch('team/findAll'),
                 this.$store.dispatch('user/findAll'),
+                this.$store.dispatch('client/findAll'),
             ]);
         },
         methods: {
@@ -325,40 +182,35 @@
             },
             openEditModal: function (team) {
                 this.editTeam = team;
-                this.editModalTeam.team = team['@id'];
-                this.editModalTeam.ageRanges = team.ageRanges
-                    .map(ageRange => {
-                        return {
-                            'rangeStart': ageRange.rangeStart,
-                            'rangeEnd': ageRange.rangeEnd,
-                        };
-                    })
-                    .sort((a, b) => {
-                        return (a.rangeStart > b.rangeStart) ? 1 : -1;
-                    })
-                ;
-                this.editModalTeam.locationNames = team.locationNames;
-                this.editModalTeam.users = team.users;
-                this.editModalTeam.name = team.name;
                 this.$root.$emit('bv::show::modal', 'edit-modal-team');
             },
-            async saveTeam() {
-                this.editModalTeam.ageRanges.sort((a, b) => {
-                    return (a.rangeStart > b.rangeStart) ? 1 : -1;
+            async handleSubmit(team) {
+                const changedTeam = await this.$store.dispatch('team/change', {
+                    team: team['@id'],
+                    name: team.name,
+                    locationNames: team.locationNames,
+                    users: team.users,
+                    ageRanges: team.ageRanges,
                 });
-                await this.$store.dispatch('team/change', this.editModalTeam);
-            },
-            removeAgeRange(index) {
-                this.editModalTeam.ageRanges.splice(index, 1);
-            },
-            addAgeRange(index) {
-                this.editModalTeam.ageRanges = [ ...this.editModalTeam.ageRanges, { rangeStart: '', rangeEnd: '' } ];
-            },
-            removeLocationName(index) {
-                this.editModalTeam.locationNames.splice(index, 1);
-            },
-            addLocationName(index) {
-                this.editModalTeam.locationNames = [ ...this.editModalTeam.locationNames, '' ];
+
+                if (changedTeam) {
+                    const message = `Das Team ${changedTeam.name} wurde erfolgreich geändert.`;
+                    this.$bvToast.toast(message, {
+                        title: 'Team geändert',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        appendToast: true,
+                    });
+                    this.$root.$emit('bv::hide::modal', 'edit-modal-team');
+                } else {
+                    this.$bvToast.toast('Upps! :-(', {
+                        title: 'Team ändern fehlgeschlagen',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        variant: 'danger',
+                        appendToast: true,
+                    });
+                }
             },
         }
     }

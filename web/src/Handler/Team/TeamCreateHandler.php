@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Handler\Team;
 
-use App\Dto\TeamChangeRequest;
+use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Team;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class TeamChangeHandler implements MessageHandlerInterface
+final class TeamCreateHandler implements MessageHandlerInterface
 {
     private TeamRepository $teamRepository;
 
@@ -18,9 +18,10 @@ final class TeamChangeHandler implements MessageHandlerInterface
         $this->teamRepository = $teamRepository;
     }
 
-    public function __invoke(TeamChangeRequest $request): Team
+    public function __invoke(TeamCreateRequest $request): Team
     {
-        $team = $request->team;
+        $team = new Team();
+        $team->updateClient($request->client);
         $team->setAgeRanges($request->ageRanges);
         $team->setUsers(new ArrayCollection($request->users));
         $team->setName($request->name);

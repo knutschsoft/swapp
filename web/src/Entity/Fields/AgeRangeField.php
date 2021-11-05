@@ -31,6 +31,17 @@ trait AgeRangeField
      */
     public function setAgeRanges(array $ageRanges): void
     {
+        \usort($ageRanges, static function (AgeRange $a, AgeRange $b) {
+            if ($a->getRangeStart() < $b->getRangeStart()) {
+                return -1;
+            }
+            if ($a->getRangeStart() === $b->getRangeStart() && $a->getRangeEnd() < $b->getRangeEnd()) {
+                return -1;
+            }
+
+            return 1;
+        });
+
         $this->ageRanges = $ageRanges;
     }
 

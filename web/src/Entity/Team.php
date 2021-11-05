@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Dto\TeamChangeRequest;
+use App\Dto\Team\TeamChangeRequest;
+use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
@@ -29,6 +30,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         "status" => 200,
         "path" => "/teams/change",
         "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.team.getClient())',
+    ],
+    "team_create" => [
+        "messenger" => "input",
+        "input" => TeamCreateRequest::class,
+        "output" => Team::class,
+        "method" => "post",
+        "status" => 200,
+        "path" => "/teams/create",
+        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.client)',
     ],
     ],
     itemOperations: [
@@ -173,6 +183,6 @@ class Team
     {
         $locationNames = \array_map('trim', $locationNames);
         \natcasesort($locationNames);
-        $this->locationNames = \array_values($locationNames);
+        $this->locationNames = \array_values(\array_unique($locationNames));
     }
 }

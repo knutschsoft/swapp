@@ -73,7 +73,6 @@ const mutations = {
     },
     [FETCHING_CLIENTS_ERROR](state, error) {
         state.error = error;
-        console.log(error);
         state.isLoading = false;
     },
     [FETCHING_CLIENT](state) {
