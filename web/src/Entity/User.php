@@ -15,22 +15,23 @@ use App\Dto\User\UserDisableRequest;
 use App\Dto\User\UserEmailConfirmRequest;
 use App\Dto\User\UserEnableRequest;
 use App\Filter\WalksTimeRangeFilter;
+use App\Repository\DoctrineORMUserRepository;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\UserVoter;
 use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="user")
- */
+#[ORM\Table(name: 'user')]
+#[ORM\Entity(repositoryClass: DoctrineORMUserRepository::class)]
 #[ApiResource(
     collectionOperations: [
         "get",
@@ -158,74 +159,68 @@ class User implements UserInterface
         self::ROLE_ALLOWED_TO_SWITCH,
     ];
 
-    /** @ORM\Column(type="string", length=180, unique=true) */
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $createdAt; // phpcs:ignore
+
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $updatedAt; // phpcs:ignore
+
+    /** @Gedmo\Blameable(on="create") */
+    #[ORM\Column(nullable: true)]
+    protected $createdBy; // phpcs:ignore
+
+    /** @Gedmo\Blameable(on="update") */
+    #[ORM\Column(nullable: true)]
+    protected $updatedBy; // phpcs:ignore
+
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     protected string $email;
 
-    /** @ORM\Column(type="boolean") */
+    #[ORM\Column(type: 'boolean')]
     protected bool $enabled;
 
-    /**
-     * The salt to use for hashing.
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     protected ?string $salt = null;
 
-    /**
-     * Encrypted password. Must be persisted.
-     *
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     protected string $password;
 
     protected ?string $plainPassword = null;
 
-    /** @ORM\Column(type="datetime", name="last_login", nullable=true) */
+    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     protected ?\DateTime $lastLogin = null;
 
-    /**
-     * Random string sent to the user email address in order to verify it.
-     *
-     * @ORM\Embedded(class="App\Value\ConfirmationToken", columnPrefix=false)
-     */
+    /** Random string sent to the user email address in order to verify it. */
+    #[ORM\Embedded(class: ConfirmationToken::class, columnPrefix: false)]
     protected ConfirmationToken $confirmationToken;
 
-    /** @ORM\Column(type="datetime", name="password_requested_at", nullable=true) */
+    #[ORM\Column(name: 'password_requested_at', type: 'datetime', nullable: true)]
     protected ?\DateTime $passwordRequestedAt = null;
 
-    /**
-     * @var string[]
-     *
-     * @ORM\Column(type="array")
-     */
+    /** @var string[] */
+    #[ORM\Column(type: 'array')]
     protected array $roles;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue()]
     private int $id;
 
-    /** @ORM\Column(type="string", length=180, unique=true) */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private string $username;
 
-    /**
-     * @var Collection<int, Walk>
-     *
-     * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTeamMembers")
-     */
+    /** @var Collection<int, Walk> */
+    #[ORM\ManyToMany(targetEntity: Walk::class, inversedBy: 'walkTeamMembers')]
     private Collection $walks;
 
-    /**
-     * @var Collection<int, Team>
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="users")
-     * @ORM\JoinTable(name="users_teams")
-     */
+    /** @var Collection<int, Team> */
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'users_teams')]
     private Collection $teams;
 
-    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="users") */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'users')]
     private Client $client;
 
     public function __construct()

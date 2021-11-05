@@ -5,18 +5,17 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\TagCreateRequest;
+use App\Repository\DoctrineORMTagRepository;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TagVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use Webmozart\Assert\Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMTagRepository")
- * @ORM\Table(name="tag")
- */
+#[ORM\Table(name: 'tag')]
+#[ORM\Entity(repositoryClass: DoctrineORMTagRepository::class)]
 #[ApiResource(
     collectionOperations: [
     'get',
@@ -107,39 +106,23 @@ class Tag
         "Ivory",
     ];
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue()]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Walk", inversedBy="walkTags")
-     *
-     * @var Collection<int, Walk>
-     */
+    /** @var Collection<int, Walk> */
+    #[ORM\ManyToMany(targetEntity: Walk::class, inversedBy: 'walkTags')]
     private Collection $walks;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="WayPoint", inversedBy="wayPointTags")
-     *
-     * @var Collection<int, WayPoint>
-     */
+    /** @var Collection<int, WayPoint> */
+    #[ORM\ManyToMany(targetEntity: WayPoint::class, inversedBy: 'wayPointTags')]
     private Collection $wayPoints;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $color;
 
     public function __construct()
@@ -150,7 +133,7 @@ class Tag
         $this->name = '';
     }
 
-    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="tags") */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'tags')]
     private Client $client;
 
     public static function fromTagCreateRequest(TagCreateRequest $request): self
@@ -158,12 +141,12 @@ class Tag
         $instance = new self();
 
         $color = \trim($request->color);
-        \Webmozart\Assert\Assert::inArray($request->color, self::COLORS);
+        Assert::inArray($request->color, self::COLORS);
         $instance->color = $color;
 
         $name = \trim($request->name);
-        \Webmozart\Assert\Assert::minLength($name, 3);
-        \Webmozart\Assert\Assert::maxLength($name, 100);
+        Assert::minLength($name, 3);
+        Assert::maxLength($name, 100);
         $instance->name = $name;
         $instance->client = $request->client;
 

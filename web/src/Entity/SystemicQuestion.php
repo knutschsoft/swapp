@@ -8,17 +8,18 @@ use App\Dto\SystemicQuestion\SystemicQuestionChangeRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionCreateRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionDisableRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionEnableRequest;
+use App\Repository\DoctrineORMSystemicQuestionRepository;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\SystemicQuestionVoter;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMSystemicQuestionRepository")
- * @ORM\Table(name="systemic_question")
- */
+#[ORM\Table(name: 'systemic_question')]
+#[ORM\Entity(repositoryClass: DoctrineORMSystemicQuestionRepository::class)]
 #[ApiResource(
     collectionOperations: [
     'get',
@@ -70,20 +71,26 @@ class SystemicQuestion
 {
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $createdAt; // phpcs:ignore
+
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $updatedAt; // phpcs:ignore
+
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue()]
     private int $id;
 
-    /** @ORM\Column(type="string", length=4096) */
+    #[ORM\Column(type: 'string', length: 4096)]
     private string $question = '';
 
-    /** @ORM\Column(type="boolean") */
+    #[ORM\Column(type: 'boolean')]
     private bool $isEnabled;
 
-    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="systemicQuestions") */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'systemicQuestions')]
     private Client $client;
 
     private function __construct(string $question, Client $client)

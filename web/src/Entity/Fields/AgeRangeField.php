@@ -9,18 +9,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 trait AgeRangeField
 {
-    /**
-     * @ORM\Column(type="json_document", options={"jsonb": true})
-     *
-     * @var AgeRange[]
-     */
+    /** @var AgeRange[] */
+    #[ORM\Column(type: 'json_document')]
     private array $ageRanges;
 
     /**
      * @return AgeRange[]
-     *
-     * @Groups({"team:read", "walk:read"})
      */
+    #[Groups(['team:read', 'walk:read'])]
     public function getAgeRanges(): array
     {
         return \array_values($this->ageRanges);

@@ -14,6 +14,7 @@ use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\WalkExportRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Repository\DoctrineORMWalkRepository;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
@@ -23,58 +24,55 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWalkRepository")
- * @ORM\Table(name="walk")
- **/
+#[ORM\Table(name: 'walk')]
+#[ORM\Entity(repositoryClass: DoctrineORMWalkRepository::class)]
 #[ApiFilter(OrderFilter::class, properties: ["name", "rating", "teamName", "startTime", "endTime", "isResubmission"])]
 #[ApiFilter(BooleanFilter::class, properties: ["isResubmission"])]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
 #[ApiResource(
     collectionOperations: [
-    "get",
-    "get_team_names" => [
-        "method" => "get",
-        "path" => "/walks/team_names",
-        "output" => TeamName::class,
-        "pagination_enabled" => false,
-        "normalization_context" => ["groups" => ["teamName:read"]],
-    ],
-    "walk_export" => [
-        "messenger" => "input",
-        "openapi_context" => [
-            "summary" => "Exports all walks",
+        "get",
+        "get_team_names" => [
+            "method" => "get",
+            "path" => "/walks/team_names",
+            "output" => TeamName::class,
+            "pagination_enabled" => false,
+            "normalization_context" => ["groups" => ["teamName:read"]],
         ],
-        "input" => WalkExportRequest::class,
-        "output" => Response::class,
-        "status" => 200,
-        "method" => "post",
-        "path" => "/walks/export",
-        "security_post_denormalize" => 'is_granted("'.ClientVoter::READ.'", object.client)',
-    ],
-    "walk_change" => [
-        "messenger" => "input",
-        "input" => WalkChangeRequest::class,
-        "output" => Walk::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/walks/change",
-        "security_post_denormalize" => "is_granted('".WalkVoter::EDIT."', object.walk)",
-    ],
-    "walk_create" => [
-        "messenger" => "input",
-        "input" => WalkCreateRequest::class,
-        "output" => Walk::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/walks/create",
-        "security_post_denormalize" => "is_granted('".TeamVoter::TEAM_READ."', object.team) and user.hasTeam(object.team)",
-    ],
+        "walk_export" => [
+            "messenger" => "input",
+            "openapi_context" => [
+                "summary" => "Exports all walks",
+            ],
+            "input" => WalkExportRequest::class,
+            "output" => Response::class,
+            "status" => 200,
+            "method" => "post",
+            "path" => "/walks/export",
+            "security_post_denormalize" => 'is_granted("'.ClientVoter::READ.'", object.client)',
+        ],
+        "walk_change" => [
+            "messenger" => "input",
+            "input" => WalkChangeRequest::class,
+            "output" => Walk::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/walks/change",
+            "security_post_denormalize" => "is_granted('".WalkVoter::EDIT."', object.walk)",
+        ],
+        "walk_create" => [
+            "messenger" => "input",
+            "input" => WalkCreateRequest::class,
+            "output" => Walk::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/walks/create",
+            "security_post_denormalize" => "is_granted('".TeamVoter::TEAM_READ."', object.team) and user.hasTeam(object.team)",
+        ],
     ],
     itemOperations: [
-    "get",
+        "get",
     ],
     attributes: [
         "pagination_items_per_page" => 5,
@@ -86,112 +84,76 @@ class Walk
 {
     use AgeRangeField;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue()]
     #[ApiProperty(identifier: true)]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank(groups={"registration"})
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="WayPoint", mappedBy="walk")
-     *
-     * @var Collection<int, WayPoint>
-     **/
+    /** @var Collection<int, WayPoint> **/
+    #[ORM\OneToMany(mappedBy: 'walk', targetEntity: WayPoint::class)]
     private Collection $wayPoints;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank(groups={"registration"})
-     */
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $startTime;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank(groups={"registration"})
-     */
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $endTime;
 
-    /**
-     * @ORM\Column(type="string", length=4096)
-     *
-     * @Assert\NotBlank(groups={"registration"})
-     */
+    #[ORM\Column(type: 'string', length: 4096)]
     private string $walkReflection;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="walks", cascade={"all"}, orphanRemoval=true)
-     * @ORM\OrderBy({"username" = "ASC"})
-     *
-     * @var Collection<int, User>
-     */
+    /** @var Collection<int, User> */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'walks', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(value: ['username' => 'ASC'])]
     private Collection $walkTeamMembers;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="walks")
-     *
-     * @var Collection<int, Tag>
-     */
+    /** @var Collection<int, Tag> */
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'walks')]
     private Collection $walkTags;
 
-    /**
-     * @ORM\Column(type="smallint")
-     *
-     * @Assert\NotBlank(groups={"registration"})
-     */
+    #[ORM\Column(type: 'smallint')]
     private int $rating;
 
-    /** @ORM\Column(type="string", length=4096) */
+    #[ORM\Column(type: 'string', length: 4096)]
     private string $systemicQuestion;
 
-    /**
-     * @ORM\Column(type="string", length=4096)
-     *
-     * @Assert\NotBlank(groups={"registration"})
-     */
+    #[ORM\Column(type: 'string', length: 4096)]
     private string $systemicAnswer;
 
-    /** @ORM\Column(type="string", nullable=true) */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $insights = null;
 
-    /** @ORM\Column(type="string", nullable=true) */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $commitments = null;
 
-    /** @ORM\Column(type="boolean", length=255) */
+    #[ORM\Column(type: 'boolean', length: 255)]
     private bool $isResubmission;
-    /**
-     * @ORM\OneToMany(targetEntity="Guest", mappedBy="walk")
-     *
-     * @var Collection<int, Guest>
-     **/
+
+    /** @var Collection<int, Guest> **/
+    #[ORM\OneToMany(mappedBy: 'walk', targetEntity: Guest::class)]
     private Collection $guests;
-    /** @ORM\Column(type="string", length=255) */
+
+    #[ORM\Column(type: 'string', length: 255)]
     private string $weather;
-    /** @ORM\Column(type="boolean", length=255) */
+
+    #[ORM\Column(type: 'boolean')]
     private bool $holidays;
-    /** @ORM\Column(type="string", length=4096) */
+
+    #[ORM\Column(type: 'string', length: 4096)]
     private string $conceptOfDay;
 
-    /** @ORM\Column(type="string", length=255) */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $teamName;
 
-    /** @ORM\Column(name="deletedAt", type="datetime", nullable=true) */
+    #[ORM\Column(name: 'deletedAt', type: 'datetime', nullable: true)]
     private ?\DateTime $deletedAt = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="walks")
-     * @ORM\OrderBy({"name" = "ASC"})
-     */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'walks')]
+    #[ORM\OrderBy(value: ['order' => 'asc'])]
     private Client $client;
 
     public function __construct()

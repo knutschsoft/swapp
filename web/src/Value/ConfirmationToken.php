@@ -6,10 +6,10 @@ namespace App\Value;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
-/** @ORM\Embeddable() */
+#[ORM\Embeddable]
 class ConfirmationToken
 {
-    /** @ORM\Column(type="string", length=180, name="confirmation_token") */
+    #[ORM\Column(type: 'string', length: 180, name: 'confirmation_token')]
     private string $token;
 
     private const EMPTY_TOKEN = '01234567890123456789012345678912';

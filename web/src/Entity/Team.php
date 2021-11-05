@@ -7,18 +7,16 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\Team\TeamChangeRequest;
 use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Repository\DoctrineORMTeamRepository;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMTeamRepository")
- * @ORM\Table(name="team")
- */
+#[ORM\Table(name: 'team')]
+#[ORM\Entity(repositoryClass: DoctrineORMTeamRepository::class)]
 #[ApiResource(
     collectionOperations: [
     "get",
@@ -52,37 +50,23 @@ class Team
 {
     use AgeRangeField;
 
-    /**
-     * @var Collection<int, User>
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="App\Entity\User",
-     *     mappedBy="teams")
-     */
+    /** @var Collection<int, User> */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
     private Collection $users;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue()]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name = '';
 
-    /** @ORM\ManyToOne(targetEntity="Client", inversedBy="teams") */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'teams')]
     private Client $client;
 
-    /**
-     * @var string[]
-     *
-     * @ORM\Column(type="array")
-     */
+    /** @var string[] */
+    #[ORM\Column(type: 'array')]
     private array $locationNames;
 
     public function __construct()

@@ -10,22 +10,22 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\WayPoint\WayPointChangeRequest;
 use App\Dto\WayPointCreateRequest;
+use App\Repository\DoctrineORMWayPointRepository;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Gender;
 use App\Value\PeopleCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMWayPointRepository")
- * @ORM\Table(name="way_point")
- */
+#[ORM\Table(name: 'way_point')]
+#[ORM\Entity(repositoryClass: DoctrineORMWayPointRepository::class)]
 #[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "oneOnOneInterview", "note", "walk.startTime", "walk.teamName"])]
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
 #[ApiFilter(
@@ -62,49 +62,44 @@ class WayPoint
 {
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $createdAt; // phpcs:ignore
+
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $updatedAt; // phpcs:ignore
+
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue()]
     private int $id;
 
-    /** @ORM\Column(type="string", length=255, name="image_name", nullable=true) */
+    #[ORM\Column(name: 'image_name', type: 'string', length: 255, nullable: true)]
     private ?string $imageName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Walk", inversedBy="wayPoints")
-     *
-     * @MaxDepth(2)
-     */
+    /** @MaxDepth(2) */
+    #[ORM\ManyToOne(targetEntity: Walk::class, inversedBy: 'wayPoints')]
     private Walk $walk;
 
-    /**
-     * @ORM\Column(type="string", length=4096)
-     *
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 4096)]
     private string $locationName;
 
-    /**
-     * @ORM\Column(type="json_document", options={"jsonb": true})
-     *
-     * @var AgeGroup[]
-     */
+    /** @var AgeGroup[] */
+    #[ORM\Column(type: 'json_document')]
     private array $ageGroups;
-    /** @ORM\Column(type="string", nullable=true, length=4096) */
+
+    #[ORM\Column(type: 'string', length: 4096, nullable: true)]
     private ?string $note = null;
-    /** @ORM\Column(type="string", length=4096) */
+
+    #[ORM\Column(type: 'string', length: 4096)]
     private string $oneOnOneInterview;
 
-    /** @ORM\Column(type="boolean", length=255) */
+    #[ORM\Column(type: 'boolean')]
     private bool $isMeeting;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="wayPoints")
-     *
-     * @var Collection<int, Tag>
-     */
+    /** @var Collection<int, Tag> */
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'wayPoints')]
     private Collection $wayPointTags;
 
     public function __construct()

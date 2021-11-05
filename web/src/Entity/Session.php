@@ -5,25 +5,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="sessions")
- */
+#[ORM\Table(name: 'sessions')]
+#[ORM\Entity()]
 class Session
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(name="sess_id",type="string", length=128, nullable=false)
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: 'sess_id', type: 'string', length: 128, nullable: false)]
     protected string $sessId;
 
-    /** @ORM\Column(name="sess_data",type="blob", nullable=false) */
+    #[ORM\Column(name: 'sess_data', type: 'blob', nullable: false)]
     protected mixed $sessData;
 
-    /** @ORM\Column(name="sess_time",type="integer", nullable=false, options={"unsigned": false}) */
+    #[ORM\Column(name: 'sess_time', type: 'integer', nullable: false, options: ['unsigned' => false])]
     protected int $sessTime;
 
-    /** @ORM\Column(name="sess_lifetime",type="integer", nullable=false) */
+    #[ORM\Column(name: 'sess_lifetime', type: 'integer', nullable: false)]
     protected int $sessLifetime;
 
     public function getSessId(): string

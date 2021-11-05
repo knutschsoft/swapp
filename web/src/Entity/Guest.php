@@ -3,37 +3,25 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Repository\DoctrineORMGuestRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMGuestRepository")
- * @ORM\Table(name="guest")
- */
+#[ORM\Table(name: 'guest')]
+#[ORM\Entity(repositoryClass: DoctrineORMGuestRepository::class)]
 class Guest
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue()]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $email;
 
-    /** @ORM\ManyToOne(targetEntity="Walk", inversedBy="guests") */
+    #[ORM\ManyToOne(targetEntity: Walk::class, inversedBy: 'guests')]
     private Walk $walk;
 
     public function getWalk(): Walk

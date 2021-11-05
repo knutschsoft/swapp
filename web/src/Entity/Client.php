@@ -6,16 +6,17 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\Client\ClientChangeRequest;
 use App\Dto\Client\ClientCreateRequest;
+use App\Repository\DoctrineORMClientRepository;
 use App\Security\Voter\ClientVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DoctrineORMClientRepository")
- * @ORM\Table(name="client")
- */
+#[ORM\Table(name: 'client')]
+#[ORM\Entity(repositoryClass: DoctrineORMClientRepository::class)]
 #[ApiResource(
     collectionOperations: [
     "get",
@@ -48,55 +49,46 @@ class Client
 {
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", unique=true)
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $createdAt; // phpcs:ignore
+
+    /** @Gedmo\Timestampable(on="create") **/
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected $updatedAt; // phpcs:ignore
+
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', unique: true)]
+    #[ORM\GeneratedValue()]
     private int $id;
 
-    /** @ORM\Column(type="string", length=255) */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    /** @ORM\Column(type="string", length=255) */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $email;
 
-    /** @ORM\Column(type="text") */
+    #[ORM\Column(type: 'text')]
     private string $description;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SystemicQuestion", mappedBy="client")
-     *
-     * @var Collection<int, SystemicQuestion>
-     **/
+    /** @var Collection<int, SystemicQuestion> **/
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: SystemicQuestion::class)]
     private Collection $systemicQuestions;
 
-    /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="client")
-     *
-     * @var Collection<int, User>
-     **/
+    /** @var Collection<int, User> **/
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: User::class)]
     private Collection $users;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Tag", mappedBy="client")
-     *
-     * @var Collection<int, Tag>
-     **/
+    /** @var Collection<int, Tag> **/
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Tag::class)]
     private Collection $tags;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Team", mappedBy="client")
-     *
-     * @var Collection<int, Team>
-     **/
+    /** @var Collection<int, Team> **/
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Team::class)]
     private Collection $teams;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Walk", mappedBy="client")
-     *
-     * @var Collection<int, Walk>
-     **/
+    /** @var Collection<int, Walk> **/
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Walk::class)]
     private Collection $walks;
 
     public function __construct()
