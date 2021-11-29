@@ -84,3 +84,14 @@ Feature: Testing way point resource
       | locationName      | Assieck   |
       | note              | Bier!     |
       | oneOnOneInterview | Gönnjamin |
+
+  @api @wayPoint
+  Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will see all way points
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send an api platform "GET" request to "/api/way_points/wayPointId<Assieck>" with parameters:
+      | key | value |
+    Then the response should be in JSON
+#    And print last JSON response
+    And the JSON nodes should be equal to:
+      | hydra:title       | An error occurred |
+      | hydra:description | Not Found         |

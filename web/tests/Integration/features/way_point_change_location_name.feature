@@ -26,9 +26,10 @@ Feature: Testing walk change resource
       | Esta muy bien? | client@gmx.de |
       | How are you?   | gamer@gmx.de  |
     Given the following tags exists:
-      | name   | color     | client        |
-      | Gewalt | Chocolate | client@gmx.de |
-      | Drogen | Blue      | client@gmx.de |
+      | name        | color     | client        |
+      | Gewalt      | Chocolate | client@gmx.de |
+      | Drogen      | Blue      | client@gmx.de |
+      | Kulleraugen | Blue      | gamer@gmx.de  |
     Given the following walks exists:
       | name        | team   | ageRanges |
       | Spaziergang | CA     | 1-2,3-10  |
@@ -39,7 +40,7 @@ Feature: Testing walk change resource
       | BOTW         | Gamescon    |
       | BOTW2        | Gamescon    |
 
-  @api @walkChange @security
+  @api @wayPointChange @security
   Scenario: I can request /api/way_points/change as authenticated user and will change locationName of a wayPoint with script tags inside
 
     Given I can find the following wayPoints in database:
@@ -66,3 +67,43 @@ Feature: Testing walk change resource
       | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 |
 
     And there are exactly 3 wayPoints in database
+
+  @api @wayPointChange
+  Scenario: I can request /api/way_points/change as authenticated user with wrong client and will try to change of a wayPoint
+
+    Given I can find the following wayPoints in database:
+      | locationName | ageGroups                                          |
+      | Assieck      | 1-2,m,0;1-2,w,0;1-2,x,0;3-10,m,0;3-10,w,0;3-10,x,0 |
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send an api platform "POST" request to "/api/way_points/change" with parameters:
+      | key               | value                                                         |
+      | wayPoint          | wayPointIri<Assieck>                                          |
+      | locationName      | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
+      | note              | High and out.                                                 |
+      | oneOnOneInterview | Sonne                                                         |
+      | isMeeting         | <false>                                                       |
+      | ageGroups         | ageGroups<1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1> |
+      | wayPointTags      | tagIris<Gewalt,Drogen>                                        |
+#    And print last response
+    And the JSON nodes should be equal to:
+      | hydra:title | An error occurred |
+
+  @api @wayPointChange @suw
+  Scenario: I can request /api/way_points/change as authenticated user and will change tags of a wayPoint of which i do not have access to
+
+    Given I can find the following wayPoints in database:
+      | locationName | ageGroups                                          |
+      | Assieck      | 1-2,m,0;1-2,w,0;1-2,x,0;3-10,m,0;3-10,w,0;3-10,x,0 |
+    Given I am authenticated against api as "two@pac.de"
+    When I send an api platform "POST" request to "/api/way_points/change" with parameters:
+      | key               | value                                                         |
+      | wayPoint          | wayPointIri<Assieck>                                          |
+      | locationName      | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
+      | note              | High and out.                                                 |
+      | oneOnOneInterview | Sonne                                                         |
+      | isMeeting         | <false>                                                       |
+      | ageGroups         | ageGroups<1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1> |
+      | wayPointTags      | tagIris<Kulleraugen>                                          |
+#    And print last response
+    And the JSON nodes should be equal to:
+      | hydra:title | An error occurred |
