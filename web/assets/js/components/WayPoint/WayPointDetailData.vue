@@ -78,7 +78,6 @@
 
 <script>
     "use strict";
-    import ModulHeader from './../ModulHeader';
     import LocationLink from '../LocationLink.vue';
     import ColorBadge from '../Tags/ColorBadge.vue';
 
@@ -87,7 +86,6 @@
         components: {
             ColorBadge,
             LocationLink,
-            ModulHeader,
             Error,
         },
         props: {

@@ -4,17 +4,22 @@ declare(strict_types=1);
 namespace App\Tests\Context;
 
 use App\Entity\Client;
+use App\Entity\Tag;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
 use App\Repository\ClientRepository;
+use App\Repository\TagRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use App\Repository\WalkRepository;
 use App\Repository\WayPointRepository;
+use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\ConfirmationToken;
+use App\Value\Gender;
+use App\Value\PeopleCount;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -27,6 +32,7 @@ trait RepositoryTrait
     private EntityManagerInterface $em;
     private ClientRepository $clientRepository;
     private UserRepository $userRepository;
+    private TagRepository $tagRepository;
     private TeamRepository $teamRepository;
     private WalkRepository $walkRepository;
     private WayPointRepository $wayPointRepository;
@@ -52,6 +58,9 @@ trait RepositoryTrait
         $wayPointRepository = $serviceContainer->get(WayPointRepository::class);
         \assert($wayPointRepository instanceof WayPointRepository);
         $this->wayPointRepository = $wayPointRepository;
+        $tagRepository = $serviceContainer->get(TagRepository::class);
+        \assert($tagRepository instanceof TagRepository);
+        $this->tagRepository = $tagRepository;
 
         $em = $serviceContainer->get('doctrine.orm.entity_manager');
         \assert($em instanceof EntityManagerInterface);
@@ -70,6 +79,15 @@ trait RepositoryTrait
         Assertion::notNull($user, \sprintf('User with email "%s" not found.', $email));
 
         return $user;
+    }
+
+    protected function getTagByName(string $name): Tag
+    {
+        $name = \trim($name);
+        $tag = $this->tagRepository->findOneBy(['name' => $name]);
+        Assertion::notNull($tag, \sprintf('Tag with name "%s" not found.', $name));
+
+        return $tag;
     }
 
     protected function getTeamByName(string $name): Team
@@ -116,6 +134,52 @@ trait RepositoryTrait
         }
 
         return $users;
+    }
+
+    /**
+     * @param string $tagsString
+     *
+     * @return Tag[]
+     */
+    protected function getTagsFromString(string $tagsString): array
+    {
+        $tags = [];
+        if (!$tagsString) {
+            return $tags;
+        }
+        $tagStrings = \explode(',', $tagsString);
+        foreach ($tagStrings as $tagString) {
+            $tags[] = $this->getTagByName($tagString);
+        }
+
+        return $tags;
+    }
+
+    /**
+     * @param string $ageGroupsString
+     *
+     * @return AgeGroup[]
+     */
+    protected function getAgeGroupsFromString(string $ageGroupsString): array
+    {
+        $ageGroups = [];
+        if (!$ageGroupsString) {
+            return $ageGroups;
+        }
+
+        $ageGroupsStrings = \explode(';', $ageGroupsString);
+
+        foreach ($ageGroupsStrings as $ageGroupString) {
+            $parts = \explode(',', $ageGroupString);
+            \assert(\count($parts) === 3);
+            $ageGroups[] = AgeGroup::fromRangeGenderAndCount(
+                AgeRange::fromString($parts[0]),
+                Gender::fromString($parts[1]),
+                PeopleCount::fromInt((int) $parts[2]),
+            );
+        }
+
+        return $ageGroups;
     }
 
     /**
@@ -177,6 +241,33 @@ trait RepositoryTrait
 
             return $ageRanges;
         }
+        if (\str_starts_with($text, 'tagIris<')) {
+            $tagIris = [];
+            foreach ($this->getTagsFromString($referenceIdentifikator) as $tag) {
+                $tagIris[] = \sprintf('/api/tags/%s', $tag->getId());
+            }
+
+            return $tagIris;
+        }
+        if (\str_starts_with($text, 'ageGroups<')) {
+            $ageGroups = [];
+            foreach ($this->getAgeGroupsFromString($referenceIdentifikator) as $ageGroup) {
+                $ageGroups[] = [
+                    'ageRange' => [
+                        'rangeStart' => $ageGroup->getAgeRange()->getRangeStart(),
+                        'rangeEnd' => $ageGroup->getAgeRange()->getRangeEnd(),
+                    ],
+                    'gender' => [
+                        'gender' => $ageGroup->getGender()->getGender(),
+                    ],
+                    'peopleCount' => [
+                        'count' => $ageGroup->getPeopleCount()->getCount(),
+                    ],
+                ];
+            }
+
+            return $ageGroups;
+        }
 
         if (\str_starts_with($text, 'teamIris<')) {
             $teams = [];
@@ -189,6 +280,10 @@ trait RepositoryTrait
 
         if (\str_starts_with($text, 'teamIri<')) {
             return \sprintf('/api/teams/%s', (string) $this->getTeamByName($referenceIdentifikator)->getId());
+        }
+
+        if (\str_starts_with($text, 'wayPointIri<')) {
+            return \sprintf('/api/way_points/%s', (string) $this->getWayPointByLocationName($referenceIdentifikator)->getId());
         }
 
         if (\str_starts_with($text, 'walkIri<')) {

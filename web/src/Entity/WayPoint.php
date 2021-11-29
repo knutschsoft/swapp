@@ -278,7 +278,7 @@ class WayPoint
 
     public function setLocationName(?string $locationName): void
     {
-        $this->locationName = (string) $locationName;
+        $this->locationName = \strip_tags((string) $locationName);
     }
 
     #[Groups(['wayPoint:read'])]

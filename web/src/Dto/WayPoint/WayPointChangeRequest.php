@@ -31,10 +31,10 @@ final class WayPointChangeRequest
     #[Assert\Length(min: 0, max: 2500)]
     public string $oneOnOneInterview;
 
-    public ?string $imageFileData;
+    public ?string $imageFileData = null;
 
     #[Assert\Length(min: 5, max: 200)]
-    public ?string $imageFileName;
+    public ?string $imageFileName = null;
 
     public bool $isMeeting;
 

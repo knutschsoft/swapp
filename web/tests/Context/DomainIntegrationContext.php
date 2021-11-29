@@ -281,6 +281,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['insights'])) {
                 $walk->setInsights($row['insights']);
             }
+            if (isset($row['ageRanges'])) {
+                $walk->setAgeRanges($this->getAgeRangesFromString($row['ageRanges']));
+            }
 
             $this->em->persist($walk);
         }
@@ -319,6 +322,16 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Given /^there are exactly (?P<code>\d+) wayPoints in database$/
+     *
+     * @param string $count
+     */
+    public function thereAreExactlyWayPointsInDatabase(string $count): void
+    {
+        Assert::same(\count($this->wayPointRepository->findAll()), (int) $count);
+    }
+
+    /**
      * @Given /^I can find the following walks in database:$/
      *
      * @param TableNode $table
@@ -352,6 +365,77 @@ final class DomainIntegrationContext extends RawMinkContext
                         $walk->getName(),
                         \count($expectedUsers),
                         \count($walkUsers)
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @Given /^I can find the following wayPoints in database:$/
+     *
+     * @param TableNode $table
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function iCanFindTheFollowingWayPointsInDatabase(TableNode $table): void
+    {
+        $this->em->clear();
+        foreach ($table as $row) {
+            $wayPoint = $this->getWayPointByLocationName($row['locationName']);
+            if (isset($row['walk'])) {
+                $walk = $this->getWalkByName($row['walk']);
+                Assert::eq($wayPoint->getWalk()->getId(), $walk->getId());
+            }
+            if (isset($row['imageName'])) {
+                Assert::eq($wayPoint->getImageName(), $row['imageName']);
+            }
+            if (isset($row['ageGroups'])) {
+                $expectedAgeGroups = $this->getAgeGroupsFromString($row['ageGroups']);
+                $wayPointAgeGroups = $wayPoint->getAgeGroups();
+                $frontendLabels = [];
+                foreach ($wayPointAgeGroups as $wayPointAgeGroup) {
+                    $frontendLabels[] = $wayPointAgeGroup->getFrontendLabel();
+                }
+                foreach ($expectedAgeGroups as $expectedAgeGroup) {
+                    Assert::inArray($expectedAgeGroup->getFrontendLabel(), $frontendLabels);
+                }
+                Assert::count(
+                    $wayPointAgeGroups,
+                    \count($expectedAgeGroups),
+                    \sprintf(
+                        'Wrong number of wayPointAgeGroups in wayPoint "%s". Expected %d. Got %d.',
+                        $wayPoint->getLocationName(),
+                        \count($expectedAgeGroups),
+                        \count($wayPointAgeGroups)
+                    )
+                );
+            }
+            if (isset($row['note'])) {
+                Assert::eq($wayPoint->getNote(), $row['note']);
+            }
+            if (isset($row['oneOnOneInterview'])) {
+                Assert::eq($wayPoint->getOneOnOneInterview(), $row['oneOnOneInterview']);
+            }
+            if (isset($row['isMeeting'])) {
+                Assert::eq($wayPoint->getIsMeeting(), (bool) $row['isMeeting']);
+            }
+            if (isset($row['wayPointTags'])) {
+                $expectedTags = $this->getTagsFromString($row['wayPointTags']);
+                $wayPointTags = $wayPoint->getWayPointTags();
+                foreach ($expectedTags as $expectedTag) {
+                    Assert::inArray($expectedTag, $wayPointTags->toArray());
+                }
+                Assert::count(
+                    $wayPointTags,
+                    \count($expectedTags),
+                    \sprintf(
+                        'Wrong number of wayPointTags in wayPoint "%s". Expected %d. Got %d.',
+                        $wayPoint->getLocationName(),
+                        \count($expectedTags),
+                        \count($wayPointTags)
                     )
                 );
             }

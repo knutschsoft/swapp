@@ -295,7 +295,7 @@ class Walk
 
     public function setName(string $name): void
     {
-        $this->name = $name;
+        $this->name = \strip_tags($name);
     }
 
     #[Groups(['walk:read'])]

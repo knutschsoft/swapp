@@ -18,7 +18,7 @@
             <StartWalk />
         </content-collapse>
         <content-collapse
-            :title="`Abgeschlossene Streetwork-Runden  ${ totalWalks ? `(${ totalWalks })` : '' }`"
+            :title="`Abgeschlossene Streetwork-Runden ${ totalWalks ? `(${ totalWalks })` : '' }`"
             collapse-key="finished-walk-list"
             is-visible-by-default
         >
