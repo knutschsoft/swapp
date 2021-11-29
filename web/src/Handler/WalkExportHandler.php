@@ -6,6 +6,7 @@ namespace App\Handler;
 use App\Dto\WalkExportRequest;
 use App\Entity\Walk;
 use App\Repository\WalkRepository;
+use League\Csv\EscapeFormula;
 use League\Csv\Writer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -22,6 +23,7 @@ final class WalkExportHandler implements MessageHandlerInterface
     public function __invoke(WalkExportRequest $request): Response
     {
         $csv = Writer::createFromString();
+        $csv->addFormatter(new EscapeFormula("'", ['=', '-', '+', '@', '\t', '\r']));
 
         $walks = $this->walkRepository->findForExport($request->client, $request->startTimeFrom, $request->startTimeTo);
         $headers = [
