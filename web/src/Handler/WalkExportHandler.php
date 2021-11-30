@@ -23,7 +23,7 @@ final class WalkExportHandler implements MessageHandlerInterface
     public function __invoke(WalkExportRequest $request): Response
     {
         $csv = Writer::createFromString();
-        $csv->addFormatter(new EscapeFormula("'", ['=', '-', '+', '@', '\t', '\r']));
+        $csv->addFormatter(new EscapeFormula("'", ['=', '-', '+', '@', "\t", "\r"]));
 
         $walks = $this->walkRepository->findForExport($request->client, $request->startTimeFrom, $request->startTimeTo);
         $headers = [
