@@ -32,6 +32,7 @@
         "doctrine/orm": "~2.6",
         "dunglas/doctrine-json-odm": "~1.1",
         "easycorp/easy-log-handler": "~1.0",
+        "enshrined/svg-sanitize": "^0.14.1",
         "gesdinet/jwt-refresh-token-bundle": "~0.9",
         "league/csv": "~9.5",
         "league/flysystem-bundle": "^2.0",

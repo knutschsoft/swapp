@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Serializer\Normalizer;
 
+use enshrined\svgSanitize\Sanitizer;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Mime\MimeTypes;
@@ -35,6 +36,11 @@ class Base64DataUriNormalizer extends DataUriNormalizer
         $tempfile = "{$filesystem->tempnam('/tmp', 'symfony')}.$extensions[0]";
         $content = \base64_decode($match['encoded'], true);
         Assert::string($content);
+        if (\str_starts_with(\strtolower($extensions[0]), 'svg')) {
+            $sanitizer = new Sanitizer();
+            $content = $sanitizer->sanitize($content);
+        }
+
         $filesystem->dumpFile("$tempfile", $content);
 
         return new File($tempfile);
