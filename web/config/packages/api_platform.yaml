@@ -14,3 +14,4 @@ api_platform:
             items_per_page_parameter_name: itemsPerPage # Default value
     defaults:
         pagination_client_items_per_page: true
+        pagination_items_per_page: 10

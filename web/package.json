@@ -52,5 +52,8 @@
     "url": "https://git@github.com:knutschsoft/swapp.git"
   },
   "author": "robertfausk <robertfreigang@gmx.de>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-webpack-plugin": "^2.5.4"
+  }
 }
