@@ -333,11 +333,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addRole(string $role): void
     {
         $role = \strtoupper($role);
-        if (static::ROLE_DEFAULT === $role) {
+        if (self::ROLE_DEFAULT === $role) {
             return;
         }
-        if (static::ROLE_SUPER_ADMIN === $role) {
-            $this->addRole(static::ROLE_ALLOWED_TO_SWITCH);
+        if (self::ROLE_SUPER_ADMIN === $role) {
+            $this->addRole(self::ROLE_ALLOWED_TO_SWITCH);
         }
 
         if (!\in_array($role, $this->roles, true)) {
@@ -436,8 +436,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
 
         // we need to make sure to have at least one role
-        $roles[] = static::ROLE_DEFAULT;
-        if (\in_array(\strtoupper(static::ROLE_SUPER_ADMIN), $roles, true)) {
+        $roles[] = self::ROLE_DEFAULT;
+        if (\in_array(\strtoupper(self::ROLE_SUPER_ADMIN), $roles, true)) {
             $roles[] = static::ROLE_ALLOWED_TO_SWITCH;
         }
 
@@ -454,7 +454,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         foreach ($roles as $role) {
             $this->addRole($role);
         }
-        $this->addRole(static::ROLE_DEFAULT);
+        $this->addRole(self::ROLE_DEFAULT);
     }
 
     public function hasRole(string $role): bool

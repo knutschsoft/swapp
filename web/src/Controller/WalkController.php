@@ -46,7 +46,7 @@ class WalkController extends AbstractController
             WalkType::class,
             $walk,
             [
-                'action' => $this->router->generate('walk_create', ['walkId' => $walk->getId()]),
+                'action' => $this->router->generate('walk_create', ['id' => $walk->getId()]),
             ]
         );
         $form->handleRequest($request);
@@ -62,7 +62,7 @@ class WalkController extends AbstractController
      * @param Walk    $walk
      * @param Request $request
      *
-     * @Route("form/walk-epilogue/{walkId}", name="walk_create")
+     * @Route("form/walk-epilogue/{id}", name="walk_create")
      *
      * @return JsonResponse
      */
@@ -87,6 +87,7 @@ class WalkController extends AbstractController
             );
         }
 
+        /** @var Walk $walk */
         $walk = $form->getData();
         $this->walkRepository->update($walk);
 

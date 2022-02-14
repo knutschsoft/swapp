@@ -45,7 +45,7 @@ final class WalksTimeRangeFilter extends AbstractContextAwareFilter
     ): void {
         $resourceClass = Walk::class;
 
-        if (!\str_starts_with($property, 'walks.')) {
+        if (!\str_starts_with($property, 'walks.') || !\is_string($value)) {
             return;
         }
         $property = \str_replace('walks.', '', $property);

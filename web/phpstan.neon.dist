@@ -1,20 +1,22 @@
-includes:
-    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
-
 parameters:
     level: max
     paths:
         - %currentWorkingDirectory%/src
-    excludes_analyse:
+    excludePaths:
         - %currentWorkingDirectory%/src/Migrations/Version*.php
+        - %currentWorkingDirectory%/src/Kernel.php
+        - %currentWorkingDirectory%/tests/object-manager.php
     ignoreErrors:
         - '#Access to an undefined property Symfony\\Component\\Validator\\Constraint::\$message#'
         - '#Method App\\Serializer\\Normalizer\\Base64DataUriNormalizer::denormalize\(\) has parameter \$context with no value type specified in iterable type array.#'
 #        - '#Method [a-zA-Z0-9\\_]+OpenApiFactory::__invoke\(\) has parameter \$context with no value type specified in iterable type array.#'
         - '#Method [a-zA-Z0-9\\_]+Requirements::getConstraints\(\) has parameter \$options with no value type specified in iterable type array.#'
-        - '#Property App\\Entity\\(User|SystemicQuestion|Client|WayPoint)::\$(crea|upda)ted(At|By) has no typehint specified.#'
 #        - '#Method [a-zA-Z0-9\\_]+Extension::applyToCollection\(\) has no return typehint specified.#'
 #        - '#Method [a-zA-Z0-9\\_]+Extension::applyToItem\(\) has no return typehint specified.#'
         - '#Method [a-zA-Z0-9\\_]+Extension::applyToItem\(\) has parameter \$[a-zA-Z0-9\\_]+ with no value type specified in iterable type array.#'
 #        - '#Method [a-zA-Z0-9\\_]+DataTransformer::[a-zA-Z0-9\\_]+\(\) has parameter \$[a-zA-Z0-9\\_]+ with no value type specified in iterable type array.#'
         - '#Method [a-zA-Z0-9\\_]+WalksTimeRangeFilter::getDescription\(\) return type has no value type specified in iterable type array\.#'
+        - '#Method App\\Repository\\DoctrineORM[a-zA-Z0-9\\_]+Repository::[a-zA-Z0-9\\_]+\(\) should return array<App\\Entity\\[a-zA-Z0-9\\_]+> but returns mixed\.#'
+        - '#Method App\\Repository\\DoctrineORMUserRepository::loadUserByUsername\(\) should return Symfony\\Component\\Security\\Core\\User\\UserInterface\|null but returns mixed\.#'
+        - '#Method App\\Repository\\DoctrineORMSystemicQuestionRepository::getRandomForClient\(\) should return App\\Entity\\SystemicQuestion but returns mixed\.#'
+        - '#Property App\\Entity\\(WayPoint|User|SystemicQuestion|Client)::\$(updated|created)(At|By) has no type specified\.#'

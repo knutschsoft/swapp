@@ -41,15 +41,8 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
     {
         $queryBuilder = $this->createQueryBuilder('tag')->select();
         $query = $queryBuilder->getQuery();
-        $result = $query->getResult();
 
-        $tagList = [];
-
-        foreach ($result as $tag) {
-            $tagList[] = $tag;
-        }
-
-        return $tagList;
+        return $query->getResult();
     }
 
     public function findOneByColorAndNameAndClient(string $color, string $name, Client $client): Tag

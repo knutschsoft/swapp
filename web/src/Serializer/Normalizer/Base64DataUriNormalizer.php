@@ -20,6 +20,7 @@ class Base64DataUriNormalizer extends DataUriNormalizer
     {
         parent::denormalize($data, $type, $format, $context);
 
+        Assert::string($data);
         $match = [];
         // @codingStandardsIgnoreStart
         \preg_match('/^data:(?P<mimeType>[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}\/[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}(;[a-z0-9\-]+\=[a-z0-9\-]+)?)?;base64,(?P<encoded>.+)$/i', $data, $match);

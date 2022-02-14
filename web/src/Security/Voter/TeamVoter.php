@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Webmozart\Assert\Assert;
 
 class TeamVoter extends Voter
 {
@@ -53,7 +54,7 @@ class TeamVoter extends Voter
             return true;
         }
 
-        /** @var Team $team */
+        Assert::isInstanceOf($subject, Team::class);
         $team = $subject;
 
         switch ($attribute) {
