@@ -130,6 +130,7 @@
             "vendor/bin/phpunit --colors --testdox-html ./var/log/qa-report/testdox.html --testdox-text ./var/log/qa-report/testdox.txt --log-junit ./var/log/qa-report/junit.xml || true",
             "mkdir -p public/images/screenshots",
             "vendor/bin/behat --colors --format=pretty --out std --format=junit --out ./var/log/qa-report",
+            "vendor/bin/local-php-security-checker-installer",
             "vendor/bin/local-php-security-checker"
         ],
         "create-jwt": [
