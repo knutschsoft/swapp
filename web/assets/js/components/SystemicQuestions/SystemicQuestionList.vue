@@ -47,7 +47,6 @@
             size="lg"
             @hide="resetEditModalSystemicQuestion"
             title="Systemische Frage ändern"
-            hide-footer
         >
             <systemic-question-form
                 v-if="editModalSystemicQuestion.selectedSystemicQuestion"
@@ -56,6 +55,24 @@
                 :initial-question="editModalSystemicQuestion.selectedSystemicQuestion.question"
                 @submit="handleSubmit"
             />
+
+            <template #modal-footer>
+                <b-alert
+                    show
+                    class="w-100 text-muted mb-0"
+                    variant="debug"
+                >
+                    <b>Hinweis:</b>
+                    <ul class="mb-0">
+                        <li>
+                            Eine Änderung der Fragestellung ändert lediglich die Fragestellung für neue Runden.
+                        </li>
+                        <li>
+                            Bereits bestehende Runden bleiben davon unberührt.
+                        </li>
+                    </ul>
+                </b-alert>
+            </template>
         </b-modal>
     </div>
 </template>
@@ -163,22 +180,24 @@ export default {
         async toggleEnabled(iri, isEnabled) {
             if (isEnabled) {
                 const systemicQuestion = await this.$store.dispatch('systemicQuestion/disable', { systemicQuestion: iri });
-                const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich deaktiviert.`;
+                const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich deaktiviert. Sie wird nun nicht mehr automatisch für neue Runden verwendet.`;
                 this.$bvToast.toast(message, {
                     title: 'Systemische Frage geändert',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     appendToast: true,
+                    variant: 'info',
                     solid: true,
                 });
             } else {
                 const systemicQuestion = await this.$store.dispatch('systemicQuestion/enable', { systemicQuestion: iri });
-                const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich aktiviert.`;
+                const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich aktiviert. Sie wird nun automatisch für neue Runden verwendet.`;
                 this.$bvToast.toast(message, {
                     title: 'Systemische Frage geändert',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     appendToast: true,
+                    variant: 'info',
                     solid: true,
                 });
             }
@@ -192,6 +211,7 @@ export default {
                     title: 'Systemische Frage geändert',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
+                    variant: 'info',
                     appendToast: true,
                     solid: true,
                 });

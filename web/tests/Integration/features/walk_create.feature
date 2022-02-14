@@ -22,6 +22,7 @@ Feature: Testing walk create resource
     Given the following systemic questions exists:
       | question       | client        |
       | Esta muy bien? | client@gmx.de |
+      | Como esta?     | gamer@gmx.de  |
     Given the following tags exists:
       | name   | color     | client        |
       | Gewalt | Chocolate | client@gmx.de |
@@ -47,7 +48,7 @@ Feature: Testing walk create resource
       | code | 401 |
 
   @api @walkCreate
-  Scenario: I can request /api/walks/create as authenticated user and will create a new walk
+  Scenario: I can request /api/walks/create as authenticated user and can not create a new walk when parameters are missing
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
       | key  | value             |
@@ -67,6 +68,7 @@ Feature: Testing walk create resource
       | violations[4].message      | Dieser Wert sollte nicht null sein. |
       | violations[5].propertyPath | walkTeamMembers                     |
       | violations[5].message      | Dieser Wert sollte nicht null sein. |
+    And there are exactly 2 walks in database
 
   @api @walkCreate
   Scenario: I can request /api/walks/create as authenticated user and will create a new walk
@@ -89,7 +91,10 @@ Feature: Testing walk create resource
       | weather          | Arschkalt       |
       | isUnfinished     | 1               |
       | teamName         | Westhang        |
+    And there are exactly 3 walks in database
 
+  @api @walkCreate
+  Scenario: I can request /api/walks/create as authenticated user and can not create a new walk with wrong team given
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
       | key             | value                 |
@@ -105,7 +110,10 @@ Feature: Testing walk create resource
     And the JSON nodes should be equal to:
       | @type       | hydra:Error       |
       | hydra:title | An error occurred |
+    And there are exactly 2 walks in database
 
+  @api @walkCreate
+  Scenario: I can request /api/walks/create as authenticated user and can create a new walk for another user
     Given I am authenticated against api as "two@pac.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
       | key             | value                 |
@@ -125,7 +133,10 @@ Feature: Testing walk create resource
       | weather          | Arschkalt       |
       | isUnfinished     | 1               |
       | teamName         | Westhang        |
+    And there are exactly 3 walks in database
 
+  @api @walkCreate
+  Scenario: I can request /api/walks/create as authenticated user and can create a new walk for another team
     Given I am authenticated against api as "two@pac.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
       | key             | value                 |
@@ -145,7 +156,10 @@ Feature: Testing walk create resource
       | weather          | Arschkalt       |
       | isUnfinished     | 1               |
       | teamName         | CA              |
+    And there are exactly 3 walks in database
 
+  @api @walkCreate
+  Scenario: I can request /api/walks/create as authenticated user and can not create a new walk when I am not part of a team
     Given I am authenticated against api as "lonely@gmx.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
       | key  | value             |
@@ -176,8 +190,7 @@ Feature: Testing walk create resource
       | @type             | hydra:Error       |
       | hydra:title       | An error occurred |
       | hydra:description | Access Denied.    |
-
-    And there are exactly 5 walks in database
+    And there are exactly 2 walks in database
 
   @api @walkCreate
   Scenario: I can request /api/walks/create as authenticated user and will create a new walk with walkTeamMembers assigned
@@ -196,6 +209,7 @@ Feature: Testing walk create resource
     And I can find the following walks in database:
       | name            | walkTeamMembers |
       | This is my Walk | karl@gmx.de     |
+    And there are exactly 3 walks in database
 
   @api @walkCreate @security
   Scenario: I can request /api/walks/create as authenticated user with script tags in name and will create a new walk without script tags in name
@@ -218,3 +232,49 @@ Feature: Testing walk create resource
       | weather          | Arschkalt       |
       | isUnfinished     | 1               |
       | teamName         | Westhang        |
+    And there are exactly 3 walks in database
+
+  @api @walkCreate @systemicQuestion
+  Scenario: I can request /api/walks/create as authenticated user of another client and will have this clients systemic question    Given I am authenticated against api as "karl@gmx.de"
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send an api platform "POST" request to "/api/walks/create" with parameters:
+      | key             | value                   |
+      | team            | teamIri<Gamers>         |
+      | name            | MyName                  |
+      | conceptOfDay    | High and out.           |
+      | weather         | Arschkalt               |
+      | startTime       | 01.01.2020              |
+      | walkTeamMembers | userIris<karl@gamer.de> |
+      | holidays        | <false>                 |
+#    And print last response
+    Then the response status code should be 200
+    And the JSON nodes should be equal to:
+      | @type            | Walk       |
+      | name             | MyName     |
+      | systemicQuestion | Como esta? |
+      | weather          | Arschkalt  |
+      | isUnfinished     | 1          |
+      | teamName         | Gamers     |
+    And there are exactly 3 walks in database
+
+  @api @walkCreate @systemicQuestion
+  Scenario: I can request /api/walks/create as authenticated user and can not create a walk with an user of another client
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send an api platform "POST" request to "/api/walks/create" with parameters:
+      | key             | value                 |
+      | team            | teamIri<Gamers>       |
+      | name            | myName                |
+      | conceptOfDay    | High and out.         |
+      | weather         | Arschkalt             |
+      | startTime       | 01.01.2020            |
+      | walkTeamMembers | userIris<karl@gmx.de> |
+      | holidays        | <false>               |
+#    And print last response
+    Then the response status code should be 400
+    And the JSON nodes should be equal to:
+      | @type       | hydra:Error       |
+      | hydra:title | An error occurred |
+    And the JSON node 'hydra:description' should contain 'Item not found for '
+    And the JSON node 'hydra:description' should contain 'api'
+    And the JSON node 'hydra:description' should contain 'users'
+    And there are exactly 2 walks in database

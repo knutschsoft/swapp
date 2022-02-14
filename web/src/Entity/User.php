@@ -26,7 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -143,7 +144,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'timeRange' => DateFilter::EXCLUDE_NULL,
     ],
 )]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
     use BlameableEntity;
@@ -234,12 +235,12 @@ class User implements UserInterface
         $this->confirmationToken = ConfirmationToken::createEmpty();
     }
 
-    public static function fromUserCreateRequest(UserCreateRequest $request, UserPasswordEncoderInterface $passwordEncoder): self
+    public static function fromUserCreateRequest(UserCreateRequest $request, UserPasswordHasherInterface $userPasswordHasher): self
     {
         $instance = new self();
         $instance->email = \strtolower($request->email);
         $instance->username = \strtolower($request->username);
-        $instance->changePassword(\md5((string) \time(), false), $passwordEncoder);
+        $instance->changePassword(\md5((string) \time(), false), $userPasswordHasher);
         $instance->client = $request->client;
         $instance->refreshConfirmationToken();
         $instance->setRoles($request->roles);
@@ -248,9 +249,9 @@ class User implements UserInterface
         return $instance;
     }
 
-    public function changePassword(string $password, UserPasswordEncoderInterface $passwordEncoder): void
+    public function changePassword(string $password, UserPasswordHasherInterface $userPasswordHasher): void
     {
-        $this->password = $passwordEncoder->encodePassword($this, $password);
+        $this->password = $userPasswordHasher->hashPassword($this, $password);
         $this->confirmationToken = ConfirmationToken::createEmpty();
         $this->passwordRequestedAt = null;
     }

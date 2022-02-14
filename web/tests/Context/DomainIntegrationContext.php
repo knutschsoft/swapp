@@ -25,7 +25,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Webmozart\Assert\Assert;
 
 final class DomainIntegrationContext extends RawMinkContext
@@ -33,7 +33,7 @@ final class DomainIntegrationContext extends RawMinkContext
     use RepositoryTrait;
 
     private EntityManagerInterface $em;
-    private UserPasswordEncoderInterface $passwordEncoder;
+    private UserPasswordHasherInterface $passwordEncoder;
     private RestContext $restContext;
     private JWTTokenManagerInterface $jwtManager;
 
@@ -44,7 +44,7 @@ final class DomainIntegrationContext extends RawMinkContext
         Assert::notNull($serviceContainer);
         Assert::isInstanceOf($serviceContainer, Container::class);
         $this->em = $serviceContainer->get('doctrine.orm.entity_manager');
-        $this->passwordEncoder = $serviceContainer->get(UserPasswordEncoderInterface::class);
+        $this->passwordEncoder = $serviceContainer->get(UserPasswordHasherInterface::class);
         $this->jwtManager = $serviceContainer->get(JWTTokenManagerInterface::class);
     }
 

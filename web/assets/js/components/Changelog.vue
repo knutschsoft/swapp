@@ -19,7 +19,7 @@
                         />
                     </b-list-group-item>
                     <b-list-group-item>
-                        <ul>
+                        <ul class="pl-3 mb-0">
                             <li
                                 v-for="entry in item.entries"
                             >
@@ -55,6 +55,17 @@ export default {
                 ],
             },
             items: [
+                {
+                    header: '14.02.2022 - Valentinstags-Update',
+                    avatarText: '💘🎁',
+                    entries: [
+                        {
+                            text: 'Fix: Bei der Auswahl der systemischen Frage für eine Runde wurde der Klient nicht beachtet. Dies ist behoben worden, so dass beim Starten einer Runde eine zufällige Systemische Frage vom eigenen Klienten verwendet wird.',
+                        },
+                        { text: 'Feature: Ein Admin kann ein Team erstellen.' },
+                        { text: 'Misc: Softwarebibliotheken geupdated.' },
+                    ],
+                },
                 {
                     header: '30.10.2021',
                     avatarText: '🆕️🛠️',

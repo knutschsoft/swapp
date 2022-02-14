@@ -10,7 +10,7 @@
                 <br>
                 oder noch kein Passwort?
             </h2>
-            <ul class="text-left mt-3">
+            <ul class="text-left mt-3 pl-3">
                 <li>
                     Um dein Passwort zu ändern, trage bitte deine E-Mail-Adresse ein und sende das Formular ab.
                 </li>
@@ -71,13 +71,13 @@
                         type="text"
                         class="form-control"
                         style="position: absolute; left: -10000px; top: -10000px;"
-                        placeholder="vorname.nachname@htwk-leipzig.de"
+                        placeholder="vorname.nachname@streetworkapp.de"
                         name="email"
                         aria-label="Email"
                         aria-describedby="email-help-block"
                     />
                     <b-input-group
-                        class="form-group input-group"
+                        class="form-group input-group mb-0"
                     >
                         <b-button
                             :disabled="username.length < 10 || isLoading || isPasswordRequested"

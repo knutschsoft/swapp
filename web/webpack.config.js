@@ -8,7 +8,7 @@ Encore
     .setOutputPath('public/build/')
 
     // what's the public path to this directory (relative to your project's document root dir)
-    .setPublicPath(Encore.isProduction() ? '/build' : '/build/')
+    .setPublicPath(Encore.isProduction() ? '/build' : 'https://swapp.local:8874')
 
     // .setOutputPath()
 
@@ -50,17 +50,16 @@ Encore
     .enableVueLoader(() => {}, { runtimeCompilerBuild: false })
 
     .enablePostCssLoader()
-    .enableEslintLoader()
+    .enableEslintPlugin()
 
     .configureDevServerOptions(options => {
-        options.client.host = 'swapp.local';
-        options.firewall = false;
+        options.allowedHosts = 'all';
         options.https = {
             key: '/var/www/certs/swapp.local.key',
             cert: '/var/www/certs/swapp.local.crt',
         };
         options.host = '0.0.0.0';
-        options.port = '8080';
+        options.port = '8874';
     })
 ;
 

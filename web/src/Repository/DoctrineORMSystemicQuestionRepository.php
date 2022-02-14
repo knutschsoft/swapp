@@ -51,6 +51,10 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
             ->getSingleScalarResult();
 
         return $this->createQueryBuilder('u')
+            ->where('u.client = :client')
+            ->setParameter('client', $client)
+            ->andWhere('u.isEnabled = :isEnabled')
+            ->setParameter('isEnabled', true)
             ->setFirstResult(\rand(0, $count - 1))
             ->setMaxResults(1)
             ->getQuery()

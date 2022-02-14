@@ -88,7 +88,7 @@ Feature: Testing walk change resource
     And the JSON nodes should be equal to:
       | hydra:title | An error occurred |
 
-  @api @wayPointChange @suw
+  @api @wayPointChange
   Scenario: I can request /api/way_points/change as authenticated user and will change tags of a wayPoint of which i do not have access to
 
     Given I can find the following wayPoints in database:
