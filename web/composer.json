@@ -68,6 +68,7 @@
         "captainhook/captainhook": "~5.0",
         "dbrekelmans/bdi": "^1.0",
         "doctrine/data-fixtures": "^1.5",
+        "enlightn/security-checker": "^1.9",
         "friends-of-behat/mink-browserkit-driver": "~1.5",
         "friends-of-behat/symfony-extension": "~2.1",
         "genesis/behat-fail-aid": "~3.5",
@@ -85,8 +86,7 @@
         "symfony/maker-bundle": "~1.13",
         "symfony/phpunit-bridge": "~5.4",
         "symfony/stopwatch": "^5.4",
-        "symfony/web-profiler-bundle": "^5.4",
-        "thibautselingue/local-php-security-checker-installer": "~1.0"
+        "symfony/web-profiler-bundle": "^5.4"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -97,7 +97,7 @@
         "behat": "vendor/bin/behat --colors --format=progress || true",
         "unit": "vendor/bin/phpunit --colors || true",
         "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
-        "security": "vendor/bin/local-php-security-checker || true",
+        "security": "vendor/bin/security-checker security:check || true",
         "compile-test": [
             "rm -rf var/cache/test/test.db",
             "bin/console doctrine:database:create --env=test --no-interaction",
@@ -129,9 +129,8 @@
             "vendor/bin/phpstan analyse --error-format=checkstyle --ansi --no-progress > ./var/log/qa-report/phpstan.xml || true",
             "vendor/bin/phpunit --colors --testdox-html ./var/log/qa-report/testdox.html --testdox-text ./var/log/qa-report/testdox.txt --log-junit ./var/log/qa-report/junit.xml || true",
             "mkdir -p public/images/screenshots",
-            "vendor/bin/behat --colors --format=pretty --out std --format=junit --out ./var/log/qa-report",
-            "vendor/bin/local-php-security-checker-installer",
-            "vendor/bin/local-php-security-checker"
+            "vendor/bin/behat --colors --format=pretty --out std --format=junit --out ./var/log/qa-report || true",
+            "vendor/bin/security-checker security:check --format=json > ./var/log/qa-report/security-checker.json"
         ],
         "create-jwt": [
             "mkdir -p config/jwt",
