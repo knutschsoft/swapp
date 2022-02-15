@@ -21,7 +21,12 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "minimum-stability": "stable",
-        "prefer-stable" : true
+        "prefer-stable" : true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "symfony/flex": true
+        }
     },
     "require": {
         "php": ">=8.1",
@@ -145,21 +150,9 @@
             "php bin/console doctrine:migrations:migrate --no-interaction"
         ],
         "post-install-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/",
-            "local-php-security-checker-installer"
+            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/"
         ],
         "post-update-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
             "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/"
         ],
         "auto-scripts": {
