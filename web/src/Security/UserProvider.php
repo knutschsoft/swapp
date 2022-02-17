@@ -6,7 +6,7 @@ namespace App\Security;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -19,18 +19,23 @@ class UserProvider implements UserProviderInterface
         $this->userRepository = $userRepository;
     }
 
-    public function loadUserByUsername(string $usernameOrEmail): UserInterface
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->userRepository->loadUserByUsername($usernameOrEmail);
+        $user = $this->userRepository->loadUserByIdentifier($identifier);
         if (\is_null($user)) {
-            throw new UsernameNotFoundException();
+            throw new UserNotFoundException();
         }
 
         if ($user instanceof User && !$user->isEnabled()) {
-            throw new UsernameNotFoundException();
+            throw new UserNotFoundException();
         }
 
         return $user;
+    }
+
+    public function loadUserByUsername(string $usernameOrEmail): UserInterface
+    {
+        return $this->loadUserByIdentifier($usernameOrEmail);
     }
 
     /**
@@ -46,6 +51,7 @@ class UserProvider implements UserProviderInterface
      * @return UserInterface
      *
      * @throws UnsupportedUserException if the user is not supported
+     * @throws UserNotFoundException if the user is not found
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
@@ -55,7 +61,7 @@ class UserProvider implements UserProviderInterface
 
         $reloadedUser = $this->userRepository->findOneBy(['id' => $user->getId()]);
         if (null === $reloadedUser) {
-            throw new UsernameNotFoundException(\sprintf('User with ID "%s" could not be reloaded.', $user->getId()));
+            throw new UserNotFoundException(\sprintf('User with ID "%s" could not be reloaded.', $user->getId()));
         }
 
         return $reloadedUser;

@@ -1,7 +1,4 @@
 {
-    "api-platform/api-pack": {
-        "version": "v1.2.2"
-    },
     "api-platform/core": {
         "version": "2.5",
         "recipe": {
@@ -131,18 +128,6 @@
             "ref": "c2ab78f625df0c89af5908d50a28602ff8c4919f"
         }
     },
-    "easycorp/easy-log-handler": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
-        },
-        "files": [
-            "config/packages/dev/easy_log_handler.yaml"
-        ]
-    },
     "egulias/email-validator": {
         "version": "3.1.1"
     },
@@ -181,9 +166,6 @@
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
-    },
-    "fzaninotto/faker": {
-        "version": "v1.8.0"
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.37"
@@ -279,20 +261,11 @@
     "nikic/php-parser": {
         "version": "v4.2.4"
     },
-    "ocramius/proxy-manager": {
-        "version": "2.2.3"
-    },
-    "paragonie/random_compat": {
-        "version": "v9.99.99"
-    },
     "phar-io/manifest": {
         "version": "1.0.3"
     },
     "phar-io/version": {
         "version": "2.0.1"
-    },
-    "php": {
-        "version": "7.4"
     },
     "php-webdriver/webdriver": {
         "version": "1.7.1"
@@ -338,9 +311,6 @@
     },
     "phpunit/php-timer": {
         "version": "1.0.9"
-    },
-    "phpunit/php-token-stream": {
-        "version": "2.0.2"
     },
     "phpunit/phpunit": {
         "version": "4.7",
@@ -487,7 +457,7 @@
         }
     },
     "symfony/amqp-messenger": {
-        "version": "v5.2.7"
+        "version": "v5.4.3"
     },
     "symfony/asset": {
         "version": "v4.3.4"
@@ -530,7 +500,7 @@
         "version": "v4.3.4"
     },
     "symfony/doctrine-messenger": {
-        "version": "v5.2.7"
+        "version": "v5.4.3"
     },
     "symfony/dom-crawler": {
         "version": "v4.3.4"
@@ -670,9 +640,6 @@
     "symfony/options-resolver": {
         "version": "v4.4.20"
     },
-    "symfony/orm-pack": {
-        "version": "v2.0.0"
-    },
     "symfony/panther": {
         "version": "v0.6.1"
     },
@@ -716,23 +683,17 @@
     "symfony/polyfill-php56": {
         "version": "v1.17.0"
     },
-    "symfony/polyfill-php70": {
-        "version": "v1.18.0"
-    },
     "symfony/polyfill-php72": {
         "version": "v1.12.0"
     },
     "symfony/polyfill-php73": {
-        "version": "v1.12.0"
+        "version": "v1.24.0"
     },
     "symfony/polyfill-php80": {
         "version": "v1.17.0"
     },
     "symfony/polyfill-php81": {
         "version": "v1.23.0"
-    },
-    "symfony/polyfill-util": {
-        "version": "v1.17.0"
     },
     "symfony/polyfill-uuid": {
         "version": "v1.23.0"
@@ -750,7 +711,7 @@
         "version": "v4.4.15"
     },
     "symfony/redis-messenger": {
-        "version": "v5.2.7"
+        "version": "v5.4.3"
     },
     "symfony/routing": {
         "version": "4.2",
@@ -786,16 +747,13 @@
         "version": "v4.3.4"
     },
     "symfony/security-guard": {
-        "version": "v4.3.4"
+        "version": "v5.4.3"
     },
     "symfony/security-http": {
         "version": "v4.3.4"
     },
     "symfony/serializer": {
         "version": "v4.3.4"
-    },
-    "symfony/serializer-pack": {
-        "version": "v1.0.3"
     },
     "symfony/service-contracts": {
         "version": "v1.1.6"
@@ -908,37 +866,16 @@
     "twig/cssinliner-extra": {
         "version": "v3.3.0"
     },
-    "twig/extensions": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a86723ee8d8b2f9437c8ce60a5546a1c267da5ed"
-        },
-        "files": [
-            "config/packages/twig_extensions.yaml"
-        ]
-    },
     "twig/extra-bundle": {
         "version": "v3.3.1"
     },
     "twig/twig": {
         "version": "v2.11.3"
     },
-    "webimpress/safe-writer": {
-        "version": "2.0.1"
-    },
     "webmozart/assert": {
         "version": "1.5.0"
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"
-    },
-    "zendframework/zend-code": {
-        "version": "3.3.2"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }

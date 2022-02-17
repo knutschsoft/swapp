@@ -46,6 +46,11 @@ class DoctrineORMUserRepository extends ServiceEntityRepository implements UserR
             ->getOneOrNullResult();
     }
 
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
+    {
+        return $this->loadUserByUsername($identifier);
+    }
+
     public function findByIdAndConfirmationToken(string $userId, string $confirmationToken): User
     {
         $queryBuilder = $this

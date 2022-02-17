@@ -350,6 +350,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     #[Groups(['user:read'])]
     public function getUsername(): string
     {
