@@ -156,7 +156,7 @@
             <b-form-group id="input-group-Tag" label="Tags" label-for="input-Tag">
                 <b-form-checkbox-group
                     id="input-Tag"
-                    v-model="form.tags"
+                    v-model="form.wayPointTags"
                     :disabled="isLoading"
                     class="row"
                 >
@@ -245,7 +245,7 @@ export default {
             imageFileName: null,
             note: '',
             oneOnOneInterview: '',
-            tags: [],
+            wayPointTags: [],
             isMeeting: false,
         };
         return {
@@ -400,7 +400,6 @@ export default {
                     ageRange: ageRange,
                     gender: {
                         gender: 'm',
-                        wurst: 'm',
                     },
                     peopleCount: {
                         count: 0,

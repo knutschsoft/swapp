@@ -1,4 +1,4 @@
-Feature: Testing wayPoint change resource
+Feature: Testing wayPoint create resource
 
   Background:
     Given the following clients exists:
@@ -34,22 +34,19 @@ Feature: Testing wayPoint change resource
       | name        | team   | ageRanges |
       | Spaziergang | CA     | 1-2,3-10  |
       | Gamescon    | Gamers | 1-2,3-10  |
-    Given the following way points exists:
-      | locationName | walkName    |
-      | Assieck      | Spaziergang |
-      | BOTW         | Gamescon    |
-      | BOTW2        | Gamescon    |
+#    Given the following way points exists:
+#      | locationName | walkName    |
+#      | Assieck      | Spaziergang |
+#      | BOTW         | Gamescon    |
+#      | BOTW2        | Gamescon    |
 
-  @api @wayPointChange @security
-  Scenario: I can request /api/way_points/change as authenticated user and will change locationName of a wayPoint with script tags inside
+  @api @wayPointCreate
+  Scenario: I can request /api/way_points/create as authenticated user and will create wayPoint
 
-    Given I can find the following wayPoints in database:
-      | locationName | ageGroups                                          |
-      | Assieck      | 1-2,m,0;1-2,w,0;1-2,x,0;3-10,m,0;3-10,w,0;3-10,x,0 |
     Given I am authenticated against api as "two@pac.de"
-    When I send an api platform "POST" request to "/api/way_points/change" with parameters:
+    When I send an api platform "POST" request to "/api/way_points/create" with parameters:
       | key               | value                                                         |
-      | wayPoint          | wayPointIri<Assieck>                                          |
+      | walk              | walkIri<Spaziergang>                                          |
       | locationName      | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
       | note              | High and out.                                                 |
       | oneOnOneInterview | Sonne                                                         |
@@ -63,21 +60,45 @@ Feature: Testing wayPoint change resource
       | locationName | \| Google holla |
 
     Given I can find the following wayPoints in database:
-      | locationName    | ageGroups                                          |
-      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 |
+      | locationName    | ageGroups                                          | imageName |
+      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | <null>    |
 
-    And there are exactly 3 wayPoints in database
+    And there are exactly 1 wayPoints in database
 
-  @api @wayPointChange
-  Scenario: I can request /api/way_points/change as authenticated user with wrong client and will try to change of a wayPoint
+  @api @wayPointCreate @imageFile
+  Scenario: I can request /api/way_points/create as authenticated user and will create wayPoint with on imageFile
+
+    Given I am authenticated against api as "two@pac.de"
+    When I send an api platform "POST" request to "/api/way_points/create" with parameters:
+      | key               | value                                                         |
+      | walk              | walkIri<Spaziergang>                                          |
+      | locationName      | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
+      | note              | High and out.                                                 |
+      | oneOnOneInterview | Sonne                                                         |
+      | isMeeting         | <false>                                                       |
+      | ageGroups         | ageGroups<1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1> |
+      | wayPointTags      | tagIris<Gewalt,Drogen>                                        |
+      | imageFileName     | AreYouDrunk.jpg                                               |
+      | imageFileData     | @image.jpg                                                    |
+#    And print last response
+    Then the response status code should be 200
+    And the JSON nodes should be equal to:
+      | @type        | WayPoint        |
+      | locationName | \| Google holla |
 
     Given I can find the following wayPoints in database:
-      | locationName | ageGroups                                          |
-      | Assieck      | 1-2,m,0;1-2,w,0;1-2,x,0;3-10,m,0;3-10,w,0;3-10,x,0 |
+      | locationName    | ageGroups                                          | imageName       |
+      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | AreYouDrunk.jpg |
+
+    And there are exactly 1 wayPoints in database
+
+  @api @wayPointCreate
+  Scenario: I can request /api/way_points/create as authenticated user with wrong client-walk-combination and will try to create a wayPoint
+
     Given I am authenticated against api as "karl@gamer.de"
-    When I send an api platform "POST" request to "/api/way_points/change" with parameters:
+    When I send an api platform "POST" request to "/api/way_points/create" with parameters:
       | key               | value                                                         |
-      | wayPoint          | wayPointIri<Assieck>                                          |
+      | walk              | walkIri<Spaziergang>                                          |
       | locationName      | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
       | note              | High and out.                                                 |
       | oneOnOneInterview | Sonne                                                         |
@@ -87,23 +108,30 @@ Feature: Testing wayPoint change resource
 #    And print last response
     And the JSON nodes should be equal to:
       | hydra:title | An error occurred |
+    And the JSON nodes should contain:
+      | hydra:description | Item not found for |
+#    And the JSON nodes should contain:
+#      | hydra:description | /api/tags |
+    And the JSON nodes should contain:
+      | hydra:description | /api/walks |
 
-  @api @wayPointChange
-  Scenario: I can request /api/way_points/change as authenticated user and will change tags of a wayPoint of which i do not have access to
+  @api @wayPointCreate
+  Scenario: I can request /api/way_points/create as authenticated user with wrong client-wayPointTags-combination and will try to create a wayPoint
 
-    Given I can find the following wayPoints in database:
-      | locationName | ageGroups                                          |
-      | Assieck      | 1-2,m,0;1-2,w,0;1-2,x,0;3-10,m,0;3-10,w,0;3-10,x,0 |
-    Given I am authenticated against api as "two@pac.de"
-    When I send an api platform "POST" request to "/api/way_points/change" with parameters:
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send an api platform "POST" request to "/api/way_points/create" with parameters:
       | key               | value                                                         |
-      | wayPoint          | wayPointIri<Assieck>                                          |
+      | walk              | walkIri<Gamescon>                                             |
       | locationName      | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
       | note              | High and out.                                                 |
       | oneOnOneInterview | Sonne                                                         |
       | isMeeting         | <false>                                                       |
       | ageGroups         | ageGroups<1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1> |
-      | wayPointTags      | tagIris<Kulleraugen>                                          |
+      | wayPointTags      | tagIris<Gewalt,Drogen>                                        |
 #    And print last response
     And the JSON nodes should be equal to:
       | hydra:title | An error occurred |
+    And the JSON nodes should contain:
+      | hydra:description | Item not found for |
+    And the JSON nodes should contain:
+      | hydra:description | /api/tags |

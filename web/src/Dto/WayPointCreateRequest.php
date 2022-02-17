@@ -31,35 +31,33 @@ final class WayPointCreateRequest
     #[Assert\Length(min: 0, max: 2500)]
     public string $oneOnOneInterview;
 
-    public ?string $imageFileData;
+    public ?string $imageFileData = null;
 
     #[Assert\Length(min: 5, max: 200)]
-    public ?string $imageFileName;
+    public ?string $imageFileName = null;
 
     public bool $isMeeting;
 
-    /**
-     * @var AgeGroup[]
-     *
-     * @Assert\All({
-     *     @Assert\NotBlank,
-     *     @Assert\NotNull,
-     *     @Assert\Type(type="App\Value\AgeGroup")
-     * })
-     */
+    /** @var AgeGroup[] */
+    #[Assert\All(
+        [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
+            new Assert\Type(type: AgeGroup::class),
+        ]
+    )]
     #[Assert\NotNull]
     public array $ageGroups;
-    /**
-     * @var Tag[]
-     *
-     * @Assert\All({
-     *     @Assert\NotBlank,
-     *     @Assert\NotNull,
-     *     @Assert\Type(type="App\Entity\Tag")
-     * })
-     */
+    /** @var Tag[] */
+    #[Assert\All(
+        [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
+            new Assert\Type(type: Tag::class),
+        ]
+    )]
     #[Assert\NotNull]
-    public array $tags;
+    public array $wayPointTags;
 
     #[Assert\Image(maxSize: "5M", maxSizeMessage: 'way_point.file.max-size')]
     public function getDecodedImageData(): ?File

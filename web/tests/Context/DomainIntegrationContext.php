@@ -389,8 +389,12 @@ final class DomainIntegrationContext extends RawMinkContext
                 $walk = $this->getWalkByName($row['walk']);
                 Assert::eq($wayPoint->getWalk()->getId(), $walk->getId());
             }
-            if (isset($row['imageName'])) {
-                Assert::eq($wayPoint->getImageName(), $row['imageName']);
+            if (isset($row['imageName']) && $row['imageName']) {
+                Assert::eq(
+                    $wayPoint->getImageName(),
+                    $row['imageName'] === '<null>' ? null : $row['imageName'],
+                    'Wrong value for imageName: It is %s instead of expected %s.'
+                );
             }
             if (isset($row['ageGroups'])) {
                 $expectedAgeGroups = $this->getAgeGroupsFromString($row['ageGroups']);

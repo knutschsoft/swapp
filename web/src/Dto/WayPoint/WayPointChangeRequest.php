@@ -38,26 +38,24 @@ final class WayPointChangeRequest
 
     public bool $isMeeting;
 
-    /**
-     * @var AgeGroup[]
-     *
-     * @Assert\All({
-     *     @Assert\NotBlank,
-     *     @Assert\NotNull,
-     *     @Assert\Type(type="App\Value\AgeGroup")
-     * })
-     */
+    /** @var AgeGroup[] */
+    #[Assert\All(
+        [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
+            new Assert\Type(type: AgeGroup::class),
+        ]
+    )]
     #[Assert\NotNull]
     public array $ageGroups;
-    /**
-     * @var Tag[]
-     *
-     * @Assert\All({
-     *     @Assert\NotBlank,
-     *     @Assert\NotNull,
-     *     @Assert\Type(type="App\Entity\Tag")
-     * })
-     */
+    /** @var Tag[] */
+    #[Assert\All(
+        [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
+            new Assert\Type(type: Tag::class),
+        ]
+    )]
     #[Assert\NotNull]
     public array $wayPointTags;
 

@@ -66,7 +66,7 @@ Feature: Testing walk change resource
       | key  | value             |
       | walk | walkIri<Gamescon> |
       | team | teamIri<Westhang> |
-    And print last response
+#    And print last response
     Then the response status code should be 422
     And the JSON nodes should be equal to:
       | violations[0].propertyPath  | name                                |
