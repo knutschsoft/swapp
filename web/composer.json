@@ -35,14 +35,16 @@
         }
     ],
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
         "ext-json": "*",
         "api-platform/core": "~2.5",
         "doctrine/doctrine-bundle": "~2.3",
         "doctrine/doctrine-migrations-bundle": "~3.1",
         "doctrine/orm": "~2.6",
         "dunglas/doctrine-json-odm": "~1.1",
-        "enshrined/svg-sanitize": "^0.14.1",
+        "enshrined/svg-sanitize": "^0.15",
         "gesdinet/jwt-refresh-token-bundle": "~1.0",
         "league/csv": "~9.5",
         "league/flysystem-bundle": "^2.0",
@@ -157,19 +159,20 @@
             "php bin/console doctrine:migrations:migrate --no-interaction"
         ],
         "post-install-cmd": [
-            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
-            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/"
+            "@auto-scripts"
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/": "script"
         }
     },
     "extra": {
         "symfony": {
-            "allow-contrib": true,
+            "allow-contrib": false,
             "require": "5.4.*"
         }
     }
