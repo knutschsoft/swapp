@@ -35,7 +35,7 @@ Feature: Testing user disable resource
   Scenario: I can request /api/users/disable as authenticated user
     Given I am authenticated against api as "two@pac.de"
     When I send an api platform POST request to "/api/users/disable" with parameters:
-      | key  | value                |
+      | key  | value               |
       | user | userIri<two@pac.de> |
     Then the response should be in JSON
 #    And print last JSON response
@@ -89,8 +89,8 @@ Feature: Testing user disable resource
     Then the response should be in JSON
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | email   | two@pac.de |
-      | enabled | 0      |
+      | email     | two@pac.de |
+      | isEnabled | 0          |
 
   @api @user
   Scenario: I can request /api/users/disable as authenticated user
@@ -102,5 +102,5 @@ Feature: Testing user disable resource
     Then the response should be in JSON
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | email   | two@pac.de |
-      | enabled | 0      |
+      | email     | two@pac.de |
+      | isEnabled | 0          |

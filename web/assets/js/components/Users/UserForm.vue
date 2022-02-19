@@ -60,7 +60,7 @@
             content-cols-lg="8"
             label-cols-lg="2"
         >
-            <template slot="label" slot-scope="{ }">
+            <template v-slot:label>
                 Klient
             </template>
             <b-form-select

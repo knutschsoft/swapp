@@ -12,13 +12,13 @@
             class="mb-0"
             stacked="sm"
         >
-            <template v-slot:cell(enabled)="row">
+            <template v-slot:cell(isEnabled)="row">
                 <span
-                    @click="toggleEnabled(row.item['@id'], row.item.enabled)"
+                    @click="toggleEnabled(row.item['@id'], row.item.isEnabled)"
                     class="cursor-pointer"
                 >
                     <mdicon
-                        v-if="row.item.enabled"
+                        v-if="row.item.isEnabled"
                         name="TagOutline"
                         class="text-success"
                     />
@@ -107,7 +107,7 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: 'enabled',
+                    key: 'isEnabled',
                     label: 'Ist aktiv?',
                     sortable: true,
                 },
@@ -161,13 +161,8 @@ export default {
         ]);
     },
     methods: {
-        clientFormatter(value) {
-            return this.getClientByIri(value).name;
-        },
-        getClientByIri(iri) {
-            const id = iri.replace('/api/clients/', '');
-
-            return this.$store.getters['client/getClientById'](id);
+        clientFormatter(clientIri) {
+            return this.$store.getters['client/getClientByIri'](clientIri).name;
         },
         editSystemicQuestion(systemicQuestion) {
             this.$root.$emit('bv::show::modal', this.editModalSystemicQuestion.id);

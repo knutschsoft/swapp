@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Webmozart\Assert\Assert;
 
 #[ORM\Table(name: 'systemic_question')]
@@ -150,6 +151,7 @@ class SystemicQuestion
     }
 
     #[Groups(['systemicQuestion:read'])]
+    #[SerializedName('isEnabled')]
     public function isEnabled(): bool
     {
         return $this->isEnabled;

@@ -4,8 +4,8 @@
             <b-col
                 class="mb-1"
                 xs="12"
-                sm="12"
-                md="12"
+                :sm="isSuperAdmin ? 8 : 12"
+                :md="isSuperAdmin ? 6 : 12"
             >
                 <b-input-group
                     size="sm"
@@ -13,7 +13,9 @@
                     <b-input-group-prepend
                         @click.stop="togglePicker"
                     >
-                        <b-input-group-text>
+                        <b-input-group-text
+                            :class="(dateRange.startDate.getTime() !== defaultDateRange.startDate.getTime() || dateRange.endDate.getTime() !== defaultDateRange.endDate.getTime()) ? 'font-weight-bold' : ''"
+                        >
                             Zeitraum
                         </b-input-group-text>
                     </b-input-group-prepend>
@@ -57,6 +59,46 @@
                     </b-input-group-append>
                 </b-input-group>
             </b-col>
+            <b-col
+                v-if="isSuperAdmin"
+                xs="12"
+                sm="4"
+                md="6"
+                class="mb-1"
+            >
+                <b-input-group
+                    size="sm"
+                >
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            title="Nur bestimmten Klient anzeigen."
+                            :class="client !== null ? 'font-weight-bold' : ''"
+                        >
+                            Klient
+                        </b-input-group-text>
+                    </b-input-group-prepend>
+                    <b-form-select
+                        v-model="client"
+                        data-test="client"
+                        placeholder="Für welchen Klienten?"
+                        :options="availableClients"
+                        value-field="@id"
+                        text-field="name"
+                    >
+                        <template #first>
+                            <b-form-select-option :value="null">Alle Klienten</b-form-select-option>
+                        </template>
+                    </b-form-select>
+                    <b-input-group-append>
+                        <b-button
+                            @click="client = null"
+                            :disabled="client === null"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
         </b-row>
         <b-table
             v-show="!isLoading"
@@ -64,13 +106,32 @@
             :fields="fields"
             small
             striped
+            hover
+            outlined
             foot-clone
             class="mb-0"
-            :stacked="this.fields.length > 11 ? 'lg' : 'sm'"
+            :stacked="isTableStacked"
         >
             <template v-slot:cell()="row">
-                <template v-if="row.field.key === 'username'">
-                    {{ row.value }}
+                <template v-if="row.field.key === 'user'">
+                    <span
+                        :class="{ 'text-muted': !row.value.isEnabled }"
+                        :title="!row.value.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
+                    >
+                        {{ row.value.username }}
+                        <mdicon
+                            v-if="!row.value.isEnabled"
+                            name="AccountOff"
+                            class="text-muted"
+                            size="16"
+                        />
+                    </span>
+                    <small
+                        v-if="isSuperAdmin && !client"
+                        class="text-muted or-text-step"
+                    >
+                        {{ clientFormatter(row.value.client) }}
+                    </small>
                 </template>
                 <mdicon
                     v-else-if="isLoadingEntries.includes(row.field.key)"
@@ -88,7 +149,7 @@
                 />
             </template>
 
-            <template #foot(username)="data">
+            <template #foot(user)="data">
                 Summe
             </template>
 
@@ -96,6 +157,20 @@
                 {{ getSumOfColumn(data.column)}}
             </template>
         </b-table>
+        <b-alert
+            show
+            class="w-100 text-muted mb-0"
+            variant="debug"
+        >
+            <b>
+                Hinweis:
+            </b>
+            <ul class="mb-0">
+                <li>
+                    Ein Nutzer gilt als aktiv, wenn er in einem Monat an mindestens einer Runde teilgenommen hat.
+                </li>
+            </ul>
+        </b-alert>
     </div>
 </template>
 
@@ -148,11 +223,30 @@ export default {
             dateFrom: now.subtract(6, 'month').startOf('month'),
             dateTo: now.add(1, 'month').endOf('month'),
             entries: [],
+            client: null,
         };
     },
     computed: {
+        isTableStacked() {
+            if (this.fields.length > 11) {
+                return 'lg';
+            } else if (this.fields.length < 4) {
+                return 'xs';
+            }
+
+            return 'sm';
+        },
+        isSuperAdmin() {
+            return this.$store.getters['security/isSuperAdmin'];
+        },
+        availableClients() {
+            return this.$store.getters['client/clients'];
+        },
+        currentUser() {
+            return this.$store.getters['security/currentUser'];
+        },
         tableData() {
-            return this.entries;
+            return this.entries.filter(entry =>  !this.client || this.client === entry.user.client);
         },
         fields() {
             let fields = [];
@@ -161,7 +255,7 @@ export default {
 
             fields.push(
                 {
-                    key: 'username',
+                    key: 'user',
                     label: 'Benutzername',
                     sortable: true,
                     class: 'text-center',
@@ -180,7 +274,17 @@ export default {
             return fields;
         },
         users() {
-            return this.$store.getters['user/users'];
+            return this.$store.getters['user/users'].slice().sort((userA, userB) => {
+                if (userA.isEnabled === userB.isEnabled) {
+                    if (userA.username.toUpperCase() < userB.username.toUpperCase()) {
+                        return -1;
+                    }
+                } else if (userA.isEnabled && !userB.isEnabled) {
+                    return -1;
+                } else if (!userA.isEnabled && userB.isEnabled) {
+                    return 1;
+                }
+            });
         },
         isLoading() {
             return this.$store.getters['user/isLoading'];
@@ -191,21 +295,28 @@ export default {
             this.$localStorage.set('aktive-benutzer-startDate', dateRange.startDate);
             this.$localStorage.set('aktive-benutzer-endDate', dateRange.endDate);
             await this.updateEntries();
-        }
+        },
+        client: async function () {
+            await this.updateEntries();
+        },
     },
     async created() {
         await this.$store.dispatch('user/findAll');
 
         this.users.forEach((user) => {
             let item = {
-                username: user.username,
+                user: user,
             };
             this.entries.push(item);
         });
 
+        this.client = this.isSuperAdmin ? null : this.currentUser.client;
         await this.updateEntries();
     },
     methods: {
+        clientFormatter(clientIri) {
+            return this.$store.getters['client/getClientByIri'](clientIri).name;
+        },
         getKeyOfDayjs(date) {
             return `${date.month()}-${date.year()}`;
         },
@@ -235,13 +346,14 @@ export default {
                     page: 1,
                     itemsPerPage: 1000,
                     filter: {
-                        'walks.timeRange': `${start.toISOString()}..${start.endOf('month').toISOString()}`
-                    }
+                        'walks.timeRange': `${start.toISOString()}..${start.endOf('month').toISOString()}`,
+                        'client': this.client,
+                    },
                 });
 
                 users.data['hydra:member'].forEach((user) => {
                     this.entries.forEach((oldObject, key) => {
-                        if (oldObject['username'] === user.username) {
+                        if (oldObject.user['@id'] === user['@id']) {
                             oldObject[this.getKeyOfDayjs(start)] = true;
                             // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
                             this.entries.splice(key, 1, oldObject);

@@ -189,7 +189,7 @@
                                     :key="key"
                                     button-class="text-truncate"
                                     style="font-size: 14px;"
-                                    :disabled="!user.enabled"
+                                    :disabled="!user.isEnabled"
                                     @click="switchUser(user)"
                                 >
                                     {{ user.username }}

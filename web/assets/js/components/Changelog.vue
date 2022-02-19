@@ -56,6 +56,14 @@ export default {
             },
             items: [
                 {
+                    header: '20.02.2022',
+                    avatarText: '🛠',
+                    entries: [
+                        { text: 'Feature: Ein Admin kann die Benutzerliste nach aktiven und inaktiven Benutzern filtern.' },
+                        { text: 'Feature: Die Benutzer in der Benutzerliste sind nun nach aktiv/inaktiv und Benutzername sortiert.' },
+                    ],
+                },
+                {
                     header: '14.02.2022 - Valentinstags-Update',
                     avatarText: '💘🎁',
                     entries: [
@@ -68,7 +76,7 @@ export default {
                 },
                 {
                     header: '30.10.2021',
-                    avatarText: '🆕️🛠️',
+                    avatarText: '🛠️',
                     entries: [
                         {
                             text: 'UX-Feature: Die Autocomplete-Vorschläge für den Ort eines Wegpunktes sind nun aufsteigend alphabetisch sortiert.',

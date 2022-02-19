@@ -6,6 +6,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Dto\User\PasswordChangeRequest;
 use App\Dto\User\RequestPasswordResetRequest;
@@ -30,6 +31,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Table(name: 'user')]
 #[ORM\Entity(repositoryClass: DoctrineORMUserRepository::class)]
@@ -144,6 +146,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'timeRange' => DateFilter::EXCLUDE_NULL,
     ],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['client' => SearchFilter::STRATEGY_EXACT])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
@@ -468,6 +471,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     #[Groups(['user:read'])]
+    #[SerializedName('isEnabled')]
     public function isEnabled(): bool
     {
         return $this->enabled;
@@ -484,6 +488,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     #[Groups(['user:read'])]
+    #[SerializedName('isSuperAdmin')]
     public function isSuperAdmin(): bool
     {
         return $this->hasRole(static::ROLE_SUPER_ADMIN);

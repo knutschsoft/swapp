@@ -169,13 +169,8 @@
             ]);
         },
         methods: {
-            clientFormatter(value) {
-                return this.getClientByIri(value).name;
-            },
-            getClientByIri(iri) {
-                const id = iri.replace('/api/clients/', '');
-
-                return this.$store.getters['client/getClientById'](id);
+            clientFormatter(clientIri) {
+                return this.$store.getters['client/getClientByIri'](clientIri).name;
             },
             getUserByIri(userIri) {
                 return this.$store.getters['user/getUserByIri'](userIri);

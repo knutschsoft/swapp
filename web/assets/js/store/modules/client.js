@@ -43,6 +43,20 @@ const getters = {
             return foundClient;
         };
     },
+    getClientByIri(state) {
+        return clientIri => {
+            let foundClient = false;
+            state.clients.forEach(
+                (client) => {
+                    if (String(client['@id']) === String(clientIri)) {
+                        foundClient = client;
+                    }
+                },
+            );
+
+            return foundClient;
+        };
+    },
     hasClients(state) {
         return state.clients.length > 0;
     },

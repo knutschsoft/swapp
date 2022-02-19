@@ -89,8 +89,8 @@ Feature: Testing user enable resource
     Then the response should be in JSON
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | email   | two@pac.de |
-      | enabled | true       |
+      | email     | two@pac.de |
+      | isEnabled | true       |
 
   @api @user
   Scenario: I can request /api/users/enable as authenticated user
@@ -102,5 +102,5 @@ Feature: Testing user enable resource
     Then the response should be in JSON
 #    And print last JSON response
     And the JSON nodes should be equal to:
-      | email   | two@pac.de |
-      | enabled | true       |
+      | email     | two@pac.de |
+      | isEnabled | true       |

@@ -25,7 +25,7 @@
                         <li v-for="userIri in row.item.users">
                             {{ getUserByIri(userIri).username }}
                             <mdicon
-                                v-if="getUserByIri(userIri).enabled"
+                                v-if="getUserByIri(userIri).isEnabled"
                                 name="Account"
                                 size="16"
                                 class="text-success"
@@ -43,7 +43,7 @@
                                 class="text-primary"
                             />
                             <mdicon
-                                v-if="getUserByIri(userIri).superAdmin"
+                                v-if="getUserByIri(userIri).isSuperAdmin"
                                 name="AccountSupervisor"
                                 size="16"
                                 class="text-danger"

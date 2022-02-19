@@ -1,5 +1,70 @@
 <template>
     <div>
+        <b-row class="p-2">
+            <b-col
+                v-if="isSuperAdmin"
+                xs="12"
+                sm="6"
+            >
+                <b-input-group size="sm" class="mb-2">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            title="Nur bestimmten Klient anzeigen."
+                            :class="filter.client !== null ? 'font-weight-bold' : ''"
+                        >
+                            Klient?
+                        </b-input-group-text>
+                    </b-input-group-prepend>
+                    <b-form-select
+                        v-model="filter.client"
+                        data-test="client"
+                        placeholder="Für welchen Klienten?"
+                        :options="availableClients"
+                        value-field="@id"
+                        text-field="name"
+                    >
+                        <template #first>
+                            <b-form-select-option :value="null">Alle Klienten</b-form-select-option>
+                        </template>
+                    </b-form-select>
+                    <b-input-group-append>
+                        <b-button
+                            @click="filter.client = null"
+                            :disabled="filter.client === null"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+            <b-col
+                xs="12"
+                :sm="isSuperAdmin ? 6 : 12"
+            >
+                <b-input-group size="sm" class="">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            title="Nur aktivierte Accounts?"
+                            :class="filter.isEnabled !== true ? 'font-weight-bold' : ''"
+                        >
+                            Nur aktivierte?
+                        </b-input-group-text>
+                    </b-input-group-prepend>
+                    <b-form-select
+                        v-model="filter.isEnabled"
+                        :options="isEnabledOptions"
+                    />
+                    <b-input-group-append>
+                        <b-button
+                            @click="filter.isEnabled = true"
+                            :disabled="filter.isEnabled === true"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+        </b-row>
         <div
             v-if="isLoading"
             class="d-flex justify-content-center my-3"
@@ -19,7 +84,21 @@
             class="mb-0"
             :stacked="this.isSuperAdmin ? 'xl' : 'lg'"
         >
-            <template v-slot:cell(enabled)="row">
+            <template v-slot:cell(username)="row">
+                <span
+                    :class="{ 'text-muted': !row.item.isEnabled }"
+                    :title="!row.item.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
+                >
+                    {{ row.item.username }}
+                    <mdicon
+                        v-if="!row.item.isEnabled"
+                        name="AccountOff"
+                        class="text-muted"
+                        size="16"
+                    />
+                </span>
+            </template>
+            <template v-slot:cell(isEnabled)="row">
                 <mdicon
                     v-if="isLoadingToggleUserState(row.item['@id'])"
                     name="loading"
@@ -28,12 +107,12 @@
                 />
                 <div
                     v-else
-                    @click="toggleEnabled(row.item, row.item.enabled)"
-                    :title="`Account ${ row.item.enabled ? 'de' : '' }aktivieren`"
+                    @click="toggleEnabled(row.item, row.item.isEnabled)"
+                    :title="`Account ${ row.item.isEnabled ? 'de' : '' }aktivieren`"
                     class="cursor-pointer"
                 >
                     <mdicon
-                        v-if="row.item.enabled"
+                        v-if="row.item.isEnabled"
                         name="check"
                         class="text-success"
                     />
@@ -62,10 +141,10 @@
                             v-if="isAdmin"
                             size="sm"
                             class="mr-2"
-                            @click="toggleEnabled(row.item, row.item.enabled)"
+                            @click="toggleEnabled(row.item, row.item.isEnabled)"
                             :disabled="isLoadingToggleUserState(row.item['@id'])"
                         >
-                            Account {{ row.item.enabled ? 'de' : '' }}aktivieren
+                            Account {{ row.item.isEnabled ? 'de' : '' }}aktivieren
                         </b-dropdown-item-button>
                         <b-dropdown-divider
                             v-if="isSuperAdmin && false"
@@ -158,9 +237,21 @@ export default {
                 id: 'edit-modal-user',
                 title: '',
             },
+            isEnabledOptions: [
+                { value: null, text: 'egal' },
+                { value: true, text: 'ja' },
+                { value: false, text: 'nur deaktivierte Accounts' },
+            ],
+            filter: {
+                client: null,
+                isEnabled: true,
+            },
         };
     },
     computed: {
+        availableClients() {
+            return this.$store.getters['client/clients'];
+        },
         fields() {
             return [
                 {
@@ -220,7 +311,7 @@ export default {
                     class: 'text-center',
                 },
                 {
-                    key: 'enabled',
+                    key: 'isEnabled',
                     label: 'Account aktiviert?',
                     sortable: true,
                     class: 'text-center',
@@ -280,7 +371,22 @@ export default {
             return this.$store.getters['security/isAdmin'];
         },
         users() {
-            return this.$store.getters['user/users'];
+            return this.$store.getters['user/users']
+                .filter(user => !this.filter.client || this.filter.client === user.client)
+                .filter(user => null === this.filter.isEnabled || this.filter.isEnabled === user.isEnabled)
+                .slice()
+                .sort((userA, userB) => {
+                    if (userA.isEnabled === userB.isEnabled) {
+                        if (userA.username.toUpperCase() < userB.username.toUpperCase()) {
+                            return -1;
+                        }
+                    } else if (userA.isEnabled && !userB.isEnabled) {
+                        return -1;
+                    } else if (!userA.isEnabled && userB.isEnabled) {
+                        return 1;
+                    }
+                })
+                ;
         },
         isLoading() {
             return this.$store.getters['user/isLoading'];
@@ -296,13 +402,8 @@ export default {
         isLoadingToggleUserState(userUri) {
             return this.$store.getters['user/isLoadingToggleUserState'](userUri);
         },
-        clientFormatter(value) {
-            return this.getClientByIri(value).name;
-        },
-        getClientByIri(iri) {
-            const id = iri.replace('/api/clients/', '');
-
-            return this.$store.getters['client/getClientById'](id);
+        clientFormatter(clientIri) {
+            return this.$store.getters['client/getClientByIri'](clientIri).name;
         },
         editUser(user) {
             this.editModal.title = `Benutzer "${user.username}" bearbeiten`;

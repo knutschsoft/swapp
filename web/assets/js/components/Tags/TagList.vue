@@ -99,13 +99,8 @@ export default {
         ]);
     },
     methods: {
-        clientFormatter(value) {
-            return this.getClientByIri(value).name;
-        },
-        getClientByIri(iri) {
-            const id = iri.replace('/api/clients/', '');
-
-            return this.$store.getters['client/getClientById'](id);
+        clientFormatter(clientIri) {
+            return this.$store.getters['client/getClientByIri'](clientIri).name;
         },
         editTag(tag) {
             this.$root.$emit('bv::show::modal', this.editModalTag.id);
