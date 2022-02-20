@@ -36,6 +36,7 @@ final class WayPointChangeRequest
     #[Assert\Length(min: 5, max: 200)]
     public ?string $imageFileName = null;
 
+    #[Assert\Type(type: 'bool')]
     public bool $isMeeting;
 
     /** @var AgeGroup[] */

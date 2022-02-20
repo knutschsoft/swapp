@@ -72,10 +72,10 @@ Feature: A user can do a walk
     Then I wait for "Tags" to appear
     Then I wait for "Gewalt" to appear
     Then I wait for "Drogen" to appear
-    Then the element "Ort" should be enabled
-    When I enter "Assieck" in "Ort" field
-    When I enter "Straßenbahnen sind blockiert" in "Beobachtung" field
-    When I enter "Jugo geht ab" in "Einzelgespräch" field
+    Then the element "locationName" should be enabled
+    When I enter "Assieck" in "locationName" field
+    When I enter "Straßenbahnen sind blockiert" in "note" field
+    When I enter "Jugo geht ab" in "oneOnOneInterview" field
     And I set browser window size to "1000" x "1800"
     And I click on text "Wegpunkt speichern und Runde abschließen"
     And there are exactly 1 walks in database

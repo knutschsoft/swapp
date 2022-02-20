@@ -1,4 +1,4 @@
-Feature: An user can request a non existing wayPoint and get redirected
+Feature: An user can upload an image when creating a new wayPoint
 
   Background:
     Given the following clients exists:
@@ -20,18 +20,18 @@ Feature: An user can request a non existing wayPoint and get redirected
 
   @javascript
   @wayPointImageUpload
-  Scenario: I can request a non existing wayPoint as an user without a group and I will get redirected to dashboard
+  Scenario: I can add an image when I create a wayPoint
     Given I am authenticated as "lonely@gmx.de"
     And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt-hinzufuegen"
     Then I wait for 'Wegpunkt zur Runde "Gorbitz" hinzufügen' to appear
-    And the element "Ort" should be enabled
-    When I enter "Assieck" in "Ort" field
-    When I enter "Straßenbahnen sind blockiert" in "Beobachtung" field
+    And the element "locationName" should be enabled
+    When I enter "Assieck" in "locationName" field
+    When I enter "Straßenbahnen sind blockiert" in "note" field
     When I enter "@image.jpg" in "Bildupload" field
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for "Wegpunkt ansehen" to disappear
-    And I click on element "save-way-point"
-    And I wait for "Wegpunkt erfolgreich hinzugefügt." to appear
+    And I click on element "button-way-point-submit"
+    And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich zur Runde hinzugefügt.' to appear
 
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to disappear
     Then I wait for "Wegpunkt ansehen" to appear

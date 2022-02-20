@@ -1,4 +1,4 @@
-Feature: An user can request a non existing wayPoint and get redirected
+Feature: An user can submit invalid entries in way point and get errors shown
 
   Background:
     Given the following clients exists:
@@ -24,11 +24,11 @@ Feature: An user can request a non existing wayPoint and get redirected
     Given I am authenticated as "lonely@gmx.de"
     And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt-hinzufuegen"
     Then I wait for 'Wegpunkt zur Runde "Gorbitz" hinzufügen' to appear
-    And the element "Ort" should be enabled
-    When I enter "A" in "Ort" field
+    And the element "locationName" should be enabled
+    When I enter "A" in "locationName" field
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for "Wegpunkt ansehen" to disappear
-    And I click on element "save-way-point"
+    And I click on element "button-way-point-submit"
     And I wait for "Wegpunkt erfolgreich hinzugefügt." to disappear
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for "Wegpunkt ansehen" to disappear

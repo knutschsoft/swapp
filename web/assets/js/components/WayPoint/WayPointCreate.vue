@@ -1,7 +1,8 @@
 <template>
     <way-point-form
-        submit-button-text="Neuen Wegpunkt erstellen"
-        :initial-client="{}"
+        submit-button-text="Wegpunkt speichern und weiteren Wegpunkt hinzufügen"
+        :initial-walk="walk"
+        :key="componentKey"
         @submit="handleSubmit"
     />
 </template>
@@ -15,35 +16,67 @@ export default {
     components: {
         WayPointForm,
     },
+    props: {
+        walk: {
+            required: true,
+            type: Object,
+        },
+    },
     data: function () {
         return {
+            componentKey: 0,
         };
     },
     computed: {
         currentUser() {
             return this.$store.getters['security/currentUser'];
         },
-        initialWayPoint() {
-            return this.currentUser.wayPoint;
-        },
     },
     async created() {
+        this.initialWalk = this.walk;
     },
     methods: {
-        async handleSubmit(payload) {
-            const wayPoint = await this.$store.dispatch('wayPoint/create', payload);
+        forceRerender() {
+            this.componentKey += 1;
+        },
+        async handleSubmit({ form, isWithFinish }) {
+            const wayPoint = await this.$store.dispatch('wayPoint/create', form);
             if (wayPoint) {
-                const message = `Der Klient "${wayPoint.name}" wurde erfolgreich erstellt.`;
+                let message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich zur Runde hinzugefügt.`;
+                if (isWithFinish) {
+                    message += ' Die Runde kann jetzt abgeschlossen werden';
+                }
                 this.$bvToast.toast(message, {
-                    title: 'Klient erstellt',
+                    title: 'Wegpunkt erstellt',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     appendToast: true,
                     solid: true,
                 });
+                if (isWithFinish) {
+                    this.$router.push({
+                        name: 'WalkEpilogue',
+                        params: { walkId: this.walk.id, successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
+                    });
+                } else {
+                    // this.$router.push({
+                    //     name: 'WalkAddWayPoint',
+                    //     params: { walkId: this.walk.id },
+                    // });
+                    // this.initialWalk = false;
+                    // this.initialWalk = this.walk;
+                    // this.initialWayPoint
+
+                    this.forceRerender();
+                    window.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth',
+                    });
+                }
             } else {
                 this.$bvToast.toast('Upps! :-(', {
-                    title: 'Klient erstellen fehlgeschlagen',
+                    title: 'Wegpunkt erstellen fehlgeschlagen',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     variant: 'danger',

@@ -3,6 +3,7 @@
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
+        form
         <b-form-group
             content-cols="12"
             label-cols="12"
@@ -14,9 +15,8 @@
                 <b-input
                     v-model="wayPoint.locationName"
                     required
-                    minlength="2"
                     maxlength="300"
-                    placeholder="Ort"
+                    :placeholder="walk ? 'Wo seid ihr gerade?' : 'Ort'"
                     :state="locationNameState"
                     data-test="locationName"
                     list="location-name-list"
@@ -201,6 +201,19 @@
         >
             {{ submitButtonText }}
         </b-button>
+        <b-button
+            v-if="walk"
+            type="submit"
+            variant="secondary"
+            :disabled="isFormInvalid"
+            data-test="button-way-point-submit-and-finish"
+            data-with-finish
+            block
+            class="col-12"
+            :tabindex="isFormInvalid ? '-1' : ''"
+        >
+            Wegpunkt speichern und Runde abschließen
+        </b-button>
         <form-error
             :error="error"
         />
@@ -218,7 +231,12 @@ export default {
         initialWayPoint: {
             type: Object,
             required: false,
-            default: {},
+            default: () => {},
+        },
+        initialWalk: {
+            type: Object,
+            required: false,
+            default: () => {},
         },
         submitButtonText: {
             type: String,
@@ -232,10 +250,10 @@ export default {
     data: function () {
         return {
             wayPoint: {
-                locationName: null,
+                locationName: '',
                 ageGroups: [],
                 imageName: null,
-                isMeeting: null,
+                isMeeting: false,
                 note: '',
                 oneOnOneInterview: '',
                 wayPointTags: [],
@@ -259,7 +277,7 @@ export default {
             return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);
         },
         walk() {
-            return this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
+            return this.initialWalk ? this.initialWalk : this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
         },
         locationNameState() {
             if (null === this.wayPoint.locationName || '' === this.wayPoint.locationName || undefined === this.wayPoint.locationName) {
@@ -336,21 +354,68 @@ export default {
         tags() {
             return this.$store.getters['tag/tags'];
         },
+        ageGroups() {
+            let ageGroups = [];
+            this.walk.ageRanges
+                .slice()
+                .sort((a, b) => a.rangeStart - b.rangeStart)
+                .forEach((ageRange) => {
+                    ageGroups.push({
+                        ageRange: ageRange,
+                        gender: {
+                            gender: 'm',
+                        },
+                        peopleCount: {
+                            count: 0,
+                        },
+                        frontendLabel: `${ageRange.frontendLabel} m`,
+                    });
+                    ageGroups.push({
+                        ageRange: ageRange,
+                        gender: {
+                            gender: 'w',
+                        },
+                        peopleCount: {
+                            count: 0,
+                        },
+                        frontendLabel: `${ageRange.frontendLabel} w`,
+                    });
+                    ageGroups.push({
+                        ageRange: ageRange,
+                        gender: {
+                            gender: 'x',
+                        },
+                        peopleCount: {
+                            count: 0,
+                        },
+                        frontendLabel: `${ageRange.frontendLabel} x`,
+                    });
+                });
+            return ageGroups;
+        },
     },
     async created() {
-        if (!this.walk) {
+        if (!this.walk && this.initialWayPoint) {
             await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
         }
-        if (!this.team) {
-            this.$store.dispatch('team/findAll');
+        if (!this.tags.length) {
+            await this.$store.dispatch('tag/findAll');
         }
-        this.wayPoint.locationName = this.initialWayPoint.locationName;
-        this.wayPoint.ageGroups = JSON.parse(JSON.stringify(this.initialWayPoint.ageGroups)) || [];
-        this.wayPoint.imageName = this.initialWayPoint.imageName;
-        this.wayPoint.isMeeting = this.initialWayPoint.isMeeting || false;
-        this.wayPoint.note = this.initialWayPoint.note;
-        this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;
-        this.wayPoint.wayPointTags = JSON.parse(JSON.stringify(this.initialWayPoint.wayPointTags)) || [];
+        if (!this.team) {
+            await this.$store.dispatch('team/findAll');
+        }
+        if (this.initialWayPoint) {
+            this.wayPoint.locationName = this.initialWayPoint.locationName;
+            this.wayPoint.ageGroups = JSON.parse(JSON.stringify(this.initialWayPoint.ageGroups)) || [];
+            this.wayPoint.imageName = this.initialWayPoint.imageName;
+            this.wayPoint.isMeeting = this.initialWayPoint.isMeeting || false;
+            this.wayPoint.note = this.initialWayPoint.note;
+            this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;
+            this.wayPoint.wayPointTags = JSON.parse(JSON.stringify(this.initialWayPoint.wayPointTags)) || [];
+        } else {
+            this.wayPoint.ageGroups = this.ageGroups;
+            this.wayPoint.walk = this.walk['@id'];
+        }
     },
     methods: {
         updateFile: async function (file) {
@@ -369,8 +434,9 @@ export default {
                 reader.readAsDataURL(file);
             });
         },
-        async handleSubmit() {
-            this.$emit('submit', this.wayPoint);
+        async handleSubmit(e) {
+            const isWithFinish = undefined !== e.submitter.dataset.withFinish;
+            this.$emit('submit', { form: this.wayPoint, isWithFinish });
         },
     },
 };

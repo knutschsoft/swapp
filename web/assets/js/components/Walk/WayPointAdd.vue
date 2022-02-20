@@ -15,6 +15,7 @@
             @submit.stop.prevent="onSubmit"
             class="pt-2 px-2"
         >
+            add
             <b-form-group
                 label="Ort"
                 label-for="input-Ort"
@@ -193,7 +194,7 @@
                     class="btn btn-secondary"
                     :disabled="isLoading"
                     type="submit"
-                    data-test="save-way-point"
+                    data-test="button-way-point-submit"
                     block
                 >
                     Wegpunkt speichern und weiteren Wegpunkt hinzufügen
@@ -207,7 +208,7 @@
                     class="btn btn-secondary"
                     :disabled="isLoading"
                     type="submit"
-                    data-test="save-way-point-and-finish"
+                    data-test="button-way-point-submit-and-finish"
                     data-with-finish
                     block
                 >

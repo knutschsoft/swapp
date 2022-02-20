@@ -102,9 +102,9 @@
             }
         },
         methods: {
-            async handleSubmit(payload) {
-                payload.wayPoint = this.wayPoint['@id'];
-                const wayPoint = await this.$store.dispatch('wayPoint/change', payload);
+            async handleSubmit({form}) {
+                form.wayPoint = this.wayPoint['@id'];
+                const wayPoint = await this.$store.dispatch('wayPoint/change', form);
                 if (wayPoint) {
                     const message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich geändert.`;
                     this.$bvToast.toast(message, {
