@@ -22,7 +22,7 @@ Feature: An user can upload an image when creating a new wayPoint
   @wayPointImageUpload
   Scenario: I can add an image when I create a wayPoint
     Given I am authenticated as "lonely@gmx.de"
-    And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt-hinzufuegen"
+    And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt-hinzufuegen"
     Then I wait for 'Wegpunkt zur Runde "Gorbitz" hinzufügen' to appear
     And the element "locationName" should be enabled
     When I enter "Assieck" in "locationName" field
@@ -44,7 +44,7 @@ Feature: An user can upload an image when creating a new wayPoint
   @wayPointImageUpload @ignore
   Scenario: I can not add an text file as image when I create a wayPoint
     Given I am authenticated as "lonely@gmx.de"
-    And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt-hinzufuegen"
+    And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt-hinzufuegen"
     Then I wait for 'Wegpunkt zur Runde "Gorbitz" hinzufügen' to appear
     And the element "locationName" should be enabled
     When I enter "Assieck" in "locationName" field
@@ -59,7 +59,7 @@ Feature: An user can upload an image when creating a new wayPoint
   @wayPointImageUpload @ignore # do not know why validation is not working
   Scenario: I can not add a too large image when I create a wayPoint
     Given I am authenticated as "lonely@gmx.de"
-    And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt-hinzufuegen"
+    And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt-hinzufuegen"
     Then I wait for 'Wegpunkt zur Runde "Gorbitz" hinzufügen' to appear
     And the element "locationName" should be enabled
     When I enter "Assieck" in "locationName" field

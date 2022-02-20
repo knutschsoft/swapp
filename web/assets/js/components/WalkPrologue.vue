@@ -338,6 +338,14 @@
             if (!this.team) {
                 await this.$store.dispatch('team/findAll');
             }
+            if (!this.team) {
+                this.$router.push({ name: 'Dashboard', params: { redirect: 'Dieses Team existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+                return;
+            }
+            if (!this.team.users.includes(this.currentUser['@id'])) {
+                this.$router.push({ name: 'Dashboard', params: { redirect: 'Du kannst für dieses Team keine Runde erstellen, da du kein Mitglied des Teams bist. Du wurdest auf das Dashboard weitergeleitet.' } });
+                return;
+            }
             this.team.users.forEach((userIri) => {
                 if (!this.getUserByIri(userIri)) {
                     this.$store.dispatch('user/findByIri', userIri);

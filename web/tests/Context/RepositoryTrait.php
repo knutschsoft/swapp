@@ -22,6 +22,7 @@ use App\Value\Gender;
 use App\Value\PeopleCount;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
 use Webmozart\Assert\Assert;
@@ -202,6 +203,38 @@ trait RepositoryTrait
         return $ageRanges;
     }
 
+    protected function enrichUrl(string $url): string
+    {
+        $request = Request::create($url);
+
+        $urlParts = \explode('/', $request->getPathInfo());
+        \assert(\is_array($urlParts));
+        $newUrlParts = [];
+        foreach ($urlParts as $urlPart) {
+            $newUrlParts[] = $this->enrichText($urlPart);
+        }
+        $url = \implode('/', $newUrlParts);
+
+        if ($request->query->count()) {
+            $url .= '?';
+        }
+
+        $append = '';
+        foreach ($request->query->all() as $key => $value) {
+            if (\is_array($value)) {
+                foreach ($value as $valueEntry) {
+                    $append .= $append ? '&' : '';
+                    $append .= \sprintf('%s[]=%s', $key, \urlencode($this->enrichText($valueEntry)));
+                }
+                continue;
+            }
+            $append .= $append ? '&' : '';
+            $append .= \sprintf('%s=%s', $key, \urlencode($this->enrichText($value)));
+        }
+
+        return \sprintf('%s%s', $url, $append);
+    }
+
     private function enrichText(string $text): mixed
     {
         if ('<null>' === $text) {
@@ -279,15 +312,24 @@ trait RepositoryTrait
         }
 
         if (\str_starts_with($text, 'teamIri<')) {
-            return \sprintf('/api/teams/%s', (string) $this->getTeamByName($referenceIdentifikator)->getId());
+            return \sprintf('/api/teams/%s', $this->getTeamByName($referenceIdentifikator)->getId());
+        }
+        if (\str_starts_with($text, 'teamId<')) {
+            return (string) $this->getTeamByName($referenceIdentifikator)->getId();
         }
 
         if (\str_starts_with($text, 'wayPointIri<')) {
             return \sprintf('/api/way_points/%s', (string) $this->getWayPointByLocationName($referenceIdentifikator)->getId());
         }
+        if (\str_starts_with($text, 'wayPointId<')) {
+            return (string) $this->getWayPointByLocationName($referenceIdentifikator)->getId();
+        }
 
         if (\str_starts_with($text, 'walkIri<')) {
-            return \sprintf('/api/walks/%s', (string) $this->getWalkByName($referenceIdentifikator)->getId());
+            return \sprintf('/api/walks/%s', $this->getWalkByName($referenceIdentifikator)->getId());
+        }
+        if (\str_starts_with($text, 'walkId<')) {
+            return (string) $this->getWalkByName($referenceIdentifikator)->getId();
         }
 
         if (\str_starts_with($text, 'int<')) {
@@ -306,27 +348,15 @@ trait RepositoryTrait
         if (\str_starts_with($text, 'userIri<')) {
             return \sprintf('/api/users/%s', (string) $this->getUserByEmail($referenceIdentifikator)->getId());
         }
-
         if (\str_starts_with($text, 'userId<')) {
-            $user = $this->getUserByEmail($referenceIdentifikator);
-
-            return (string) $user->getId();
-        }
-
-        if (\str_starts_with($text, 'wayPointId<')) {
-            $wayPoint = $this->getWayPointByLocationName($referenceIdentifikator);
-
-            return (string) $wayPoint->getId();
-        }
-
-        if (\str_starts_with($text, 'walkId<')) {
-            $walk = $this->getWalkByName($referenceIdentifikator);
-
-            return (string) $walk->getId();
+            return (string) $this->getUserByEmail($referenceIdentifikator)->getId();
         }
 
         if (\str_starts_with($text, 'clientIri<')) {
             return \sprintf('/api/clients/%s', (string) $this->getClientByEmail($referenceIdentifikator)->getId());
+        }
+        if (\str_starts_with($text, 'clientId<')) {
+            return (string) $this->getClientByEmail($referenceIdentifikator)->getId();
         }
 
         if (\str_starts_with($text, 'confirmationToken<')) {

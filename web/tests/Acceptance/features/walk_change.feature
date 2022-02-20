@@ -26,7 +26,7 @@ Feature: An administrator can change a walk
   Scenario: I can not start a walk as an user without a group
     And there are exactly 1 walks in database
     Given I am authenticated as "karl@gmx.de"
-    When I go to swapp page "/runde/walk<Klippe>/detail"
+    When I go to swapp page "/runde/walkId<Klippe>/detail"
     Then I wait for 'Runde "Klippe" ändern' to appear
 
 #    When I click on element "collapse-walk-detail"

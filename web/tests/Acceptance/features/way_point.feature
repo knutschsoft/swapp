@@ -60,7 +60,7 @@ Feature: An user can request a non existing wayPoint and get redirected
   @wayPoint
   Scenario: I can request a wayPoint route directly as an user without a group
     Given I am authenticated as "lonely@gmx.de"
-    And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt/wayPoint<Elbamare>/detail"
+    And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Elbamare>/detail"
     Then I wait for "Wegpunkt: Elbamare" to appear
     Then I wait for "Runde: Gorbitz" to appear
     Then I wait for "Ort: Elbamare" to appear

@@ -48,22 +48,13 @@ final class AcceptanceContext extends MinkContext
      * Example: Then I go to swapp page "/"
      * Example: And I go to swapp page "/bats"
      * Example: And I go to swapp page "http://google.com"
-     * Example: And I go to swapp page "/runde/walk<Gorbitz>/wayPoint<Elbamare>"
+     * Example: And I go to swapp page "/runde/walkId<Gorbitz>/wayPointId<Elbamare>"
      *
      * @Then /^(?:|I )go to swapp page "(?P<page>[^"]+)"$/
      */
     public function iGoToSwappPage(string $page): void
     {
-        $parts = \explode('/', $page);
-        foreach ($parts as $key => $part) {
-            if (\str_starts_with($part, 'walk<') && \str_ends_with($part, '>')) {
-                $parts[$key] = (string) $this->getWalkByName(\substr($part, 5, -1))->getId();
-            } elseif (\str_starts_with($part, 'wayPoint<') && \str_ends_with($part, '>')) {
-                $parts[$key] = (string) $this->getWayPointByLocationName(\substr($part, 9, -1))->getId();
-            }
-        }
-        $page = \implode('/', $parts);
-        $this->visit($page);
+        $this->visit($this->enrichUrl($page));
     }
 
     /**

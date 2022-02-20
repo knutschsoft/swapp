@@ -38,7 +38,7 @@ Feature: An user can go to wayPoint add route and see all already created wayPoi
   @wayPoint
   Scenario: I can request a wayPoint route directly as an user without a group
     Given I am authenticated as "lonely@gmx.de"
-    And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt-hinzufuegen"
+    And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt-hinzufuegen"
     Then I wait for "Elbamare" to appear
     Then I wait for "Block17" to appear
     Then I wait for "Gamestop" to disappear

@@ -22,7 +22,7 @@ Feature: An user can submit invalid entries in way point and get errors shown
   @wayPointValidate
   Scenario: I can request a non existing wayPoint as an user without a group and I will get redirected to dashboard
     Given I am authenticated as "lonely@gmx.de"
-    And I go to swapp page "/runde/walk<Gorbitz>/wegpunkt-hinzufuegen"
+    And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt-hinzufuegen"
     Then I wait for 'Wegpunkt zur Runde "Gorbitz" hinzufügen' to appear
     And the element "locationName" should be enabled
     When I enter "A" in "locationName" field
