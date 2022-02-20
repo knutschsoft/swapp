@@ -41,27 +41,35 @@
             label-cols-lg="2"
             label="Altersgruppen"
         >
-            <b-form-group
-                v-for="ageGroup in wayPoint.ageGroups"
+            <b-row
+                v-for="(ageGroup, index) in wayPoint.ageGroups"
                 :key="ageGroup.frontendLabel"
-                :label="ageGroup.frontendLabel"
-                label-cols="4"
-                content-cols="8"
-                label-cols-sm="3"
-                content-cols-sm="9"
-                label-cols-md="2"
-                content-cols-md="10"
-                label-cols-lg="1"
-                content-cols-lg="11"
             >
-                <b-form-select
-                    v-model="ageGroup.peopleCount.count"
-                    :options="ageRangeOptions"
-                    :disabled="isLoading"
-                    size="sm"
-                    class=""
-                ></b-form-select>
-            </b-form-group>
+                <b-col
+                    v-if="index % 3 === 0"
+                    v-for="colIndex in 3"
+                    :key="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                    cols="4"
+                    sm="4"
+                    md="4"
+                    class="mb-1"
+                >
+                    <b-form-group
+                        :label="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                        label-cols-sm="auto"
+                        label-cols="12"
+                    >
+                        <b-form-select
+                            v-model="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count"
+                            :options="ageRangeOptions"
+                            :disabled="isLoading"
+                            :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                            size="sm"
+                            class=""
+                        ></b-form-select>
+                    </b-form-group>
+                </b-col>
+            </b-row>
         </b-form-group>
         <b-form-group
             id="input-group-image"
