@@ -18,11 +18,12 @@ Feature: An superadmin can impersonate any user
     Given I am on "/benutzer"
     And I wait for "Nutzer wechseln" to appear
 
-    And I click on element "switch-user-karl@gmx.de"
+    When I click on element "switch-user-karl@gmx.de"
+    And I wait 1 second
+    Then I should be on "/dashboard"
 
-    Given I am on "/dashboard"
     And I wait for "Neue Streetwork-Runde" to appear
-    Then I should see "karl@gmx.de" appear
+    And I should see "karl@gmx.de" appear
 
     When I click on element "nav-user-item"
     Then I should see "Nutzerwechsel beenden" appear

@@ -40,7 +40,7 @@ Feature: An user can upload an image when creating a new wayPoint
     Then I wait for "Wegpunkt: Assieck vom" to appear
     Then I wait for "kein Bild hochgeladen" to disappear
 
-  @javascript @suw2
+  @javascript
   @wayPointImageUpload @ignore
   Scenario: I can not add an text file as image when I create a wayPoint
     Given I am authenticated as "lonely@gmx.de"
