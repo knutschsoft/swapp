@@ -48,6 +48,7 @@ export default {
                 }
                 this.$bvToast.toast(message, {
                     title: 'Wegpunkt erstellt',
+                    variant: 'success',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,
                     appendToast: true,
@@ -59,14 +60,6 @@ export default {
                         params: { walkId: this.walk.id, successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
                     });
                 } else {
-                    // this.$router.push({
-                    //     name: 'WalkAddWayPoint',
-                    //     params: { walkId: this.walk.id },
-                    // });
-                    // this.initialWalk = false;
-                    // this.initialWalk = this.walk;
-                    // this.initialWayPoint
-
                     this.forceRerender();
                     window.scrollTo({
                         top: 0,

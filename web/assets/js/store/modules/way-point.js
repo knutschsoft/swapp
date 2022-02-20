@@ -10,11 +10,35 @@ const
     FETCHING_WAY_POINT_ERROR = "FETCHING_WAY_POINT_ERROR",
     CHANGE_WAY_POINT = "CHANGE_WAY_POINT",
     CHANGE_WAY_POINT_SUCCESS = "CHANGE_WAY_POINT_SUCCESS",
-    CHANGE_WAY_POINT_ERROR = "FETCHING_WAY_POINT_ERROR",
+    CHANGE_WAY_POINT_ERROR = "CHANGE_WAY_POINT_ERROR",
+    RESET_CHANGE_WAY_POINT_ERROR = "RESET_CHANGE_WAY_POINT_ERROR",
     CREATE_WAY_POINT = 'CREATE_WAY_POINT',
     CREATE_WAY_POINT_SUCCESS = 'CREATE_WAY_POINT_SUCCESS',
     CREATE_WAY_POINT_ERROR = 'CREATE_WAY_POINT_ERROR'
 ;
+
+function replaceObjectInState(state, object) {
+    let isReplaced = false;
+    state.wayPoints.forEach(function (oldObject, key) {
+        if (oldObject['@id'] === object['@id']) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            state.wayPoints.splice(key, 1, object);
+            isReplaced = true;
+        }
+    });
+    if (!isReplaced) {
+        state.wayPoints = [ ...state.wayPoints, object ];
+    }
+}
+
+function removeStringValueFromStateProperty(stateProperty, stringValue) {
+    stateProperty.forEach(function (oldStringValue, key) {
+        if (oldStringValue === stringValue) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            stateProperty.splice(key, 1);
+        }
+    });
+}
 
 const state = {
     wayPoints: [],
@@ -72,7 +96,7 @@ const mutations = {
     [FETCHING_WAY_POINTS_SUCCESS](state, wayPoints) {
         state.error = null;
         state.isLoading = false;
-        state.wayPoints = wayPoints;
+        wayPoints.forEach(wayPoint => replaceObjectInState(state, wayPoint));
     },
     [FETCHING_WAY_POINTS_ERROR](state, error) {
         state.error = error;
@@ -85,14 +109,7 @@ const mutations = {
     [FETCHING_WAY_POINT_SUCCESS](state, wayPoint) {
         state.error = null;
         state.isLoading = false;
-        let fetchedWayPoint = wayPoint;
-        state.wayPoints.forEach((wayPoint, index) => {
-            if (String(fetchedWayPoint.id) === String(wayPoint.id)) {
-                state.wayPoints.splice(index, 1);
-            }
-        });
-
-        state.wayPoints = [...state.wayPoints, fetchedWayPoint];
+        replaceObjectInState(state, wayPoint);
     },
     [FETCHING_WAY_POINT_ERROR](state, error) {
         state.error = error;
@@ -105,18 +122,14 @@ const mutations = {
     [CHANGE_WAY_POINT_SUCCESS](state, wayPoint) {
         state.errorChange = null;
         state.isLoadingChange = false;
-        let fetchedWayPoint = wayPoint;
-        state.wayPoints.forEach((wayPoint, index) => {
-            if (String(fetchedWayPoint.id) === String(wayPoint.id)) {
-                state.wayPoints.splice(index, 1);
-            }
-        });
-
-        state.wayPoints = [...state.wayPoints, fetchedWayPoint];
+        replaceObjectInState(state, wayPoint);
     },
     [CHANGE_WAY_POINT_ERROR](state, error) {
         state.errorChange = error;
         state.isLoadingChange = false;
+    },
+    [RESET_CHANGE_WAY_POINT_ERROR](state) {
+        state.errorChange = null;
     },
     [CREATE_WAY_POINT](state) {
         state.isLoadingChange = true;
@@ -125,7 +138,7 @@ const mutations = {
     [CREATE_WAY_POINT_SUCCESS](state, wayPoint) {
         state.errorChange = null;
         state.isLoadingChange = false;
-        state.wayPoints = [...state.wayPoints, wayPoint];
+        replaceObjectInState(state, wayPoint);
     },
     [CREATE_WAY_POINT_ERROR](state, error) {
         state.errorChange = error;
@@ -147,7 +160,7 @@ const actions = {
         commit(FETCHING_WAY_POINTS);
         try {
             let response = await WayPointAPI.find(payload);
-            commit(FETCHING_WAY_POINTS_SUCCESS, response.data);
+            commit(FETCHING_WAY_POINTS_SUCCESS, response.data['hydra:member']);
             return response.data['hydra:member'];
         } catch (error) {
             commit(FETCHING_WAY_POINTS_ERROR, error);
@@ -186,6 +199,9 @@ const actions = {
         } catch (error) {
             commit(CREATE_WAY_POINT_ERROR, error);
         }
+    },
+    resetChangeError({ commit }) {
+        commit(RESET_CHANGE_WAY_POINT_ERROR);
     },
 };
 

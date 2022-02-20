@@ -20,6 +20,7 @@
             <way-point-form
                 submit-button-text="Wegpunkt speichern"
                 :initial-way-point="wayPoint"
+                :error="changeError"
                 @submit="handleSubmit"
             />
         </content-collapse>
@@ -73,6 +74,9 @@
             },
             error() {
                 return this.$store.getters["walk/error"];
+            },
+            changeError() {
+                return this.$store.getters['wayPoint/errorChange'];
             },
             hasWalks() {
                 return this.$store.getters["walk/hasWalks"];

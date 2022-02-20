@@ -3,13 +3,14 @@
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
-        form
         <b-form-group
             content-cols="12"
             label-cols="12"
             content-cols-lg="10"
             label-cols-lg="2"
             label="Ort"
+            :state="locationNameState"
+            :invalid-feedback="invalidLocationNameState"
         >
             <b-input-group>
                 <b-input
@@ -125,6 +126,8 @@
             content-cols-lg="10"
             label-cols-lg="2"
             label="Beobachtung"
+            :invalid-feedback="invalidNoteFeedback"
+            :state="noteState"
         >
             <b-textarea
                 v-model="wayPoint.note"
@@ -143,6 +146,8 @@
             content-cols-lg="10"
             label-cols-lg="2"
             label="Einzelgespräch"
+            :invalid-feedback="invalidOneOnOneInterviewFeedback"
+            :state="oneOnOneInterviewState"
         >
             <b-textarea
                 v-model="wayPoint.oneOnOneInterview"
@@ -201,11 +206,11 @@
         <b-button
             type="submit"
             variant="secondary"
-            :disabled="isFormInvalid"
+            :disabled="isSubmitDisabled"
             data-test="button-way-point-submit"
             block
             class="col-12"
-            :tabindex="isFormInvalid ? '-1' : ''"
+            :tabindex="isSubmitDisabled ? '-1' : ''"
         >
             {{ submitButtonText }}
         </b-button>
@@ -213,25 +218,26 @@
             v-if="walk"
             type="submit"
             variant="secondary"
-            :disabled="isFormInvalid"
+            :disabled="isSubmitDisabled"
             data-test="button-way-point-submit-and-finish"
             data-with-finish
             block
             class="col-12"
-            :tabindex="isFormInvalid ? '-1' : ''"
+            :tabindex="isSubmitDisabled ? '-1' : ''"
         >
             Wegpunkt speichern und Runde abschließen
         </b-button>
-        <form-error
-            :error="error"
+        <global-form-error
+            :error="globalErrors"
         />
     </b-form>
 </template>
 
 <script>
 'use strict';
-import FormError from '../Common/FormError.vue';
+import GlobalFormError from '../Common/GlobalFormError.vue';
 import ColorBadge from '../Tags/ColorBadge.vue';
+import getViolationsFeedback from '../../utils/validation.js';
 
 export default {
     name: 'WayPointForm',
@@ -253,7 +259,7 @@ export default {
     },
     components: {
         ColorBadge,
-        FormError,
+        GlobalFormError,
     },
     data: function () {
         return {
@@ -273,6 +279,9 @@ export default {
         };
     },
     computed: {
+        error() {
+            return this.$store.getters['wayPoint/errorChange'];
+        },
         locationNames() {
             if (!this.team) {
                 return [];
@@ -292,57 +301,40 @@ export default {
                 return;
             }
 
-            return this.wayPoint.locationName.length >= 2 && this.wayPoint.locationName.length <= 300;
+            return '' === this.invalidLocationNameState;
+        },
+        invalidLocationNameState() {
+            return getViolationsFeedback(['locationName'], this.error);
         },
         noteState() {
             if (null === this.wayPoint.note || undefined === this.wayPoint.note) {
                 return;
             }
 
-            return this.wayPoint.note.length >= 0 && this.wayPoint.note.length <= 2500;
+            return '' === this.invalidNoteFeedback;
+        },
+        invalidNoteFeedback() {
+            return getViolationsFeedback(['note'], this.error);
         },
         oneOnOneInterviewState() {
             if (null === this.wayPoint.oneOnOneInterview || undefined === this.wayPoint.oneOnOneInterview) {
                 return;
             }
 
-            return this.wayPoint.oneOnOneInterview.length >= 0 && this.wayPoint.oneOnOneInterview.length <= 2500;
+            return '' === this.invalidOneOnOneInterviewFeedback;
+        },
+        invalidOneOnOneInterviewFeedback() {
+            return getViolationsFeedback(['oneOnOneInterview'], this.error);
         },
         imageState() {
             if (!this.wayPoint.imageFileData) {
                 return null;
             }
 
-            return undefined === this.validationErrors.decodedImageData && undefined === this.validationErrors.imageFileData && undefined === this.validationErrors.imageFileName;
+            return '' === this.invalidImageFeedback;
         },
         invalidImageFeedback() {
-            let message = '';
-            ['decodedImageData', 'imageFileData', 'imageFileName'].forEach(key => {
-                if (this.validationErrors[key]) {
-                    message += ` ${this.validationErrors[key]}`;
-                }
-            });
-
-            return message;
-        },
-        validationErrors() {
-            const errors = {};
-            if (!this.hasError) {
-                return errors;
-            }
-            const error = this.error;
-            if (error && error.data.violations) {
-                error.data.violations.forEach((violation) => {
-                    const key = violation.propertyPath ? violation.propertyPath : 'global';
-                    errors[key] = violation.message;
-                });
-                return errors;
-            }
-            if (error.data && error.data['hydra:description']) {
-                errors.global = error.data['hydra:description'];
-            }
-
-            return errors;
+            return getViolationsFeedback(['decodedImageData', 'imageFileData', 'imageFileName'], this.error);
         },
         isLoading() {
             return this.$store.getters['wayPoint/isLoadingChange'];
@@ -353,11 +345,11 @@ export default {
         isSuperAdmin() {
             return this.$store.getters['security/isSuperAdmin'];
         },
-        isFormInvalid() {
-            return (!this.locationNameState || !this.noteState || !this.oneOnOneInterviewState || this.isLoading) && this.imageState !== null;
+        isSubmitDisabled() {
+            return this.isLoading;
         },
-        error() {
-            return this.$store.getters['wayPoint/errorChange'];
+        globalErrors() {
+            return getViolationsFeedback(['oneOnOneInterview', 'note', 'locationName', 'decodedImageData', 'imageFileData', 'imageFileName'], this.error, true);
         },
         tags() {
             return this.$store.getters['tag/tags'];
@@ -403,6 +395,7 @@ export default {
         },
     },
     async created() {
+        await this.$store.dispatch('wayPoint/resetChangeError');
         if (!this.walk && this.initialWayPoint) {
             await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
         }
