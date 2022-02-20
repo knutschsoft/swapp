@@ -16,7 +16,7 @@
             :is-loading="!walk"
             is-visible-by-default
         >
-            <WayPointAdd
+            <WayPointCreate
                 v-if="walk"
                 :walk="walk"
             />
@@ -39,12 +39,12 @@
     "use strict";
     import WayPointList from './Walk/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
-    import WayPointAdd from './Walk/WayPointAdd.vue';
+    import WayPointCreate from './WayPoint/WayPointCreate.vue';
 
     export default {
         name: "WalkAddWayPoint",
         components: {
-            WayPointAdd,
+            WayPointCreate,
             ContentCollapse,
             WayPointList,
         },
