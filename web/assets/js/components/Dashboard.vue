@@ -18,7 +18,7 @@
             <StartWalk />
         </content-collapse>
         <content-collapse
-            :title="`Abgeschlossene Streetwork-Runden ${ totalWalks ? `(${ totalWalks })` : '' }`"
+            :title="`Abgeschlossene Streetwork-Runden ${ totalWalks !== null ? `(${ totalWalks })` : '' }`"
             collapse-key="finished-walk-list"
             is-visible-by-default
         >
@@ -34,7 +34,7 @@
             <WalkExport />
         </content-collapse>
         <content-collapse
-            :title="`Liste aller Wegpunkte ${ totalWayPoints ? `(${ totalWayPoints })` : '' }`"
+            :title="`Liste aller Wegpunkte ${ totalWayPoints !== null ? `(${ totalWayPoints })` : '' }`"
             collapse-key="all-way-point-list"
             is-visible-by-default
         >
@@ -70,8 +70,8 @@
         },
         data: function () {
             return {
-                totalWayPoints: 0,
-                totalWalks: 0,
+                totalWayPoints: null,
+                totalWalks: null,
             }
         },
         computed: {

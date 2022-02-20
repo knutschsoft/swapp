@@ -23,13 +23,14 @@
         </content-collapse>
 
         <content-collapse
-            :title="`Wegpunkte der Runde ${walk.name}`"
+            :title="`Wegpunkte der Runde ${walk.name} ${ totalWayPoints !== null ? `(${ totalWayPoints })` : '' }`"
             :is-loading="!walk"
             collapse-key="waypoints-of-round"
             is-visible-by-default
         >
             <WayPointList
                 :walk-id="walkId"
+                @refresh-total-way-points="updateTotalWayPoints"
             />
         </content-collapse>
     </div>
@@ -55,6 +56,7 @@
         },
         data: function () {
             return {
+                totalWayPoints: null,
             }
         },
         computed: {
@@ -76,6 +78,9 @@
             this.$store.dispatch('walk/findById', this.walkId);
         },
         methods: {
+            updateTotalWayPoints(totalWayPoints) {
+                this.totalWayPoints = totalWayPoints;
+            },
         },
     }
 </script>

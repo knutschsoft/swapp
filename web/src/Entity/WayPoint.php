@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\SearchFilterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -30,7 +31,14 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
 #[ApiFilter(
     SearchFilter::class,
-    properties: ['locationName' => 'partial', 'note' => 'partial', 'oneOnOneInterview' => 'partial', 'wayPointTags' => 'exact', 'walk.teamName' => 'partial']
+    properties: [
+        'locationName' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'note' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'oneOnOneInterview' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'wayPointTags' => SearchFilterInterface::STRATEGY_EXACT,
+        'walk.teamName' => SearchFilterInterface::STRATEGY_PARTIAL,
+        'walk' => SearchFilterInterface::STRATEGY_EXACT,
+    ]
 )]
 #[ApiResource(
     collectionOperations: [
