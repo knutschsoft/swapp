@@ -4,6 +4,32 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}Swapp!{% endblock %}</title>
+
+        {% if 'test' == app.environment %}
+            <script type="text/javascript">
+                window.jsErrors = []; window.jsWarns = []; window.jsLogs = [];
+                window.onerror = function(error, url, line) {
+                    window.jsErrors.push('[Uncaught error]: ' + error + '; Line: ' + line);
+                };
+
+                if (!console) var console = {};
+                var _privateError = console.error;
+                console.error = function() {
+                    window.jsErrors.push('[Console error]: ' + JSON.stringify(arguments)); _privateError.apply(console, arguments);
+                }
+
+                var _privateWarn = console.warn;
+                console.warn = function() {
+                    window.jsWarns.push('[Console warn]: ' + JSON.stringify(arguments)); _privateWarn.apply(console, arguments);
+                }
+
+                var _privateLog = console.log;
+                console.log = function() {
+                    window.jsLogs.push('[Console log]: ' + JSON.stringify(arguments)); _privateLog.apply(console, arguments);
+                }
+            </script>
+        {% endif %}
+
         {% block meta_description %}{% endblock %}
         {% block stylesheets %}
             {{ encore_entry_link_tags('global') }}

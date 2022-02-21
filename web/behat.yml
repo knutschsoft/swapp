@@ -44,6 +44,11 @@ default:
                 autoClean: true
                 # size: 1444x1280
                 hostUrl: "https://swapp.local/images/screenshots/"
+            trackJs:
+                errors: true
+                warns: true
+                logs: true
+                trim: 1000
         FriendsOfBehat\SymfonyExtension: ~
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
