@@ -54,9 +54,12 @@ Encore
 
     .configureDevServerOptions(options => {
         options.allowedHosts = 'all';
-        options.https = {
-            key: '/var/www/certs/swapp.local.key',
-            cert: '/var/www/certs/swapp.local.crt',
+        options.server = {
+            type: 'https',
+            options: {
+                key: '/var/www/certs/swapp.local.key',
+                cert: '/var/www/certs/swapp.local.crt',
+            },
         };
         options.host = '0.0.0.0';
         options.port = '8874';
