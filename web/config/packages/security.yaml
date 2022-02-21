@@ -36,6 +36,7 @@ security:
             stateless: true
             switch_user: true
             provider: app_user_provider
+            user_checker: App\Security\UserChecker
             jwt: ~
 
     password_hashers:

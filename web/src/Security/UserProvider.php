@@ -26,10 +26,6 @@ class UserProvider implements UserProviderInterface
             throw new UserNotFoundException();
         }
 
-        if ($user instanceof User && !$user->isEnabled()) {
-            throw new UserNotFoundException();
-        }
-
         return $user;
     }
 

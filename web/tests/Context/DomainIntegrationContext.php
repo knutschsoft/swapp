@@ -20,6 +20,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behatch\Context\RestContext;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -329,6 +330,40 @@ final class DomainIntegrationContext extends RawMinkContext
     public function thereAreExactlyWayPointsInDatabase(string $count): void
     {
         Assert::same(\count($this->wayPointRepository->findAll()), (int) $count);
+    }
+
+    /**
+     * @Given /^I can find the following users in database:$/
+     *
+     * @param TableNode $table
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function iCanFindTheFollowingUsersInDatabase(TableNode $table): void
+    {
+        $this->em->clear();
+        foreach ($table as $row) {
+            $user = $this->getUserByEmail($row['email']);
+            if (isset($row['isEnabled']) && '' !== $row['isEnabled']) {
+                Assert::eq($user->isEnabled(), (bool) $row['isEnabled']);
+            }
+            if (isset($row['lastLoginAt']) && '' !== $row['lastLoginAt']) {
+                $lastLoginAt = $row['lastLoginAt'];
+                if ('<null>' === $lastLoginAt) {
+                    Assert::null($user->getLastLoginAt());
+                } else {
+                    Assert::notNull($user->getLastLoginAt());
+                    $expectedLastLoginAt = new Carbon($lastLoginAt);
+                    $lastLoginAt = new Carbon($user->getLastLoginAt());
+                    Assert::true(
+                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 5,
+                        \sprintf('Expected lastLoginAt "%s" is not same as value "%s".', $expectedLastLoginAt, $lastLoginAt)
+                    );
+                }
+            }
+        }
     }
 
     /**

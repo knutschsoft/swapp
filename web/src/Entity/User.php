@@ -411,7 +411,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     #[Groups(['user:read'])]
-    public function getLastLogin(): ?\DateTime
+    public function getLastLoginAt(): ?\DateTime
     {
         return $this->lastLogin;
     }

@@ -19,8 +19,14 @@ Feature: A user can login
     And I should be on "/anmeldung"
     When I enter "karl@gmx.de" in "username" field
     When I enter "karl@gmx.de" in "password" field
+    And I can find the following users in database:
+      | email       | isEnabled | lastLoginAt |
+      | karl@gmx.de | 1         | <null>      |
     When I click on text "Anmelden"
     Then I wait for "Neue Streetwork-Runde" to appear
+    And I can find the following users in database:
+      | email       | isEnabled | lastLoginAt |
+      | karl@gmx.de | 1         | now         |
     And I should be on "/dashboard"
     Then I wait for "Dashboard" to appear
     Then I wait for "Benutzer" to disappear
@@ -35,9 +41,15 @@ Feature: A user can login
     Then I wait for "Login" to appear
     When I enter "old_karl@gmx.de" in "username" field
     When I enter "old_karl@gmx.de" in "password" field
+    And I can find the following users in database:
+      | email           | isEnabled | lastLoginAt |
+      | old_karl@gmx.de | 0         | <null>      |
     When I click on text "Anmelden"
     Then I wait for "Die Kombination aus E-Mail-Adresse und Passwort ist ungültig." to appear
     And I should be on "/anmeldung"
+    And I can find the following users in database:
+      | email           | isEnabled | lastLoginAt |
+      | old_karl@gmx.de | 0         | <null>      |
 
   @javascript
   @login
