@@ -31,6 +31,9 @@ import VuePageTransition from 'vue-page-transition';
 import Nl2br from 'vue-nl2br';
 import Swapp from './Swapp';
 
+// see https://caniuse.com/?search=submitter
+import 'event-submitter-polyfill';
+
 import dayjs from 'dayjs';
 require('dayjs/locale/de');
 dayjs.locale('de');

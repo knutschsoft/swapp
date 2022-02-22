@@ -2963,6 +2963,11 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
+event-submitter-polyfill@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/event-submitter-polyfill/-/event-submitter-polyfill-0.2.3.tgz#cf1804c89f4cb9c53ca6ed751367a78bd3413bcb"
+  integrity sha512-5pyBVQCxKyba6xvvIyJmOWGp/LmQKjrHdQOMgY0rpM2B866/IqtrRZmsFINa+B/sx8h+/Rz8yb9cV61Ui5I4zg==
+
 eventemitter3@^4.0.0:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
