@@ -12,7 +12,10 @@ function getViolationErrorsObject(errorData) {
     if (localErrorData.violations) {
         localErrorData.violations.forEach((violation) => {
             if (violation.propertyPath) {
-                errors[violation.propertyPath] = violation.message
+                if (undefined === errors[violation.propertyPath]) {
+                    errors[violation.propertyPath] = [];
+                }
+                errors[violation.propertyPath].push(violation.message);
             } else {
                 errors.global.push(violation.message)
             }
@@ -33,15 +36,15 @@ function getViolationsFeedback(fields, errorData, isResultInverted = false) {
 
     if (isResultInverted) {
 
-        for (const [fieldName, errorMessage] of Object.entries(validationErrors)) {
+        for (const [fieldName, errorMessageArray] of Object.entries(validationErrors)) {
             if (!fields.includes(fieldName)) {
-                message += ` ${errorMessage}`;
+                message += ` ${errorMessageArray.join(' ')}`;
             }
         }
     } else {
         fields.forEach(fieldName => {
             if (validationErrors[fieldName]) {
-                message += ` ${validationErrors[fieldName]}`;
+                message += ` ${validationErrors[fieldName].join(' ')}`;
             }
         });
     }
