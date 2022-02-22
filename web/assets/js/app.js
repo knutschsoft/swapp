@@ -25,7 +25,6 @@ import { AlertPlugin, BootstrapVue, CollapsePlugin, IconsPlugin, NavbarPlugin } 
 import Storage from 'vue-web-storage';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import VuePictureSwipe from 'vue-picture-swipe';
 import mdiVue from 'mdi-vue';
 import * as mdijs from '@mdi/js';
 import VuePageTransition from 'vue-page-transition';
@@ -51,7 +50,6 @@ Vue.use(IconsPlugin);
 Vue.use(CollapsePlugin);
 Vue.use(AlertPlugin);
 Vue.use(NavbarPlugin);
-Vue.component('vue-picture-swipe', VuePictureSwipe);
 Vue.use(VuePageTransition);
 Vue.use(mdiVue, {
     icons: mdijs

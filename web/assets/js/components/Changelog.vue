@@ -24,10 +24,10 @@
                                 v-for="entry in item.entries"
                             >
                                 {{ entry.text }}
-                                <vue-picture-swipe
-                                    v-if="entry.images && entry.images.length"
-                                    :items="entry.images"
-                                    :options="photoSwipeOptions"
+                                <silent-box
+                                    v-if="entry.gallery && entry.gallery.length"
+                                    :gallery="entry.gallery"
+                                    lazy-loading
                                 />
                             </li>
                         </ul>
@@ -49,11 +49,6 @@ export default {
     },
     data: () => {
         return {
-            photoSwipeOptions: {
-                shareButtons: [
-                    { id: 'download', label: 'Bild herunterladen', url: '{{raw_image_url}}', download: true },
-                ],
-            },
             items: [
                 {
                     header: '20.02.2022',
@@ -94,13 +89,11 @@ export default {
                         },
                         {
                             text: 'Fix: Beim automatischen Logout nach abgelaufener Anmeldesession erscheint nun eine Benachrichtigung anstatt einer Fehlermeldung und der Nutzer wird automatisch abgemeldet.',
-                            images: [
+                            gallery: [
                                 {
                                     src: '../changelog/20213010_abmeldung.png',
-                                    thumbnail: '../changelog/20213010_abmeldung_thumb.png',
-                                    w: 643,
-                                    h: 517,
-                                    title: 'Benachrichtigung bei automatischer Abmeldung',
+                                    thumbnailHeight: '100px',
+                                    description: 'Benachrichtigung bei automatischer Abmeldung',
                                     alt: 'Benachrichtigung bei automatischer Abmeldung auf Swapp der Streetworkapp.',
                                 },
                             ],
