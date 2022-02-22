@@ -25,6 +25,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Webmozart\Assert\Assert;
@@ -37,6 +38,7 @@ final class DomainIntegrationContext extends RawMinkContext
     private UserPasswordHasherInterface $passwordEncoder;
     private RestContext $restContext;
     private JWTTokenManagerInterface $jwtManager;
+    private string $publicDir;
 
     public function __construct(KernelInterface $kernel)
     {
@@ -47,6 +49,7 @@ final class DomainIntegrationContext extends RawMinkContext
         $this->em = $serviceContainer->get('doctrine.orm.entity_manager');
         $this->passwordEncoder = $serviceContainer->get(UserPasswordHasherInterface::class);
         $this->jwtManager = $serviceContainer->get(JWTTokenManagerInterface::class);
+        $this->publicDir = (string) $serviceContainer->getParameter('kernel.public_dir');
     }
 
     /** @BeforeScenario */
@@ -358,7 +361,7 @@ final class DomainIntegrationContext extends RawMinkContext
                     $expectedLastLoginAt = new Carbon($lastLoginAt);
                     $lastLoginAt = new Carbon($user->getLastLoginAt());
                     Assert::true(
-                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 5,
+                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 1,
                         \sprintf('Expected lastLoginAt "%s" is not same as value "%s".', $expectedLastLoginAt, $lastLoginAt)
                     );
                 }
@@ -424,12 +427,24 @@ final class DomainIntegrationContext extends RawMinkContext
                 $walk = $this->getWalkByName($row['walk']);
                 Assert::eq($wayPoint->getWalk()->getId(), $walk->getId());
             }
-            if (isset($row['imageName']) && $row['imageName']) {
-                Assert::eq(
-                    $wayPoint->getImageName(),
-                    $row['imageName'] === '<null>' ? null : $row['imageName'],
-                    'Wrong value for imageName: It is %s instead of expected %s.'
-                );
+            if (isset($row['imageName']) && '' !== $row['imageName']) {
+                $imageName = $row['imageName'];
+                if ('<null>' === $imageName) {
+                    Assert::null($wayPoint->getImageName());
+                } else {
+                    Assert::notNull($wayPoint->getImageName());
+                    $imageNameList = \explode('_', $imageName);
+                    Assert::count($imageNameList, 2);
+                    $timestamp = $this->enrichText($imageNameList[0]);
+                    dump($timestamp);
+                    Assert::contains($wayPoint->getImageName(), $imageNameList[1]);
+                    $expectedTimestamp = Carbon::createFromTimestamp($timestamp);
+                    $actualTimestamp = Carbon::createFromTimestamp(\explode('_', $wayPoint->getImageName())[0]);
+                    Assert::true(
+                        $expectedTimestamp->diffInSeconds($actualTimestamp) < 5,
+                        \sprintf('Expected timestamp in imageName "%s" is not same as value "%s". Diff is "%d seconds".', $expectedTimestamp, $actualTimestamp, $expectedTimestamp->diffInSeconds($actualTimestamp))
+                    );
+                }
             }
             if (isset($row['ageGroups'])) {
                 $expectedAgeGroups = $this->getAgeGroupsFromString($row['ageGroups']);
@@ -505,6 +520,32 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Then /^I can find the file "([^"]*)" in public folder$/
+     *
+     * @param string $file
+     *
+     * @example I can find the file "/images/way_points/timestamp<now>_AreYouDrunkMyDear.jpg" in public folder
+     */
+    public function iCanFindTheFileInPublicFolder(string $file): void
+    {
+        $isFound = $this->isFileInPublicDir($file);
+        Assert::true($isFound, \sprintf('Did not find file "%s"', $file));
+    }
+
+    /**
+     * @Then /^I can not find the file "([^"]*)" in public folder$/
+     *
+     * @param string $file
+     *
+     * @example I can not find the file "/images/way_points/timestamp<now>_AreYouDrunkMyDear.jpg" in public folder
+     */
+    public function iCanNotFindTheFileInPublicFolder(string $file): void
+    {
+        $isFound = $this->isFileInPublicDir($file);
+        Assert::false($isFound, \sprintf('Did find file "%s"', $file));
+    }
+
+    /**
      * @When /^I enable user "([^"]*)"$/
      *
      * @param string $email
@@ -566,5 +607,32 @@ final class DomainIntegrationContext extends RawMinkContext
         }
 
         return $userIds;
+    }
+
+    private function isFileInPublicDir(string $file): bool
+    {
+        $fileList = \explode('/', $file);
+        Assert::minCount($fileList, 3);
+        $filename = $fileList[\count($fileList) - 1];
+        $filenameList = \explode('_', $filename);
+        Assert::minCount($filenameList, 2);
+        $expectedTime = Carbon::createFromTimestamp($this->enrichText($filenameList[0]));
+        \array_pop($fileList);
+        $dirName = \implode('/', $fileList);
+        Assert::string($dirName);
+        $finder = new Finder();
+        $finder->in(\sprintf('%s%s', $this->publicDir, $dirName));
+        foreach ($finder->files() as $finderFile) {
+            $currentFileNameList = \explode('_', $finderFile->getFilename());
+            if (\count($currentFileNameList) !== 2) {
+                continue;
+            }
+            $time = Carbon::createFromTimestamp($currentFileNameList[0]);
+            if ($expectedTime->diffInSeconds($time) < 1 && $currentFileNameList[1] === $filenameList[1]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

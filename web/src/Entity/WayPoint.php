@@ -85,6 +85,7 @@ class WayPoint
 
     #[ORM\Column(name: 'image_name', type: 'string', length: 255, nullable: true)]
     private ?string $imageName = null;
+    private string $imageSrc;
 
     /** @MaxDepth(2) */
     #[ORM\ManyToOne(targetEntity: Walk::class, inversedBy: 'wayPoints')]
@@ -118,6 +119,7 @@ class WayPoint
         $this->isMeeting = false;
         $this->note = '';
         $this->oneOnOneInterview = '';
+        $this->imageSrc = '';
     }
 
     public static function fromWalk(Walk $walk): self
@@ -148,7 +150,7 @@ class WayPoint
         $instance->setOneOnOneInterview($request->oneOnOneInterview);
         $instance->setLocationName($request->locationName);
         if ($request->imageFileName) {
-            $instance->setImageName($request->imageFileName);
+            $instance->setImageName(\sprintf("%s_%s", \time(), $request->imageFileName));
         }
         $instance->setIsMeeting($request->isMeeting);
 
@@ -293,6 +295,17 @@ class WayPoint
     public function getImageName(): ?string
     {
         return $this->imageName;
+    }
+
+    #[Groups(['wayPoint:read'])]
+    public function getImageSrc(): string
+    {
+        return $this->imageSrc;
+    }
+
+    public function setImageSrc(string $imageSrc): void
+    {
+        $this->imageSrc = $imageSrc;
     }
 
     public function setImageName(string $imageName): void

@@ -24,12 +24,14 @@
 
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification">
         <exclude-pattern>src/DataTransformer/*.php</exclude-pattern>
+        <exclude-pattern>src/Serializer/*Normalizer.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
         <exclude-pattern>src/Security/Voter/*Voter.php</exclude-pattern>
         <exclude-pattern>src/DataTransformer/*.php</exclude-pattern>
         <exclude-pattern>src/Filter/*Filter.php</exclude-pattern>
+        <exclude-pattern>src/Serializer/*Normalizer.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue.NullabilityTypeMissing">

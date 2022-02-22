@@ -13,6 +13,7 @@
 import 'core-js';
 import 'regenerator-runtime/runtime';
 import 'css/global.scss';
+import './plugins/vue-silentbox';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faMapSigns, faShoePrints, faWalking } from '@fortawesome/free-solid-svg-icons';

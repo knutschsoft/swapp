@@ -31,16 +31,21 @@ final class WayPointChangeHandler implements MessageHandlerInterface
         $wayPoint->setAgeGroups($request->ageGroups);
         $wayPoint->setNote($request->note);
         $wayPoint->setOneOnOneInterview($request->oneOnOneInterview);
-        $wayPoint->setImageName((string) $request->imageFileName);
         $wayPoint->setIsMeeting($request->isMeeting);
         $wayPoint->setWayPointTags(new ArrayCollection($request->wayPointTags));
 
         $tmpFile = $request->getDecodedImageData();
-        $imageName = $wayPoint->getImageName();
-        if ($tmpFile && $imageName) {
+        $oldImageName = $wayPoint->getImageName();
+        if ($tmpFile && $request->imageFileName) {
+            $newImageName = \sprintf("%s_%s", \time(), $request->imageFileName);
+            $wayPoint->setImageName($newImageName);
+
             $contents = \file_get_contents(\sprintf("%s%s%s", $tmpFile->getPath(), \DIRECTORY_SEPARATOR, $tmpFile->getFilename()));
             Assert::string($contents);
-            $this->wayPointImageStorage->write($imageName, $contents);
+            $this->wayPointImageStorage->write($newImageName, $contents);
+            if ($newImageName !== $oldImageName && $oldImageName) {
+                $this->wayPointImageStorage->delete($oldImageName);
+            }
         }
         $this->wayPointRepository->save($wayPoint);
 

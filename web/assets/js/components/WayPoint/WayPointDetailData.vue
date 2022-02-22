@@ -44,6 +44,11 @@
                     class="text-left"
                 >
                     <template
+                        v-if="0 === field.value.length"
+                    >
+                        keine Tags vergeben
+                    </template>
+                    <template
                         v-for="tag in field.value"
                     >
                         {{ tag.name }}
@@ -56,14 +61,11 @@
                 <template
                     v-else-if="field.name === 'Bild'"
                 >
-                    <b-img
+                    <silent-box
                         v-if="field.value"
-                        :src="`/images/way_points/${field.value}`"
-                        :alt="field.value"
-                        :title="field.value"
-                        fluid
-                        class=""
+                        :gallery="gallery"
                     />
+
                     <template v-else>
                         kein Bild hochgeladen
                     </template>
@@ -98,7 +100,7 @@
         },
         data: function () {
             return {
-            }
+            };
         },
         computed: {
             isLoading() {
@@ -129,6 +131,16 @@
                 })
 
                 return wayPointTags.sort((a, b) => a.name > b.name ? 1 : -1);
+            },
+            gallery() {
+                if (!this.wayPoint.imageName) {
+                    return [];
+                }
+                return [{
+                    src: this.wayPoint.imageSrc,
+                    thumbnailHeight: '220px',
+                    description: this.wayPoint.imageName,
+                }];
             },
             fields() {
                 if (!this.wayPoint) {

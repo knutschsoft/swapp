@@ -20,6 +20,7 @@ use App\Value\AgeRange;
 use App\Value\ConfirmationToken;
 use App\Value\Gender;
 use App\Value\PeopleCount;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
@@ -262,6 +263,10 @@ trait RepositoryTrait
             return $text;
         }
         $referenceIdentifikator = $this->getReferenceIdentifikator($text);
+
+        if (\str_starts_with($text, 'timestamp<')) {
+            return (string) (new Carbon($referenceIdentifikator))->timestamp;
+        }
 
         if (\str_starts_with($text, 'ageRanges<')) {
             $ageRanges = [];
