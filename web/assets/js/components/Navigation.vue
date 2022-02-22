@@ -96,6 +96,25 @@
 
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto pl-2 pl-lg-0">
+                    <b-button
+                        variant="link"
+                        class="text-right"
+                        :to="{name:'Changelog'}"
+                        :title="`Es gibt ${ hasNewChangelogItems ? '' : 'keine ' }Neuigkeiten für dich!`"
+                    >
+                        <mdicon
+                            v-if="hasNewChangelogItems"
+                            name="BellBadgeOutline"
+                            size="20"
+                            class="text-primary"
+                        />
+                        <mdicon
+                            v-else
+                            name="BellOutline"
+                            size="20"
+                            class="text-muted"
+                        />
+                    </b-button>
                     <b-nav-item-dropdown
                         right
                         lazy
@@ -161,6 +180,12 @@
                             :active="$route.name === 'Changelog'"
                         >
                             Changelog
+                            <b-badge
+                                v-if="hasNewChangelogItems"
+                                variant="primary"
+                            >
+                                Neue Einträge vorhanden!
+                            </b-badge>
                         </b-dropdown-item>
                         <b-dropdown-divider v-if="!isUserSwitched && isSuperAdmin" />
                         <b-dropdown-form
@@ -262,7 +287,10 @@
             },
             isUserMenuActive() {
                 return -1 !== ['PasswordChangeRequest', 'Login', 'PasswordReset'].indexOf(this.$route.name);
-            }
+            },
+            hasNewChangelogItems() {
+                return this.$store.getters['changelog/hasNewChangelogItems'];
+            },
         },
         watch: {
             userFilter() {

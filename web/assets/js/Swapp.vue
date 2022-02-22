@@ -57,6 +57,7 @@
 <script>
 import Navigation from './components/Navigation';
 import FrameError from './components/FrameError';
+import dayjs from 'dayjs';
 
 export default {
     name: 'Swapp',
@@ -67,10 +68,28 @@ export default {
             errorData: '',
             showError: false,
             oldToasterValue: '',
+            storageChangelogLastVisitedAt: 'changelog-last-visited-at',
         }
     },
-    computed: {},
+    computed: {
+        currentUser() {
+            return this.$store.getters['security/currentUser'];
+        },
+    },
     created() {
+        if (!this.$store.getters['changelog/lastVisitedAt']) {
+            let lastVisitedAt;
+            const storageLastVisitedAtValue = this.$localStorage.get(this.storageChangelogLastVisitedAt);
+            if (storageLastVisitedAtValue) {
+                lastVisitedAt = dayjs(storageLastVisitedAtValue);
+            } else if (this.currentUser) {
+                lastVisitedAt = dayjs(this.currentUser.lastLoginAt);
+            } else {
+                lastVisitedAt = dayjs().subtract(1, 'month');
+            }
+            this.$store.dispatch('changelog/updateLastVisitedAt', lastVisitedAt)
+        }
+
         this.axios.interceptors.response.use(undefined, (err) => {
             if (this.$route.name === 'Logout') {
                 return Promise.reject(err.response);
