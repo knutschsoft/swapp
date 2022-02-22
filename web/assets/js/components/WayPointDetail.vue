@@ -114,6 +114,7 @@
                     this.$bvToast.toast(message, {
                         title: 'Wegpunkt geändert',
                         toaster: 'b-toaster-top-right',
+                        variant: 'success',
                         autoHideDelay: 10000,
                         appendToast: true,
                         solid: true,

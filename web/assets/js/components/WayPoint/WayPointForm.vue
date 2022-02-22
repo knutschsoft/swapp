@@ -215,12 +215,13 @@
             {{ submitButtonText }}
         </b-button>
         <b-button
-            v-if="walk"
+            v-if="initialWalk"
             type="submit"
             variant="secondary"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit-and-finish"
             data-with-finish
+            @click="handleSubmitWithFinish"
             block
             class="col-12"
             :tabindex="isSubmitDisabled ? '-1' : ''"
@@ -435,9 +436,11 @@ export default {
                 reader.readAsDataURL(file);
             });
         },
-        async handleSubmit(e) {
-            const isWithFinish = undefined !== e.submitter.dataset.withFinish;
-            this.$emit('submit', { form: this.wayPoint, isWithFinish });
+        async handleSubmitWithFinish() {
+            this.$emit('submit', { form: this.wayPoint, isWithFinish: true });
+        },
+        async handleSubmit() {
+            this.$emit('submit', { form: this.wayPoint, isWithFinish: false });
         },
     },
 };
