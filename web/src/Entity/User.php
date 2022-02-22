@@ -133,6 +133,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             ],
             "security_post_denormalize" =>
                 "(is_granted('".User::ROLE_SUPER_ADMIN."') or not object.superAdminRightsNeeded()) and ".
+                "is_granted('".User::ROLE_ADMIN."') and ".
                 "is_granted('".ClientVoter::READ."', object.client)"
             ,
         ],

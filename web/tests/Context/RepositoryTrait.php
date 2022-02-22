@@ -371,7 +371,7 @@ trait RepositoryTrait
         }
 
         if (\str_starts_with($text, 'array<')) {
-            return \explode(',', $referenceIdentifikator);
+            return '' !== $referenceIdentifikator ? \explode(',', $referenceIdentifikator) : [];
         }
 
         return \trim($text);

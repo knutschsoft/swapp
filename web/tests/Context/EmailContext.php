@@ -8,6 +8,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behatch\Context\RestContext;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Webmozart\Assert\Assert;
 
@@ -49,10 +50,9 @@ final class EmailContext implements Context
         /** @var Email[] $messages */
         $messages = $this->getMailerMessagesForAddress($recipient);
 
-        // 2 events => 2 messages
         Assert::count(
             $messages,
-            2,
+            1,
             \sprintf('Found %d messages for %s', \count($messages), $recipient)
         );
 
@@ -63,46 +63,35 @@ final class EmailContext implements Context
     }
 
     /**
-     * @Then an email should be sent to :recipient containing a link to :paramValue and subject:
+     * @Then an email should be sent to :recipient with content:
+     *
+     * @param string       $recipient
+     * @param PyStringNode $text
      */
-    public function anEmailShouldContainingLinkAndSubject(
+    public function anEmailShouldBeSentToWithContent(
         string $recipient,
-        string $paramValue,
         PyStringNode $text
     ): void {
-        $this->anEmailShouldBeSentToWithSubject($recipient, $text);
-        $this->anEmailShouldBeSentToContainingALinkTo($recipient, $paramValue);
-    }
-
-    /**
-     * @Given /^NO email should be sent to "([^"]*)"$/
-     */
-    public function noEmailShoudBeSentTo(string $recipient): void
-    {
         /** @var Email[] $messages */
         $messages = $this->getMailerMessagesForAddress($recipient);
 
-        // 2 events => 2 messages
-        Assert::count($messages, 0);
-    }
-
-    /**
-     * @Given /^an email should be sent to "([^"]*)" containing a link to "([^"]*)"$/
-     */
-    public function anEmailShouldBeSentToContainingALinkTo(string $recipient, string $paramValue): void
-    {
-        /** @var Email[] $messages */
-        $messages = $this->getMailerMessagesForAddress($recipient);
-
-        $url = $paramValue;
+        Assert::count(
+            $messages,
+            1,
+            \sprintf('Found %d messages for %s', \count($messages), $recipient)
+        );
 
         foreach ($messages as $message) {
-            $htmlBody = $message->getHtmlBody();
-            Assert::contains(
-                $htmlBody,
-                $url,
-                \sprintf('%s did not contain a link %s.', $htmlBody, $url)
+            $addresses = \array_merge($message->getTo(), $message->getCc());
+            $addressStrings = \array_map(
+                static function (Address $address) {
+                    return $address->getAddress();
+                },
+                $addresses
             );
+
+            Assert::inArray($recipient, $addressStrings);
+            Assert::contains($message->getHtmlBody(), $text->getRaw());
         }
     }
 }

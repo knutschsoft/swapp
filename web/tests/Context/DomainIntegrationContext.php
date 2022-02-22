@@ -436,13 +436,17 @@ final class DomainIntegrationContext extends RawMinkContext
                     $imageNameList = \explode('_', $imageName);
                     Assert::count($imageNameList, 2);
                     $timestamp = $this->enrichText($imageNameList[0]);
-                    dump($timestamp);
                     Assert::contains($wayPoint->getImageName(), $imageNameList[1]);
                     $expectedTimestamp = Carbon::createFromTimestamp($timestamp);
                     $actualTimestamp = Carbon::createFromTimestamp(\explode('_', $wayPoint->getImageName())[0]);
                     Assert::true(
                         $expectedTimestamp->diffInSeconds($actualTimestamp) < 5,
-                        \sprintf('Expected timestamp in imageName "%s" is not same as value "%s". Diff is "%d seconds".', $expectedTimestamp, $actualTimestamp, $expectedTimestamp->diffInSeconds($actualTimestamp))
+                        \sprintf(
+                            'Expected timestamp in imageName "%s" is not same as value "%s". Diff is "%d seconds".',
+                            $expectedTimestamp,
+                            $actualTimestamp,
+                            $expectedTimestamp->diffInSeconds($actualTimestamp)
+                        )
                     );
                 }
             }

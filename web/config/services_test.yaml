@@ -5,3 +5,5 @@ services:
 
     App\Tests\Context\:
         resource: '../tests/Context/*'
+
+    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
