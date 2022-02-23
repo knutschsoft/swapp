@@ -83,8 +83,8 @@ Feature: A user can do a walk
     Then I wait for 'Runde "Mein erster Lauf" abschließen' to appear
     Then I wait for 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
 
-    When I enter "38" in "Systemische Antwort" field
-    When I enter "Nice day!" in "Reflexion" field
+    When I enter "38" in "systemicAnswer" field
+    When I enter "Nice day!" in "walkReflection" field
     When I enter "nächste Woche nochmal" in "commitments" field
     When I enter "Blockieren ist doof!" in "insights" field
     And I click on text "Runde abschließen"

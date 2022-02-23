@@ -11,6 +11,7 @@ const
     CHANGE_WALK = 'CHANGE_WALK',
     CHANGE_WALK_SUCCESS = 'CHANGE_WALK_SUCCESS',
     CHANGE_WALK_ERROR = 'CHANGE_WALK_ERROR',
+    RESET_CHANGE_WALK_ERROR = "RESET_CHANGE_WALK_ERROR",
     CREATE_WALK = 'CREATE_WALK',
     CREATE_WALK_SUCCESS = 'CREATE_WALK_SUCCESS',
     CREATE_WALK_ERROR = 'CREATE_WALK_ERROR'
@@ -129,6 +130,9 @@ const mutations = {
         state.errorChange = error;
         state.isLoadingChange = false;
     },
+    [RESET_CHANGE_WALK_ERROR](state) {
+        state.errorChange = null;
+    },
     [CREATE_WALK](state) {
         state.isLoadingCreate = true;
         state.errorCreate = null;
@@ -180,6 +184,17 @@ const actions = {
             commit(CHANGE_WALK_ERROR, error);
         }
     },
+    async epilogue({ commit }, payload) {
+        commit(CHANGE_WALK);
+        try {
+            let response = await WalkAPI.epilogue(payload);
+            commit(CHANGE_WALK_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(CHANGE_WALK_ERROR, error);
+        }
+    },
     async create({ commit }, payload) {
         commit(CREATE_WALK);
         try {
@@ -190,6 +205,9 @@ const actions = {
         } catch (error) {
             commit(CREATE_WALK_ERROR, error);
         }
+    },
+    resetChangeError({ commit }) {
+        commit(RESET_CHANGE_WALK_ERROR);
     },
 };
 

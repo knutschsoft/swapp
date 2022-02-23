@@ -1,9 +1,0 @@
-{% set personsFemale %}
-    {% if walk.getFemalesCount %}
-        {{ walk.getFemalesCount }}
-    {% else %}
-        keine weiblichen Personen angetroffen
-    {% endif %}
-{% endset %}
-
-{{ include('walk/showItem.html.twig', {'key': 'angetroffene weibliche Personen', 'value': personsFemale}, with_context = false) }}

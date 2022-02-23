@@ -1,4 +1,4 @@
-Feature: Testing walk change resource
+Feature: Testing walk epilogue resource
 
   Background:
     Given the following clients exists:
@@ -12,14 +12,15 @@ Feature: Testing walk change resource
       | lonely@gmx.de     |                  | client@gmx.de |
       | two@pac.de        |                  | client@gmx.de |
       | karl@gamer.de     |                  | gamer@gmx.de  |
+      | pinky@gamer.de    |                  | gamer@gmx.de  |
       | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
       | admin@gamer.de    | ROLE_ADMIN       | gamer@gmx.de  |
       | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following teams exists:
-      | name     | users                  | ageRanges          | client        |
-      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | Gamers   | karl@gamer.de          |                    | gamer@gmx.de  |
+      | name     | users                        | ageRanges          | client        |
+      | Westhang | karl@gmx.de,two@pac.de       | 1-10,3-12, 13 - 90 | client@gmx.de |
+      | CA       | two@pac.de                   | 1-10,3-12, 13 - 90 | client@gmx.de |
+      | Gamers   | karl@gamer.de,pinky@gamer.de |                    | gamer@gmx.de  |
     Given the following systemic questions exists:
       | question       | client        |
       | Esta muy bien? | client@gmx.de |
@@ -38,9 +39,44 @@ Feature: Testing walk change resource
       | BOTW         | Gamescon    |
       | BOTW2        | Gamescon    |
 
+  @api @walkEpilogue @security
+  Scenario: I can request /api/walks/epilogue as authenticated user and will change walk name of a walk with script tags inside
+
+    Given I can find the following walks in database:
+      | name     | walkTeamMembers              |
+      | Gamescon | karl@gamer.de,pinky@gamer.de |
+    Given I am authenticated against api as "admin@gamer.de"
+    When I send an api platform "POST" request to "/api/walks/epilogue" with parameters:
+      | key             | value                                                         |
+      | walk            | walkIri<Gamescon>                                             |
+      | name            | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
+      | conceptOfDay    | High and out.                                                 |
+      | weather         | Sonne                                                         |
+      | isResubmission  | <false>                                                       |
+      | holidays        | <false>                                                       |
+      | commitments     | narf                                                          |
+      | insights        | zorp                                                          |
+      | systemicAnswer  | zorp                                                          |
+      | walkReflection  | zorp                                                          |
+      | rating          | int<2>                                                        |
+      | startTime       | 2021-05-11T15:51:06+00:00                                     |
+      | endTime         | 2021-05-11T15:51:08+00:00                                     |
+#    And print last response
+    Then the response status code should be 200
+    And the JSON nodes should be equal to:
+      | @type | Walk            |
+      | name  | \| Google holla |
+
+    Given I can find the following walks in database:
+      | name            | rating |
+      | \| Google holla | 2   |
+
+    And there are exactly 2 walks in database
+
+
   @api @walkChange
-  Scenario: I can request /api/walks/change as a not authenticated user and an auth error will occur
-    When I send an api platform "POST" request to "/api/walks/change" with parameters:
+  Scenario: I can request /api/walks/epilogue as a not authenticated user and an auth error will occur
+    When I send an api platform "POST" request to "/api/walks/epilogue" with parameters:
       | key  | value             |
       | team | teamIri<Westhang> |
     Then the response status code should be 401
@@ -48,21 +84,10 @@ Feature: Testing walk change resource
     And the JSON nodes should be equal to:
       | code | 401 |
 
-  @api @walkChange
-  Scenario: I can request /api/walks/change as a normal user and an access denied error will occur
-    Given I am authenticated against api as "karl@gmx.de"
-    When I send an api platform "POST" request to "/api/walks/change" with parameters:
-      | key  | value             |
-      | walk | walkIri<Spaziergang> |
-    Then the response status code should be 403
-#    And print last response
-    And the JSON nodes should be equal to:
-      | hydra:description | Access Denied. |
-
-  @api @walkChange
-  Scenario: I can not request /api/walks/change for a walk as an admin of another client
+  @api @walkEpilogue
+  Scenario: I can not request /api/walks/epilogue for a walk as an admin of another client
     Given I am authenticated against api as "admin@gmx.de"
-    When I send an api platform "POST" request to "/api/walks/change" with parameters:
+    When I send an api platform "POST" request to "/api/walks/epilogue" with parameters:
       | key  | value             |
       | walk | walkIri<Gamescon> |
     Then the response status code should be 400
@@ -70,13 +95,12 @@ Feature: Testing walk change resource
       | hydra:description | Item not found for "/api/walks/ |
 
 
-  @api @walkChange
-  Scenario: I can request /api/walks/change as authenticated user and will try to change a walk
+  @api @walkEpilogue
+  Scenario: I can request /api/walks/epilogue as authenticated user and will try to epilogue a walk
     Given I am authenticated against api as "admin@gamer.de"
-    When I send an api platform "POST" request to "/api/walks/change" with parameters:
+    When I send an api platform "POST" request to "/api/walks/epilogue" with parameters:
       | key  | value             |
       | walk | walkIri<Gamescon> |
-      | team | teamIri<Westhang> |
 #    And print last response
     Then the response status code should be 422
     And the JSON nodes should be equal to:
@@ -106,19 +130,16 @@ Feature: Testing walk change resource
       | violations[11].message      | Dieser Wert sollte nicht null sein. |
       | violations[12].propertyPath | isResubmission                      |
       | violations[12].message      | Dieser Wert sollte nicht null sein. |
-      | violations[13].propertyPath | walkTeamMembers                     |
-      | violations[13].message      | Dieser Wert sollte nicht null sein. |
 
-  @api @walkChange
-  Scenario: I can request /api/walks/change as authenticated user and will change a walk
+  @api @walkEpilogue
+  Scenario: I can request /api/walks/epilogue as authenticated user and will epilogue a walk
     Given I am authenticated against api as "admin@gamer.de"
-    When I send an api platform "POST" request to "/api/walks/change" with parameters:
+    When I send an api platform "POST" request to "/api/walks/epilogue" with parameters:
       | key             | value                     |
       | walk            | walkIri<Gamescon>         |
       | name            | This is my Walk           |
       | conceptOfDay    | High and out.             |
       | weather         | Sonne                     |
-      | walkTeamMembers | userIris<karl@gamer.de>   |
       | isResubmission  | <false>                   |
       | holidays        | <false>                   |
       | commitments     | narf                      |

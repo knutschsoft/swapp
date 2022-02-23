@@ -12,3 +12,5 @@ user:
 client:
  name_is_not_unique: Ein Klient mit dem Namen "{{ value }}" existiert bereits.
  email_is_not_unique: Ein Klient mit der E-Mail "{{ value }}" existiert bereits.
+walk:
+ isStartTimeBeforeEndTime: Die Rundenstartzeit muss vor der Rundenendzeit liegen.

@@ -1,9 +1,0 @@
-{% set persons %}
-    {% if walk.getMalesCount + walk.getFemalesCount %}
-        {{ walk.getMalesCount + walk.getFemalesCount }}
-    {% else %}
-        keine Personen angetroffen
-    {% endif %}
-{% endset %}
-
-{{ include('walk/showItem.html.twig', {'key': 'angetroffene Personen', 'value': persons}, with_context = false) }}

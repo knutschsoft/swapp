@@ -65,10 +65,16 @@
                     <b>Hinweis:</b>
                     <ul class="mb-0">
                         <li>
+                            Beim Abschluss jeder Runde gibt es ein Reflexionsprotokoll mit
+                            systemischen Reflexionsfragen, welche u.a. einen
+                            "psychohygienischen" Beitrag zum Abschluss der Streetwork leisten.
+                            Dazu wird bei Abschluss einer Runde zufällig eine dieser Fragen gestellt und muss beantwortet werden.
+                        </li>
+                        <li>
                             Eine Änderung der Fragestellung ändert lediglich die Fragestellung für neue Runden.
                         </li>
                         <li>
-                            Bereits bestehende Runden bleiben davon unberührt.
+                            Bereits bestehende Runden bleiben von Änderungen an einer Frage unberührt.
                         </li>
                     </ul>
                 </b-alert>

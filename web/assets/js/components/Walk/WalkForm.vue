@@ -380,7 +380,7 @@ export default {
     watch: {
         startTimeTime(startTimeTime) {
             const values = startTimeTime.split(':');
-            if (values.length !== 3) {
+            if (values.length < 2) {
                 return;
             }
             let startTime = dayjs(this.walk.startTime);
@@ -398,7 +398,7 @@ export default {
         },
         endTimeTime(endTimeTime) {
             const values = endTimeTime.split(':');
-            if (values.length !== 3) {
+            if (values.length < 2) {
                 return;
             }
             let endTime = dayjs(this.walk.endTime);

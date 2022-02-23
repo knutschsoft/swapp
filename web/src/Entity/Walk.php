@@ -12,6 +12,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\TeamName;
 use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkCreateRequest;
+use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\WalkExportRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Repository\DoctrineORMWalkRepository;
@@ -60,6 +61,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "status" => 200,
             "path" => "/walks/change",
             "security_post_denormalize" => "is_granted('".WalkVoter::EDIT."', object.walk)",
+        ],
+        "walk_epilogue" => [
+            "messenger" => "input",
+            "input" => WalkEpilogueRequest::class,
+            "output" => Walk::class,
+            "method" => "post",
+            "status" => 200,
+            "path" => "/walks/epilogue",
+            "security_post_denormalize" => "is_granted('".WalkVoter::READ."', object.walk)",
         ],
         "walk_create" => [
             "messenger" => "input",

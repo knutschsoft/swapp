@@ -141,6 +141,7 @@
                         title: 'Runde geändert',
                         toaster: 'b-toaster-top-right',
                         autoHideDelay: 10000,
+                        variant: 'success',
                         appendToast: true,
                         solid: true,
                     });

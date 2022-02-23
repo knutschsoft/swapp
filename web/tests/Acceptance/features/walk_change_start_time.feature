@@ -1,4 +1,4 @@
-Feature: An administrator can change a walk
+Feature: An administrator can change startTime of a walk
 
   Background:
     Given the following clients exists:
@@ -22,8 +22,8 @@ Feature: An administrator can change a walk
       | Klippe | Westhang | 02.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
 
   @javascript
-  @walkChange
-  Scenario: I can not start a walk as an user without a group
+  @walkChange @startTime
+  Scenario: I can change startTime of a walk as an admin
     And there are exactly 1 walks in database
     Given I am authenticated as "karl@gmx.de"
     When I go to swapp page "/runde/walkId<Klippe>/detail"

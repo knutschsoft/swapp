@@ -1,9 +1,0 @@
-{% set guests %}
-    {% for guest in walk.getGuests %}
-        {{ guest.getName }}
-    {% else %}
-        Es haben keine Gäste teilgenommen.
-    {% endfor %}
-{% endset %}
-
-{{ include('walk/showItem.html.twig', {'key': 'Gäste', 'value': guests}, with_context = false) }}

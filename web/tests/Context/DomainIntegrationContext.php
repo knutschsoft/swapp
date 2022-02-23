@@ -361,7 +361,7 @@ final class DomainIntegrationContext extends RawMinkContext
                     $expectedLastLoginAt = new Carbon($lastLoginAt);
                     $lastLoginAt = new Carbon($user->getLastLoginAt());
                     Assert::true(
-                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 1,
+                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 2,
                         \sprintf('Expected lastLoginAt "%s" is not same as value "%s".', $expectedLastLoginAt, $lastLoginAt)
                     );
                 }
