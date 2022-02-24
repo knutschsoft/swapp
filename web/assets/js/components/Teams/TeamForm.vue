@@ -6,11 +6,13 @@
         <b-form-group
             label="Teamname"
             v-slot="{ ariaDescribedby }"
+            :state="nameState"
         >
             <b-input
                 v-model="team.name"
                 :aria-describedby="ariaDescribedby"
                 :disabled="isDisabled"
+                :state="nameState"
                 trim
             />
         </b-form-group>

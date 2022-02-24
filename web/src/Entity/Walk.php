@@ -100,7 +100,7 @@ class Walk
     #[ApiProperty(identifier: true)]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 1024)]
     private string $name;
 
     /** @var Collection<int, WayPoint> **/
@@ -134,13 +134,13 @@ class Walk
     #[ORM\Column(type: 'string', length: 4096)]
     private string $systemicAnswer;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $insights = null;
+    #[ORM\Column(type: 'text', length: 4096)]
+    private string $insights;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $commitments = null;
+    #[ORM\Column(type: 'text', length: 4096)]
+    private string $commitments;
 
-    #[ORM\Column(type: 'boolean', length: 255)]
+    #[ORM\Column(type: 'boolean')]
     private bool $isResubmission;
 
     /** @var Collection<int, Guest> **/
@@ -175,6 +175,10 @@ class Walk
         $this->guests = new ArrayCollection();
         $this->holidays = false;
         $this->conceptOfDay = '';
+        $this->commitments = '';
+        $this->insights = '';
+        $this->systemicAnswer = '';
+        $this->walkReflection = '';
     }
 
     public static function fromWalkCreateRequest(WalkCreateRequest $request, SystemicQuestion $systemicQuestion): self
@@ -215,23 +219,23 @@ class Walk
     }
 
     #[Groups(['walk:read'])]
-    public function getInsights(): ?string
+    public function getInsights(): string
     {
         return $this->insights;
     }
 
-    public function setInsights(?string $insights): void
+    public function setInsights(string $insights): void
     {
         $this->insights = $insights;
     }
 
     #[Groups(['walk:read'])]
-    public function getCommitments(): ?string
+    public function getCommitments(): string
     {
         return $this->commitments;
     }
 
-    public function setCommitments(?string $commitments): void
+    public function setCommitments(string $commitments): void
     {
         $this->commitments = $commitments;
     }

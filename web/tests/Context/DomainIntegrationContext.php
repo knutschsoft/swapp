@@ -382,7 +382,8 @@ final class DomainIntegrationContext extends RawMinkContext
     {
         $this->em->clear();
         foreach ($table as $row) {
-            $walk = $this->getWalkByName($row['name']);
+            $name = $row['name'];
+            $walk = $this->getWalkByName($this->enrichText($name));
             if (isset($row['startTime'])) {
                 Assert::eq($walk->getStartTime(), new \DateTime($row['startTime']));
             }
@@ -405,6 +406,21 @@ final class DomainIntegrationContext extends RawMinkContext
                         \count($walkUsers)
                     )
                 );
+            }
+            if (isset($row['conceptOfDay'])) {
+                Assert::same($walk->getConceptOfDay(), $this->enrichText($row['conceptOfDay']));
+            }
+            if (isset($row['commitments'])) {
+                Assert::same($walk->getCommitments(), $this->enrichText($row['commitments']));
+            }
+            if (isset($row['insights'])) {
+                Assert::same($walk->getCommitments(), $this->enrichText($row['insights']));
+            }
+            if (isset($row['systemicAnswer'])) {
+                Assert::same($walk->getSystemicAnswer(), $this->enrichText($row['systemicAnswer']));
+            }
+            if (isset($row['walkReflection'])) {
+                Assert::same($walk->getWalkReflection(), $this->enrichText($row['walkReflection']));
             }
         }
     }

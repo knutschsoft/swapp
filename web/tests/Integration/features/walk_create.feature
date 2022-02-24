@@ -278,3 +278,27 @@ Feature: Testing walk create resource
     And the JSON node 'hydra:description' should contain 'api'
     And the JSON node 'hydra:description' should contain 'users'
     And there are exactly 2 walks in database
+
+  @api @walkCreate
+  Scenario: I can request /api/walks/create as authenticated user and can create a new walk for another user with full length fields
+    Given I am authenticated against api as "two@pac.de"
+    When I send an api platform "POST" request to "/api/walks/create" with parameters:
+      | key             | value                 |
+      | team            | teamIri<Westhang>     |
+      | name            | string<300>           |
+      | conceptOfDay    | string<2500>          |
+      | weather         | Arschkalt             |
+      | startTime       | 01.01.2020            |
+      | walkTeamMembers | userIris<karl@gmx.de> |
+      | holidays        | <false>               |
+#    And print last response
+    Then the response status code should be 200
+    And the enriched JSON nodes should be equal to:
+      | @type            | Walk           |
+      | name             | string<300>    |
+      | systemicQuestion | Esta muy bien? |
+      | weather          | Arschkalt      |
+      | isUnfinished     | 1              |
+      | teamName         | Westhang       |
+      | conceptOfDay     | string<2500>   |
+    And there are exactly 3 walks in database

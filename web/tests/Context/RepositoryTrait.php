@@ -267,6 +267,9 @@ trait RepositoryTrait
         if (\str_starts_with($text, 'timestamp<')) {
             return (string) (new Carbon($referenceIdentifikator))->timestamp;
         }
+        if (\str_starts_with($text, 'string<')) {
+            return \str_repeat('a', (int) $referenceIdentifikator);
+        }
 
         if (\str_starts_with($text, 'ageRanges<')) {
             $ageRanges = [];
