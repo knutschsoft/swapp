@@ -145,7 +145,7 @@ class WayPoint
 
         $instance->setWalk($request->walk);
         $instance->ageGroups = $request->ageGroups;
-        $instance->wayPointTags = new ArrayCollection($request->wayPointTags);
+        $instance->setWayPointTags(new ArrayCollection($request->wayPointTags));
         $instance->setNote($request->note);
         $instance->setOneOnOneInterview($request->oneOnOneInterview);
         $instance->setLocationName($request->locationName);

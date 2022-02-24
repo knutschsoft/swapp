@@ -10,8 +10,15 @@ const
 const state = {
     changelogs: [
         {
+            header: '24.02.2022',
+            avatarText: '🪛',
+            entries: [
+                { text: 'Fix: Beim Erstellen eines Wegpunktes wurden die Tags nicht mit gespeichert. Lediglich beim Ändern eines Wegpunktes funktionierte das Ändern der Tags.' },
+            ],
+        },
+        {
             header: '22.02.2022',
-            avatarText: '🛠',
+            avatarText: '🛠️',
             entries: [
                 { text: 'Feature: Ein Admin kann die Benutzerliste nach aktiven und inaktiven Benutzern filtern.' },
                 { text: 'Feature: Die Benutzer in der Benutzerliste sind nun nach aktiv/inaktiv und Benutzername sortiert.' },

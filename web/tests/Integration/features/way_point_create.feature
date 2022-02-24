@@ -60,13 +60,13 @@ Feature: Testing wayPoint create resource
       | locationName | \| Google holla |
 
     Given I can find the following wayPoints in database:
-      | locationName    | ageGroups                                          | imageName |
-      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | <null>    |
+      | locationName    | ageGroups                                          | imageName | wayPointTags  |
+      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | <null>    | Gewalt,Drogen |
 
     And there are exactly 1 wayPoints in database
 
   @api @wayPointCreate @imageFile
-  Scenario: I can request /api/way_points/create as authenticated user and will create wayPoint with on imageFile
+  Scenario: I can request /api/way_points/create as authenticated user and will create wayPoint with an imageFile
 
     Given I am authenticated against api as "two@pac.de"
     And I can not find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder
@@ -87,12 +87,12 @@ Feature: Testing wayPoint create resource
       | @type        | WayPoint        |
       | locationName | \| Google holla |
     And the JSON nodes should contain:
-      | imageName | _AreYouDrunk.jpg |
+      | imageName | _AreYouDrunk.jpg                    |
       | imageSrc  | http://localhost/images/way_points/ |
-      | imageSrc  | _AreYouDrunk.jpg |
+      | imageSrc  | _AreYouDrunk.jpg                    |
 
     Given I can find the following wayPoints in database:
-      | locationName    | ageGroups                                          | imageName       |
+      | locationName    | ageGroups                                          | imageName                      |
       | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | timestamp<now>_AreYouDrunk.jpg |
 
     And I can find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder

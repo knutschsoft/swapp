@@ -484,7 +484,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 $expectedTags = $this->getTagsFromString($row['wayPointTags']);
                 $wayPointTags = $wayPoint->getWayPointTags();
                 foreach ($expectedTags as $expectedTag) {
-                    Assert::inArray($expectedTag, $wayPointTags->toArray());
+                    Assert::inArray($expectedTag, $wayPointTags->toArray(), 'Expected "%s" to be in list of wayPointTags "%2$s" from database object.');
                 }
                 Assert::count(
                     $wayPointTags,
