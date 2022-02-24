@@ -30,7 +30,7 @@
                         @click="wayPoint.locationName = ''"
                         :disabled="wayPoint.locationName === ''"
                     >
-                        <mdicon name="CloseCircleOutline" size="20" />
+                        <mdicon name="CloseCircleOutline" size="20"/>
                     </b-button>
                 </b-input-group-append>
             </b-input-group>
@@ -239,6 +239,7 @@
 import GlobalFormError from '../Common/GlobalFormError.vue';
 import ColorBadge from '../Tags/ColorBadge.vue';
 import getViolationsFeedback from '../../utils/validation.js';
+import axios from 'axios';
 
 export default {
     name: 'WayPointForm',
@@ -410,6 +411,13 @@ export default {
             this.wayPoint.locationName = this.initialWayPoint.locationName;
             this.wayPoint.ageGroups = JSON.parse(JSON.stringify(this.initialWayPoint.ageGroups)) || [];
             this.wayPoint.imageName = this.initialWayPoint.imageName;
+            if (this.initialWayPoint.imageSrc) {
+                const response = await axios.get(this.initialWayPoint.imageSrc, { responseType: 'blob' });
+                if (response.status) {
+                    this.wayPoint.imageFileData = await this.readFile(response.data);
+                    this.wayPoint.imageFileName = this.initialWayPoint.imageName;
+                }
+            }
             this.wayPoint.isMeeting = this.initialWayPoint.isMeeting || false;
             this.wayPoint.note = this.initialWayPoint.note;
             this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;
