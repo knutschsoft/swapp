@@ -14,6 +14,7 @@ const state = {
             avatarText: '🪛',
             entries: [
                 { text: 'Fix: Beim Erstellen eines Wegpunktes wurden die Tags nicht mit gespeichert. Lediglich beim Ändern eines Wegpunktes funktionierte das Ändern der Tags.' },
+                { text: 'Fix: Für den "Name" (maximal 300 Zeichen), "Termine, Besorgungen, Verabredungen" (maximal 2500 Zeichen) und "Termine, Besorgungen, Verabredungen" (maximal 2500 Zeichen) einer Runde kann nun das jeweilige Limit an Zeichen auch gespeichert werden.' },
             ],
         },
         {
