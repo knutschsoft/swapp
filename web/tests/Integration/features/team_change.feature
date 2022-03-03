@@ -112,13 +112,11 @@ Feature: Testing team change resource
       | violations[1].propertyPath | name                                                                   |
       | violations[1].message      | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 3 Zeichen haben. |
       | violations[2].propertyPath | locationNames                                                          |
-      | violations[2].message      | Dieser Wert sollte nicht leer sein.                                    |
-      | violations[3].propertyPath | locationNames                                                          |
+      | violations[2].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[3].propertyPath | users                                                                  |
       | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[4].propertyPath | users                                                                  |
+      | violations[4].propertyPath | ageRanges                                                              |
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath | ageRanges                                                              |
-      | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin of another client/team and can not change a team
