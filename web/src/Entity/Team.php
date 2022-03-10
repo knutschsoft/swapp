@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Table(name: 'team')]
 #[ORM\Entity(repositoryClass: DoctrineORMTeamRepository::class)]
@@ -68,6 +69,9 @@ class Team
     /** @var string[] */
     #[ORM\Column(type: 'array')]
     private array $locationNames;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithContactsCount;
 
     public function __construct()
     {
@@ -168,5 +172,17 @@ class Team
         $locationNames = \array_map('trim', $locationNames);
         \natcasesort($locationNames);
         $this->locationNames = \array_values(\array_unique($locationNames));
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithContactsCount')]
+    public function isWithContactsCount(): bool
+    {
+        return $this->isWithContactsCount;
+    }
+
+    public function setIsWithContactsCount(bool $isWithContactsCount): void
+    {
+        $this->isWithContactsCount = $isWithContactsCount;
     }
 }

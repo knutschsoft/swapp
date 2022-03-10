@@ -120,6 +120,25 @@ trait RepositoryTrait
     }
 
     /**
+     * @param string $locationNamesString
+     *
+     * @return string[]
+     */
+    protected function getLocationNamesFromString(string $locationNamesString): array
+    {
+        $locationNames = [];
+        if (!$locationNamesString) {
+            return $locationNames;
+        }
+        $locationNameStrings = \explode(',', $locationNamesString);
+        foreach ($locationNameStrings as $locationNameString) {
+            $locationNames[] = $this->getUserByEmail($locationNameString);
+        }
+
+        return $locationNames;
+    }
+
+    /**
      * @param string $usersString
      *
      * @return User[]

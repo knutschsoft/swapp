@@ -370,6 +370,99 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Given /^I can find the following teams in database:$/
+     *
+     * @param TableNode $table
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function iCanFindTheFollowingTeamsInDatabase(TableNode $table): void
+    {
+        $this->em->clear();
+        foreach ($table as $row) {
+            Assert::keyExists($row, 'name');
+            $team = $this->getTeamByName($row['name']);
+            if (isset($row['isWithContactsCount']) && '' !== $row['isWithContactsCount']) {
+                Assert::eq($team->isWithContactsCount(), (bool) $this->enrichText($row['isWithContactsCount']));
+            }
+            if (isset($row['client']) && '' !== $row['client']) {
+                Assert::eq($team->getClient()->getId(), $this->getClientByEmail($row['client']));
+            }
+            if (isset($row['users'])) {
+                $expectedUsers = $this->getUsersFromString($row['walkTeamMembers']);
+                $users = $team->getUsers();
+                foreach ($expectedUsers as $expectedUser) {
+                    Assert::inArray($expectedUser, $users->toArray());
+                }
+                Assert::count(
+                    $users,
+                    \count($expectedUsers),
+                    \sprintf(
+                        'Wrong number of users in team "%s". Expected %d. Got %d.',
+                        $team->getName(),
+                        \count($expectedUsers),
+                        \count($users)
+                    )
+                );
+            }
+            if (isset($row['locationNames'])) {
+                $expectedLocationNames = $this->getLocationNamesFromString($row['locationNames']);
+                $locationNames = $team->getLocationNames();
+                foreach ($expectedLocationNames as $expectedLocationName) {
+                    Assert::inArray($expectedLocationName, $locationNames);
+                }
+                Assert::count(
+                    $locationNames,
+                    \count($expectedLocationNames),
+                    \sprintf(
+                        'Wrong number of locationNames in team "%s". Expected %d. Got %d.',
+                        $team->getName(),
+                        \count($expectedLocationNames),
+                        \count($locationNames)
+                    )
+                );
+            }
+            if (isset($row['ageRanges'])) {
+                $expectedAgeRanges = $this->getAgeRangesFromString($row['ageRanges']);
+                $teamAgeRanges = $team->getAgeRanges();
+                $frontendLabels = [];
+                foreach ($teamAgeRanges as $teamAgeRange) {
+                    $frontendLabels[] = $teamAgeRange->getFrontendLabel();
+                }
+                foreach ($expectedAgeRanges as $expectedAgeRange) {
+                    Assert::inArray($expectedAgeRange->getFrontendLabel(), $frontendLabels);
+                }
+                Assert::count(
+                    $teamAgeRanges,
+                    \count($expectedAgeRanges),
+                    \sprintf(
+                        'Wrong number of teamAgeRanges in team "%s". Expected %d. Got %d.',
+                        $team->getName(),
+                        \count($expectedAgeRanges),
+                        \count($teamAgeRanges)
+                    )
+                );
+            }
+            if (isset($row['lastLoginAt']) && '' !== $row['lastLoginAt']) {
+                $lastLoginAt = $row['lastLoginAt'];
+                if ('<null>' === $lastLoginAt) {
+                    Assert::null($team->getLastLoginAt());
+                } else {
+                    Assert::notNull($team->getLastLoginAt());
+                    $expectedLastLoginAt = new Carbon($lastLoginAt);
+                    $lastLoginAt = new Carbon($team->getLastLoginAt());
+                    Assert::true(
+                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 2,
+                        \sprintf('Expected lastLoginAt "%s" is not same as value "%s".', $expectedLastLoginAt, $lastLoginAt)
+                    );
+                }
+            }
+        }
+    }
+
+    /**
      * @Given /^I can find the following walks in database:$/
      *
      * @param TableNode $table
@@ -532,6 +625,11 @@ final class DomainIntegrationContext extends RawMinkContext
             $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '');
             $team->setAgeRanges($ageRanges);
             $team->setLocationNames(isset($row['locationNames']) && $row['locationNames'] ? \explode(',', $row['locationNames']) : []);
+            $isWithContactsCount = false;
+            if (isset($row['isWithContactsCount']) && '' !== $row['isWithContactsCount']) {
+                $isWithContactsCount = (bool) $this->enrichText($row['isWithContactsCount']);
+            }
+            $team->setIsWithContactsCount($isWithContactsCount);
             $team->updateClient($this->getClientByEmail($row['client']));
 
             $this->em->persist($team);

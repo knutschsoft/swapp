@@ -25,6 +25,7 @@ final class TeamChangeHandler implements MessageHandlerInterface
         $team->setUsers(new ArrayCollection($request->users));
         $team->setName($request->name);
         $team->setLocationNames($request->locationNames);
+        $team->setIsWithContactsCount($request->isWithContactsCount);
         $this->teamRepository->save($team);
 
         return $team;

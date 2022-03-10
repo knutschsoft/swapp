@@ -27,4 +27,7 @@ final class TeamChangeRequest
     /** @var AgeRange[] */
     #[AppAssert\AgeRangesRequirements]
     public array $ageRanges;
+
+    #[AppAssert\IsWithContactsCountRequirements]
+    public bool $isWithContactsCount;
 }

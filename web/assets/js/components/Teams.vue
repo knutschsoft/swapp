@@ -43,6 +43,7 @@
                     locationNames: team.locationNames,
                     users: team.users,
                     ageRanges: team.ageRanges,
+                    isWithContactsCount: team.isWithContactsCount,
                 });
 
                 if (createdTeam) {
@@ -50,6 +51,7 @@
                     this.$bvToast.toast(message, {
                         title: 'Team erstellt',
                         toaster: 'b-toaster-top-right',
+                        variant: 'success',
                         autoHideDelay: 10000,
                         appendToast: true,
                     });

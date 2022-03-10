@@ -27,6 +27,10 @@
                 />
                 <span v-else>{{ data.value }}</span>
             </template>
+            <template #cell(additionalWayPointFields)="row">
+                <span v-if="row.item.isWithContactsCount">Anzahl der Kontakte</span>
+                <span v-else>-</span>
+            </template>
 
             <template v-slot:cell(actions)="row">
                 <b-button
@@ -42,7 +46,7 @@
         <b-modal
             id="edit-modal-team"
             :title="`Team &quot;${editTeam ? editTeam.name : ''}&quot; bearbeiten`"
-            size="lg"
+            size="xl"
             hide-footer
         >
             <team-form
@@ -72,6 +76,7 @@
                     },
                     {
                         key: 'users',
+                        label: 'Benutzer',
                         sortable: true,
                         formatter: (userIris, key, item) => {
                             let usernames = [];
@@ -100,6 +105,13 @@
                             return '-'
                         },
                         sortByFormatted: true,
+                        class: 'text-center',
+                    },
+                    {
+                        key: 'additionalWayPointFields',
+                        label: 'zusätzliche Wegpunkt-Felder',
+                        sortable: false,
+                        sortByFormatted: false,
                         class: 'text-center',
                     },
                     {
@@ -186,6 +198,7 @@
                     locationNames: team.locationNames,
                     users: team.users,
                     ageRanges: team.ageRanges,
+                    isWithContactsCount: team.isWithContactsCount,
                 });
 
                 if (changedTeam) {
@@ -193,6 +206,7 @@
                     this.$bvToast.toast(message, {
                         title: 'Team geändert',
                         toaster: 'b-toaster-top-right',
+                        variant: 'success',
                         autoHideDelay: 10000,
                         appendToast: true,
                     });

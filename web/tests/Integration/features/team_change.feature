@@ -24,11 +24,12 @@ Feature: Testing team change resource
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as a not authenticated user and an auth error will occur
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key       | value            |
-      | team      | teamIri<Empties> |
-      | name      | Religion         |
-      | ageRanges | ageRanges<>      |
-      | users     | userIris<>       |
+      | key                 | value            |
+      | team                | teamIri<Empties> |
+      | name                | Religion         |
+      | ageRanges           | ageRanges<>      |
+      | users               | userIris<>       |
+      | isWithContactsCount | <false>          |
     Then the response should be in JSON
     And the response status code should be 401
 #    And print last JSON response
@@ -39,11 +40,12 @@ Feature: Testing team change resource
   Scenario: I can request /api/teams/change as authenticated user and will get access denied
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key       | value             |
-      | team      | teamIri<Westhang> |
-      | name      | Religion          |
-      | ageRanges | ageRanges<>       |
-      | users     | userIris<>        |
+      | key                 | value             |
+      | team                | teamIri<Westhang> |
+      | name                | Religion          |
+      | ageRanges           | ageRanges<>       |
+      | users               | userIris<>        |
+      | isWithContactsCount | <false>           |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 403
@@ -54,47 +56,51 @@ Feature: Testing team change resource
   Scenario: I can request /api/teams/change as an admin and change a team
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key           | value                   |
-      | team          | teamIri<Empties>        |
-      | name          | Religion                |
-      | ageRanges     | ageRanges<1-3>          |
-      | users         | userIris<two@pac.de>    |
-      | locationNames | array<City, Spielplatz> |
+      | key                 | value                   |
+      | team                | teamIri<Empties>        |
+      | name                | Religion                |
+      | ageRanges           | ageRanges<1-3>          |
+      | users               | userIris<two@pac.de>    |
+      | locationNames       | array<City, Spielplatz> |
+      | isWithContactsCount | <false>                 |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
-    And the JSON nodes should be equal to:
-      | @type                      | Team       |
-      | name                       | Religion   |
-      | ageRanges[0].rangeStart    | 1          |
-      | ageRanges[0].rangeEnd      | 3          |
-      | ageRanges[0].frontendLabel | 1 - 3      |
-      | locationNames[0]           | City       |
-      | locationNames[1]           | Spielplatz |
-#      |users[0]                | userIri<two@pac.de> |
+    And the enriched JSON nodes should be equal to:
+      | @type                      | Team                |
+      | name                       | Religion            |
+      | ageRanges[0].rangeStart    | 1                   |
+      | ageRanges[0].rangeEnd      | 3                   |
+      | ageRanges[0].frontendLabel | 1 - 3               |
+      | locationNames[0]           | City                |
+      | locationNames[1]           | Spielplatz          |
+      | isWithContactsCount        | <false>             |
+      | users[0]                   | userIri<two@pac.de> |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an superadmin and change a team
     Given I am authenticated against api as "superadmin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key           | value                   |
-      | team          | teamIri<Empties>        |
-      | name          | Religion                |
-      | ageRanges     | ageRanges<1-3>          |
-      | users         | userIris<two@pac.de>    |
-      | locationNames | array<City, Spielplatz> |
+      | key                 | value                   |
+      | team                | teamIri<Empties>        |
+      | name                | Religion                |
+      | ageRanges           | ageRanges<1-3>          |
+      | users               | userIris<two@pac.de>    |
+      | locationNames       | array<City, Spielplatz> |
+      | isWithContactsCount | <true>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
-    And the JSON nodes should be equal to:
-      | name                       | Religion   |
-      | name                       | Religion   |
-      | ageRanges[0].rangeStart    | 1          |
-      | ageRanges[0].rangeEnd      | 3          |
-      | ageRanges[0].frontendLabel | 1 - 3      |
-      | locationNames[0]           | City       |
-      | locationNames[1]           | Spielplatz |
-#      |users[0]                | userIri<two@pac.de> |
+    And the enriched JSON nodes should be equal to:
+      | name                       | Religion            |
+      | name                       | Religion            |
+      | ageRanges[0].rangeStart    | 1                   |
+      | ageRanges[0].rangeEnd      | 3                   |
+      | ageRanges[0].frontendLabel | 1 - 3               |
+      | locationNames[0]           | City                |
+      | locationNames[1]           | Spielplatz          |
+      | isWithContactsCount        | <true>              |
+      | users[0]                   | userIri<two@pac.de> |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an superadmin and will get a validation error
@@ -117,16 +123,19 @@ Feature: Testing team change resource
       | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[4].propertyPath | ageRanges                                                              |
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[5].propertyPath | isWithContactsCount                                                    |
+      | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin of another client/team and can not change a team
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key       | value                |
-      | team      | teamIri<Gamers>      |
-      | name      | Religion             |
-      | ageRanges | ageRanges<1-3>       |
-      | users     | userIris<two@pac.de> |
+      | key                 | value                |
+      | team                | teamIri<Gamers>      |
+      | name                | Religion             |
+      | ageRanges           | ageRanges<1-3>       |
+      | users               | userIris<two@pac.de> |
+      | isWithContactsCount | <true>               |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 400
@@ -137,11 +146,12 @@ Feature: Testing team change resource
   Scenario: I can request /api/teams/change as an admin with an user of another client and can not change a team
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key       | value                   |
-      | team      | teamIri<Empties>        |
-      | name      | Religion                |
-      | ageRanges | ageRanges<1-3>          |
-      | users     | userIris<karl@gamer.de> |
+      | key                 | value                   |
+      | team                | teamIri<Empties>        |
+      | name                | Religion                |
+      | ageRanges           | ageRanges<1-3>          |
+      | users               | userIris<karl@gamer.de> |
+      | isWithContactsCount | <true>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 400
