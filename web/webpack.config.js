@@ -19,7 +19,7 @@ Encore
     .copyFiles(
         {
             from: './assets/images/icons',
-            to: '../images/icons/[path][name].[ext]',
+            to: 'images/icons/[path][name].[ext]',
             pattern: /\.(png|jpg|jpeg)$/,
         },
     )
@@ -39,12 +39,12 @@ Encore
             'theme_color': '#1c97b0',
             'icons': [
                 {
-                    'src': '/images/icons/icon-512x512.png',
+                    'src': '/build/images/icons/icon-512x512.png',
                     'type': 'image/png',
                     'sizes': '512x512',
                 },
                 {
-                    'src': '/images/icons/icon-192x192.png',
+                    'src': '/build/images/icons/icon-192x192.png',
                     'type': 'image/png',
                     'sizes': '192x192',
                 },
