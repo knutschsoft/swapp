@@ -15,6 +15,7 @@ import 'regenerator-runtime/runtime';
 import 'css/global.scss';
 import './plugins/vue-silentbox';
 import './plugins/dayjs';
+import wb from "./registerServiceWorker";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faMapSigns, faShoePrints, faWalking } from '@fortawesome/free-solid-svg-icons';
@@ -34,6 +35,7 @@ import Swapp from './Swapp';
 
 library.add(faWalking, faShoePrints, faEye, faMapSigns)
 
+Vue.prototype.$workbox = wb;
 Vue.component('nl2br', Nl2br);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)

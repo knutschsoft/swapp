@@ -23,6 +23,7 @@
     "eslint": "^7.2.0",
     "eslint-loader": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "file-loader": "^6.0.0",
     "font-awesome-animation": "^0.2.1",
     "ionicons": "^4.6",
     "mdi-vue": "^2.2.3",
@@ -41,7 +42,9 @@
     "vue-web-storage": "^4.0.2",
     "vue2-daterange-picker": "^0.6.7",
     "vuex": "^3.4.0",
-    "webpack-notifier": "^1.8"
+    "webpack-notifier": "^1.8",
+    "workbox-webpack-plugin": "^6.5.1",
+    "workbox-window": "^6.5.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

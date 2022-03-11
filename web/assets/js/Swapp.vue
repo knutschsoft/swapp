@@ -2,6 +2,47 @@
     <FrameError @error="showSnackbar">
         <div>
             <b-alert
+                v-if="showUpdateUI"
+                show
+                class="p-8 pl-0 mb-0"
+            >
+                <div class="d-sm-flex">
+                    <div>
+                        <div class="ml-2 mb-1 mb-sm-0">
+                            <b>Es gibt eine neue Version von Swapp!</b>
+                        </div>
+                        <ul class="ml-0 mb-0 mr-4">
+                            <li>Ggfs. funktioniert die aktuelle Version momentan nicht mehr ordnungsgemäß.</li>
+                            <li>Bitte sichere vorher deine ungespeicherten Eingaben.</li>
+                        </ul>
+                    </div>
+                    <b-button
+                        class="btn-info btn-sm ml-sm-auto mr-sm-0 ml-4 d-none d-sm-block"
+                        secondary
+                        :disabled="isUpdateLoading"
+                        @click="update"
+                    >
+                        <mdicon
+                            name="Autorenew"
+                            :spin="isUpdateLoading"
+                        />
+                        Versionsupdate
+                    </b-button>
+                    <b-button
+                        class="btn-info btn-sm ml-sm-auto mr-sm-0 d-sm-none mx-2 mt-2 btn-block"
+                        secondary
+                        :disabled="isUpdateLoading"
+                        @click="update"
+                    >
+                        <mdicon
+                            name="Autorenew"
+                            :spin="isUpdateLoading"
+                        />
+                        Versionsupdate
+                    </b-button>
+                </div>
+            </b-alert>
+            <b-alert
                 v-model="showError"
                 class="position-fixed fixed-top m-0 rounded-0"
                 style="z-index: 2000;"
@@ -66,6 +107,8 @@ export default {
     data() {
         return {
             errorData: '',
+            isUpdateLoading: false,
+            showUpdateUI: false,
             showError: false,
             oldToasterValue: '',
             storageChangelogLastVisitedAt: 'changelog-last-visited-at',
@@ -88,6 +131,12 @@ export default {
                 lastVisitedAt = dayjs().subtract(1, 'month');
             }
             this.$store.dispatch('changelog/updateLastVisitedAt', lastVisitedAt)
+        }
+
+        if (this.$workbox) {
+            this.$workbox.addEventListener("waiting", () => {
+                this.showUpdateUI = true;
+            });
         }
 
         this.axios.interceptors.response.use(undefined, (err) => {
@@ -118,6 +167,11 @@ export default {
         });
     },
     methods: {
+        async update() {
+            this.isUpdateLoading = true;
+            await this.$workbox.messageSkipWaiting();
+            window.location.reload();
+        },
         showSnackbar(error) {
             if (this.$route.name === 'Logout') {
                 return;

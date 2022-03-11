@@ -2,9 +2,10 @@ let assets_dir = './assets';
 const path = require('path');
 
 let Encore = require('@symfony/webpack-encore');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 Encore
-// directory where all compiled assets will be stored
+    // directory where all compiled assets will be stored
     .setOutputPath('public/build/')
 
     // what's the public path to this directory (relative to your project's document root dir)
@@ -14,6 +15,42 @@ Encore
 
     // empty the outputPath dir before each build
     .cleanupOutputBeforeBuild()
+
+    .copyFiles(
+        {
+            from: './assets/images/icons',
+            to: '../images/icons/[path][name].[ext]',
+            pattern: /\.(png|jpg|jpeg)$/,
+        },
+    )
+
+    .configureManifestPlugin(options => {
+        // options.fileName = 'webpack-manifest.json';
+        options.seed = {
+            'name': 'Swapp - Die Streetworkapp',
+            'short_name': 'Swapp',
+            'display': 'standalone',
+            'display_overrides': ['tabbed', 'fullscreen'],
+            'description': 'Swapp für Fachkräfte der Streetwork/Mobilen Jugendarbeit.\nDokumentation und Reflexion für unterwegs.\nsince 2015',
+            'start_url': '.',
+            'lang': 'de',
+            'dir': 'ltr',
+            'background_color': '#fff',
+            'theme_color': '#1c97b0',
+            'icons': [
+                {
+                    'src': '/images/icons/icon-512x512.png',
+                    'type': 'image/png',
+                    'sizes': '512x512',
+                },
+                {
+                    'src': '/images/icons/icon-192x192.png',
+                    'type': 'image/png',
+                    'sizes': '192x192',
+                },
+            ],
+        };
+    })
 
     // will output as web/build/app.js
     .addEntry('app', assets_dir + '/js/app.js')
@@ -26,7 +63,7 @@ Encore
             'router': path.resolve(__dirname, 'assets/js/router'),
             'store': path.resolve(__dirname, 'assets/js/store'),
             'css': path.resolve(__dirname, 'assets/css'),
-        }
+        },
     )
 
     // will require an extra script tag for runtime.js
@@ -65,5 +102,16 @@ Encore
         options.port = '8874';
     })
 ;
+
+if (Encore.isProduction()) {
+    Encore.addPlugin(
+        // new WorkboxPlugin.InjectManifest({
+        new WorkboxPlugin.GenerateSW({
+            // swSrc: "./assets/js/service-worker.js",
+            swDest: 'service-worker.js',
+            maximumFileSizeToCacheInBytes: 50000000,
+        })
+    );
+}
 
 module.exports = Encore.getWebpackConfig();
