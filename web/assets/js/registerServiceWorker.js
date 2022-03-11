@@ -3,7 +3,7 @@ import { Workbox } from 'workbox-window';
 let wb;
 
 if ('serviceWorker' in navigator) {
-    wb = new Workbox(`/build/service-worker.js`);
+    wb = new Workbox(`build/service-worker.js`);
     wb.addEventListener('controlling', () => {
         // At this point, reloading will ensure that the current
         // tab is loaded under the control of the new service worker.
