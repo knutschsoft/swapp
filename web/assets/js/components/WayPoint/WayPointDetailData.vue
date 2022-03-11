@@ -33,6 +33,11 @@
                     :text="field.value.trim()"
                     class-name="text-left"
                 />
+                <div
+                    v-else-if="field.name === 'Anzahl der Kontakte'"
+                >
+                    {{ field.value === null ? 'nicht erfasst' : field.value}}
+                </div>
                 <nl2br
                     v-else-if="field.name === 'Einzelgespräch'"
                     tag="div"
@@ -160,14 +165,21 @@
                     })
                 });
 
-                return [
+                let fields = [
                     { name: 'Ort', value: this.wayPoint.locationName },
                     { name: 'Beobachtung', value: this.wayPoint.note },
+                ];
+
+                if (this.walk.isWithContactsCount) {
+                    fields.push({ name: 'Anzahl der Kontakte', value: this.wayPoint.contactsCount });
+                }
+
+                return fields.concat([
                     { name: 'Einzelgespräch', value: this.wayPoint.oneOnOneInterview },
                     { name: 'Bild', value: this.wayPoint.imageName },
                     { name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein' },
                     { name: 'Tags', value: this.wayPointTags },
-                ].concat(ageGroups);
+                ]).concat(ageGroups);
             },
         },
         watch: {},

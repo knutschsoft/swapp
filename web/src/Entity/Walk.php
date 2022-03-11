@@ -25,6 +25,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Table(name: 'walk')]
 #[ORM\Entity(repositoryClass: DoctrineORMWalkRepository::class)]
@@ -166,6 +167,9 @@ class Walk
     #[ORM\OrderBy(value: ['order' => 'asc'])]
     private Client $client;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithContactsCount;
+
     public function __construct()
     {
         $this->ageRanges = [];
@@ -188,6 +192,7 @@ class Walk
 
         $instance->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
         $instance->setTeamName($team->getName());
+        $instance->setIsWithContactsCount($team->isWithContactsCount());
         $instance->updateClient($team->getClient());
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
@@ -593,5 +598,17 @@ class Walk
             '%s',
             $this->getName()
         );
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithContactsCount')]
+    public function isWithContactsCount(): bool
+    {
+        return $this->isWithContactsCount;
+    }
+
+    public function setIsWithContactsCount(bool $isWithContactsCount): void
+    {
+        $this->isWithContactsCount = $isWithContactsCount;
     }
 }

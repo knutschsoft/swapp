@@ -36,6 +36,28 @@
             </b-input-group>
         </b-form-group>
         <b-form-group
+            v-if="walk.isWithContactsCount"
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
+            label="Anzahl der Kontakte"
+            :state="contactsCountState"
+            description="Mit wie viel Personen wurde gesprochen?"
+            :invalid-feedback="invalidContactsCountState"
+        >
+            <b-input-group>
+                <b-form-select
+                    v-model="wayPoint.contactsCount"
+                    required
+                    :state="contactsCountState"
+                    :options="contactsCountOptions"
+                    size="sm"
+                    data-test="contactsCount"
+                ></b-form-select>
+            </b-input-group>
+        </b-form-group>
+        <b-form-group
             content-cols="12"
             label-cols="12"
             content-cols-lg="10"
@@ -275,9 +297,11 @@ export default {
                 wayPointTags: [],
                 imageFileData: null,
                 imageFileName: null,
+                contactsCount: null,
             },
             file: null,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),
+            contactsCountOptions: Array.from(Array(41), (x, i) => i),
         };
     },
     computed: {
@@ -299,7 +323,7 @@ export default {
             return this.initialWalk ? this.initialWalk : this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
         },
         locationNameState() {
-            if (null === this.wayPoint.locationName || '' === this.wayPoint.locationName || undefined === this.wayPoint.locationName) {
+            if ((null === this.wayPoint.locationName || '' === this.wayPoint.locationName || undefined === this.wayPoint.locationName) && '' === this.invalidLocationNameState) {
                 return;
             }
 
@@ -307,6 +331,16 @@ export default {
         },
         invalidLocationNameState() {
             return getViolationsFeedback(['locationName'], this.error);
+        },
+        contactsCountState() {
+            if ('' === this.invalidContactsCountState && null === this.wayPoint.contactsCount) {
+                return null;
+            }
+
+            return '' === this.invalidContactsCountState;
+        },
+        invalidContactsCountState() {
+            return getViolationsFeedback(['contactsCount'], this.error);
         },
         noteState() {
             if (null === this.wayPoint.note || undefined === this.wayPoint.note) {
@@ -351,7 +385,13 @@ export default {
             return this.isLoading;
         },
         globalErrors() {
-            return getViolationsFeedback(['oneOnOneInterview', 'note', 'locationName', 'decodedImageData', 'imageFileData', 'imageFileName'], this.error, true);
+            let keys = ['oneOnOneInterview', 'note', 'locationName', 'decodedImageData', 'imageFileData', 'imageFileName'];
+
+            if (this.walk.isWithContactsCount) {
+                keys.push('contactsCount');
+            }
+
+            return getViolationsFeedback(keys, this.error, true);
         },
         tags() {
             return this.$store.getters['tag/tags'];
@@ -418,6 +458,7 @@ export default {
                     this.wayPoint.imageFileName = this.initialWayPoint.imageName;
                 }
             }
+            this.wayPoint.contactsCount = this.initialWayPoint.contactsCount;
             this.wayPoint.isMeeting = this.initialWayPoint.isMeeting || false;
             this.wayPoint.note = this.initialWayPoint.note;
             this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;

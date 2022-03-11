@@ -111,6 +111,9 @@ class WayPoint
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'wayPoints')]
     private Collection $wayPointTags;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $contactsCount;
+
     public function __construct()
     {
         $this->wayPointTags = new ArrayCollection();
@@ -120,6 +123,7 @@ class WayPoint
         $this->note = '';
         $this->oneOnOneInterview = '';
         $this->imageSrc = '';
+        $this->contactsCount = null;
     }
 
     public static function fromWalk(Walk $walk): self
@@ -146,6 +150,9 @@ class WayPoint
         $instance->setWalk($request->walk);
         $instance->ageGroups = $request->ageGroups;
         $instance->setWayPointTags(new ArrayCollection($request->wayPointTags));
+        if ($request->walk->isWithContactsCount()) {
+            $instance->setContactsCount($request->contactsCount);
+        }
         $instance->setNote($request->note);
         $instance->setOneOnOneInterview($request->oneOnOneInterview);
         $instance->setLocationName($request->locationName);
@@ -412,5 +419,16 @@ class WayPoint
             '%s',
             $this->getLocationName()
         );
+    }
+
+    #[Groups(['wayPoint:read'])]
+    public function getContactsCount(): ?int
+    {
+        return $this->contactsCount;
+    }
+
+    public function setContactsCount(?int $contactsCount): void
+    {
+        $this->contactsCount = $contactsCount;
     }
 }

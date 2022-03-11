@@ -6,11 +6,13 @@ namespace App\Dto;
 use App\Entity\Tag;
 use App\Entity\Walk;
 use App\Serializer\Normalizer\Base64DataUriNormalizer;
+use App\Validator\Constraints as AppAssert;
 use App\Value\AgeGroup;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Assert\GroupSequence(['WayPointCreateRequest', 'SecondGroup'])]
+#[AppAssert\ContactsCount(groups: ['SecondGroup'])]
 final class WayPointCreateRequest
 {
     #[Assert\NotBlank]
@@ -59,6 +61,9 @@ final class WayPointCreateRequest
     )]
     #[Assert\NotNull]
     public array $wayPointTags;
+
+    #[AppAssert\ContactsCountRequirements]
+    public ?int $contactsCount = null;
 
     #[Assert\Image(maxSize: "5M", maxSizeMessage: 'way_point.file.max-size')]
     public function getDecodedImageData(): ?File

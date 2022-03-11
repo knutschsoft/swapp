@@ -60,8 +60,8 @@ Feature: Testing wayPoint create resource
       | locationName | \| Google holla |
 
     Given I can find the following wayPoints in database:
-      | locationName    | ageGroups                                          | imageName | wayPointTags  |
-      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | <null>    | Gewalt,Drogen |
+      | locationName    | ageGroups                                          | imageName | wayPointTags  | contactsCount |
+      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | <null>    | Gewalt,Drogen | <null>        |
 
     And there are exactly 1 wayPoints in database
 
@@ -92,8 +92,8 @@ Feature: Testing wayPoint create resource
       | imageSrc  | _AreYouDrunk.jpg                    |
 
     Given I can find the following wayPoints in database:
-      | locationName    | ageGroups                                          | imageName                      |
-      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | timestamp<now>_AreYouDrunk.jpg |
+      | locationName    | ageGroups                                          | imageName                      | contactsCount |
+      | \| Google holla | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | timestamp<now>_AreYouDrunk.jpg | <null>        |
 
     And I can find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder
     And there are exactly 1 wayPoints in database

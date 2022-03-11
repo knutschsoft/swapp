@@ -309,6 +309,9 @@ final class DomainIntegrationContext extends RawMinkContext
             $wayPoint->setLocationName($row['locationName']);
             $wayPoint->setNote($row['beobachtung'] ?? 'null');
             $wayPoint->setOneOnOneInterview($row['einzelgespraech'] ?? 'null');
+            if ($walk->isWithContactsCount()) {
+                $wayPoint->setContactsCount($this->enrichText($row['contactsCount'] ?? 'int<7>'));
+            }
 
             $this->em->persist($wayPoint);
         }
@@ -445,20 +448,6 @@ final class DomainIntegrationContext extends RawMinkContext
                     )
                 );
             }
-            if (isset($row['lastLoginAt']) && '' !== $row['lastLoginAt']) {
-                $lastLoginAt = $row['lastLoginAt'];
-                if ('<null>' === $lastLoginAt) {
-                    Assert::null($team->getLastLoginAt());
-                } else {
-                    Assert::notNull($team->getLastLoginAt());
-                    $expectedLastLoginAt = new Carbon($lastLoginAt);
-                    $lastLoginAt = new Carbon($team->getLastLoginAt());
-                    Assert::true(
-                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 2,
-                        \sprintf('Expected lastLoginAt "%s" is not same as value "%s".', $expectedLastLoginAt, $lastLoginAt)
-                    );
-                }
-            }
         }
     }
 
@@ -477,6 +466,9 @@ final class DomainIntegrationContext extends RawMinkContext
         foreach ($table as $row) {
             $name = $row['name'];
             $walk = $this->getWalkByName($this->enrichText($name));
+            if (isset($row['isWithContactsCount']) && '' !== $row['isWithContactsCount']) {
+                Assert::eq($walk->isWithContactsCount(), (bool) $this->enrichText($row['isWithContactsCount']));
+            }
             if (isset($row['startTime'])) {
                 Assert::eq($walk->getStartTime(), new \DateTime($row['startTime']));
             }
@@ -535,6 +527,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['walk'])) {
                 $walk = $this->getWalkByName($row['walk']);
                 Assert::eq($wayPoint->getWalk()->getId(), $walk->getId());
+            }
+            if (isset($row['contactsCount']) && '' !== $row['contactsCount']) {
+                Assert::eq($wayPoint->getContactsCount(), $this->enrichText($row['contactsCount']));
             }
             if (isset($row['imageName']) && '' !== $row['imageName']) {
                 $imageName = $row['imageName'];
@@ -622,7 +617,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $team->setName($row['name'] ?? 'Clari@narf.de'.$key);
             $users = $this->getUsersFromString($row['users'] ?? '');
             $team->setUsers(new ArrayCollection($users));
-            $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '');
+            $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '1-2,3-10');
             $team->setAgeRanges($ageRanges);
             $team->setLocationNames(isset($row['locationNames']) && $row['locationNames'] ? \explode(',', $row['locationNames']) : []);
             $isWithContactsCount = false;

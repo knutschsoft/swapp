@@ -42,8 +42,8 @@ Feature: Testing wayPoint change resource
   Scenario: I can request /api/way_points/change as authenticated user and will change wayPoint
     Given I am authenticated against api as "two@pac.de"
     Given I can find the following wayPoints in database:
-      | locationName | imageName |
-      | Assieck      | <null>    |
+      | locationName | imageName | contactsCount |
+      | Assieck      | <null>    | <null>        |
     When I send an api platform "POST" request to "/api/way_points/change" with parameters:
       | key               | value                                                         |
       | wayPoint          | wayPointIri<Assieck>                                          |
@@ -66,8 +66,8 @@ Feature: Testing wayPoint change resource
       | imageSrc  | _AreYouDrunk.jpg                    |
 
     And I can find the following wayPoints in database:
-      | locationName | ageGroups                                          | imageName                      | wayPointTags  |
-      | Assieck      | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | timestamp<now>_AreYouDrunk.jpg | Gewalt,Drogen |
+      | locationName | ageGroups                                          | imageName                      | wayPointTags  | contactsCount |
+      | Assieck      | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | timestamp<now>_AreYouDrunk.jpg | Gewalt,Drogen | <null>        |
     And there are exactly 1 wayPoints in database
     And I can not find the file "/images/way_points/timestamp<now>_AreYouDrunkMyDear.jpg" in public folder
     And I can find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder
@@ -95,8 +95,8 @@ Feature: Testing wayPoint change resource
       | imageSrc  | _AreYouDrunkMyDear.jpg              |
 
     And I can find the following wayPoints in database:
-      | locationName | ageGroups                                          | imageName                            |
-      | Assieck      | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | timestamp<now>_AreYouDrunkMyDear.jpg |
+      | locationName | ageGroups                                          | imageName                            | contactsCount |
+      | Assieck      | 1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1 | timestamp<now>_AreYouDrunkMyDear.jpg | <null>        |
     And I can find the file "/images/way_points/timestamp<now>_AreYouDrunkMyDear.jpg" in public folder
     And I can not find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder
     And there are exactly 1 wayPoints in database

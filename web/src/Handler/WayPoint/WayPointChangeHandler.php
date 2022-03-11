@@ -33,6 +33,9 @@ final class WayPointChangeHandler implements MessageHandlerInterface
         $wayPoint->setOneOnOneInterview($request->oneOnOneInterview);
         $wayPoint->setIsMeeting($request->isMeeting);
         $wayPoint->setWayPointTags(new ArrayCollection($request->wayPointTags));
+        if ($wayPoint->getWalk()->isWithContactsCount()) {
+            $wayPoint->setContactsCount($request->contactsCount);
+        }
 
         $tmpFile = $request->getDecodedImageData();
         $oldImageName = $wayPoint->getImageName();

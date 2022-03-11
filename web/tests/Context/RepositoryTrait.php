@@ -289,6 +289,9 @@ trait RepositoryTrait
         if (\str_starts_with($text, 'string<')) {
             return \str_repeat('a', (int) $referenceIdentifikator);
         }
+        if (\str_starts_with($text, 'int<')) {
+            return (int) $referenceIdentifikator;
+        }
 
         if (\str_starts_with($text, 'ageRanges<')) {
             $ageRanges = [];
