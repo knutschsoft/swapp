@@ -32,7 +32,7 @@ Encore
             'display': 'standalone',
             'display_overrides': ['tabbed', 'fullscreen'],
             'description': 'Swapp für Fachkräfte der Streetwork/Mobilen Jugendarbeit.\nDokumentation und Reflexion für unterwegs.\nsince 2015',
-            'start_url': '.',
+            'start_url': '../',
             'lang': 'de',
             'dir': 'ltr',
             'background_color': '#fff',
