@@ -14,11 +14,11 @@
             >
                 <img
                     :src="swappLogo"
-                    class="navbar-logo"
-                    alt="htwk-logo"
+                    class="navbar-logo rounded-sm"
+                    alt="swapp-logo"
                 >
             </b-navbar-brand>
-            <div class="text-center d-flex justify-content-between mx-2">
+            <div class="text-center d-none d-lg-flex justify-content-between mx-2">
                 <b-spinner
                     v-if="isLoading"
                     variant="light"
@@ -29,13 +29,31 @@
                     style="width: 32px;"
                 />
             </div>
-
+            <b-button
+                variant="link"
+                class="text-right d-lg-none d-block"
+                :to="{ name:'Changelog' }"
+                :title="`Es gibt ${ hasNewChangelogItems ? '' : 'keine ' }Neuigkeiten für dich!`"
+            >
+                <mdicon
+                    v-if="hasNewChangelogItems"
+                    name="BellBadgeOutline"
+                    size="26"
+                    class="text-primary"
+                />
+                <mdicon
+                    v-else
+                    name="BellOutline"
+                    size="26"
+                    class="text-muted"
+                />
+            </b-button>
             <b-collapse
                 id="nav-collapse"
                 is-nav
             >
                 <b-navbar-nav
-                    justified
+                    fill
                     class="w-100"
                 >
                     <b-nav-item
@@ -231,6 +249,13 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
+        <b-progress
+            class="d-lg-none w-100"
+            height="3px"
+            :variant="isLoading ? 'secondary' : 'dark'"
+            :value="100"
+            :animated="isLoading"
+        />
     </div>
 </template>
 
@@ -322,5 +347,13 @@
     .navbar-logo {
         max-height: 37px !important;
         flex: 1 1 auto;
+    }
+    @media screen and (min-width: 992px) {
+        .navbar-logo {
+            border-radius: 0 !important;
+        }
+    }
+    .progress {
+        border-radius: 0;
     }
 </style>
