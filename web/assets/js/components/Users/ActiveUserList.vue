@@ -21,7 +21,7 @@
                     </b-input-group-prepend>
                     <date-range-picker
                         ref="picker"
-                        class="form-control form-control-m"
+                        class="form-control"
                         v-model="dateRange"
                         :ranges="ranges"
                         :locale-data="locale"
@@ -370,13 +370,5 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.vue-daterange-picker {
-    .form-control {
-        padding: 0;
-        border: 0;
-        height: auto;
-        width: 100%;
-    }
-}
+<style lang="scss" scoped>
 </style>

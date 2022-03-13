@@ -27,9 +27,9 @@ Feature: Testing walk export resource
       | Gewalt | Chocolate | client@gmx.de |
       | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
-      | name        | team   |
-      | Spaziergang | CA     |
-      | Gamescon    | Gamers |
+      | name        | team   | startTime  |
+      | Spaziergang | CA     | 01.02.2021 |
+      | Gamescon    | Gamers | 01.03.2021 |
     Given the following way points exists:
       | locationName | walkName    |
       | Assieck      | Spaziergang |
@@ -56,6 +56,38 @@ Feature: Testing walk export resource
     And the response status code should be 400
     And the JSON nodes should be equal to:
       | hydra:title | An error occurred |
+
+  @api @walkExport
+  Scenario: I can request /api/walks/export as authenticated user with date range given which will result in filled csv
+    Given I am authenticated against api as "karl@gmx.de"
+    When I send an api platform POST request to "/api/walks/export" with parameters:
+      | key           | value                    |
+      | client        | clientIri<client@gmx.de> |
+      | startTimeFrom | 2020-12-31T23:00:00.000Z |
+      | startTimeTo   | 2021-12-31T22:59:59.999Z |
+#    And print last response
+    Then the response status code should be 200
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
+    And the response should contain ",Spaziergang,"
+    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0"
+    And the response should not contain "Gamescon"
+    And the response should not contain "BOTW"
+
+  @api @walkExport
+  Scenario: I can request /api/walks/export as authenticated user with date range given which will result in empty csv
+    Given I am authenticated against api as "karl@gmx.de"
+    When I send an api platform POST request to "/api/walks/export" with parameters:
+      | key           | value                    |
+      | client        | clientIri<client@gmx.de> |
+      | startTimeFrom | 2019-12-31T23:00:00.000Z |
+      | startTimeTo   | 2020-12-31T22:59:59.999Z |
+#    And print last response
+    Then the response status code should be 200
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname"
+    And the response should not contain ",Spaziergang,"
+    And the response should not contain "How are you?"
+    And the response should not contain "Gamescon"
+    And the response should not contain "BOTW"
 
   @api @walkExport
   Scenario: I can request /api/walks/export as authenticated user and will see all way points

@@ -9,6 +9,15 @@ body {
   font-size: 14px;
 }
 
+.vue-daterange-picker {
+  .form-control {
+    padding: 0 !important;
+    border: 0 !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+}
+
 .card-columns {
   @include media-breakpoint-only(sm) {
     column-count: 1;

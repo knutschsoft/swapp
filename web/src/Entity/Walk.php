@@ -45,7 +45,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         "walk_export" => [
             "messenger" => "input",
             "openapi_context" => [
-                "summary" => "Exports all walks",
+                "summary" => "Exports all walks for given date range.",
             ],
             "input" => WalkExportRequest::class,
             "output" => Response::class,

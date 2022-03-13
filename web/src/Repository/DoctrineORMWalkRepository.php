@@ -83,7 +83,7 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
             ->setParameter('client', $client);
 
         if ($startTimeFrom) {
-            $startTimeFrom->setTime(0, 0, 0);
+            $startTimeFrom->setTime(0, 0);
             $queryBuilder
                 ->andWhere('walk.startTime > :startTimeFrom')
                 ->setParameter('startTimeFrom', $startTimeFrom);
@@ -91,7 +91,7 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
         if ($startTimeTo) {
             $startTimeTo->setTime(23, 59, 59);
             $queryBuilder
-                ->andWhere('walk.startTimeTo < :')
+                ->andWhere('walk.startTime < :startTimeTo')
                 ->setParameter('startTimeTo', $startTimeTo);
         }
 
