@@ -116,8 +116,8 @@
                 <b-navbar-nav class="ml-auto pl-2 pl-lg-0">
                     <b-button
                         variant="link"
-                        class="text-right"
-                        :to="{name:'Changelog'}"
+                        class="text-right d-none d-lg-block"
+                        :to="{ name: 'Changelog' }"
                         :title="`Es gibt ${ hasNewChangelogItems ? '' : 'keine ' }Neuigkeiten für dich!`"
                     >
                         <mdicon

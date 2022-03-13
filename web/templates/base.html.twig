@@ -59,7 +59,7 @@
 
         {% block meta_description %}{% endblock %}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('global') }}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -71,6 +71,11 @@
             <script>
                 {{ nelmio_js_error_logger('ERROR', false) }}
                 {{ nelmio_js_logger('nelmioLog', false) }}
+            </script>
+            {{ encore_entry_script_tags('app') }}
+            <script type="application/javascript">
+                const params = {};
+                new window.App(params);
             </script>
         {% endblock %}
     </body>

@@ -35,6 +35,7 @@ Encore
             'start_url': '../',
             'lang': 'de',
             'dir': 'ltr',
+            'id': '/',
             'background_color': '#fff',
             'theme_color': '#1c97b0',
             'icons': [
@@ -108,7 +109,7 @@ if (Encore.isProduction()) {
         // new WorkboxPlugin.InjectManifest({
         new WorkboxPlugin.GenerateSW({
             // swSrc: "./assets/js/service-worker.js",
-            swDest: 'service-worker.js',
+            swDest: '../service-worker.js',
             maximumFileSizeToCacheInBytes: 50000000,
         })
     );

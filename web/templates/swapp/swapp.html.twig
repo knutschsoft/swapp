@@ -4,16 +4,3 @@
     <div id="swapp">
     </div>
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('app') }}
-    <script type="application/javascript">
-        const params = {};
-        new window.App(params);
-    </script>
-{% endblock %}
-
-{% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
-{% endblock %}
