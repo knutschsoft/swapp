@@ -168,18 +168,17 @@
                 let fields = [
                     { name: 'Ort', value: this.wayPoint.locationName },
                     { name: 'Beobachtung', value: this.wayPoint.note },
+                    { name: 'Einzelgespräch', value: this.wayPoint.oneOnOneInterview },
+                    { name: 'Bild', value: this.wayPoint.imageName },
+                    { name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein' },
+                    { name: 'Tags', value: this.wayPointTags },
                 ];
 
                 if (this.walk.isWithContactsCount) {
                     fields.push({ name: 'Anzahl der Kontakte', value: this.wayPoint.contactsCount });
                 }
 
-                return fields.concat([
-                    { name: 'Einzelgespräch', value: this.wayPoint.oneOnOneInterview },
-                    { name: 'Bild', value: this.wayPoint.imageName },
-                    { name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein' },
-                    { name: 'Tags', value: this.wayPointTags },
-                ]).concat(ageGroups);
+                return fields.concat(ageGroups);
             },
         },
         watch: {},
