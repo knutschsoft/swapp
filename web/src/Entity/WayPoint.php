@@ -10,7 +10,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\WayPoint\WayPointChangeRequest;
-use App\Dto\WayPointCreateRequest;
+use App\Dto\WayPoint\WayPointCreateRequest;
 use App\Repository\DoctrineORMWayPointRepository;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;

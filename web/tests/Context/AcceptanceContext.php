@@ -281,6 +281,7 @@ final class AcceptanceContext extends MinkContext
             );
             //$value = (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
             $element->attachFile($path);
+            // sleep(5); // maybe needed for big files but chrome is crashing nonetheless
         } else {
             $element->setValue($value);
         }

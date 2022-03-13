@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use App\Dto\WayPointCreateRequest;
+use App\Dto\WayPoint\WayPointCreateRequest;
 use App\Entity\WayPoint;
 use App\Repository\WayPointRepository;
 use League\Flysystem\FilesystemOperator;

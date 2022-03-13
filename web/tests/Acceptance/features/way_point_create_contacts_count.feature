@@ -23,7 +23,7 @@ Feature: An user can create a wayPoint with and without contactsCount
       | Gorbitz | Westhang |
       | Neuse   | CA       |
 
-  @javascript @suw
+  @javascript
   @wayPoint
   Scenario: I can create a wayPoint with and without contactsCount
     Given I am authenticated as "karl@gmx.de"

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Validator\Constraints;
 
 use App\Dto\WayPoint\WayPointChangeRequest;
-use App\Dto\WayPointCreateRequest;
+use App\Dto\WayPoint\WayPointCreateRequest;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

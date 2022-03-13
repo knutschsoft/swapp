@@ -41,7 +41,7 @@ Feature: An user can upload an image when creating a new wayPoint
     Then I wait for "kein Bild hochgeladen" to disappear
 
   @javascript
-  @wayPointImageUpload @ignore
+  @wayPointImageUpload
   Scenario: I can not add an text file as image when I create a wayPoint
     Given I am authenticated as "lonely@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt-hinzufuegen"
@@ -53,10 +53,10 @@ Feature: An user can upload an image when creating a new wayPoint
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for "Wegpunkt ansehen" to disappear
     And I click on element "button-way-point-submit"
-    And I wait for 'The provided "data:" URI ist not valid.' to appear
+    And I wait for 'The provided "data:" URI is not valid.' to appear
 
-  @javascript
-  @wayPointImageUpload @ignore # do not know why validation is not working
+  @javascript @suw
+  @wayPointImageUpload @ignore # chrome is crashing:   unknown error: session deleted because of page crash from unknown error: cannot determine loading status from tab crashed (Session info: headless chrome=98.0.4758.102)
   Scenario: I can not add a too large image when I create a wayPoint
     Given I am authenticated as "lonely@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt-hinzufuegen"
@@ -68,4 +68,4 @@ Feature: An user can upload an image when creating a new wayPoint
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for "Wegpunkt ansehen" to disappear
     And I click on element "button-way-point-submit"
-    And I wait for 'Das Bild ist mit 5.2 MB größer als die maximal erlaubten 5 MB.' to appear
+    And I wait for 'Das Bild ist mit 10.08 MB größer als die maximal erlaubten 10 MB.' to appear

@@ -66,7 +66,7 @@ final class WayPointChangeRequest
     #[AppAssert\ContactsCountRequirements]
     public ?int $contactsCount = null;
 
-    #[Assert\Image(maxSize: "5M", maxSizeMessage: 'way_point.file.max-size')]
+    #[AppAssert\WayPointImageRequirements]
     public function getDecodedImageData(): ?File
     {
         if (!$this->imageFileData) {
