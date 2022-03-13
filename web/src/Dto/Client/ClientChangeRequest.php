@@ -14,7 +14,6 @@ final class ClientChangeRequest
 {
     use ClientRequest;
 
-    #[Assert\NotNull]
-    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    #[AppAssert\ClientRequirements]
     public Client $client;
 }

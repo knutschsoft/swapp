@@ -32,8 +32,7 @@ final class UserCreateRequest
     #[Assert\NotNull]
     public array $roles;
 
-    #[Assert\NotNull]
-    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    #[AppAssert\ClientRequirements]
     public Client $client;
 
     public function superAdminRightsNeeded(): bool

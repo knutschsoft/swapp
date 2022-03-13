@@ -36,8 +36,7 @@ final class UserChangeRequest
     #[Assert\Type(type: User::class, groups: ['SecondGroup'])]
     public User $user;
 
-    #[Assert\NotNull]
-    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    #[AppAssert\ClientRequirements]
     public Client $client;
 
     public function superAdminRightsNeeded(): bool

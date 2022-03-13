@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Dto\SystemicQuestion;
 
 use App\Entity\Client;
+use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(["SystemicQuestionCreateRequest", "SecondGroup"])]
 final class SystemicQuestionCreateRequest
 {
     #[Assert\NotBlank]
@@ -15,8 +15,6 @@ final class SystemicQuestionCreateRequest
     #[Assert\Type(['type' => 'string'])]
     public string $question;
 
-    #[Assert\NotNull]
-    #[Assert\NotBlank]
-    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    #[AppAssert\ClientRequirements]
     public Client $client;
 }

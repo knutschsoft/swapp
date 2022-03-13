@@ -8,8 +8,8 @@ use App\Entity\Tag;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(["TagCreateRequest", "SecondGroup", "ThirdGroup"])]
-#[AppAssert\IsTagUnique(['groups' => 'ThirdGroup'])]
+#[Assert\GroupSequence(["TagCreateRequest", "SecondGroup"])]
+#[AppAssert\IsTagUnique(['groups' => 'SecondGroup'])]
 final class TagCreateRequest
 {
     #[Assert\NotBlank]
@@ -24,8 +24,6 @@ final class TagCreateRequest
     #[Assert\Type(['type' => 'string'])]
     public string $color;
 
-    #[Assert\NotNull]
-    #[Assert\NotBlank]
-    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    #[AppAssert\ClientRequirements]
     public Client $client;
 }

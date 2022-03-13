@@ -4,16 +4,15 @@ declare(strict_types=1);
 namespace App\Dto;
 
 use App\Entity\Client;
+use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(["WalkExportRequest", "SecondGroup"])]
 class WalkExportRequest
 {
     public ?\DateTime $startTimeFrom = null;
     public ?\DateTime $startTimeTo = null;
 
-    #[Assert\NotNull]
-    #[Assert\Type(type: Client::class, groups: ['SecondGroup'])]
+    #[AppAssert\ClientRequirements]
     public Client $client;
 
     #[Assert\IsTrue()]
