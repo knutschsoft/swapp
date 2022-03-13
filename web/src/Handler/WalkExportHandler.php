@@ -45,9 +45,16 @@ final class WalkExportHandler implements MessageHandlerInterface
         ];
 
         $ageHeaders = [];
+        $isAtLeastOneWalkWithContactsCount = false;
         foreach ($walks as $walk) {
+            if ($walk->isWithContactsCount()) {
+                $isAtLeastOneWalkWithContactsCount = true;
+            }
             \assert($walk instanceof Walk);
             $ageHeaders = \array_merge($ageHeaders, $this->getCsvAgeHeaders($walk));
+        }
+        if ($isAtLeastOneWalkWithContactsCount) {
+            $headers[] = 'Anzahl der Kontakte';
         }
         $headers = \array_merge($headers, $ageHeaders);
 
@@ -55,7 +62,7 @@ final class WalkExportHandler implements MessageHandlerInterface
 
         foreach ($walks as $walk) {
             \assert($walk instanceof Walk);
-            $csv->insertOne($this->getCsvContentCells($walk, $ageHeaders));
+            $csv->insertOne($this->getCsvContentCells($walk, $ageHeaders, $isAtLeastOneWalkWithContactsCount));
         }
 
         return new Response(
@@ -105,10 +112,11 @@ final class WalkExportHandler implements MessageHandlerInterface
     /**
      * @param Walk                                    $walk
      * @param array<int|string, bool|int|string|null> $ageHeaders
+     * @param bool                                    $isAtLeastOneWalkWithContactsCount
      *
      * @return array<int|string, string>
      */
-    private function getCsvContentCells(Walk $walk, array $ageHeaders): array
+    private function getCsvContentCells(Walk $walk, array $ageHeaders, bool $isAtLeastOneWalkWithContactsCount): array
     {
         $content = [
             (string) $walk->getId(),
@@ -119,14 +127,18 @@ final class WalkExportHandler implements MessageHandlerInterface
             (string) $walk->getRating(),
             $walk->getSystemicQuestion(),
             $walk->getSystemicAnswer(),
-            (string) $walk->getInsights(),
-            (string) $walk->getCommitments(),
+            $walk->getInsights(),
+            $walk->getCommitments(),
             (string) $walk->getIsResubmission(),
             $walk->getWeather(),
             (string) $walk->getHolidays(),
             $walk->getConceptOfDay(),
             $walk->getTeamName(),
         ];
+
+        if ($isAtLeastOneWalkWithContactsCount) {
+            $content[] = (string) $walk->getSumOfContactsCount();
+        }
 
         foreach ($ageHeaders as $header) {
             $content[$header] = '';

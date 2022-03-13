@@ -611,4 +611,17 @@ class Walk
     {
         $this->isWithContactsCount = $isWithContactsCount;
     }
+
+    public function getSumOfContactsCount(): ?int
+    {
+        if (!$this->isWithContactsCount) {
+            return null;
+        }
+        $sumOfContactsCount = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $sumOfContactsCount += (int) $wayPoint->getContactsCount();
+        }
+
+        return $sumOfContactsCount;
+    }
 }

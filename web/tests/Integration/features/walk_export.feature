@@ -15,10 +15,10 @@ Feature: Testing walk export resource
       | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
       | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following teams exists:
-      | name     | users                  | ageRanges          | client        |
-      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | Gamers   | karl@gamer.de          |                    | gamer@gmx.de  |
+      | name     | users                  | ageRanges          | client        | isWithContactsCount |
+      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 | client@gmx.de | <false>             |
+      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 | client@gmx.de | <false>             |
+      | Gamers   | karl@gamer.de          |                    | gamer@gmx.de  | <true>              |
     Given the following systemic questions exists:
       | question       | client        |
       | Esta muy bien? | client@gmx.de |
@@ -31,10 +31,10 @@ Feature: Testing walk export resource
       | Spaziergang | CA     | 01.02.2021 |
       | Gamescon    | Gamers | 01.03.2021 |
     Given the following way points exists:
-      | locationName | walkName    |
-      | Assieck      | Spaziergang |
-      | BOTW         | Gamescon    |
-      | BOTW2        | Gamescon    |
+      | locationName | walkName    | contactsCount |
+      | Assieck      | Spaziergang | <null>        |
+      | BOTW         | Gamescon    | int<3>        |
+      | BOTW2        | Gamescon    | int<2>        |
 
   @api @walkExport
   Scenario: I can request /api/walks/export as a not authenticated user and an auth error will occur
@@ -71,6 +71,22 @@ Feature: Testing walk export resource
     And the response should contain ",Spaziergang,"
     And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0"
     And the response should not contain "Gamescon"
+    And the response should not contain "BOTW"
+
+  @api @walkExport
+  Scenario: I can request /api/walks/export as authenticated user with contacts count which will result in filled csv with additional header
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send an api platform POST request to "/api/walks/export" with parameters:
+      | key           | value                    |
+      | client        | clientIri<gamer@gmx.de> |
+      | startTimeFrom | 2020-12-31T23:00:00.000Z |
+      | startTimeTo   | 2021-12-31T22:59:59.999Z |
+#    And print last response
+    Then the response status code should be 200
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Anzahl der Kontakte\""
+    And the response should not contain ",Spaziergang,"
+    And the response should contain ",Gamescon,\"01.03.2021 00:00:00\",\"01.03.2021 00:00:00\",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",Gamers,5"
+    And the response should contain "Gamescon"
     And the response should not contain "BOTW"
 
   @api @walkExport
