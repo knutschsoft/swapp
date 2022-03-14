@@ -35,7 +35,7 @@ jobs:
           ini-values: error_reporting=-1, display_errors=On
       - name: Install dependencies
         run: |
-          composer install --no-interaction --no-scripts --no-progress --prefer-dist
+          cd web && composer install --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Run qa-ci
         run: |
           cd web && composer qa-ci
