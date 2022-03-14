@@ -38,9 +38,30 @@ jobs:
       - name: Install dependencies
         run: |
           cd web && composer install --no-interaction --no-scripts --no-progress --prefer-dist
-      - name: Run qa-ci
+      - name: Prepare folders and environment
         run: |
-          cd web && composer qa-ci
+          cd web
+          composer compile-test
+          mkdir -p var/log/qa-report
+          mkdir -p public/images/screenshots var/log/qa-report/screenshots
+      - name: Run phpcs
+        run: |
+          cd web && vendor/bin/phpcs --colors --report=checkstyle src tests > ./var/log/qa-report/phpcs.xml
+      - name: Run phpstan
+        run: |
+          cd web && vendor/bin/phpstan analyse --error-format=checkstyle --ansi --no-progress > ./var/log/qa-report/phpstan.xml
+      - name: Run phpunit
+        run: |
+          cd web && vendor/bin/phpunit --colors --testdox-html ./var/log/qa-report/testdox.html --testdox-text ./var/log/qa-report/testdox.txt
+      - name: Run behat
+        run: |
+          cd web && vendor/bin/behat --colors --format=pretty --out std --format=junit --out ./var/log/qa-report
+      - name: Copy images of behat to log folder for archiving of log artifacts
+        run: |
+          cd web && cp -R public/images/screenshots/* var/log/qa-report/screenshots/
+      - name: Run security-checker
+        run: |
+          cd web && vendor/bin/security-checker security:check --format=json > ./var/log/qa-report/security-checker.json
       - name: Archive logs artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
@@ -48,3 +69,5 @@ jobs:
           name: logs_php-${{ matrix.php }}
           path: |
             web/var/log/qa-report
+            web/var/log
+            logs
