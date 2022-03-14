@@ -1,0 +1,48 @@
+name: quality assurance
+
+on:
+  push:
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php: [ '8.1' ]
+      fail-fast: false
+    env:
+      MATRIX_PHP: ${{ matrix.php }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "xdebug"
+          php-version: "${{ matrix.php }}"
+          extensions: zip
+          tools: composer
+          ini-values: error_reporting=-1, display_errors=On
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Run qa-ci
+        run: |
+          cd web && composer qa-ci
+      - name: Archive logs artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs_php-${{ matrix.php }}
+          path: |
+            web/var/log/qa-report
