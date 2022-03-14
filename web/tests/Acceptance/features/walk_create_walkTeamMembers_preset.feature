@@ -41,6 +41,7 @@ Feature: A user can do a walk with preset walkTeamMembers
     When I click on element "walkTeamMember-pinky@gmx.de"
 
     When I click on text "Runde beginnen"
+    Then I wait for "Runde beginnen" to disappear
     And I wait for "Wegpunkte der Runde" to appear
 
     Then there are exactly 1 walks in database
@@ -63,6 +64,7 @@ Feature: A user can do a walk with preset walkTeamMembers
     When I click on element "walkTeamMember-karl@gmx.de"
 
     When I click on text "Runde beginnen"
+    Then I wait for "Runde beginnen" to disappear
     And I wait for "Wegpunkte der Runde" to appear
 
     And there are exactly 2 walks in database
@@ -84,6 +86,7 @@ Feature: A user can do a walk with preset walkTeamMembers
     When I enter "Arschkalt" in "Wetter" field
 
     When I click on text "Runde beginnen"
+    Then I wait for "Runde beginnen" to disappear
     And I wait for "Wegpunkte der Runde" to appear
 
     Then there are exactly 3 walks in database
