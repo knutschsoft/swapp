@@ -36,8 +36,11 @@ jobs:
         run: |
           cd web && composer install --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Run qa-ci
+        env:
+          APP_ENVIRONMENT: test
+          JWT_PASSPHRASE: IamYourBelovedHeroOfTheUniverse
         run: |
-          export $(grep -v '^#' .env | xargs -d '\n') && cd web && composer qa-ci
+          cd web && composer qa-ci
       - name: Archive logs artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
