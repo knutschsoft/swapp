@@ -37,7 +37,7 @@ jobs:
           cd web && composer install --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Run qa-ci
         run: |
-          cd web && composer qa-ci
+          export $(grep -v '^#' .env | xargs -d '\n') && cd web && composer qa-ci
       - name: Archive logs artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
