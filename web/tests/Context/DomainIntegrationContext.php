@@ -741,7 +741,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 continue;
             }
             $time = Carbon::createFromTimestamp($currentFileNameList[0]);
-            if ($expectedTime->diffInSeconds($time) < 1 && $currentFileNameList[1] === $filenameList[1]) {
+            if ($expectedTime->diffInSeconds($time) < 2 && $currentFileNameList[1] === $filenameList[1]) {
                 return true;
             }
         }
