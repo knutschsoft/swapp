@@ -65,7 +65,7 @@ final class AcceptanceContext extends MinkContext
      *
      * @throws \Throwable
      */
-    public function iWaitForFieldToBeNotDisabled(string $locator, ?int $tries = 25): void
+    public function iWaitForFieldToBeNotDisabled(string $locator, ?int $tries = 100): void
     {
         $element = $this->getTestElement($locator);
         $this->spin(
@@ -87,7 +87,7 @@ final class AcceptanceContext extends MinkContext
      *
      * @throws \Throwable
      */
-    public function iWaitForTextToAppear(string $text, ?int $tries = 75): void
+    public function iWaitForTextToAppear(string $text, ?int $tries = 100): void
     {
         $this->spin(
             function () use ($text): void {
@@ -118,7 +118,7 @@ final class AcceptanceContext extends MinkContext
      *
      * @throws \Throwable
      */
-    public function iWaitForTextToDisappear(string $text, ?int $tries = 25): void
+    public function iWaitForTextToDisappear(string $text, ?int $tries = 100): void
     {
         $this->spin(
             function () use ($text): void {
@@ -226,7 +226,7 @@ final class AcceptanceContext extends MinkContext
         Assert::false($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not enabled.', $dataTestSelector));
     }
 
-    public function spin(\Closure $closure, ?int $tries = 25): ?NodeElement
+    public function spin(\Closure $closure, ?int $tries = 100): ?NodeElement
     {
         for ($i = 0; $i <= $tries; $i++) {
             try {
