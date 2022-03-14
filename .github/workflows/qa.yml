@@ -29,9 +29,9 @@ jobs:
           extensions: zip
           tools: composer
           ini-values: error_reporting=-1, display_errors=On
-      - name: Init .env file
+      - name: Set env variables from .env.dist file
         run: |
-          cp web/env.dist web/.env
+          export $(grep -v '^#' .env | xargs -d '\n')
       - name: Install dependencies
         run: |
           cd web && composer install --no-interaction --no-scripts --no-progress --prefer-dist
