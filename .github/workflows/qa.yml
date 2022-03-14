@@ -13,6 +13,9 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-20.04
+    env:
+      APP_ENVIRONMENT: test
+      JWT_PASSPHRASE: IamYourBelovedHeroOfTheUniverse
     strategy:
       fail-fast: false
 
@@ -36,9 +39,6 @@ jobs:
         run: |
           cd web && composer install --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Run qa-ci
-        env:
-          APP_ENVIRONMENT: test
-          JWT_PASSPHRASE: IamYourBelovedHeroOfTheUniverse
         run: |
           cd web && composer qa-ci
       - name: Archive logs artifacts
