@@ -153,6 +153,7 @@
                 }
                 let ageGroups = [];
                 let ageGroupsSorted = [];
+                let sumPeopleCount = 0;
                 this.wayPoint.ageGroups.forEach(ageGroup => {
                         ageGroupsSorted[String(ageGroup.ageRange.rangeEnd)+String(ageGroup.gender.gender.charCodeAt(0))] = ageGroup;
                     });
@@ -163,6 +164,7 @@
                         value: ageGroup.peopleCount.count,
                         isAgeGroup: true,
                     })
+                    sumPeopleCount += ageGroup.peopleCount.count;
                 });
 
                 let fields = [
@@ -177,6 +179,8 @@
                 if (this.walk.isWithContactsCount) {
                     fields.push({ name: 'Anzahl der Kontakte', value: this.wayPoint.contactsCount });
                 }
+
+                fields.push({ name: 'Angetroffene Personenzahl:', value: sumPeopleCount});
 
                 return fields.concat(ageGroups);
             },

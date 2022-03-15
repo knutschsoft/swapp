@@ -67,9 +67,9 @@ Feature: Testing walk export resource
       | startTimeTo   | 2021-12-31T22:59:59.999Z |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Angetroffene Personenzahl\",\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
     And the response should contain ",Spaziergang,"
-    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0"
+    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0,0"
     And the response should not contain "Gamescon"
     And the response should not contain "BOTW"
 
@@ -78,14 +78,14 @@ Feature: Testing walk export resource
     Given I am authenticated against api as "karl@gamer.de"
     When I send an api platform POST request to "/api/walks/export" with parameters:
       | key           | value                    |
-      | client        | clientIri<gamer@gmx.de> |
+      | client        | clientIri<gamer@gmx.de>  |
       | startTimeFrom | 2020-12-31T23:00:00.000Z |
       | startTimeTo   | 2021-12-31T22:59:59.999Z |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Anzahl der Kontakte\""
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Anzahl der Kontakte\",\"Angetroffene Personenzahl\""
     And the response should not contain ",Spaziergang,"
-    And the response should contain ",Gamescon,\"01.03.2021 00:00:00\",\"01.03.2021 00:00:00\",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",Gamers,5"
+    And the response should contain ",Gamescon,\"01.03.2021 00:00:00\",\"01.03.2021 00:00:00\",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",Gamers,5,0"
     And the response should contain "Gamescon"
     And the response should not contain "BOTW"
 
@@ -99,7 +99,7 @@ Feature: Testing walk export resource
       | startTimeTo   | 2020-12-31T22:59:59.999Z |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname"
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Angetroffene Personenzahl\""
     And the response should not contain ",Spaziergang,"
     And the response should not contain "How are you?"
     And the response should not contain "Gamescon"
@@ -113,9 +113,9 @@ Feature: Testing walk export resource
       | client | clientIri<client@gmx.de> |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Angetroffene Personenzahl\",\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
     And the response should contain ",Spaziergang,"
-    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0"
+    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0,0"
     And the response should not contain "Gamescon"
     And the response should not contain "BOTW"
 
@@ -125,9 +125,9 @@ Feature: Testing walk export resource
       | client | clientIri<client@gmx.de> |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Angetroffene Personenzahl\",\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
     And the response should contain ",Spaziergang,"
-    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0"
+    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0,0"
     And the response should not contain "Gamescon"
     And the response should not contain "BOTW"
 
@@ -137,9 +137,9 @@ Feature: Testing walk export resource
       | client | clientIri<client@gmx.de> |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Angetroffene Personenzahl\",\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
     And the response should contain ",Spaziergang,"
-    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0"
+    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0,0"
     And the response should not contain "Gamescon"
     And the response should not contain "BOTW"
 
@@ -149,8 +149,8 @@ Feature: Testing walk export resource
       | client | clientIri<client@gmx.de> |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
+    And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Angetroffene Personenzahl\",\"angetroffene w 1-10\",\"angetroffene m 1-10\",\"angetroffene d 1-10\",\"angetroffene w 3-12\",\"angetroffene m 3-12\",\"angetroffene d 3-12\",\"angetroffene w 13-90\",\"angetroffene m 13-90\",\"angetroffene d 13-90\""
     And the response should contain ",Spaziergang,"
-    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0"
+    And the response should contain ",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",CA,0,0,0,0,0,0,0,0,0,0"
     And the response should not contain "Gamescon"
     And the response should not contain "BOTW"

@@ -62,6 +62,23 @@
             label-cols="12"
             content-cols-lg="10"
             label-cols-lg="2"
+            label="Angetroffene Personenzahl"
+            description="Ergibt sich automatisch aus der Summe der Altersgruppen."
+        >
+            <b-input-group>
+                <b-input
+                    v-model="sumPeopleCount"
+                    type="text"
+                    disabled
+                    readonly
+                />
+            </b-input-group>
+        </b-form-group>
+        <b-form-group
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
             label="Altersgruppen"
         >
             <b-row
@@ -315,6 +332,12 @@ export default {
             return this.team.locationNames.filter((locationName) => {
                 return locationName.toLowerCase().startsWith(this.wayPoint.locationName.toLowerCase());
             }).map((locationName) => locationName);
+        },
+        sumPeopleCount() {
+            let sumPeopleCount = 0;
+            this.wayPoint.ageGroups.forEach(ageGroup => sumPeopleCount += ageGroup.peopleCount.count);
+
+            return sumPeopleCount;
         },
         team() {
             return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);

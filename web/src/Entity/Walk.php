@@ -465,6 +465,16 @@ class Walk
         $this->teamName = $teamName;
     }
 
+    public function getPeopleCount(): int
+    {
+        $count = 0;
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $count += $wayPoint->getPeopleCount();
+        }
+
+        return $count;
+    }
+
     #[Groups(['walk:read'])]
     public function getFemalesCount(): int
     {

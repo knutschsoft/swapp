@@ -186,6 +186,16 @@ class WayPoint
         $this->ageGroups[] = $ageGroup;
     }
 
+    public function getPeopleCount(): int
+    {
+        $sum = 0;
+        foreach ($this->getAgeGroups() as $ageGroup) {
+            $sum += $ageGroup->getPeopleCount()->getCount();
+        }
+
+        return $sum;
+    }
+
     #[Groups(['wayPoint:read'])]
     public function getFemalesCount(): int
     {

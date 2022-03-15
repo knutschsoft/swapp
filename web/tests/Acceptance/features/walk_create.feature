@@ -67,6 +67,8 @@ Feature: A user can do a walk
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for 'Wegpunkt zur Runde "Mein erster Lauf" hinzufügen' to appear
     Then I wait for "Ort" to appear
+    Then I wait for "Angetroffene Personenzahl" to appear
+    Then I wait for "Ergibt sich automatisch aus der Summe der Altersgruppen." to appear
     Then I wait for "Altersgruppen" to appear
     Then I wait for "1 - 10 m" to appear
     Then I wait for "3 - 12 w" to appear

@@ -10,6 +10,27 @@ const
 const state = {
     changelogs: [
         {
+            header: '18.03.2022',
+            avatarText: '🙃️',
+            entries: [
+                {
+                    text: 'Feature: Zu einem Wegpunkt wird die angetroffene Personenzahl mit ausgegeben. Sie ergibt sich as der Summer der angetroffenen Personen aller Altersgruppen. Darstellung im Wegpunkt-Formular, auf der Wegpunkt-Detailseite sowie als eigene Spalte im Runden-CSV-Export.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220314_angetroffene_Personenzahl_Formular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Formular (links: Vorher - rechts: Nachher)',
+                        },
+                        {
+                            src: '../changelog/20220314_angetroffene_Personenzahl_Detailseite.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf der Detailseite (links: Vorher - rechts: Nachher)',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
             header: '24.02.2022',
             avatarText: '🪛',
             entries: [

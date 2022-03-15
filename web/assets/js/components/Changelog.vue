@@ -86,4 +86,7 @@ export default {
     margin-right: 0.5rem;
     border: 1px solid grey;
 }
+#silentbox-overlay div .arrow {
+    padding: 1rem;
+}
 </style>

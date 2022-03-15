@@ -56,6 +56,7 @@ final class WalkExportHandler implements MessageHandlerInterface
         if ($isAtLeastOneWalkWithContactsCount) {
             $headers[] = 'Anzahl der Kontakte';
         }
+        $headers[] = 'Angetroffene Personenzahl';
         $headers = \array_merge($headers, $ageHeaders);
 
         $csv->insertOne($headers);
@@ -139,6 +140,7 @@ final class WalkExportHandler implements MessageHandlerInterface
         if ($isAtLeastOneWalkWithContactsCount) {
             $content[] = (string) $walk->getSumOfContactsCount();
         }
+        $content[] = (string) $walk->getPeopleCount();
 
         foreach ($ageHeaders as $header) {
             $content[$header] = '';
