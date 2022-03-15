@@ -169,8 +169,7 @@ export default {
     methods: {
         async update() {
             this.isUpdateLoading = true;
-            await this.$workbox.messageSkipWaiting();
-            window.location.reload();
+            await this.$workbox.messageSW({ type: "SKIP_WAITING" });
         },
         showSnackbar(error) {
             if (this.$route.name === 'Logout') {
