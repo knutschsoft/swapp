@@ -9,7 +9,7 @@ Encore
     .setOutputPath('public/build/')
 
     // what's the public path to this directory (relative to your project's document root dir)
-    .setPublicPath(Encore.isProduction() ? '/build' : 'https://swapp.local:8874')
+    .setPublicPath(!Encore.isDevServer() ? '/build' : 'https://swapp.local:8874')
 
     // .setOutputPath()
 
@@ -104,7 +104,7 @@ Encore
     })
 ;
 
-if (Encore.isProduction()) {
+if (!Encore.isDevServer()) {
     Encore.addPlugin(
         // new WorkboxPlugin.InjectManifest({
         new WorkboxPlugin.GenerateSW({
