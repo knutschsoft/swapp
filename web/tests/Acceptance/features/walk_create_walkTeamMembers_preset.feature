@@ -27,7 +27,7 @@ Feature: A user can do a walk with preset walkTeamMembers
     And I should be on "/dashboard"
     Then I wait for "Team 'Westhang'" to appear
     When I click on text "Runde beginnen"
-    Then I wait for "Runde beginnen" to disappear
+    Then I wait for "Team 'Westhang'" to disappear
 
     Then I wait for "Name" to appear
     Then I wait for "Tageskonzept" to appear
@@ -54,7 +54,7 @@ Feature: A user can do a walk with preset walkTeamMembers
     And I should be on "/dashboard"
     Then I wait for "Team 'Westhang'" to appear
     When I click on text "Runde beginnen"
-    Then I wait for "Runde beginnen" to disappear
+    Then I wait for "Team 'Westhang'" to disappear
 
     Then I wait for "Name" to appear
     When I enter "Mein zweiter Lauf" in "Name" field
@@ -78,7 +78,7 @@ Feature: A user can do a walk with preset walkTeamMembers
     And I should be on "/dashboard"
     Then I wait for "Team 'Westhang'" to appear
     When I click on text "Runde beginnen"
-    Then I wait for "Runde beginnen" to disappear
+    Then I wait for "Team 'Westhang'" to disappear
 
     Then I wait for "Name" to appear
     When I enter "Mein dritter Lauf" in "Name" field

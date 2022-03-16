@@ -364,7 +364,7 @@ final class DomainIntegrationContext extends RawMinkContext
                     $expectedLastLoginAt = new Carbon($lastLoginAt);
                     $lastLoginAt = new Carbon($user->getLastLoginAt());
                     Assert::true(
-                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 2,
+                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 3,
                         \sprintf('Expected lastLoginAt "%s" is not same as value "%s".', $expectedLastLoginAt, $lastLoginAt)
                     );
                 }
@@ -741,7 +741,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 continue;
             }
             $time = Carbon::createFromTimestamp($currentFileNameList[0]);
-            if ($expectedTime->diffInSeconds($time) < 2 && $currentFileNameList[1] === $filenameList[1]) {
+            if ($expectedTime->diffInSeconds($time) < 3 && $currentFileNameList[1] === $filenameList[1]) {
                 return true;
             }
         }
