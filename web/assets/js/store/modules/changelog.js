@@ -14,7 +14,7 @@ const state = {
             avatarText: '🙃️',
             entries: [
                 {
-                    text: 'Feature: Zu einem Wegpunkt wird die angetroffene Personenzahl mit ausgegeben. Sie ergibt sich as der Summer der angetroffenen Personen aller Altersgruppen. Darstellung im Wegpunkt-Formular, auf der Wegpunkt-Detailseite sowie als eigene Spalte im Runden-CSV-Export.',
+                    text: 'Feature: Zu einem Wegpunkt wird die angetroffene Personenzahl mit ausgegeben. Sie ergibt sich as der Summe der angetroffenen Personen aller Altersgruppen. Darstellung im Wegpunkt-Formular, auf der Wegpunkt-Detailseite sowie als eigene Spalte im Runden-CSV-Export.',
                     gallery: [
                         {
                             src: '../changelog/20220314_angetroffene_Personenzahl_Formular.png',
