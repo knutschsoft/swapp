@@ -496,6 +496,10 @@ export default {
             this.wayPoint.ageGroups = this.ageGroups;
             this.wayPoint.walk = this.walk['@id'];
         }
+
+        if (!this.walk.isWithContactsCount) {
+            this.contactsCount = null;
+        }
     },
     methods: {
         updateFile: async function (file) {
