@@ -314,7 +314,7 @@ export default {
                 wayPointTags: [],
                 imageFileData: null,
                 imageFileName: null,
-                contactsCount: null,
+                contactsCount: 0,
             },
             file: null,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),
