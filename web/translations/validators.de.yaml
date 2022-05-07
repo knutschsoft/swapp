@@ -1,8 +1,8 @@
 tag:
  is_not_unique: Ein Tag mit dem Namen "{{ name }}" und der Farbe "{{ color }}" existiert bereits.
 way_point:
-  contacts_count_not_set: Die Anzahl der Kontakte muss gesetzt sein.
-  contacts_count_set: Die Anzahl der Kontakte darf nicht gesetzt sein.
+  contacts_count_not_set: Die Anzahl direkter Kontakte muss gesetzt sein.
+  contacts_count_set: Die Anzahl direkter Kontakte darf nicht gesetzt sein.
   file:
     max-size: Das Bild ist mit {{ size }} {{ suffix }} größer als die maximal erlaubten {{ limit }} {{ suffix }}.
 user:

@@ -28,7 +28,7 @@ Feature: Testing wayPoint create resource with contacts count
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/way_points/create" with parameters:
       | key               | value                                                         |
-      | walk          | walkIri<Spaziergang>                                          |
+      | walk              | walkIri<Spaziergang>                                          |
       | locationName      | Assieck                                                       |
       | note              | High and out.                                                 |
       | oneOnOneInterview | Sonne                                                         |
@@ -55,7 +55,7 @@ Feature: Testing wayPoint create resource with contacts count
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/way_points/create" with parameters:
       | key               | value                                                         |
-      | walk          | walkIri<Spaziergang>                                          |
+      | walk              | walkIri<Spaziergang>                                          |
       | locationName      | Assieck                                                       |
       | note              | High and out.                                                 |
       | oneOnOneInterview | Sonne                                                         |
@@ -68,9 +68,9 @@ Feature: Testing wayPoint create resource with contacts count
 #    And print last response
     Then the response status code should be 422
     And the enriched JSON nodes should be equal to:
-      | hydra:title                | An error occurred                                |
-      | violations[0].propertyPath | contactsCount                                    |
-      | violations[0].message      | Die Anzahl der Kontakte darf nicht gesetzt sein. |
+      | hydra:title                | An error occurred                                     |
+      | violations[0].propertyPath | contactsCount                                         |
+      | violations[0].message      | Die Anzahl direkter Kontakte darf nicht gesetzt sein. |
 
     And there are exactly 0 wayPoints in database
 
@@ -79,7 +79,7 @@ Feature: Testing wayPoint create resource with contacts count
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/way_points/create" with parameters:
       | key               | value                                                         |
-      | walk          | walkIri<Gamescon>                                            |
+      | walk              | walkIri<Gamescon>                                             |
       | locationName      | Ackis                                                         |
       | note              | High and out.                                                 |
       | oneOnOneInterview | Sonne                                                         |
@@ -106,7 +106,7 @@ Feature: Testing wayPoint create resource with contacts count
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/way_points/create" with parameters:
       | key               | value                                                         |
-      | walk          | walkIri<Gamescon>                                            |
+      | walk              | walkIri<Gamescon>                                             |
       | locationName      | Assieck                                                       |
       | note              | High and out.                                                 |
       | oneOnOneInterview | Sonne                                                         |
@@ -119,8 +119,8 @@ Feature: Testing wayPoint create resource with contacts count
 #    And print last response
     Then the response status code should be 422
     And the enriched JSON nodes should be equal to:
-      | hydra:title                | An error occurred                          |
-      | violations[0].propertyPath | contactsCount                              |
-      | violations[0].message      | Die Anzahl der Kontakte muss gesetzt sein. |
+      | hydra:title                | An error occurred                               |
+      | violations[0].propertyPath | contactsCount                                   |
+      | violations[0].message      | Die Anzahl direkter Kontakte muss gesetzt sein. |
 
     And there are exactly 0 wayPoints in database

@@ -36,51 +36,17 @@
             </b-input-group>
         </b-form-group>
         <b-form-group
-            v-if="walk.isWithContactsCount"
             content-cols="12"
             label-cols="12"
             content-cols-lg="10"
             label-cols-lg="2"
-            label="Anzahl der Kontakte"
-            :state="contactsCountState"
-            description="Mit wie viel Personen wurde gesprochen?"
-            :invalid-feedback="invalidContactsCountState"
         >
-            <b-input-group>
-                <b-form-select
-                    v-model="wayPoint.contactsCount"
-                    required
-                    :state="contactsCountState"
-                    :options="contactsCountOptions"
-                    size="sm"
-                    data-test="contactsCount"
-                ></b-form-select>
-            </b-input-group>
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Angetroffene Personenzahl"
-            description="Ergibt sich automatisch aus der Summe der Altersgruppen."
-        >
-            <b-input-group>
-                <b-input
-                    v-model="sumPeopleCount"
-                    type="text"
-                    disabled
-                    readonly
-                />
-            </b-input-group>
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Altersgruppen"
-        >
+
+            <template v-slot:label>
+                <b>Altersgruppen</b>
+                <br>
+                <small class="font-weight-normal text-muted">Anzahl der Personen vor Ort</small>
+            </template>
             <b-row
                 v-for="(ageGroup, index) in wayPoint.ageGroups"
                 :key="ageGroup.frontendLabel"
@@ -110,6 +76,46 @@
                     </b-form-group>
                 </b-col>
             </b-row>
+
+            <b-form-group
+                content-cols="12"
+                label-cols="12"
+                content-cols-lg="10"
+                label-cols-lg="2"
+                label="Anzahl Personen vor Ort"
+                description="Ergibt sich automatisch aus der Summe der Altersgruppen."
+            >
+                <b-input-group>
+                    <b-input
+                        v-model="sumPeopleCount"
+                        type="text"
+                        disabled
+                        readonly
+                    />
+                </b-input-group>
+            </b-form-group>
+        </b-form-group>
+        <b-form-group
+            v-if="walk.isWithContactsCount"
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
+            label="Anzahl direkter Kontakte"
+            :state="contactsCountState"
+            description="Mit wie viel Personen wurde gesprochen?"
+            :invalid-feedback="invalidContactsCountState"
+        >
+            <b-input-group>
+                <b-form-select
+                    v-model="wayPoint.contactsCount"
+                    required
+                    :state="contactsCountState"
+                    :options="contactsCountOptions"
+                    size="sm"
+                    data-test="contactsCount"
+                ></b-form-select>
+            </b-input-group>
         </b-form-group>
         <b-form-group
             id="input-group-image"

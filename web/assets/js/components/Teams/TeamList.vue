@@ -28,7 +28,7 @@
                 <span v-else>{{ data.value }}</span>
             </template>
             <template #cell(additionalWayPointFields)="row">
-                <span v-if="row.item.isWithContactsCount">Anzahl der Kontakte</span>
+                <span v-if="row.item.isWithContactsCount">Anzahl direkter Kontakte</span>
                 <span v-else>-</span>
             </template>
 

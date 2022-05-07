@@ -78,9 +78,9 @@ Feature: Testing wayPoint change resource with contacts count
 #    And print last response
     Then the response status code should be 422
     And the enriched JSON nodes should be equal to:
-      | hydra:title                | An error occurred                                |
-      | violations[0].propertyPath | contactsCount                                    |
-      | violations[0].message      | Die Anzahl der Kontakte darf nicht gesetzt sein. |
+      | hydra:title                | An error occurred                                     |
+      | violations[0].propertyPath | contactsCount                                         |
+      | violations[0].message      | Die Anzahl direkter Kontakte darf nicht gesetzt sein. |
 
     And I can find the following wayPoints in database:
       | locationName | contactsCount |
@@ -138,9 +138,9 @@ Feature: Testing wayPoint change resource with contacts count
 #    And print last response
     Then the response status code should be 422
     And the enriched JSON nodes should be equal to:
-      | hydra:title                | An error occurred                          |
-      | violations[0].propertyPath | contactsCount                              |
-      | violations[0].message      | Die Anzahl der Kontakte muss gesetzt sein. |
+      | hydra:title                | An error occurred                               |
+      | violations[0].propertyPath | contactsCount                                   |
+      | violations[0].message      | Die Anzahl direkter Kontakte muss gesetzt sein. |
 
     And I can find the following wayPoints in database:
       | locationName | contactsCount |

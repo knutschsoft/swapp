@@ -34,7 +34,7 @@
                     class-name="text-left"
                 />
                 <div
-                    v-else-if="field.name === 'Anzahl der Kontakte'"
+                    v-else-if="field.name === 'Anzahl direkter Kontakte'"
                 >
                     {{ field.value === null ? 'nicht erfasst' : field.value}}
                 </div>
@@ -176,13 +176,15 @@
                     { name: 'Tags', value: this.wayPointTags },
                 ];
 
+                fields = fields.concat(ageGroups);
+
+                fields.push({ name: 'Anzahl Personen vor Ort', value: sumPeopleCount});
+
                 if (this.walk.isWithContactsCount) {
-                    fields.push({ name: 'Anzahl der Kontakte', value: this.wayPoint.contactsCount });
+                    fields.push({ name: 'Anzahl direkter Kontakte', value: this.wayPoint.contactsCount });
                 }
 
-                fields.push({ name: 'Angetroffene Personenzahl:', value: sumPeopleCount});
-
-                return fields.concat(ageGroups);
+                return fields;
             },
         },
         watch: {},

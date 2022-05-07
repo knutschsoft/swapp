@@ -76,10 +76,10 @@
                         :disabled="isDisabled"
                         switch
                     >
-                        Die Anzahl der Kontakte eines Wegpunktes soll mit erfasst werden.
+                        Die Anzahl direkter Kontakte eines Wegpunktes soll mit erfasst werden.
                     </b-form-checkbox>
                     <b-form-text>
-                        Eine Person gilt als Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
+                        Eine Person gilt als direkter Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
                     </b-form-text>
                 </b-form-group>
 
