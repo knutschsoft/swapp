@@ -20,7 +20,7 @@ Encore
         {
             from: './assets/images/icons',
             to: 'images/icons/[path][name].[ext]',
-            pattern: /\.(png|jpg|jpeg)$/,
+            pattern: /\.(png|jpg|jpeg|xml|svg|ico)$/,
         },
     )
 
@@ -40,15 +40,10 @@ Encore
             'theme_color': '#1c97b0',
             'icons': [
                 {
-                    'src': '/build/images/icons/icon-512x512.png',
-                    'type': 'image/png',
-                    'sizes': '512x512',
-                },
-                {
-                    'src': '/build/images/icons/icon-192x192.png',
-                    'type': 'image/png',
-                    'sizes': '192x192',
-                },
+                    "src": "/build/images/icons/android-chrome-72x72.png",
+                    "sizes": "72x72",
+                    "type": "image/png"
+                }
             ],
         };
     })
