@@ -68,13 +68,8 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-    {{ device_version('iOS') }}
-    {{ device_version('iOS') }}
-    {{ device_version('iOS') }}
-    {{ device_version('iOS') }}
-
-{#    {% block body %}#}
-{#        {% endblock body %}#}
+        {% block body %}
+        {% endblock body %}
 
         {% block javascripts %}
             <script>
