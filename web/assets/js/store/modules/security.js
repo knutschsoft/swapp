@@ -168,9 +168,11 @@ export default {
                 let response = await SecurityAPI.login(payload.username, payload.password);
                 const userResponse = await SecurityAPI.findUserWithToken(response.data['@id'], response.data.token);
                 response.data.user = userResponse.data;
+                console.error(response.data);
                 commit(AUTHENTICATING_SUCCESS, response.data);
                 return response.data;
             } catch (error) {
+                console.error(error);
                 commit(AUTHENTICATING_ERROR, error);
                 return null;
             }
