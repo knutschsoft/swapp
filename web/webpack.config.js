@@ -42,7 +42,8 @@ Encore
                 {
                     "src": "/build/images/icons/android-chrome-72x72.png",
                     "sizes": "72x72",
-                    "type": "image/png"
+                    "type": "image/png",
+                    "purpose": "maskable"
                 }
             ],
         };
