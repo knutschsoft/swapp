@@ -23,18 +23,19 @@
 
         <link rel="icon" type="image/png" sizes="32x32" href="/build/images/icons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/build/images/icons/favicon-16x16.png">
-        <link rel="mask-icon" href="/build/images/icons/safari-pinned-tab.svg" color="#1c97b0">
+        <link rel="mask-icon" href="/build/images/icons/safari-pinned-tab.svg" color="#b2b3b5">
         <link rel="shortcut icon" href="/build/images/icons/favicon.ico">
-        <meta name="msapplication-TileColor" content="#00aba9">
+        <link rel="icon" type="image/png"  sizes="180x180"  href="/build/images/icons/apple-touch-icon.png">
+        <meta name="msapplication-TileColor" content="#b2b3b5">
         <meta name="msapplication-config" content="/build/images/icons/browserconfig.xml">
+        <link rel="apple-touch-icon" sizes="180x180" href="/build/images/icons/apple-touch-icon.png?v=1566861131254">
 
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="white">
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black">
 
         <meta name="mobile-web-app-capable" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="Swapp">
-        <meta name="application-name" content="Swapp">
-        <meta name="msapplication-TileColor" content="#2d89ef">
+        <meta name="apple-mobile-web-app-title" content="Swapp2">
+        <meta name="application-name" content="Swapp2">
 
         <title>{% block title %}Swapp!{% endblock %}</title>
 
@@ -70,6 +71,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+    {{ absolute_url(asset('/build/images/icons/apple-touch-icon.png')) }}
         {% block body %}
         {% endblock body %}
 

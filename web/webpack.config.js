@@ -37,7 +37,7 @@ Encore
             'dir': 'ltr',
             'id': '/',
             'background_color': '#fff',
-            'theme_color': '#1c97b0',
+            'theme_color': '#b2b3b5',
             'icons': [
                 {
                     "src": "/build/images/icons/android-chrome-72x72.png",
