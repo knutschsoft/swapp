@@ -113,10 +113,4 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
         $this->_em->persist($walk);
         $this->_em->flush();
     }
-
-    public function update(Walk $walk): void
-    {
-        $this->_em->merge($walk);
-        $this->_em->flush();
-    }
 }

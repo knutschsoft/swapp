@@ -13,7 +13,5 @@ interface TagRepository
     /** @return Tag[] */
     public function getTags(): array;
 
-    public function updateTag(Tag $tag): void;
-
     public function findOneByColorAndNameAndClient(string $color, string $name, Client $client): Tag;
 }

@@ -24,12 +24,6 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
         parent::__construct($registry, Tag::class);
     }
 
-    public function updateTag(Tag $tag): void
-    {
-        $this->_em->merge($tag);
-        $this->_em->flush();
-    }
-
     public function save(Tag $tag): void
     {
         $this->_em->persist($tag);

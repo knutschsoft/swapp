@@ -32,8 +32,6 @@ interface WalkRepository
 
     public function save(Walk $walk): void;
 
-    public function update(Walk $walk): void;
-
     /**
      * @param Client     $client
      * @param ?\DateTime $startTimeFrom

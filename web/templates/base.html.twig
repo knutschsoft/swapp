@@ -5,11 +5,22 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        {# from https://realfavicongenerator.net/ #}
-        <link rel="apple-touch-icon" sizes="57x57" href="/build/images/icons/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="/build/images/icons/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="/build/images/icons/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="/build/images/icons/apple-touch-icon-76x76.png">
+        {% if is_device('iOS') and device_version('iOS', 'float') < 11.3 %}
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-title" content="Swapp">
+        {% endif %}
+        {% if is_device('iOS') and device_version('iOS', 'float') < 15.4 %}
+            <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        {% endif %}
+        {% if is_device('iOS') and device_version('iOS', 'float') < 15.4 %}
+            {# from https://realfavicongenerator.net/ #}
+            <link rel="apple-touch-icon" sizes="57x57" href="/build/images/icons/apple-touch-icon-57x57.png">
+            <link rel="apple-touch-icon" sizes="60x60" href="/build/images/icons/apple-touch-icon-60x60.png">
+            <link rel="apple-touch-icon" sizes="72x72" href="/build/images/icons/apple-touch-icon-72x72.png">
+            <link rel="apple-touch-icon" sizes="76x76" href="/build/images/icons/apple-touch-icon-76x76.png">
+        {% endif %}
+        <link rel="apple-touch-startup-image" sizes="76x76" href="/build/images/icons/apple-touch-icon-76x76.png">
+
         <link rel="icon" type="image/png" sizes="32x32" href="/build/images/icons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/build/images/icons/favicon-16x16.png">
         <link rel="mask-icon" href="/build/images/icons/safari-pinned-tab.svg" color="#1c97b0">
@@ -18,9 +29,7 @@
         <meta name="msapplication-config" content="/build/images/icons/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
 
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Swapp">
         <meta name="application-name" content="Swapp">
         <meta name="msapplication-TileColor" content="#2d89ef">
@@ -59,8 +68,13 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}
-        {% endblock body %}
+    {{ device_version('iOS') }}
+    {{ device_version('iOS') }}
+    {{ device_version('iOS') }}
+    {{ device_version('iOS') }}
+
+{#    {% block body %}#}
+{#        {% endblock body %}#}
 
         {% block javascripts %}
             <script>

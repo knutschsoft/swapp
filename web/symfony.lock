@@ -234,6 +234,9 @@
             "config/packages/lexik_jwt_authentication.yaml"
         ]
     },
+    "mobiledetect/mobiledetectlib": {
+        "version": "2.8.39"
+    },
     "monolog/monolog": {
         "version": "1.25.1"
     },
@@ -859,6 +862,9 @@
     },
     "symfony/yaml": {
         "version": "v4.3.4"
+    },
+    "tattali/mobile-detect-bundle": {
+        "version": "v2.2.2"
     },
     "theseer/tokenizer": {
         "version": "1.1.3"

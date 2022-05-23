@@ -31,7 +31,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/kbond/security-checker"
+            "url": "https://github.com/robertfausk/MobileDetectBundle"
         }
     ],
     "require": {
@@ -72,6 +72,7 @@
         "symfony/uid": "5.4.*",
         "symfony/validator": "5.4.*",
         "symfony/webpack-encore-bundle": "~1.6",
+        "tattali/mobile-detect-bundle": "dev-fix_device_version_call_with_type_float",
         "twig/cssinliner-extra": "^3.3",
         "twig/extra-bundle": "^3.3"
     },
