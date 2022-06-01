@@ -24,7 +24,7 @@ Feature: An user can create a wayPoint with and without contactsCount
       | Neuse   | CA       |
 
   @javascript
-  @wayPoint
+  @wayPoint @contactsCount
   Scenario: I can create a wayPoint with and without contactsCount
     Given I am authenticated as "karl@gmx.de"
 

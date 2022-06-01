@@ -10,19 +10,37 @@ const
 const state = {
     changelogs: [
         {
-            header: '18.03.2022',
+            header: '01.06.2022',
             avatarText: '🙃️',
             entries: [
                 {
-                    text: 'Feature: Zu einem Wegpunkt wird die angetroffene Personenzahl mit ausgegeben. Sie ergibt sich as der Summe der angetroffenen Personen aller Altersgruppen. Darstellung im Wegpunkt-Formular, auf der Wegpunkt-Detailseite sowie als eigene Spalte im Runden-CSV-Export.',
+
+                    text: 'Feature: Swapp kann nun als App (Progressive Web App - PWA) installiert werden. Vorteile sind unter anderem ein schnellerer Zugriff auf Swapp und der Wegfall der Browserleiste. Die Installation ist auf fast allen Betriebssystemen möglich. Anbei die Installationsanleitung als Video auf einem iPhone:',
                     gallery: [
                         {
-                            src: '../changelog/20220314_angetroffene_Personenzahl_Formular.png',
+                            src: '../changelog/20220601_iPad_Splitscreen_PWA.jpeg',
+                            thumbnailHeight: '100px',
+                            description: 'Swapp im Splitscreen auf einem iPad (links: im Browser - rechts: als PWA)',
+                        },
+                        {
+                            src: '../changelog/20220601_Swapp-Installation-iPhoneSE.mp4',
+                            thumbnailHeight: '100px',
+                            description: 'Installation von Swapp als PWA unter iOS.',
+                            autoplay: false,
+                            thumbnail: '../changelog/pexels-torsten-dettlaff-347734.jpg',
+                        },
+                    ]
+                },
+                {
+                    text: 'Feature: Zu einem Wegpunkt wird die Anzahl der Personen vor Ort mit ausgegeben. Sie ergibt sich as der Summe der angetroffenen Personen aller Altersgruppen. Darstellung im Wegpunkt-Formular, auf der Wegpunkt-Detailseite sowie als eigene Spalte im Runden-CSV-Export.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220601_angetroffene_Personenzahl_Formular.png',
                             thumbnailHeight: '100px',
                             description: 'Darstellung im Formular (links: Vorher - rechts: Nachher)',
                         },
                         {
-                            src: '../changelog/20220314_angetroffene_Personenzahl_Detailseite.png',
+                            src: '../changelog/20220601_angetroffene_Personenzahl_Detailseite.png',
                             thumbnailHeight: '100px',
                             description: 'Darstellung auf der Detailseite (links: Vorher - rechts: Nachher)',
                         },

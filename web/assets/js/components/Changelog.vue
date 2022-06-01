@@ -89,4 +89,8 @@ export default {
 #silentbox-overlay div .arrow {
     padding: 1rem;
 }
+#silentbox-overlay .silentbox-video__embed {
+    height: 100%;
+    width: 100%;
+}
 </style>
