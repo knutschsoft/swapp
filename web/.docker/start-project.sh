@@ -28,7 +28,7 @@ bin/set_owner.sh
 bin/set_acl.sh ${CONTAINER_USER}
 
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
-    gosu ${CONTAINER_USER} APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install
+    APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} vendor/bin/bdi detect drivers
     gosu ${CONTAINER_USER} vendor/bin/captainhook install -f
