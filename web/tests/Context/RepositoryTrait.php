@@ -242,9 +242,9 @@ trait RepositoryTrait
         $append = '';
         foreach ($request->query->all() as $key => $value) {
             if (\is_array($value)) {
-                foreach ($value as $valueEntry) {
+                foreach ($value as $innerKey => $valueEntry) {
                     $append .= $append ? '&' : '';
-                    $append .= \sprintf('%s[]=%s', $key, \urlencode($this->enrichText($valueEntry)));
+                    $append .= \sprintf('%s[%s]=%s', $key, $innerKey, \urlencode($this->enrichText($valueEntry)));
                 }
                 continue;
             }
