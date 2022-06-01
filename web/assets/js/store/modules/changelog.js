@@ -37,12 +37,12 @@ const state = {
                         {
                             src: '../changelog/20220601_angetroffene_Personenzahl_Formular.png',
                             thumbnailHeight: '100px',
-                            description: 'Darstellung im Formular (links: Vorher - rechts: Nachher)',
+                            description: 'Darstellung im Formular (links: Nachher - rechts: Vorher)',
                         },
                         {
                             src: '../changelog/20220601_angetroffene_Personenzahl_Detailseite.png',
                             thumbnailHeight: '100px',
-                            description: 'Darstellung auf der Detailseite (links: Vorher - rechts: Nachher)',
+                            description: 'Darstellung auf der Detailseite (links: Nachher - rechts: Vorher)',
                         },
                     ],
                 },
