@@ -28,12 +28,6 @@
             "symfony/flex": true
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/robertfausk/MobileDetectBundle"
-        }
-    ],
     "require": {
         "php": ">=8.1",
         "ext-ctype": "*",
@@ -72,7 +66,7 @@
         "symfony/uid": "5.4.*",
         "symfony/validator": "5.4.*",
         "symfony/webpack-encore-bundle": "~1.6",
-        "tattali/mobile-detect-bundle": "dev-fix_device_version_call_with_type_float",
+        "tattali/mobile-detect-bundle": "~2.2",
         "twig/cssinliner-extra": "^3.3",
         "twig/extra-bundle": "^3.3"
     },
