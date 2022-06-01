@@ -17,13 +17,8 @@ final class DatabaseContext implements Context
 
     public function __construct(KernelInterface $kernel)
     {
-        $this->setKernel($kernel);
-        $this->doctrine = $this->kernel->getContainer()->get('test.service_container')->get('doctrine');
-    }
-
-    public function setKernel(KernelInterface $kernel): void
-    {
         $this->kernel = $kernel;
+        $this->doctrine = $this->kernel->getContainer()->get('test.service_container')->get('doctrine');
     }
 
     /**

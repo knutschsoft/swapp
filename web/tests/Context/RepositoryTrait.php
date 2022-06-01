@@ -267,7 +267,7 @@ trait RepositoryTrait
             return true;
         }
 
-        if ('@' === \substr($text, 0, 1)) {
+        if (\str_starts_with($text, '@')) {
             $path = \sprintf(
                 "%s%s%s",
                 \rtrim($this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR),
