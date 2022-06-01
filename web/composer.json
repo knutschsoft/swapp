@@ -66,7 +66,7 @@
         "symfony/uid": "5.4.*",
         "symfony/validator": "5.4.*",
         "symfony/webpack-encore-bundle": "~1.6",
-        "tattali/mobile-detect-bundle": "~2.2",
+        "tattali/mobile-detect-bundle": "dev-main",
         "twig/cssinliner-extra": "^3.3",
         "twig/extra-bundle": "^3.3"
     },
