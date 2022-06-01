@@ -46,6 +46,26 @@ const state = {
                         },
                     ],
                 },
+                {
+                    text: 'Feature: Ein Nutzer kann beim Runden-CSV-Export über einen Datumsfilter eine Spanne eingeben um nicht mehr alle Runden mit einmal zu exportieren.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Mobilansicht (links: Vorher - rechts: Nachher)',
+                        },
+                        {
+                            src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_Mobilansicht.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Mobilansicht mit aufgeklapptem Datumsfilter',
+                        },
+                        {
+                            src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_Tabletansicht.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Tabletansicht mit aufgeklapptem Datumsfilter',
+                        },
+                    ],
+                },
             ],
         },
         {
