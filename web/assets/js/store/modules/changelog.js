@@ -47,6 +47,31 @@ const state = {
                     ],
                 },
                 {
+                    text: 'Feature: Zu einem Wegpunkt kann die Anzahl direkter Kontakte mit aufgenommen werden. Ein direkter Kontakt ist eine Person mit der an diesem Wegpunkt gesprochen wurde. Die Erfassung ist optional und kann von einem Admin für jedes Team einzeln festgelegt werden. Zusätzlich wurde das Design für das Erstellen-Formular und Bearbeiten-Formular eines Teams überarbeitet. Darstellung im Wegpunkt-Formular, auf der Wegpunkt-Detailseite sowie als eigene Spalte im Runden-CSV-Export.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Teamseite.png',
+                            thumbnailHeight: '100px',
+                            description: 'Teamliste mit neuer Spalte "zusätzliche Wegpunkt-Felder" sowie überarbeitetes "Neues Team erstellen"-Formular',
+                        },
+                        {
+                            src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Team-Formular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Überarbeitetes "Team bearbeiten"-Formular mit neuem Switch für "optionale Felder"',
+                        },
+                        {
+                            src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Formular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Formular',
+                        },
+                        {
+                            src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Detailseite.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf der Detailseite',
+                        },
+                    ],
+                },
+                {
                     text: 'Feature: Ein Nutzer kann beim Runden-CSV-Export über einen Datumsfilter eine Spanne eingeben um nicht mehr alle Runden mit einmal zu exportieren.',
                     gallery: [
                         {
