@@ -212,7 +212,7 @@
             small
             striped
             class="mb-0"
-            stacked="lg"
+            stacked="xl"
             :items="itemProvider"
             :fields="fields"
             :current-page="currentPage"
@@ -313,14 +313,21 @@ export default {
                     },
                 },
                 {
-                    key: 'walk.startTime',
-                    label: 'Runden-Beginn',
+                    key: 'visitedAt',
+                    label: 'Ankunft',
+                    sortable: true,
+                    class: 'text-center align-middle',
+                    formatter: (value) => this.formatStartDate(value),
+                },
+                {
+                    key: 'walk.name',
+                    label: 'Runde',
                     sortable: true,
                     class: 'text-center align-middle',
                     formatter: (value, key, item) => {
-                        const walk = this.getWalkByIri(item.walk);
+                        let walk = this.getWalkByIri(item.walk);
 
-                        return this.formatStartDate(walk.startTime) + ' (' + walk.name + ')';
+                        return walk.name;
                     },
                 },
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },

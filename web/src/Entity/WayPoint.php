@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Table(name: 'way_point')]
 #[ORM\Entity(repositoryClass: DoctrineORMWayPointRepository::class)]
-#[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "oneOnOneInterview", "note", "walk.startTime", "walk.teamName"])]
+#[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "oneOnOneInterview", "note", "visitedAt", "walk.name", "walk.startTime", "walk.teamName"])]
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
 #[ApiFilter(
     SearchFilter::class,
