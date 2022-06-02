@@ -1,3 +1,25 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+$grid-breakpoints: (
+        xxs: 0,
+        xs: 375px,
+        sm: 480px,
+        md: 768px,
+        lg: 1024px,
+        xl: 1200px,
+        xxl: 1600px
+);
+
+$container-max-widths: (
+        xxs: 320px,
+        xs: 375px,
+        sm: 544px,
+        md: 728px,
+        lg: 960px,
+        xl: 1200px,
+        xxl: 1600px
+);
 @import '~bootstrap';
 @import '~bootstrap-vue';
 @import '~font-awesome-animation/dist/font-awesome-animation.css';
