@@ -8,6 +8,7 @@
             stacked="md"
             :items="wayPoints"
             :fields="fields"
+            sort-by="visitedAt"
             class="mb-0"
         >
             <template #cell(locationName)="data">
