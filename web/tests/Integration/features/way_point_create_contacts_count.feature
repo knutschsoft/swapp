@@ -38,6 +38,7 @@ Feature: Testing wayPoint create resource with contacts count
       | imageFileName     | <null>                                                        |
       | imageFileData     | <null>                                                        |
       | contactsCount     | <null>                                                        |
+      | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
@@ -65,6 +66,7 @@ Feature: Testing wayPoint create resource with contacts count
       | imageFileName     | <null>                                                        |
       | imageFileData     | <null>                                                        |
       | contactsCount     | int<7>                                                        |
+      | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
     Then the response status code should be 422
     And the enriched JSON nodes should be equal to:
@@ -89,6 +91,7 @@ Feature: Testing wayPoint create resource with contacts count
       | imageFileName     | <null>                                                        |
       | imageFileData     | <null>                                                        |
       | contactsCount     | int<22>                                                       |
+      | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
@@ -116,6 +119,7 @@ Feature: Testing wayPoint create resource with contacts count
       | imageFileName     | <null>                                                        |
       | imageFileData     | <null>                                                        |
       | contactsCount     | <null>                                                        |
+      | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
     Then the response status code should be 422
     And the enriched JSON nodes should be equal to:

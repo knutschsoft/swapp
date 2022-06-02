@@ -40,6 +40,43 @@
             label-cols="12"
             content-cols-lg="10"
             label-cols-lg="2"
+            label="Ankunft"
+            :description="visitedAtDescription"
+            :invalid-feedback="invalidVisitedAtState"
+            :state="visitedAtState"
+        >
+            <b-row>
+                <b-col>
+                    <b-timepicker
+                        v-model="visitedAtTime"
+                        v-bind="timeLabels['de']"
+                        :disabled="isLoading"
+                        :state="visitedAtState"
+                        data-test="visitedAtTime"
+                        minutes-step="5"
+                        locale="de"
+                        size="sm"
+                    />
+                </b-col>
+                <b-col>
+                    <b-datepicker
+                        v-model="visitedAtDate"
+                        v-bind="dateLabels['de']"
+                        :disabled="isLoading"
+                        :state="visitedAtState"
+                        data-test="visitedAtDate"
+                        locale="de"
+                        size="sm"
+                        right
+                    />
+                </b-col>
+            </b-row>
+        </b-form-group>
+        <b-form-group
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
         >
 
             <template v-slot:label>
@@ -285,6 +322,7 @@ import GlobalFormError from '../Common/GlobalFormError.vue';
 import ColorBadge from '../Tags/ColorBadge.vue';
 import getViolationsFeedback from '../../utils/validation.js';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 export default {
     name: 'WayPointForm',
@@ -312,6 +350,7 @@ export default {
         return {
             wayPoint: {
                 locationName: '',
+                visitedAt: dayjs(),
                 ageGroups: [],
                 imageName: null,
                 isMeeting: false,
@@ -322,9 +361,40 @@ export default {
                 imageFileName: null,
                 contactsCount: 0,
             },
+            visitedAtTime: null,
+            visitedAtDate: null,
             file: null,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),
             contactsCountOptions: Array.from(Array(41), (x, i) => i),
+            dateLabels: {
+                de: {
+                    labelPrevDecade: 'Vorheriges Jahrzehnt',
+                    labelPrevYear: 'Vorheriges Jahr',
+                    labelPrevMonth: 'Vorheriger Monat',
+                    labelCurrentMonth: 'Aktueller Monat',
+                    labelNextMonth: 'Nächster Monat',
+                    labelNextYear: 'Nächstes Jahr',
+                    labelNextDecade: 'Nächstes Jahrzehnt',
+                    labelToday: 'Heute',
+                    labelSelected: 'Ausgewähltes Datum',
+                    labelNoDateSelected: 'Kein Datum gewählt',
+                    labelCalendar: 'Kalender',
+                    labelNav: 'Kalendernavigation',
+                    labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren'
+                },
+            },
+            timeLabels: {
+                de: {
+                    labelHours: 'Stunden',
+                    labelMinutes: 'Minuten',
+                    labelSeconds: 'Sekunden',
+                    labelIncrement: 'Erhöhen',
+                    labelDecrement: 'Verringern',
+                    labelSelected: 'Ausgewählte Zeit',
+                    labelNoTimeSelected: 'Keine Zeit ausgewählt',
+                    labelCloseButton: 'Schließen'
+                },
+            },
         };
     },
     computed: {
@@ -360,6 +430,33 @@ export default {
         },
         invalidLocationNameState() {
             return getViolationsFeedback(['locationName'], this.error);
+        },
+        visitedAtState() {
+            if (null === this.wayPoint.visitedAt || undefined === this.wayPoint.visitedAt) {
+                return;
+            }
+            if (!this.visitedAtTime || !this.visitedAtDate) {
+                return;
+            }
+            if (!this.walk) {
+                return;
+            }
+
+            const isAfterStart = dayjs(this.wayPoint.visitedAt).diff(dayjs(this.walk.startTime), 'second') >= -60;
+
+            // can not be used cause startTime==endTime on creation of walk
+            // if (this.walk.endTime) {
+            //     const isBeforeEnd = this.wayPoint.visitedAtTime <= this.walk.endTime;
+            //     return isBeforeEnd && isAfterStart;
+            // }
+
+            return isAfterStart;
+        },
+        visitedAtDescription() {
+            return `Die Ankunftszeit muss nach der Startzeit der Runde (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) liegen.`;
+        },
+        invalidVisitedAtState() {
+            return getViolationsFeedback(['visitedAt'], this.error);
         },
         contactsCountState() {
             if ('' === this.invalidContactsCountState && null === this.wayPoint.contactsCount) {
@@ -411,7 +508,7 @@ export default {
             return this.$store.getters['security/isSuperAdmin'];
         },
         isSubmitDisabled() {
-            return this.isLoading;
+            return this.isLoading || !this.visitedAtState;
         },
         globalErrors() {
             let keys = ['oneOnOneInterview', 'note', 'locationName', 'decodedImageData', 'imageFileData', 'imageFileName'];
@@ -465,6 +562,26 @@ export default {
             return ageGroups;
         },
     },
+    watch: {
+        visitedAtTime(visitedAtTime) {
+            const values = visitedAtTime.split(':');
+            if (values.length < 2) {
+                return;
+            }
+            let visitedAt = dayjs(this.wayPoint.visitedAt);
+            visitedAt = visitedAt.hour(Number(values[0]));
+            visitedAt = visitedAt.minute(Number(values[1]));
+            this.wayPoint.visitedAt = visitedAt.format();
+        },
+        visitedAtDate(visitedAtDate) {
+            const visitedAtDateValue = dayjs(visitedAtDate);
+            let visitedAt = dayjs(this.wayPoint.visitedAt);
+            visitedAt = visitedAt.date(visitedAtDateValue.date());
+            visitedAt = visitedAt.month(visitedAtDateValue.month());
+            visitedAt = visitedAt.year(visitedAtDateValue.year());
+            this.wayPoint.visitedAt = visitedAt.format();
+        },
+    },
     async created() {
         await this.$store.dispatch('wayPoint/resetChangeError');
         if (!this.walk && this.initialWayPoint) {
@@ -492,14 +609,16 @@ export default {
             this.wayPoint.note = this.initialWayPoint.note;
             this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;
             this.wayPoint.wayPointTags = JSON.parse(JSON.stringify(this.initialWayPoint.wayPointTags)) || [];
+            this.visitedAtDate = dayjs(this.initialWayPoint.visitedAt).format('YYYY-MM-DD');
+            this.visitedAtTime = dayjs(this.initialWayPoint.visitedAt).format('HH:mm');
         } else {
             this.wayPoint.ageGroups = this.ageGroups;
             this.wayPoint.walk = this.walk['@id'];
+            this.visitedAtTime = dayjs().format('HH:mm');
+            this.visitedAtDate = dayjs().format('YYYY-MM-DD');
         }
 
-        if (!this.walk.isWithContactsCount) {
-            this.contactsCount = null;
-        }
+        this.wayPoint.contactsCount = this.walk.isWithContactsCount ? 0 : null;
     },
     methods: {
         updateFile: async function (file) {

@@ -87,6 +87,7 @@
     "use strict";
     import LocationLink from '../LocationLink.vue';
     import ColorBadge from '../Tags/ColorBadge.vue';
+    import dayjs from 'dayjs';
 
     export default {
         name: "WayPointDetailData",
@@ -169,6 +170,7 @@
 
                 let fields = [
                     { name: 'Ort', value: this.wayPoint.locationName },
+                    { name: 'Ankunft', value: dayjs(this.wayPoint.visitedAt).format('ddd, DD.MM.YYYY HH:mm') },
                     { name: 'Beobachtung', value: this.wayPoint.note },
                     { name: 'Einzelgespräch', value: this.wayPoint.oneOnOneInterview },
                     { name: 'Bild', value: this.wayPoint.imageName },

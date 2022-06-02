@@ -32,7 +32,7 @@ Feature: Testing tag resource
     Given I am authenticated against api as "karl@gmx.de"
     When I send a GET request to "/api/tags"
     Then the response should be in JSON
-    And print last JSON response
+#    And print last JSON response
     And the JSON nodes should be equal to:
       | hydra:totalItems      | 2         |
       | hydra:member[0].@type | Tag       |

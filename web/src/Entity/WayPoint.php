@@ -78,6 +78,9 @@ class WayPoint
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     protected $updatedAt; // phpcs:ignore
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    protected \DateTimeInterface $visitedAt;
+
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue()]
@@ -160,6 +163,7 @@ class WayPoint
             $instance->setImageName(\sprintf("%s_%s", \time(), $request->imageFileName));
         }
         $instance->setIsMeeting($request->isMeeting);
+        $instance->setVisitedAt($request->visitedAt);
 
         return $instance;
     }
@@ -350,6 +354,17 @@ class WayPoint
     public function setNote(?string $note): void
     {
         $this->note = $note;
+    }
+
+    #[Groups(['wayPoint:read'])]
+    public function getVisitedAt(): \DateTimeInterface
+    {
+        return $this->visitedAt;
+    }
+
+    public function setVisitedAt(\DateTimeInterface $visitedAt): void
+    {
+        $this->visitedAt = $visitedAt;
     }
 
     #[Groups(['wayPoint:read'])]

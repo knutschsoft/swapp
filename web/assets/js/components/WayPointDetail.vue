@@ -64,7 +64,7 @@
                 return this.$store.getters["wayPoint/getWayPointById"](this.wayPointId);
             },
             title() {
-                return `Wegpunkt: ${this.wayPoint.locationName} <small>vom ${(new Date(this.walk.startTime)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
+                return `Wegpunkt: ${this.wayPoint.locationName} <small>vom ${(new Date(this.wayPoint.visitedAt)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
             },
             isLoading() {
                 return this.$store.getters["walk/isLoading"];

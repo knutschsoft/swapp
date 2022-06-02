@@ -89,6 +89,7 @@ final class AcceptanceContext extends MinkContext
      */
     public function iWaitForTextToAppear(string $text, ?int $tries = 125): void
     {
+        $text = $this->enrichText($text);
         $this->spin(
             function () use ($text): void {
                 $this->assertPageContainsText($text);

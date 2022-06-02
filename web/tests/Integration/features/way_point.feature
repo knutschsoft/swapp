@@ -80,10 +80,11 @@ Feature: Testing way point resource
       | key | value |
     Then the response should be in JSON
 #    And print last JSON response
-    And the JSON nodes should be equal to:
-      | locationName      | Assieck   |
-      | note              | Bier!     |
-      | oneOnOneInterview | Gönnjamin |
+    And the enriched JSON nodes should be equal to:
+      | locationName      | Assieck                     |
+      | note              | Bier!                       |
+      | oneOnOneInterview | Gönnjamin                   |
+      | visitedAt         | date<now,Y-m-dTH:i:s+02:00> |
 
   @api @wayPoint
   Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will see all way points

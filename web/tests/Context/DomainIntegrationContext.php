@@ -309,6 +309,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $wayPoint->setLocationName($row['locationName']);
             $wayPoint->setNote($row['beobachtung'] ?? 'null');
             $wayPoint->setOneOnOneInterview($row['einzelgespraech'] ?? 'null');
+            $wayPoint->setVisitedAt(isset($row['visitedAt']) ? new \DateTime($row['visitedAt']) : new \DateTime());
             if ($walk->isWithContactsCount()) {
                 $wayPoint->setContactsCount($this->enrichText($row['contactsCount'] ?? 'int<7>'));
             }
@@ -364,7 +365,7 @@ final class DomainIntegrationContext extends RawMinkContext
                     $expectedLastLoginAt = new Carbon($lastLoginAt);
                     $lastLoginAt = new Carbon($user->getLastLoginAt());
                     Assert::true(
-                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 3,
+                        $lastLoginAt->diffInSeconds($expectedLastLoginAt) < 5,
                         \sprintf('Expected lastLoginAt "%s" is not same as value "%s".', $expectedLastLoginAt, $lastLoginAt)
                     );
                 }
@@ -583,6 +584,24 @@ final class DomainIntegrationContext extends RawMinkContext
             }
             if (isset($row['isMeeting'])) {
                 Assert::eq($wayPoint->getIsMeeting(), (bool) $row['isMeeting']);
+            }
+            if (isset($row['visitedAt'])) {
+                $allowedDistanceInSeconds = 10;
+                $expectedVisitedAt = new Carbon($this->enrichText($row['visitedAt']));
+                $lowerExpectedVisitedAt = $expectedVisitedAt->clone()->subSeconds($allowedDistanceInSeconds);
+                $higherExpectedVisitedAt = $expectedVisitedAt->clone()->addSeconds($allowedDistanceInSeconds);
+                //$higherExpectedVisitedAt = $lowerExpectedVisitedAt;
+                $visitedAt = new Carbon($wayPoint->getVisitedAt());
+                Assert::true(
+                    $visitedAt->isBetween($lowerExpectedVisitedAt, $higherExpectedVisitedAt),
+                    \sprintf(
+                        "Distance is larger than %d seconds. lower: %s visitedAt: %s higher: %s",
+                        $allowedDistanceInSeconds,
+                        $lowerExpectedVisitedAt->format('H:i:s'),
+                        $visitedAt->format('H:i:s'),
+                        $higherExpectedVisitedAt->format('H:i:s')
+                    )
+                );
             }
             if (isset($row['wayPointTags'])) {
                 $expectedTags = $this->getTagsFromString($row['wayPointTags']);

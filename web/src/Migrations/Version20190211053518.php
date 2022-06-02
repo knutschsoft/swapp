@@ -32,7 +32,7 @@ final class Version20190211053518 extends AbstractMigration
             ->from('way_point')
             ->getSQL();
 
-        $this->wayPoints = $this->connection->executeQuery($query)->fetchAll();
+        $this->wayPoints = $this->connection->executeQuery($query)->fetchAllAssociative();
     }
 
     public function up(Schema $schema): void

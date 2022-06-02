@@ -65,6 +65,12 @@ final class WayPointCreateRequest
     #[AppAssert\ContactsCountRequirements]
     public ?int $contactsCount = null;
 
+    #[Assert\Sequentially([
+        new Assert\NotNull(),
+        new Assert\Type(type: \DateTime::class),
+    ])]
+    public \DateTime $visitedAt;
+
     #[AppAssert\WayPointImageRequirements]
     public function getDecodedImageData(): ?File
     {

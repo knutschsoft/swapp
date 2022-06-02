@@ -332,6 +332,14 @@ trait RepositoryTrait
             return $ageGroups;
         }
 
+        if (\str_starts_with($text, 'date<')) {
+            $dateConfig = \explode(',', $referenceIdentifikator);
+            Assert::isArray($dateConfig);
+            Assert::countBetween($dateConfig, 1, 2);
+            Carbon::setlocale('de');
+            return (new Carbon($dateConfig[0]))->translatedFormat($dateConfig[1] ?? 'd.m.Y');
+        }
+
         if (\str_starts_with($text, 'teamIris<')) {
             $teams = [];
             foreach ($this->getTeamIdsFromTeamsString($referenceIdentifikator) as $teamId) {

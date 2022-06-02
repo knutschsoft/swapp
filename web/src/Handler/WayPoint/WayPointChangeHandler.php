@@ -36,6 +36,7 @@ final class WayPointChangeHandler implements MessageHandlerInterface
         if ($wayPoint->getWalk()->isWithContactsCount()) {
             $wayPoint->setContactsCount($request->contactsCount);
         }
+        $wayPoint->setVisitedAt($request->visitedAt);
 
         $tmpFile = $request->getDecodedImageData();
         $oldImageName = $wayPoint->getImageName();
