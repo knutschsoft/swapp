@@ -39,6 +39,7 @@
 'use strict';
 
 import LocationLink from '../LocationLink.vue';
+import dayjs from 'dayjs';
 
 export default {
     name: 'WayPointList',
@@ -54,6 +55,18 @@ export default {
         return {
             fields: [
                 { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
+                {
+                    key: 'visitedAt',
+                    label: 'Ankunft',
+                    sortable: true,
+                    sortByFormatted: true,
+                    filterByFormatted: true,
+                    formatter: (value) => {
+                        return dayjs(value).format('DD.MM.YYYY HH:mm');
+                    },
+                    sortDirection: 'desc',
+                    class: 'text-center align-middle',
+                },
                 {
                     key: 'isMeeting',
                     label: 'Meeting',

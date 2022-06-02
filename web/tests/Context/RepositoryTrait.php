@@ -337,6 +337,7 @@ trait RepositoryTrait
             Assert::isArray($dateConfig);
             Assert::countBetween($dateConfig, 1, 2);
             Carbon::setlocale('de');
+
             return (new Carbon($dateConfig[0]))->translatedFormat($dateConfig[1] ?? 'd.m.Y');
         }
 
