@@ -20,6 +20,7 @@ use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
 use App\Value\AgeRange;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -196,7 +197,7 @@ class Walk
         $instance->updateClient($team->getClient());
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
-        $instance->setEndTime($request->startTime);
+        $instance->setEndTime((new Carbon($request->startTime))->endOfDay()->toDateTime());
         $instance->setRating(1);
         $instance->setSystemicAnswer('');
         $instance->setSystemicQuestion($systemicQuestion->getQuestion());

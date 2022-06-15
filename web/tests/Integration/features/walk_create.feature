@@ -116,23 +116,25 @@ Feature: Testing walk create resource
   Scenario: I can request /api/walks/create as authenticated user and can create a new walk for another user
     Given I am authenticated against api as "two@pac.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
-      | key             | value                 |
-      | team            | teamIri<Westhang>     |
-      | name            | This is my Walk       |
-      | conceptOfDay    | High and out.         |
-      | weather         | Arschkalt             |
-      | startTime       | 01.01.2020            |
-      | walkTeamMembers | userIris<karl@gmx.de> |
-      | holidays        | <false>               |
+      | key             | value                     |
+      | team            | teamIri<Westhang>         |
+      | name            | This is my Walk           |
+      | conceptOfDay    | High and out.             |
+      | weather         | Arschkalt                 |
+      | startTime       | 2020-01-01T13:37:22+02:00 |
+      | walkTeamMembers | userIris<karl@gmx.de>     |
+      | holidays        | <false>                   |
 #    And print last response
     Then the response status code should be 200
-    And the JSON nodes should be equal to:
-      | @type            | Walk            |
-      | name             | This is my Walk |
-      | systemicQuestion | Esta muy bien?  |
-      | weather          | Arschkalt       |
-      | isUnfinished     | 1               |
-      | teamName         | Westhang        |
+    And the enriched JSON nodes should be equal to:
+      | @type            | Walk                      |
+      | name             | This is my Walk           |
+      | systemicQuestion | Esta muy bien?            |
+      | weather          | Arschkalt                 |
+      | isUnfinished     | 1                         |
+      | teamName         | Westhang                  |
+      | startTime        | 2020-01-01T13:37:22+02:00 |
+      | endTime          | 2020-01-01T23:59:59+02:00 |
     And there are exactly 3 walks in database
 
   @api @walkCreate

@@ -85,7 +85,7 @@ Feature: Testing walk export resource
     Then the response status code should be 200
     And the response should contain "Id,Name,Beginn,Ende,Reflexion,Bewertung,\"systemische Frage\",\"systemische Antwort\",\"Erkenntnisse, Überlegungen, Zielsetzungen\",\"Termine, Besorgungen, Verabredungen\",\"Wiedervorlage Dienstberatung\",Wetter,Ferien,Tageskonzept,Teamname,\"Anzahl direkter Kontakte\",\"Anzahl Personen vor Ort\""
     And the response should not contain ",Spaziergang,"
-    And the response should contain ",Gamescon,\"01.03.2021 00:00:00\",\"01.03.2021 00:00:00\",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",Gamers,5,0"
+    And the response should contain ",Gamescon,\"01.03.2021 00:00:00\",\"01.03.2021 23:59:59\",,1,\"How are you?\",,,,,Arschkalt,,\"My daily concept.\",Gamers,5,0"
     And the response should contain "Gamescon"
     And the response should not contain "BOTW"
 

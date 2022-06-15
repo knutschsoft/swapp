@@ -35,14 +35,14 @@ Feature: An admin can see users of his client
   @userList
   Scenario: I can not see tag list as a non admin user
     Given I am authenticated as "lonely@gmx.de"
-    When I am on "benutzer"
+    When I am on "/benutzer"
     Then I should be on "/dashboard"
 
   @javascript
   @userList
   Scenario: I can not see tag list as an admin user
     Given I am authenticated as "admin@gmx.de"
-    When I am on "benutzer"
+    When I am on "/benutzer"
     Then I should be on "/benutzer"
 
     And I wait for "Liste der Benutzer" to appear
@@ -57,7 +57,7 @@ Feature: An admin can see users of his client
   @userList
   Scenario: I can see tag list as an super admin user
     Given I am authenticated as "superadmin@gmx.de"
-    When I am on "benutzer"
+    When I am on "/benutzer"
     Then I should be on "/benutzer"
 
     And I wait for "Liste der Benutzer" to appear

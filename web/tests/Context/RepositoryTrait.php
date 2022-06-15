@@ -371,10 +371,6 @@ trait RepositoryTrait
             return (string) $this->getWalkByName($referenceIdentifikator)->getId();
         }
 
-        if (\str_starts_with($text, 'int<')) {
-            return (int) \substr($text, 4, -1);
-        }
-
         if (\str_starts_with($text, 'userIris<')) {
             $userIds = [];
             foreach ($this->getUserIdsFromUsernamesString($referenceIdentifikator) as $userId) {

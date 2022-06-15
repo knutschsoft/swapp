@@ -45,12 +45,12 @@ Feature: An admin can change visited at of a wayPoint
 
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Assieck>/detail"
     Then I wait for "Ankunft" to appear
-    Then I wait for 'Die Ankunftszeit muss nach der Startzeit der Runde (' to disappear
+    Then I wait for 'Die Ankunftszeit muss nach Rundenstartzeit (' to disappear
 
     Then I go to swapp page "/abmeldung"
     Given I am authenticated as "admin@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Assieck>/detail"
-    Then I wait for 'Die Ankunftszeit muss nach der Startzeit der Runde (' to appear
+    Then I wait for 'Die Ankunftszeit muss nach der Rundenstartzeit (' to appear
 
     Then the element "button-way-point-submit" should be enabled
     When I click on element "visitedAtTime"
