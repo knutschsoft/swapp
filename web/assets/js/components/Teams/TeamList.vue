@@ -27,10 +27,6 @@
                 />
                 <span v-else>{{ data.value }}</span>
             </template>
-            <template #cell(additionalWayPointFields)="row">
-                <span v-if="row.item.isWithContactsCount">Anzahl direkter Kontakte</span>
-                <span v-else>-</span>
-            </template>
 
             <template v-slot:cell(actions)="row">
                 <b-button
@@ -99,10 +95,10 @@
                         sortable: true,
                         formatter: (locationNames) => {
                             if (locationNames.length) {
-                                return locationNames.join(', ')
+                                return locationNames.join(', ');
                             }
 
-                            return '-'
+                            return '-';
                         },
                         sortByFormatted: true,
                         class: 'text-center',
@@ -113,6 +109,21 @@
                         sortable: false,
                         sortByFormatted: false,
                         class: 'text-center',
+                        formatter: (value, key, item) => {
+                            let additionalWayPointFields = [];
+                            if (item.isWithContactsCount) {
+                                additionalWayPointFields.push('Anzahl direkter Kontakte');
+                            }
+                            if (item.isWithUserGroups) {
+                                additionalWayPointFields.push('Personenanzahl von Nutzergruppen');
+                            }
+
+                            if (additionalWayPointFields.length) {
+                                return additionalWayPointFields.join(', ');
+                            }
+
+                            return '-';
+                        },
                     },
                     {
                         key: 'ageRanges',
@@ -199,6 +210,7 @@
                     users: team.users,
                     ageRanges: team.ageRanges,
                     isWithContactsCount: team.isWithContactsCount,
+                    isWithUserGroups: team.isWithUserGroups,
                 });
 
                 if (changedTeam) {

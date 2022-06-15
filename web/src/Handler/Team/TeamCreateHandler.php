@@ -27,6 +27,7 @@ final class TeamCreateHandler implements MessageHandlerInterface
         $team->setName($request->name);
         $team->setLocationNames($request->locationNames);
         $team->setIsWithContactsCount($request->isWithContactsCount);
+        $team->setIsWithUserGroups($request->isWithUserGroups);
         $this->teamRepository->save($team);
 
         return $team;

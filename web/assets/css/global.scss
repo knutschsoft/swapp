@@ -53,6 +53,9 @@ body {
   @include media-breakpoint-only(xl) {
     column-count: 2;
   }
+  @include media-breakpoint-only(xxl) {
+    column-count: 2;
+  }
 }
 
 .col-form-label {

@@ -30,6 +30,7 @@ Feature: Testing team change resource
       | ageRanges           | ageRanges<>      |
       | users               | userIris<>       |
       | isWithContactsCount | <false>          |
+      | isWithUserGroups    | <false>          |
     Then the response should be in JSON
     And the response status code should be 401
 #    And print last JSON response
@@ -46,6 +47,7 @@ Feature: Testing team change resource
       | ageRanges           | ageRanges<>       |
       | users               | userIris<>        |
       | isWithContactsCount | <false>           |
+      | isWithUserGroups    | <false>           |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 403
@@ -63,6 +65,7 @@ Feature: Testing team change resource
       | users               | userIris<two@pac.de>    |
       | locationNames       | array<City, Spielplatz> |
       | isWithContactsCount | <false>                 |
+      | isWithUserGroups    | <false>                 |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -75,6 +78,7 @@ Feature: Testing team change resource
       | locationNames[0]           | City                |
       | locationNames[1]           | Spielplatz          |
       | isWithContactsCount        | <false>             |
+      | isWithUserGroups           | <false>             |
       | users[0]                   | userIri<two@pac.de> |
 
   @api @apiTeamChange
@@ -88,6 +92,7 @@ Feature: Testing team change resource
       | users               | userIris<two@pac.de>    |
       | locationNames       | array<City, Spielplatz> |
       | isWithContactsCount | <true>                  |
+      | isWithUserGroups    | <true>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -100,6 +105,7 @@ Feature: Testing team change resource
       | locationNames[0]           | City                |
       | locationNames[1]           | Spielplatz          |
       | isWithContactsCount        | <true>              |
+      | isWithUserGroups           | <true>              |
       | users[0]                   | userIri<two@pac.de> |
 
   @api @apiTeamChange
@@ -125,6 +131,8 @@ Feature: Testing team change resource
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[5].propertyPath | isWithContactsCount                                                    |
       | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[6].propertyPath | isWithUserGroups                                                       |
+      | violations[6].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin of another client/team and can not change a team
@@ -136,6 +144,7 @@ Feature: Testing team change resource
       | ageRanges           | ageRanges<1-3>       |
       | users               | userIris<two@pac.de> |
       | isWithContactsCount | <true>               |
+      | isWithUserGroups    | <true>               |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 400
@@ -152,6 +161,7 @@ Feature: Testing team change resource
       | ageRanges           | ageRanges<1-3>          |
       | users               | userIris<karl@gamer.de> |
       | isWithContactsCount | <true>                  |
+      | isWithUserGroups    | <true>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 400

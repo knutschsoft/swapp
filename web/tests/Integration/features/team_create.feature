@@ -57,6 +57,7 @@ Feature: Testing team create resource
       | users               | userIris<two@pac.de>     |
       | locationNames       | array<City, Spielplatz>  |
       | isWithContactsCount | <false>                  |
+      | isWithUserGroups    | <false>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -69,6 +70,7 @@ Feature: Testing team create resource
       | locationNames[0]           | City                     |
       | locationNames[1]           | Spielplatz               |
       | isWithContactsCount        | <false>                  |
+      | isWithUserGroups           | <false>                  |
       | users[0]                   | userIri<two@pac.de>      |
       | client                     | clientIri<client@gmx.de> |
 
@@ -83,6 +85,7 @@ Feature: Testing team create resource
       | users               | userIris<two@pac.de>     |
       | locationNames       | array<City, Spielplatz>  |
       | isWithContactsCount | <true>                   |
+      | isWithUserGroups    | <true>                   |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -95,6 +98,7 @@ Feature: Testing team create resource
       | locationNames[0]           | City                     |
       | locationNames[1]           | Spielplatz               |
       | isWithContactsCount        | <true>                   |
+      | isWithUserGroups           | <true>                   |
       | users[0]                   | userIri<two@pac.de>      |
       | client                     | clientIri<client@gmx.de> |
 
@@ -121,6 +125,8 @@ Feature: Testing team create resource
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[5].propertyPath | isWithContactsCount                                                    |
       | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[6].propertyPath | isWithUserGroups                                                       |
+      | violations[6].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team
@@ -132,6 +138,7 @@ Feature: Testing team create resource
       | ageRanges           | ageRanges<1-3>          |
       | users               | userIris<two@pac.de>    |
       | isWithContactsCount | <true>                  |
+      | isWithUserGroups    | <true>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 400

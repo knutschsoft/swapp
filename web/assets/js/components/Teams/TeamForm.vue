@@ -81,6 +81,23 @@
                     <b-form-text>
                         Eine Person gilt als direkter Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
                     </b-form-text>
+                    <b-form-checkbox
+                        v-model="team.isWithUserGroups"
+                        :disabled="isDisabled"
+                        switch
+                    >
+                        Die Personenanzahl von Nutzergruppen eines Wegpunktes soll zusätzlich mit erfasst werden.
+                    </b-form-checkbox>
+                    <b-form-text>
+                        Die 5 Nutzergruppen sind:
+                        <ul class="mb-0">
+                            <li>"Aktuelle Nutzer"</li>
+                            <li>"jemals genutzt - nutzungsberechtigt"</li>
+                            <li>"jemals genutzt - nicht nutzungsberechtigt"</li>
+                            <li>"nie genutzt - nutzungsberechtigt"</li>
+                            <li>"nie genutzt - nicht nutzungsberechtigt"</li>
+                        </ul>
+                    </b-form-text>
                 </b-form-group>
 
                 <b-form-group
@@ -239,6 +256,8 @@ export default {
                 team: '',
                 client: '',
                 name: '',
+                isWithContactsCount: false,
+                isWithUserGroups: false,
                 users: [],
                 ageRanges: [],
                 locationNames: [],

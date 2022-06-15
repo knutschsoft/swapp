@@ -30,4 +30,7 @@ final class TeamCreateRequest
 
     #[AppAssert\IsWithContactsCountRequirements]
     public bool $isWithContactsCount;
+
+    #[AppAssert\IsWithUserGroupsRequirements]
+    public bool $isWithUserGroups;
 }

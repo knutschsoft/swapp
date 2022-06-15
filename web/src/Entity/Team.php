@@ -73,6 +73,9 @@ class Team
     #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithUserGroups;
+
     public function __construct()
     {
         $this->ageRanges = [];
@@ -184,5 +187,17 @@ class Team
     public function setIsWithContactsCount(bool $isWithContactsCount): void
     {
         $this->isWithContactsCount = $isWithContactsCount;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithUserGroups')]
+    public function isWithUserGroups(): bool
+    {
+        return $this->isWithUserGroups;
+    }
+
+    public function setIsWithUserGroups(bool $isWithUserGroups): void
+    {
+        $this->isWithUserGroups = $isWithUserGroups;
     }
 }

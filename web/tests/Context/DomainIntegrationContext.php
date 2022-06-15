@@ -391,6 +391,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['isWithContactsCount']) && '' !== $row['isWithContactsCount']) {
                 Assert::eq($team->isWithContactsCount(), (bool) $this->enrichText($row['isWithContactsCount']));
             }
+            if (isset($row['isWithUserGroups']) && '' !== $row['isWithUserGroups']) {
+                Assert::eq($team->isWithUserGroups(), (bool) $this->enrichText($row['isWithUserGroups']));
+            }
             if (isset($row['client']) && '' !== $row['client']) {
                 Assert::eq($team->getClient()->getId(), $this->getClientByEmail($row['client']));
             }
@@ -644,6 +647,11 @@ final class DomainIntegrationContext extends RawMinkContext
                 $isWithContactsCount = (bool) $this->enrichText($row['isWithContactsCount']);
             }
             $team->setIsWithContactsCount($isWithContactsCount);
+            $isWithUserGroups = false;
+            if (isset($row['isWithContactsCount']) && '' !== $row['isWithUserGroups']) {
+                $isWithUserGroups = (bool) $this->enrichText($row['isWithUserGroups']);
+            }
+            $team->setIsWithUserGroups($isWithUserGroups);
             $team->updateClient($this->getClientByEmail($row['client']));
 
             $this->em->persist($team);
