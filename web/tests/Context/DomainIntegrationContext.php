@@ -648,7 +648,7 @@ final class DomainIntegrationContext extends RawMinkContext
             }
             $team->setIsWithContactsCount($isWithContactsCount);
             $isWithUserGroups = false;
-            if (isset($row['isWithContactsCount']) && '' !== $row['isWithUserGroups']) {
+            if (isset($row['isWithUserGroups']) && '' !== $row['isWithUserGroups']) {
                 $isWithUserGroups = (bool) $this->enrichText($row['isWithUserGroups']);
             }
             $team->setIsWithUserGroups($isWithUserGroups);
