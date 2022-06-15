@@ -568,16 +568,10 @@ export default {
         this.form.walk = this.walk['@id'];
         this.form.name = this.walk.name;
         this.form.conceptOfDay = this.walk.conceptOfDay;
-        console.log(this.walk.startTime);
-        console.log(dayjs(this.walk.startTime));
         this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');
-        console.log(this.startTimeTime);
         this.startTimeDate = dayjs(this.walk.startTime).format('YYYY-MM-DD');
-        console.log(this.form.endTime);
         this.endTimeTime = dayjs().format('HH:mm');
-        console.log(this.form.endTime);
         this.endTimeDate = dayjs().format('YYYY-MM-DD');
-        console.log(this.form.endTime);
 
         this.form.systemicAnswer = this.walk.systemicAnswer;
         this.form.walkReflection = this.walk.walkReflection;
