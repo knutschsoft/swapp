@@ -16,3 +16,4 @@ client:
  email_is_not_unique: Ein Klient mit der E-Mail "{{ value }}" existiert bereits.
 walk:
  isStartTimeBeforeEndTime: Die Rundenstartzeit muss vor der Rundenendzeit liegen.
+ isEndTimeAfterWayPointsVisitedAt: Die Rundenendzeit muss nach der Ankunftszeit aller ihrer Wegpunkte liegen.

@@ -20,7 +20,6 @@ use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
 use App\Value\AgeRange;
-use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -110,10 +109,10 @@ class Walk
     private Collection $wayPoints;
 
     #[ORM\Column(type: 'datetime')]
-    private \DateTime $startTime;
+    private \DateTimeInterface $startTime;
 
-    #[ORM\Column(type: 'datetime')]
-    private \DateTime $endTime;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $endTime;
 
     #[ORM\Column(type: 'string', length: 4096)]
     private string $walkReflection;
@@ -171,6 +170,9 @@ class Walk
     #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isUnfinished;
+
     public function __construct()
     {
         $this->ageRanges = [];
@@ -184,6 +186,8 @@ class Walk
         $this->insights = '';
         $this->systemicAnswer = '';
         $this->walkReflection = '';
+        $this->endTime = null;
+        $this->isUnfinished = true;
     }
 
     public static function fromWalkCreateRequest(WalkCreateRequest $request, SystemicQuestion $systemicQuestion): self
@@ -197,7 +201,6 @@ class Walk
         $instance->updateClient($team->getClient());
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
-        $instance->setEndTime((new Carbon($request->startTime))->endOfDay()->toDateTime());
         $instance->setRating(1);
         $instance->setSystemicAnswer('');
         $instance->setSystemicQuestion($systemicQuestion->getQuestion());
@@ -319,12 +322,12 @@ class Walk
     }
 
     #[Groups(['walk:read'])]
-    public function getEndTime(): \DateTime
+    public function getEndTime(): ?\DateTimeInterface
     {
         return $this->endTime;
     }
 
-    public function setEndTime(\DateTime $endTime): void
+    public function setEndTime(?\DateTimeInterface $endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -352,12 +355,12 @@ class Walk
     }
 
     #[Groups(['walk:read'])]
-    public function getStartTime(): \DateTime
+    public function getStartTime(): \DateTimeInterface
     {
         return $this->startTime;
     }
 
-    public function setStartTime(\DateTime $startTime): void
+    public function setStartTime(\DateTimeInterface $startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -589,7 +592,12 @@ class Walk
     #[Groups(['walk:read'])]
     public function getIsUnfinished(): bool
     {
-        return '' === $this->getSystemicAnswer();
+        return $this->isUnfinished;
+    }
+
+    public function setIsUnfinished(bool $isUnfinished): void
+    {
+        $this->isUnfinished = $isUnfinished;
     }
 
     #[Groups(['walk:read'])]

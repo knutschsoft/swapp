@@ -72,6 +72,18 @@ final class WalkChangeRequest
         return $this->startTime <= $this->endTime;
     }
 
+    #[Assert\IsTrue(message: 'walk.isEndTimeAfterWayPointsVisitedAt', groups: ['SecondGroup'])]
+    public function isEndTimeAfterWayPointsVisitedAt(): bool
+    {
+        foreach ($this->walk->getWayPoints() as $wayPoint) {
+            if ($wayPoint->getVisitedAt() > $this->endTime) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * @var User[]
      *

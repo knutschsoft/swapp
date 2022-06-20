@@ -33,6 +33,7 @@ final class WalkEpilogueHandler implements MessageHandlerInterface
         $walk->setHolidays($request->holidays);
         $walk->setIsResubmission($request->isResubmission);
         $walk->setRating($request->rating);
+        $walk->setIsUnfinished(false);
 
         $this->walkRepository->save($walk);
 

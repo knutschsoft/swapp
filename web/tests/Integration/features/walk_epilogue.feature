@@ -60,7 +60,7 @@ Feature: Testing walk epilogue resource
       | walkReflection  | zorp                                                          |
       | rating          | int<2>                                                        |
       | startTime       | 2021-05-11T15:51:06+00:00                                     |
-      | endTime         | 2021-05-11T15:51:08+00:00                                     |
+      | endTime         | 2030-05-11T15:51:08+00:00                                     |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -148,15 +148,15 @@ Feature: Testing walk epilogue resource
       | walkReflection  | zorp                      |
       | rating          | int<2>                    |
       | startTime       | 2021-05-11T15:51:06+00:00 |
-      | endTime         | 2021-05-11T15:51:08+00:00 |
+      | endTime         | 2030-05-11T15:51:08+00:00 |
 #    And print last response
     Then the response status code should be 200
-    And the JSON nodes should be equal to:
+    And the enriched JSON nodes should be equal to:
       | @type            | Walk                      |
       | name             | This is my Walk           |
       | systemicQuestion | How are you?              |
       | weather          | Sonne                     |
       | startTime        | 2021-05-11T15:51:06+00:00 |
-      | endTime          | 2021-05-11T15:51:08+00:00 |
+      | endTime          | 2030-05-11T15:51:08+00:00 |
 
     And there are exactly 2 walks in database

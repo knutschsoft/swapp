@@ -443,11 +443,20 @@ export default {
             }
 
             const isAfterStart = dayjs(this.wayPoint.visitedAt).diff(dayjs(this.walk.startTime), 'minute') >= 0;
+
+            if (this.walk.isUnfinished) {
+                return isAfterStart;
+            }
+
             const isBeforeEnd = dayjs(this.wayPoint.visitedAt).diff(dayjs(this.walk.endTime), 'minute') < 0;
 
             return isBeforeEnd && isAfterStart;
         },
         visitedAtDescription() {
+            if (this.walk.isUnfinished) {
+                return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) liegen.`
+            }
+
             return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) und vor der Rundenendzeit (${dayjs(this.walk.endTime).format('HH:mm')} Uhr am ${dayjs(this.walk.endTime).format('DD.MM.YYYY')}) liegen.`;
         },
         invalidVisitedAtState() {

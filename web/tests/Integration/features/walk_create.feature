@@ -134,7 +134,7 @@ Feature: Testing walk create resource
       | isUnfinished     | 1                         |
       | teamName         | Westhang                  |
       | startTime        | 2020-01-01T13:37:22+02:00 |
-      | endTime          | 2020-01-01T23:59:59+02:00 |
+      | endTime          | <null>                    |
     And there are exactly 3 walks in database
 
   @api @walkCreate

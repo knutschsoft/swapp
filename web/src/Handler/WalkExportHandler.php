@@ -123,7 +123,7 @@ final class WalkExportHandler implements MessageHandlerInterface
             (string) $walk->getId(),
             $walk->getName(),
             $walk->getStartTime()->format('d.m.Y H:i:s'),
-            $walk->getEndTime()->format('d.m.Y H:i:s'),
+            (string) $walk->getEndTime()?->format('d.m.Y H:i:s'),
             $walk->getWalkReflection(),
             (string) $walk->getRating(),
             $walk->getSystemicQuestion(),

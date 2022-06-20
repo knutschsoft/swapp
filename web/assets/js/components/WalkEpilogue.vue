@@ -318,6 +318,17 @@
                 class="p-2"
             />
         </content-collapse>
+
+        <content-collapse
+            :title="`Wegpunkte der Runde &quot;${walk.name}&quot;`"
+            collapse-key="waypoints-of-round"
+            is-visible-by-default
+            :is-loading="!walk"
+        >
+            <WayPointList
+                :walk-id="walkId"
+            />
+        </content-collapse>
     </div>
 </template>
 
@@ -325,6 +336,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
+import WayPointList from './Walk/WayPointList';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
 
@@ -333,6 +345,7 @@ export default {
     components: {
         ContentCollapse,
         GlobalFormError,
+        WayPointList,
     },
     props: {
         walkId: {
@@ -410,6 +423,7 @@ export default {
                 'walkReflection',
                 'insights',
                 'commitments',
+                'endTimeAfterWayPointsVisitedAt',
             ], this.error, true);
         },
         nameState() {
@@ -450,7 +464,7 @@ export default {
             return !!this.form.endTime && '' === this.invalidEndTimeFeedback;
         },
         invalidEndTimeFeedback() {
-            return getViolationsFeedback(['endTime', 'startTimeBeforeEndTime'], this.error);
+            return getViolationsFeedback(['endTime', 'startTimeBeforeEndTime', 'endTimeAfterWayPointsVisitedAt'], this.error);
         },
         weatherState() {
             if ('' === this.form.weather) {
