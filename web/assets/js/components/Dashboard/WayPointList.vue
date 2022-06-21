@@ -207,6 +207,64 @@
                     </b-input-group-append>
                 </b-input-group>
             </b-col>
+            <b-col
+                class="my-1"
+                xs="12"
+                sm="12"
+                md="12"
+                xl="12"
+            >
+                <b-input-group size="sm">
+                    <b-input-group-prepend
+                        @click.stop="togglePicker"
+                    >
+                        <b-input-group-text
+                            :class="(filter.visitedAt.startDate !== defaultDateRange.startDate || filter.visitedAt.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
+                        >
+                            Ankunft
+                        </b-input-group-text>
+                    </b-input-group-prepend>
+                    <date-range-picker
+                        ref="picker"
+                        class="form-control"
+                        v-model="filter.visitedAt"
+                        :ranges="ranges"
+                        :locale-data="locale"
+                        auto-apply
+                        show-dropdowns
+                        opens="right"
+                        :readonly="isLoading"
+                        :disabled="isLoading"
+                        @update="handleFilterChange"
+                    >
+                    </date-range-picker>
+                    <b-input-group-append
+                        @click.stop="togglePicker"
+                    >
+                        <b-input-group-text>
+                            <mdicon
+                                v-if="isLoading"
+                                name="loading"
+                                size="18"
+                                spin
+                            />
+                            <mdicon
+                                v-else
+                                size="18"
+                                name="calendar"
+                            />
+                        </b-input-group-text>
+                    </b-input-group-append>
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterVisitedAt"
+                            :disabled="(filter.visitedAt.startDate === defaultDateRange.startDate && filter.visitedAt.endDate === defaultDateRange.endDate) || isLoading"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
         </b-row>
         <b-table
             small
@@ -286,16 +344,63 @@
 
 <script>
 'use strict';
+import DateRangePicker from 'vue2-daterange-picker';
+import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import dayjs from 'dayjs';
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
 
 export default {
     name: 'WayPointList',
-    components: {},
+    components: {
+        DateRangePicker,
+    },
     props: {},
     data: function () {
+        let defaultStartDate = null;
+        let defaultEndDate = null;
+
+        let filter = this.$localStorage.get('alle-wegpunkte-filter', {
+            wayPointTags: [],
+            locationName: '',
+            note: '',
+            teamName: '',
+            oneOnOneInterview: '',
+            visitedAt: {
+                startDate: defaultStartDate,
+                endDate: defaultEndDate,
+            },
+        });
+        if (filter.visitedAt.startDate && filter.visitedAt.endDate) {
+            filter.visitedAt.startDate = new Date(filter.visitedAt.startDate);
+            filter.visitedAt.endDate = new Date(filter.visitedAt.endDate);
+        }
+
         return {
+            locale: {
+                direction: 'ltr',
+                format: 'dd.mm.yyyy',
+                separator: ' - ',
+                applyLabel: 'Übernehmen',
+                cancelLabel: 'Abbrechen',
+                weekLabel: 'W',
+                customRangeLabel: 'Custom Range',
+                daysOfWeek: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+                monthNames: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+                firstDay: 1
+            },
+            defaultDateRange: {
+                startDate: defaultStartDate,
+                endDate: defaultEndDate,
+            },
+            ranges: {
+                'Dieser Monat': [dayjs().startOf('month').toDate(), dayjs().endOf('month').toDate()],
+                'Letzter Monat': [dayjs().subtract(1, 'month').startOf('month').toDate(), dayjs().subtract(1, 'month').endOf('month').toDate()],
+                'Letzte 6 Monate': [dayjs().subtract(5, 'month').startOf('month').toDate(), dayjs().endOf('month').toDate()],
+                'Dieses Jahr': [dayjs().startOf('year').toDate(), dayjs().endOf('year').toDate()],
+                // 'Letztes Jahr': [dayjs().subtract(1, 'year').startOf('year').toDate(), dayjs().subtract(1, 'year').endOf('year').toDate()],
+                // 'Vorletztes Jahr': [dayjs().subtract(2, 'year').startOf('year').toDate(), dayjs().subtract(2, 'year').endOf('year').toDate()],
+            },
             fields: [
                 { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
                 { key: 'malesCount', label: 'Männer', sortable: false, sortDirection: 'desc', class: 'text-center align-middle' },
@@ -340,7 +445,7 @@ export default {
             sortBy: 'walk.startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: this.$localStorage.get('alle-wegpunkte-filter', { wayPointTags: [], locationName: '', note: '', teamName: '', oneOnOneInterview: '' }),
+            filter: filter,
             storagePerPageId: 'alle-wegpunkte-per-page',
             storageCurrentPageId: 'alle-wegpunkte-current-page',
             storageFilterId: 'alle-wegpunkte-filter',
@@ -353,9 +458,6 @@ export default {
             return this.allTeamNames.filter((teamName) => {
                 return teamName.teamName.toLowerCase().startsWith(filterTeamName);
             }).map((teamName) => teamName.teamName);
-        },
-        hasWayPoints() {
-            return this.$store.getters['wayPoint/hasWayPoints'];
         },
         wayPoints() {
             return this.$store.getters['wayPoint/wayPoints'];
@@ -451,6 +553,13 @@ export default {
         unsetFilterTeamName() {
             this.filter.teamName = '';
             this.handleFilterChange();
+        },
+        unsetFilterVisitedAt() {
+            this.filter.visitedAt = this.defaultDateRange;
+            this.handleFilterChange();
+        },
+        togglePicker() {
+            this.$refs.picker.togglePicker(!this.$refs.picker.open);
         },
     },
 };

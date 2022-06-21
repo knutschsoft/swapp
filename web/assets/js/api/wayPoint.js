@@ -1,6 +1,7 @@
 "use strict";
 
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 export default {
     find(params) {
@@ -16,6 +17,8 @@ export default {
                 });
             } else if ('teamName' === key) {
                 sort += `&walk.${key}=${value}`;
+            } else if ('visitedAt' === key && value.startDate && value.endDate) {
+                sort += `&${key}[after]=${dayjs(value.startDate).toISOString()}&${key}[before]=${dayjs(value.endDate).toISOString()}`;
             } else {
                 sort += `&${key}=${value}`;
             }

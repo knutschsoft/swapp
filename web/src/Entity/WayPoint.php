@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\SearchFilterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\WayPoint\WayPointChangeRequest;
@@ -30,6 +31,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 #[ORM\Entity(repositoryClass: DoctrineORMWayPointRepository::class)]
 #[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "oneOnOneInterview", "note", "visitedAt", "walk.name", "walk.startTime", "walk.teamName"])]
 #[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
+#[ApiFilter(DateFilter::class, properties: ['visitedAt'])]
 #[ApiFilter(
     SearchFilter::class,
     properties: [
