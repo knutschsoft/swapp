@@ -133,6 +133,34 @@
             </b-form-group>
         </b-form-group>
         <b-form-group
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
+            label="Personenanzahl von Nutzergruppen"
+        >
+            <b-row
+                class="d-flex align-items-end"
+            >
+                <b-col
+                    v-for="(userGroup, index) in wayPoint.userGroups"
+                    :key="userGroup.userGroupName.name"
+                >
+                    <b-form-group
+                        :label="userGroup.userGroupName.name"
+                    >
+                        <b-form-select
+                            v-model="userGroup.peopleCount.count"
+                            :options="ageRangeOptions"
+                            :disabled="isLoading"
+                            :help="userGroup.userGroupName.name"
+                            size="sm"
+                        ></b-form-select>
+                    </b-form-group>
+                </b-col>
+            </b-row>
+        </b-form-group>
+        <b-form-group
             v-if="walk.isWithContactsCount"
             content-cols="12"
             label-cols="12"
@@ -352,6 +380,7 @@ export default {
                 locationName: '',
                 visitedAt: dayjs(),
                 ageGroups: [],
+                userGroups: [],
                 imageName: null,
                 isMeeting: false,
                 note: '',
@@ -366,6 +395,7 @@ export default {
             file: null,
             ageRangeOptions: Array.from(Array(21), (x, i) => i),
             contactsCountOptions: Array.from(Array(41), (x, i) => i),
+            userGroupOptions: Array.from(Array(21), (x, i) => i),
             dateLabels: {
                 de: {
                     labelPrevDecade: 'Vorheriges Jahrzehnt',
@@ -565,6 +595,24 @@ export default {
                 });
             return ageGroups;
         },
+        userGroups() {
+            let userGroups = [];
+            if (!this.walk.isWithUserGroups) {
+                return userGroups;
+            }
+            this.walk.userGroupNames
+                .slice()
+                .forEach((userGroupName) => {
+                    userGroups.push({
+                        userGroupName,
+                        peopleCount: {
+                            count: 0,
+                        },
+                    });
+                });
+
+            return userGroups;
+        },
     },
     watch: {
         visitedAtTime(visitedAtTime) {
@@ -600,6 +648,7 @@ export default {
         if (this.initialWayPoint) {
             this.wayPoint.locationName = this.initialWayPoint.locationName;
             this.wayPoint.ageGroups = JSON.parse(JSON.stringify(this.initialWayPoint.ageGroups)) || [];
+            this.wayPoint.userGroups = JSON.parse(JSON.stringify(this.initialWayPoint.userGroups)) || [];
             this.wayPoint.imageName = this.initialWayPoint.imageName;
             if (this.initialWayPoint.imageSrc) {
                 const response = await axios.get(this.initialWayPoint.imageSrc, { responseType: 'blob' });
@@ -617,6 +666,7 @@ export default {
             this.visitedAtTime = dayjs(this.initialWayPoint.visitedAt).format('HH:mm');
         } else {
             this.wayPoint.ageGroups = this.ageGroups;
+            this.wayPoint.userGroups = this.userGroups;
             this.wayPoint.walk = this.walk['@id'];
             this.visitedAtTime = dayjs().format('HH:mm');
             this.visitedAtDate = dayjs().format('YYYY-MM-DD');

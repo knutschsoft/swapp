@@ -20,6 +20,8 @@ use App\Value\AgeRange;
 use App\Value\ConfirmationToken;
 use App\Value\Gender;
 use App\Value\PeopleCount;
+use App\Value\UserGroup;
+use App\Value\UserGroupName;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -204,6 +206,52 @@ trait RepositoryTrait
     }
 
     /**
+     * @param string $userGroupsString
+     *
+     * @return UserGroup[]
+     */
+    protected function getUserGroupsFromString(string $userGroupsString): array
+    {
+        $userGroups = [];
+        if (!$userGroupsString) {
+            return $userGroups;
+        }
+
+        $userGroupsStrings = \explode(';', $userGroupsString);
+
+        foreach ($userGroupsStrings as $userGroupString) {
+            $parts = \explode(',', $userGroupString);
+            \assert(\count($parts) === 2);
+            $userGroups[] = UserGroup::fromUserGroupNameAndCount(
+                UserGroupName::fromString($parts[0]),
+                PeopleCount::fromInt((int) $parts[1]),
+            );
+        }
+
+        return $userGroups;
+    }
+
+    /**
+     * @param string $userGroupNamesString
+     *
+     * @return UserGroupName[]
+     */
+    protected function getUserGroupNamesFromString(string $userGroupNamesString): array
+    {
+        $userGroupNames = [];
+        if (!$userGroupNamesString) {
+            return $userGroupNames;
+        }
+
+        $userGroupNamesStrings = \explode(',', $userGroupNamesString);
+        foreach ($userGroupNamesStrings as $userGroupNameString) {
+            $userGroupNames[] = UserGroupName::fromString($userGroupNameString);
+        }
+
+        return $userGroupNames;
+    }
+
+    /**
      * @param string $ageRangesString
      *
      * @return AgeRange[]
@@ -330,6 +378,31 @@ trait RepositoryTrait
             }
 
             return $ageGroups;
+        }
+        if (\str_starts_with($text, 'userGroups<')) {
+            $userGroups = [];
+            foreach ($this->getUserGroupsFromString($referenceIdentifikator) as $userGroup) {
+                $userGroups[] = [
+                    'userGroupName' => [
+                        'name' => $userGroup->getUserGroupName()->getName(),
+                    ],
+                    'peopleCount' => [
+                        'count' => $userGroup->getPeopleCount()->getCount(),
+                    ],
+                ];
+            }
+
+            return $userGroups;
+        }
+        if (\str_starts_with($text, 'userGroupNames<')) {
+            $userGroupNames = [];
+            foreach ($this->getUserGroupNamesFromString($referenceIdentifikator) as $userGroupName) {
+                $userGroupNames[] = [
+                    'name' => $userGroupName->getName(),
+                ];
+            }
+
+            return $userGroupNames;
         }
 
         if (\str_starts_with($text, 'date<')) {

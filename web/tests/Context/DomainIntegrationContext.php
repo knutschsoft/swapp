@@ -313,6 +313,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if ($walk->isWithContactsCount()) {
                 $wayPoint->setContactsCount($this->enrichText($row['contactsCount'] ?? 'int<7>'));
             }
+            if (isset($row['userGroups'])) {
+                $wayPoint->setUserGroups($this->getUserGroupsFromString($row['userGroups']));
+            }
 
             $this->em->persist($wayPoint);
         }
@@ -579,6 +582,27 @@ final class DomainIntegrationContext extends RawMinkContext
                     )
                 );
             }
+            if (isset($row['userGroups'])) {
+                $expectedUserGroups = $this->getUserGroupsFromString($row['userGroups']);
+                $wayPointUserGroups = $wayPoint->getUserGroups();
+                $frontendLabels = [];
+                foreach ($wayPointUserGroups as $wayPointUserGroup) {
+                    $frontendLabels[] = $wayPointUserGroup->getFrontendLabel();
+                }
+                foreach ($expectedUserGroups as $expectedUserGroup) {
+                    Assert::inArray($expectedUserGroup->getFrontendLabel(), $frontendLabels);
+                }
+                Assert::count(
+                    $wayPointUserGroups,
+                    \count($expectedUserGroups),
+                    \sprintf(
+                        'Wrong number of wayPointUserGroups in wayPoint "%s". Expected %d. Got %d.',
+                        $wayPoint->getLocationName(),
+                        \count($expectedUserGroups),
+                        \count($wayPointUserGroups)
+                    )
+                );
+            }
             if (isset($row['note'])) {
                 Assert::eq($wayPoint->getNote(), $row['note']);
             }
@@ -650,6 +674,9 @@ final class DomainIntegrationContext extends RawMinkContext
             $isWithUserGroups = false;
             if (isset($row['isWithUserGroups']) && '' !== $row['isWithUserGroups']) {
                 $isWithUserGroups = (bool) $this->enrichText($row['isWithUserGroups']);
+            }
+            if (isset($row['userGroupNames'])) {
+                $team->setUserGroupNames($this->getUserGroupNamesFromString($row['userGroupNames']));
             }
             $team->setIsWithUserGroups($isWithUserGroups);
             $team->updateClient($this->getClientByEmail($row['client']));

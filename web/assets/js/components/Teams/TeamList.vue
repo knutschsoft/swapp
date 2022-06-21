@@ -209,6 +209,7 @@
                     locationNames: team.locationNames,
                     users: team.users,
                     ageRanges: team.ageRanges,
+                    userGroupNames: team.userGroupNames,
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
                 });

@@ -16,6 +16,7 @@ use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Gender;
 use App\Value\PeopleCount;
+use App\Value\UserGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -101,6 +102,10 @@ class WayPoint
     #[ORM\Column(type: 'json_document')]
     private array $ageGroups;
 
+    /** @var UserGroup[] */
+    #[ORM\Column(type: 'json_document')]
+    private array $userGroups;
+
     #[ORM\Column(type: 'string', length: 4096, nullable: true)]
     private ?string $note = null;
 
@@ -121,6 +126,7 @@ class WayPoint
     {
         $this->wayPointTags = new ArrayCollection();
         $this->ageGroups = [];
+        $this->userGroups = [];
         $this->locationName = '';
         $this->isMeeting = false;
         $this->note = '';
@@ -152,6 +158,9 @@ class WayPoint
 
         $instance->setWalk($request->walk);
         $instance->ageGroups = $request->ageGroups;
+        if ($request->userGroups && $instance->getWalk()->isWithUserGroups()) {
+            $instance->setUserGroups($request->userGroups);
+        }
         $instance->setWayPointTags(new ArrayCollection($request->wayPointTags));
         if ($request->walk->isWithContactsCount()) {
             $instance->setContactsCount($request->contactsCount);
@@ -166,6 +175,23 @@ class WayPoint
         $instance->setVisitedAt($request->visitedAt);
 
         return $instance;
+    }
+
+    /**
+     * @return UserGroup[]
+     */
+    #[Groups(['wayPoint:read'])]
+    public function getUserGroups(): array
+    {
+        return $this->userGroups;
+    }
+
+    /**
+     * @param UserGroup[] $userGroups
+     */
+    public function setUserGroups(array $userGroups): void
+    {
+        $this->userGroups = $userGroups;
     }
 
     /**

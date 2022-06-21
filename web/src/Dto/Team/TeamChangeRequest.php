@@ -7,6 +7,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Validator\Constraints as AppAssert;
 use App\Value\AgeRange;
+use App\Value\UserGroupName;
 
 final class TeamChangeRequest
 {
@@ -33,4 +34,8 @@ final class TeamChangeRequest
 
     #[AppAssert\IsWithUserGroupsRequirements]
     public bool $isWithUserGroups;
+
+    /** @var ?UserGroupName[] */
+    #[AppAssert\UserGroupNameRequirements]
+    public ?array $userGroupNames = null;
 }

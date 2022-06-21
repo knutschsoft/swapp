@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Dto\Team\TeamChangeRequest;
 use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMTeamRepository;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
@@ -50,6 +51,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Team
 {
     use AgeRangeField;
+    use UserGroupNamesField;
 
     /** @var Collection<int, User> */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
@@ -79,6 +81,7 @@ class Team
     public function __construct()
     {
         $this->ageRanges = [];
+        $this->userGroupNames = [];
         $this->locationNames = [];
         $this->users = new ArrayCollection();
     }

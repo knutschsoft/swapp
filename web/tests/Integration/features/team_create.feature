@@ -78,14 +78,15 @@ Feature: Testing team create resource
   Scenario: I can request /api/teams/create as an superadmin and create a team
     Given I am authenticated against api as "superadmin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/create" with parameters:
-      | key                 | value                    |
-      | client              | clientIri<client@gmx.de> |
-      | name                | Religion                 |
-      | ageRanges           | ageRanges<1-3>           |
-      | users               | userIris<two@pac.de>     |
-      | locationNames       | array<City, Spielplatz>  |
-      | isWithContactsCount | <true>                   |
-      | isWithUserGroups    | <true>                   |
+      | key                 | value                          |
+      | client              | clientIri<client@gmx.de>       |
+      | name                | Religion                       |
+      | ageRanges           | ageRanges<1-3>                 |
+      | users               | userIris<two@pac.de>           |
+      | locationNames       | array<City, Spielplatz>        |
+      | isWithContactsCount | <true>                         |
+      | isWithUserGroups    | <true>                         |
+      | userGroupNames      | userGroupNames<Nutzende,Dudes> |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -101,6 +102,8 @@ Feature: Testing team create resource
       | isWithUserGroups           | <true>                   |
       | users[0]                   | userIri<two@pac.de>      |
       | client                     | clientIri<client@gmx.de> |
+      | userGroupNames[0].name     | Nutzende                 |
+      | userGroupNames[1].name     | Dudes                    |
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an superadmin and will get a validation error

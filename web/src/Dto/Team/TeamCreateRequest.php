@@ -7,6 +7,7 @@ use App\Entity\Client;
 use App\Entity\User;
 use App\Validator\Constraints as AppAssert;
 use App\Value\AgeRange;
+use App\Value\UserGroupName;
 
 final class TeamCreateRequest
 {
@@ -33,4 +34,8 @@ final class TeamCreateRequest
 
     #[AppAssert\IsWithUserGroupsRequirements]
     public bool $isWithUserGroups;
+
+    /** @var ?UserGroupName[] */
+    #[AppAssert\UserGroupNameRequirements]
+    public ?array $userGroupNames = null;
 }

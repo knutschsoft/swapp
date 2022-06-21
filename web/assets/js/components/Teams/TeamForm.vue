@@ -89,15 +89,87 @@
                         Die Personenanzahl von Nutzergruppen eines Wegpunktes soll zusätzlich mit erfasst werden.
                     </b-form-checkbox>
                     <b-form-text>
-                        Die 5 Nutzergruppen sind:
+                        Beispiel für Nutzergruppen sind:
                         <ul class="mb-0">
-                            <li>"Aktuelle Nutzer"</li>
-                            <li>"jemals genutzt - nutzungsberechtigt"</li>
-                            <li>"jemals genutzt - nicht nutzungsberechtigt"</li>
-                            <li>"nie genutzt - nutzungsberechtigt"</li>
-                            <li>"nie genutzt - nicht nutzungsberechtigt"</li>
+                            <li>Aktuell Nutzende</li>
+                            <li>jemals genutzt - nutzungsberechtigt</li>
+                            <li>jemals genutzt - nicht nutzungsberechtigt</li>
+                            <li>nie genutzt - nutzungsberechtigt</li>
+                            <li>nie genutzt - nicht nutzungsberechtigt</li>
                         </ul>
                     </b-form-text>
+                    <b-card
+                        v-if="team.isWithUserGroups"
+                        bg-variant="light"
+                        header="Nutzergruppen definieren"
+                    >
+                        <b-form-group
+                            v-slot="{ ariaDescribedby }"
+                            class="mb-0"
+                        >
+                            <b-row
+                                v-for="(userGroupName, i) in team.userGroupNames"
+                                :key="i"
+                            >
+                                <b-col cols="8" class="mb-1">
+                                    <b-input
+                                        v-model="team.userGroupNames[i].name"
+                                        :aria-describedby="ariaDescribedby"
+                                        :disabled="isDisabled"
+                                        type="text"
+                                        :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
+                                        trim
+                                        required
+                                        autocomplete="off"
+                                        placeholder="Name der Nutzergruppe eingeben..."
+                                    />
+                                </b-col>
+                                <b-col cols="4" class="mb-1">
+                                    <div class="mt-1">
+                                        <span
+                                            class="cursor-pointer"
+                                            @click="removeUserGroupName(i)"
+                                        >
+                                            <mdicon
+                                                name="DeleteCircleOutline"
+                                            />
+                                        </span>
+                                        <span
+                                            v-if="i !== 0"
+                                            class="cursor-pointer mt-1"
+                                            @click="moveUserGroupUp(i)"
+                                        >
+                                            <mdicon
+                                                name="ArrowUpDropCircleOutline"
+                                            />
+                                        </span>
+                                        <span
+                                            v-if="i !== (team.userGroupNames.length - 1)"
+                                            class="cursor-pointer mt-1"
+                                            @click="moveUserGroupDown(i)"
+                                        >
+                                            <mdicon
+                                                name="ArrowDownDropCircleOutline"
+                                            />
+                                        </span>
+                                    </div>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col cols="12">
+                                    <div
+                                        class="cursor-pointer mt-1"
+                                        @click="addUserGroupName()"
+                                    >
+                                        <mdicon
+                                            name="PlusCircleOutline"
+                                        />
+                                        neue Nutzergruppe hinzufügen
+                                    </div>
+                                </b-col>
+                            </b-row>
+                        </b-form-group>
+                    </b-card>
                 </b-form-group>
 
                 <b-form-group
@@ -261,6 +333,7 @@ export default {
                 users: [],
                 ageRanges: [],
                 locationNames: [],
+                userGroupNames: [],
             },
             client: null,
         };
@@ -322,6 +395,7 @@ export default {
         if (this.initialTeam) {
             this.team = JSON.parse(JSON.stringify(this.initialTeam));
         }
+        console.log(this.team);
         this.team.client = this.team.client || this.currentUser.client;
     },
     methods: {
@@ -342,6 +416,36 @@ export default {
         },
         addLocationName() {
             this.team.locationNames = [ ...this.team.locationNames, '' ];
+        },
+        removeUserGroupName(index) {
+            this.$delete(this.team.userGroupNames, index);
+        },
+        addUserGroupName() {
+            this.team.userGroupNames = [ ...this.team.userGroupNames, { name: '' } ];
+        },
+        moveUserGroupUp(index) {
+            const tempUserGroupName = this.team.userGroupNames[index];
+            let newUserGroups = [];
+            this.$delete(this.team.userGroupNames, index);
+            this.team.userGroupNames.forEach((userGroupName, key) => {
+                if (key === index - 1) {
+                    newUserGroups.push(tempUserGroupName);
+                }
+                newUserGroups.push(userGroupName);
+            });
+            this.team.userGroupNames = newUserGroups;
+        },
+        moveUserGroupDown(index) {
+            const tempUserGroupName = this.team.userGroupNames[index];
+            let newUserGroups = [];
+            this.$delete(this.team.userGroupNames, index);
+            this.team.userGroupNames.forEach((userGroupName, key) => {
+                newUserGroups.push(userGroupName);
+                if (key === index) {
+                    newUserGroups.push(tempUserGroupName);
+                }
+            });
+            this.team.userGroupNames = newUserGroups;
         },
     },
 };

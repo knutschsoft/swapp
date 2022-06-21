@@ -44,6 +44,8 @@
                     users: team.users,
                     ageRanges: team.ageRanges,
                     isWithContactsCount: team.isWithContactsCount,
+                    isWithUserGroups: team.isWithUserGroups,
+                    userGroupNames: team.userGroupNames,
                 });
 
                 if (createdTeam) {

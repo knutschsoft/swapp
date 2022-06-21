@@ -75,6 +75,16 @@
                         kein Bild hochgeladen
                     </template>
                 </template>
+                <template
+                    v-else-if="field.name === 'Personenanzahl von Nutzergruppen'"
+                >
+                    <div
+                        v-for="userGroup in field.value"
+                        :class="{'text-muted': userGroup.peopleCount.count === 0}"
+                    >
+                        {{ userGroup.userGroupName.name }}:&nbsp;{{ userGroup.peopleCount.count }}
+                    </div>
+                </template>
                 <template v-else>
                     {{ field.value }}
                 </template>
@@ -182,6 +192,9 @@
 
                 fields.push({ name: 'Anzahl Personen vor Ort', value: sumPeopleCount});
 
+                if (this.walk.isWithUserGroups) {
+                    fields.push({ name: 'Personenanzahl von Nutzergruppen', value: this.wayPoint.userGroups });
+                }
                 if (this.walk.isWithContactsCount) {
                     fields.push({ name: 'Anzahl direkter Kontakte', value: this.wayPoint.contactsCount });
                 }

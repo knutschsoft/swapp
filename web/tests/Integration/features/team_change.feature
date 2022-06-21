@@ -85,14 +85,15 @@ Feature: Testing team change resource
   Scenario: I can request /api/teams/change as an superadmin and change a team
     Given I am authenticated against api as "superadmin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key                 | value                   |
-      | team                | teamIri<Empties>        |
-      | name                | Religion                |
-      | ageRanges           | ageRanges<1-3>          |
-      | users               | userIris<two@pac.de>    |
-      | locationNames       | array<City, Spielplatz> |
-      | isWithContactsCount | <true>                  |
-      | isWithUserGroups    | <true>                  |
+      | key                 | value                          |
+      | team                | teamIri<Empties>               |
+      | name                | Religion                       |
+      | ageRanges           | ageRanges<1-3>                 |
+      | users               | userIris<two@pac.de>           |
+      | locationNames       | array<City, Spielplatz>        |
+      | isWithContactsCount | <true>                         |
+      | isWithUserGroups    | <true>                         |
+      | userGroupNames      | userGroupNames<Nutzende,Dudes> |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -107,6 +108,8 @@ Feature: Testing team change resource
       | isWithContactsCount        | <true>              |
       | isWithUserGroups           | <true>              |
       | users[0]                   | userIri<two@pac.de> |
+      | userGroupNames[0].name     | Nutzende            |
+      | userGroupNames[1].name     | Dudes               |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an superadmin and will get a validation error

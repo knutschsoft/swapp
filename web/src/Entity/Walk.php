@@ -15,6 +15,7 @@ use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\WalkExportRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMWalkRepository;
 use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
@@ -94,6 +95,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Walk
 {
     use AgeRangeField;
+    use UserGroupNamesField;
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -171,11 +173,15 @@ class Walk
     private bool $isWithContactsCount;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithUserGroups;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isUnfinished;
 
     public function __construct()
     {
         $this->ageRanges = [];
+        $this->userGroupNames = [];
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
         $this->wayPoints = new ArrayCollection();
@@ -198,6 +204,8 @@ class Walk
         $instance->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
         $instance->setTeamName($team->getName());
         $instance->setIsWithContactsCount($team->isWithContactsCount());
+        $instance->setIsWithUserGroups($team->isWithUserGroups());
+        $instance->setUserGroupNames($team->getUserGroupNames());
         $instance->updateClient($team->getClient());
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
@@ -629,6 +637,18 @@ class Walk
     public function setIsWithContactsCount(bool $isWithContactsCount): void
     {
         $this->isWithContactsCount = $isWithContactsCount;
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithUserGroups')]
+    public function isWithUserGroups(): bool
+    {
+        return $this->isWithUserGroups;
+    }
+
+    public function setIsWithUserGroups(bool $isWithUserGroups): void
+    {
+        $this->isWithUserGroups = $isWithUserGroups;
     }
 
     public function getSumOfContactsCount(): ?int
