@@ -268,8 +268,8 @@
                 } else if (!regex.test(value)) {
                     this.passwordInvalidText = 'Dein Passwort darf nur aus Buchstaben, Ziffern und folgenden Sonderzeichen _.*-+:#!?%{}|@[];=&$\\/,() bestehen.';
                     this.passwordState = false;
-                } else if (value.trim().length < 7 || value.trim().length > 40) {
-                    this.passwordInvalidText = 'Dein Passwort muss zwischen 7 und 40 Zeichen enthalten.';
+                } else if (value.trim().length < 12 || value.trim().length > 40) {
+                    this.passwordInvalidText = 'Dein Passwort muss zwischen 12 und 40 Zeichen enthalten.';
                     this.passwordState = false;
                 } else {
                     this.passwordState = true;

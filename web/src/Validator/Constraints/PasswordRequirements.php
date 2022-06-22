@@ -17,7 +17,7 @@ class PasswordRequirements extends Compound
         return [
             new Assert\NotBlank(),
             new Assert\Type('string'),
-            new Assert\Length(['min' => 7, 'max' => 40]),
+            new Assert\Length(['min' => 12, 'max' => 40]),
             new Assert\NotCompromisedPassword(),
         ];
     }

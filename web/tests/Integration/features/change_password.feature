@@ -51,9 +51,9 @@ Feature: Testing change password resource
 #    And print last JSON response
     And the response status code should be 422
     And the JSON nodes should be equal to:
-      | hydra:title                | An error occurred                                                      |
-      | violations[0].propertyPath | password                                                               |
-      | violations[0].message      | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 7 Zeichen haben. |
+      | hydra:title                | An error occurred                                                       |
+      | violations[0].propertyPath | password                                                                |
+      | violations[0].message      | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 12 Zeichen haben. |
     And there is a non empty confirmationToken for "karl@gmx.de"
 
   @api @changePassword
