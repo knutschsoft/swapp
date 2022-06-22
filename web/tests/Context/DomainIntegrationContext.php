@@ -99,23 +99,12 @@ final class DomainIntegrationContext extends RawMinkContext
         }
 
         $body = new PyStringNode([\json_encode($parameters)], 0);
-        //if ($url === '/api/walks/export') {
-        //    $this->restContext->iAddHeaderEqualTo('content-type', 'text/csv');
-        //    $this->restContext->iAddHeaderEqualTo('accept', 'text/csv');
-        //    $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
-        //
-        //
-        //} else {
-        $this->restContext->iAddHeaderEqualTo('content-type', 'application/ld+json');
-        $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
-        //}
-
-        $urlItems = \explode('/', $url);
-        $newUrlItems = [];
-        foreach ($urlItems as $urlItem) {
-            $newUrlItems[] = $this->enrichText($urlItem);
+        if (!\str_starts_with($url, '/api/way_points/export')) {
+            $this->restContext->iAddHeaderEqualTo('content-type', 'application/ld+json');
+            $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
         }
-        $url = \implode('/', $newUrlItems);
+
+        $url = $this->enrichUrl($url);
 
         $this->restContext->iSendARequestToWithBody($method, $this->locatePath($this->enrichText($url)), $body);
     }
@@ -313,8 +302,14 @@ final class DomainIntegrationContext extends RawMinkContext
             if ($walk->isWithContactsCount()) {
                 $wayPoint->setContactsCount($this->enrichText($row['contactsCount'] ?? 'int<7>'));
             }
-            if (isset($row['userGroups'])) {
+            if (isset($row['userGroups']) && '' !== $row['userGroups']) {
                 $wayPoint->setUserGroups($this->getUserGroupsFromString($row['userGroups']));
+            }
+            if (isset($row['ageGroups']) && '' !== $row['ageGroups']) {
+                $wayPoint->setAgeGroups($this->getAgeGroupsFromString($row['ageGroups']));
+            }
+            if (isset($row['tags']) && '' !== $row['tags']) {
+                $wayPoint->setWayPointTags(new ArrayCollection($this->getTagsFromString($row['tags'])));
             }
 
             $this->em->persist($wayPoint);

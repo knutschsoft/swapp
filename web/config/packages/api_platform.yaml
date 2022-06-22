@@ -1,4 +1,9 @@
 api_platform:
+    formats:
+        jsonld: [ 'application/ld+json' ]
+        json: [ 'application/json' ]
+        csv: [ 'text/csv' ]
+        html: [ 'text/html' ]
     mapping:
         paths: ['%kernel.project_dir%/src/Entity', '%kernel.project_dir%/src/Dto']
     patch_formats:

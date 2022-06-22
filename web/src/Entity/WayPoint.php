@@ -12,6 +12,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Dto\WayPoint\WayPointChangeRequest;
 use App\Dto\WayPoint\WayPointCreateRequest;
+use App\Entity\Export\WayPointExport;
 use App\Repository\DoctrineORMWayPointRepository;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
@@ -46,6 +47,14 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 #[ApiResource(
     collectionOperations: [
     'get',
+     'export' => [
+         "output" => WayPointExport::class,
+         "method" => "get",
+         "formats" => ['csv' => 'text/csv'],
+         "normalization_context" => ['groups' => []],
+         "status" => 200,
+         "path" => "/way_points/export",
+     ],
     "way_point_change" => [
         "messenger" => "input",
         "input" => WayPointChangeRequest::class,

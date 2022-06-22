@@ -265,6 +265,26 @@
                     </b-input-group-append>
                 </b-input-group>
             </b-col>
+            <b-col
+                class="my-1"
+                xs="12"
+                sm="12"
+                md="12"
+                xl="12"
+            >
+                <b-button
+                    size="sm"
+                    block
+                    :disabled="isLoading || isExportLoading || this.totalRows === 0"
+                    @click="exportWayPoints"
+                >
+                    {{ this.totalRows > 1000 ? 1000 : this.totalRows }} Wegpunkt{{ this.totalRows !== 1 ? 'e' : '' }} als .csv-Datei exportieren
+                    <mdicon
+                        :name="isExportLoading ? 'Loading' : 'Download'"
+                        :spin="isExportLoading"
+                    />
+                </b-button>
+            </b-col>
         </b-row>
         <b-table
             small
@@ -377,6 +397,8 @@ export default {
         }
 
         return {
+            isExportLoading: false,
+            exportCtx: null,
             locale: {
                 direction: 'ltr',
                 format: 'dd.mm.yyyy',
@@ -503,6 +525,7 @@ export default {
             return dayjs(dateString).format('dd, DD.MM.YYYY HH:mm:ss');
         },
         async itemProvider(ctx) {
+            this.exportCtx = ctx;
             const result = await WayPointAPI.find(ctx);
             const wayPoints = result.data['hydra:member'];
 
@@ -560,6 +583,24 @@ export default {
         },
         togglePicker() {
             this.$refs.picker.togglePicker(!this.$refs.picker.open);
+        },
+        forceFileDownload(response, title) {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', title);
+            document.body.appendChild(link);
+            link.click();
+        },
+        exportWayPoints: async function () {
+            this.isExportLoading = true;
+            const response = await WayPointAPI.export(this.exportCtx);
+            let title = `streetworkwegpunkte_export.csv`;
+            if (this.filter.visitedAt.startDate && this.filter.visitedAt.endDate) {
+                title = `${dayjs(this.filter.visitedAt.startDate).format('YYYYMMDD')}-${dayjs(this.filter.visitedAt.endDate).format('YYYYMMDD')}_${title}`;
+            }
+            this.forceFileDownload(response, title);
+            this.isExportLoading = false;
         },
     },
 };

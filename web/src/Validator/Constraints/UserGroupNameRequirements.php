@@ -20,7 +20,6 @@ class UserGroupNameRequirements extends Compound
                 new Assert\IsNull(),
                 new Assert\Sequentially([
                     new Assert\NotNull(),
-                    new Assert\NotBlank(),
                     new Assert\Type('array'),
                     new Assert\All([
                         new Assert\NotNull(),

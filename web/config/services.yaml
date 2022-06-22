@@ -70,3 +70,11 @@ services:
         decorates: 'api_platform.openapi.factory'
         arguments: [ '@App\OpenApi\OpenApiFactory.inner' ]
         autoconfigure: false
+
+    App\Serializer\ApiNormalizer:
+        # By default .inner is passed as argument
+        decorates: 'api_platform.jsonld.normalizer.item'
+
+    'app.serializer.normalizer.item.csv':
+        class: 'App\Serializer\ApiNormalizer'
+        decorates: 'api_platform.serializer.normalizer.item'

@@ -16,6 +16,7 @@
     <rule ref="SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty">
         <exclude-pattern>src/Dto/LocationName.php</exclude-pattern>
         <exclude-pattern>src/Dto/TeamName.php</exclude-pattern>
+        <exclude-pattern>src/Entity/Export/WayPointExport.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint">
