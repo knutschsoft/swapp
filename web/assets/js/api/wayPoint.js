@@ -51,7 +51,7 @@ export default {
 
         // return axios.post('/api/way_points/export', payload);
         return axios.get(
-            '/api/way_points/export?page=1&itemsPerPage=1000' + sort,
+            '/api/way_points/export?page=1&itemsPerPage=5000' + sort,
             {
                 headers: { accept: 'text/csv' },
                 responseType: 'arraybuffer',

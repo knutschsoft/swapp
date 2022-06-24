@@ -281,7 +281,7 @@
                     :disabled="isLoading || isExportLoading || this.totalRows === 0"
                     @click="exportWayPoints"
                 >
-                    {{ this.totalRows > 1000 ? 1000 : this.totalRows }} Wegpunkt{{ this.totalRows !== 1 ? 'e' : '' }} als .csv-Datei exportieren
+                    {{ this.totalRows > 5000 ? 5000 : this.totalRows }} Wegpunkt{{ this.totalRows !== 1 ? 'e' : '' }} als .csv-Datei exportieren
                     <mdicon
                         :name="isExportLoading ? 'Loading' : 'Download'"
                         :spin="isExportLoading"
@@ -463,7 +463,7 @@ export default {
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
             ],
             allTeamNames: [],
-            totalRows: 10000,
+            totalRows: 0,
             currentPage: this.$localStorage.get('alle-wegpunkte-current-page', 1),
             perPage: this.$localStorage.get('alle-wegpunkte-per-page', 5),
             pageOptions: [5, 10, 25, 50, 100],
