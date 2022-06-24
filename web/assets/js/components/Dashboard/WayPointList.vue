@@ -604,13 +604,44 @@ export default {
         exportWayPoints: async function () {
             this.isExportLoading = true;
             const response = await WayPointAPI.export(this.exportCtx);
-            let title = `streetworkwegpunkte_export.csv`;
-            if (this.filter.visitedAt.startDate && this.filter.visitedAt.endDate) {
-                title = `${dayjs(this.filter.visitedAt.startDate).format('YYYYMMDD')}-${dayjs(this.filter.visitedAt.endDate).format('YYYYMMDD')}_${title}`;
-            }
-            this.forceFileDownload(response, title);
+            this.forceFileDownload(response, this.getFileName());
             this.isExportLoading = false;
         },
+        getFileName() {
+            let title = `streetworkwegpunkte_export.csv`;
+
+            if (this.filter.wayPointTags.length) {
+                const tags = [];
+                this.filter.wayPointTags.forEach((tagIri) => {
+                    tags.push(this.getTagByIri(tagIri).name);
+                });
+                title = `TAGS_${tags.join('_')}_${title}`;
+            }
+            if (this.filter.oneOnOneInterview) {
+                title = `EINZELGESPRAECH_${this.filter.oneOnOneInterview}_${title}`;
+            }
+            if (this.filter.note) {
+                title = `BEOBACHTUNG_${this.filter.note}_${title}`;
+            }
+            if (this.filter.teamName) {
+                title = `TEAM_${this.filter.teamName}_${title}`;
+            }
+            if (this.filter.locationName) {
+                title = `ORT_${this.filter.locationName}_${title}`;
+            }
+            if (this.filter.visitedAt.startDate && this.filter.visitedAt.endDate) {
+                const formattedStartDate = dayjs(this.filter.visitedAt.startDate).format('YYYYMMDD');
+                const formattedEndDate = dayjs(this.filter.visitedAt.endDate).format('YYYYMMDD');
+                if (formattedStartDate === formattedEndDate) {
+                    title = `${formattedStartDate}_${title}`;
+                } else {
+                    title = `${formattedStartDate}-${formattedEndDate}_${title}`;
+                }
+
+            }
+
+            return title;
+        }
     },
 };
 </script>
