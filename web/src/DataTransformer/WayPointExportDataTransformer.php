@@ -24,6 +24,12 @@ class WayPointExportDataTransformer implements DataTransformerInterface
         $wayPointExport->visitedAt = $data->getVisitedAt()->format('d.m.Y H:i:s');
         $wayPointExport->walkName = $data->getWalk()->getName();
         $wayPointExport->teamName = $data->getWalk()->getTeamName();
+        $users = [];
+        foreach ($data->getWalk()->getWalkTeamMembers() as $walkTeamMember) {
+            $users[] = $walkTeamMember->getUsername();
+        }
+        $wayPointExport->users = \implode(',', $users);
+        $wayPointExport->conceptOfDay = $data->getWalk()->getConceptOfDay();
         $wayPointExport->note = (string) $data->getNote();
         $wayPointExport->oneOnOneInterview = $data->getOneOnOneInterview();
         $wayPointExport->isMeeting = $data->getIsMeeting();

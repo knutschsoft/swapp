@@ -16,6 +16,10 @@ class WayPointExport
     public string $walkName;
     #[SerializedName('Teamname')]
     public string $teamName;
+    #[SerializedName('Teilnehmer')]
+    public string $users;
+    #[SerializedName('Tageskonzept')]
+    public string $conceptOfDay;
     #[SerializedName('Beobachtung')]
     public string $note;
     #[SerializedName('Einzelgespräch')]
