@@ -218,7 +218,12 @@ export default {
                 { key: 'name', label: 'Name', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
                 { key: 'rating', label: 'Bewertung', sortable: true, class: 'text-center align-middle', formatter: (value) => {return formatter.formatRating(value);} },
                 { key: 'startTime', label: 'Beginn', sortable: true, class: 'text-center align-middle', formatter: (value) => {return this.formatStartDate(value);} },
-                { key: 'endTime', label: 'Ende', sortable: false, class: 'text-center align-middle', formatter: (value, key, item) => {return this.formatEndDate(value, item.startTime);} },
+                { key: 'endTime', label: 'Ende', sortable: false, class: 'text-center align-middle',
+                    formatter: (value, key, item) => {
+                        return item.isUnfinished ? '-' : this.formatEndDate(value, item.startTime);
+
+                    }
+                },
                 { key: 'teamName', label: 'Team', sortable: true, class: 'text-center align-middle' },
                 {
                     key: 'isResubmission',

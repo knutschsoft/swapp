@@ -76,7 +76,7 @@
                     { name: 'Ferien', value: this.walk.holiday ? 'ja' : 'nein' },
                     { name: 'Wetter', value: this.walk.weather },
                     { name: 'Beginn', value: this.formatDate(this.walk.startTime) },
-                    { name: 'Ende', value: this.formatDate(this.walk.endTime) },
+                    { name: 'Ende', value: this.walk.isUnfinished ? '-' : this.formatDate(this.walk.endTime) },
                     { name: 'Systemische Frage', value: this.walk.systemicQuestion },
                     { name: 'Systemische Antwort', value: this.walk.systemicAnswer, nl2br: true },
                     { name: 'Reflexion', value: this.walk.walkReflection, nl2br: true },
