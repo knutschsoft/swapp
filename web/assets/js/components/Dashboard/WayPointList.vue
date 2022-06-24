@@ -265,6 +265,9 @@
                     </b-input-group-append>
                 </b-input-group>
             </b-col>
+            <b-col cols="12">
+                <hr class="my-1" />
+            </b-col>
             <b-col
                 class="my-1"
                 xs="12"
