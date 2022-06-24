@@ -394,6 +394,12 @@ export default {
                 endDate: defaultEndDate,
             },
         });
+        if (!filter.visitedAt) {
+            filter.visitedAt = {
+                startDate: defaultStartDate,
+                endDate: defaultEndDate,
+            };
+        }
         if (filter.visitedAt.startDate && filter.visitedAt.endDate) {
             filter.visitedAt.startDate = new Date(filter.visitedAt.startDate);
             filter.visitedAt.endDate = new Date(filter.visitedAt.endDate);
