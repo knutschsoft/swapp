@@ -75,16 +75,18 @@
                         kein Bild hochgeladen
                     </template>
                 </template>
-                <template
+                <div
                     v-else-if="field.name === 'Personenanzahl von Nutzergruppen'"
+                    class="d-flex flex-wrap"
                 >
                     <div
                         v-for="userGroup in field.value"
+                        class="mr-2 flex-fill"
                         :class="{'text-muted': userGroup.peopleCount.count === 0}"
                     >
                         {{ userGroup.userGroupName.name }}:&nbsp;{{ userGroup.peopleCount.count }}
                     </div>
-                </template>
+                </div>
                 <template v-else>
                     {{ field.value }}
                 </template>
