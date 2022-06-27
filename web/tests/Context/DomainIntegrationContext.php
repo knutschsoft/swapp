@@ -277,6 +277,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['ageRanges'])) {
                 $walk->setAgeRanges($this->getAgeRangesFromString($row['ageRanges']));
             }
+            if (isset($row['isUnfinished']) && '' !== $row['isUnfinished']) {
+                $walk->setIsUnfinished((bool) $this->enrichText($row['isUnfinished']));
+            }
 
             $this->em->persist($walk);
         }
