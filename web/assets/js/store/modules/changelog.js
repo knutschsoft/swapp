@@ -1,6 +1,7 @@
 'use strict';
 
 import dayjs from 'dayjs';
+
 const swappStoreChangelogLastVisitedAt = 'swapp-store-changelog-last-visited-at';
 
 const
@@ -9,6 +10,40 @@ const
 
 const state = {
     changelogs: [
+        {
+            header: '24.06.2022',
+            avatarText: '😺️',
+            entries: [
+                {
+
+                    text: 'Feature: Zu einem Wegpunkt muss die Ankunft als Zeitpunkt festgehalten werden. ' +
+                        'Sie muss nach der Rundenstartzeit und - falls die Runde schon abgeschlossen ist - vor der Rundenendzeit liegen. ' +
+                        'Die Darstellung erfolgt in der Wegpunkttabelle auf der Runden-Detailseite, auf der Wegpunkt-Detailseite sowie in der Wegpunkttabelle auf dem Dashboard anstatt der Spalte Runden-Beginn.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220624_Ankunft_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Formular (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20220624_Ankunft_Detailseite_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf der Detailseite (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20220624_Ankunft_Wegpunkttabelle_Rundendetailseite_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Wegpunkttabelle auf der Rundendetailseite (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20220624_Ankunft_Wegpunkttabelle_Dashboard_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Wegpunkttabelle auf dem Dashboard (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+            ],
+        },
         {
             header: '01.06.2022',
             avatarText: '🙃️',
@@ -29,7 +64,7 @@ const state = {
                             autoplay: false,
                             thumbnail: '../changelog/pexels-torsten-dettlaff-347734.jpg',
                         },
-                    ]
+                    ],
                 },
                 {
                     text: 'Feature: Zu einem Wegpunkt wird die Anzahl der Personen vor Ort mit ausgegeben. Sie ergibt sich as der Summe der angetroffenen Personen aller Altersgruppen. Darstellung im Wegpunkt-Formular, auf der Wegpunkt-Detailseite sowie als eigene Spalte im Runden-CSV-Export.',
@@ -274,13 +309,13 @@ const getters = {
         }
         const header = state.changelogs[0].header;
 
-        return dayjs(header.split(' ')[0], ["DD.MM.YYYY", "YYYY"]);
+        return dayjs(header.split(' ')[0], ['DD.MM.YYYY', 'YYYY']);
     },
     lastVisitedAt(state) {
         return state.lastVisitedAt;
     },
     hasNewChangelogItems(state, getters) {
-        return getters.latestCreatedAt.isAfter(getters.lastVisitedAt)
+        return getters.latestCreatedAt.isAfter(getters.lastVisitedAt);
     },
 };
 
