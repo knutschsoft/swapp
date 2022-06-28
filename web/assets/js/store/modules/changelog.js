@@ -15,6 +15,31 @@ const state = {
             avatarText: '😺️',
             entries: [
                 {
+                    text: 'Feature: Ein Admin kann pro Team festlegen, ob zu einem Wegpunkt die Personenanzahl von Nutzergruppen festgehalten werden soll und um welche Nutzergruppen es sich handelt.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220624_Nutzergruppen_Teamformular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Team-Formular (links: vorher - rechts: neu). Der Admin kann die Namen der Nutzergruppen frei bestimmen.',
+                        },
+                    ],
+                },
+                {
+                    text: 'Feature: Ein Bearbeiter kann bei einem Wegpunkt die Personenanzahl von Nutzergruppen festhalten. Die Darstellung erfolgt auf der Wegpunkt-Detailseite sowie beim csv-Export der Wegpunkte.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220624_Nutzergruppen_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20220624_Nutzergruppen_Detailseite_vorher_nachher.png',
+                            thumbnailHeight: '50px',
+                            description: 'Darstellung auf der Wegpunkte-Detailseite (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
 
                     text: 'Feature: Zu einem Wegpunkt muss die Ankunft als Zeitpunkt festgehalten werden. ' +
                         'Sie muss nach der Rundenstartzeit und - falls die Runde schon abgeschlossen ist - vor der Rundenendzeit liegen. ' +
@@ -27,13 +52,13 @@ const state = {
                         },
                         {
                             src: '../changelog/20220624_Ankunft_Detailseite_vorher_nachher.png',
-                            thumbnailHeight: '100px',
+                            thumbnailHeight: '75px',
                             description: 'Darstellung auf der Detailseite (links: vorher - rechts: neu)',
                         },
                         {
                             src: '../changelog/20220624_Ankunft_Wegpunkttabelle_Rundendetailseite_vorher_nachher.png',
-                            thumbnailHeight: '100px',
-                            description: 'Darstellung in der Wegpunkttabelle auf der Rundendetailseite (links: vorher - rechts: neu)',
+                            thumbnailHeight: '75px',
+                            description: 'Darstellung in der Wegpunkttabelle auf der Runden-Detailseite (links: vorher - rechts: neu)',
                         },
                         {
                             src: '../changelog/20220624_Ankunft_Wegpunkttabelle_Dashboard_vorher_nachher.png',
