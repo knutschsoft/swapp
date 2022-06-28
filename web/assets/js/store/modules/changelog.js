@@ -50,7 +50,6 @@ const state = {
                     ],
                 },
                 {
-
                     text: 'Feature: Zu einem Wegpunkt muss die Ankunft als Zeitpunkt festgehalten werden. ' +
                         'Sie muss nach der Rundenstartzeit und - falls die Runde schon abgeschlossen ist - vor der Rundenendzeit liegen. ' +
                         'Die Darstellung erfolgt in der Wegpunkttabelle auf der Runden-Detailseite, auf der Wegpunkt-Detailseite sowie in der Wegpunkttabelle auf dem Dashboard anstatt der Spalte Runden-Beginn.',
@@ -76,6 +75,10 @@ const state = {
                             description: 'Darstellung in der Wegpunkttabelle auf dem Dashboard (links: vorher - rechts: neu)',
                         },
                     ],
+                },
+                {
+                    text: 'Security: Die minimale Passwortlänge eines Benutzerpasswortes ist von 7 auf 12 Zeichen erhöht. ' +
+                        'Dies betrifft nur das Neusetzen eines Passwortes.',
                 },
             ],
         },
