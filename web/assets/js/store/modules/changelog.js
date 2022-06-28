@@ -15,6 +15,16 @@ const state = {
             avatarText: '😺️',
             entries: [
                 {
+                    text: 'Feature: Ein Bearbeiter kann die Wegpunkte auf dem Dashboard nach dem Zeitpunkt der Ankunft filtern.',
+                    gallery: [
+                        {
+                            src: '../changelog/20220624_Ankunft_Wegpunkt_Filterung_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Der neue Filter nach Ankunft auf dem Dashboard (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
                     text: 'Feature: Ein Admin kann pro Team festlegen, ob zu einem Wegpunkt die Personenanzahl von Nutzergruppen festgehalten werden soll und um welche Nutzergruppen es sich handelt.',
                     gallery: [
                         {
