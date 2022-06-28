@@ -29,6 +29,20 @@ const state = {
                     ],
                 },
                 {
+                    text: [
+                        'Feature: Ein Bearbeiter kann die Wegpunkte als csv-Datei exportieren.',
+                        'Die Filtereinstellungen der Wegpunkte-Tabelle werden dabei berücksichtigt.',
+                        'Der Dateiname setzt sich aus den gewählten Filtern zusammen: "streetworkwegpunkte_export.csv" bzw. bei Datumsfilterung "20220601-20220630_streetworkwegpunkte_export.csv"',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20220624_Wegpunkte-csv-Export_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Der Button zum Export von Wegpunkten auf dem Dashboard (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
                     text: 'Feature: Ein Admin kann pro Team festlegen, ob zu einem Wegpunkt die Personenanzahl von Nutzergruppen festgehalten werden soll und um welche Nutzergruppen es sich handelt.',
                     gallery: [
                         {
