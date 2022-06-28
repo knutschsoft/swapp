@@ -15,7 +15,8 @@ const state = {
             avatarText: '😺️',
             entries: [
                 {
-                    text: 'Feature: Ein Bearbeiter kann die Wegpunkte auf dem Dashboard nach dem Zeitpunkt der Ankunft filtern.',
+                    text: 'Feature: Ein Bearbeiter kann die Wegpunkte auf dem Dashboard nach dem Zeitpunkt der Ankunft filtern. ' +
+                        'Bei der Standardeinstellung ist kein Zeitraum ausgewählt. Beim Seitenwechsel wird sich die Filtereinstellung gemerkt.',
                     gallery: [
                         {
                             src: '../changelog/20220624_Ankunft_Wegpunkt_Filterung_vorher_nachher.png',
