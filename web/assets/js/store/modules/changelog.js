@@ -15,8 +15,11 @@ const state = {
             avatarText: '😺️',
             entries: [
                 {
-                    text: 'Feature: Ein Bearbeiter kann die Wegpunkte auf dem Dashboard nach dem Zeitpunkt der Ankunft filtern. ' +
-                        'Bei der Standardeinstellung ist kein Zeitraum ausgewählt. Beim Seitenwechsel wird sich die Filtereinstellung gemerkt.',
+                    text: [
+                        'Feature: Ein Bearbeiter kann die Wegpunkte auf dem Dashboard nach dem Zeitpunkt der Ankunft filtern. ',
+                        'Bei der Standardeinstellung ist kein Zeitraum ausgewählt.',
+                        'Beim Seitenwechsel wird sich die Filtereinstellung gemerkt.',
+                    ],
                     gallery: [
                         {
                             src: '../changelog/20220624_Ankunft_Wegpunkt_Filterung_vorher_nachher.png',
@@ -36,7 +39,10 @@ const state = {
                     ],
                 },
                 {
-                    text: 'Feature: Ein Bearbeiter kann bei einem Wegpunkt die Personenanzahl von Nutzergruppen festhalten. Die Darstellung erfolgt auf der Wegpunkt-Detailseite sowie beim csv-Export der Wegpunkte.',
+                    text: [
+                        'Feature: Ein Bearbeiter kann bei einem Wegpunkt die Personenanzahl von Nutzergruppen festhalten.',
+                        'Die Darstellung erfolgt auf der Wegpunkt-Detailseite sowie beim csv-Export der Wegpunkte.',
+                    ],
                     gallery: [
                         {
                             src: '../changelog/20220624_Nutzergruppen_Formular_vorher_nachher.png',
@@ -51,9 +57,11 @@ const state = {
                     ],
                 },
                 {
-                    text: 'Feature: Zu einem Wegpunkt muss die Ankunft als Zeitpunkt festgehalten werden. ' +
-                        'Sie muss nach der Rundenstartzeit und - falls die Runde schon abgeschlossen ist - vor der Rundenendzeit liegen. ' +
+                    text: [
+                        'Feature: Zu einem Wegpunkt muss die Ankunft als Zeitpunkt festgehalten werden.',
+                        'Sie muss nach der Rundenstartzeit und - falls die Runde schon abgeschlossen ist - vor der Rundenendzeit liegen.',
                         'Die Darstellung erfolgt in der Wegpunkttabelle auf der Runden-Detailseite, auf der Wegpunkt-Detailseite sowie in der Wegpunkttabelle auf dem Dashboard anstatt der Spalte Runden-Beginn.',
+                    ],
                     gallery: [
                         {
                             src: '../changelog/20220624_Ankunft_Formular_vorher_nachher.png',
@@ -78,8 +86,10 @@ const state = {
                     ],
                 },
                 {
-                    text: 'Security: Die minimale Passwortlänge eines Benutzerpasswortes ist von 7 auf 12 Zeichen erhöht. ' +
+                    text: [
+                        'Security: Die minimale Passwortlänge eines Benutzerpasswortes ist von 7 auf 12 Zeichen erhöht.',
                         'Dies betrifft nur das Neusetzen eines Passwortes.',
+                    ],
                 },
             ],
         },
@@ -88,7 +98,6 @@ const state = {
             avatarText: '🙃️',
             entries: [
                 {
-
                     text: 'Feature: Swapp kann nun als App (Progressive Web App - PWA) installiert werden. Vorteile sind unter anderem ein schnellerer Zugriff auf Swapp und der Wegfall der Browserleiste. Die Installation ist auf fast allen Betriebssystemen möglich. Anbei die Installationsanleitung als Video auf einem iPhone:',
                     gallery: [
                         {

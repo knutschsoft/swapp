@@ -31,7 +31,21 @@
                             <li
                                 v-for="entry in item.entries"
                             >
-                                {{ entry.text }}
+                                <template v-if="Array.isArray(entry.text)">
+
+                                    {{ entry.text[0] }}
+                                    <ul>
+                                        <li
+                                            v-for="(textItem, i) in entry.text"
+                                            v-if="i !== 0"
+                                        >
+                                            {{ textItem }}
+                                        </li>
+                                    </ul>
+                                </template>
+                                <template v-else>
+                                    {{ entry.text }}
+                                </template>
                                 <silent-box
                                     v-if="entry.gallery && entry.gallery.length"
                                     :gallery="entry.gallery"
