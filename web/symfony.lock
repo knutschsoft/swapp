@@ -1,4 +1,7 @@
 {
+    "acsiomatic/device-detector-bundle": {
+        "version": "0.4.0"
+    },
     "api-platform/core": {
         "version": "2.5",
         "recipe": {

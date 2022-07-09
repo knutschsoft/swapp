@@ -71,6 +71,36 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        {% if 'Internet Explorer' is same as device.getClient.name %}
+            <div
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert m-0 rounded-0 alert-danger"
+                style="z-index: 2000;"
+            >
+                <div class="d-flex align-items-center">
+                    <span
+                        role="img"
+                        class="mr-4 mdi mdi-AlertCircle"
+                    >
+                        <svg
+                            fill="currentColor"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+                            ></path>
+                        </svg>
+                    </span>
+                    Sie verwenden einen veralteten Browser, der von Swapp nicht mehr unterstützt wird.<br>
+                    Bitte verwenden sie einen aktuellen Browser.
+                </div>
+            </div>
+        {% endif %}
         {% block body %}
         {% endblock body %}
 
