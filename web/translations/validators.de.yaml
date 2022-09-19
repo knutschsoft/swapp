@@ -10,7 +10,7 @@ user:
   not_found_or_disabled: Der Nutzer "{{ value }}" existiert nicht oder sein Account ist inaktiv.
   password_not_compromised: Dieses Passwort war Teil eines Datenlecks und gewährleistet keine sichere Nutzung. Bitte wähle ein sicheres Passwort.
   email_is_not_unique: Ein Benutzer mit der E-Mail "{{ value }}" existiert bereits.
-  username_is_not_unique: Ein Benutzer mit dem Benutzeramen "{{ value }}" existiert bereits.
+  username_is_not_unique: Ein Benutzer mit dem Benutzernamen "{{ value }}" existiert bereits.
 client:
  name_is_not_unique: Ein Klient mit dem Namen "{{ value }}" existiert bereits.
  email_is_not_unique: Ein Klient mit der E-Mail "{{ value }}" existiert bereits.
