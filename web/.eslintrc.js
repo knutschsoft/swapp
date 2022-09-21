@@ -15,12 +15,15 @@ module.exports = {
             "attribute": 1,
             "closeBracket": 0,
             "alignAttributesVertically": true,
-            "ignores": []
-        }]
+            "ignores": [],
+        }],
+        "vue/multi-word-component-names": ["off"],
+        "vue/component-definition-name-casing": ["off"],
     },
     "parserOptions": {
         "ecmaVersion": 2018,
         "sourceType": "module",
-        "parser": "babel-eslint"
+        "parser": "@babel/eslint-parser",
+        "requireConfigFile": false,
     },
 };
