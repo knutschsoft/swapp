@@ -168,6 +168,9 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-develop": "1.0.x-dev"
+        },
         "symfony": {
             "allow-contrib": false,
             "require": "5.4.*"
