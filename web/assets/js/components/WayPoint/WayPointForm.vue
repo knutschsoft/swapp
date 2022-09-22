@@ -396,7 +396,30 @@ export default {
             visitedAtTime: null,
             visitedAtDate: null,
             file: null,
-            ageRangeOptions: Array.from(Array(21), (x, i) => i),
+            ageRangeOptions: Array.from(Array(51), (x, i) => {
+                let start = 30;
+                let stepSize = 5;
+                let value = i;
+                if (value > start) {
+                    value = start + stepSize * (i - start);
+                }
+                start = 34;
+                stepSize = 5;
+                if (i > start) {
+                    value = value + stepSize * (i - start);
+                }
+                start = 39;
+                stepSize = 15;
+                if (i > start) {
+                    value = value + stepSize * (i - start);
+                }
+                start = 45;
+                stepSize = 25;
+                if (i > start) {
+                    value = value + stepSize * (i - start);
+                }
+                return value;
+            }),
             contactsCountOptions: Array.from(Array(41), (x, i) => i),
             userGroupOptions: Array.from(Array(21), (x, i) => i),
             dateLabels: {

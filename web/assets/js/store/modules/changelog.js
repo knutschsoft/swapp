@@ -45,6 +45,20 @@ const state = {
                         },
                     ],
                 },
+                {
+                    text: [
+                        'Feature: Erhöhung der möglichen Werte für die Altersgruppen.',
+                        'Bisher war nur die maximale Anzahl von 20 möglich.',
+                        'Nun kann - in verschiedenen Abstufungen - bis zu 500 ausgewählt werden.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20220927_Werte_Altersgruppen_Wegpunkte_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
             ],
         },
         {
