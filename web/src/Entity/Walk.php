@@ -31,7 +31,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\Table(name: 'walk')]
 #[ORM\Entity(repositoryClass: DoctrineORMWalkRepository::class)]
 #[ApiFilter(OrderFilter::class, properties: ["name", "rating", "teamName", "startTime", "endTime", "isResubmission"])]
-#[ApiFilter(BooleanFilter::class, properties: ["isResubmission"])]
+#[ApiFilter(BooleanFilter::class, properties: ["isResubmission", "isUnfinished"])]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
 #[ApiResource(
     collectionOperations: [

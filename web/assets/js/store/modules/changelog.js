@@ -59,6 +59,18 @@ const state = {
                         },
                     ],
                 },
+                {
+                    text: [
+                        'Feature: Ein Benutzer kann die Wegpunktliste nach nicht beendeten Runden filtern.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20220927_Filter_Rundenende_Dashboard_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der Filterung auf dem Dashboard (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
             ],
         },
         {

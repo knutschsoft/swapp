@@ -37,8 +37,8 @@
             </b-col>
             <b-col
                 class="my-1"
-                sm="4"
-                md="4"
+                sm="6"
+                md="3"
             >
                 <b-input-group size="sm" class="">
                     <b-input-group-prepend>
@@ -66,8 +66,37 @@
             </b-col>
             <b-col
                 class="my-1"
-                sm="4"
-                md="4"
+                sm="6"
+                md="3"
+            >
+                <b-input-group size="sm" class="">
+                    <b-input-group-prepend>
+                        <b-input-group-text
+                            title="Wurde die Runde schon beendet?"
+                            :class="filter.isUnfinished !== null ? 'font-weight-bold' : ''"
+                        >
+                            Beendet?
+                        </b-input-group-text>
+                    </b-input-group-prepend>
+                    <b-form-select
+                        v-model="filter.isUnfinished"
+                        :options="isUnfinishedOptions"
+                        @change="handleFilterChange"
+                    />
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterIsUnfinished"
+                            :disabled="filter.isUnfinished === null"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+            <b-col
+                class="my-1"
+                sm="6"
+                md="3"
             >
                 <b-input-group size="sm">
                     <b-input-group-prepend>
@@ -96,8 +125,8 @@
             </b-col>
             <b-col
                 class="my-1"
-                sm="4"
-                md="4"
+                sm="6"
+                md="3"
             >
                 <b-input-group size="sm">
                     <b-input-group-prepend>
@@ -209,10 +238,16 @@ export default {
     data: function () {
         return {
             isResubmission: null,
+            isUnfinished: null,
             isResubmissionOptions: [
                 { value: null, text: 'egal' },
                 { value: 1, text: 'ja' },
                 { value: 0, text: 'nein' },
+            ],
+            isUnfinishedOptions: [
+                { value: null, text: 'egal' },
+                { value: 0, text: 'ja' },
+                { value: 1, text: 'nein' },
             ],
             fields: [
                 { key: 'name', label: 'Name', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
@@ -246,7 +281,7 @@ export default {
             sortBy: 'startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: { isResubmission: null, name: null, teamName: '' },
+            filter: { isResubmission: null, isUnfinished:null, name: null, teamName: '' },
             storagePerPageId: 'abgeschlossene-runden-per-page',
             storageCurrentPageId: 'abgeschlossene-runden-current-page',
             storageFilterId: 'abgeschlossene-runden-filter',
@@ -313,6 +348,10 @@ export default {
         },
         unsetFilterIsResubmission() {
             this.filter.isResubmission = null;
+            this.handleFilterChange();
+        },
+        unsetFilterIsUnfinished() {
+            this.filter.isUnfinished = null;
             this.handleFilterChange();
         },
         unsetFilterName() {
