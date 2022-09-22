@@ -20,7 +20,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "vendor/bin/local-php-security-checker",
+                "action": "vendor/bin/security-checker security:check",
                 "options": [],
                 "conditions": []
             }
