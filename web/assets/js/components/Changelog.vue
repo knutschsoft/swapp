@@ -23,7 +23,8 @@
                         <b-avatar
                             v-if="item.avatarText"
                             variant="light"
-                            :text="item.avatarText"
+                            v-html="item.avatarText"
+                            :title="item.avatarTitle ?? ''"
                         />
                     </b-list-group-item>
                     <b-list-group-item>

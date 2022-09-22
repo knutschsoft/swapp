@@ -53,8 +53,11 @@ export default {
         },
     },
     data: function () {
-        return {
-            fields: [
+        return {};
+    },
+    computed: {
+        fields () {
+            return [
                 { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
                 {
                     key: 'visitedAt',
@@ -79,15 +82,13 @@ export default {
                     filterByFormatted: true,
                     class: 'text-center align-middle',
                 },
-                { key: 'malesCount', label: 'Männer', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'femalesCount', label: 'Frauen', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'queerCount', label: 'Andere', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
+                { key: 'malesCount', label: 'Männer', sortable: true, sortDirection: 'desc', class: !this.walk.isWithAgeRanges ? 'd-none' : 'text-center align-middle' },
+                { key: 'femalesCount', label: 'Frauen', sortable: true, sortDirection: 'desc', class: !this.walk.isWithAgeRanges ? 'd-none' : 'text-center align-middle' },
+                { key: 'queerCount', label: 'Andere', sortable: true, sortDirection: 'desc', class: !this.walk.isWithAgeRanges ? 'd-none' : 'text-center align-middle' },
                 { key: 'actions', label: 'Aktionen', class: 'text-center align-middle' },
-            ],
-        };
-    },
-    computed: {
-        isLoading() {
+            ];
+        },
+        isLoading () {
             return this.$store.getters['walk/isLoading'] || this.$store.getters['wayPoint/isLoading'];
         },
         walk() {

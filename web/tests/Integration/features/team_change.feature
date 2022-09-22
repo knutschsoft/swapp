@@ -64,10 +64,11 @@ Feature: Testing team change resource
       | ageRanges           | ageRanges<1-3>          |
       | users               | userIris<two@pac.de>    |
       | locationNames       | array<City, Spielplatz> |
+      | isWithAgeRanges     | <true>                  |
       | isWithContactsCount | <false>                 |
       | isWithUserGroups    | <false>                 |
     Then the response should be in JSON
-#    And print last JSON response
+    And print last JSON response
     And the response status code should be 200
     And the enriched JSON nodes should be equal to:
       | @type                      | Team                |
@@ -77,6 +78,7 @@ Feature: Testing team change resource
       | ageRanges[0].frontendLabel | 1 - 3               |
       | locationNames[0]           | City                |
       | locationNames[1]           | Spielplatz          |
+      | isWithAgeRanges            | <true>              |
       | isWithContactsCount        | <false>             |
       | isWithUserGroups           | <false>             |
       | users[0]                   | userIri<two@pac.de> |
@@ -91,6 +93,7 @@ Feature: Testing team change resource
       | ageRanges           | ageRanges<1-3>                 |
       | users               | userIris<two@pac.de>           |
       | locationNames       | array<City, Spielplatz>        |
+      | isWithAgeRanges     | <true>                         |
       | isWithContactsCount | <true>                         |
       | isWithUserGroups    | <true>                         |
       | userGroupNames      | userGroupNames<Nutzende,Dudes> |
@@ -99,12 +102,12 @@ Feature: Testing team change resource
     And the response status code should be 200
     And the enriched JSON nodes should be equal to:
       | name                       | Religion            |
-      | name                       | Religion            |
       | ageRanges[0].rangeStart    | 1                   |
       | ageRanges[0].rangeEnd      | 3                   |
       | ageRanges[0].frontendLabel | 1 - 3               |
       | locationNames[0]           | City                |
       | locationNames[1]           | Spielplatz          |
+      | isWithAgeRanges            | <true>              |
       | isWithContactsCount        | <true>              |
       | isWithUserGroups           | <true>              |
       | users[0]                   | userIri<two@pac.de> |
@@ -130,12 +133,42 @@ Feature: Testing team change resource
       | violations[2].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[3].propertyPath | users                                                                  |
       | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[4].propertyPath | ageRanges                                                              |
+      | violations[4].propertyPath | isWithAgeRanges                                                        |
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath | isWithContactsCount                                                    |
+      | violations[5].propertyPath | ageRanges                                                              |
       | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[6].propertyPath | isWithUserGroups                                                       |
+      | violations[6].propertyPath | isWithContactsCount                                                    |
       | violations[6].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[7].propertyPath | isWithUserGroups                                                       |
+      | violations[7].message      | Dieser Wert sollte nicht null sein.                                    |
+
+  @api @apiTeamChange
+  Scenario: I can request /api/teams/change as an admin and change isWithAgeRanges to false and the ageRanges are not changed
+    Given I am authenticated against api as "admin@gmx.de"
+    When I send an api platform "POST" request to "/api/teams/change" with parameters:
+      | key                 | value                   |
+      | team                | teamIri<Empties>        |
+      | name                | Religion                |
+      | ageRanges           | ageRanges<1-3>          |
+      | users               | userIris<two@pac.de>    |
+      | locationNames       | array<City, Spielplatz> |
+      | isWithAgeRanges     | <false>                 |
+      | isWithContactsCount | <false>                 |
+      | isWithUserGroups    | <false>                 |
+    Then the response should be in JSON
+#    And print last JSON response
+    And the response status code should be 200
+    And the enriched JSON nodes should be equal to:
+      | @type               | Team                |
+      | name                | Religion            |
+      | locationNames[0]    | City                |
+      | locationNames[1]    | Spielplatz          |
+      | isWithAgeRanges     | <false>              |
+      | isWithContactsCount | <false>             |
+      | isWithUserGroups    | <false>             |
+      | users[0]            | userIri<two@pac.de> |
+    And the JSON node "ageRanges" should exist
+    And the JSON node "ageRanges[0]" should not exist
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin of another client/team and can not change a team

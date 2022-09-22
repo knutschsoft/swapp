@@ -111,6 +111,9 @@
                         class: 'text-center',
                         formatter: (value, key, item) => {
                             let additionalWayPointFields = [];
+                            if (item.isWithAgeRanges) {
+                                additionalWayPointFields.push('Altersgruppen');
+                            }
                             if (item.isWithContactsCount) {
                                 additionalWayPointFields.push('Anzahl direkter Kontakte');
                             }
@@ -130,6 +133,9 @@
                         label: 'Altersgruppen',
                         formatter: (value, key, item) => {
                             let ageRanges = [];
+                            if (!item.isWithAgeRanges) {
+                              return '-';
+                            }
                             value.forEach(ageRange => {
                                 ageRanges.push(ageRange.rangeStart + '-' + ageRange.rangeEnd)
                             })
@@ -210,6 +216,7 @@
                     users: team.users,
                     ageRanges: team.ageRanges,
                     userGroupNames: team.userGroupNames,
+                    isWithAgeRanges: team.isWithAgeRanges,
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
                 });

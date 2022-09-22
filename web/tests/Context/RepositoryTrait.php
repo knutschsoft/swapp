@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
 use Webmozart\Assert\Assert;
-use Webmozart\Assert\Assert as Assertion;
 
 trait RepositoryTrait
 {
@@ -44,8 +43,8 @@ trait RepositoryTrait
     public function initRepositories(KernelInterface $kernel): void
     {
         $serviceContainer = $kernel->getContainer()->get('test.service_container');
-        Assertion::notNull($serviceContainer);
-        Assertion::isInstanceOf($serviceContainer, Container::class);
+        Assert::notNull($serviceContainer);
+        Assert::isInstanceOf($serviceContainer, Container::class);
 
         $clientRepository = $serviceContainer->get(ClientRepository::class);
         \assert($clientRepository instanceof ClientRepository);
@@ -80,7 +79,7 @@ trait RepositoryTrait
     {
         $email = \trim($email);
         $user = $this->userRepository->findOneBy(['email' => $email]);
-        Assertion::notNull($user, \sprintf('User with email "%s" not found.', $email));
+        Assert::notNull($user, \sprintf('User with email "%s" not found.', $email));
 
         return $user;
     }
@@ -89,7 +88,7 @@ trait RepositoryTrait
     {
         $name = \trim($name);
         $tag = $this->tagRepository->findOneBy(['name' => $name]);
-        Assertion::notNull($tag, \sprintf('Tag with name "%s" not found.', $name));
+        Assert::notNull($tag, \sprintf('Tag with name "%s" not found.', $name));
 
         return $tag;
     }
@@ -98,7 +97,7 @@ trait RepositoryTrait
     {
         $name = \trim($name);
         $team = $this->teamRepository->findOneBy(['name' => $name]);
-        Assertion::notNull($team, \sprintf('Team with name "%s" not found.', $name));
+        Assert::notNull($team, \sprintf('Team with name "%s" not found.', $name));
 
         return $team;
     }
@@ -107,7 +106,7 @@ trait RepositoryTrait
     {
         $name = \trim($name);
         $walk = $this->walkRepository->findOneBy(['name' => $name]);
-        Assertion::notNull($walk, \sprintf('Walk with name "%s" not found.', $name));
+        Assert::notNull($walk, \sprintf('Walk with name "%s" not found.', $name));
 
         return $walk;
     }
@@ -116,7 +115,7 @@ trait RepositoryTrait
     {
         $locationName = \trim($locationName);
         $wayPoint = $this->wayPointRepository->findOneBy(['locationName' => $locationName]);
-        Assertion::notNull($wayPoint, \sprintf('WayPoint with locationName "%s" not found.', $locationName));
+        Assert::notNull($wayPoint, \sprintf('WayPoint with locationName "%s" not found.', $locationName));
 
         return $wayPoint;
     }
@@ -193,8 +192,11 @@ trait RepositoryTrait
         $ageGroupsStrings = \explode(';', $ageGroupsString);
 
         foreach ($ageGroupsStrings as $ageGroupString) {
+            if ('' === $ageGroupString) {
+                continue;
+            }
             $parts = \explode(',', $ageGroupString);
-            \assert(\count($parts) === 3);
+            \assert(\count($parts) === 3, \sprintf('There are "%s" instead of 3 parts in string "%s".', \count($parts), $ageGroupString));
             $ageGroups[] = AgeGroup::fromRangeGenderAndCount(
                 AgeRange::fromString($parts[0]),
                 Gender::fromString($parts[1]),

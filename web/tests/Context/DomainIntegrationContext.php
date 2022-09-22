@@ -661,14 +661,21 @@ final class DomainIntegrationContext extends RawMinkContext
             $team->setName($row['name'] ?? 'Clari@narf.de'.$key);
             $users = $this->getUsersFromString($row['users'] ?? '');
             $team->setUsers(new ArrayCollection($users));
-            $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '1-2,3-10');
-            $team->setAgeRanges($ageRanges);
             $team->setLocationNames(isset($row['locationNames']) && $row['locationNames'] ? \explode(',', $row['locationNames']) : []);
             $isWithContactsCount = false;
             if (isset($row['isWithContactsCount']) && '' !== $row['isWithContactsCount']) {
                 $isWithContactsCount = (bool) $this->enrichText($row['isWithContactsCount']);
             }
             $team->setIsWithContactsCount($isWithContactsCount);
+            $isWithAgeRanges = true;
+            if (isset($row['isWithAgeRanges']) && '' !== $row['isWithAgeRanges']) {
+                $isWithAgeRanges = (bool) $this->enrichText($row['isWithAgeRanges']);
+            }
+            $team->setIsWithAgeRanges($isWithAgeRanges);
+            if ($team->isWithAgeRanges()) {
+                $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '1-2,3-10');
+                $team->setAgeRanges($ageRanges);
+            }
             $isWithUserGroups = false;
             if (isset($row['isWithUserGroups']) && '' !== $row['isWithUserGroups']) {
                 $isWithUserGroups = (bool) $this->enrichText($row['isWithUserGroups']);

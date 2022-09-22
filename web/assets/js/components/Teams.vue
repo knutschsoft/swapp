@@ -43,6 +43,7 @@
                     locationNames: team.locationNames,
                     users: team.users,
                     ageRanges: team.ageRanges,
+                    isWithAgeRanges: team.isWithAgeRanges,
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
                     userGroupNames: team.userGroupNames,

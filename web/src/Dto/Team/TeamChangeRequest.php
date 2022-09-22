@@ -25,6 +25,9 @@ final class TeamChangeRequest
     #[AppAssert\UsersRequirements]
     public array $users;
 
+    #[AppAssert\IsWithAgeRangesRequirements]
+    public bool $isWithAgeRanges;
+
     /** @var AgeRange[] */
     #[AppAssert\AgeRangesRequirements]
     public array $ageRanges;

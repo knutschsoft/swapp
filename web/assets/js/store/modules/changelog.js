@@ -11,6 +11,43 @@ const
 const state = {
     changelogs: [
         {
+            header: '27.09.2022',
+            avatarText: '&#129507;',
+            avatarTitle: 'Zu Ehren des \'Tag des Schals\'',
+            entries: [
+                {
+                    text: [
+                        'Feature: Ein Admin kann pro Team festlegen, ob zu einem Wegpunkt die Altersgruppen festgehalten werden sollen.',
+                        'Bisher war die Erfassung der Altersgruppen ein Pflichtfeld.',
+                        'Use Case 1: Bei einer Gruppe von 40 Leuten ist es schwierig und zeitaufwändig zu sagen, wie das Verhältnis von m/w/x ist.',
+                        'Use Case 2: Bei manchen Teams werden nur in bestimmten Fällen Altersgruppen mit erfasst.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20220927_Team_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Team-Formular (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20220927_Wegpunkte_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20220927_Altersgruppen_Wegpunkttabelle_Dashboard_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Wegpunkttabelle auf dem Dashboard (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20220927_Altersgruppen_Wegpunkttabelle_Rundendetailseite_vorher_nachher.png',
+                            thumbnailHeight: '75px',
+                            description: 'Darstellung in der Wegpunkttabelle auf der Runden-Detailseite (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
             header: '24.06.2022',
             avatarText: '😺️',
             entries: [

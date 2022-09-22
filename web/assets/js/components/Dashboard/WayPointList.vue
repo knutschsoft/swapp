@@ -434,9 +434,9 @@ export default {
             },
             fields: [
                 { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'malesCount', label: 'Männer', sortable: false, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'femalesCount', label: 'Frauen', sortable: false, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'queerCount', label: 'Andere', sortable: false, sortDirection: 'desc', class: 'text-center align-middle' },
+                { key: 'malesCount', label: 'Männer', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk).isWithAgeRanges ? value : '-'} },
+                { key: 'femalesCount', label: 'Frauen', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk).isWithAgeRanges ? value : '-'}  },
+                { key: 'queerCount', label: 'Andere', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk).isWithAgeRanges ? value : '-'}  },
                 { key: 'note', label: 'Beobachtung', sortable: true, class: 'text-left align-middle' },
                 { key: 'oneOnOneInterview', label: 'Einzelgespräch', sortable: true, class: 'text-left align-middle' },
                 { key: 'wayPointTags', label: 'Tags', sortable: false, class: 'text-center align-middle', formatter: (value) => {return this.formatTags(value);} },

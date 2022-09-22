@@ -18,7 +18,6 @@ class AgeRangesRequirements extends Compound
         return [
             new Assert\Sequentially([
                 new Assert\NotNull(),
-                new Assert\NotBlank(),
                 new Assert\Type('array'),
                 new Assert\All([
                     new Assert\NotNull(),

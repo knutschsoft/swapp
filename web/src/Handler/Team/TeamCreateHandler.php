@@ -22,7 +22,10 @@ final class TeamCreateHandler implements MessageHandlerInterface
     {
         $team = new Team();
         $team->updateClient($request->client);
-        $team->setAgeRanges($request->ageRanges);
+        if ($request->isWithAgeRanges) {
+            $team->setAgeRanges($request->ageRanges);
+        }
+        $team->setIsWithAgeRanges($request->isWithAgeRanges);
         if ($request->userGroupNames) {
             $team->setUserGroupNames($request->userGroupNames);
         }

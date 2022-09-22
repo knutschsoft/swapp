@@ -190,9 +190,11 @@
                     { name: 'Tags', value: this.wayPointTags },
                 ];
 
-                fields = fields.concat(ageGroups);
+                if (this.walk.isWithAgeRanges) {
+                    fields = fields.concat(ageGroups);
 
-                fields.push({ name: 'Anzahl Personen vor Ort', value: sumPeopleCount});
+                    fields.push({ name: 'Anzahl Personen vor Ort', value: sumPeopleCount});
+                }
 
                 if (this.walk.isWithUserGroups) {
                     fields.push({ name: 'Personenanzahl von Nutzergruppen', value: this.wayPoint.userGroups });

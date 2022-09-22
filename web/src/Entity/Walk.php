@@ -170,6 +170,9 @@ class Walk
     private Client $client;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithAgeRanges;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
 
     #[ORM\Column(type: 'boolean')]
@@ -203,6 +206,10 @@ class Walk
 
         $instance->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
         $instance->setTeamName($team->getName());
+        $instance->setIsWithAgeRanges($team->isWithAgeRanges());
+        if ($instance->isWithAgeRanges()) {
+            $instance->setAgeRanges($team->getAgeRanges());
+        }
         $instance->setIsWithContactsCount($team->isWithContactsCount());
         $instance->setIsWithUserGroups($team->isWithUserGroups());
         $instance->setUserGroupNames($team->getUserGroupNames());
@@ -219,7 +226,6 @@ class Walk
         $instance->setCommitments('');
         $instance->setInsights('');
         $instance->setConceptOfDay($request->conceptOfDay);
-        $instance->setAgeRanges($team->getAgeRanges());
 
         return $instance;
     }
@@ -625,6 +631,18 @@ class Walk
             '%s',
             $this->getName()
         );
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithAgeRanges')]
+    public function isWithAgeRanges(): bool
+    {
+        return $this->isWithAgeRanges;
+    }
+
+    public function setIsWithAgeRanges(bool $isWithAgeRanges): void
+    {
+        $this->isWithAgeRanges = $isWithAgeRanges;
     }
 
     #[Groups(['walk:read'])]

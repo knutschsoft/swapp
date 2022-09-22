@@ -40,6 +40,7 @@ Feature: Testing team create resource
       | ageRanges           | ageRanges<>              |
       | users               | userIris<>               |
       | isWithContactsCount | <false>                  |
+      | isWithAgeRanges     | <true>                   |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 403
@@ -56,6 +57,7 @@ Feature: Testing team create resource
       | ageRanges           | ageRanges<1-3>           |
       | users               | userIris<two@pac.de>     |
       | locationNames       | array<City, Spielplatz>  |
+      | isWithAgeRanges     | <true>                   |
       | isWithContactsCount | <false>                  |
       | isWithUserGroups    | <false>                  |
     Then the response should be in JSON
@@ -69,10 +71,40 @@ Feature: Testing team create resource
       | ageRanges[0].frontendLabel | 1 - 3                    |
       | locationNames[0]           | City                     |
       | locationNames[1]           | Spielplatz               |
+      | isWithAgeRanges            | <true>                   |
       | isWithContactsCount        | <false>                  |
       | isWithUserGroups           | <false>                  |
       | users[0]                   | userIri<two@pac.de>      |
       | client                     | clientIri<client@gmx.de> |
+
+  @api @apiTeamCreate
+  Scenario: I can request /api/teams/create as an admin and create a team without ageGroups
+    Given I am authenticated against api as "admin@gmx.de"
+    When I send an api platform "POST" request to "/api/teams/create" with parameters:
+      | key                 | value                    |
+      | client              | clientIri<client@gmx.de> |
+      | name                | Religion                 |
+      | ageRanges           | ageRanges<1-3>           |
+      | users               | userIris<two@pac.de>     |
+      | locationNames       | array<City, Spielplatz>  |
+      | isWithAgeRanges     | <false>                  |
+      | isWithContactsCount | <false>                  |
+      | isWithUserGroups    | <false>                  |
+    Then the response should be in JSON
+#    And print last JSON response
+    And the response status code should be 200
+    And the enriched JSON nodes should be equal to:
+      | @type               | Team                     |
+      | name                | Religion                 |
+      | locationNames[0]    | City                     |
+      | locationNames[1]    | Spielplatz               |
+      | isWithAgeRanges     | <false>                  |
+      | isWithContactsCount | <false>                  |
+      | isWithUserGroups    | <false>                  |
+      | users[0]            | userIri<two@pac.de>      |
+      | client              | clientIri<client@gmx.de> |
+    And the JSON node "ageRanges" should exist
+    And the JSON node "ageRanges[0]" should not exist
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an superadmin and create a team
@@ -84,6 +116,7 @@ Feature: Testing team create resource
       | ageRanges           | ageRanges<1-3>                 |
       | users               | userIris<two@pac.de>           |
       | locationNames       | array<City, Spielplatz>        |
+      | isWithAgeRanges     | <true>                         |
       | isWithContactsCount | <true>                         |
       | isWithUserGroups    | <true>                         |
       | userGroupNames      | userGroupNames<Nutzende,Dudes> |
@@ -98,6 +131,7 @@ Feature: Testing team create resource
       | ageRanges[0].frontendLabel | 1 - 3                    |
       | locationNames[0]           | City                     |
       | locationNames[1]           | Spielplatz               |
+      | isWithAgeRanges            | <true>                   |
       | isWithContactsCount        | <true>                   |
       | isWithUserGroups           | <true>                   |
       | users[0]                   | userIri<two@pac.de>      |
@@ -124,12 +158,14 @@ Feature: Testing team create resource
       | violations[2].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[3].propertyPath | users                                                                  |
       | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[4].propertyPath | ageRanges                                                              |
+      | violations[4].propertyPath | isWithAgeRanges                                                        |
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath | isWithContactsCount                                                    |
+      | violations[5].propertyPath | ageRanges                                                              |
       | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[6].propertyPath | isWithUserGroups                                                       |
+      | violations[6].propertyPath | isWithContactsCount                                                    |
       | violations[6].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[7].propertyPath | isWithUserGroups                                                       |
+      | violations[7].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team

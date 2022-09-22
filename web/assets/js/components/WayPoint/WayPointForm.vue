@@ -73,6 +73,7 @@
             </b-row>
         </b-form-group>
         <b-form-group
+            v-if="walk.isWithAgeRanges"
             content-cols="12"
             label-cols="12"
             content-cols-lg="10"
@@ -107,6 +108,7 @@
                             :options="ageRangeOptions"
                             :disabled="isLoading"
                             :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                            :data-test="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
                             size="sm"
                             class=""
                         ></b-form-select>
@@ -133,6 +135,7 @@
             </b-form-group>
         </b-form-group>
         <b-form-group
+            v-if="walk.isWithUserGroups"
             content-cols="12"
             label-cols="12"
             content-cols-lg="10"

@@ -21,7 +21,10 @@ final class TeamChangeHandler implements MessageHandlerInterface
     public function __invoke(TeamChangeRequest $request): Team
     {
         $team = $request->team;
-        $team->setAgeRanges($request->ageRanges);
+        if ($request->isWithAgeRanges) {
+            $team->setAgeRanges($request->ageRanges);
+        }
+        $team->setIsWithAgeRanges($request->isWithAgeRanges);
         if ($request->userGroupNames) {
             $team->setUserGroupNames($request->userGroupNames);
         }

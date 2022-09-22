@@ -73,6 +73,9 @@ class Team
     private array $locationNames;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithAgeRanges;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
 
     #[ORM\Column(type: 'boolean')]
@@ -202,5 +205,17 @@ class Team
     public function setIsWithUserGroups(bool $isWithUserGroups): void
     {
         $this->isWithUserGroups = $isWithUserGroups;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithAgeRanges')]
+    public function isWithAgeRanges(): bool
+    {
+        return $this->isWithAgeRanges;
+    }
+
+    public function setIsWithAgeRanges(bool $isWithAgeRanges): void
+    {
+        $this->isWithAgeRanges = $isWithAgeRanges;
     }
 }
