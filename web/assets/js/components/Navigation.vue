@@ -134,11 +134,12 @@
                         />
                     </b-button>
                     <b-nav-item-dropdown
+                        ref="userMenu"
                         right
                         lazy
                         :toggle-class="isUserMenuActive ? 'active router-link-active' : ''"
                         data-test="nav-user-item"
-                        @show="showUserMenu()"
+                        @show="showUserMenu"
                     >
                         <!-- Using 'button-content' slot -->
                         <template v-slot:button-content >
@@ -236,12 +237,7 @@
                                     @click="switchUser(user)"
                                 >
                                     {{ user.username }}
-                                    ({{ Object.values(user.roles).map((currentRole) => {
-                                        return currentRole === 'ROLE_USER' ? '' : `${currentRole.substring(5)} `
-                                    }).join('')
-                                    }}{{ (user.teams.length && (user.roles.length > 1)) ? ' - ' : '' }}{{ Object.values(user.teams).map((currentTeam) => {
-                                        return currentTeam.name
-                                    }).join('') }})
+                                    <span class="text-muted">{{ getAdditionalUserInfo(user) }}</span>
                                 </b-dropdown-item-button>
                             </b-dropdown-group>
                         </b-dropdown-form>
@@ -334,10 +330,57 @@
             exitSwitchUser() {
                 this.$store.dispatch('security/exitSwitchUser');
             },
-            async showUserMenu() {
+            getClientByIri(clientIri) {
+                return this.$store.getters['client/getClientByIri'](clientIri);
+            },
+            async showUserMenu(bvEvent) {
                 if (this.isSuperAdmin && this.users.length <= 1) {
-                    this.users = await this.$store.dispatch('user/findAll');
+                    bvEvent.preventDefault();
+                    this.users = (await this.$store.dispatch('user/findAll')).slice(0).filter(user => user.isEnabled);
+                    await this.$store.dispatch('client/findAll');
+                    this.$refs.userMenu.show();
                 }
+            },
+            getAdditionalUserInfo(user) {
+                let trimLength = 7;
+                let usernameLength = 11;
+                let doShorten = false;
+                if (user.username.length > usernameLength) {
+                    doShorten = true;
+                }
+
+                let additionalUserInfo = Object.values(user.roles).map((currentRole) => {
+                    if ('ROLE_USER' === currentRole || 'ROLE_SUPER_ADMIN' === currentRole) {
+                        return '';
+                    }
+                    if ('ROLE_ALLOWED_TO_SWITCH' === currentRole) {
+                        return '';
+                    }
+                    if ('ROLE_ADMIN' === currentRole) {
+                        return '👨‍💼 ';
+                    }
+
+                    return `${currentRole.substring(5)} `;
+                }).join(' ');
+                let teams = Object.values(user.teams).map((currentTeam) => {
+                    return currentTeam.name
+                }).join(', ')
+                if ((doShorten || teams.length > 20) && teams !== teams.substring(0, trimLength)) {
+                    teams = `${teams.substring(0, trimLength)}...`;
+                }
+                additionalUserInfo += teams;
+
+
+                if ('' !== additionalUserInfo.trim()) {
+                    additionalUserInfo = additionalUserInfo.trim() + ' - ';
+                }
+                let clientName = this.getClientByIri(user.client).name;
+                if (doShorten && clientName !== clientName.substring(0, trimLength)) {
+                    clientName = `${clientName.substring(0, trimLength)}...`;
+                }
+                additionalUserInfo += ` ${clientName}`;
+
+                return `${additionalUserInfo.trim()}`;
             },
         },
     }
