@@ -61,7 +61,7 @@ const state = {
                 },
                 {
                     text: [
-                        'Feature: Ein Benutzer kann die Wegpunktliste nach nicht beendeten Runden filtern.',
+                        'Feature: Ein Benutzer kann die Rundenliste auf dem Dashboard nach nicht beendeten Runden filtern.',
                     ],
                     gallery: [
                         {
