@@ -375,7 +375,7 @@
                     additionalUserInfo = additionalUserInfo.trim() + ' - ';
                 }
                 let clientName = this.getClientByIri(user.client).name;
-                if (doShorten && clientName !== clientName.substring(0, trimLength)) {
+                if (doShorten && clientName && clientName !== clientName.substring(0, trimLength)) {
                     clientName = `${clientName.substring(0, trimLength)}...`;
                 }
                 additionalUserInfo += ` ${clientName}`;
