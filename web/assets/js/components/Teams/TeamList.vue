@@ -64,7 +64,12 @@
         components: { TeamForm },
         data: function () {
             return {
-                fields: [
+                editTeam: null,
+            };
+        },
+        computed: {
+            fields() {
+                return [
                     {
                         key: 'name',
                         sortable: true,
@@ -134,7 +139,7 @@
                         formatter: (value, key, item) => {
                             let ageRanges = [];
                             if (!item.isWithAgeRanges) {
-                              return '-';
+                                return '-';
                             }
                             value.forEach(ageRange => {
                                 ageRanges.push(ageRange.rangeStart + '-' + ageRange.rangeEnd)
@@ -148,7 +153,48 @@
                         },
                         sortByFormatted: true,
                         sortable: true,
+                        class: this.hasAtLeastOneTeamAgeRanges ? 'text-center' : 'd-none',
+                    },
+                    {
+                        key: 'additionalWalkFields',
+                        label: 'zusätzliche Runden-Felder',
+                        sortable: false,
+                        sortByFormatted: false,
                         class: 'text-center',
+                        formatter: (value, key, item) => {
+                            let additionalWayPointFields = [];
+                            if (item.isWithGuests) {
+                                additionalWayPointFields.push('Weitere Teilnehmende');
+                            }
+
+                            if (additionalWayPointFields.length) {
+                                return additionalWayPointFields.join(', ');
+                            }
+
+                            return '-';
+                        },
+                    },
+                    {
+                        key: 'guestNames',
+                        label: 'mögliche weitere Teilnehmende',
+                        formatter: (value, key, item) => {
+                            let ageRanges = [];
+                            if (!item.isWithGuests) {
+                                return '-';
+                            }
+                            value.forEach(ageRange => {
+                                ageRanges.push(ageRange)
+                            })
+
+                            if (ageRanges.length) {
+                                return ageRanges.join(', ')
+                            }
+
+                            return '-'
+                        },
+                        sortByFormatted: true,
+                        sortable: true,
+                        class: this.hasAtLeastOneTeamGuestNames ? 'text-center' : 'd-none',
                     },
                     {
                         key: 'client',
@@ -159,11 +205,8 @@
                         formatter: this.clientFormatter,
                     },
                     {key: 'actions', label: 'Aktionen', class: 'text-center',}
-                ],
-                editTeam: null,
-            }
-        },
-        computed: {
+                ];
+            },
             isDisabled() {
                 return this.$store.getters["team/changeTeamIsLoading"];
             },
@@ -188,6 +231,12 @@
             },
             isSuperAdmin() {
                 return this.$store.getters['security/isSuperAdmin'];
+            },
+            hasAtLeastOneTeamGuestNames() {
+                return !this.teams.every(team => !team.isWithGuests);
+            },
+            hasAtLeastOneTeamAgeRanges() {
+                return !this.teams.every(team => !team.isWithAgeRanges);
             },
         },
         async created() {
@@ -219,6 +268,8 @@
                     isWithAgeRanges: team.isWithAgeRanges,
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
+                    isWithGuests: team.isWithGuests,
+                    guestNames: team.guestNames,
                 });
 
                 if (changedTeam) {

@@ -52,7 +52,7 @@ Feature: Testing walk change resource
   Scenario: I can request /api/walks/change as a normal user and an access denied error will occur
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "POST" request to "/api/walks/change" with parameters:
-      | key  | value             |
+      | key  | value                |
       | walk | walkIri<Spaziergang> |
     Then the response status code should be 403
 #    And print last response
@@ -108,6 +108,8 @@ Feature: Testing walk change resource
       | violations[12].message      | Dieser Wert sollte nicht null sein. |
       | violations[13].propertyPath | walkTeamMembers                     |
       | violations[13].message      | Dieser Wert sollte nicht null sein. |
+      | violations[14].propertyPath | guestNames                          |
+      | violations[14].message      | Dieser Wert sollte nicht null sein. |
 
   @api @walkChange
   Scenario: I can request /api/walks/change as authenticated user and will change a walk
@@ -128,6 +130,7 @@ Feature: Testing walk change resource
       | rating          | int<2>                    |
       | startTime       | 2021-05-11T15:51:06+00:00 |
       | endTime         | 2030-05-11T15:51:08+00:00 |
+      | guestNames      | array<>                   |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:

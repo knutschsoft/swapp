@@ -66,7 +66,7 @@
                 return users.sort((a, b) => a > b ? 1 : -1);
             },
             fields() {
-                return [
+                let fields = [
                     { name: 'Name', value: this.walk.name },
                     { name: 'angetroffene männliche Personen', value: this.walk.malesCount ? this.walk.malesCount : 'keine männlichen Personen angetroffen' },
                     { name: 'angetroffene weibliche Personen', value: this.walk.femalesCount ? this.walk.femalesCount : 'keine weiblichen Personen angetroffen' },
@@ -85,9 +85,13 @@
                     { name: 'Erkenntnisse, Überlegungen, Zielsetzungen', value: this.walk.insights, nl2br: true },
                     { name: 'Wiedervorlage Dienstberatung', value: this.walk.isResubmission ? 'ja' : 'nein' },
                     { name: 'Team', value: this.walk.teamName },
-                    { name: 'Teilnehmer', value: this.walkTeamMembers.length ? this.walkTeamMembers.join(', ') : 'keine Teilnehmer' },
-                    { name: 'Gäste', value: this.walk.guests && this.walk.guests.length ? this.walk.guests.join(', ') : 'keine Gäste' },
-                ]
+                    { name: 'Teilnehmende', value: this.walkTeamMembers.length ? this.walkTeamMembers.join(', ') : 'keine Teilnehmenden' },
+                ];
+                if (this.walk.isWithGuests) {
+                    fields.push({ name: 'Weitere Teilnehmende', value: this.walk.guestNames && this.walk.guestNames.length ? this.walk.guestNames.join(', ') : 'keine weiteren Teilnehmenden' });
+                }
+
+                return fields;
             },
         },
         watch: {},

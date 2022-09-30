@@ -4,7 +4,7 @@
         class="p-1 p-sm-2 p-lg-3"
     >
         <form-group
-            :label="`Teilnehmer der Runde`"
+            :label="`Teilnehmende der Runde`"
             description="Wer war mit dabei?"
         >
             <b-form-checkbox-group
@@ -26,7 +26,27 @@
                 </div>
             </b-form-checkbox-group>
         </form-group>
-        <form-group label="Ort">
+        <form-group
+            :label="`Weitere Teilnehmende`"
+        >
+            <b-form-tags
+                v-model="walk.guestNames"
+                :disabled="isLoading"
+                tag-pills
+                placeholder="Namen eintragen..."
+                add-button-text="Hinzufügen"
+                duplicate-tag-text="Weiterer Teilnehmender ist schon dabei"
+                remove-on-delete
+                :input-attrs="{ list: 'guest-name-list' }"
+                add-on-change
+            />
+            <b-form-datalist
+                id="guest-name-list"
+                :options="guestNames"
+                autocomplete="off"
+            />
+        </form-group>
+        <form-group label="Name">
             <b-input
                 v-model="walk.name"
                 :disabled="isLoading"
@@ -226,7 +246,6 @@ export default {
             startTimeTime: null,
             endTimeDate: null,
             endTimeTime: null,
-            team: null,
             walk: {
                 name: null,
                 commitments: null,
@@ -242,6 +261,7 @@ export default {
                 walkReflection: null,
                 weather: null,
                 walkTeamMembers: [],
+                guestNames: [],
             },
             dateLabels: {
                 de: {
@@ -275,6 +295,20 @@ export default {
         };
     },
     computed: {
+        team() {
+            return this.$store.getters['team/getTeamByTeamName'](this.initialWalk.teamName);
+        },
+        guestNames() {
+            let guestNames = [];
+            if (!this.team || !this.initialWalk.isWithGuests) {
+                return guestNames;
+            }
+            guestNames = [...new Set(this.initialWalk.guestNames.concat(this.team.guestNames))];
+
+            return guestNames.filter((guestName) => {
+                return !this.walk.guestNames.includes(guestName);
+            });
+        },
         nameState() {
             if (null === this.walk.name || '' === this.walk.name || undefined === this.walk.name) {
                 return;
@@ -430,9 +464,13 @@ export default {
         this.walk.walkReflection = this.initialWalk.walkReflection;
         this.walk.weather = this.initialWalk.weather;
         this.walk.walkTeamMembers = this.initialWalk.walkTeamMembers.slice();
+        this.walk.guestNames = this.initialWalk.guestNames.slice();
 
         if (!this.users.length) {
             await this.$store.dispatch('user/findAll');
+        }
+        if (!this.team) {
+            await this.$store.dispatch('team/findAll');
         }
 
         this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');

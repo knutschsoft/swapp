@@ -70,10 +70,17 @@ class Team
 
     /** @var string[] */
     #[ORM\Column(type: 'array')]
+    private array $guestNames;
+
+    /** @var string[] */
+    #[ORM\Column(type: 'array')]
     private array $locationNames;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isWithAgeRanges;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithGuests;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
@@ -85,6 +92,8 @@ class Team
     {
         $this->ageRanges = [];
         $this->userGroupNames = [];
+        $this->guestNames = [];
+        $this->isWithGuests = false;
         $this->locationNames = [];
         $this->users = new ArrayCollection();
     }
@@ -181,6 +190,37 @@ class Team
         $locationNames = \array_map('trim', $locationNames);
         \natcasesort($locationNames);
         $this->locationNames = \array_values(\array_unique($locationNames));
+    }
+
+    /**
+     * @return string[]
+     */
+    #[Groups(['team:read'])]
+    public function getGuestNames(): array
+    {
+        return $this->guestNames;
+    }
+
+    /**
+     * @param string[] $guestNames
+     */
+    public function setGuestNames(array $guestNames): void
+    {
+        $guestNames = \array_map('trim', $guestNames);
+        \natcasesort($guestNames);
+        $this->guestNames = \array_values(\array_unique($guestNames));
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithGuests')]
+    public function isWithGuests(): bool
+    {
+        return $this->isWithGuests;
+    }
+
+    public function setIsWithGuests(bool $isWithGuests): void
+    {
+        $this->isWithGuests = $isWithGuests;
     }
 
     #[Groups(['team:read'])]

@@ -29,9 +29,6 @@ Feature: An administrator can change startTime of a walk
     When I go to swapp page "/runde/walkId<Klippe>/detail"
     Then I wait for 'Runde "Klippe" ändern' to appear
 
-#    When I click on element "collapse-walk-detail"
-#    Then I wait for "Keine Gäste" to disappear
-
     When I click on element "startTimeTime"
     Then I wait for 'Schließen' to appear
     When I click on aria label "Erhöhen"

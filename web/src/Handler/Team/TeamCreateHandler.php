@@ -31,6 +31,10 @@ final class TeamCreateHandler implements MessageHandlerInterface
         }
         $team->setUsers(new ArrayCollection($request->users));
         $team->setName($request->name);
+        $team->setIsWithGuests($request->isWithGuests);
+        if ($request->isWithGuests) {
+            $team->setGuestNames($request->guestNames);
+        }
         $team->setLocationNames($request->locationNames);
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);

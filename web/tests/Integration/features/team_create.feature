@@ -60,6 +60,8 @@ Feature: Testing team create resource
       | isWithAgeRanges     | <true>                   |
       | isWithContactsCount | <false>                  |
       | isWithUserGroups    | <false>                  |
+      | isWithGuests        | <false>                  |
+      | guestNames          | array<>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -90,6 +92,8 @@ Feature: Testing team create resource
       | isWithAgeRanges     | <false>                  |
       | isWithContactsCount | <false>                  |
       | isWithUserGroups    | <false>                  |
+      | isWithGuests        | <false>                  |
+      | guestNames          | array<>                  |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -120,6 +124,8 @@ Feature: Testing team create resource
       | isWithContactsCount | <true>                         |
       | isWithUserGroups    | <true>                         |
       | userGroupNames      | userGroupNames<Nutzende,Dudes> |
+      | isWithGuests        | <false>                        |
+      | guestNames          | array<>                        |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -154,18 +160,22 @@ Feature: Testing team create resource
       | violations[0].message      | Dieser Wert sollte nicht leer sein.                                    |
       | violations[1].propertyPath | name                                                                   |
       | violations[1].message      | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 3 Zeichen haben. |
-      | violations[2].propertyPath | locationNames                                                          |
+      | violations[2].propertyPath | guestNames                                                             |
       | violations[2].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[3].propertyPath | users                                                                  |
+      | violations[3].propertyPath | locationNames                                                          |
       | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[4].propertyPath | isWithAgeRanges                                                        |
+      | violations[4].propertyPath | users                                                                  |
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath | ageRanges                                                              |
+      | violations[5].propertyPath | isWithAgeRanges                                                        |
       | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[6].propertyPath | isWithContactsCount                                                    |
+      | violations[6].propertyPath | ageRanges                                                              |
       | violations[6].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[7].propertyPath | isWithUserGroups                                                       |
+      | violations[7].propertyPath | isWithGuests                                                           |
       | violations[7].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[8].propertyPath | isWithContactsCount                                                    |
+      | violations[8].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[9].propertyPath | isWithUserGroups                                                       |
+      | violations[9].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team

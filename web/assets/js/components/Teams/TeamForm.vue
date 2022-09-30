@@ -75,194 +75,330 @@
 
         <b-card
             bg-variant="light"
+            header="Einstellungen für die Dokumentation einer Runde"
+            class="mb-4"
+        >
+            <b-form-group
+                label="Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?"
+                class="mb-0"
+            >
+                <b-row>
+                    <b-col
+                        md="6"
+                    >
+                        <b-card
+                            bg-variant="light"
+                            no-body
+                        >
+                            <b-card-header>
+                                <b-form-checkbox
+                                    v-model="team.isWithGuests"
+                                    :disabled="isDisabled"
+                                    switch
+                                >
+                                    Weitere Teilnehmende
+                                </b-form-checkbox>
+                            </b-card-header>
+                            <b-card-body
+                                v-if="team.isWithGuests"
+                                @keyup.alt.a="addGuestName"
+                                tabindex="0"
+                            >
+                                <b-form-group
+                                    label="Autocomplete-Vorschläge für die weitere Teilnehmende"
+                                    v-slot="{ ariaDescribedby }"
+                                    description="Zusätzlich zu den Autocomplete-Vorschlägen ist es auch möglich bei der Rundenerstellung eigene weitere Teilnehmende einzugeben."
+                                    class="mb-0"
+                                >
+                                    <b-row
+                                        v-for="(guestName, i) in team.guestNames"
+                                        :key="i"
+                                    >
+                                        <b-col cols="8" class="mb-1">
+                                            <b-input
+                                                v-model="team.guestNames[i]"
+                                                :aria-describedby="ariaDescribedby"
+                                                :disabled="isDisabled"
+                                                type="text"
+                                                :state="team.guestNames[i] === '' ? null : (team.guestNames[i].length > 1 && team.guestNames[i].length <= 300)"
+                                                trim
+                                                ref="guestNameInputs"
+                                                required
+                                                autocomplete="new-guest-name"
+                                                placeholder="Vorname, Nachname, Pseudonym"
+                                            />
+                                        </b-col>
+                                        <b-col cols="3" class="mb-1">
+                                            <div
+                                                class="cursor-pointer mt-1"
+                                                @click="removeGuestName(i)"
+                                            >
+                                                <mdicon
+                                                    name="DeleteCircleOutline"
+                                                />
+                                            </div>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col cols="12">
+                                            <div
+                                                class="cursor-pointer mt-1"
+                                                @click="addGuestName()"
+                                            >
+                                                <mdicon
+                                                    name="PlusCircleOutline"
+                                                />
+                                                neuen Autocomplete-Vorschl<u>a</u>g hinzufügen
+                                            </div>
+                                        </b-col>
+                                    </b-row>
+                                </b-form-group>
+                            </b-card-body>
+                        </b-card>
+                    </b-col>
+                </b-row>
+            </b-form-group>
+        </b-card>
+
+        <b-card
+            bg-variant="light"
             header="Einstellungen für die Dokumentation eines Wegpunktes"
             class="mb-4"
         >
             <b-form-group
                 label="Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?"
+                class="mb-0"
             >
-                <b-form-checkbox
-                    v-model="team.isWithAgeRanges"
-                    :disabled="isDisabled"
-                    switch
-                >
-                    Altersgruppen
-                </b-form-checkbox>
-                <b-card
-                    v-if="team.isWithAgeRanges"
-                    bg-variant="light"
-                    header="Altersgruppen definieren"
-                >
-                    <b-form-group
-                        v-slot="{ ariaDescribedby }"
+                <b-row>
+                    <b-col
+                        md="6"
+                        lg="4"
+                        class="mb-2"
                     >
-                        <b-row
-                            v-for="(ageRange, i) in team.ageRanges"
-                            :key="i"
+                        <b-card
+                            bg-variant="light"
+                            no-body
                         >
-                            <b-col cols="12">
-                                {{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre
-                            </b-col>
-                            <b-col cols="4" class="mb-2">
-                                <b-input
-                                    v-model="team.ageRanges[i].rangeStart"
-                                    :aria-describedby="ariaDescribedby"
+                            <b-card-header>
+                                <b-form-checkbox
+                                    v-model="team.isWithContactsCount"
                                     :disabled="isDisabled"
-                                    type="number"
-                                    min="0"
-                                    max="120"
-                                    trim
-                                    number
-                                    step="1"
-                                    required
-                                    placeholder="von"
-                                />
-                            </b-col>
-                            <b-col cols="4" class="mb-2">
-                                <b-input
-                                    v-model="team.ageRanges[i].rangeEnd"
-                                    :aria-describedby="ariaDescribedby"
-                                    :disabled="isDisabled"
-                                    type="number"
-                                    min="0"
-                                    max="120"
-                                    trim
-                                    number
-                                    step="1"
-                                    required
-                                    placeholder="bis"
-                                />
-                            </b-col>
-                            <b-col cols="3">
-                                <div
-                                    class="cursor-pointer mt-2"
-                                    @click="removeAgeRange(i)"
+                                    switch
                                 >
-                                    <mdicon
-                                        name="DeleteCircleOutline"
-                                    />
-                                </div>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col cols="12">
-                                <div
-                                    class="cursor-pointer mt-1"
-                                    @click="addAgeRange()"
-                                >
-                                    <mdicon
-                                        name="PlusCircleOutline"
-                                    />
-                                    neue Altersgruppe hinzufügen
-                                </div>
-                            </b-col>
-                        </b-row>
-                    </b-form-group>
-                </b-card>
-                <b-form-checkbox
-                    v-model="team.isWithContactsCount"
-                    :disabled="isDisabled"
-                    switch
-                >
-                    Anzahl direkter Kontakte
-                </b-form-checkbox>
-                <b-form-text>
-                    Eine Person gilt als direkter Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
-                </b-form-text>
-                <b-form-checkbox
-                    v-model="team.isWithUserGroups"
-                    :disabled="isDisabled"
-                    switch
-                >
-                    Personenanzahl von Nutzergruppen
-                </b-form-checkbox>
-                <b-form-text>
-                    Beispiele für Nutzergruppen sind:
-                    <ul class="mb-0">
-                        <li>Aktuell Nutzende</li>
-                        <li>jemals genutzt - nutzungsberechtigt</li>
-                        <li>jemals genutzt - nicht nutzungsberechtigt</li>
-                        <li>nie genutzt - nutzungsberechtigt</li>
-                        <li>nie genutzt - nicht nutzungsberechtigt</li>
-                    </ul>
-                </b-form-text>
-                <b-card
-                    v-if="team.isWithUserGroups"
-                    bg-variant="light"
-                    header="Nutzergruppen definieren"
-                >
-                    <b-form-group
-                        v-slot="{ ariaDescribedby }"
-                        class="mb-0"
+                                    Anzahl direkter Kontakte
+                                </b-form-checkbox>
+                                <b-form-text>
+                                    Eine Person gilt als direkter Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
+                                </b-form-text>
+                            </b-card-header>
+                        </b-card>
+                    </b-col>
+                    <b-col
+                        md="6"
+                        lg="4"
+                        class="mb-2"
                     >
-                        <b-row
-                            v-for="(userGroupName, i) in team.userGroupNames"
-                            :key="i"
+                        <b-card
+                            bg-variant="light"
+                            no-body
                         >
-                            <b-col cols="8" class="mb-1">
-                                <b-input
-                                    v-model="team.userGroupNames[i].name"
-                                    :aria-describedby="ariaDescribedby"
+                            <b-card-header>
+                                <b-form-checkbox
+                                    v-model="team.isWithAgeRanges"
                                     :disabled="isDisabled"
-                                    type="text"
-                                    :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
-                                    trim
-                                    required
-                                    autocomplete="off"
-                                    placeholder="Name der Nutzergruppe eingeben..."
-                                />
-                            </b-col>
-                            <b-col cols="4" class="mb-1">
-                                <div class="mt-1">
-                                      <span
-                                          class="cursor-pointer"
-                                          @click="removeUserGroupName(i)"
-                                      >
-                                          <mdicon
-                                              name="DeleteCircleOutline"
-                                          />
-                                      </span>
-                                    <span
-                                        v-if="i !== 0"
-                                        class="cursor-pointer mt-1"
-                                        @click="moveUserGroupUp(i)"
-                                    >
-                                          <mdicon
-                                              name="ArrowUpDropCircleOutline"
-                                          />
-                                      </span>
-                                    <span
-                                        v-if="i !== (team.userGroupNames.length - 1)"
-                                        class="cursor-pointer mt-1"
-                                        @click="moveUserGroupDown(i)"
-                                    >
-                                          <mdicon
-                                              name="ArrowDownDropCircleOutline"
-                                          />
-                                      </span>
-                                </div>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col cols="12">
-                                <div
-                                    class="cursor-pointer mt-1"
-                                    @click="addUserGroupName()"
+                                    switch
                                 >
-                                    <mdicon
-                                        name="PlusCircleOutline"
-                                    />
-                                    neue Nutzergruppe hinzufügen
-                                </div>
-                            </b-col>
-                        </b-row>
-                    </b-form-group>
-                </b-card>
+                                    Altersgruppen
+                                </b-form-checkbox>
+                            </b-card-header>
+                            <b-card-body
+                                v-if="team.isWithAgeRanges"
+                            >
+                                <b-form-group
+                                    label="Altersgruppen definieren"
+                                    v-slot="{ ariaDescribedby }"
+                                    class="mb-0"
+                                >
+                                    <b-row
+                                        v-for="(ageRange, i) in team.ageRanges"
+                                        :key="i"
+                                    >
+                                        <b-col cols="12">
+                                            {{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre
+                                        </b-col>
+                                        <b-col cols="4" class="mb-2">
+                                            <b-input
+                                                v-model="team.ageRanges[i].rangeStart"
+                                                :aria-describedby="ariaDescribedby"
+                                                :disabled="isDisabled"
+                                                type="number"
+                                                min="0"
+                                                max="120"
+                                                trim
+                                                number
+                                                step="1"
+                                                required
+                                                placeholder="von"
+                                            />
+                                        </b-col>
+                                        <b-col cols="4" class="mb-2">
+                                            <b-input
+                                                v-model="team.ageRanges[i].rangeEnd"
+                                                :aria-describedby="ariaDescribedby"
+                                                :disabled="isDisabled"
+                                                type="number"
+                                                min="0"
+                                                max="120"
+                                                trim
+                                                number
+                                                step="1"
+                                                required
+                                                placeholder="bis"
+                                            />
+                                        </b-col>
+                                        <b-col cols="3">
+                                            <div
+                                                class="cursor-pointer mt-2"
+                                                @click="removeAgeRange(i)"
+                                            >
+                                                <mdicon
+                                                    name="DeleteCircleOutline"
+                                                />
+                                            </div>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col cols="12">
+                                            <div
+                                                class="cursor-pointer mt-1"
+                                                @click="addAgeRange()"
+                                            >
+                                                <mdicon
+                                                    name="PlusCircleOutline"
+                                                />
+                                                neue Altersgruppe hinzufügen
+                                            </div>
+                                        </b-col>
+                                    </b-row>
+                                </b-form-group>
+                            </b-card-body>
+                        </b-card>
+                    </b-col>
+                    <b-col
+                        md="6"
+                        lg="4"
+                        class="mb-2"
+                    >
+                        <b-card
+                            bg-variant="light"
+                            no-body
+                        >
+                            <b-card-header>
+                                <b-form-checkbox
+                                    v-model="team.isWithUserGroups"
+                                    :disabled="isDisabled"
+                                    switch
+                                >
+                                    Personenanzahl von Nutzergruppen
+                                </b-form-checkbox>
+                            </b-card-header>
+                            <b-card-body
+                                v-if="team.isWithUserGroups"
+                                header="Nutzergruppen definieren"
+                            >
+                                <b-form-group
+                                    label="Nutzergruppen definieren"
+                                    class="mb-0"
+                                >
+                                    <template #description>
+                                        <b-form-text>
+                                            Beispiele für Nutzergruppen sind:
+                                            <ul class="mb-0">
+                                                <li>Aktuell Nutzende</li>
+                                                <li>jemals genutzt - nutzungsberechtigt</li>
+                                                <li>jemals genutzt - nicht nutzungsberechtigt</li>
+                                                <li>nie genutzt - nutzungsberechtigt</li>
+                                                <li>nie genutzt - nicht nutzungsberechtigt</li>
+                                            </ul>
+                                        </b-form-text>
+                                    </template>
+                                    <template
+                                        #default
+                                        v-slot="ariaDescribedby"
+                                    >
+                                        <b-row
+                                            v-for="(userGroupName, i) in team.userGroupNames"
+                                            :key="i"
+                                        >
+                                            <b-col cols="8" class="mb-1">
+                                                <b-input
+                                                    v-model="team.userGroupNames[i].name"
+                                                    :aria-describedby="ariaDescribedby"
+                                                    :disabled="isDisabled"
+                                                    type="text"
+                                                    :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
+                                                    trim
+                                                    required
+                                                    autocomplete="off"
+                                                    placeholder="Name der Nutzergruppe eingeben..."
+                                                />
+                                            </b-col>
+                                            <b-col cols="4" class="mb-1">
+                                                <div class="mt-1">
+                                                    <span
+                                                        class="cursor-pointer"
+                                                        @click="removeUserGroupName(i)"
+                                                    >
+                                                        <mdicon
+                                                            name="DeleteCircleOutline"
+                                                        />
+                                                    </span>
+                                                    <span
+                                                        v-if="i !== 0"
+                                                        class="cursor-pointer mt-1"
+                                                        @click="moveUserGroupUp(i)"
+                                                    >
+                                                        <mdicon
+                                                            name="ArrowUpDropCircleOutline"
+                                                        />
+                                                    </span>
+                                                    <span
+                                                        v-if="i !== (team.userGroupNames.length - 1)"
+                                                        class="cursor-pointer mt-1"
+                                                        @click="moveUserGroupDown(i)"
+                                                    >
+                                                        <mdicon
+                                                            name="ArrowDownDropCircleOutline"
+                                                        />
+                                                    </span>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col cols="12">
+                                                <div
+                                                    class="cursor-pointer mt-1"
+                                                    @click="addUserGroupName()"
+                                                >
+                                                    <mdicon
+                                                        name="PlusCircleOutline"
+                                                    />
+                                                    neue Nutzergruppe hinzufügen
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                    </template>
+                                </b-form-group>
+                            </b-card-body>
+                        </b-card>
+                    </b-col>
+                </b-row>
             </b-form-group>
 
             <b-form-group
                 label="Autocomplete-Vorschläge für den Ort eines Wegpunktes"
                 v-slot="{ ariaDescribedby }"
+                class="mb-0"
             >
                 <b-row
                     v-for="(locationName, i) in team.locationNames"
@@ -351,10 +487,12 @@ export default {
                 name: '',
                 isWithAgeRanges: false,
                 isWithContactsCount: false,
+                isWithGuests: false,
                 isWithUserGroups: false,
                 users: [],
                 ageRanges: [],
                 locationNames: [],
+                guestNames: [],
                 userGroupNames: [],
             },
             client: null,
@@ -370,19 +508,6 @@ export default {
         },
         isDisabled () {
             return this.$store.getters['team/changeTeamIsLoading']
-        },
-        colors () {
-            return this.$store.getters['tag/tags'].map(tag => tag.color)
-        },
-        names () {
-            return this.$store.getters['tag/tags'].map(tag => tag.name)
-        },
-        colorState () {
-            if (null === this.color) {
-                return
-            }
-
-            return -1 === this.colors.indexOf(this.color)
         },
         nameState () {
             if (null === this.team.name || '' === this.team.name) {
@@ -434,6 +559,15 @@ export default {
         },
         addLocationName () {
             this.team.locationNames = [...this.team.locationNames, '']
+        },
+        removeGuestName (index) {
+            this.$delete(this.team.guestNames, index)
+        },
+        addGuestName () {
+            this.team.guestNames = [...this.team.guestNames, ''];
+            this.$nextTick(() => {
+                this.$refs.guestNameInputs[this.$refs.guestNameInputs.length - 1].focus();
+            });
         },
         removeUserGroupName (index) {
             this.$delete(this.team.userGroupNames, index)

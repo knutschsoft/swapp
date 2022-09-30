@@ -146,10 +146,6 @@ class Walk
     #[ORM\Column(type: 'boolean')]
     private bool $isResubmission;
 
-    /** @var Collection<int, Guest> **/
-    #[ORM\OneToMany(mappedBy: 'walk', targetEntity: Guest::class)]
-    private Collection $guests;
-
     #[ORM\Column(type: 'string', length: 255)]
     private string $weather;
 
@@ -169,6 +165,13 @@ class Walk
     #[ORM\OrderBy(value: ['order' => 'asc'])]
     private Client $client;
 
+    /** @var string[] */
+    #[ORM\Column(type: 'array')]
+    private array $guestNames;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithGuests;
+
     #[ORM\Column(type: 'boolean')]
     private bool $isWithAgeRanges;
 
@@ -185,10 +188,10 @@ class Walk
     {
         $this->ageRanges = [];
         $this->userGroupNames = [];
+        $this->guestNames = [];
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
         $this->wayPoints = new ArrayCollection();
-        $this->guests = new ArrayCollection();
         $this->holidays = false;
         $this->conceptOfDay = '';
         $this->commitments = '';
@@ -206,6 +209,10 @@ class Walk
 
         $instance->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
         $instance->setTeamName($team->getName());
+        $instance->setIsWithGuests($team->isWithGuests());
+        if ($team->isWithGuests()) {
+            $instance->setGuestNames($request->guestNames);
+        }
         $instance->setIsWithAgeRanges($team->isWithAgeRanges());
         if ($instance->isWithAgeRanges()) {
             $instance->setAgeRanges($team->getAgeRanges());
@@ -305,23 +312,6 @@ class Walk
     public function setHolidays(bool $holidays): void
     {
         $this->holidays = $holidays;
-    }
-
-    /**
-     * @return Collection<int,Guest>
-     */
-    #[Groups(['walk:read'])]
-    public function getGuests(): Collection
-    {
-        return $this->guests;
-    }
-
-    /**
-     * @param Collection<int,Guest> $guests
-     */
-    public function setGuests(Collection $guests): void
-    {
-        $this->guests = $guests;
     }
 
     #[Groups(['walk:read'])]
@@ -591,18 +581,6 @@ class Walk
         $this->walkTeamMembers->removeElement($walkTeamMember);
     }
 
-    public function addGuest(Guest $guest): self
-    {
-        $this->guests[] = $guest;
-
-        return $this;
-    }
-
-    public function removeGuest(Guest $guest): void
-    {
-        $this->guests->removeElement($guest);
-    }
-
     #[Groups(['walk:read'])]
     public function getIsUnfinished(): bool
     {
@@ -631,6 +609,37 @@ class Walk
             '%s',
             $this->getName()
         );
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithGuests')]
+    public function isWithGuests(): bool
+    {
+        return $this->isWithGuests;
+    }
+
+    public function setIsWithGuests(bool $isWithGuests): void
+    {
+        $this->isWithGuests = $isWithGuests;
+    }
+
+    /**
+     * @return string[]
+     */
+    #[Groups(['walk:read'])]
+    public function getGuestNames(): array
+    {
+        return $this->guestNames;
+    }
+
+    /**
+     * @param string[] $guestNames
+     */
+    public function setGuestNames(array $guestNames): void
+    {
+        $guestNames = \array_map('trim', $guestNames);
+        \natcasesort($guestNames);
+        $this->guestNames = \array_values(\array_unique($guestNames));
     }
 
     #[Groups(['walk:read'])]

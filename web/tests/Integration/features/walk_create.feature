@@ -68,6 +68,8 @@ Feature: Testing walk create resource
       | violations[4].message      | Dieser Wert sollte nicht null sein. |
       | violations[5].propertyPath | walkTeamMembers                     |
       | violations[5].message      | Dieser Wert sollte nicht null sein. |
+      | violations[6].propertyPath | guestNames                          |
+      | violations[6].message      | Dieser Wert sollte nicht null sein. |
     And there are exactly 2 walks in database
 
   @api @walkCreate
@@ -82,6 +84,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
+      | guestNames      | array<>               |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -105,6 +108,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
+      | guestNames      | array<>               |
 #    And print last response
     Then the response status code should be 400
     And the JSON nodes should be equal to:
@@ -124,6 +128,7 @@ Feature: Testing walk create resource
       | startTime       | 2020-01-01T13:37:22+02:00 |
       | walkTeamMembers | userIris<karl@gmx.de>     |
       | holidays        | <false>                   |
+      | guestNames      | array<>                   |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
@@ -149,6 +154,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
+      | guestNames      | array<>               |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -206,6 +212,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
+      | guestNames      | array<>               |
 #    And print last response
     Then the response status code should be 200
     And I can find the following walks in database:
@@ -225,6 +232,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020                                                    |
       | walkTeamMembers | userIris<karl@gmx.de>                                         |
       | holidays        | <false>                                                       |
+      | guestNames      | array<>                                                       |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -248,6 +256,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020              |
       | walkTeamMembers | userIris<karl@gamer.de> |
       | holidays        | <false>                 |
+      | guestNames      | array<>                 |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -271,6 +280,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
+      | guestNames      | array<>               |
 #    And print last response
     Then the response status code should be 400
     And the JSON nodes should be equal to:
@@ -293,6 +303,7 @@ Feature: Testing walk create resource
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
+      | guestNames      | array<>               |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:

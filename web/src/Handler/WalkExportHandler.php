@@ -46,15 +46,22 @@ final class WalkExportHandler implements MessageHandlerInterface
 
         $ageHeaders = [];
         $isAtLeastOneWalkWithContactsCount = false;
+        $isAtLeastOneWalkWithGuestNames = false;
         foreach ($walks as $walk) {
+            \assert($walk instanceof Walk);
             if ($walk->isWithContactsCount()) {
                 $isAtLeastOneWalkWithContactsCount = true;
             }
-            \assert($walk instanceof Walk);
+            if ($walk->isWithGuests()) {
+                $isAtLeastOneWalkWithGuestNames = true;
+            }
             $ageHeaders = \array_merge($ageHeaders, $this->getCsvAgeHeaders($walk));
         }
         if ($isAtLeastOneWalkWithContactsCount) {
             $headers[] = 'Anzahl direkter Kontakte';
+        }
+        if ($isAtLeastOneWalkWithGuestNames) {
+            $headers[] = 'Weitere Teilnehmende';
         }
         $headers[] = 'Anzahl Personen vor Ort';
         $headers = \array_merge($headers, $ageHeaders);
@@ -63,7 +70,7 @@ final class WalkExportHandler implements MessageHandlerInterface
 
         foreach ($walks as $walk) {
             \assert($walk instanceof Walk);
-            $csv->insertOne($this->getCsvContentCells($walk, $ageHeaders, $isAtLeastOneWalkWithContactsCount));
+            $csv->insertOne($this->getCsvContentCells($walk, $ageHeaders, $isAtLeastOneWalkWithContactsCount, $isAtLeastOneWalkWithGuestNames));
         }
 
         return new Response(
@@ -114,11 +121,16 @@ final class WalkExportHandler implements MessageHandlerInterface
      * @param Walk                                    $walk
      * @param array<int|string, bool|int|string|null> $ageHeaders
      * @param bool                                    $isAtLeastOneWalkWithContactsCount
+     * @param bool                                    $isAtLeastOneWalkWithGuestNames
      *
      * @return array<int|string, string>
      */
-    private function getCsvContentCells(Walk $walk, array $ageHeaders, bool $isAtLeastOneWalkWithContactsCount): array
-    {
+    private function getCsvContentCells(
+        Walk $walk,
+        array $ageHeaders,
+        bool $isAtLeastOneWalkWithContactsCount,
+        bool $isAtLeastOneWalkWithGuestNames
+    ): array {
         $content = [
             (string) $walk->getId(),
             $walk->getName(),
@@ -139,6 +151,9 @@ final class WalkExportHandler implements MessageHandlerInterface
 
         if ($isAtLeastOneWalkWithContactsCount) {
             $content[] = (string) $walk->getSumOfContactsCount();
+        }
+        if ($isAtLeastOneWalkWithGuestNames) {
+            $content[] = \implode(', ', $walk->getGuestNames());
         }
         $content[] = (string) $walk->getPeopleCount();
 

@@ -257,6 +257,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $request->holidays = isset($row['holidays']) ? (bool) $row['holidays'] : false;
             $request->conceptOfDay = $row['conceptOfDay'] ?? 'My daily concept.';
             $request->walkTeamMembers = $team->getUsers()->toArray();
+            $request->guestNames = $team->getGuestNames();
             $walk = Walk::fromWalkCreateRequest($request, $systemicQuestion);
 
             if (isset($row['endTime'])) {
@@ -474,6 +475,12 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['isWithContactsCount']) && '' !== $row['isWithContactsCount']) {
                 Assert::eq($walk->isWithContactsCount(), (bool) $this->enrichText($row['isWithContactsCount']));
             }
+            if (isset($row['isWithGuests']) && '' !== $row['isWithGuests']) {
+                Assert::eq($walk->isWithGuests(), (bool) $this->enrichText($row['isWithGuests']));
+            }
+            if (isset($row['guestNames']) && '' !== $row['guestNames']) {
+                Assert::eq($walk->getGuestNames(), (array) $this->enrichText($row['guestNames']));
+            }
             if (isset($row['startTime'])) {
                 Assert::eq($walk->getStartTime(), new \DateTime($row['startTime']));
             }
@@ -611,7 +618,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 Assert::eq($wayPoint->getIsMeeting(), (bool) $row['isMeeting']);
             }
             if (isset($row['visitedAt'])) {
-                $allowedDistanceInSeconds = 10;
+                $allowedDistanceInSeconds = 15;
                 $expectedVisitedAt = new Carbon($this->enrichText($row['visitedAt']));
                 $lowerExpectedVisitedAt = $expectedVisitedAt->clone()->subSeconds($allowedDistanceInSeconds);
                 $higherExpectedVisitedAt = $expectedVisitedAt->clone()->addSeconds($allowedDistanceInSeconds);
@@ -684,6 +691,14 @@ final class DomainIntegrationContext extends RawMinkContext
                 $team->setUserGroupNames($this->getUserGroupNamesFromString($row['userGroupNames']));
             }
             $team->setIsWithUserGroups($isWithUserGroups);
+            $isWithGuests = false;
+            if (isset($row['isWithGuests']) && '' !== $row['isWithGuests']) {
+                $isWithGuests = (bool) $this->enrichText($row['isWithGuests']);
+            }
+            if ($isWithGuests && isset($row['guestNames'])) {
+                $team->setGuestNames((array) $this->enrichText($row['guestNames']));
+            }
+            $team->setIsWithGuests($isWithGuests);
             $team->updateClient($this->getClientByEmail($row['client']));
 
             $this->em->persist($team);

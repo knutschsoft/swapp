@@ -18,6 +18,10 @@ final class TeamChangeRequest
     public string $name;
 
     /** @var string[] */
+    #[AppAssert\GuestNamesRequirements]
+    public array $guestNames;
+
+    /** @var string[] */
     #[AppAssert\LocationNamesRequirements]
     public array $locationNames;
 
@@ -31,6 +35,9 @@ final class TeamChangeRequest
     /** @var AgeRange[] */
     #[AppAssert\AgeRangesRequirements]
     public array $ageRanges;
+
+    #[AppAssert\IsWithGuestsRequirements]
+    public bool $isWithGuests;
 
     #[AppAssert\IsWithContactsCountRequirements]
     public bool $isWithContactsCount;

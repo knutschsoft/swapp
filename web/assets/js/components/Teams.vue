@@ -47,6 +47,8 @@
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
                     userGroupNames: team.userGroupNames,
+                    isWithGuests: team.isWithGuests,
+                    guestNames: team.guestNames,
                 });
 
                 if (createdTeam) {

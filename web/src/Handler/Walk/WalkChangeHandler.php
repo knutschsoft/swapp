@@ -35,7 +35,9 @@ final class WalkChangeHandler implements MessageHandlerInterface
         $walk->setIsResubmission($request->isResubmission);
         $walk->setRating($request->rating);
         $walk->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
-
+        if ($walk->isWithGuests()) {
+            $walk->setGuestNames($request->guestNames);
+        }
         $this->walkRepository->save($walk);
 
         return $walk;

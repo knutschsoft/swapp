@@ -67,8 +67,10 @@ Feature: Testing team change resource
       | isWithAgeRanges     | <true>                  |
       | isWithContactsCount | <false>                 |
       | isWithUserGroups    | <false>                 |
+      | isWithGuests        | <false>                 |
+      | guestNames          | array<>                 |
     Then the response should be in JSON
-    And print last JSON response
+#    And print last JSON response
     And the response status code should be 200
     And the enriched JSON nodes should be equal to:
       | @type                      | Team                |
@@ -97,6 +99,8 @@ Feature: Testing team change resource
       | isWithContactsCount | <true>                         |
       | isWithUserGroups    | <true>                         |
       | userGroupNames      | userGroupNames<Nutzende,Dudes> |
+      | isWithGuests        | <false>                        |
+      | guestNames          | array<>                        |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -129,18 +133,22 @@ Feature: Testing team change resource
       | violations[0].message      | Dieser Wert sollte nicht leer sein.                                    |
       | violations[1].propertyPath | name                                                                   |
       | violations[1].message      | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 3 Zeichen haben. |
-      | violations[2].propertyPath | locationNames                                                          |
+      | violations[2].propertyPath | guestNames                                                             |
       | violations[2].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[3].propertyPath | users                                                                  |
+      | violations[3].propertyPath | locationNames                                                          |
       | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[4].propertyPath | isWithAgeRanges                                                        |
+      | violations[4].propertyPath | users                                                                  |
       | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath | ageRanges                                                              |
+      | violations[5].propertyPath | isWithAgeRanges                                                        |
       | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[6].propertyPath | isWithContactsCount                                                    |
+      | violations[6].propertyPath | ageRanges                                                              |
       | violations[6].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[7].propertyPath | isWithUserGroups                                                       |
+      | violations[7].propertyPath | isWithGuests                                                           |
       | violations[7].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[8].propertyPath | isWithContactsCount                                                    |
+      | violations[8].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[9].propertyPath | isWithUserGroups                                                       |
+      | violations[9].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin and change isWithAgeRanges to false and the ageRanges are not changed
@@ -155,6 +163,8 @@ Feature: Testing team change resource
       | isWithAgeRanges     | <false>                 |
       | isWithContactsCount | <false>                 |
       | isWithUserGroups    | <false>                 |
+      | isWithGuests        | <false>                 |
+      | guestNames          | array<>                 |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -163,10 +173,12 @@ Feature: Testing team change resource
       | name                | Religion            |
       | locationNames[0]    | City                |
       | locationNames[1]    | Spielplatz          |
-      | isWithAgeRanges     | <false>              |
+      | isWithAgeRanges     | <false>             |
       | isWithContactsCount | <false>             |
       | isWithUserGroups    | <false>             |
       | users[0]            | userIri<two@pac.de> |
+      | isWithGuests        | <false>             |
+      | guestNames          | array<>             |
     And the JSON node "ageRanges" should exist
     And the JSON node "ageRanges[0]" should not exist
 

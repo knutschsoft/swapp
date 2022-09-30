@@ -5,6 +5,7 @@ namespace App\Dto\Walk;
 
 use App\Entity\User;
 use App\Entity\Walk;
+use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Assert\GroupSequence(['WalkChangeRequest', 'SecondGroup'])]
@@ -95,4 +96,8 @@ final class WalkChangeRequest
      */
     #[Assert\NotNull]
     public array $walkTeamMembers;
+
+    /** @var string[] */
+    #[AppAssert\GuestNamesRequirements]
+    public array $guestNames;
 }

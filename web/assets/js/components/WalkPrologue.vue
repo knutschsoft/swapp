@@ -14,7 +14,7 @@
                     class="pt-2 px-2"
                 >
                     <form-group
-                        :label="`Teilnehmer des Teams &quot;${team.name}&quot;`"
+                        :label="`Teilnehmende des Teams &quot;${team.name}&quot;`"
                         description="Wer ist heute mit dabei?"
                     >
                         <b-form-checkbox-group
@@ -38,7 +38,26 @@
                             </div>
                         </b-form-checkbox-group>
                     </form-group>
-
+                    <form-group
+                        :label="`Weitere Teilnehmende`"
+                    >
+                        <b-form-tags
+                            v-model="form.guestNames"
+                            :disabled="isLoading"
+                            tag-pills
+                            placeholder="Namen eintragen..."
+                            add-button-text="Hinzufügen"
+                            duplicate-tag-text="Weiterer Teilnehmender ist schon dabei"
+                            remove-on-delete
+                            :input-attrs="{ list: 'guest-name-list' }"
+                            add-on-change
+                        />
+                        <b-form-datalist
+                            id="guest-name-list"
+                            :options="guestNames"
+                            autocomplete="off"
+                        />
+                    </form-group>
                     <form-group
                         label="Name"
                         :state="nameState"
@@ -166,6 +185,7 @@
                     name: '',
                     team: null,
                     walkTeamMembers: [],
+                    guestNames: [],
                     conceptOfDay: '',
                     startTime: dayjs().format(),
                     holidays: false,
@@ -220,6 +240,15 @@
                 }
 
                 return this.form.name.length >= 1 && undefined === this.validationErrors.name;
+            },
+            guestNames() {
+                if (!this.team || !this.team.isWithGuests) {
+                    return [];
+                }
+
+                return this.team.guestNames.filter((guestName) => {
+                    return !this.form.guestNames.includes(guestName);
+                });
             },
             invalidNameFeedback() {
                 let message = '';
