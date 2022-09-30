@@ -81,7 +81,7 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     // enable vue-load
-    .enableVueLoader(() => {}, { runtimeCompilerBuild: false })
+    .enableVueLoader(() => {}, { runtimeCompilerBuild: true })
 
     .enablePostCssLoader()
     .enableEslintPlugin()
