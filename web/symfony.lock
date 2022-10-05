@@ -279,18 +279,6 @@
     "php-webdriver/webdriver": {
         "version": "1.7.1"
     },
-    "phpdocumentor/reflection-common": {
-        "version": "2.0.0"
-    },
-    "phpdocumentor/reflection-docblock": {
-        "version": "4.3.2"
-    },
-    "phpdocumentor/type-resolver": {
-        "version": "1.0.1"
-    },
-    "phpspec/prophecy": {
-        "version": "1.8.1"
-    },
     "phpstan/extension-installer": {
         "version": "1.1.0"
     },
@@ -468,9 +456,6 @@
             "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
         }
     },
-    "symfony/amqp-messenger": {
-        "version": "v5.4.3"
-    },
     "symfony/asset": {
         "version": "v4.3.4"
     },
@@ -510,9 +495,6 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v4.3.4"
-    },
-    "symfony/doctrine-messenger": {
-        "version": "v5.4.3"
     },
     "symfony/dom-crawler": {
         "version": "v4.3.4"
@@ -698,14 +680,8 @@
     "symfony/polyfill-php72": {
         "version": "v1.12.0"
     },
-    "symfony/polyfill-php73": {
-        "version": "v1.24.0"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.17.0"
-    },
-    "symfony/polyfill-php81": {
-        "version": "v1.23.0"
     },
     "symfony/polyfill-uuid": {
         "version": "v1.23.0"
@@ -721,9 +697,6 @@
     },
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.15"
-    },
-    "symfony/redis-messenger": {
-        "version": "v5.4.3"
     },
     "symfony/routing": {
         "version": "4.2",
@@ -757,9 +730,6 @@
     },
     "symfony/security-csrf": {
         "version": "v4.3.4"
-    },
-    "symfony/security-guard": {
-        "version": "v5.4.3"
     },
     "symfony/security-http": {
         "version": "v4.3.4"
