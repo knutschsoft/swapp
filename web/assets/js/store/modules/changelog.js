@@ -71,6 +71,7 @@ const state = {
                         },
                     ],
                 },
+                { text: 'Fix: Beim Klick auf "Wegpunkt speichern und Runde abschließen" im Firefox wurden 2 Wegpunkte anstatt einer gespeichert. Dies passiert nun nicht mehr.' },
             ],
         },
         {

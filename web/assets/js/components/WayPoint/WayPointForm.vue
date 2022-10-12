@@ -329,7 +329,6 @@
         </b-button>
         <b-button
             v-if="initialWalk"
-            type="submit"
             variant="secondary"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit-and-finish"
@@ -436,7 +435,7 @@ export default {
                     labelNoDateSelected: 'Kein Datum gewählt',
                     labelCalendar: 'Kalender',
                     labelNav: 'Kalendernavigation',
-                    labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren'
+                    labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren',
                 },
             },
             timeLabels: {
@@ -448,7 +447,7 @@ export default {
                     labelDecrement: 'Verringern',
                     labelSelected: 'Ausgewählte Zeit',
                     labelNoTimeSelected: 'Keine Zeit ausgewählt',
-                    labelCloseButton: 'Schließen'
+                    labelCloseButton: 'Schließen',
                 },
             },
         };
@@ -510,7 +509,7 @@ export default {
         },
         visitedAtDescription() {
             if (this.walk.isUnfinished) {
-                return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) liegen.`
+                return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) liegen.`;
             }
 
             return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) und vor der Rundenendzeit (${dayjs(this.walk.endTime).format('HH:mm')} Uhr am ${dayjs(this.walk.endTime).format('DD.MM.YYYY')}) liegen.`;
@@ -559,7 +558,11 @@ export default {
             return getViolationsFeedback(['decodedImageData', 'imageFileData', 'imageFileName'], this.error);
         },
         isLoading() {
-            return this.$store.getters['wayPoint/isLoadingChange'];
+            return this.$store.getters['wayPoint/isLoadingChange']
+                || this.$store.getters['wayPoint/isLoading']
+                || this.$store.getters['walk/isLoading']
+                || this.$store.getters['tag/isLoading']
+                || this.$store.getters['team/isLoading'];
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
