@@ -3,6 +3,7 @@
         submit-button-text="Neue systemische Frage erstellen"
         @submit="handleSubmit"
         :initial-client="initialClient"
+        ref="systemicQuestionForm"
     />
 </template>
 
@@ -33,6 +34,7 @@ export default {
         async handleSubmit(payload) {
             const systemicQuestion = await this.$store.dispatch('systemicQuestion/create', payload);
             if (systemicQuestion) {
+                this.$refs.systemicQuestionForm.resetForm();
                 const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich erstellt.`;
                 this.$bvToast.toast(message, {
                     title: 'Systemische Frage erstellt',

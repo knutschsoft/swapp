@@ -1,6 +1,7 @@
 <template>
     <b-form
         @submit.prevent.stop="handleSubmit"
+        ref="form"
         class="p-1 p-sm-2 p-lg-3"
     >
         <b-form-group
@@ -123,6 +124,9 @@ export default {
                 client: this.client,
                 question: this.question,
             });
+        },
+        resetForm() {
+            this.question = null;
         },
     },
 };
