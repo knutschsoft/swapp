@@ -111,6 +111,7 @@ RUN groupadd --gid ${HOST_GID} ${CONTAINER_GROUP} && \
     chown ${CONTAINER_USER}:${CONTAINER_GROUP} /usr/bin/composer
 
 # contains dev-mode packages
+RUN gosu ${CONTAINER_USER} composer global config --no-plugins allow-plugins.pyrech/composer-changelogs true
 RUN gosu ${CONTAINER_USER} composer global require "pyrech/composer-changelogs:^1.6" --prefer-dist --no-progress --classmap-authoritative
 
 COPY .docker /
