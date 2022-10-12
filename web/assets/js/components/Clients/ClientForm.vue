@@ -150,6 +150,9 @@ export default {
         },
         resetForm() {
             this.$refs.form.reset();
+            this.client.name = this.initialClient.name;
+            this.client.email = this.initialClient.email;
+            this.client.description = this.initialClient.description || '';
         },
     },
 };
