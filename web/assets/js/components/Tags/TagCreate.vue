@@ -81,6 +81,7 @@
                 type="submit"
                 variant="secondary"
                 data-test="button-tag-create"
+                :disabled="isFormInvalid || isLoading"
                 block
                 class="col-12"
                 :tabindex="isFormInvalid ? '-1' : ''"
@@ -225,6 +226,7 @@ export default {
 
             const tag = await this.$store.dispatch('tag/create', payload);
             if (tag) {
+                this.resetForm();
                 const message = `Der Tag ${tag.name} (${tag.color}) wurde erfolgreich erstellt.`;
                 this.$bvToast.toast(message, {
                     title: 'Tag erstellt',
@@ -246,6 +248,10 @@ export default {
                     appendToast: true,
                 });
             }
+        },
+        resetForm() {
+            this.name = null;
+            this.color = null;
         },
     },
 };
