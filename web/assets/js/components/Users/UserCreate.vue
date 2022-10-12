@@ -2,6 +2,7 @@
     <user-form
         submit-button-text="Neuen Benutzer erstellen"
         :initial-user="{ client: initialClient, user: ['ROLE_USER'] }"
+        ref="userForm"
         @submit="handleSubmit"
     />
 </template>
@@ -33,6 +34,7 @@ export default {
         async handleSubmit(payload) {
             const user = await this.$store.dispatch('user/create', payload);
             if (user) {
+                this.$refs.userForm.resetForm();
                 const message = `Der Benutzer "${user.username}" wurde erfolgreich erstellt. Er hat eine E-Mail an "${user.email}" mit seinen Kontoinformationen erhalten.`;
                 this.$bvToast.toast(message, {
                     title: 'Benutzer erstellt',
