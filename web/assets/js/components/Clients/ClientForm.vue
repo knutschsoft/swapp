@@ -1,6 +1,7 @@
 <template>
     <b-form
         @submit.prevent.stop="handleSubmit"
+        ref="form"
         class="p-1 p-sm-2 p-lg-3"
     >
         <b-form-group
@@ -146,6 +147,9 @@ export default {
     methods: {
         async handleSubmit() {
             this.$emit('submit', this.client);
+        },
+        resetForm() {
+            this.$refs.form.reset();
         },
     },
 };

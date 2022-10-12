@@ -2,6 +2,7 @@
     <client-form
         submit-button-text="Neuen Klienten erstellen"
         :initial-client="{}"
+        ref="clientForm"
         @submit="handleSubmit"
     />
 </template>
@@ -23,9 +24,6 @@ export default {
         currentUser() {
             return this.$store.getters['security/currentUser'];
         },
-        initialClient() {
-            return this.currentUser.client;
-        },
     },
     async created() {
     },
@@ -41,6 +39,7 @@ export default {
                     appendToast: true,
                     solid: true,
                 });
+                this.$refs.clientForm.resetForm();
             } else {
                 this.$bvToast.toast('Upps! :-(', {
                     title: 'Klient erstellen fehlgeschlagen',
