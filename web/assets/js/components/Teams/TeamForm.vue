@@ -1,6 +1,7 @@
 <template>
     <b-form
         @submit.prevent.stop="handleSubmit"
+        ref="form"
         class="p-1 p-sm-2 p-lg-3"
     >
         <b-card
@@ -448,6 +449,7 @@
             variant="secondary"
             data-test="button-team-form"
             block
+            :disabled="isFormInvalid || isDisabled"
             class="col-12"
             :tabindex="isFormInvalid ? '-1' : ''"
         >
@@ -482,7 +484,7 @@ export default {
     data: function () {
         return {
             team: {
-                team: '',
+                team: null,
                 client: '',
                 name: '',
                 isWithAgeRanges: false,
@@ -537,9 +539,9 @@ export default {
     },
     created () {
         if (this.initialTeam) {
-            this.team = JSON.parse(JSON.stringify(this.initialTeam))
+            this.team = JSON.parse(JSON.stringify(this.initialTeam));
         }
-        this.team.client = this.team.client || this.currentUser.client
+        this.team.client = this.team.client || this.currentUser.client;
     },
     methods: {
         async handleSubmit () {
@@ -598,6 +600,24 @@ export default {
                 }
             })
             this.team.userGroupNames = newUserGroups
+        },
+        resetForm() {
+            this.$refs.form.reset();
+            if (this.initialTeam) {
+                this.team = JSON.parse(JSON.stringify(this.initialTeam));
+            } else {
+                this.team.name = null;
+                this.team.isWithAgeRanges = false;
+                this.team.isWithContactsCount = false;
+                this.team.isWithGuests = false;
+                this.team.isWithUserGroups = false;
+                this.team.users = [];
+                this.team.ageRanges = [];
+                this.team.locationNames = [];
+                this.team.guestNames = [];
+                this.team.userGroupNames = [];
+            }
+            this.team.client = this.team.client || this.currentUser.client;
         },
     },
 }

@@ -13,6 +13,7 @@
             collapse-key="team-create"
         >
             <team-form
+                ref="teamForm"
                 button-label="Team erstellen"
                 @submit="handleSubmit"
             />
@@ -52,6 +53,7 @@
                 });
 
                 if (createdTeam) {
+                    this.$refs.teamForm.resetForm();
                     const message = `Das Team ${createdTeam.name} wurde erfolgreich erstellt.`;
                     this.$bvToast.toast(message, {
                         title: 'Team erstellt',
