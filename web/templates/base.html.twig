@@ -34,10 +34,22 @@
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black">
 
         <meta name="mobile-web-app-capable" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="Swapp2">
-        <meta name="application-name" content="Swapp2">
+        <meta name="apple-mobile-web-app-title" content="Swapp">
+        <meta name="application-name" content="Swapp">
 
-        <title>{% block title %}Swapp!{% endblock %}</title>
+        <title>
+            {%- block title -%}
+                {%- if '/changelog' in app.request.requestUri -%}
+                    Changelog - Was ist neu bei Swapp?
+                {%- elseif '/was-ist-swapp-die-streetworkapp' in app.request.requestUri -%}
+                    Was ist Swapp, die Streetworkapp?
+                {%- elseif 'swapp.demo' in app.request.host or app.request.query.get('demo') -%}
+                    Demo-Version mit allen Funktionen zum Ausprobieren
+                {%- else -%}
+                    Swapp: Die Streetworkapp
+                {%- endif -%}
+            {%- endblock -%}
+        </title>
 
         {% if 'test' == app.environment %}
             <script type="text/javascript">
