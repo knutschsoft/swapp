@@ -25,9 +25,7 @@ final class TeamChangeHandler implements MessageHandlerInterface
             $team->setAgeRanges($request->ageRanges);
         }
         $team->setIsWithAgeRanges($request->isWithAgeRanges);
-        if ($request->userGroupNames) {
-            $team->setUserGroupNames($request->userGroupNames);
-        }
+        $team->setUserGroupNames($request->userGroupNames);
         $team->setUsers(new ArrayCollection($request->users));
         $team->setName($request->name);
         $team->setIsWithGuests($request->isWithGuests);

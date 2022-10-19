@@ -16,15 +16,12 @@ class UserGroupNameRequirements extends Compound
     protected function getConstraints(array $options): array
     {
         return [
-            new Assert\AtLeastOneOf([
-                new Assert\IsNull(),
-                new Assert\Sequentially([
+            new Assert\Sequentially([
+                new Assert\NotNull(),
+                new Assert\Type('array'),
+                new Assert\All([
                     new Assert\NotNull(),
-                    new Assert\Type('array'),
-                    new Assert\All([
-                        new Assert\NotNull(),
-                        new Assert\Type(UserGroupName::class),
-                    ]),
+                    new Assert\Type(UserGroupName::class),
                 ]),
             ]),
         ];

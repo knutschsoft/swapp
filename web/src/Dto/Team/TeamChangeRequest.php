@@ -45,7 +45,7 @@ final class TeamChangeRequest
     #[AppAssert\IsWithUserGroupsRequirements]
     public bool $isWithUserGroups;
 
-    /** @var ?UserGroupName[] */
+    /** @var UserGroupName[] */
     #[AppAssert\UserGroupNameRequirements]
-    public ?array $userGroupNames = null;
+    public array $userGroupNames;
 }
