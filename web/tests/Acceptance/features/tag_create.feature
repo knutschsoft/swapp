@@ -38,9 +38,10 @@ Feature: A user can do a walk
     And I click on element "header-tag-create"
     Then I wait for "Name" to appear
 
-    Then the element "button-tag-create" should be enabled
+    Then the element "button-tag-create" should be disabled
     When I enter "Religion" in "name" field
     When I click on text "MediumAquaMarine"
+    Then the element "button-tag-create" should be enabled
     Then I click on element "button-tag-create"
 
     And I click on text "Liste der Tags"
@@ -68,9 +69,10 @@ Feature: A user can do a walk
     # open
     And I click on element "header-tag-create"
 
-    Then the element "button-tag-create" should be enabled
+    Then the element "button-tag-create" should be disabled
     When I enter "Religion" in "name" field
     When I click on text "MediumAquaMarine"
+    Then the element "button-tag-create" should be enabled
     Then I click on element "button-tag-create"
 
     And I click on text "Liste der Tags"
