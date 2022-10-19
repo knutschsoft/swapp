@@ -26,9 +26,11 @@ $container-max-widths: (
 @import 'bootstrap-pre-migrate';
 @import './fixes/prevent-ios-input-zoom.scss';
 
+html {
+  font-size: 16px;
+}
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
 }
 
 .vue-daterange-picker {
