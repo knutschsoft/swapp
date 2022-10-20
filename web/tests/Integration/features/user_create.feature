@@ -24,7 +24,7 @@ Feature: Testing user create resource
       | client   | clientIri<client@gmx.de> |
     Then the response should be in JSON
     And the response status code should be 401
-    And print last JSON response
+#    And print last JSON response
     And the JSON nodes should be equal to:
       | code | 401 |
 

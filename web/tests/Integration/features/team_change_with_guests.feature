@@ -26,6 +26,7 @@ Feature: Testing team change resource with guests
       | isWithUserGroups    | <false>                   |
       | isWithGuests        | <true>                    |
       | guestNames          | array<Opa Manfred, Karla> |
+      | userGroupNames      | array<>                   |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -34,4 +35,3 @@ Feature: Testing team change resource with guests
       | name         | Religion                 |
       | isWithGuests | <true>                   |
       | guestNames   | array<Karla,Opa Manfred> |
-

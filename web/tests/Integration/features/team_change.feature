@@ -69,6 +69,7 @@ Feature: Testing team change resource
       | isWithUserGroups    | <false>                 |
       | isWithGuests        | <false>                 |
       | guestNames          | array<>                 |
+      | userGroupNames      | array<>                 |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -165,6 +166,7 @@ Feature: Testing team change resource
       | isWithUserGroups    | <false>                 |
       | isWithGuests        | <false>                 |
       | guestNames          | array<>                 |
+      | userGroupNames      | array<>                 |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200

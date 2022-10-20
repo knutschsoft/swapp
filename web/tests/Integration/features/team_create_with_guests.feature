@@ -23,6 +23,7 @@ Feature: Testing team create resource with guests
       | isWithUserGroups    | <false>                           |
       | isWithGuests        | <true>                            |
       | guestNames          | array<Karla, Opa Manfred, Alfons> |
+      | userGroupNames      | array<>                           |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
