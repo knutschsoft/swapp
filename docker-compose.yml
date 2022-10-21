@@ -3,6 +3,7 @@ version: '3.4'
 
 services:
   web:
+    shm_size: '128m'
     image: ${IMAGE:?IMAGE is not set or empty}
     volumes:
       - ${VOLUME_DIR_WEB:?VOLUME_DIR_WEB is not set or empty}apache-logs/:/var/log/apache2/
