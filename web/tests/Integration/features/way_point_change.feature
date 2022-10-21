@@ -56,6 +56,7 @@ Feature: Testing wayPoint change resource
       | imageFileName     | AreYouDrunk.jpg                                               |
       | imageFileData     | @image.jpg                                                    |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
+      | userGroups        | userGroups<>                                                  |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -86,6 +87,7 @@ Feature: Testing wayPoint change resource
       | imageFileName     | AreYouDrunkMyDear.jpg                                         |
       | imageFileData     | @image.jpg                                                    |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
+      | userGroups        | userGroups<>                                                  |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:

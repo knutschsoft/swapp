@@ -169,7 +169,7 @@ class WayPoint
 
         $instance->setWalk($request->walk);
         $instance->ageGroups = $request->ageGroups;
-        if ($request->userGroups && $instance->getWalk()->isWithUserGroups()) {
+        if ($instance->getWalk()->isWithUserGroups()) {
             $instance->setUserGroups($request->userGroups);
         }
         $instance->setWayPointTags(new ArrayCollection($request->wayPointTags));

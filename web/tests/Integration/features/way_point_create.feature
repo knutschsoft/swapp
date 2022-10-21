@@ -54,6 +54,7 @@ Feature: Testing wayPoint create resource
       | ageGroups         | ageGroups<1-2,m,7;1-2,w,3;1-2,x,1;3-10,m,7;3-10,w,3;3-10,x,1> |
       | wayPointTags      | tagIris<Gewalt,Drogen>                                        |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
+      | userGroups        | userGroups<>                                                  |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -83,6 +84,7 @@ Feature: Testing wayPoint create resource
       | imageFileName     | AreYouDrunk.jpg                                               |
       | imageFileData     | @image.jpg                                                    |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
+      | userGroups        | userGroups<>                                                  |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:

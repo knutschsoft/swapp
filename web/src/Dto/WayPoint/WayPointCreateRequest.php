@@ -53,9 +53,9 @@ final class WayPointCreateRequest
     #[Assert\NotNull]
     public array $ageGroups;
 
-    /** @var ?UserGroup[] */
+    /** @var UserGroup[] */
     #[AppAssert\UserGroupsRequirements]
-    public ?array $userGroups = null;
+    public array $userGroups;
 
     /** @var Tag[] */
     #[Assert\All(
