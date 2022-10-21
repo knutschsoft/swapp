@@ -34,6 +34,7 @@ Feature: An user can create a wayPoint with and without contactsCount
     When I enter "Straßenbahnen sind blockiert" in "note" field
     When I enter "Jugo geht ab" in "oneOnOneInterview" field
     Then I wait for 'Anzahl direkter Kontakte' to disappear
+    And I wait for field "button-way-point-submit-and-finish" to be not disabled
     And I click on text "Wegpunkt speichern und Runde abschließen"
     And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
     And there are exactly 1 wayPoints in database
