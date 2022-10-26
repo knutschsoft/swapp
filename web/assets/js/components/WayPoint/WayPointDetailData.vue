@@ -194,6 +194,8 @@
                     fields = fields.concat(ageGroups);
 
                     fields.push({ name: 'Anzahl Personen vor Ort', value: sumPeopleCount});
+                } else if (this.walk.isWithPeopleCount) {
+                    fields.push({ name: 'Anzahl Personen vor Ort', value: this.wayPoint.peopleCount});
                 }
 
                 if (this.walk.isWithUserGroups) {

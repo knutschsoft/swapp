@@ -65,6 +65,7 @@ Feature: Testing team change resource
       | users               | userIris<two@pac.de>    |
       | locationNames       | array<City, Spielplatz> |
       | isWithAgeRanges     | <true>                  |
+      | isWithPeopleCount   | <true>                  |
       | isWithContactsCount | <false>                 |
       | isWithUserGroups    | <false>                 |
       | isWithGuests        | <false>                 |
@@ -97,6 +98,7 @@ Feature: Testing team change resource
       | users               | userIris<two@pac.de>           |
       | locationNames       | array<City, Spielplatz>        |
       | isWithAgeRanges     | <true>                         |
+      | isWithPeopleCount   | <true>                         |
       | isWithContactsCount | <true>                         |
       | isWithUserGroups    | <true>                         |
       | userGroupNames      | userGroupNames<Nutzende,Dudes> |
@@ -130,26 +132,30 @@ Feature: Testing team change resource
 #    And print last JSON response
     And the response status code should be 422
     And the JSON nodes should be equal to:
-      | violations[0].propertyPath | name                                                                   |
-      | violations[0].message      | Dieser Wert sollte nicht leer sein.                                    |
-      | violations[1].propertyPath | name                                                                   |
-      | violations[1].message      | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 3 Zeichen haben. |
-      | violations[2].propertyPath | guestNames                                                             |
-      | violations[2].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[3].propertyPath | locationNames                                                          |
-      | violations[3].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[4].propertyPath | users                                                                  |
-      | violations[4].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath | isWithAgeRanges                                                        |
-      | violations[5].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[6].propertyPath | ageRanges                                                              |
-      | violations[6].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[7].propertyPath | isWithGuests                                                           |
-      | violations[7].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[8].propertyPath | isWithContactsCount                                                    |
-      | violations[8].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[9].propertyPath | isWithUserGroups                                                       |
-      | violations[9].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[0].propertyPath  | name                                                                   |
+      | violations[0].message       | Dieser Wert sollte nicht leer sein.                                    |
+      | violations[1].propertyPath  | name                                                                   |
+      | violations[1].message       | Diese Zeichenkette ist zu kurz. Sie sollte mindestens 3 Zeichen haben. |
+      | violations[2].propertyPath  | guestNames                                                             |
+      | violations[2].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[3].propertyPath  | locationNames                                                          |
+      | violations[3].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[4].propertyPath  | users                                                                  |
+      | violations[4].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[5].propertyPath  | isWithAgeRanges                                                        |
+      | violations[5].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[6].propertyPath  | isWithPeopleCount                                                      |
+      | violations[6].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[7].propertyPath  | ageRanges                                                              |
+      | violations[7].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[8].propertyPath  | isWithGuests                                                           |
+      | violations[8].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[9].propertyPath  | isWithContactsCount                                                    |
+      | violations[9].message       | Dieser Wert sollte nicht null sein.                                    |
+      | violations[10].propertyPath | isWithUserGroups                                                       |
+      | violations[10].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[11].propertyPath | userGroupNames                                                         |
+      | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin and change isWithAgeRanges to false and the ageRanges are not changed
@@ -162,6 +168,7 @@ Feature: Testing team change resource
       | users               | userIris<two@pac.de>    |
       | locationNames       | array<City, Spielplatz> |
       | isWithAgeRanges     | <false>                 |
+      | isWithPeopleCount   | <false>                 |
       | isWithContactsCount | <false>                 |
       | isWithUserGroups    | <false>                 |
       | isWithGuests        | <false>                 |

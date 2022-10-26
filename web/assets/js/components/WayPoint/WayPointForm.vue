@@ -73,7 +73,7 @@
             </b-row>
         </b-form-group>
         <b-form-group
-            v-if="walk.isWithAgeRanges"
+            v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
             content-cols="12"
             label-cols="12"
             content-cols-lg="10"
@@ -81,11 +81,17 @@
         >
 
             <template v-slot:label>
-                <b>Altersgruppen</b>
-                <br>
-                <small class="font-weight-normal text-muted">Anzahl der Personen vor Ort</small>
+                <b v-text="walk.isWithAgeRanges ? `Altersgruppen` : `Anzahl der Personen vor Ort`" />
+                <br v-if="walk.isWithAgeRanges">
+                <small
+                    v-if="walk.isWithAgeRanges"
+                    class="font-weight-normal text-muted"
+                >
+                    Anzahl der Personen vor Ort
+                </small>
             </template>
             <b-row
+                v-if="walk.isWithAgeRanges"
                 v-for="(ageGroup, index) in wayPoint.ageGroups"
                 :key="ageGroup.frontendLabel"
             >
@@ -117,6 +123,7 @@
             </b-row>
 
             <b-form-group
+                v-if="walk.isWithAgeRanges"
                 content-cols="12"
                 label-cols="12"
                 content-cols-lg="10"
@@ -128,11 +135,28 @@
                     <b-input
                         v-model="sumPeopleCount"
                         type="text"
+                        data-test="sumPeopleCount"
                         disabled
                         readonly
                     />
                 </b-input-group>
             </b-form-group>
+            <b-input-group
+                v-else
+                content-cols="12"
+                label-cols="12"
+                content-cols-lg="10"
+                label-cols-lg="2"
+                label="Anzahl Personen vor Ort"
+            >
+                <b-form-select
+                    v-model="wayPoint.peopleCount"
+                    :options="ageRangeOptions"
+                    :disabled="isLoading"
+                    data-test="peopleCount"
+                    class=""
+                ></b-form-select>
+            </b-input-group>
         </b-form-group>
         <b-form-group
             v-if="walk.isWithUserGroups"
@@ -382,6 +406,7 @@ export default {
                 locationName: '',
                 visitedAt: dayjs(),
                 ageGroups: [],
+                peopleCount: 0,
                 userGroups: [],
                 imageName: null,
                 isMeeting: false,
@@ -689,6 +714,7 @@ export default {
             this.wayPoint.contactsCount = this.initialWayPoint.contactsCount;
             this.wayPoint.isMeeting = this.initialWayPoint.isMeeting || false;
             this.wayPoint.note = this.initialWayPoint.note;
+            this.wayPoint.peopleCount = this.initialWayPoint.peopleCount;
             this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;
             this.wayPoint.wayPointTags = JSON.parse(JSON.stringify(this.initialWayPoint.wayPointTags)) || [];
             this.visitedAtDate = dayjs(this.initialWayPoint.visitedAt).format('YYYY-MM-DD');

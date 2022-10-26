@@ -1,7 +1,7 @@
 <template>
     <div v-if="!isLoading">
         <div
-            v-if="walk"
+            v-if="walk && !field.isHidden"
             v-for="(field, index2) in fields"
             :key="index2"
         >
@@ -51,9 +51,6 @@
             walk() {
                 return this.$store.getters["walk/getWalkById"](this.walkId);
             },
-            personCount() {
-                return this.walk.malesCount + this.walk.femalesCount + this.walk.queerCount;
-            },
             walkTeamMembers() {
                 let users = [];
                 if (!this.walk) {
@@ -68,10 +65,10 @@
             fields() {
                 let fields = [
                     { name: 'Name', value: this.walk.name },
-                    { name: 'angetroffene männliche Personen', value: this.walk.malesCount ? this.walk.malesCount : 'keine männlichen Personen angetroffen' },
-                    { name: 'angetroffene weibliche Personen', value: this.walk.femalesCount ? this.walk.femalesCount : 'keine weiblichen Personen angetroffen' },
-                    { name: 'angetroffene diverse Personen', value: this.walk.queerCount ? this.walk.queerCount : 'keine diversen Personen angetroffen' },
-                    { name: 'angetroffene Personen', value: this.personCount ? this.personCount : 'keine Personen angetroffen' },
+                    { name: 'angetroffene männliche Personen', isHidden: !this.walk.isWithAgeRanges, value: this.walk.malesCount ? this.walk.malesCount : 'keine männlichen Personen angetroffen' },
+                    { name: 'angetroffene weibliche Personen', isHidden: !this.walk.isWithAgeRanges, value: this.walk.femalesCount ? this.walk.femalesCount : 'keine weiblichen Personen angetroffen' },
+                    { name: 'angetroffene diverse Personen', isHidden: !this.walk.isWithAgeRanges, value: this.walk.queerCount ? this.walk.queerCount : 'keine diversen Personen angetroffen' },
+                    { name: 'angetroffene Personen', isHidden: !this.walk.isWithPeopleCount, value: this.walk.peopleCount ? this.walk.peopleCount : 'keine Personen angetroffen' },
                     { name: 'Tageskonzept', value: this.walk.conceptOfDay, nl2br: true },
                     { name: 'Ferien', value: this.walk.holiday ? 'ja' : 'nein' },
                     { name: 'Wetter', value: this.walk.weather },

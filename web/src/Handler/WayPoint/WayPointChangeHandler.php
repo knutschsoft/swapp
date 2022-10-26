@@ -28,7 +28,12 @@ final class WayPointChangeHandler implements MessageHandlerInterface
     {
         $wayPoint = $request->wayPoint;
         $wayPoint->setLocationName($request->locationName);
-        $wayPoint->setAgeGroups($request->ageGroups);
+        if ($wayPoint->getWalk()->isWithAgeRanges()) {
+            $wayPoint->setAgeGroups($request->ageGroups);
+            $wayPoint->setPeopleCount($wayPoint->getPeopleCount());
+        } elseif ($wayPoint->getWalk()->isWithPeopleCount()) {
+            $wayPoint->setPeopleCount($request->peopleCount);
+        }
         if ($wayPoint->getWalk()->isWithUserGroups()) {
             $wayPoint->setUserGroups($request->userGroups);
         }

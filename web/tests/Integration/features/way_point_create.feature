@@ -55,6 +55,7 @@ Feature: Testing wayPoint create resource
       | wayPointTags      | tagIris<Gewalt,Drogen>                                        |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
       | userGroups        | userGroups<>                                                  |
+      | peopleCount       | int<0>                                                        |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -85,6 +86,7 @@ Feature: Testing wayPoint create resource
       | imageFileData     | @image.jpg                                                    |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
       | userGroups        | userGroups<>                                                  |
+      | peopleCount       | int<0>                                                        |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:

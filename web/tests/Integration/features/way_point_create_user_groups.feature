@@ -40,12 +40,14 @@ Feature: Testing wayPoint create resource with user groups
       | contactsCount     | <null>                                                        |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
       | userGroups        | userGroups<Nutzende,7;Dudes,2>                                |
+      | peopleCount       | int<0>                                                        |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
       | @type        | WayPoint |
       | locationName | Assieck  |
       | userGroups   | array<>  |
+      | peopleCount  | 22       |
 
     And I can find the following wayPoints in database:
       | locationName | userGroups |
@@ -70,6 +72,7 @@ Feature: Testing wayPoint create resource with user groups
       | contactsCount     | <null>                                                        |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
       | userGroups        | userGroups<Nutzende,7;Dudes,2>                                |
+      | peopleCount       | int<0>                                                        |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
@@ -79,6 +82,7 @@ Feature: Testing wayPoint create resource with user groups
       | userGroups[0].peopleCount.count  | 7        |
       | userGroups[1].userGroupName.name | Dudes    |
       | userGroups[1].peopleCount.count  | 2        |
+      | peopleCount                      | 22       |
 
     And I can find the following wayPoints in database:
       | locationName | userGroups         |

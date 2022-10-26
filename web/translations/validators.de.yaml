@@ -17,3 +17,6 @@ client:
 walk:
  isStartTimeBeforeEndTime: Die Rundenstartzeit muss vor der Rundenendzeit liegen.
  isEndTimeAfterWayPointsVisitedAt: Die Rundenendzeit muss nach der Ankunftszeit aller ihrer Wegpunkte liegen.
+team:
+ hasAgeRangesWhenIsWithAgeRangesIsTrue: Das Team muss mindestens eine Altersgruppe haben, wenn die Altersgruppen mit erfasst werden.
+ hasPeopleCountWhenIsWithAgeRangesIsTrue: Das Team muss "Anzahl Personen vor Ort" aktiviert haben, wenn die Altersgruppen mit erfasst werden.

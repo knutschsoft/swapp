@@ -17,10 +17,11 @@ const state = {
             entries: [
                 {
                     text: [
-                        'Feature: Ein Admin kann pro Team festlegen, ob zu einem Wegpunkt die Altersgruppen festgehalten werden sollen.',
+                        'Feature: Ein Admin kann pro Team festlegen, ob zu einem Wegpunkt die Altersgruppen oder die Anzahl der Personen vor Ort oder keines von beiden festgehalten werden sollen.',
                         'Bisher war die Erfassung der Altersgruppen ein Pflichtfeld.',
-                        'Use Case 1: Bei einer Gruppe von 40 Leuten ist es schwierig und zeitaufwändig zu sagen, wie das Verhältnis von m/w/x ist.',
+                        'Use Case 1: Bei einer Gruppe von 40 Leuten ist es schwierig bzw. zeitaufwändig zu sagen, wie das Verhältnis von m/w/x ist.',
                         'Use Case 2: Bei manchen Teams werden nur in bestimmten Fällen Altersgruppen mit erfasst.',
+                        'Use Case 3: Bei manchen Teams spielt die Anzahl der Personen keine Rolle und braucht nicht mit erfasst werden.',
                     ],
                     gallery: [
                         {
@@ -31,7 +32,12 @@ const state = {
                         {
                             src: '../changelog/20220927_Wegpunkte_Formular_vorher_nachher.png',
                             thumbnailHeight: '100px',
-                            description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu)',
+                            description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu ohne Altersgruppen)',
+                        },
+                        {
+                            src: '../changelog/20220927_Wegpunkte_Formular_vorher_nachher_nur_mit_personenzahl.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu nur mit Anzahl der Personen)',
                         },
                         {
                             src: '../changelog/20220927_Altersgruppen_Wegpunkttabelle_Dashboard_vorher_nachher.png',
@@ -42,6 +48,32 @@ const state = {
                             src: '../changelog/20220927_Altersgruppen_Wegpunkttabelle_Rundendetailseite_vorher_nachher.png',
                             thumbnailHeight: '75px',
                             description: 'Darstellung in der Wegpunkttabelle auf der Runden-Detailseite (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'Feature: Ein Admin kann pro Team festlegen, ob zu einer Runde weitere Teilnehmende festgehalten werden sollen.',
+                        'Für die weiteren Teilnehmenden können optional Autocomplete-Vorschläge erstellt werden.',
+                        'Die weiteren Teilnehmenden werden im csv-Export der Runden in einer Spalte aufgelistet mit ausgegeben.',
+                        'Use Case 1: Ab und zu nehmen Personen der Diakonie an der Runde des Teams teil.',
+                        'Use Case 2: Ab und zu nimmt ein/-e Praktikant/-in an der Runde des Teams teil.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20221026_Team_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Team-Formular (neu: Einstellungen für die Dokumentation einer Runde)',
+                        },
+                        {
+                            src: '../changelog/20221026_Runden_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Runden-Formular (links: vorher - rechts: neu mit weiteren Teilnehmenden und Autocomplete)',
+                        },
+                        {
+                            src: '../changelog/20221026_Runden_Formular_eigener_Eintrag.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im Runden-Formular: eigene Einträge sind auch während der Rundenerstellung möglich',
                         },
                     ],
                 },

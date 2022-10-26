@@ -19,6 +19,7 @@ Feature: Testing team create resource with guests
       | users               | userIris<admin@gmx.de>            |
       | locationNames       | array<City, Spielplatz>           |
       | isWithAgeRanges     | <true>                            |
+      | isWithPeopleCount   | <true>                            |
       | isWithContactsCount | <false>                           |
       | isWithUserGroups    | <false>                           |
       | isWithGuests        | <true>                            |

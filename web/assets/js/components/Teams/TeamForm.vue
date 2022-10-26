@@ -205,12 +205,22 @@
                         >
                             <b-card-header>
                                 <b-form-checkbox
+                                    v-model="team.isWithPeopleCount"
+                                    :disabled="isPeopleCountDisabled"
+                                    switch
+                                >
+                                    Anzahl Personen vor Ort
+                                </b-form-checkbox>
+                                <b-form-checkbox
                                     v-model="team.isWithAgeRanges"
                                     :disabled="isDisabled"
                                     switch
                                 >
                                     Altersgruppen
                                 </b-form-checkbox>
+                                <b-form-text>
+                                    Wenn Altersgruppen gewählt sind, wird die Anzahl der Personen daraus automatisch ermittelt.
+                                </b-form-text>
                             </b-card-header>
                             <b-card-body
                                 v-if="team.isWithAgeRanges"
@@ -482,12 +492,15 @@ export default {
         FormError,
     },
     data: function () {
+        let isWithPeopleCountDefault = true;
+
         return {
             team: {
                 team: null,
                 client: '',
                 name: '',
-                isWithAgeRanges: false,
+                isWithAgeRanges: !isWithPeopleCountDefault,
+                isWithPeopleCount: isWithPeopleCountDefault,
                 isWithContactsCount: false,
                 isWithGuests: false,
                 isWithUserGroups: false,
@@ -507,6 +520,9 @@ export default {
             }).sort((a, b) => {
                 return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1
             })
+        },
+        isPeopleCountDisabled () {
+            return this.team.isWithAgeRanges || this.isDisabled;
         },
         isDisabled () {
             return this.$store.getters['team/changeTeamIsLoading']
@@ -542,6 +558,13 @@ export default {
             this.team = JSON.parse(JSON.stringify(this.initialTeam));
         }
         this.team.client = this.team.client || this.currentUser.client;
+    },
+    watch: {
+        'team.isWithAgeRanges': function (newValue) {
+            if (newValue) {
+                this.team.isWithPeopleCount = true;
+            }
+        },
     },
     methods: {
         async handleSubmit () {
@@ -608,6 +631,7 @@ export default {
             } else {
                 this.team.name = null;
                 this.team.isWithAgeRanges = false;
+                this.team.isWithPeopleCount = false;
                 this.team.isWithContactsCount = false;
                 this.team.isWithGuests = false;
                 this.team.isWithUserGroups = false;

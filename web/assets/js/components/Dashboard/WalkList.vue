@@ -259,6 +259,11 @@ export default {
 
                     }
                 },
+                { key: 'peopleCount', label: 'Anzahl Personen', sortable: false, class: 'text-center align-middle',
+                    formatter: (value, key, item) => {
+                        return item.isWithPeopleCount ? value : '-';
+                    }
+                },
                 { key: 'teamName', label: 'Team', sortable: true, class: 'text-center align-middle' },
                 {
                     key: 'isResubmission',

@@ -45,6 +45,7 @@
                     users: team.users,
                     ageRanges: team.ageRanges,
                     isWithAgeRanges: team.isWithAgeRanges,
+                    isWithPeopleCount: team.isWithPeopleCount,
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
                     userGroupNames: team.userGroupNames,

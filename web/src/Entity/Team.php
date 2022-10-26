@@ -80,6 +80,9 @@ class Team
     private bool $isWithAgeRanges;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithPeopleCount;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithGuests;
 
     #[ORM\Column(type: 'boolean')]
@@ -94,6 +97,8 @@ class Team
         $this->userGroupNames = [];
         $this->guestNames = [];
         $this->isWithGuests = false;
+        $this->isWithPeopleCount = false;
+        $this->isWithAgeRanges = true;
         $this->locationNames = [];
         $this->users = new ArrayCollection();
     }
@@ -257,5 +262,17 @@ class Team
     public function setIsWithAgeRanges(bool $isWithAgeRanges): void
     {
         $this->isWithAgeRanges = $isWithAgeRanges;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithPeopleCount')]
+    public function isWithPeopleCount(): bool
+    {
+        return $this->isWithPeopleCount;
+    }
+
+    public function setIsWithPeopleCount(bool $isWithPeopleCount): void
+    {
+        $this->isWithPeopleCount = $isWithPeopleCount;
     }
 }

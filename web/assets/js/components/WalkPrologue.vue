@@ -39,6 +39,7 @@
                         </b-form-checkbox-group>
                     </form-group>
                     <form-group
+                        v-if="team.isWithGuests"
                         :label="`Weitere Teilnehmende`"
                     >
                         <b-form-tags

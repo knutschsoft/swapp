@@ -71,6 +71,9 @@ final class WayPointCreateRequest
     #[AppAssert\ContactsCountRequirements]
     public ?int $contactsCount = null;
 
+    #[AppAssert\PeopleCountRequirements]
+    public int $peopleCount;
+
     #[Assert\Sequentially([
         new Assert\NotNull(),
         new Assert\Type(type: \DateTime::class),

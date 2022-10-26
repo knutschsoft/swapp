@@ -27,6 +27,7 @@
             </b-form-checkbox-group>
         </form-group>
         <form-group
+            v-if="walk.isWithGuests"
             :label="`Weitere Teilnehmende`"
         >
             <b-form-tags

@@ -130,6 +130,9 @@ class WayPoint
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'wayPoints')]
     private Collection $wayPointTags;
 
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private int $peopleCount;
+
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $contactsCount;
 
@@ -144,6 +147,7 @@ class WayPoint
         $this->oneOnOneInterview = '';
         $this->imageSrc = '';
         $this->contactsCount = null;
+        $this->peopleCount = 0;
     }
 
     public static function fromWalk(Walk $walk): self
@@ -168,7 +172,12 @@ class WayPoint
         $instance = new self();
 
         $instance->setWalk($request->walk);
-        $instance->ageGroups = $request->ageGroups;
+        if ($request->walk->isWithAgeRanges()) {
+            $instance->setAgeGroups($request->ageGroups);
+            $instance->setPeopleCount($instance->getPeopleCount());
+        } elseif ($request->walk->isWithPeopleCount()) {
+            $instance->setPeopleCount($request->peopleCount);
+        }
         if ($instance->getWalk()->isWithUserGroups()) {
             $instance->setUserGroups($request->userGroups);
         }
@@ -227,14 +236,24 @@ class WayPoint
         $this->ageGroups[] = $ageGroup;
     }
 
+    #[Groups(['wayPoint:read'])]
     public function getPeopleCount(): int
     {
-        $sum = 0;
-        foreach ($this->getAgeGroups() as $ageGroup) {
-            $sum += $ageGroup->getPeopleCount()->getCount();
+        if ($this->getWalk()->isWithAgeRanges()) {
+            $sum = 0;
+            foreach ($this->getAgeGroups() as $ageGroup) {
+                $sum += $ageGroup->getPeopleCount()->getCount();
+            }
+
+            return $sum;
         }
 
-        return $sum;
+        return $this->peopleCount;
+    }
+
+    public function setPeopleCount(int $peopleCount): void
+    {
+        $this->peopleCount = $peopleCount;
     }
 
     #[Groups(['wayPoint:read'])]

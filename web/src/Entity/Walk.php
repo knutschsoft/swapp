@@ -176,6 +176,9 @@ class Walk
     private bool $isWithAgeRanges;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithPeopleCount;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
 
     #[ORM\Column(type: 'boolean')]
@@ -213,6 +216,7 @@ class Walk
         if ($team->isWithGuests()) {
             $instance->setGuestNames($request->guestNames);
         }
+        $instance->setIsWithPeopleCount($team->isWithPeopleCount());
         $instance->setIsWithAgeRanges($team->isWithAgeRanges());
         if ($instance->isWithAgeRanges()) {
             $instance->setAgeRanges($team->getAgeRanges());
@@ -473,6 +477,7 @@ class Walk
         $this->teamName = $teamName;
     }
 
+    #[Groups(['walk:read'])]
     public function getPeopleCount(): int
     {
         $count = 0;
@@ -652,6 +657,18 @@ class Walk
     public function setIsWithAgeRanges(bool $isWithAgeRanges): void
     {
         $this->isWithAgeRanges = $isWithAgeRanges;
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithPeopleCount')]
+    public function isWithPeopleCount(): bool
+    {
+        return $this->isWithPeopleCount;
+    }
+
+    public function setIsWithPeopleCount(bool $isWithPeopleCount): void
+    {
+        $this->isWithPeopleCount = $isWithPeopleCount;
     }
 
     #[Groups(['walk:read'])]

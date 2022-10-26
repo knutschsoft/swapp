@@ -116,8 +116,15 @@
                         class: 'text-center',
                         formatter: (value, key, item) => {
                             let additionalWayPointFields = [];
-                            if (item.isWithAgeRanges) {
-                                additionalWayPointFields.push('Altersgruppen');
+                            if (item.isWithPeopleCount && item.isWithAgeRanges) {
+                                additionalWayPointFields.push('Altersgruppen & Anzahl Personen vor Ort');
+                            } else {
+                                if (item.isWithPeopleCount) {
+                                    additionalWayPointFields.push('Anzahl Personen vor Ort');
+                                }
+                                if (item.isWithAgeRanges) {
+                                    additionalWayPointFields.push('Altersgruppen');
+                                }
                             }
                             if (item.isWithContactsCount) {
                                 additionalWayPointFields.push('Anzahl direkter Kontakte');
@@ -266,6 +273,7 @@
                     ageRanges: team.ageRanges,
                     userGroupNames: team.userGroupNames,
                     isWithAgeRanges: team.isWithAgeRanges,
+                    isWithPeopleCount: team.isWithPeopleCount,
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
                     isWithGuests: team.isWithGuests,
