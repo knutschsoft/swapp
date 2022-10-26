@@ -103,6 +103,19 @@ const state = {
                         },
                     ],
                 },
+                {
+                    text: [
+                        'Feature: Wenn ein Nutzer mit einem veralteten und nicht unterstützten Browser Swapp versucht zu nutzen, bekommt er einen Hinweis diesbezüglich angezeigt.',
+                        'Dies ist bspw. beim Internet Explorer 11 der Fall.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20221026_Deprecated_Browser_hint.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des Hinweises auf jeder Seite',
+                        },
+                    ],
+                },
                 { text: 'Fix: Beim Klick auf "Wegpunkt speichern und Runde abschließen" im Firefox wurden 2 Wegpunkte anstatt einer gespeichert. Dies passiert nun nicht mehr.' },
             ],
         },
