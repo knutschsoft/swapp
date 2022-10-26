@@ -22,7 +22,7 @@ final class WalkChangeRequest
     public string $name;
 
     #[Assert\NotNull]
-    #[Assert\Length(min: 1, max: 2500)]
+    #[Assert\Length(min: 0, max: 2500)]
     public string $commitments;
 
     #[Assert\NotNull]
@@ -30,15 +30,15 @@ final class WalkChangeRequest
     public string $conceptOfDay;
 
     #[Assert\NotNull]
-    #[Assert\Length(min: 1, max: 2500)]
+    #[Assert\Length(min: 0, max: 2500)]
     public string $insights;
 
     #[Assert\NotNull]
-    #[Assert\Length(min: 1, max: 2500)]
+    #[Assert\Length(min: 0, max: 2500)]
     public string $systemicAnswer;
 
     #[Assert\NotNull]
-    #[Assert\Length(min: 1, max: 2500)]
+    #[Assert\Length(min: 0, max: 2500)]
     public string $walkReflection;
 
     #[Assert\NotNull]

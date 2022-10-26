@@ -63,6 +63,7 @@
                         :state="conceptOfDayState"
                         data-test="conceptOfDay"
                         rows="3"
+                        trim
                         max-rows="15"
                     />
                 </b-form-group>
@@ -179,21 +180,35 @@
                     label-cols="12"
                     content-cols-lg="10"
                     label-cols-lg="2"
-                    :label="`Systemische Antwort`"
                     :description="walk.systemicQuestion"
                     :disabled="isLoading"
                     :invalid-feedback="invalidSystemicAnswerFeedback"
                     :state="systemicAnswerState"
                 >
+                    <template v-slot:label>
+                        <div class="d-flex justify-content-between">
+                            <div :class="isWithoutSystemicAnswer ? `text-muted` : ``">
+                                Systemische Antwort
+                            </div>
+                            <b-form-checkbox
+                                v-model="isWithoutSystemicAnswer"
+                                :disabled="isLoading"
+                                class="font-weight-normal"
+                            >
+                                nicht benötigt
+                            </b-form-checkbox>
+                        </div>
+                    </template>
                     <b-textarea
                         v-model="form.systemicAnswer"
                         minlength="1"
                         maxlength="2500"
                         :placeholder="walk.systemicQuestion"
-                        :disabled="isLoading"
+                        :disabled="isLoading || isWithoutSystemicAnswer"
                         :state="systemicAnswerState"
                         data-test="systemicAnswer"
                         rows="3"
+                        trim
                         max-rows="15"
                     />
                 </b-form-group>
@@ -208,15 +223,30 @@
                     :invalid-feedback="invalidWalkReflectionFeedback"
                     :state="walkReflectionState"
                 >
+                    <template v-slot:label>
+                        <div class="d-flex justify-content-between">
+                            <div :class="isWithoutWalkReflection ? `text-muted` : ``">
+                                Reflexion
+                            </div>
+                            <b-form-checkbox
+                                v-model="isWithoutWalkReflection"
+                                :disabled="isLoading"
+                                class="font-weight-normal"
+                            >
+                                nicht benötigt
+                            </b-form-checkbox>
+                        </div>
+                    </template>
                     <b-textarea
                         v-model="form.walkReflection"
                         minlength="1"
                         maxlength="2500"
                         placeholder="Reflexion"
-                        :disabled="isLoading"
+                        :disabled="isLoading || isWithoutWalkReflection"
                         :state="walkReflectionState"
                         data-test="walkReflection"
                         rows="3"
+                        trim
                         max-rows="15"
                     />
                 </b-form-group>
@@ -241,21 +271,35 @@
                     label-cols="12"
                     content-cols-lg="10"
                     label-cols-lg="2"
-                    label="Termine, Besorgungen, Verabredungen"
                     description=""
                     :disabled="isLoading"
                     :invalid-feedback="invalidCommitmentsFeedback"
                     :state="commitmentsState"
                 >
+                    <template v-slot:label>
+                        <div class="d-flex justify-content-between">
+                            <div :class="isWithoutCommitments ? `text-muted` : ``">
+                                Termine, Besorgungen, Verabredungen
+                            </div>
+                            <b-form-checkbox
+                                v-model="isWithoutCommitments"
+                                :disabled="isLoading"
+                                class="font-weight-normal"
+                            >
+                                nicht benötigt
+                            </b-form-checkbox>
+                        </div>
+                    </template>
                     <b-textarea
                         v-model="form.commitments"
                         minlength="1"
                         maxlength="2500"
                         placeholder="Termine, Besorgungen, Verabredungen"
-                        :disabled="isLoading"
+                        :disabled="isLoading || isWithoutCommitments"
                         :state="commitmentsState"
                         data-test="commitments"
                         rows="3"
+                        trim
                         max-rows="15"
                     />
                 </b-form-group>
@@ -264,20 +308,34 @@
                     label-cols="12"
                     content-cols-lg="10"
                     label-cols-lg="2"
-                    label="Erkenntnisse, Überlegungen, Zielsetzungen"
                     :invalid-feedback="invalidInsightsFeedback"
                     :state="insightsState"
                 >
+                    <template v-slot:label>
+                        <div class="d-flex justify-content-between">
+                            <div :class="isWithoutInsights ? `text-muted` : ``">
+                                Erkenntnisse, Überlegungen, Zielsetzungen
+                            </div>
+                            <b-form-checkbox
+                                v-model="isWithoutInsights"
+                                :disabled="isLoading"
+                                class="font-weight-normal"
+                            >
+                                nicht benötigt
+                            </b-form-checkbox>
+                        </div>
+                    </template>
                     <b-textarea
                         v-model="form.insights"
                         minlength="1"
                         maxlength="2500"
                         placeholder="Erkenntnisse, Überlegungen, Zielsetzungen"
-                        :disabled="isLoading"
+                        :disabled="isLoading || isWithoutInsights"
                         description=""
                         :state="insightsState"
                         data-test="insights"
                         rows="3"
+                        trim
                         max-rows="15"
                     />
                 </b-form-group>
@@ -299,7 +357,7 @@
                 <b-button
                     type="submit"
                     variant="secondary"
-                    :disabled="isLoading"
+                    :disabled="isLoading || isSubmitDisabled"
                     data-test="button-walk-submit"
                     block
                     class="col-12"
@@ -359,6 +417,10 @@ export default {
     },
     data: function () {
         return {
+            isWithoutSystemicAnswer: false,
+            isWithoutWalkReflection: false,
+            isWithoutCommitments: false,
+            isWithoutInsights: false,
             startTimeTime: null,
             startTimeDate: null,
             endTimeTime: null,
@@ -411,6 +473,12 @@ export default {
         };
     },
     computed: {
+        isSubmitDisabled() {
+            return !this.form.systemicAnswer && !this.isWithoutSystemicAnswer
+                || !this.form.walkReflection && !this.isWithoutWalkReflection
+                || !this.form.commitments && !this.isWithoutCommitments
+                || !this.form.insights && !this.isWithoutInsights
+        },
         globalErrors() {
             return getViolationsFeedback([
                 'name',
@@ -477,6 +545,9 @@ export default {
             return getViolationsFeedback(['weather'], this.error);
         },
         systemicAnswerState() {
+            if (this.isWithoutSystemicAnswer) {
+                return true;
+            }
             if (!this.form.systemicAnswer && !this.invalidSystemicAnswerFeedback) {
                 return;
             }
@@ -487,6 +558,9 @@ export default {
             return getViolationsFeedback(['systemicAnswer'], this.error);
         },
         walkReflectionState() {
+            if (this.isWithoutWalkReflection) {
+                return true;
+            }
             if (!this.form.walkReflection && !this.invalidWalkReflectionFeedback) {
                 return;
             }
@@ -497,6 +571,9 @@ export default {
             return getViolationsFeedback(['walkReflection'], this.error);
         },
         insightsState() {
+            if (this.isWithoutInsights) {
+                return true;
+            }
             if (!this.form.insights && !this.invalidInsightsFeedback) {
                 return;
             }
@@ -507,6 +584,9 @@ export default {
             return getViolationsFeedback(['insights'], this.error);
         },
         commitmentsState() {
+            if (this.isWithoutCommitments) {
+                return true;
+            }
             if (!this.form.commitments && !this.invalidCommitmentsFeedback) {
                 return;
             }

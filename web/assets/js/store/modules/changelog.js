@@ -93,7 +93,22 @@ const state = {
                 },
                 {
                     text: [
-                        'Feature: Ein Benutzer kann die Rundenliste auf dem Dashboard nach nicht beendeten Runden filtern.',
+                        'Feature: Ein Nutzender muss nicht alle Felder einer Runde eingeben .',
+                        'Dies betrifft die Felder: "Systemische Antwort", "Reflexion", "Termine, Besorgungen, Verabredungen" sowie "Erkenntnisse, Überlegungen, Zielsetzungen".',
+                        'Die Nichteingabe muss jedoch bewusst per Klick bestätigt werden.',
+                        'Der Vorteil ist, dass keine Dummywerte mehr eingetragen werden brauchen und ein Nutzender sich somit die Klicks dafür spart.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20221026_optionale_Felder_Wegpunkt_abschliessen_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung bei Runde abschließen und bei Runde ändern (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'Feature: Ein Nutzender kann die Rundenliste auf dem Dashboard nach nicht beendeten Runden filtern.',
                     ],
                     gallery: [
                         {
@@ -314,7 +329,7 @@ const state = {
                 { text: 'Feature: Ein Admin kann die Benutzerliste nach aktiven und inaktiven Benutzern filtern.' },
                 { text: 'Feature: Die Benutzer in der Benutzerliste sind nun nach aktiv/inaktiv und Benutzername sortiert.' },
                 {
-                    text: 'Feature: Ein Benutzer wird nun mit einem Hinweis auf neue Änderungen in Swapp hingewiesen.',
+                    text: 'Feature: Ein Nutzender wird nun mit einem Hinweis auf neue Änderungen in Swapp hingewiesen.',
                     gallery: [
                         {
                             src: '../changelog/20220222_changelog_aktiviert_icon.png',

@@ -9,6 +9,7 @@
         :state="state"
         :invalid-feedback="invalidFeedback"
     >
+        <slot name="label" />
         <slot />
     </b-form-group>
 </template>
@@ -20,8 +21,9 @@ export default {
     name: 'FormGroup',
     props: {
         label: {
-            required: true,
+            required: false,
             type: String,
+            default: '',
         },
         description: {
             required: false,

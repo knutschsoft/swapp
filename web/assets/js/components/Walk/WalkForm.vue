@@ -69,6 +69,7 @@
                 :state="conceptOfDayState"
                 data-test="conceptOfDay"
                 rows="3"
+                trim
                 max-rows="15"
             />
         </form-group>
@@ -134,29 +135,59 @@
                 readonly
             />
         </form-group>
-        <form-group label="Systemische Antwort">
+        <form-group>
+            <template v-slot:label>
+                <div class="d-flex justify-content-between">
+                    <div :class="isWithoutSystemicAnswer ? `text-muted` : ``">
+                        Systemische Antwort
+                    </div>
+                    <b-form-checkbox
+                        v-model="isWithoutSystemicAnswer"
+                        :disabled="isLoading"
+                        class="font-weight-normal"
+                    >
+                        nicht benötigt
+                    </b-form-checkbox>
+                </div>
+            </template>
             <b-textarea
                 v-model="walk.systemicAnswer"
-                :disabled="isLoading"
+                :disabled="isLoading || isWithoutSystemicAnswer"
                 minlength="1"
                 maxlength="2500"
                 placeholder="Systemische Antwort"
                 :state="systemicAnswerState"
                 data-test="systemicAnswer"
                 rows="3"
+                trim
                 max-rows="15"
             />
         </form-group>
-        <form-group label="Reflexion">
+        <form-group>
+            <template v-slot:label>
+                <div class="d-flex justify-content-between">
+                    <div :class="isWithoutWalkReflection ? `text-muted` : ``">
+                        Reflexion
+                    </div>
+                    <b-form-checkbox
+                        v-model="isWithoutWalkReflection"
+                        :disabled="isLoading"
+                        class="font-weight-normal"
+                    >
+                        nicht benötigt
+                    </b-form-checkbox>
+                </div>
+            </template>
             <b-textarea
                 v-model="walk.walkReflection"
-                :disabled="isLoading"
+                :disabled="isLoading || isWithoutWalkReflection"
                 minlength="1"
                 maxlength="2500"
                 placeholder="Reflexion"
                 :state="walkReflectionState"
                 data-test="walkReflection"
                 rows="3"
+                trim
                 max-rows="15"
             />
         </form-group>
@@ -167,29 +198,59 @@
                 :options="[1, 2, 3, 4, 5]"
             />
         </form-group>
-        <form-group label="Termine, Besorgungen, Verabredungen">
+        <form-group>
+            <template v-slot:label>
+                <div class="d-flex justify-content-between">
+                    <div :class="isWithoutCommitments ? `text-muted` : ``">
+                        Termine, Besorgungen, Verabredungen
+                    </div>
+                    <b-form-checkbox
+                        v-model="isWithoutCommitments"
+                        :disabled="isLoading"
+                        class="font-weight-normal"
+                    >
+                        nicht benötigt
+                    </b-form-checkbox>
+                </div>
+            </template>
             <b-textarea
                 v-model="walk.commitments"
-                :disabled="isLoading"
+                :disabled="isLoading || isWithoutCommitments"
                 minlength="1"
                 maxlength="2500"
                 placeholder="Termine, Besorgungen, Verabredungen"
                 :state="commitmentsState"
                 data-test="commitments"
                 rows="3"
+                trim
                 max-rows="15"
             />
         </form-group>
-        <form-group label="Erkenntnisse, Überlegungen, Zielsetzungen">
+        <form-group>
+            <template v-slot:label>
+                <div class="d-flex justify-content-between">
+                    <div :class="isWithoutInsights ? `text-muted` : ``">
+                        Erkenntnisse, Überlegungen, Zielsetzungen
+                    </div>
+                    <b-form-checkbox
+                        v-model="isWithoutInsights"
+                        :disabled="isLoading"
+                        class="font-weight-normal"
+                    >
+                        nicht benötigt
+                    </b-form-checkbox>
+                </div>
+            </template>
             <b-textarea
                 v-model="walk.insights"
-                :disabled="isLoading"
+                :disabled="isLoading || isWithoutInsights"
                 minlength="1"
                 maxlength="2500"
                 placeholder="Termine, Besorgungen, Verabredungen"
                 :state="insightsState"
                 data-test="insights"
                 rows="3"
+                trim
                 max-rows="15"
             />
         </form-group>
@@ -204,7 +265,7 @@
         <b-button
             type="submit"
             variant="secondary"
-            :disabled="isFormInvalid"
+            :disabled="isFormInvalid || isSubmitDisabled"
             data-test="button-walk-submit"
             block
             class="col-12"
@@ -243,6 +304,10 @@ export default {
     },
     data: function () {
         return {
+            isWithoutSystemicAnswer: false,
+            isWithoutWalkReflection: false,
+            isWithoutCommitments: false,
+            isWithoutInsights: false,
             startTimeDate: null,
             startTimeTime: null,
             endTimeDate: null,
@@ -296,6 +361,13 @@ export default {
         };
     },
     computed: {
+        isSubmitDisabled() {
+            return !this.walk
+                || !this.walk.systemicAnswer && !this.isWithoutSystemicAnswer
+                || !this.walk.walkReflection && !this.isWithoutWalkReflection
+                || !this.walk.commitments && !this.isWithoutCommitments
+                || !this.walk.insights && !this.isWithoutInsights
+        },
         team() {
             return this.$store.getters['team/getTeamByTeamName'](this.initialWalk.teamName);
         },
@@ -318,6 +390,9 @@ export default {
             return this.walk.name.length >= 2 && this.walk.name.length <= 300;
         },
         commitmentsState() {
+            if (this.isWithoutCommitments) {
+                return true;
+            }
             if (null === this.walk.commitments || undefined === this.walk.commitments) {
                 return;
             }
@@ -332,6 +407,9 @@ export default {
             return this.walk.conceptOfDay.length >= 1 && this.walk.conceptOfDay.length <= 2500;
         },
         insightsState() {
+            if (this.isWithoutInsights) {
+                return true;
+            }
             if (null === this.walk.insights || undefined === this.walk.insights) {
                 return;
             }
@@ -339,6 +417,9 @@ export default {
             return this.walk.insights.length >= 1 && this.walk.insights.length <= 2500;
         },
         systemicAnswerState() {
+            if (this.isWithoutSystemicAnswer) {
+                return true;
+            }
             if (null === this.walk.systemicAnswer || undefined === this.walk.systemicAnswer) {
                 return;
             }
@@ -346,6 +427,9 @@ export default {
             return this.walk.systemicAnswer.length >= 1 && this.walk.systemicAnswer.length <= 2500;
         },
         walkReflectionState() {
+            if (this.isWithoutWalkReflection) {
+                return true;
+            }
             if (null === this.walk.walkReflection || undefined === this.walk.walkReflection) {
                 return;
             }
@@ -466,6 +550,11 @@ export default {
         this.walk.weather = this.initialWalk.weather;
         this.walk.walkTeamMembers = this.initialWalk.walkTeamMembers.slice();
         this.walk.guestNames = this.initialWalk.guestNames.slice();
+
+        this.isWithoutSystemicAnswer = !this.walk.systemicAnswer.length;
+        this.isWithoutWalkReflection = !this.walk.walkReflection.length;
+        this.isWithoutCommitments = !this.walk.commitments.length;
+        this.isWithoutInsights = !this.walk.insights.length;
 
         if (!this.users.length) {
             await this.$store.dispatch('user/findAll');
