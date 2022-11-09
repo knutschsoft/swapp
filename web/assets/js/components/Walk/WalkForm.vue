@@ -246,7 +246,7 @@
                 :disabled="isLoading || isWithoutInsights"
                 minlength="1"
                 maxlength="2500"
-                placeholder="Termine, Besorgungen, Verabredungen"
+                placeholder="Erkenntnisse, Überlegungen, Zielsetzungen"
                 :state="insightsState"
                 data-test="insights"
                 rows="3"
