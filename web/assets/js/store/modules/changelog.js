@@ -11,9 +11,9 @@ const
 const state = {
     changelogs: [
         {
-            header: '27.09.2022',
-            avatarText: '&#129507;',
-            avatarTitle: 'Zu Ehren des \'Tag des Schals\'',
+            header: '09.11.2022',
+            avatarText: '&#129303;',
+            avatarTitle: 'Zu Ehren des \'Falls der Berliner Mauer\'',
             entries: [
                 {
                     text: [
