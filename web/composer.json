@@ -90,7 +90,6 @@
         "phpunit/phpunit": "~9.5.4",
         "projektmotor/symfony-coding-standard": "~1.0",
         "robertfausk/behat-panther-extension": "~1.0",
-        "robertfausk/mink-panther-driver": "dev-master",
         "soyuka/contexts": "dev-main",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
