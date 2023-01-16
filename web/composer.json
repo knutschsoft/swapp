@@ -91,7 +91,7 @@
         "phpunit/phpunit": "~9.5.4",
         "projektmotor/symfony-coding-standard": "~1.0",
         "robertfausk/behat-panther-extension": "~1.0",
-        "soyuka/contexts": "3.3.4",
+        "robertfausk/contexts": "dev-main",
         "symfony/browser-kit": "6.2.*",
         "symfony/css-selector": "6.2.*",
         "symfony/dotenv": "~6.2",

@@ -417,9 +417,6 @@
     "slevomat/coding-standard": {
         "version": "5.0.4"
     },
-    "soyuka/contexts": {
-        "version": "3.3.3"
-    },
     "squizlabs/php_codesniffer": {
         "version": "3.0",
         "recipe": {

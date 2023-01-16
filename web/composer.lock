@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc5b99f6fca9ae472fb07cf4ba02af61",
+    "content-hash": "e0ec96dc79d64db7564b6f71e57dee14",
     "packages": [
         {
             "name": "acsiomatic/device-detector-bundle",
@@ -73,16 +73,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v3.0.9",
+            "version": "v3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "c39c3e8c1b775926215a750ecef6a03bb569ef40"
+                "reference": "14a317529895206af074df28e0eded580ecea899"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/c39c3e8c1b775926215a750ecef6a03bb569ef40",
-                "reference": "c39c3e8c1b775926215a750ecef6a03bb569ef40",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/14a317529895206af074df28e0eded580ecea899",
+                "reference": "14a317529895206af074df28e0eded580ecea899",
                 "shasum": ""
             },
             "require": {
@@ -231,7 +231,7 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v3.0.9"
+                "source": "https://github.com/api-platform/core/tree/v3.0.10"
             },
             "funding": [
                 {
@@ -239,7 +239,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-14T08:20:58+00:00"
+            "time": "2023-01-16T08:40:14+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -12381,6 +12381,67 @@
             "time": "2022-09-17T11:06:40+00:00"
         },
         {
+            "name": "robertfausk/contexts",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robertfausk/contexts.git",
+                "reference": "dbe1076b64bfad7991cb7c62277b1d167c611a04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robertfausk/contexts/zipball/dbe1076b64bfad7991cb7c62277b1d167c611a04",
+                "reference": "dbe1076b64bfad7991cb7c62277b1d167c611a04",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.13",
+                "friends-of-behat/mink-extension": "^2.3.1",
+                "justinrainbow/json-schema": "^5.0",
+                "php": ">=5.5",
+                "symfony/dom-crawler": "^2.4|^3.0|^4.0|^5.0|^6.0",
+                "symfony/http-foundation": "^2.3|^3.0|^4.0|^5.0|^6.0",
+                "symfony/property-access": "^2.3|^3.0|^4.0|^5.0|^6.0"
+            },
+            "replace": {
+                "sanpi/behatch-contexts": "self.version"
+            },
+            "require-dev": {
+                "atoum/atoum": "^2.8|^3.0",
+                "behat/mink-goutte-driver": "^1.1",
+                "behat/mink-selenium2-driver": "^1.4@dev",
+                "fabpot/goutte": "^3.2",
+                "guzzlehttp/guzzle": "^6.3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Behatch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "beerware"
+            ],
+            "description": "Behatch contexts",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "Context",
+                "Symfony2"
+            ],
+            "support": {
+                "source": "https://github.com/robertfausk/contexts/tree/main"
+            },
+            "time": "2022-07-25T17:05:23+00:00"
+        },
+        {
             "name": "robertfausk/mink-panther-driver",
             "version": "v1.1.0",
             "source": {
@@ -13651,66 +13712,6 @@
             "time": "2022-05-25T10:58:12+00:00"
         },
         {
-            "name": "soyuka/contexts",
-            "version": "v3.3.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/soyuka/contexts.git",
-                "reference": "ce2832852da375d521987d3cdf90c48ed009d46d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/soyuka/contexts/zipball/ce2832852da375d521987d3cdf90c48ed009d46d",
-                "reference": "ce2832852da375d521987d3cdf90c48ed009d46d",
-                "shasum": ""
-            },
-            "require": {
-                "behat/behat": "^3.0.13",
-                "friends-of-behat/mink-extension": "^2.3.1",
-                "justinrainbow/json-schema": "^5.0",
-                "php": ">=5.5",
-                "symfony/dom-crawler": "^2.4|^3.0|^4.0|^5.0|^6.0",
-                "symfony/http-foundation": "^2.3|^3.0|^4.0|^5.0|^6.0",
-                "symfony/property-access": "^2.3|^3.0|^4.0|^5.0|^6.0"
-            },
-            "replace": {
-                "sanpi/behatch-contexts": "self.version"
-            },
-            "require-dev": {
-                "atoum/atoum": "^2.8|^3.0",
-                "behat/mink-goutte-driver": "^1.1",
-                "behat/mink-selenium2-driver": "^1.4@dev",
-                "fabpot/goutte": "^3.2",
-                "guzzlehttp/guzzle": "^6.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Behatch\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "beerware"
-            ],
-            "description": "Behatch contexts",
-            "keywords": [
-                "BDD",
-                "Behat",
-                "Context",
-                "Symfony2"
-            ],
-            "support": {
-                "source": "https://github.com/soyuka/contexts/tree/v3.3.4"
-            },
-            "time": "2022-12-12T10:10:21+00:00"
-        },
-        {
             "name": "squizlabs/php_codesniffer",
             "version": "3.7.1",
             "source": {
@@ -14604,7 +14605,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "robertfausk/contexts": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
