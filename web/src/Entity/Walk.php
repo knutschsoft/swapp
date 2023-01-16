@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Dto\TeamName;
 use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkCreateRequest;
@@ -17,9 +20,6 @@ use App\Dto\WalkExportRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMWalkRepository;
-use App\Security\Voter\ClientVoter;
-use App\Security\Voter\TeamVoter;
-use App\Security\Voter\WalkVoter;
 use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,79 +28,69 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            requirements: ['id' => '\d+'],
+        ),
+        new GetCollection(),
+        new GetCollection(
+            uriTemplate: '/walks/team_names',
+            output: TeamName::class,
+            forceEager: false,
+        ),
+        new Post(
+            uriTemplate: '/walks/export',
+            status: 200,
+            openapiContext: ['summary' => 'Exports all walks for given date range.'],
+            securityPostDenormalize: 'is_granted("CLIENT_READ", object.client)',
+            input: WalkExportRequest::class,
+            output: Response::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/walks/change',
+            status: 200,
+            securityPostDenormalize: 'is_granted(\'WALK_EDIT\', object.walk)',
+            input: WalkChangeRequest::class,
+            output: Walk::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/walks/epilogue',
+            status: 200,
+            securityPostDenormalize: 'is_granted(\'WALK_READ\', object.walk)',
+            input: WalkEpilogueRequest::class,
+            output: Walk::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/walks/create',
+            status: 200,
+            securityPostDenormalize: 'is_granted(\'TEAM_READ\', object.team) and user.hasTeam(object.team)',
+            input: WalkCreateRequest::class,
+            output: Walk::class,
+            messenger: 'input'
+        ),
+    ],
+    normalizationContext: ['groups' => ['walk:read']],
+    order: ['teamName' => 'ASC'],
+    paginationItemsPerPage: 5
+)]
 #[ORM\Table(name: 'walk')]
 #[ORM\Entity(repositoryClass: DoctrineORMWalkRepository::class)]
-#[ApiFilter(OrderFilter::class, properties: ["name", "rating", "teamName", "startTime", "endTime", "isResubmission"])]
-#[ApiFilter(BooleanFilter::class, properties: ["isResubmission", "isUnfinished"])]
-#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
-#[ApiResource(
-    collectionOperations: [
-        "get",
-        "get_team_names" => [
-            "method" => "get",
-            "path" => "/walks/team_names",
-            "output" => TeamName::class,
-            "pagination_enabled" => false,
-            "normalization_context" => ["groups" => ["teamName:read"]],
-        ],
-        "walk_export" => [
-            "messenger" => "input",
-            "openapi_context" => [
-                "summary" => "Exports all walks for given date range.",
-            ],
-            "input" => WalkExportRequest::class,
-            "output" => Response::class,
-            "status" => 200,
-            "method" => "post",
-            "path" => "/walks/export",
-            "security_post_denormalize" => 'is_granted("'.ClientVoter::READ.'", object.client)',
-        ],
-        "walk_change" => [
-            "messenger" => "input",
-            "input" => WalkChangeRequest::class,
-            "output" => Walk::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/walks/change",
-            "security_post_denormalize" => "is_granted('".WalkVoter::EDIT."', object.walk)",
-        ],
-        "walk_epilogue" => [
-            "messenger" => "input",
-            "input" => WalkEpilogueRequest::class,
-            "output" => Walk::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/walks/epilogue",
-            "security_post_denormalize" => "is_granted('".WalkVoter::READ."', object.walk)",
-        ],
-        "walk_create" => [
-            "messenger" => "input",
-            "input" => WalkCreateRequest::class,
-            "output" => Walk::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/walks/create",
-            "security_post_denormalize" => "is_granted('".TeamVoter::TEAM_READ."', object.team) and user.hasTeam(object.team)",
-        ],
-    ],
-    itemOperations: [
-        "get",
-    ],
-    attributes: [
-        "pagination_items_per_page" => 5,
-        "order" => ["teamName" => "ASC"],
-    ],
-    normalizationContext: ["groups" => ["walk:read"]]
-)]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['name', 'rating', 'teamName', 'startTime', 'endTime', 'isResubmission'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['isResubmission', 'isUnfinished'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
 class Walk
 {
     use AgeRangeField;
     use UserGroupNamesField;
 
+    #[ApiProperty(identifier: true)]
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue()]
-    #[ApiProperty(identifier: true)]
+    #[ORM\GeneratedValue]
     private int $id;
 
     #[ORM\Column(type: 'string', length: 1024)]

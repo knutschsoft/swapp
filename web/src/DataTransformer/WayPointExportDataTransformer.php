@@ -3,44 +3,34 @@ declare(strict_types=1);
 
 namespace App\DataTransformer;
 
-use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Entity\Export\WayPointExport;
 use App\Entity\WayPoint;
 
-class WayPointExportDataTransformer implements DataTransformerInterface
+final class WayPointExportDataTransformer
 {
-    /**
-     * @param WayPoint $data
-     * @param string   $to
-     * @param array    $context
-     *
-     * @return WayPointExport
-     */
-    public function transform($data, string $to, array $context = []): WayPointExport
+    public function transform(WayPoint $wayPoint): WayPointExport
     {
         $wayPointExport = new WayPointExport();
-        $wayPointExport->id = $data->getId();
-        $wayPointExport->locationName = $data->getLocationName();
-        $wayPointExport->visitedAt = $data->getVisitedAt()->format('d.m.Y H:i:s');
-        $wayPointExport->walkName = $data->getWalk()->getName();
-        $wayPointExport->teamName = $data->getWalk()->getTeamName();
+        $wayPointExport->id = $wayPoint->getId();
+        $wayPointExport->locationName = $wayPoint->getLocationName();
+        $wayPointExport->visitedAt = $wayPoint->getVisitedAt()->format('d.m.Y H:i:s');
+        $wayPointExport->walkName = $wayPoint->getWalk()->getName();
+        $wayPointExport->teamName = $wayPoint->getWalk()->getTeamName();
         $users = [];
-        foreach ($data->getWalk()->getWalkTeamMembers() as $walkTeamMember) {
+        foreach ($wayPoint->getWalk()->getWalkTeamMembers() as $walkTeamMember) {
             $users[] = $walkTeamMember->getUsername();
         }
         $wayPointExport->users = \implode(',', $users);
-        $wayPointExport->conceptOfDay = $data->getWalk()->getConceptOfDay();
-        $wayPointExport->note = (string) $data->getNote();
-        $wayPointExport->oneOnOneInterview = $data->getOneOnOneInterview();
-        $wayPointExport->isMeeting = $data->getIsMeeting();
-        $wayPointExport->contactsCount = $data->getContactsCount();
-        $wayPointExport->peopleCount = $data->getPeopleCount();
+        $wayPointExport->conceptOfDay = $wayPoint->getWalk()->getConceptOfDay();
+        $wayPointExport->note = (string) $wayPoint->getNote();
+        $wayPointExport->oneOnOneInterview = $wayPoint->getOneOnOneInterview();
+        $wayPointExport->isMeeting = $wayPoint->getIsMeeting();
+        $wayPointExport->contactsCount = $wayPoint->getContactsCount();
+        $wayPointExport->peopleCount = $wayPoint->getPeopleCount();
+        $wayPointExport->userGroups = $wayPoint->getUserGroups();
+        $wayPointExport->ageGroups = $wayPoint->getAgeGroups();
+        $wayPointExport->tags = $wayPoint->getWayPointTags()->toArray();
 
         return $wayPointExport;
-    }
-
-    public function supportsTransformation($data, string $to, array $context = []): bool
-    {
-        return WayPointExport::class === $to && $data instanceof WayPoint;
     }
 }

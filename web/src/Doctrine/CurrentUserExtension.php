@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
+use App\Dto\TeamName;
 use App\Entity\Client;
 use App\Entity\SystemicQuestion;
 use App\Entity\Tag;
@@ -29,9 +31,10 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        ?string $operationName = null
+        ?Operation $operation = null,
+        array $context = []
     ): void {
-        $this->addWhere($queryBuilder, $resourceClass, $operationName);
+        $this->addWhere($queryBuilder, $resourceClass, $operation);
     }
 
     public function applyToItem(
@@ -39,13 +42,13 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        ?string $operationName = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
-        $this->addWhere($queryBuilder, $resourceClass, $operationName);
+        $this->addWhere($queryBuilder, $resourceClass, $operation);
     }
 
-    private function addWhere(QueryBuilder $queryBuilder, string $resourceClass, ?string $operationName = null): void
+    private function addWhere(QueryBuilder $queryBuilder, string $resourceClass, ?Operation $operation = null): void
     {
         $user = $this->security->getUser();
         if (null === $user) {
@@ -93,7 +96,8 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->andWhere(\sprintf(':client = %s.client', $rootAlias));
                 $queryBuilder->setParameter('client', $user->getClient());
             }
-            if ('get_team_names' === $operationName) {
+
+            if ($operation?->getOutput() && TeamName::class === $operation->getOutput()['class']) {
                 $queryBuilder->select(\sprintf('%s.teamName', $rootAlias));
                 $queryBuilder->groupBy(\sprintf('%s.teamName', $rootAlias));
                 $queryBuilder->andWhere(\sprintf('LENGTH(%s.teamName) > 1', $rootAlias));

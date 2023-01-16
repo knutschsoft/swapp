@@ -32,12 +32,12 @@ Feature: Testing way point resource
       | Gorbitz     | Westhang |
       | Gamescon    | Gamers   |
     Given the following way points exists:
-      | locationName | walkName    | beobachtung | einzelgespraech |
-      | Assieck      | Spaziergang | Bier!       | Gönnjamin       |
-      | Elbamare     | Gorbitz     |             |                 |
-      | Block17      | Gorbitz     |             |                 |
-      | BOTW         | Gamescon    |             |                 |
-      | BOTW2        | Gamescon    |             |                 |
+      | locationName | walkName    | beobachtung | einzelgespraech | visitedAt |
+      | Assieck      | Spaziergang | Bier!       | Gönnjamin       | now       |
+      | Elbamare     | Gorbitz     |             |                 | now       |
+      | Block17      | Gorbitz     |             |                 | now       |
+      | BOTW         | Gamescon    |             |                 | now       |
+      | BOTW2        | Gamescon    |             |                 | now       |
 
   @api @wayPoint
   Scenario: I can request /api/way_points as a not authenticated user and an auth error will occur
@@ -84,7 +84,7 @@ Feature: Testing way point resource
       | locationName      | Assieck                     |
       | note              | Bier!                       |
       | oneOnOneInterview | Gönnjamin                   |
-      | visitedAt         | date<now,Y-m-dTH:i:s+02:00> |
+      | visitedAt         | date<now,Y-m-dTH:i:s+01:00> |
 
   @api @wayPoint
   Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will see all way points

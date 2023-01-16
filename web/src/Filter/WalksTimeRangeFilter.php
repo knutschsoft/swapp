@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace App\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Walk;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\PropertyInfo\Type;
 
-final class WalksTimeRangeFilter extends AbstractContextAwareFilter
+final class WalksTimeRangeFilter extends AbstractFilter
 {
     public function getDescription(string $resourceClass): array
     {
@@ -35,13 +36,15 @@ final class WalksTimeRangeFilter extends AbstractContextAwareFilter
         return $description;
     }
 
+    /** @inheritDoc */
     protected function filterProperty(
         string $property,
         $value,
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        Operation $operation = null,
+        array $context = []
     ): void {
         $resourceClass = Walk::class;
 

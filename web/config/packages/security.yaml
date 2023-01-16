@@ -1,5 +1,4 @@
 security:
-    enable_authenticator_manager: true
     providers:
         app_user_provider:
             id: App\Security\UserProvider
@@ -40,23 +39,29 @@ security:
             jwt: ~
 
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'sha512'
-        #            algorithm: argon2i
-        #            algorithm: auto
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/login-check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/is-confirmation-token-valid, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/user-email-confirm, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/getToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/login-check, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/is-confirmation-token-valid, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/user-email-confirm, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/signup, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/token/refresh, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/getToken, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 #        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+when@test:
+    security:
+        password_hashers:
+            App\Entity\User:
+                algorithm: md5
+                encode_as_base64: false
+                iterations: 0

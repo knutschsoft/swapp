@@ -1,16 +1,17 @@
 <?php
-declare(strict_types=1);
+declare (strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Dto\SystemicQuestion\SystemicQuestionChangeRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionCreateRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionDisableRequest;
 use App\Dto\SystemicQuestion\SystemicQuestionEnableRequest;
 use App\Repository\DoctrineORMSystemicQuestionRepository;
-use App\Security\Voter\ClientVoter;
-use App\Security\Voter\SystemicQuestionVoter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -19,55 +20,47 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Webmozart\Assert\Assert;
 
+#[ApiResource(
+    operations: [
+        new Get(security: 'is_granted("SYSTEMIC_QUESTION_READ", object)'),
+        new GetCollection(),
+        new Post(
+            uriTemplate: '/systemic_questions/create',
+            status: 200,
+            securityPostDenormalize: 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.client)',
+            input: SystemicQuestionCreateRequest::class,
+            output: SystemicQuestion::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/systemic_questions/change',
+            status: 200,
+            securityPostDenormalize: 'is_granted("SYSTEMIC_QUESTION_EDIT", object.systemicQuestion) && is_granted("CLIENT_READ", object.client)',
+            input: SystemicQuestionChangeRequest::class,
+            output: SystemicQuestion::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/systemic_questions/enable',
+            status: 200,
+            securityPostDenormalize: 'is_granted("ROLE_ADMIN") && is_granted("SYSTEMIC_QUESTION_EDIT", object.systemicQuestion)',
+            input: SystemicQuestionEnableRequest::class,
+            output: SystemicQuestion::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/systemic_questions/disable',
+            status: 200,
+            securityPostDenormalize: 'is_granted("ROLE_ADMIN") && is_granted("SYSTEMIC_QUESTION_EDIT", object.systemicQuestion)',
+            input: SystemicQuestionDisableRequest::class,
+            output: SystemicQuestion::class,
+            messenger: 'input'
+        ),
+    ],
+    normalizationContext: ['groups' => ['systemicQuestion:read']],
+)]
 #[ORM\Table(name: 'systemic_question')]
 #[ORM\Entity(repositoryClass: DoctrineORMSystemicQuestionRepository::class)]
-#[ApiResource(
-    collectionOperations: [
-    'get',
-    'systemic_question_create' => [
-        "messenger" => "input",
-        "input" => SystemicQuestionCreateRequest::class,
-        "output" => SystemicQuestion::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/systemic_questions/create",
-        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.client)',
-    ],
-    'systemic_question_change' => [
-        "messenger" => "input",
-        "input" => SystemicQuestionChangeRequest::class,
-        "output" => SystemicQuestion::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/systemic_questions/change",
-        "security_post_denormalize" => 'is_granted("'.SystemicQuestionVoter::EDIT.'", object.systemicQuestion) && is_granted("'.ClientVoter::READ.'", object.client)',
-    ],
-    'systemic_question_enable' => [
-        "messenger" => "input",
-        "input" => SystemicQuestionEnableRequest::class,
-        "output" => SystemicQuestion::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/systemic_questions/enable",
-        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.SystemicQuestionVoter::EDIT.'", object.systemicQuestion)',
-    ],
-    'systemic_question_disable' => [
-        "messenger" => "input",
-        "input" => SystemicQuestionDisableRequest::class,
-        "output" => SystemicQuestion::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/systemic_questions/disable",
-        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.SystemicQuestionVoter::EDIT.'", object.systemicQuestion)',
-    ],
-    ],
-    itemOperations: [
-    'get' => [
-        'security' => 'is_granted("'.SystemicQuestionVoter::READ.'", object)',
-    ],
-    ],
-    normalizationContext: ["groups" => ["systemicQuestion:read"]]
-)]
 class SystemicQuestion
 {
     use TimestampableEntity;

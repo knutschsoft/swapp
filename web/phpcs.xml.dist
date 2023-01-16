@@ -12,6 +12,7 @@
     </rule>
 
     <exclude-pattern>./tests/object-manager.php</exclude-pattern>
+    <exclude-pattern>./tests/behat-bootstrap.php</exclude-pattern>
 
     <rule ref="SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty">
         <exclude-pattern>src/Dto/LocationName.php</exclude-pattern>

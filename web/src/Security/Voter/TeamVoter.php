@@ -5,9 +5,9 @@ namespace App\Security\Voter;
 
 use App\Entity\Team;
 use App\Entity\User;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Webmozart\Assert\Assert;
 
@@ -18,17 +18,11 @@ class TeamVoter extends Voter
     public const TEAM_EDIT = 'TEAM_EDIT';
     public const TEAM_DELETE = 'TEAM_DELETE';
 
-    private Security $security;
-
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
         $supportsAttribute = \in_array($attribute, [self::TEAM_CREATE, self::TEAM_READ, self::TEAM_EDIT, self::TEAM_DELETE], true);
         $supportsSubject = $subject instanceof Team;
@@ -36,10 +30,7 @@ class TeamVoter extends Voter
         return $supportsAttribute && $supportsSubject;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access

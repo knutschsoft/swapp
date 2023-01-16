@@ -3,39 +3,37 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Dto\TagCreateRequest;
 use App\Repository\DoctrineORMTagRepository;
-use App\Security\Voter\ClientVoter;
-use App\Security\Voter\TagVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
+#[ApiResource(
+    operations: [
+        new Get(security: 'is_granted("TAG_READ", object)'),
+        new GetCollection(
+            uriTemplate: '/tags'
+        ),
+        new Post(
+            uriTemplate: '/tags/create',
+            status: 200,
+            securityPostDenormalize: 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.client)',
+            input: TagCreateRequest::class,
+            output: Tag::class,
+            messenger: 'input'
+        ),
+    ],
+    normalizationContext: ['groups' => ['tag:read']]
+)]
 #[ORM\Table(name: 'tag')]
 #[ORM\Entity(repositoryClass: DoctrineORMTagRepository::class)]
-#[ApiResource(
-    collectionOperations: [
-    'get',
-    'tag_create' => [
-        "messenger" => "input",
-        "input" => TagCreateRequest::class,
-        "output" => Tag::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/tags/create",
-        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.client)',
-    ],
-    ],
-    itemOperations: [
-        'get' => [
-            'security' => 'is_granted("'.TagVoter::READ.'", object)',
-        ],
-    ],
-    normalizationContext: ["groups" => ["tag:read"]]
-)]
 class Tag
 {
     public const COLORS = [
@@ -153,11 +151,7 @@ class Tag
         return $instance;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"tag:read", "walk:read"})
-     */
+    #[Groups(['tag:read', 'walk:read'])]
     public function getName(): string
     {
         return $this->name;
@@ -168,11 +162,7 @@ class Tag
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     *
-     * @Groups({"tag:read", "walk:read"})
-     */
+    #[Groups(['tag:read', 'walk:read'])]
     public function getColor(): string
     {
         return $this->color;
@@ -183,11 +173,7 @@ class Tag
         $this->color = $color;
     }
 
-    /**
-     * @Groups({"tag:read", "walk:read"})
-     *
-     * @return int
-     */
+    #[Groups(['tag:read', 'walk:read'])]
     public function getId(): int
     {
         return $this->id;

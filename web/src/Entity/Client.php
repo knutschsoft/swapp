@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Dto\Client\ClientChangeRequest;
 use App\Dto\Client\ClientCreateRequest;
 use App\Repository\DoctrineORMClientRepository;
-use App\Security\Voter\ClientVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -15,36 +17,30 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[ApiResource(
+    operations: [
+        new Get(security: 'is_granted("CLIENT_READ", object)'),
+        new GetCollection(),
+        new Post(
+            uriTemplate: '/clients/change',
+            status: 200,
+            securityPostDenormalize: 'is_granted("CLIENT_EDIT", object.client)',
+            input: ClientChangeRequest::class,
+            output: Client::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/clients/create',
+            status: 200,
+            securityPostDenormalize: 'is_granted("ROLE_SUPER_ADMIN")',
+            input: ClientCreateRequest::class,
+            output: Client::class,
+            messenger: 'input'
+        ),
+    ]
+)]
 #[ORM\Table(name: 'client')]
 #[ORM\Entity(repositoryClass: DoctrineORMClientRepository::class)]
-#[ApiResource(
-    collectionOperations: [
-    "get",
-    "change_client" => [
-        "messenger" => "input",
-        "input" => ClientChangeRequest::class,
-        "output" => Client::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/clients/change",
-        "security_post_denormalize" => 'is_granted("'.ClientVoter::EDIT.'", object.client)',
-    ],
-    "add_client" => [
-        "messenger" => "input",
-        "input" => ClientCreateRequest::class,
-        "output" => Client::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/clients/create",
-        "security_post_denormalize" => 'is_granted("'.User::ROLE_SUPER_ADMIN.'")',
-    ],
-    ],
-    itemOperations: [
-    'get' => [
-        'security' => 'is_granted("'.ClientVoter::READ.'", object)',
-    ],
-    ],
-)]
 class Client
 {
     use TimestampableEntity;

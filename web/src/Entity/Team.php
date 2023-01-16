@@ -3,51 +3,46 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Dto\Team\TeamChangeRequest;
 use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMTeamRepository;
-use App\Security\Voter\ClientVoter;
-use App\Security\Voter\TeamVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
+#[ApiResource(
+    operations: [
+        new Get(security: 'is_granted("TEAM_READ", object)'),
+        new GetCollection(),
+        new Post(
+            uriTemplate: '/teams/change',
+            status: 200,
+            securityPostDenormalize: 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.team.getClient())',
+            input: TeamChangeRequest::class,
+            output: Team::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/teams/create',
+            status: 200,
+            securityPostDenormalize: 'is_granted("ROLE_ADMIN") && is_granted("CLIENT_READ", object.client)',
+            input: TeamCreateRequest::class,
+            output: Team::class,
+            messenger: 'input'
+        ),
+    ],
+    normalizationContext: ['groups' => ['team:read']]
+)]
 #[ORM\Table(name: 'team')]
 #[ORM\Entity(repositoryClass: DoctrineORMTeamRepository::class)]
-#[ApiResource(
-    collectionOperations: [
-    "get",
-    "team_change" => [
-        "messenger" => "input",
-        "input" => TeamChangeRequest::class,
-        "output" => Team::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/teams/change",
-        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.team.getClient())',
-    ],
-    "team_create" => [
-        "messenger" => "input",
-        "input" => TeamCreateRequest::class,
-        "output" => Team::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/teams/create",
-        "security_post_denormalize" => 'is_granted("'.User::ROLE_ADMIN.'") && is_granted("'.ClientVoter::READ.'", object.client)',
-    ],
-    ],
-    itemOperations: [
-    'get' => [
-        'security' => 'is_granted("'.TeamVoter::TEAM_READ.'", object)',
-    ],
-    ],
-    normalizationContext: ["groups" => ["team:read"]]
-)]
 class Team
 {
     use AgeRangeField;
@@ -59,7 +54,7 @@ class Team
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue()]
+    #[ORM\GeneratedValue]
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]

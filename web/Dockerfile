@@ -1,4 +1,4 @@
-FROM composer:2 as composer
+FROM composer:2.5 as composer
 FROM php:8.1-apache
 
 ARG APP_ENVIRONMENT=prod

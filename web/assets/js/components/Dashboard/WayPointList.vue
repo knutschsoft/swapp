@@ -310,14 +310,14 @@
                 >
                     <nl2br
                         tag="div"
-                        :text="row.item.note.trim()"
+                        :text="row.item.note ? row.item.note.trim() : ''"
                         class-name="text-truncate"
                     />
                 </div>
                 <b-tooltip :target="`tooltip-target-note-${ row.item.id }`" triggers="hover click">
                     <nl2br
                         tag="div"
-                        :text="row.item.note.trim()"
+                        :text="row.item.note ? row.item.note.trim() : ''"
                     />
                 </b-tooltip>
             </template>

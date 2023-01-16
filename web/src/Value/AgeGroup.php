@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace App\Value;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource()]
 final class AgeGroup
 {
     private AgeRange $ageRange;

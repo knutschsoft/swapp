@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Dto\User\PasswordChangeRequest;
 use App\Dto\User\RequestPasswordResetRequest;
@@ -17,8 +19,6 @@ use App\Dto\User\UserEmailConfirmRequest;
 use App\Dto\User\UserEnableRequest;
 use App\Filter\WalksTimeRangeFilter;
 use App\Repository\DoctrineORMUserRepository;
-use App\Security\Voter\ClientVoter;
-use App\Security\Voter\UserVoter;
 use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,127 +28,94 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            requirements: ['id' => '\d+'],
+        ),
+        new GetCollection(),
+        new Post(
+            uriTemplate: '/users/request-password-reset',
+            status: 200,
+            openapiContext: ['summary' => 'An user requests a new password.'],
+            input: RequestPasswordResetRequest::class,
+            output: false,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/users/is-confirmation-token-valid',
+            status: 200,
+            openapiContext: ['summary' => 'Check if an user is allowed to perform a certain action.'],
+            input: IsConfirmationTokenValidRequest::class,
+            output: User::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/users/user-email-confirm',
+            status: 200,
+            openapiContext: ['summary' => 'Enables an user and sends password request notification.'],
+            input: UserEmailConfirmRequest::class,
+            output: User::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/users/change-password',
+            status: 200,
+            openapiContext: ['summary' => 'Change password of an user.'],
+            input: PasswordChangeRequest::class,
+            output: User::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/users/change',
+            status: 200,
+            openapiContext: ['summary' => 'Change attributes of an user.'],
+            securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user) and (is_granted("ROLE_SUPER_ADMIN") or not object.superAdminRightsNeeded()) and is_granted(\'CLIENT_READ\', object.client)', // phpcs:ignore
+            input: UserChangeRequest::class,
+            output: User::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/users/disable',
+            status: 200,
+            openapiContext: ['summary' => 'Disables an user. A disabled user will not be able to login.'],
+            securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user)',
+            input: UserDisableRequest::class,
+            output: User::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/users/enable',
+            status: 200,
+            openapiContext: ['summary' => 'Enables an user. An enabled user will be able to login.'],
+            securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user)',
+            input: UserEnableRequest::class,
+            output: User::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/users/create',
+            status: 200,
+            openapiContext: ['summary' => 'Create an user which is initially disabled. Will send notification with further instructions.'],
+            securityPostDenormalize: '(is_granted(\'ROLE_SUPER_ADMIN\') or not object.superAdminRightsNeeded()) and is_granted(\'ROLE_ADMIN\') and is_granted(\'CLIENT_READ\', object.client)',// phpcs:ignore
+            input: UserCreateRequest::class,
+            output: User::class,
+            messenger: 'input'
+        ),
+    ],
+    normalizationContext: ['groups' => ['user:read']]
+)]
 #[ORM\Table(name: 'user')]
 #[ORM\Entity(repositoryClass: DoctrineORMUserRepository::class)]
-#[ApiResource(
-    collectionOperations: [
-        "get",
-        "request_password_reset" => [
-            "messenger" => "input",
-            "input" => RequestPasswordResetRequest::class,
-            "output" => false,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/request-password-reset",
-            "openapi_context" => [
-                "summary" => "An user requests a new password.",
-            ],
-        ],
-        "is_confirmation_token_valid" => [
-            "messenger" => "input",
-            "input" => IsConfirmationTokenValidRequest::class,
-            "output" => User::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/is-confirmation-token-valid",
-            "openapi_context" => [
-                "summary" => "Check if an user is allowed to perform a certain action.",
-            ],
-        ],
-        "user_email_confirm" => [
-            "messenger" => "input",
-            "input" => UserEmailConfirmRequest::class,
-            "output" => User::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/user-email-confirm",
-            "openapi_context" => [
-                "summary" => "Enables an user and sends password request notification.",
-            ],
-        ],
-        "change_password" => [
-            "messenger" => "input",
-            "input" => PasswordChangeRequest::class,
-            "output" => User::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/change-password",
-            "openapi_context" => [
-                "summary" => "Change password of an user.",
-            ],
-        ],
-        "change_user" => [
-            "messenger" => "input",
-            "input" => UserChangeRequest::class,
-            "output" => User::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/change",
-            "openapi_context" => [
-                "summary" => "Change attributes of an user.",
-            ],
-            "security_post_denormalize" =>
-                "is_granted('".UserVoter::EDIT."', object.user) and ".
-                '(is_granted("'.User::ROLE_SUPER_ADMIN.'") or not object.superAdminRightsNeeded()) and '.
-                "is_granted('".ClientVoter::READ."', object.client)",
-        ],
-        "disable_user" => [
-            "messenger" => "input",
-            "input" => UserDisableRequest::class,
-            "output" => User::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/disable",
-            "openapi_context" => [
-                "summary" => "Disables an user. A disabled user will not be able to login.",
-            ],
-            "security_post_denormalize" => "is_granted('".UserVoter::EDIT."', object.user)",
-        ],
-        "enable_user" => [
-            "messenger" => "input",
-            "input" => UserEnableRequest::class,
-            "output" => User::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/enable",
-            "openapi_context" => [
-                "summary" => "Enables an user. An enabled user will be able to login.",
-            ],
-            "security_post_denormalize" => "is_granted('".UserVoter::EDIT."', object.user)",
-        ],
-        "create_user" => [
-            "messenger" => "input",
-            "input" => UserCreateRequest::class,
-            "output" => User::class,
-            "method" => "post",
-            "status" => 200,
-            "path" => "/users/create",
-            "openapi_context" => [
-                "summary" => "Create an user which is initially disabled. Will send notification with further instructions.",
-            ],
-            "security_post_denormalize" =>
-                "(is_granted('".User::ROLE_SUPER_ADMIN."') or not object.superAdminRightsNeeded()) and ".
-                "is_granted('".User::ROLE_ADMIN."') and ".
-                "is_granted('".ClientVoter::READ."', object.client)"
-            ,
-        ],
-    ],
-    itemOperations: ["get"],
-    normalizationContext: ["groups" => ["user:read"]]
-)]
-#[ApiFilter(
-    WalksTimeRangeFilter::class,
-    properties: [
-        'timeRange' => DateFilter::EXCLUDE_NULL,
-    ],
-)]
-#[ApiFilter(SearchFilter::class, properties: ['client' => SearchFilter::STRATEGY_EXACT])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ApiFilter(filterClass: WalksTimeRangeFilter::class, properties: ['timeRange' => 'exclude_null'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['client' => 'exact'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
     use BlameableEntity;
@@ -343,7 +310,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (self::ROLE_SUPER_ADMIN === $role) {
             $this->addRole(self::ROLE_ALLOWED_TO_SWITCH);
         }
-
         if (!\in_array($role, $this->roles, true)) {
             $this->roles[] = $role;
         }

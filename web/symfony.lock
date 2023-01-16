@@ -146,9 +146,6 @@
     "fig/link-util": {
         "version": "1.1.1"
     },
-    "friends-of-behat/mink-browserkit-driver": {
-        "version": "v1.5.0"
-    },
     "friends-of-behat/mink-extension": {
         "version": "2.3.1"
     },
@@ -417,18 +414,6 @@
     "sebastianfeldmann/git": {
         "version": "2.3.0"
     },
-    "sensio/framework-extra-bundle": {
-        "version": "5.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "config/packages/sensio_framework_extra.yaml"
-        ]
-    },
     "slevomat/coding-standard": {
         "version": "5.0.4"
     },
@@ -443,9 +428,6 @@
             "version": "3.0",
             "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
         }
-    },
-    "stella-maris/clock": {
-        "version": "0.1.4"
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",

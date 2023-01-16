@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Serializer;
 
 use App\Entity\Export\WayPointExport;
-use App\Entity\WayPoint;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -23,7 +22,7 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         $this->decorated = $decorated;
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
     }
@@ -34,7 +33,7 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         if (!\is_array($data)) {
             return $data;
         }
-        if (!$object instanceof WayPoint) {
+        if (!$object instanceof WayPointExport) {
             return $data;
         }
         if (!isset($context['output'])
@@ -55,8 +54,8 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         foreach ($this->getCsvAgeCells($object) as $label => $csvAgeCell) {
             $newData[$label] = $csvAgeCell;
         }
-        foreach ($object->getWayPointTags() as $tag) {
-            if (!isset($newData['Tags'])) {
+        foreach ($object->tags as $tag) {
+            if (empty($newData['Tags'])) {
                 $newData['Tags'] = $tag->getName();
             } else {
                 $newData['Tags'] .= \sprintf(',%s', $tag->getName());
@@ -66,7 +65,7 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         return $newData;
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
     {
         return $this->decorated->supportsDenormalization($data, $type, $format);
     }
@@ -84,22 +83,22 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
     }
 
     /**
-     * @param WayPoint $wayPoint
+     * @param WayPointExport $wayPointExport
      *
      * @return array<string, int>
      */
-    private function getCsvAgeCells(WayPoint $wayPoint): array
+    private function getCsvAgeCells(WayPointExport $wayPointExport): array
     {
         $ageHeaders = [];
 
-        foreach ($wayPoint->getAgeGroups() as $ageGroup) {
+        foreach ($wayPointExport->ageGroups as $ageGroup) {
             $ageRange = $ageGroup->getAgeRange();
             $label = \sprintf(
                 'angetroffene w %s-%s',
                 $ageRange->getRangeStart(),
                 $ageRange->getRangeEnd()
             );
-            $value = $wayPoint->getFemalesCountForAgeRange($ageRange);
+            $value = $wayPointExport->getFemalesCountForAgeRange($ageRange);
             $ageHeaders[$label] = $value;
 
             $label = \sprintf(
@@ -107,7 +106,7 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
                 $ageRange->getRangeStart(),
                 $ageRange->getRangeEnd()
             );
-            $value = $wayPoint->getMalesCountForAgeRange($ageRange);
+            $value = $wayPointExport->getMalesCountForAgeRange($ageRange);
             $ageHeaders[$label] = $value;
 
             $label = \sprintf(
@@ -115,7 +114,7 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
                 $ageRange->getRangeStart(),
                 $ageRange->getRangeEnd()
             );
-            $value = $wayPoint->getQueerCountForAgeRange($ageRange);
+            $value = $wayPointExport->getQueerCountForAgeRange($ageRange);
             $ageHeaders[$label] = $value;
         }
 
@@ -123,15 +122,15 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
     }
 
     /**
-     * @param WayPoint $wayPoint
+     * @param WayPointExport $wayPointExport
      *
      * @return array<string, int>
      */
-    private function getCsvUserGroupCells(WayPoint $wayPoint): array
+    private function getCsvUserGroupCells(WayPointExport $wayPointExport): array
     {
         $userGroupHeaders = [];
 
-        foreach ($wayPoint->getUserGroups() as $userGroup) {
+        foreach ($wayPointExport->userGroups as $userGroup) {
             $label = $userGroup->getFrontendLabel();
             $value = $userGroup->getPeopleCount()->getCount();
             $userGroupHeaders[$label] = $value;

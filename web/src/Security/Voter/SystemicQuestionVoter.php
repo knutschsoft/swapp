@@ -5,29 +5,26 @@ namespace App\Security\Voter;
 
 use App\Entity\SystemicQuestion;
 use App\Entity\User;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Security;
 
 class SystemicQuestionVoter extends Voter
 {
     public const READ = 'SYSTEMIC_QUESTION_READ';
     public const EDIT = 'SYSTEMIC_QUESTION_EDIT';
 
-    private Security $security;
-
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return \in_array($attribute, [self::READ, self::EDIT], true)
             && $subject instanceof SystemicQuestion;
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         if (!$user instanceof User) {

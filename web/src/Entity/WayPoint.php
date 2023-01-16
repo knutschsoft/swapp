@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\SearchFilterInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Dto\WayPoint\WayPointChangeRequest;
 use App\Dto\WayPoint\WayPointCreateRequest;
-use App\Entity\Export\WayPointExport;
 use App\Repository\DoctrineORMWayPointRepository;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
@@ -28,56 +29,50 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(
+            uriTemplate: '/way_points/change',
+            status: 200,
+            input: WayPointChangeRequest::class,
+            output: WayPoint::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/way_points/create',
+            status: 200,
+            input: WayPointCreateRequest::class,
+            output: WayPoint::class,
+            messenger: 'input'
+        ),
+    ],
+    normalizationContext: ['groups' => ['wayPoint:read']],
+    order: ['locationName' => 'ASC'],
+)]
 #[ORM\Table(name: 'way_point')]
 #[ORM\Entity(repositoryClass: DoctrineORMWayPointRepository::class)]
-#[ApiFilter(OrderFilter::class, properties: ["walk.updatedAt", "locationName", "oneOnOneInterview", "note", "visitedAt", "walk.name", "walk.startTime", "walk.teamName"])]
-#[ApiFilter(BooleanFilter::class, properties: ["isMeeting"])]
-#[ApiFilter(DateFilter::class, properties: ['visitedAt'])]
-#[ApiFilter(
-    SearchFilter::class,
-    properties: [
-        'locationName' => SearchFilterInterface::STRATEGY_PARTIAL,
-        'note' => SearchFilterInterface::STRATEGY_PARTIAL,
-        'oneOnOneInterview' => SearchFilterInterface::STRATEGY_PARTIAL,
-        'wayPointTags' => SearchFilterInterface::STRATEGY_EXACT,
-        'walk.teamName' => SearchFilterInterface::STRATEGY_PARTIAL,
-        'walk' => SearchFilterInterface::STRATEGY_EXACT,
-    ]
-)]
-#[ApiResource(
-    collectionOperations: [
-    'get',
-     'export' => [
-         "output" => WayPointExport::class,
-         "method" => "get",
-         "formats" => ['csv' => 'text/csv'],
-         "normalization_context" => ['groups' => []],
-         "status" => 200,
-         "path" => "/way_points/export",
-     ],
-    "way_point_change" => [
-        "messenger" => "input",
-        "input" => WayPointChangeRequest::class,
-        "output" => WayPoint::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/way_points/change",
-    ],
-    "way_point_create" => [
-        "messenger" => "input",
-        "input" => WayPointCreateRequest::class,
-        "output" => WayPoint::class,
-        "method" => "post",
-        "status" => 200,
-        "path" => "/way_points/create",
-    ],
-    ],
-    itemOperations: ['get'],
-    attributes: [
-        "order" => ["locationName" => "ASC"],
-    ],
-    normalizationContext: ["groups" => ["wayPoint:read"]],
-)]
+#[ApiFilter(filterClass: OrderFilter::class, properties: [
+    'walk.updatedAt',
+    'locationName',
+    'oneOnOneInterview',
+    'note',
+    'visitedAt',
+    'walk.name',
+    'walk.startTime',
+    'walk.teamName',
+])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['isMeeting'])]
+#[ApiFilter(filterClass: DateFilter::class, properties: ['visitedAt'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: [
+    'locationName' => 'partial',
+    'note' => 'partial',
+    'oneOnOneInterview' => 'partial',
+    'wayPointTags' => 'exact',
+    'walk.teamName' => 'partial',
+    'walk' => 'exact',
+])]
 class WayPoint
 {
     use TimestampableEntity;

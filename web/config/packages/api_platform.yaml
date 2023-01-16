@@ -20,3 +20,5 @@ api_platform:
     defaults:
         pagination_client_items_per_page: true
         pagination_items_per_page: 10
+        normalization_context:
+            skip_null_values: false

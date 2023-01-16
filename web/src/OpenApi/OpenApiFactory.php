@@ -3,19 +3,16 @@ declare(strict_types=1);
 
 namespace App\OpenApi;
 
-use ApiPlatform\Core\OpenApi\Factory\OpenApiFactoryInterface;
-use ApiPlatform\Core\OpenApi\Model;
-use ApiPlatform\Core\OpenApi\Model\Info;
-use ApiPlatform\Core\OpenApi\OpenApi;
+use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
+use ApiPlatform\OpenApi\Model;
+use ApiPlatform\OpenApi\Model\Info;
+use ApiPlatform\OpenApi\OpenApi;
 use Webmozart\Assert\Assert;
 
-class OpenApiFactory implements OpenApiFactoryInterface
+final class OpenApiFactory implements OpenApiFactoryInterface
 {
-    private OpenApiFactoryInterface $decorated;
-
-    public function __construct(OpenApiFactoryInterface $decorated)
+    public function __construct(private readonly OpenApiFactoryInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     /**

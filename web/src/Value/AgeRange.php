@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace App\Value;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Webmozart\Assert\Assert;
 
-#[ApiResource()]
 class AgeRange
 {
     private int $rangeStart;

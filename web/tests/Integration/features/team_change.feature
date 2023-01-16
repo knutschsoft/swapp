@@ -178,16 +178,17 @@ Feature: Testing team change resource
 #    And print last JSON response
     And the response status code should be 200
     And the enriched JSON nodes should be equal to:
-      | @type               | Team                |
-      | name                | Religion            |
-      | locationNames[0]    | City                |
-      | locationNames[1]    | Spielplatz          |
-      | isWithAgeRanges     | <false>             |
-      | isWithContactsCount | <false>             |
-      | isWithUserGroups    | <false>             |
-      | users[0]            | userIri<two@pac.de> |
-      | isWithGuests        | <false>             |
-      | guestNames          | array<>             |
+      | @type               | Team                     |
+      | name                | Religion                 |
+      | locationNames[0]    | City                     |
+      | locationNames[1]    | Spielplatz               |
+      | isWithAgeRanges     | <false>                  |
+      | isWithContactsCount | <false>                  |
+      | isWithUserGroups    | <false>                  |
+      | users[0]            | userIri<two@pac.de>      |
+      | client              | clientIri<client@gmx.de> |
+      | isWithGuests        | <false>                  |
+      | guestNames          | array<>                  |
     And the JSON node "ageRanges" should exist
     And the JSON node "ageRanges[0]" should not exist
 

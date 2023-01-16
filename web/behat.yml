@@ -49,7 +49,8 @@ default:
                 warns: true
                 logs: true
                 trim: 1000
-        FriendsOfBehat\SymfonyExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: "tests/behat-bootstrap.php"
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
             files_path: "tests/fixtures/"
