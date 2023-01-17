@@ -11,6 +11,15 @@ const
 const state = {
     changelogs: [
         {
+            header: '17.01.2023',
+            avatarText: '&#x1F3D7;',
+            entries: [
+                {
+                    text: 'Misc: Softwarebibliotheken geupdated. Unter anderem von Symfony 5.4 auf 6.x und von Api Platform 2.7 auf 3.x.',
+                },
+            ]
+        },
+        {
             header: '09.11.2022',
             avatarText: '&#129303;',
             avatarTitle: 'Zu Ehren des \'Falls der Berliner Mauer\'',
