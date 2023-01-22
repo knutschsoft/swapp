@@ -13,6 +13,7 @@ class WalkVoter extends Voter
 {
     public const READ = 'WALK_READ';
     public const EDIT = 'WALK_EDIT';
+    public const REMOVE = 'WALK_REMOVE';
 
     public function __construct(private readonly Security $security)
     {
@@ -20,7 +21,7 @@ class WalkVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return \in_array($attribute, [self::EDIT, self::READ], true)
+        return \in_array($attribute, [self::EDIT, self::READ, self::REMOVE], true)
             && $subject instanceof Walk;
     }
 
@@ -41,6 +42,7 @@ class WalkVoter extends Voter
 
         switch ($attribute) {
             case self::EDIT:
+            case self::REMOVE:
                 if (!$this->security->isGranted(User::ROLE_ADMIN)) {
                     return false;
                 }

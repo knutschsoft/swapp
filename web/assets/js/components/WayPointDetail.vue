@@ -34,7 +34,7 @@
                 submit-button-text="Wegpunkt löschen"
                 :initial-way-point="wayPoint"
                 :initial-walk="walk"
-                :error="removeError"
+                :error="changeError"
                 @remove="handleRemove"
             />
         </content-collapse>
@@ -93,9 +93,6 @@
             },
             changeError() {
                 return this.$store.getters['wayPoint/errorChange'];
-            },
-            removeError() {
-                return this.$store.getters['wayPoint/errorRemove'];
             },
             hasWalks() {
                 return this.$store.getters["walk/hasWalks"];

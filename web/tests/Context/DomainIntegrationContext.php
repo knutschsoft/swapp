@@ -366,6 +366,20 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Given /^there are exactly (?P<code>\d+) userWalks in database$/
+     *
+     * @param string $expectedCount
+     */
+    public function thereAreExactlyUserWalksInDatabase(string $expectedCount): void
+    {
+        $count = 0;
+        foreach ($this->userRepository->findAll() as $user) {
+            $count += $user->getWalks()->count();
+        }
+        Assert::same($count, (int) $expectedCount);
+    }
+
+    /**
      * @Given /^I can find the following users in database:$/
      *
      * @param TableNode $table
@@ -477,6 +491,28 @@ final class DomainIntegrationContext extends RawMinkContext
                         \count($teamAgeRanges)
                     )
                 );
+            }
+        }
+    }
+
+    /**
+     * @Given /^I can not find the following walks in database:$/
+     *
+     * @param TableNode $table
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function iCanNotFindTheFollowingWalksInDatabase(TableNode $table): void
+    {
+        $this->em->clear();
+        foreach ($table as $row) {
+            try {
+                $this->getWayPointByLocationName($row['name']);
+                Assert::false(true, \sprintf('there should be no Walk in database for name "%s"', $row['name']));
+            } catch (\InvalidArgumentException) {
+                // expected
             }
         }
     }

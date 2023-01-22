@@ -6,16 +6,14 @@ namespace App\Handler\Walk;
 use App\Dto\Walk\WalkEpilogueRequest;
 use App\Entity\Walk;
 use App\Repository\WalkRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class WalkEpilogueHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class WalkEpilogueHandler
 {
-    private WalkRepository $walkRepository;
-
     public function __construct(
-        WalkRepository $walkRepository
+        private readonly WalkRepository $walkRepository
     ) {
-        $this->walkRepository = $walkRepository;
     }
 
     public function __invoke(WalkEpilogueRequest $request): Walk

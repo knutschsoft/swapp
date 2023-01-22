@@ -12,10 +12,22 @@ const
     CHANGE_WALK_SUCCESS = 'CHANGE_WALK_SUCCESS',
     CHANGE_WALK_ERROR = 'CHANGE_WALK_ERROR',
     RESET_CHANGE_WALK_ERROR = "RESET_CHANGE_WALK_ERROR",
+    REMOVE_WALK = "REMOVE_WALK",
+    REMOVE_WALK_SUCCESS = "REMOVE_WALK_SUCCESS",
+    REMOVE_WALK_ERROR = "REMOVE_WALK_ERROR",
     CREATE_WALK = 'CREATE_WALK',
     CREATE_WALK_SUCCESS = 'CREATE_WALK_SUCCESS',
     CREATE_WALK_ERROR = 'CREATE_WALK_ERROR'
 ;
+
+function removeObjectFromState(state, object) {
+    state.walks.forEach(function (oldObject, key) {
+        if (oldObject['@id'] === object['@id']) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            state.walks.splice(key, 1);
+        }
+    });
+}
 
 const state = {
     walks: [],
@@ -133,6 +145,19 @@ const mutations = {
     [RESET_CHANGE_WALK_ERROR](state) {
         state.errorChange = null;
     },
+    [REMOVE_WALK](state) {
+        state.isLoadingChange = true;
+        state.errorChange = null;
+    },
+    [REMOVE_WALK_SUCCESS](state, walk) {
+        state.errorChange = null;
+        state.isLoadingChange = false;
+        removeObjectFromState(state, walk);
+    },
+    [REMOVE_WALK_ERROR](state, error) {
+        state.errorChange = error;
+        state.isLoadingChange = false;
+    },
     [CREATE_WALK](state) {
         state.isLoadingCreate = true;
         state.errorCreate = null;
@@ -204,6 +229,17 @@ const actions = {
             return response.data;
         } catch (error) {
             commit(CREATE_WALK_ERROR, error);
+        }
+    },
+    async remove({commit, dispatch}, walk) {
+        commit(REMOVE_WALK);
+        try {
+            let response = await WalkAPI.remove({walk: walk['@id']});
+            commit(REMOVE_WALK_SUCCESS, walk);
+
+            return response.data;
+        } catch (error) {
+            commit(REMOVE_WALK_ERROR, error);
         }
     },
     resetChangeError({ commit }) {

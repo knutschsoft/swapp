@@ -38,6 +38,9 @@ export default {
     change(payload) {
         return axios.post(`/api/walks/change`, payload);
     },
+    remove(payload) {
+        return axios.post(`/api/walks/remove`, payload);
+    },
     epilogue(payload) {
         return axios.post(`/api/walks/epilogue`, payload);
     },

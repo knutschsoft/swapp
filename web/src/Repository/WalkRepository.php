@@ -40,4 +40,6 @@ interface WalkRepository
      * @return Walk[]
      */
     public function findForExport(Client $client, ?\DateTime $startTimeFrom, ?\DateTime $startTimeTo): array;
+
+    public function remove(Walk $walk): void;
 }

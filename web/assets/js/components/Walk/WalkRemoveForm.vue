@@ -3,17 +3,17 @@
         @submit.prevent.stop="handleRemove"
         class="p-1 p-sm-2 p-lg-3"
     >
-        Wenn der Wegpunkt gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
+        Wenn die Runde Wegpunkt gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
         <b-form-group>
             <b-button
                 variant="danger"
                 v-b-modal.modal-remove
-                data-test="button-way-point-remove"
+                data-test="button-walk-remove"
                 :disabled="isLoading"
                 block
                 class="col-12"
             >
-                Wegpunkt löschen und zur Runde zurückkehren
+                Runde löschen und zum Dashboard zurückkehren
             </b-button>
         </b-form-group>
         <global-form-error
@@ -33,22 +33,22 @@
                 Unerwarte Dinge können passieren, wenn du dies nicht liest.
             </b-alert>
             <p>
-            Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.
-            Dies wird permanent den Wegpunkt <b>{{ initialWayPoint.locationName }}</b> und der an ihm gespeicherten Tags löschen. Die Runde {{ initialWalk.name }} bleibt erhalten.
+                Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.
+                Dies wird permanent die Runde <b>{{ initialWalk.name }}</b> und der ihr zugeordneten Wegpunkte (inklusive deren Bilder und Tags) löschen.
             </p>
             <p>
-                Bitte gib <b>{{ initialWayPoint.locationName }}</b> ein um das Löschen zu bestätigen.
+                Bitte gib <b>{{ initialWalk.name }}</b> ein um das Löschen zu bestätigen.
             </p>
             <b-form-group
                 label=""
-                :state="wayPointNameState"
-                :invalid-feedback="invalidWayPointNameFeedback"
+                :state="walkNameState"
+                :invalid-feedback="invalidWalkNameFeedback"
             >
                 <b-input-group>
                     <b-input
-                        v-model="wayPointName"
+                        v-model="walkName"
                         type="text"
-                        data-test="wayPointName"
+                        data-test="walkName"
                         autocomplete="off"
                         :disabled="isLoading"
                     />
@@ -58,12 +58,12 @@
                 type="submit"
                 variant="danger"
                 :disabled="isSubmitDisabled"
-                data-test="button-way-point-remove-modal"
+                data-test="button-walk-remove-modal"
                 @click="handleRemove"
                 block
                 class="col-12"
             >
-                Ich verstehe die Auswirkungen; Wegpunkt löschen und zur Runde zurückkehren
+                Ich verstehe die Auswirkungen; Runde löschen und zum Dashboard zurückkehren
             </b-button>
         </b-modal>
     </b-form>
@@ -75,12 +75,8 @@ import GlobalFormError from '../Common/GlobalFormError.vue';
 import getViolationsFeedback from '../../utils/validation.js';
 
 export default {
-    name: 'WayPointRemoveForm',
+    name: 'WalkRemoveForm',
     props: {
-        initialWayPoint: {
-            type: Object,
-            required: true,
-        },
         initialWalk: {
             type: Object,
             required: true,
@@ -95,44 +91,36 @@ export default {
     },
     data: function () {
         return {
-            wayPointName: '',
+            walkName: '',
         };
     },
     computed: {
         error() {
-            return this.$store.getters['wayPoint/errorChange'];
+            return this.$store.getters['walk/errorChange'];
         },
-        walk() {
-            return this.initialWalk ? this.initialWalk : this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
-        },
-        wayPointNameState() {
-            if (!this.wayPointName) {
+        walkNameState() {
+            if (!this.walkName) {
                 return null;
             }
 
-            return this.wayPointName === this.initialWayPoint.locationName;
+            return this.walkName === this.initialWalk.name;
         },
-        invalidWayPointNameFeedback() {
-            return getViolationsFeedback(['wayPoint'], this.error);
+        invalidWalkNameFeedback() {
+            return getViolationsFeedback(['walk'], this.error);
         },
         isLoading() {
-            return this.$store.getters['wayPoint/isLoadingChange']
-                || this.$store.getters['wayPoint/isLoading']
+            return this.$store.getters['walk/isLoadingChange']
                 || this.$store.getters['walk/isLoading']
+                || this.$store.getters['walk/isLoading']
+                || this.$store.getters['wayPoint/isLoading']
                 || this.$store.getters['tag/isLoading']
                 || this.$store.getters['team/isLoading'];
         },
-        currentUser() {
-            return this.$store.getters['security/currentUser'];
-        },
-        isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
-        },
         isSubmitDisabled() {
-            return this.isLoading || !this.wayPointNameState;
+            return this.isLoading || !this.walkNameState;
         },
         globalErrors() {
-            let keys = ['wayPoint'];
+            let keys = ['walk'];
 
             return getViolationsFeedback(keys, this.error, true);
         },
@@ -140,15 +128,12 @@ export default {
     watch: {
     },
     async mounted() {
-        await this.$store.dispatch('wayPoint/resetChangeError');
-        this.wayPointName = '';
-        if (!this.walk && this.initialWayPoint) {
-            await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
-        }
+        await this.$store.dispatch('walk/resetChangeError');
+        this.walkName = '';
     },
     methods: {
         async handleRemove() {
-            this.$emit('remove', { wayPoint: this.initialWayPoint });
+            this.$emit('remove', { walk: this.initialWalk });
         },
     },
 };

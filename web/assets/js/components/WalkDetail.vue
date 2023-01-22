@@ -50,6 +50,19 @@
                 @submit="handleSubmit"
             />
         </content-collapse>
+        <content-collapse
+            v-if="walk && isAdmin"
+            title="Runde löschen"
+            collapse-key="walk-delete"
+            is-visible-by-default
+        >
+            <walk-remove-form
+                submit-button-text="Runde löschen"
+                :initial-walk="walk"
+                :error="changeError"
+                @remove="handleRemove"
+            />
+        </content-collapse>
     </div>
 </template>
 
@@ -60,11 +73,13 @@
     import WayPointList from './Walk/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
     import WalkForm from './Walk/WalkForm.vue';
+    import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
 
     export default {
         name: "WalkDetail",
         components: {
             WalkForm,
+            WalkRemoveForm,
             ContentCollapse,
             WayPointList,
             WalkDetailData,
@@ -91,6 +106,9 @@
             },
             error() {
                 return this.$store.getters["walk/error"];
+            },
+            changeError() {
+                return this.$store.getters['walk/errorChange'];
             },
             hasWalks() {
                 return this.$store.getters["walk/hasWalks"];
@@ -129,6 +147,31 @@
             await Promise.all(wayPointPromises);
         },
         methods: {
+            async handleRemove({walk}) {
+                await this.$store.dispatch('walk/remove', walk);
+                if (!this.changeError) {
+                    const message = `Die Runde "${walk.name}" wurde erfolgreich gelöscht.`;
+                    this.$bvToast.toast(message, {
+                        title: 'Runde gelöscht',
+                        toaster: 'b-toaster-top-right',
+                        variant: 'success',
+                        autoHideDelay: 10000,
+                        appendToast: true,
+                        solid: true,
+                    });
+
+                    this.$router.push({name: 'Dashboard'});
+                } else {
+                    this.$bvToast.toast('Upps! :-(', {
+                        title: 'Runde löschen fehlgeschlagen',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        variant: 'danger',
+                        appendToast: true,
+                        solid: true,
+                    });
+                }
+            },
             getWayPointByIri(iri) {
                 return this.$store.getters['wayPoint/getWayPointByIri'](iri);
             },

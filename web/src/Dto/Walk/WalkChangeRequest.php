@@ -11,9 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Assert\GroupSequence(['WalkChangeRequest', 'SecondGroup'])]
 final class WalkChangeRequest
 {
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
-    #[Assert\Type(type: Walk::class, groups: ['SecondGroup'])]
+    #[AppAssert\WalkRequirements]
     public Walk $walk;
 
     #[Assert\NotBlank]

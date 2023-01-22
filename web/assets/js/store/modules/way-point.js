@@ -153,7 +153,7 @@ const mutations = {
         removeObjectFromState(state, wayPoint);
     },
     [REMOVE_WAY_POINT_ERROR](state, error) {
-        state.errorRemove = error;
+        state.errorChange = error;
         state.isLoadingChange = false;
     },
     [CREATE_WAY_POINT](state) {
@@ -228,7 +228,7 @@ const actions = {
     async remove({commit, dispatch}, wayPoint) {
         commit(REMOVE_WAY_POINT);
         try {
-            await WayPointAPI.remove({wayPoint: wayPoint['@id']});
+            let response = await WayPointAPI.remove({wayPoint: wayPoint['@id']});
             commit(REMOVE_WAY_POINT_SUCCESS, wayPoint);
             dispatch('walk/findByIri', wayPoint.walk, { root: true });
 

@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace App\Dto\Walk;
 
 use App\Entity\Walk;
+use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Assert\GroupSequence(['WalkEpilogueRequest', 'SecondGroup'])]
 final class WalkEpilogueRequest
 {
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
-    #[Assert\Type(type: Walk::class, groups: ['SecondGroup'])]
+    #[AppAssert\WalkRequirements]
     public Walk $walk;
 
     #[Assert\NotBlank]

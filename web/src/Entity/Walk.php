@@ -16,10 +16,14 @@ use App\Dto\TeamName;
 use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\Walk\WalkEpilogueRequest;
+use App\Dto\Walk\WalkRemoveRequest;
 use App\Dto\WalkExportRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMWalkRepository;
+use App\Security\Voter\ClientVoter;
+use App\Security\Voter\TeamVoter;
+use App\Security\Voter\WalkVoter;
 use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,7 +47,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/walks/export',
             status: 200,
             openapiContext: ['summary' => 'Exports all walks for given date range.'],
-            securityPostDenormalize: 'is_granted("CLIENT_READ", object.client)',
+            securityPostDenormalize: 'is_granted("'.ClientVoter::READ.'", object.client)',
             input: WalkExportRequest::class,
             output: Response::class,
             messenger: 'input'
@@ -51,7 +55,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/change',
             status: 200,
-            securityPostDenormalize: 'is_granted(\'WALK_EDIT\', object.walk)',
+            securityPostDenormalize: 'is_granted("'.WalkVoter::READ.'", object.walk)',
             input: WalkChangeRequest::class,
             output: Walk::class,
             messenger: 'input'
@@ -59,7 +63,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/epilogue',
             status: 200,
-            securityPostDenormalize: 'is_granted(\'WALK_READ\', object.walk)',
+            securityPostDenormalize: 'is_granted("'.WalkVoter::READ.'", object.walk)',
             input: WalkEpilogueRequest::class,
             output: Walk::class,
             messenger: 'input'
@@ -67,9 +71,16 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/create',
             status: 200,
-            securityPostDenormalize: 'is_granted(\'TEAM_READ\', object.team) and user.hasTeam(object.team)',
+            securityPostDenormalize: 'is_granted("'.TeamVoter::TEAM_READ.'", object.team) and user.hasTeam(object.team)',
             input: WalkCreateRequest::class,
             output: Walk::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/walks/remove',
+            status: 200,
+            securityPostDenormalize: 'is_granted("'.WalkVoter::REMOVE.'", object.walk)',
+            input: WalkRemoveRequest::class,
             messenger: 'input'
         ),
     ],

@@ -7,16 +7,14 @@ use App\Dto\Walk\WalkChangeRequest;
 use App\Entity\Walk;
 use App\Repository\WalkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class WalkChangeHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class WalkChangeHandler
 {
-    private WalkRepository $walkRepository;
-
     public function __construct(
-        WalkRepository $walkRepository
+        private readonly WalkRepository $walkRepository
     ) {
-        $this->walkRepository = $walkRepository;
     }
 
     public function __invoke(WalkChangeRequest $request): Walk
