@@ -342,6 +342,30 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Given /^there are exactly (?P<code>\d+) tags in database$/
+     *
+     * @param string $count
+     */
+    public function thereAreExactlyTagsInDatabase(string $count): void
+    {
+        Assert::same(\count($this->tagRepository->findAll()), (int) $count);
+    }
+
+    /**
+     * @Given /^there are exactly (?P<code>\d+) tagWayPoints in database$/
+     *
+     * @param string $expectedCount
+     */
+    public function thereAreExactlyTagWayPointsInDatabase(string $expectedCount): void
+    {
+        $count = 0;
+        foreach ($this->tagRepository->findAll() as $tag) {
+            $count += $tag->getWayPoints()->count();
+        }
+        Assert::same($count, (int) $expectedCount);
+    }
+
+    /**
      * @Given /^I can find the following users in database:$/
      *
      * @param TableNode $table

@@ -30,15 +30,6 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
         $this->_em->flush();
     }
 
-    /** @return Tag[] */
-    public function getTags(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('tag')->select();
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
-    }
-
     public function findOneByColorAndNameAndClient(string $color, string $name, Client $client): Tag
     {
         $tag = $this->findOneBy(['color' => $color, 'name' => $name, 'client' => $client]);

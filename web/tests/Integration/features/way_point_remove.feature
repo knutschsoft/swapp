@@ -35,15 +35,16 @@ Feature: Testing wayPoint delete resource
       | Spaziergang | CA     | 1-2,3-10  |
       | Gamescon    | Gamers | 1-2,3-10  |
     Given the following way points exists:
-      | locationName | walkName    |
-      | Assieck      | Spaziergang |
+      | locationName | walkName    | tags           |
+      | Assieck      | Spaziergang | Drogen, Gewalt |
 
   @api @wayPoint @remove
-  Scenario: I can request /api/way_points/remove as authenticated user and will delete a wayPoint
+  Scenario: I can request /api/way_points/remove as authenticated user and will delete a wayPoint including its tags
     Given I am authenticated against api as "admin@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | imageName | contactsCount |
       | Assieck      | <null>    | <null>        |
+    And there are exactly 2 tagWayPoints in database
     When I send an api platform "POST" request to "/api/way_points/remove" with parameters:
       | key      | value                |
       | wayPoint | wayPointIri<Assieck> |
@@ -54,6 +55,7 @@ Feature: Testing wayPoint delete resource
       | locationName |
       | Assieck      |
     And there are exactly 0 wayPoints in database
+    And there are exactly 0 tagWayPoints in database
 
   @api @wayPoint @remove
   Scenario: I can request /api/way_points/remove as authenticated user and will not be able to delete a wayPoint when I am not an admin
