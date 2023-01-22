@@ -6,16 +6,14 @@ namespace App\Handler;
 use App\Dto\TagCreateRequest;
 use App\Entity\Tag;
 use App\Repository\TagRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class TagCreateHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class TagCreateHandler
 {
-    private TagRepository $tagRepository;
-
     public function __construct(
-        TagRepository $tagRepository
+        private readonly TagRepository $tagRepository
     ) {
-        $this->tagRepository = $tagRepository;
     }
 
     public function __invoke(TagCreateRequest $request): Tag

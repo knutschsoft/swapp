@@ -5,9 +5,10 @@ namespace App\Handler\User;
 
 use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Entity\User;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class IsConfirmationTokenValidHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class IsConfirmationTokenValidHandler
 {
     public function __invoke(IsConfirmationTokenValidRequest $request): User
     {

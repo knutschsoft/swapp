@@ -7,25 +7,19 @@ use App\Dto\User\UserCreateRequest;
 use App\Entity\User;
 use App\Notifier\UserCreatedNotification;
 use App\Repository\UserRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final class UserCreateHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class UserCreateHandler
 {
-    private UserRepository $userRepository;
-    private UserPasswordHasherInterface $userPasswordHasher;
-    private NotifierInterface $notifier;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserPasswordHasherInterface $userPasswordHasher,
-        NotifierInterface $notifier
+        private readonly UserRepository $userRepository,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly NotifierInterface $notifier
     ) {
-        $this->userRepository = $userRepository;
-        $this->userPasswordHasher = $userPasswordHasher;
-        $this->notifier = $notifier;
     }
 
     public function __invoke(UserCreateRequest $request): User

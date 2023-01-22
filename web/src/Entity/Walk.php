@@ -55,7 +55,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/change',
             status: 200,
-            securityPostDenormalize: 'is_granted("'.WalkVoter::READ.'", object.walk)',
+            securityPostDenormalize: 'is_granted("'.WalkVoter::EDIT.'", object.walk)',
             input: WalkChangeRequest::class,
             output: Walk::class,
             messenger: 'input'

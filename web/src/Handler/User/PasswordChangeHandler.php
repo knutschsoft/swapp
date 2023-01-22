@@ -7,25 +7,19 @@ use App\Dto\User\PasswordChangeRequest;
 use App\Entity\User;
 use App\Notifier\ChangePasswordNotification;
 use App\Repository\UserRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final class PasswordChangeHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class PasswordChangeHandler
 {
-    private UserPasswordHasherInterface $userPasswordHasher;
-    private UserRepository $userRepository;
-    private NotifierInterface $notifier;
-
     public function __construct(
-        UserPasswordHasherInterface $userPasswordHasher,
-        UserRepository $userRepository,
-        NotifierInterface $notifier
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly UserRepository $userRepository,
+        private readonly NotifierInterface $notifier
     ) {
-        $this->userPasswordHasher = $userPasswordHasher;
-        $this->userRepository = $userRepository;
-        $this->notifier = $notifier;
     }
 
     public function __invoke(PasswordChangeRequest $request): User

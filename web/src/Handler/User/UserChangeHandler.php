@@ -6,16 +6,14 @@ namespace App\Handler\User;
 use App\Dto\User\UserChangeRequest;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class UserChangeHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class UserChangeHandler
 {
-    private UserRepository $userRepository;
-
     public function __construct(
-        UserRepository $userRepository
+        private readonly UserRepository $userRepository
     ) {
-        $this->userRepository = $userRepository;
     }
 
     public function __invoke(UserChangeRequest $request): User

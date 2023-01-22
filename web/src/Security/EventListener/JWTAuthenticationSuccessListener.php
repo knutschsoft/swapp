@@ -10,20 +10,12 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 
 class JWTAuthenticationSuccessListener
 {
-    private UserRepository $userRepository;
-    private IriConverterInterface $iriConverter;
-
     public function __construct(
-        UserRepository $userRepository,
-        IriConverterInterface $iriConverter
+        private readonly UserRepository $userRepository,
+        private readonly IriConverterInterface $iriConverter
     ) {
-        $this->userRepository = $userRepository;
-        $this->iriConverter = $iriConverter;
     }
 
-    /**
-     * @param AuthenticationSuccessEvent $event
-     */
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event): void
     {
         $data = $event->getData();

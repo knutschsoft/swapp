@@ -6,16 +6,14 @@ namespace App\Handler\Client;
 use App\Dto\Client\ClientCreateRequest;
 use App\Entity\Client;
 use App\Repository\ClientRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class ClientInitHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ClientInitHandler
 {
-    private ClientRepository $clientRepository;
-
     public function __construct(
-        ClientRepository $clientRepository
+        private readonly ClientRepository $clientRepository
     ) {
-        $this->clientRepository = $clientRepository;
     }
 
     public function __invoke(ClientCreateRequest $request): Client

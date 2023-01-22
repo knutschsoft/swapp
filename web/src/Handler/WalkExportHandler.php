@@ -9,15 +9,13 @@ use App\Repository\WalkRepository;
 use League\Csv\EscapeFormula;
 use League\Csv\Writer;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class WalkExportHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class WalkExportHandler
 {
-    private WalkRepository $walkRepository;
-
-    public function __construct(WalkRepository $walkRepository)
+    public function __construct(private readonly WalkRepository $walkRepository)
     {
-        $this->walkRepository = $walkRepository;
     }
 
     public function __invoke(WalkExportRequest $request): Response

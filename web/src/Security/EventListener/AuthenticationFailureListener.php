@@ -11,16 +11,10 @@ use Webmozart\Assert\Assert;
 
 class AuthenticationFailureListener
 {
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
-    /**
-     * @param AuthenticationFailureEvent $event
-     */
     public function onAuthenticationFailureResponse(AuthenticationFailureEvent $event): void
     {
         $data = [

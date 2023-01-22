@@ -9,11 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class GetTokenController extends AbstractController
 {
-    /**
-     * @Route("/api/users/getToken", methods={"POST"})
-     *
-     * @return Response
-     */
+    #[Route("/api/users/getToken", methods: ['POST'])]
     public function getTokenAction(): Response
     {
         // The security layer will intercept this request

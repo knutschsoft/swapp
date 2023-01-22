@@ -6,16 +6,14 @@ namespace App\Handler\SystemicQuestion;
 use App\Dto\SystemicQuestion\SystemicQuestionCreateRequest;
 use App\Entity\SystemicQuestion;
 use App\Repository\SystemicQuestionRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class SystemicQuestionCreateHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SystemicQuestionCreateHandler
 {
-    private SystemicQuestionRepository $systemicQuestionRepository;
-
     public function __construct(
-        SystemicQuestionRepository $systemicQuestionRepository
+        private readonly SystemicQuestionRepository $systemicQuestionRepository
     ) {
-        $this->systemicQuestionRepository = $systemicQuestionRepository;
     }
 
     public function __invoke(SystemicQuestionCreateRequest $request): SystemicQuestion

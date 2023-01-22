@@ -14,15 +14,10 @@ use Webmozart\Assert\Assert;
 #[AsMessageHandler]
 final class WayPointChangeHandler
 {
-    private WayPointRepository $wayPointRepository;
-    private FilesystemOperator $wayPointImageStorage;
-
     public function __construct(
-        WayPointRepository $wayPointRepository,
-        FilesystemOperator $wayPointImageStorage
+        private readonly WayPointRepository $wayPointRepository,
+        private readonly FilesystemOperator $wayPointImageStorage
     ) {
-        $this->wayPointRepository = $wayPointRepository;
-        $this->wayPointImageStorage = $wayPointImageStorage;
     }
 
     public function __invoke(WayPointChangeRequest $request): WayPoint

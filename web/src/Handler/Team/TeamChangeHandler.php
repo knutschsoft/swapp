@@ -7,15 +7,13 @@ use App\Dto\Team\TeamChangeRequest;
 use App\Entity\Team;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class TeamChangeHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class TeamChangeHandler
 {
-    private TeamRepository $teamRepository;
-
-    public function __construct(TeamRepository $teamRepository)
+    public function __construct(private readonly TeamRepository $teamRepository)
     {
-        $this->teamRepository = $teamRepository;
     }
 
     public function __invoke(TeamChangeRequest $request): Team

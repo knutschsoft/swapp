@@ -7,15 +7,13 @@ use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Team;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class TeamCreateHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class TeamCreateHandler
 {
-    private TeamRepository $teamRepository;
-
-    public function __construct(TeamRepository $teamRepository)
+    public function __construct(private readonly TeamRepository $teamRepository)
     {
-        $this->teamRepository = $teamRepository;
     }
 
     public function __invoke(TeamCreateRequest $request): Team

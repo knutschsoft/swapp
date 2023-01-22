@@ -7,21 +7,17 @@ use App\Dto\User\UserEmailConfirmRequest;
 use App\Entity\User;
 use App\Notifier\RequestPasswordResetNotification;
 use App\Repository\UserRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
-final class UserEmailConfirmHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class UserEmailConfirmHandler
 {
-    private UserRepository $userRepository;
-    private NotifierInterface $notifier;
-
     public function __construct(
-        UserRepository $userRepository,
-        NotifierInterface $notifier
+        private readonly UserRepository $userRepository,
+        private readonly NotifierInterface $notifier
     ) {
-        $this->userRepository = $userRepository;
-        $this->notifier = $notifier;
     }
 
     public function __invoke(UserEmailConfirmRequest $request): User

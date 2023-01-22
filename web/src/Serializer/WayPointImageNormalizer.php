@@ -15,18 +15,10 @@ final class WayPointImageNormalizer implements ContextAwareNormalizerInterface, 
 
     private const ALREADY_CALLED = 'WAY_POINT_IMAGE_NORMALIZER_ALREADY_CALLED';
 
-    private UrlHelper $urlHelper;
-    private string $uploadPathWebWayPointImages;
-
-    /**
-     * @inheritDoc
-     */
     public function __construct(
-        UrlHelper $urlHelper,
-        string $uploadPathWebWayPointImages
+        private readonly UrlHelper $urlHelper,
+        private readonly string $uploadPathWebWayPointImages
     ) {
-        $this->urlHelper = $urlHelper;
-        $this->uploadPathWebWayPointImages = $uploadPathWebWayPointImages;
     }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool

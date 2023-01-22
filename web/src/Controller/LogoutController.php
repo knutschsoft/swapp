@@ -7,11 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LogoutController
 {
-    /**
-     * @Route(name="app_logout", methods={"GET"}, path="/logout")
-     *
-     * @throws \Exception
-     */
+    #[Route(path: '/logout', name: 'app_logout', methods: ['GET'])]
     public function __invoke(): void
     {
         // controller can be blank: it will never be executed!
