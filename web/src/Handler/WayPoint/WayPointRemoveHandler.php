@@ -11,23 +11,15 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final class WayPointRemoveHandler
 {
-    private WayPointRepository $wayPointRepository;
-    private FilesystemOperator $wayPointImageStorage;
-
     public function __construct(
-        WayPointRepository $wayPointRepository,
-        FilesystemOperator $wayPointImageStorage
+        private readonly WayPointRepository $wayPointRepository,
+        private readonly FilesystemOperator $wayPointImageStorage
     ) {
-        $this->wayPointRepository = $wayPointRepository;
-        $this->wayPointImageStorage = $wayPointImageStorage;
     }
 
     public function __invoke(WayPointRemoveRequest $request): void
     {
         $wayPoint = $request->wayPoint;
-
-        // TODO check for need of manual deletion
-        //$wayPoint->setWayPointTags(new ArrayCollection($request->wayPointTags));
 
         if ($wayPoint->getImageName()) {
             $this->wayPointImageStorage->delete($wayPoint->getImageName());
