@@ -58,6 +58,7 @@
                     >
                         {{ tag.name }}
                         <color-badge
+                            v-if="tag"
                             :color="tag.color"
                             class="mr-2"
                         />
