@@ -17,7 +17,7 @@
         "preferred-install": {
             "*": "dist"
         },
-        "process-timeout": 1500,
+        "process-timeout": 1800,
         "sort-packages": true,
         "optimize-autoloader": true,
         "minimum-stability": "stable",
