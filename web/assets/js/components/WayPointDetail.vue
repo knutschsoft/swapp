@@ -24,6 +24,20 @@
                 @submit="handleSubmit"
             />
         </content-collapse>
+        <content-collapse
+            v-if="walk && wayPoint && isAdmin"
+            title="Wegpunkt löschen"
+            collapse-key="way-point-delete"
+            is-visible-by-default
+        >
+            <way-point-remove-form
+                submit-button-text="Wegpunkt löschen"
+                :initial-way-point="wayPoint"
+                :initial-walk="walk"
+                :error="removeError"
+                @remove="handleRemove"
+            />
+        </content-collapse>
     </div>
 </template>
 
@@ -32,11 +46,13 @@
     import WayPointDetailData from './WayPoint/WayPointDetailData';
     import ContentCollapse from './ContentCollapse.vue';
     import WayPointForm from './WayPoint/WayPointForm.vue';
+    import WayPointRemoveForm from './WayPoint/WayPointRemoveForm.vue';
 
     export default {
         name: "WayPointDetail",
         components: {
             WayPointForm,
+            WayPointRemoveForm,
             ContentCollapse,
             WayPointDetailData,
         },
@@ -78,6 +94,9 @@
             changeError() {
                 return this.$store.getters['wayPoint/errorChange'];
             },
+            removeError() {
+                return this.$store.getters['wayPoint/errorRemove'];
+            },
             hasWalks() {
                 return this.$store.getters["walk/hasWalks"];
             },
@@ -106,6 +125,31 @@
             }
         },
         methods: {
+            async handleRemove({wayPoint}) {
+                await this.$store.dispatch('wayPoint/remove', wayPoint);
+                if (!this.changeError) {
+                    const message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich gelöscht.`;
+                    this.$bvToast.toast(message, {
+                        title: 'Wegpunkt gelöscht',
+                        toaster: 'b-toaster-top-right',
+                        variant: 'success',
+                        autoHideDelay: 10000,
+                        appendToast: true,
+                        solid: true,
+                    });
+
+                    this.$router.push({name: 'WalkDetail', params: { walkId: this.walk.id }});
+                } else {
+                    this.$bvToast.toast('Upps! :-(', {
+                        title: 'Wegpunkt löschen fehlgeschlagen',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        variant: 'danger',
+                        appendToast: true,
+                        solid: true,
+                    });
+                }
+            },
             async handleSubmit({form}) {
                 form.wayPoint = this.wayPoint['@id'];
                 const wayPoint = await this.$store.dispatch('wayPoint/change', form);

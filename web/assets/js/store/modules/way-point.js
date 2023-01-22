@@ -12,6 +12,9 @@ const
     CHANGE_WAY_POINT_SUCCESS = "CHANGE_WAY_POINT_SUCCESS",
     CHANGE_WAY_POINT_ERROR = "CHANGE_WAY_POINT_ERROR",
     RESET_CHANGE_WAY_POINT_ERROR = "RESET_CHANGE_WAY_POINT_ERROR",
+    REMOVE_WAY_POINT = "REMOVE_WAY_POINT",
+    REMOVE_WAY_POINT_SUCCESS = "REMOVE_WAY_POINT_SUCCESS",
+    REMOVE_WAY_POINT_ERROR = "REMOVE_WAY_POINT_ERROR",
     CREATE_WAY_POINT = 'CREATE_WAY_POINT',
     CREATE_WAY_POINT_SUCCESS = 'CREATE_WAY_POINT_SUCCESS',
     CREATE_WAY_POINT_ERROR = 'CREATE_WAY_POINT_ERROR'
@@ -39,6 +42,15 @@ function removeStringValueFromStateProperty(stateProperty, stringValue) {
         }
     });
 }
+function removeObjectFromState(state, object) {
+    state.wayPoints.forEach(function (oldObject, key) {
+        if (oldObject['@id'] === object['@id']) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            state.wayPoints.splice(key, 1);
+        }
+    });
+}
+
 
 const state = {
     wayPoints: [],
@@ -131,6 +143,19 @@ const mutations = {
     [RESET_CHANGE_WAY_POINT_ERROR](state) {
         state.errorChange = null;
     },
+    [REMOVE_WAY_POINT](state) {
+        state.isLoadingChange = true;
+        state.errorChange = null;
+    },
+    [REMOVE_WAY_POINT_SUCCESS](state, wayPoint) {
+        state.errorChange = null;
+        state.isLoadingChange = false;
+        removeObjectFromState(state, wayPoint);
+    },
+    [REMOVE_WAY_POINT_ERROR](state, error) {
+        state.errorRemove = error;
+        state.isLoadingChange = false;
+    },
     [CREATE_WAY_POINT](state) {
         state.isLoadingChange = true;
         state.errorChange = null;
@@ -198,6 +223,18 @@ const actions = {
             return response.data;
         } catch (error) {
             commit(CREATE_WAY_POINT_ERROR, error);
+        }
+    },
+    async remove({commit, dispatch}, wayPoint) {
+        commit(REMOVE_WAY_POINT);
+        try {
+            await WayPointAPI.remove({wayPoint: wayPoint['@id']});
+            commit(REMOVE_WAY_POINT_SUCCESS, wayPoint);
+            dispatch('walk/findByIri', wayPoint.walk, { root: true });
+
+            return response.data;
+        } catch (error) {
+            commit(REMOVE_WAY_POINT_ERROR, error);
         }
     },
     resetChangeError({ commit }) {

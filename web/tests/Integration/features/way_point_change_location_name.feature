@@ -10,7 +10,7 @@ Feature: Testing wayPoint change resource
       | email             | roles            | client        |
       | karl@gmx.de       |                  | client@gmx.de |
       | lonely@gmx.de     |                  | client@gmx.de |
-      | two@pac.de        |                  | client@gmx.de |
+      | two@pac.de        | ROLE_ADMIN       | client@gmx.de |
       | karl@gamer.de     |                  | gamer@gmx.de  |
       | pinky@gamer.de    |                  | gamer@gmx.de  |
       | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
@@ -40,7 +40,7 @@ Feature: Testing wayPoint change resource
       | BOTW         | Gamescon    |
       | BOTW2        | Gamescon    |
 
-  @api @wayPointChange @security
+  @api @wayPoint @security
   Scenario: I can request /api/way_points/change as authenticated user and will change locationName of a wayPoint with script tags inside
 
     Given I can find the following wayPoints in database:
@@ -71,7 +71,7 @@ Feature: Testing wayPoint change resource
 
     And there are exactly 3 wayPoints in database
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change as authenticated user with wrong client and will try to change of a wayPoint
 
     Given I can find the following wayPoints in database:
@@ -92,7 +92,7 @@ Feature: Testing wayPoint change resource
     And the JSON nodes should be equal to:
       | hydra:title | An error occurred |
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change as authenticated user and will change tags of a wayPoint of which i do not have access to
 
     Given I can find the following wayPoints in database:

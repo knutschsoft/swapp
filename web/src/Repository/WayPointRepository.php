@@ -11,4 +11,6 @@ interface WayPointRepository
     public function findOneById(mixed $id): ?WayPoint;
 
     public function save(WayPoint $wayPoint): void;
+
+    public function remove(WayPoint $wayPoint): void;
 }

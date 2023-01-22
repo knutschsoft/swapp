@@ -1,16 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Handler\WayPoint;
 
 use App\Dto\WayPoint\WayPointCreateRequest;
 use App\Entity\WayPoint;
 use App\Repository\WayPointRepository;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
-final class WayPointCreateHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class WayPointCreateHandler
 {
     private WayPointRepository $wayPointRepository;
     private FilesystemOperator $wayPointImageStorage;

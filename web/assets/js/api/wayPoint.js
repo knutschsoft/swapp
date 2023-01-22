@@ -40,6 +40,9 @@ export default {
     change(payload) {
         return axios.post(`/api/way_points/change`, payload);
     },
+    remove(payload) {
+        return axios.post(`/api/way_points/remove`, payload);
+    },
     findById(id) {
         return axios.get(`/api/way_points/${id}`);
     },

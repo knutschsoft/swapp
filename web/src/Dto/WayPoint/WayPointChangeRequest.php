@@ -12,13 +12,10 @@ use App\Value\UserGroup;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(['WayPointChangeRequest', 'SecondGroup'])]
-#[AppAssert\ContactsCount(groups: ['SecondGroup'])]
+#[AppAssert\ContactsCount]
 final class WayPointChangeRequest
 {
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
-    #[Assert\Type(type: WayPoint::class, groups: ['SecondGroup'])]
+    #[AppAssert\WayPointRequirements]
     public WayPoint $wayPoint;
 
     #[Assert\NotBlank]

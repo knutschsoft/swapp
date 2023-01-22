@@ -49,7 +49,7 @@ Feature: Testing way point resource
       | code | 401 |
 
   @api @wayPoint
-  Scenario: I can request /api/way_points as authenticated user and will see all way points
+  Scenario: I can request /api/way_points as authenticated user and will see all wayPoints of my client
     Given I am authenticated against api as "karl@gmx.de"
     When I send a GET request to "/api/way_points"
     Then the response should be in JSON
@@ -73,8 +73,17 @@ Feature: Testing way point resource
     And the JSON nodes should be equal to:
       | hydra:totalItems | 5 |
 
+    Given I am authenticated against api as "karl@gamer.de"
+    When I send a GET request to "/api/way_points"
+    Then the response should be in JSON
+#    And print last JSON response
+    And the JSON nodes should be equal to:
+      | hydra:totalItems             | 2        |
+      | hydra:member[0].@type        | WayPoint |
+      | hydra:member[0].locationName | BOTW     |
+
   @api @wayPoint
-  Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will see all way points
+  Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will see this wayPoint
     Given I am authenticated against api as "karl@gmx.de"
     When I send an api platform "GET" request to "/api/way_points/wayPointId<Assieck>" with parameters:
       | key | value |
@@ -87,7 +96,7 @@ Feature: Testing way point resource
       | visitedAt         | date<now,Y-m-dTH:i:s+01:00> |
 
   @api @wayPoint
-  Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will see all way points
+  Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will not see this wayPoint cause it is not of my client
     Given I am authenticated against api as "karl@gamer.de"
     When I send an api platform "GET" request to "/api/way_points/wayPointId<Assieck>" with parameters:
       | key | value |

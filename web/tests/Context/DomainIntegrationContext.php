@@ -523,6 +523,28 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Given /^I can not find the following wayPoints in database:$/
+     *
+     * @param TableNode $table
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function iCanNotFindTheFollowingWayPointsInDatabase(TableNode $table): void
+    {
+        $this->em->clear();
+        foreach ($table as $row) {
+            try {
+                $this->getWayPointByLocationName($row['locationName']);
+                Assert::false(true, \sprintf('there should be no WayPoint in database for location name "%s"', $row['locationName']));
+            } catch (\InvalidArgumentException) {
+                // expected
+            }
+        }
+    }
+
+    /**
      * @Given /^I can find the following wayPoints in database:$/
      *
      * @param TableNode $table

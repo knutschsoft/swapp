@@ -7,6 +7,7 @@ Feature: Testing wayPoint change resource with user groups
     Given the following users exists:
       | email       | roles | client        |
       | karl@gmx.de |       | client@gmx.de |
+      | admin@gmx.de | ROLE_ADMIN      | client@gmx.de |
     Given the following teams exists:
       | name     | users       | client        | isWithUserGroups | userGroups     |
       | Westhang | karl@gmx.de | client@gmx.de | <false>          |                |
@@ -27,9 +28,9 @@ Feature: Testing wayPoint change resource with user groups
       | Assieck      | Spaziergang |                    |
       | Ackis        | Gamescon    | Nutzende,7;Dudes,2 |
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithUserGroups disabled
-    Given I am authenticated against api as "karl@gmx.de"
+    Given I am authenticated against api as "admin@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | contactsCount |
       | Assieck      | <null>        |
@@ -60,9 +61,9 @@ Feature: Testing wayPoint change resource with user groups
       | Assieck      |            |
     And there are exactly 2 wayPoints in database
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithUserGroups enabled
-    Given I am authenticated against api as "karl@gmx.de"
+    Given I am authenticated against api as "admin@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | userGroups         |
       | Ackis        | Nutzende,7;Dudes,2 |

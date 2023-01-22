@@ -14,7 +14,10 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Dto\WayPoint\WayPointChangeRequest;
 use App\Dto\WayPoint\WayPointCreateRequest;
+use App\Dto\WayPoint\WayPointRemoveRequest;
 use App\Repository\DoctrineORMWayPointRepository;
+use App\Security\Voter\WalkVoter;
+use App\Security\Voter\WayPointVoter;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Gender;
@@ -36,15 +39,24 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
         new Post(
             uriTemplate: '/way_points/change',
             status: 200,
+            securityPostDenormalize: 'is_granted("'.WayPointVoter::EDIT.'", object.wayPoint)',
             input: WayPointChangeRequest::class,
             output: WayPoint::class,
-            messenger: 'input'
+            messenger: 'input',
         ),
         new Post(
             uriTemplate: '/way_points/create',
             status: 200,
+            securityPostDenormalize: 'is_granted("'.WalkVoter::READ.'", object.walk)',
             input: WayPointCreateRequest::class,
             output: WayPoint::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/way_points/remove',
+            status: 200,
+            securityPostDenormalize: 'is_granted("'.WayPointVoter::REMOVE.'", object.wayPoint)',
+            input: WayPointRemoveRequest::class,
             messenger: 'input'
         ),
     ],

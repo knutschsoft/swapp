@@ -8,10 +8,11 @@ use App\Entity\WayPoint;
 use App\Repository\WayPointRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
-final class WayPointChangeHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class WayPointChangeHandler
 {
     private WayPointRepository $wayPointRepository;
     private FilesystemOperator $wayPointImageStorage;

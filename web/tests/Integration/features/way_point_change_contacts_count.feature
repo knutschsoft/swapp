@@ -5,8 +5,9 @@ Feature: Testing wayPoint change resource with contacts count
       | email         |
       | client@gmx.de |
     Given the following users exists:
-      | email       | roles | client        |
-      | karl@gmx.de |       | client@gmx.de |
+      | email        | roles      | client        |
+      | karl@gmx.de  |            | client@gmx.de |
+      | admin@gmx.de | ROLE_ADMIN | client@gmx.de |
     Given the following teams exists:
       | name     | users       | client        | isWithContactsCount |
       | Westhang | karl@gmx.de | client@gmx.de | <false>             |
@@ -27,9 +28,9 @@ Feature: Testing wayPoint change resource with contacts count
       | Assieck      | Spaziergang | <null>        |
       | Ackis        | Gamescon    | int<7>        |
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithContactsCount disabled
-    Given I am authenticated against api as "karl@gmx.de"
+    Given I am authenticated against api as "admin@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | contactsCount |
       | Assieck      | <null>        |
@@ -60,9 +61,9 @@ Feature: Testing wayPoint change resource with contacts count
       | Assieck      | <null>        |
     And there are exactly 2 wayPoints in database
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change and will not be able to set contactsCount of a wayPoint for a team/walk with isWithContactsCount disabled
-    Given I am authenticated against api as "karl@gmx.de"
+    Given I am authenticated against api as "admin@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | contactsCount |
       | Assieck      | <null>        |
@@ -93,9 +94,9 @@ Feature: Testing wayPoint change resource with contacts count
       | Assieck      | <null>        |
     And there are exactly 2 wayPoints in database
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithContactsCount enabled
-    Given I am authenticated against api as "karl@gmx.de"
+    Given I am authenticated against api as "admin@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | contactsCount |
       | Ackis        | int<7>        |
@@ -126,9 +127,9 @@ Feature: Testing wayPoint change resource with contacts count
       | Ackis        | int<22>       |
     And there are exactly 2 wayPoints in database
 
-  @api @wayPointChange
+  @api @wayPoint
   Scenario: I can request /api/way_points/change and will not be able to unset contactsCount of a wayPoint for a team/walk with isWithContactsCount enabled
-    Given I am authenticated against api as "karl@gmx.de"
+    Given I am authenticated against api as "admin@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | contactsCount |
       | Ackis        | int<7>        |
