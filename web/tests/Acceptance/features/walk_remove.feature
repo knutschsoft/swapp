@@ -29,7 +29,7 @@ Feature: An user can delete a walk
       | Elbamare     | Gorbitz  | Nichts großartig neues. | Jugo geht ab.   |
 
   @javascript
-  @walk @delete @suw
+  @walk @delete
   Scenario: I can not delete a walk as a normal user
     Given I am authenticated as "karl@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/detail"
@@ -37,7 +37,7 @@ Feature: An user can delete a walk
     Then I wait for "runde löschen und zur Runde zurückkehren" to disappear
 
   @javascript
-  @walk @delete @suw
+  @walk @delete
   Scenario: I can delete a walk as an admin
     Given I am authenticated as "admin@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/detail"
