@@ -33,6 +33,14 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+.border-dotted{
+  border-style: dotted !important;
+}
+
+.border-dashed{
+  border-style: dashed !important;
+}
+
 .vue-daterange-picker {
   .form-control {
     padding: 0 !important;

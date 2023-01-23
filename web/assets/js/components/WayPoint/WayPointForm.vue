@@ -57,8 +57,6 @@
                         locale="de"
                         size="sm"
                     />
-                </b-col>
-                <b-col>
                     <b-datepicker
                         v-model="visitedAtDate"
                         v-bind="dateLabels['de']"
@@ -67,10 +65,40 @@
                         data-test="visitedAtDate"
                         locale="de"
                         size="sm"
+                        class="mt-2"
                         right
                     />
                 </b-col>
+                <b-col
+                    class="border-top-0 border-bottom-0 border-right-0 border-secondary border-dashed border-left"
+                >
+                    <b-button
+                        variant="outline-secondary"
+                        block
+                        size="sm"
+                        @click="selectCurrentTime"
+                    >
+                        Schnellauswahl: aktueller Zeitpunkt
+                    </b-button>
+                    <b-button
+                        variant="outline-secondary"
+                        block
+                        size="sm"
+                        @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
+                    >
+                        Schnellauswahl: {{ walk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
+                    </b-button>
+                </b-col>
             </b-row>
+            <b-form-group
+                label=""
+                class=""
+            >
+                <b-row
+                    class=""
+                >
+                </b-row>
+            </b-form-group>
         </b-form-group>
         <b-form-group
             v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
@@ -730,6 +758,25 @@ export default {
         this.wayPoint.contactsCount = this.walk.isWithContactsCount ? 0 : null;
     },
     methods: {
+        getWayPointByIri(iri) {
+            return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+        },
+        selectCurrentTime() {
+            this.visitedAtTime = dayjs().format('HH:mm');
+            this.visitedAtDate = dayjs().format('YYYY-MM-DD');
+        },
+        selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
+            let time;
+            console.log(this.walk.wayPoints);
+            if (this.walk.wayPoints.length) {
+                const wayPoint = this.getWayPointByIri(this.walk.wayPoints[this.walk.wayPoints.length - 1])
+                time = dayjs(wayPoint.visitedAt).add(5, 'minute');
+            } else {
+                time = dayjs(this.walk.startTime);
+            }
+            this.visitedAtTime = time.format('HH:mm');
+            this.visitedAtDate = time.format('YYYY-MM-DD');
+        },
         updateFile: async function (file) {
             this.wayPoint.imageFileData = file ? await this.readFile(file) : null;
             this.wayPoint.imageFileName = file ? file.name : null;
