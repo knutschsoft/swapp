@@ -767,7 +767,6 @@ export default {
         },
         selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
             let time;
-            console.log(this.walk.wayPoints);
             if (this.walk.wayPoints.length) {
                 const wayPoint = this.getWayPointByIri(this.walk.wayPoints[this.walk.wayPoints.length - 1])
                 time = dayjs(wayPoint.visitedAt).add(5, 'minute');
