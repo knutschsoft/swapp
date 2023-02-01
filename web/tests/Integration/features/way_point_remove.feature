@@ -37,6 +37,7 @@ Feature: Testing wayPoint delete resource
     Given the following way points exists:
       | locationName | walkName    | tags           |
       | Assieck      | Spaziergang | Drogen, Gewalt |
+      | Spass        | Spaziergang | Drogen, Gewalt |
 
   @api @wayPoint @remove
   Scenario: I can request /api/way_points/remove as authenticated user and will delete a wayPoint including its tags
@@ -44,7 +45,8 @@ Feature: Testing wayPoint delete resource
     Given I can find the following wayPoints in database:
       | locationName | imageName | contactsCount |
       | Assieck      | <null>    | <null>        |
-    And there are exactly 2 tagWayPoints in database
+    And there are exactly 4 tagWayPoints in database
+    And there are exactly 2 wayPoints in database
     When I send an api platform "POST" request to "/api/way_points/remove" with parameters:
       | key      | value                |
       | wayPoint | wayPointIri<Assieck> |
@@ -54,12 +56,13 @@ Feature: Testing wayPoint delete resource
     And I can not find the following wayPoints in database:
       | locationName |
       | Assieck      |
-    And there are exactly 0 wayPoints in database
-    And there are exactly 0 tagWayPoints in database
+    And there are exactly 1 wayPoints in database
+    And there are exactly 2 tagWayPoints in database
 
   @api @wayPoint @remove
   Scenario: I can request /api/way_points/remove as authenticated user and will not be able to delete a wayPoint when I am not an admin
     Given I am authenticated against api as "two@pac.de"
+    And there are exactly 2 wayPoints in database
     Given I can find the following wayPoints in database:
       | locationName | imageName | contactsCount |
       | Assieck      | <null>    | <null>        |
@@ -76,11 +79,12 @@ Feature: Testing wayPoint delete resource
     And I can find the following wayPoints in database:
       | locationName |
       | Assieck      |
-    And there are exactly 1 wayPoints in database
+    And there are exactly 2 wayPoints in database
 
   @api @wayPoint @remove
   Scenario: I can request /api/way_points/remove as authenticated user and will not be able to delete a wayPoint of another client
     Given I am authenticated against api as "admin@gamer.de"
+    And there are exactly 2 wayPoints in database
     Given I can find the following wayPoints in database:
       | locationName | imageName | contactsCount |
       | Assieck      | <null>    | <null>        |
@@ -98,7 +102,7 @@ Feature: Testing wayPoint delete resource
     And I can find the following wayPoints in database:
       | locationName |
       | Assieck      |
-    And there are exactly 1 wayPoints in database
+    And there are exactly 2 wayPoints in database
 
   @api @wayPoint @remove
   Scenario: I can request /api/way_points/remove as authenticated user and will delete a wayPoint with an image
@@ -113,7 +117,7 @@ Feature: Testing wayPoint delete resource
     And there are exactly 2 systemicQuestions in database
     And there are exactly 3 tags in database
     And there are exactly 2 walks in database
-    And there are exactly 1 wayPoints in database
+    And there are exactly 2 wayPoints in database
 
     When I send an api platform "POST" request to "/api/way_points/change" with parameters:
       | key               | value                                                         |
@@ -148,4 +152,4 @@ Feature: Testing wayPoint delete resource
     And there are exactly 2 systemicQuestions in database
     And there are exactly 3 tags in database
     And there are exactly 2 walks in database
-    And there are exactly 0 wayPoints in database
+    And there are exactly 1 wayPoints in database
