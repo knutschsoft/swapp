@@ -93,6 +93,7 @@
             <template v-slot:valid-feedback>
                 <b-alert
                     :show="!!diffLastWayPointOrRound"
+                    class="mb-0"
                     variant="warning"
                 >
                     Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
