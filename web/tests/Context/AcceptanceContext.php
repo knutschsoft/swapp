@@ -139,6 +139,14 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When /^I click on element with selector "([^"]*)"$/
+     */
+    public function iClickOnElementWithSelector(string $selector): void
+    {
+        $this->getNodeElement($selector)->click();
+    }
+
+    /**
      * @When /^I press key "([^"]*)" on element "([^"]*)"$/
      */
     public function iPressOnKey(string $key, string $dataTestSelector): void

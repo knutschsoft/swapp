@@ -731,6 +731,7 @@ export default {
         }
         if (!this.walk) {
             this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+            return;
         }
 
         this.form.walk = this.walk['@id'];

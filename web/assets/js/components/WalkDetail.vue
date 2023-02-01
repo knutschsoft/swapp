@@ -125,11 +125,13 @@
         },
         watch: {},
         async mounted() {
+            await this.$store.dispatch('walk/resetChangeError');
             if (!this.walk) {
                 await this.$store.dispatch('walk/findById', this.walkId);
             }
             if (!this.walk) {
-                // return 404
+                this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+                return;
             }
 
             let wayPointPromises = [];

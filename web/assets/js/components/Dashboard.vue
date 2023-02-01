@@ -7,6 +7,7 @@
             variant="warning"
             fade
             dismissible
+            data-test="redirect-alert"
         >
             {{ redirect }}
         </b-alert>
