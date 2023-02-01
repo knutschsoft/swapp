@@ -118,14 +118,11 @@ export default {
             this.$emit('refresh-total-way-points', this.wayPoints.length);
         },
     },
-    async created() {
+    async mounted() {
         if (!this.walk) {
             await this.$store.dispatch('walk/findById', this.walkId);
         }
-        if (!this.walk) {
-            this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
-        }
-        if (this.walk.wayPoints.length !== this.wayPoints.length) {
+        if (this.walk && this.walk.wayPoints.length !== this.wayPoints.length) {
             await this.$store.dispatch('wayPoint/find', {
                 filter: {
                     walk: this.walk['@id'],
