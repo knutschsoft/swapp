@@ -142,6 +142,14 @@
                             />
                         </b-col>
                     </b-row>
+                    <template v-slot:valid-feedback>
+                        <b-alert
+                            :show="!!diffLastWayPointOrRound"
+                            variant="warning"
+                        >
+                            Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
+                        </b-alert>
+                    </template>
                 </b-form-group>
                 <b-form-group
                     content-cols="12"
@@ -473,6 +481,35 @@ export default {
         };
     },
     computed: {
+        hasLastWayPoint() {
+            return this.walk.wayPoints.length > 0;
+        },
+        lastWayPointOrRoundTime() {
+            let time = false;
+            this.walk.wayPoints.slice().reverse().every(wayPointIri => {
+                const wayPoint = this.getWayPointByIri(wayPointIri);
+                time = dayjs(wayPoint.visitedAt);
+
+                return false;
+            });
+
+            if (time) {
+                return time;
+            }
+
+            return dayjs(this.walk.startTime);
+        },
+        lastWayPointOrRoundTimeAsCalendar() {
+            return this.lastWayPointOrRoundTime.calendar();
+        },
+        diffLastWayPointOrRound() {
+            const diff = dayjs(this.form.endTime).diff(this.lastWayPointOrRoundTime, 'minute');
+            if (diff > 240) { // 4 hours
+                return dayjs(this.form.endTime).to(this.lastWayPointOrRoundTime, true);
+            }
+
+            return false;
+        },
         isSubmitDisabled() {
             return !this.form.systemicAnswer && !this.isWithoutSystemicAnswer
                 || !this.form.walkReflection && !this.isWithoutWalkReflection
@@ -673,6 +710,9 @@ export default {
         this.form.weather = this.walk.weather;
     },
     methods: {
+        getWayPointByIri(iri) {
+            return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+        },
         refreshWalk: async function() {
             await this.$store.dispatch('walk/findById', this.walkId);
         },

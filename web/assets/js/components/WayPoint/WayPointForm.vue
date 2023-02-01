@@ -95,7 +95,7 @@
                     :show="!!diffLastWayPointOrRound"
                     variant="warning"
                 >
-                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem letzten Wegpunkt vom {{ lastWayPointOrRoundTimeAsCalendar }}.
+                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
                 </b-alert>
             </template>
         </b-form-group>
@@ -558,6 +558,18 @@ export default {
             const isBeforeEnd = dayjs(this.wayPoint.visitedAt).diff(dayjs(this.walk.endTime), 'minute') < 0;
 
             return isBeforeEnd && isAfterStart;
+        },
+        hasLastWayPoint() {
+            let hasLastWayPoint = false;
+            this.walk.wayPoints.slice().reverse().every(wayPointIri => {
+                if (!this.initialWayPoint || this.initialWayPoint['@id'] !== wayPointIri) {
+                    hasLastWayPoint = true;
+
+                    return false;
+                }
+            });
+
+            return hasLastWayPoint;
         },
         lastWayPointOrRoundTime() {
             let time = false;
