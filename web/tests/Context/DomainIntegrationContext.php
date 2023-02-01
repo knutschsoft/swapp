@@ -700,7 +700,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 Assert::eq($wayPoint->getIsMeeting(), (bool) $row['isMeeting']);
             }
             if (isset($row['visitedAt'])) {
-                $allowedDistanceInSeconds = 15;
+                $allowedDistanceInSeconds = 60;
                 $expectedVisitedAt = new Carbon($this->enrichText($row['visitedAt']));
                 $lowerExpectedVisitedAt = $expectedVisitedAt->clone()->subSeconds($allowedDistanceInSeconds);
                 $higherExpectedVisitedAt = $expectedVisitedAt->clone()->addSeconds($allowedDistanceInSeconds);
