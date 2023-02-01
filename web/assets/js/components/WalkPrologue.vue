@@ -358,9 +358,9 @@
             startTimeDate(startTimeDate) {
                 const startTimeDateValue = dayjs(startTimeDate);
                 let startTime = dayjs(this.form.startTime);
-                startTime = startTime.date(startTimeDateValue.date());
-                startTime = startTime.month(startTimeDateValue.month());
                 startTime = startTime.year(startTimeDateValue.year());
+                startTime = startTime.month(startTimeDateValue.month());
+                startTime = startTime.date(startTimeDateValue.date());
                 this.form.startTime = startTime.format();
             },
         },

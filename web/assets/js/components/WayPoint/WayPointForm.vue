@@ -737,9 +737,9 @@ export default {
         visitedAtDate(visitedAtDate) {
             const visitedAtDateValue = dayjs(visitedAtDate);
             let visitedAt = dayjs(this.wayPoint.visitedAt);
-            visitedAt = visitedAt.date(visitedAtDateValue.date());
-            visitedAt = visitedAt.month(visitedAtDateValue.month());
             visitedAt = visitedAt.year(visitedAtDateValue.year());
+            visitedAt = visitedAt.month(visitedAtDateValue.month());
+            visitedAt = visitedAt.date(visitedAtDateValue.date());
             this.wayPoint.visitedAt = visitedAt.format();
         },
     },

@@ -626,9 +626,9 @@ export default {
         startTimeDate(startTimeDate) {
             const startTimeDateValue = dayjs(startTimeDate);
             let startTime = dayjs(this.form.startTime);
-            startTime = startTime.date(startTimeDateValue.date());
-            startTime = startTime.month(startTimeDateValue.month());
             startTime = startTime.year(startTimeDateValue.year());
+            startTime = startTime.month(startTimeDateValue.month());
+            startTime = startTime.date(startTimeDateValue.date());
             this.form.startTime = startTime.format();
         },
         endTimeTime(endTimeTime) {
@@ -644,9 +644,9 @@ export default {
         endTimeDate(endTimeDate) {
             const endTimeDateValue = dayjs(endTimeDate);
             let endTime = dayjs(this.form.endTime);
-            endTime = endTime.date(endTimeDateValue.date());
-            endTime = endTime.month(endTimeDateValue.month());
             endTime = endTime.year(endTimeDateValue.year());
+            endTime = endTime.month(endTimeDateValue.month());
+            endTime = endTime.date(endTimeDateValue.date());
             this.form.endTime = endTime.format();
         },
     },
