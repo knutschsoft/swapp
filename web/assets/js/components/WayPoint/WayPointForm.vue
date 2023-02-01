@@ -806,7 +806,7 @@ export default {
         },
         selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
             let time = this.lastWayPointOrRoundTime;
-            if (this.walk.wayPoints.length) {
+            if (this.hasLastWayPoint) {
                 time = time.add(5, 'minute');
             }
             this.visitedAtTime = time.format('HH:mm');

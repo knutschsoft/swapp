@@ -142,9 +142,37 @@
                             />
                         </b-col>
                     </b-row>
+                    <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top" />
+                    <b-row>
+                        <b-col
+                            class="mt-2"
+                        >
+                            <b-button
+                                variant="outline-secondary"
+                                block
+                                size="sm"
+                                @click="selectCurrentTime"
+                            >
+                                Schnellauswahl: aktueller Zeitpunkt
+                            </b-button>
+                        </b-col>
+                        <b-col
+                            class="mt-2"
+                        >
+                            <b-button
+                                variant="outline-secondary"
+                                block
+                                size="sm"
+                                @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
+                            >
+                                Schnellauswahl: {{ walk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
+                            </b-button>
+                        </b-col>
+                    </b-row>
                     <template v-slot:valid-feedback>
                         <b-alert
                             :show="!!diffLastWayPointOrRound"
+                            class="mb-0"
                             variant="warning"
                         >
                             Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
@@ -712,6 +740,18 @@ export default {
     methods: {
         getWayPointByIri(iri) {
             return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+        },
+        selectCurrentTime() {
+            this.endTimeTime = dayjs().format('HH:mm');
+            this.endTimeDate = dayjs().format('YYYY-MM-DD');
+        },
+        selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
+            let time = this.lastWayPointOrRoundTime;
+            if (this.hasLastWayPoint) {
+                time = time.add(5, 'minute');
+            }
+            this.endTimeTime = time.format('HH:mm');
+            this.endTimeDate = time.format('YYYY-MM-DD');
         },
         refreshWalk: async function() {
             await this.$store.dispatch('walk/findById', this.walkId);
