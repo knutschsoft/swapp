@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
 use App\Repository\ClientRepository;
+use App\Repository\SystemicQuestionRepository;
 use App\Repository\TagRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
@@ -35,6 +36,7 @@ trait RepositoryTrait
     private EntityManagerInterface $em;
     private ClientRepository $clientRepository;
     private UserRepository $userRepository;
+    private SystemicQuestionRepository $systemicQuestionRepository;
     private TagRepository $tagRepository;
     private TeamRepository $teamRepository;
     private WalkRepository $walkRepository;
@@ -52,6 +54,9 @@ trait RepositoryTrait
         $userRepository = $serviceContainer->get(UserRepository::class);
         \assert($userRepository instanceof UserRepository);
         $this->userRepository = $userRepository;
+        $systemicQuestionRepository = $serviceContainer->get(SystemicQuestionRepository::class);
+        \assert($systemicQuestionRepository instanceof SystemicQuestionRepository);
+        $this->systemicQuestionRepository = $systemicQuestionRepository;
         $teamRepository = $serviceContainer->get(TeamRepository::class);
         \assert($teamRepository instanceof TeamRepository);
         $this->teamRepository = $teamRepository;

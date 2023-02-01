@@ -107,6 +107,14 @@ Feature: Testing wayPoint delete resource
       | locationName | imageName | contactsCount |
       | Assieck      | <null>    | <null>        |
 
+    And there are exactly 3 clients in database
+    And there are exactly 8 users in database
+    And there are exactly 3 teams in database
+    And there are exactly 2 systemicQuestions in database
+    And there are exactly 3 tags in database
+    And there are exactly 2 walks in database
+    And there are exactly 1 wayPoints in database
+
     When I send an api platform "POST" request to "/api/way_points/change" with parameters:
       | key               | value                                                         |
       | wayPoint          | wayPointIri<Assieck>                                          |
@@ -134,4 +142,10 @@ Feature: Testing wayPoint delete resource
       | locationName |
       | Assieck      |
     And I can not find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder
+    And there are exactly 3 clients in database
+    And there are exactly 8 users in database
+    And there are exactly 3 teams in database
+    And there are exactly 2 systemicQuestions in database
+    And there are exactly 3 tags in database
+    And there are exactly 2 walks in database
     And there are exactly 0 wayPoints in database

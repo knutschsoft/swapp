@@ -332,6 +332,46 @@ final class DomainIntegrationContext extends RawMinkContext
     }
 
     /**
+     * @Given /^there are exactly (?P<code>\d+) clients in database$/
+     *
+     * @param string $count
+     */
+    public function thereAreExactlyClientsInDatabase(string $count): void
+    {
+        Assert::same(\count($this->clientRepository->findAll()), (int) $count);
+    }
+
+    /**
+     * @Given /^there are exactly (?P<code>\d+) users in database$/
+     *
+     * @param string $count
+     */
+    public function thereAreExactlyUsersInDatabase(string $count): void
+    {
+        Assert::same(\count($this->userRepository->findAll()), (int) $count);
+    }
+
+    /**
+     * @Given /^there are exactly (?P<code>\d+) teams in database$/
+     *
+     * @param string $count
+     */
+    public function thereAreExactlyTeamsInDatabase(string $count): void
+    {
+        Assert::same(\count($this->teamRepository->findAll()), (int) $count);
+    }
+
+    /**
+     * @Given /^there are exactly (?P<code>\d+) systemicQuestions in database$/
+     *
+     * @param string $count
+     */
+    public function thereAreExactlySystemicQuestionsInDatabase(string $count): void
+    {
+        Assert::same(\count($this->systemicQuestionRepository->findAll()), (int) $count);
+    }
+
+    /**
      * @Given /^there are exactly (?P<code>\d+) wayPoints in database$/
      *
      * @param string $count

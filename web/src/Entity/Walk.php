@@ -121,7 +121,7 @@ class Walk
     private string $walkReflection;
 
     /** @var Collection<int, User> */
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'walks', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'walks', cascade: ['persist'], orphanRemoval: false)]
     #[ORM\OrderBy(value: ['username' => 'ASC'])]
     private Collection $walkTeamMembers;
 
