@@ -57,6 +57,5 @@
   },
   "author": "robertfausk <robertfreigang@gmx.de>",
   "license": "MIT",
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
