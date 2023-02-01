@@ -51,7 +51,7 @@
             />
         </content-collapse>
         <content-collapse
-            v-if="walk && isAdmin"
+            v-if="walk && isAdmin && false"
             title="Runde löschen"
             collapse-key="walk-delete"
             is-visible-by-default

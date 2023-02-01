@@ -25,7 +25,7 @@
             />
         </content-collapse>
         <content-collapse
-            v-if="walk && wayPoint && isAdmin"
+            v-if="walk && wayPoint && isAdmin && false"
             title="Wegpunkt löschen"
             collapse-key="way-point-delete"
             is-visible-by-default
