@@ -3,7 +3,7 @@
         @submit.prevent.stop="handleRemove"
         class="p-1 p-sm-2 p-lg-3"
     >
-        Wenn die Runde Wegpunkt gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
+        Wenn die Runde gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
         <b-form-group>
             <b-button
                 variant="danger"
