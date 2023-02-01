@@ -11,6 +11,7 @@
     >
         <slot name="label" />
         <slot />
+        <slot name="valid-feedback" />
     </b-form-group>
 </template>
 

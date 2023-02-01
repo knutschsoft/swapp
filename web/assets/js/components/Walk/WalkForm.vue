@@ -89,6 +89,7 @@
                 :state="startTimeState"
                 data-test="startTimeTime"
                 minutes-step="5"
+                class="mt-2"
                 locale="de"
             />
         </form-group>
@@ -111,6 +112,42 @@
                 class="mt-2"
                 locale="de"
             />
+            <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top" />
+            <b-row>
+                <b-col
+                    class="mt-2"
+                >
+                    <b-button
+                        variant="outline-secondary"
+                        block
+                        size="sm"
+                        @click="selectCurrentTime"
+                    >
+                        Schnellauswahl: aktueller Zeitpunkt
+                    </b-button>
+                </b-col>
+                <b-col
+                    class="mt-2"
+                >
+                    <b-button
+                        variant="outline-secondary"
+                        block
+                        size="sm"
+                        @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
+                    >
+                        Schnellauswahl: {{ initialWalk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
+                    </b-button>
+                </b-col>
+            </b-row>
+            <template v-slot:valid-feedback>
+                <b-alert
+                    :show="!!diffLastWayPointOrRound"
+                    class="mb-0 mt-2"
+                    variant="warning"
+                >
+                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
+                </b-alert>
+            </template>
         </form-group>
         <form-group label="Ferien">
             <b-form-checkbox
@@ -361,6 +398,47 @@ export default {
         };
     },
     computed: {
+        hasLastWayPoint() {
+            return this.initialWalk.wayPoints.length > 0;
+        },
+        lastWayPointOrRoundTime() {
+            let time = false;
+            this.initialWalk.wayPoints
+                .slice()
+                .sort((a, b) => {
+                        if (dayjs(this.getWayPointByIri(a).visitedAt).isAfter(dayjs(this.getWayPointByIri(b).visitedAt))) {
+                            return -1;
+                        }
+                        return 1;
+                    },
+                )
+                .every(wayPointIri => {
+                const wayPoint = this.getWayPointByIri(wayPointIri);
+                if (false === wayPoint) {
+                    return true;
+                }
+                time = dayjs(wayPoint.visitedAt);
+
+                return false;
+            });
+
+            if (time) {
+                return time;
+            }
+
+            return dayjs(this.initialWalk.startTime);
+        },
+        lastWayPointOrRoundTimeAsCalendar() {
+            return this.lastWayPointOrRoundTime.calendar();
+        },
+        diffLastWayPointOrRound() {
+            const diff = dayjs(this.walk.endTime).diff(this.lastWayPointOrRoundTime, 'minute');
+            if (diff > 240) { // 4 hours
+                return dayjs(this.walk.endTime).to(this.lastWayPointOrRoundTime, true);
+            }
+
+            return false;
+        },
         isSubmitDisabled() {
             return !this.walk
                 || !this.walk.systemicAnswer && !this.isWithoutSystemicAnswer
@@ -569,6 +647,21 @@ export default {
         this.endTimeDate = dayjs(this.walk.endTime).format('YYYY-MM-DD');
     },
     methods: {
+        getWayPointByIri(iri) {
+            return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+        },
+        selectCurrentTime() {
+            this.endTimeTime = dayjs().format('HH:mm');
+            this.endTimeDate = dayjs().format('YYYY-MM-DD');
+        },
+        selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
+            let time = this.lastWayPointOrRoundTime;
+            if (this.hasLastWayPoint) {
+                time = time.add(5, 'minute');
+            }
+            this.endTimeTime = time.format('HH:mm');
+            this.endTimeDate = time.format('YYYY-MM-DD');
+        },
         async handleSubmit() {
             this.$emit('submit', this.walk);
         },

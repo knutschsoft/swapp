@@ -573,7 +573,16 @@ export default {
         },
         lastWayPointOrRoundTime() {
             let time = false;
-            this.walk.wayPoints.slice().reverse().every(wayPointIri => {
+            this.walk.wayPoints
+                .slice()
+                .sort((a, b) => {
+                        if (dayjs(this.getWayPointByIri(a).visitedAt).isAfter(dayjs(this.getWayPointByIri(b).visitedAt))) {
+                            return -1;
+                        }
+                        return 1;
+                    },
+                )
+                .every(wayPointIri => {
                 if (!this.initialWayPoint || this.initialWayPoint['@id'] !== wayPointIri) {
                     const wayPoint = this.getWayPointByIri(wayPointIri);
                     time = dayjs(wayPoint.visitedAt);
