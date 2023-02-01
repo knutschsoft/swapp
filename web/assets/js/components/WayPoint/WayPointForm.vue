@@ -90,15 +90,14 @@
                     </b-button>
                 </b-col>
             </b-row>
-            <b-form-group
-                label=""
-                class=""
-            >
-                <b-row
-                    class=""
+            <template v-slot:valid-feedback>
+                <b-alert
+                    :show="!!diffLastWayPointOrRound"
+                    variant="warning"
                 >
-                </b-row>
-            </b-form-group>
+                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem letzten Wegpunkt vom {{ lastWayPointOrRoundTimeAsCalendar }}.
+                </b-alert>
+            </template>
         </b-form-group>
         <b-form-group
             v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
@@ -560,6 +559,34 @@ export default {
 
             return isBeforeEnd && isAfterStart;
         },
+        lastWayPointOrRoundTime() {
+            let time = false;
+            this.walk.wayPoints.slice().reverse().every(wayPointIri => {
+                if (!this.initialWayPoint || this.initialWayPoint['@id'] !== wayPointIri) {
+                    const wayPoint = this.getWayPointByIri(wayPointIri);
+                    time = dayjs(wayPoint.visitedAt);
+
+                    return false;
+                }
+            });
+
+            if (time) {
+                return time;
+            }
+
+            return dayjs(this.walk.startTime);
+        },
+        lastWayPointOrRoundTimeAsCalendar() {
+            return this.lastWayPointOrRoundTime.calendar();
+        },
+        diffLastWayPointOrRound() {
+            const diff = dayjs(this.wayPoint.visitedAt).diff(this.lastWayPointOrRoundTime, 'minute');
+            if (diff > 240) { // 4 hours
+                return dayjs(this.wayPoint.visitedAt).to(this.lastWayPointOrRoundTime, true);
+            }
+
+            return false;
+        },
         visitedAtDescription() {
             if (this.walk.isUnfinished) {
                 return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) liegen.`;
@@ -766,12 +793,9 @@ export default {
             this.visitedAtDate = dayjs().format('YYYY-MM-DD');
         },
         selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
-            let time;
+            let time = this.lastWayPointOrRoundTime;
             if (this.walk.wayPoints.length) {
-                const wayPoint = this.getWayPointByIri(this.walk.wayPoints[this.walk.wayPoints.length - 1])
-                time = dayjs(wayPoint.visitedAt).add(5, 'minute');
-            } else {
-                time = dayjs(this.walk.startTime);
+                time = time.add(5, 'minute');
             }
             this.visitedAtTime = time.format('HH:mm');
             this.visitedAtDate = time.format('YYYY-MM-DD');
