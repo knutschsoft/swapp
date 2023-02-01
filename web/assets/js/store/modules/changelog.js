@@ -11,6 +11,137 @@ const
 const state = {
     changelogs: [
         {
+            header: '01.02.2023',
+            avatarText: '&#129528;',
+            entries: [
+                {
+                    text: [
+                        'Feature: Ein Admin kann einen Wegpunkt löschen.',
+                        'Dies ist auf der Wegpunkt-Detailseite möglich.',
+                        'Um ein versehentliches Löschen zu vermeiden kommt eine Sicherheitsabfrage und der Ort des Wegpunktes muss manuell eingegeben werden.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230201_Wegpunkt_loeschen_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf der Wegpunkt-Detailseite (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20230201_Wegpunkt_loeschen_Overlay.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der Sicherheitsabfrage',
+                        },
+                        {
+                            src: '../changelog/20230201_Wegpunkt_loeschen_Overlay_ausgefuellt.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der ausgefüllten Sicherheitsabfrage',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'Feature: Ein Admin kann eine Runde löschen. Dabei werden auch alle zugehörigen Wegpunkte gelöscht.',
+                        'Dies ist auf der Runden-Detailseite möglich.',
+                        'Um ein versehentliches Löschen zu vermeiden kommt eine Sicherheitsabfrage und der Name der Runde muss manuell eingegeben werden.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230201_Runde_loeschen_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf der Runden-Detailseite (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20230201_Runde_loeschen_Overlay.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der Sicherheitsabfrage',
+                        },
+                        {
+                            src: '../changelog/20230201_Runde_loeschen_Overlay_ausgefuellt.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der ausgefüllten Sicherheitsabfrage',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Ein Bearbeiter bekommt einen Hinweis angezeigt, wenn die Ankunftszeit eines Wegpunktes mehr als 4 Stunden her ist gegenüber dem letzten Wegpunkt bzw. der Rundenstartzeit.',
+                        'Use Case 1: Der Ankunftszeit eines Wegpunktes ist beim nachträglichen Protokollieren bspw. am nächsten Tag initial auf die aktuelle Uhrzeit gesetzt und wurde bisher vom Nutzenden übersehen.',
+                        'Use Case 2: Der Endzeitpunkt einer Runde ist beim nachträglichen Protokollieren nach bspw. 2 Tagen auf einem falschen Wert und zeigt einen Validierungfehler, wenn ein Wegpunkt vorher eine zu späte Ankunftszeit gesetzt bekommen hatte.',
+                        'Beispiel zu Use Case 3: Eine Runde wurde am Montag gestartet und zwei Wegpunkte wurden angelegt. Am Mittwoch wurden weitere Wegpunkte hinzugefügt. Dabei wurde die Ankunftszeit nicht abgeändert, da es für den Nutzenden nicht ersichtlich war und bspw. durch Flüchtigkeitsfehler vergessen/übersehen wurude. Beim Abschluss der Runde mit Rundenendzeit auf Montag wurde dann ein Validierungsfehler angezeigt.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230201_Wegpunkte_Formular_Hinweis_Ankunftszeit.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des Hinweises im Wegpunkte-Formular',
+                        },
+                        {
+                            src: '../changelog/20230201_Wegpunkte_Hinzufuegen_Formular_Hinweis_Ankunftszeit.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des Hinweises im Wegpunkt hinzufügen-Formular in Stunden bezogen auf die Rundenstartzeit',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Ein Bearbeiter bekommt einen Hinweis angezeigt, wenn die Rundenendzeit einer Runde mehr als 4 Stunden her ist gegenüber dem letzten Wegpunkt.',
+                        'Use Case: Eine Runde wurde am Montag gestartet und zwei Wegpunkte wurden angelegt. Am Mittwoch wird die Runde beendet und die Rundenendzeit enthält initial die aktuelle Uhrzeit für Mittwoch. Das wurde vom Nutzenden bisher leicht übersehen und die Rundenendzeit nicht auf Montag gesetzt.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230201_Runden_Formular_Hinweis_Rundenendzeit.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des Hinweises im Runden-Formular in Tagen',
+                        },
+                        {
+                            src: '../changelog/20230201_Runden_Formular_Hinweis_Rundenendzeit_Stunden.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des Hinweises im Runden-Formular in Stunden',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Ein Bearbeiter kann die Rundenendzeit einer Runde sowie die Ankunftszeit eines Wegpunktes mittels Schnellauswahlbuttons setzen.',
+                        'Dies reduziert die Anzahl der Klicks.',
+                        'Die Schnellauswahlbuttons sind auf allen Wepunkt- und Runden-Formulare verfügbar.',
+                        'Es gibt einen Schnellauswahl für den aktuelle Zeitpunkt und einen für 5 Minuten nach dem letzten Wegpunkt (bzw. der Rundenstartzeit, falls es keinen letzten Wegpunkt gibt).',
+                        'Use Case 1: Eine Runde wurde am Montag morgen gestartet und zwei Wegpunkte wurden angelegt. Am Montag Abend wird die Protokollierung fortgesetzt und die Uhrzeit muss geändert werden. Mittels klick auf "Schnellauswahl: 5 Minuten nach dem letzten Wegpunkt" setzt der Nutzende schnell die Ankunftszeit.',
+                        'Use Case 2: Eine Runde wurde am Montag gestartet und keine Wegpunkte wurden angelegt. Am Mittwoch wird die Protokollierung fortgesetzt und die Uhrzeit muss geändert werden. Mittels klick auf "Schnellauswahl: 5 Minuten nach dem Rundenbeginn" setzt der Nutzende schnell die Ankunftszeit.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230201_Schnellauswahlbuttons_Wegpunkte_Formular_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der Schnellauswahlbuttons im Wegpunkte-Formular (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Die Darstellung der Rundenstartzeit und Rundenendzeit im Runde-Bearbeiten-Formular ist nun 1-zeilig anstatt 2-zeilig.',
+                        'Dies erlaubt mehr Content auf dem Bildschirm und spart scrollen.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230201_Runden_Formular_Einzeilig.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der Zeitauswahl im Runden-Formular (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'Fix: Bei der Datumsänderung konnte es ggfs. zu falschen Datumswerten kommen, die erst nach dem Speichern sichtbar wurden.',
+                        'Dies passierte bspw. beim Wechsel von "01.02.2023" auf "31.01.2023".',
+                    ]
+                },
+                {
+                    text: 'Fix: Bei Aufruf eines nichtexistierenden Wegpunktes wurde ggfs. ein Fehler angezeigt, der die Weiterleitung auf das Dashboard verhinderte.',
+                },
+            ]
+        },
+        {
             header: '17.01.2023',
             avatarText: '&#x1F3D7;',
             entries: [
@@ -307,7 +438,7 @@ const state = {
                         {
                             src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_vorher_nachher.png',
                             thumbnailHeight: '100px',
-                            description: 'Darstellung in der Mobilansicht (links: Vorher - rechts: Nachher)',
+                            description: 'Darstellung in der Mobilansicht (links: vorher - rechts: neu)',
                         },
                         {
                             src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_Mobilansicht.png',
