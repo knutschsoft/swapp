@@ -160,6 +160,88 @@
                     </b-input-group-append>
                 </b-input-group>
             </b-col>
+            <b-col
+                class="my-1"
+                xs="12"
+                sm="12"
+                md="12"
+                xl="12"
+            >
+                <b-input-group size="sm">
+                    <b-input-group-prepend
+                        @click.stop="togglePicker"
+                    >
+                        <b-input-group-text
+                            :class="(filter.startTime.startDate !== defaultDateRange.startDate || filter.startTime.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
+                        >
+                            Beginn
+                        </b-input-group-text>
+                    </b-input-group-prepend>
+                    <date-range-picker
+                        ref="picker"
+                        class="form-control"
+                        v-model="filter.startTime"
+                        :ranges="ranges"
+                        :locale-data="locale"
+                        showWeekNumbers
+                        auto-apply
+                        show-dropdowns
+                        opens="right"
+                        :readonly="isLoading"
+                        :disabled="isLoading"
+                        @update="handleFilterChange"
+                    >
+                    </date-range-picker>
+                    <b-input-group-append
+                        @click.stop="togglePicker"
+                    >
+                        <b-input-group-text>
+                            <mdicon
+                                v-if="isLoading"
+                                name="loading"
+                                size="18"
+                                spin
+                            />
+                            <mdicon
+                                v-else
+                                size="18"
+                                name="calendar"
+                            />
+                        </b-input-group-text>
+                    </b-input-group-append>
+                    <b-input-group-append>
+                        <b-button
+                            @click="unsetFilterStartTime"
+                            :disabled="(filter.startTime.startDate === defaultDateRange.startDate && filter.startTime.endDate === defaultDateRange.endDate) || isLoading"
+                        >
+                            <mdicon name="CloseCircleOutline" size="18" />
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+            <b-col cols="12">
+                <hr class="my-1" />
+            </b-col>
+            <b-col
+                class="my-1"
+                xs="12"
+                sm="12"
+                md="12"
+                xl="12"
+            >
+                <b-button
+                    size="sm"
+                    block
+                    :disabled="isLoading || isExportLoading || this.totalRows === 0"
+                    @click="exportWalks"
+                >
+                    {{ this.totalRows > 5000 ? 5000 : this.totalRows }} Rund{{ this.totalRows === 1 ? 'e' : 'en' }} als .csv-Datei exportieren
+                    <mdicon
+                        :name="isExportLoading ? 'Loading' : 'Download'"
+                        :spin="isExportLoading"
+                    />
+                </b-button>
+            </b-col>
         </b-row>
         <b-table
             small
@@ -227,16 +309,46 @@
 
 <script>
 'use strict';
+import DateRangePicker from 'vue2-daterange-picker';
+import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import formatter from '../../utils/formatter.js';
 import WalkAPI from '../../api/walk.js';
 import dayjs from 'dayjs';
 
 export default {
     name: 'WalkList',
-    components: {},
+    components: {
+        DateRangePicker,
+    },
     props: {},
     data: function () {
         return {
+            isExportLoading: false,
+            exportCtx: null,
+            locale: {
+                direction: 'ltr',
+                format: 'dd.mm.yyyy',
+                separator: ' - ',
+                applyLabel: 'Übernehmen',
+                cancelLabel: 'Abbrechen',
+                weekLabel: 'W',
+                customRangeLabel: 'Custom Range',
+                daysOfWeek: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+                monthNames: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+                firstDay: 1
+            },
+            defaultDateRange: {
+                startDate: null,
+                endDate: null,
+            },
+            ranges: {
+                'Dieser Monat': [dayjs().startOf('month').toDate(), dayjs().endOf('month').toDate()],
+                'Letzter Monat': [dayjs().subtract(1, 'month').startOf('month').toDate(), dayjs().subtract(1, 'month').endOf('month').toDate()],
+                'Letzte 6 Monate': [dayjs().subtract(5, 'month').startOf('month').toDate(), dayjs().endOf('month').toDate()],
+                'Dieses Jahr': [dayjs().startOf('year').toDate(), dayjs().endOf('year').toDate()],
+                'Letztes Jahr': [dayjs().subtract(1, 'year').startOf('year').toDate(), dayjs().subtract(1, 'year').endOf('year').toDate()],
+                'Vorletztes Jahr': [dayjs().subtract(2, 'year').startOf('year').toDate(), dayjs().subtract(2, 'year').endOf('year').toDate()],
+            },
             isResubmission: null,
             isUnfinished: null,
             isResubmissionOptions: [
@@ -276,17 +388,24 @@ export default {
                     filterByFormatted: true,
                     class: 'text-center align-middle',
                 },
+                {
+                    key: 'startTime',
+                    label: 'Rundenbeginn',
+                    sortable: true,
+                    class: 'text-center align-middle',
+                    formatter: (value) => this.formatStartDate(value),
+                },
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
             ],
             allTeamNames: [],
-            totalRows: 10000,
+            totalRows: 0,
             currentPage: null,
             perPage: null,
             pageOptions: [5, 10, 25, 50, 100],
             sortBy: 'startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: { isResubmission: null, isUnfinished:null, name: null, teamName: '' },
+            filter: { isResubmission: null, isUnfinished:null, name: null, teamName: '', startTime: { startDate: null, endDate: null } },
             storagePerPageId: 'abgeschlossene-runden-per-page',
             storageCurrentPageId: 'abgeschlossene-runden-current-page',
             storageFilterId: 'abgeschlossene-runden-filter',
@@ -313,10 +432,17 @@ export default {
             return this.$store.getters['walk/isLoading'];
         },
     },
-    async created() {
+    async mounted() {
         this.perPage = this.$localStorage.get(this.storagePerPageId, 5);
         this.currentPage = this.$localStorage.get(this.storageCurrentPageId, 1);
         this.filter = this.$localStorage.get(this.storageFilterId, this.filter);
+        if (!this.filter.startTime) {
+            this.filter.startTime = this.defaultDateRange
+        }
+        if (this.filter.startTime.startDate && this.filter.startTime.endDate) {
+            this.filter.startTime.startDate = new Date(this.filter.startTime.startDate);
+            this.filter.startTime.endDate = new Date(this.filter.startTime.endDate);
+        }
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
@@ -334,6 +460,7 @@ export default {
             return this.formatStartDate(dateString);
         },
         async itemProvider(ctx) {
+            this.exportCtx = ctx;
             const result = await WalkAPI.find(ctx);
             const walks = result.data['hydra:member']
             this.totalRows = result.data['hydra:totalItems'];
@@ -366,6 +493,55 @@ export default {
         unsetFilterTeamName() {
             this.filter.teamName = '';
             this.handleFilterChange();
+        },
+        unsetFilterStartTime() {
+            this.filter.startTime = this.defaultDateRange;
+            this.handleFilterChange();
+        },
+        togglePicker() {
+            this.$refs.picker.togglePicker(!this.$refs.picker.open);
+        },
+        forceFileDownload(response, title) {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', title);
+            document.body.appendChild(link);
+            link.click();
+        },
+        exportWalks: async function () {
+            this.isExportLoading = true;
+            const response = await WalkAPI.export(this.exportCtx);
+            this.forceFileDownload(response, this.getFileName());
+            this.isExportLoading = false;
+        },
+        getFileName() {
+            let title = `streetworkrunden_export.csv`;
+
+            if (this.filter.teamName) {
+                title = `TEAM_${this.filter.teamName}_${title}`;
+            }
+            if (null !== this.filter.isResubmission) {
+                title = `WV_DB_${this.filter.isResubmission}_${this.filter.isResubmission ? 'ja' : 'nein'}_${title}`;
+            }
+            if (null !== this.filter.isUnfinished) {
+                title = `BEENDET_${this.filter.isUnfinished ? 'nein' : 'ja'}_${title}`;
+            }
+            if (this.filter.name) {
+                title = `NAME_${this.filter.name}_${title}`;
+            }
+            if (this.filter.startTime.startDate && this.filter.startTime.endDate) {
+                const formattedStartDate = dayjs(this.filter.startTime.startDate).format('YYYYMMDD');
+                const formattedEndDate = dayjs(this.filter.startTime.endDate).format('YYYYMMDD');
+                if (formattedStartDate === formattedEndDate) {
+                    title = `${formattedStartDate}_${title}`;
+                } else {
+                    title = `${formattedStartDate}-${formattedEndDate}_${title}`;
+                }
+
+            }
+
+            return title;
         },
     },
 };

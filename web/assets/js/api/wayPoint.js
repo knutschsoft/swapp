@@ -52,7 +52,6 @@ export default {
     export(params) {
         const sort = updateFilterParams(params);
 
-        // return axios.post('/api/way_points/export', payload);
         return axios.get(
             '/api/way_points/export?page=1&itemsPerPage=5000' + sort,
             {

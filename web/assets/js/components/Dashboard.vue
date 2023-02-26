@@ -28,13 +28,6 @@
             />
         </content-collapse>
         <content-collapse
-            title="Streetwork-Runden exportieren"
-            collapse-key="export-walks"
-            is-visible-by-default
-        >
-            <WalkExport />
-        </content-collapse>
-        <content-collapse
             :title="`Liste aller Wegpunkte ${ totalWayPoints !== null ? `(${ totalWayPoints })` : '' }`"
             collapse-key="all-way-point-list"
             is-visible-by-default
@@ -52,7 +45,6 @@
     import WalkList from './Dashboard/WalkList';
     import WayPointList from './Dashboard/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
-    import WalkExport from './Walk/WalkExport.vue';
 
     export default {
         name: "Dashboard",
@@ -60,7 +52,6 @@
             ContentCollapse,
             StartWalk,
             WalkList,
-            WalkExport,
             WayPointList,
         },
         props: {

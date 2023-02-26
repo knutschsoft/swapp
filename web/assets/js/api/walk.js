@@ -10,13 +10,7 @@ const updateFilterParams = function (params) {
     }
     for (const [key, value] of Object.entries(params.filter)) {
         if (value === null) {
-        } else if ('wayPointTags' === key) {
-            value.forEach(iri => {
-                sort += `&${key}[]=${iri}`;
-            });
-        } else if ('teamName' === key) {
-            sort += `&walk.${key}=${value}`;
-        } else if ('visitedAt' === key) {
+        } else if ('startTime' === key) {
             if (value.startDate && value.endDate) {
                 sort += `&${key}[after]=${dayjs(value.startDate).startOf('day').toISOString()}&${key}[before]=${dayjs(value.endDate).endOf('day').toISOString()}`;
             }
@@ -30,17 +24,7 @@ const updateFilterParams = function (params) {
 
 export default {
     find(params) {
-        let sort = '';
-        if (params.sortBy) {
-            sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
-        }
-        if (params.filter) {
-            for (const [key, value] of Object.entries(params.filter)) {
-                if (value !== null) {
-                    sort += `&${key}=${value}`;
-                }
-            }
-        }
+        let sort = updateFilterParams(params);
 
         return axios.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
@@ -71,13 +55,6 @@ export default {
         return axios.post(`/api/walks/epilogue`, payload);
     },
     export(params) {
-        params = {
-            currentPage: 1,
-            filter: params,
-            perPage: 5,
-            sortBy: "walk.id",
-            sortAsc: true,
-        };
         const sort = updateFilterParams(params);
 
         return axios.get(
