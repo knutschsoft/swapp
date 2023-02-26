@@ -49,14 +49,10 @@
                             />
                         </b-input-group-text>
                     </b-input-group-append>
-                    <b-input-group-append>
-                        <b-button
-                            @click="resetDefaultDateRange"
-                            :disabled="(dateRange.startDate.getTime() === defaultDateRange.startDate.getTime() && dateRange.endDate.getTime() === defaultDateRange.endDate.getTime()) || isLoading || isLoadingEntries.length > 0"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="resetDefaultDateRange"
+                        :is-active="!((dateRange.startDate.getTime() === defaultDateRange.startDate.getTime() && dateRange.endDate.getTime() === defaultDateRange.endDate.getTime()) || isLoading || isLoadingEntries.length > 0)"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -89,14 +85,10 @@
                             <b-form-select-option :value="null">Alle Klienten</b-form-select-option>
                         </template>
                     </b-form-select>
-                    <b-input-group-append>
-                        <b-button
-                            @click="client = null"
-                            :disabled="client === null"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="client = null"
+                        :is-active="client !== null"
+                    />
                 </b-input-group>
             </b-col>
         </b-row>
@@ -178,6 +170,7 @@
 'use strict';
 import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
+import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import UserAPI from '../../api/user';
 import dayjs from 'dayjs';
 
@@ -185,6 +178,7 @@ export default {
     name: 'ActiveUserList',
     components: {
         DateRangePicker,
+        MyInputGroupAppend,
     },
     data: function () {
         let now = dayjs();

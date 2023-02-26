@@ -27,14 +27,10 @@
                             <b-form-select-option :value="null">Alle Klienten</b-form-select-option>
                         </template>
                     </b-form-select>
-                    <b-input-group-append>
-                        <b-button
-                            @click="filter.client = null"
-                            :disabled="filter.client === null"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="filter.client = null"
+                        :is-active="filter.client !== null"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -54,14 +50,10 @@
                         v-model="filter.isEnabled"
                         :options="isEnabledOptions"
                     />
-                    <b-input-group-append>
-                        <b-button
-                            @click="filter.isEnabled = true"
-                            :disabled="filter.isEnabled === true"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="filter.isEnabled = true"
+                        :is-active="filter.isEnabled !== true"
+                    />
                 </b-input-group>
             </b-col>
         </b-row>
@@ -226,10 +218,14 @@
 'use strict';
 import UserForm from './UserForm.vue';
 import dayjs from 'dayjs';
+import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 
 export default {
     name: 'UserList',
-    components: { UserForm },
+    components: {
+        UserForm,
+        MyInputGroupAppend,
+    },
     data: function () {
         return {
             editModal: {
