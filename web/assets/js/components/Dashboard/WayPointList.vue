@@ -66,14 +66,10 @@
                             </b-form-checkbox>
                         </div>
                     </b-form-group>
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterWayPointTags"
-                            :disabled="!filter.wayPointTags.length"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterWayPointTags"
+                        :is-active="filter.wayPointTags.length > 0"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -97,14 +93,10 @@
                         size="sm"
                         @update="handleFilterChange"
                     />
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterNote"
-                            :disabled="!filter.note"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18"/>
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterNote"
+                        :is-active="filter.note !== defaultFilter.note"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -128,14 +120,10 @@
                         size="sm"
                         @update="handleFilterChange"
                     />
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterOneOnOneInterview"
-                            :disabled="!filter.oneOnOneInterview"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18"/>
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterOneOnOneInterview"
+                        :is-active="filter.oneOnOneInterview !== defaultFilter.oneOnOneInterview"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -159,14 +147,10 @@
                         size="sm"
                         @update="handleFilterChange"
                     />
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterLocationName"
-                            :disabled="!filter.locationName"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18"/>
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterLocationName"
+                        :is-active="filter.locationName !== defaultFilter.locationName"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -197,14 +181,10 @@
                     <datalist id="team-name-for-wayPoint-list">
                         <option v-for="teamName in teamNames">{{ teamName }}</option>
                     </datalist>
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterTeamName"
-                            :disabled="!filter.teamName"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterTeamName"
+                        :is-active="filter.teamName !== defaultFilter.teamName"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -255,15 +235,30 @@
                             />
                         </b-input-group-text>
                     </b-input-group-append>
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterVisitedAt"
-                            :disabled="(filter.visitedAt.startDate === defaultDateRange.startDate && filter.visitedAt.endDate === defaultDateRange.endDate) || isLoading"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterVisitedAt"
+                        :is-active="!((filter.visitedAt.startDate === defaultDateRange.startDate && filter.visitedAt.endDate === defaultDateRange.endDate) || isLoading)"
+                    />
                 </b-input-group>
+            </b-col>
+            <b-col
+                class="my-1"
+                xs="12"
+                sm="12"
+                md="12"
+                xl="12"
+            >
+                <b-button
+                    size="sm"
+                    block
+                    :disabled="isLoading || isExportLoading || !this.hasFilter"
+                    @click="unsetAllFilter"
+                >
+                    Alle Filter zurücksetzen
+                    <mdicon
+                        :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
+                    />
+                </b-button>
             </b-col>
             <b-col cols="12">
                 <hr class="my-1" />
@@ -369,6 +364,7 @@
 'use strict';
 import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
+import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import dayjs from 'dayjs';
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
@@ -377,13 +373,14 @@ export default {
     name: 'WayPointList',
     components: {
         DateRangePicker,
+        MyInputGroupAppend,
     },
     props: {},
     data: function () {
         let defaultStartDate = null;
         let defaultEndDate = null;
 
-        let filter = this.$localStorage.get('alle-wegpunkte-filter', {
+        const defaultFilter = {
             wayPointTags: [],
             locationName: '',
             note: '',
@@ -393,7 +390,8 @@ export default {
                 startDate: defaultStartDate,
                 endDate: defaultEndDate,
             },
-        });
+        };
+        let filter = this.$localStorage.get('alle-wegpunkte-filter', defaultFilter);
         if (!filter.visitedAt) {
             filter.visitedAt = {
                 startDate: defaultStartDate,
@@ -482,6 +480,7 @@ export default {
             sortDesc: true,
             sortDirection: 'desc',
             filter: filter,
+            defaultFilter: defaultFilter,
             storagePerPageId: 'alle-wegpunkte-per-page',
             storageCurrentPageId: 'alle-wegpunkte-current-page',
             storageFilterId: 'alle-wegpunkte-filter',
@@ -503,6 +502,9 @@ export default {
         },
         isLoading() {
             return this.$store.getters['wayPoint/isLoading'];
+        },
+        hasFilter() {
+            return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);
         },
     },
     async mounted() {
@@ -593,6 +595,10 @@ export default {
         },
         unsetFilterVisitedAt() {
             this.filter.visitedAt = this.defaultDateRange;
+            this.handleFilterChange();
+        },
+        unsetAllFilter() {
+            this.filter = JSON.parse(JSON.stringify(this.defaultFilter));
             this.handleFilterChange();
         },
         togglePicker() {

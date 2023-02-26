@@ -40,8 +40,11 @@
                 sm="6"
                 md="3"
             >
-                <b-input-group size="sm" class="">
-                    <b-input-group-prepend>
+                <b-input-group
+                    size="sm"
+                >
+                    <b-input-group-prepend
+                    >
                         <b-input-group-text
                             title="Wiedervorlage zur Dienstberatung?"
                             :class="filter.isResubmission !== null ? 'font-weight-bold' : ''"
@@ -54,14 +57,10 @@
                         :options="isResubmissionOptions"
                         @change="handleFilterChange"
                     />
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterIsResubmission"
-                            :disabled="filter.isResubmission === null"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterIsResubmission"
+                        :is-active="filter.isResubmission !== defaultFilter.isResubmission"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -83,14 +82,10 @@
                         :options="isUnfinishedOptions"
                         @change="handleFilterChange"
                     />
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterIsUnfinished"
-                            :disabled="filter.isUnfinished === null"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterIsUnfinished"
+                        :is-active="filter.isUnfinished !== defaultFilter.isUnfinished"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -113,14 +108,10 @@
                         size="sm"
                         @update="handleFilterChange"
                     />
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterName"
-                            :disabled="!filter.name"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterName"
+                        :is-active="filter.name !== defaultFilter.name"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -150,14 +141,10 @@
                     <datalist id="team-name-for-walk-list">
                         <option v-for="teamName in teamNames">{{ teamName }}</option>
                     </datalist>
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterTeamName"
-                            :disabled="!filter.teamName"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterTeamName"
+                        :is-active="filter.teamName !== defaultFilter.teamName"
+                    />
                 </b-input-group>
             </b-col>
             <b-col
@@ -209,15 +196,30 @@
                             />
                         </b-input-group-text>
                     </b-input-group-append>
-                    <b-input-group-append>
-                        <b-button
-                            @click="unsetFilterStartTime"
-                            :disabled="(filter.startTime.startDate === defaultDateRange.startDate && filter.startTime.endDate === defaultDateRange.endDate) || isLoading"
-                        >
-                            <mdicon name="CloseCircleOutline" size="18" />
-                        </b-button>
-                    </b-input-group-append>
+                    <my-input-group-append
+                        @click="unsetFilterStartTime"
+                        :is-active="!((filter.startTime.startDate === defaultDateRange.startDate && filter.startTime.endDate === defaultDateRange.endDate) || isLoading)"
+                    />
                 </b-input-group>
+            </b-col>
+            <b-col
+                class="my-1"
+                xs="12"
+                sm="12"
+                md="12"
+                xl="12"
+            >
+                <b-button
+                    size="sm"
+                    block
+                    :disabled="isLoading || isExportLoading || !this.hasFilter"
+                    @click="unsetAllFilter"
+                >
+                    Alle Filter zurücksetzen
+                    <mdicon
+                        :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
+                    />
+                </b-button>
             </b-col>
             <b-col cols="12">
                 <hr class="my-1" />
@@ -312,6 +314,7 @@
 import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import formatter from '../../utils/formatter.js';
+import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import WalkAPI from '../../api/walk.js';
 import dayjs from 'dayjs';
 
@@ -319,9 +322,31 @@ export default {
     name: 'WalkList',
     components: {
         DateRangePicker,
+        MyInputGroupAppend,
     },
     props: {},
     data: function () {
+        const defaultDateRange = {
+            startDate: null,
+            endDate: null,
+        }
+        const defaultFilter = {
+            isResubmission: null,
+            isUnfinished: null,
+            name: '',
+            teamName: '',
+            startTime: defaultDateRange,
+        };
+
+        let filter = this.$localStorage.get('abgeschlossene-runden-filter', defaultFilter);
+        if (!filter.startTime) {
+            filter.startTime = defaultDateRange;
+        }
+        if (filter.startTime.startDate && filter.startTime.endDate) {
+            filter.startTime.startDate = new Date(filter.startTime.startDate);
+            filter.startTime.endDate = new Date(filter.startTime.endDate);
+        }
+
         return {
             isExportLoading: false,
             exportCtx: null,
@@ -337,10 +362,7 @@ export default {
                 monthNames: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
                 firstDay: 1
             },
-            defaultDateRange: {
-                startDate: null,
-                endDate: null,
-            },
+            defaultDateRange: defaultDateRange,
             ranges: {
                 'Dieser Monat': [dayjs().startOf('month').toDate(), dayjs().endOf('month').toDate()],
                 'Letzter Monat': [dayjs().subtract(1, 'month').startOf('month').toDate(), dayjs().subtract(1, 'month').endOf('month').toDate()],
@@ -405,7 +427,8 @@ export default {
             sortBy: 'startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: { isResubmission: null, isUnfinished:null, name: null, teamName: '', startTime: { startDate: null, endDate: null } },
+            filter: filter,
+            defaultFilter: defaultFilter,
             storagePerPageId: 'abgeschlossene-runden-per-page',
             storageCurrentPageId: 'abgeschlossene-runden-current-page',
             storageFilterId: 'abgeschlossene-runden-filter',
@@ -431,18 +454,13 @@ export default {
         isLoading() {
             return this.$store.getters['walk/isLoading'];
         },
+        hasFilter() {
+            return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);
+        },
     },
     async mounted() {
         this.perPage = this.$localStorage.get(this.storagePerPageId, 5);
         this.currentPage = this.$localStorage.get(this.storageCurrentPageId, 1);
-        this.filter = this.$localStorage.get(this.storageFilterId, this.filter);
-        if (!this.filter.startTime) {
-            this.filter.startTime = this.defaultDateRange
-        }
-        if (this.filter.startTime.startDate && this.filter.startTime.endDate) {
-            this.filter.startTime.startDate = new Date(this.filter.startTime.startDate);
-            this.filter.startTime.endDate = new Date(this.filter.startTime.endDate);
-        }
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
@@ -496,6 +514,10 @@ export default {
         },
         unsetFilterStartTime() {
             this.filter.startTime = this.defaultDateRange;
+            this.handleFilterChange();
+        },
+        unsetAllFilter() {
+            this.filter = JSON.parse(JSON.stringify(this.defaultFilter));
             this.handleFilterChange();
         },
         togglePicker() {
