@@ -46,14 +46,14 @@ export default {
                 return errors;
             }
             const error = this.error;
-            if (error && error.data.violations) {
+            if (error && error.data && error.data.violations) {
                 error.data.violations.forEach((violation) => {
                     const key = violation.propertyPath ? violation.propertyPath : 'global';
                     errors[key] = violation.message;
                 });
                 return errors;
             }
-            if (error.data && error.data["hydra:description"]) {
+            if (error && error.data && error.data["hydra:description"]) {
                 errors.global = error.data["hydra:description"];
             }
 

@@ -99,7 +99,7 @@ final class DomainIntegrationContext extends RawMinkContext
         }
 
         $body = new PyStringNode([\json_encode($parameters)], 0);
-        if (!\str_starts_with($url, '/api/way_points/export')) {
+        if (!\str_starts_with($url, '/api/way_points/export') && !\str_starts_with($url, '/api/walks/export')) {
             $this->restContext->iAddHeaderEqualTo('content-type', 'application/ld+json');
             $this->restContext->iAddHeaderEqualTo('accept', 'application/ld+json');
         }

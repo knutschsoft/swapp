@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -17,18 +18,16 @@ use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\Walk\WalkRemoveRequest;
-use App\Dto\WalkExportRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMWalkRepository;
-use App\Security\Voter\ClientVoter;
 use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
+use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -42,15 +41,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/walks/team_names',
             output: TeamName::class,
             forceEager: false,
-        ),
-        new Post(
-            uriTemplate: '/walks/export',
-            status: 200,
-            openapiContext: ['summary' => 'Exports all walks for given date range.'],
-            securityPostDenormalize: 'is_granted("'.ClientVoter::READ.'", object.client)',
-            input: WalkExportRequest::class,
-            output: Response::class,
-            messenger: 'input'
         ),
         new Post(
             uriTemplate: '/walks/change',
@@ -90,8 +80,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 )]
 #[ORM\Table(name: 'walk')]
 #[ORM\Entity(repositoryClass: DoctrineORMWalkRepository::class)]
-#[ApiFilter(filterClass: OrderFilter::class, properties: ['name', 'rating', 'teamName', 'startTime', 'endTime', 'isResubmission'])]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['id', 'name', 'rating', 'teamName', 'startTime', 'endTime', 'isResubmission'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isResubmission', 'isUnfinished'])]
+#[ApiFilter(filterClass: DateFilter::class, properties: ['startTime', 'endTime'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
 class Walk
 {
@@ -707,5 +698,18 @@ class Walk
         }
 
         return $sumOfContactsCount;
+    }
+
+    /**
+     * @return AgeGroup[]
+     */
+    public function getAgeGroups(): array
+    {
+        $ageGroups = [];
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $ageGroups = \array_merge($ageGroups, $wayPoint->getAgeGroups());
+        }
+
+        return  $ageGroups;
     }
 }

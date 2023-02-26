@@ -70,6 +70,14 @@ services:
         # By default .inner is passed as argument
         decorates: 'api_platform.jsonld.normalizer.item'
 
+    App\Serializer\WalkExportNormalizer:
+        # By default .inner is passed as argument
+        decorates: 'api_platform.jsonld.normalizer.item'
+
     'app.serializer.normalizer.item.csv':
         class: 'App\Serializer\ApiNormalizer'
+        decorates: 'api_platform.serializer.normalizer.item'
+
+    'app.serializer.normalizer.item.csv.walk':
+        class: 'App\Serializer\WalkExportNormalizer'
         decorates: 'api_platform.serializer.normalizer.item'
