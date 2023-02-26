@@ -19,37 +19,47 @@
             class="mb-0"
             stacked="md"
         >
+            <template v-slot:cell(name)="row">
+                {{ row.item.name }}
+                <br>
+                <small class="text-muted">{{ row.item.email }}</small>
+            </template>
             <template v-slot:cell(users)="row">
                 <div class="d-flex justify-content-between">
                     <ul>
-                        <li v-for="userIri in row.item.users">
-                            {{ getUserByIri(userIri).username }}
-                            <mdicon
-                                v-if="getUserByIri(userIri).isEnabled"
-                                name="Account"
-                                size="16"
-                                class="text-success"
-                            />
-                            <mdicon
-                                v-else
-                                name="AccountOff"
-                                size="16"
-                                class="text-info"
-                            />
-                            <mdicon
-                                v-if="getUserByIri(userIri).roles.indexOf('ROLE_ADMIN') !== -1"
-                                name="AccountSupervisor"
-                                size="16"
-                                class="text-primary"
-                            />
-                            <mdicon
-                                v-if="getUserByIri(userIri).isSuperAdmin"
-                                name="AccountSupervisor"
-                                size="16"
-                                class="text-danger"
-                            />
-                            <small class="text-muted">{{ getUserByIri(userIri).email }}</small>
-                        </li>
+                        <template v-for="(userIri, i) in row.item.users">
+                            <li v-if="i < 5">
+                                {{ getUserByIri(userIri).username }}
+                                <mdicon
+                                    v-if="getUserByIri(userIri).isEnabled"
+                                    name="Account"
+                                    size="16"
+                                    class="text-success"
+                                />
+                                <mdicon
+                                    v-else
+                                    name="AccountOff"
+                                    size="16"
+                                    class="text-info"
+                                />
+                                <mdicon
+                                    v-if="getUserByIri(userIri).roles.indexOf('ROLE_ADMIN') !== -1"
+                                    name="AccountSupervisor"
+                                    size="16"
+                                    class="text-primary"
+                                />
+                                <mdicon
+                                    v-if="getUserByIri(userIri).isSuperAdmin"
+                                    name="AccountSupervisor"
+                                    size="16"
+                                    class="text-danger"
+                                />
+                                <small class="text-muted">{{ getUserByIri(userIri).email }}</small>
+                            </li>
+                        </template>
+                        <li
+                            v-if="row.item.users.length >= 5"
+                        >{{ row.item.users.length - 5 }} weitere Benutzer</li>
                     </ul>
                 </div>
             </template>
@@ -80,12 +90,6 @@ export default {
                 {
                     key: 'name',
                     label: 'Name',
-                    sortable: true,
-                    class: 'text-center',
-                },
-                {
-                    key: 'email',
-                    label: 'E-Mail',
                     sortable: true,
                     class: 'text-center',
                 },
