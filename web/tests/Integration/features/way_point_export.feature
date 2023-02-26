@@ -51,9 +51,9 @@ Feature: Testing wayPoint csv export resource
       | key | value |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "id,Ort,Ankunft,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\""
+    And the response should contain "id,Ort,Ankunft,Tag,Uhrzeit,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\""
     And the response should contain "Nutzende,Dudes,\"angetroffene w 2-3\",\"angetroffene m 2-3\",\"angetroffene d 2-3\""
-    And the response should contain "Ackis,\"20.12.2021 12:11:00\",Montag,Gamescon,CA,karl@gmx.de,\"My daily concept.\",null,null,0,,0,7,2,0,0,0"
+    And the response should contain "Ackis,\"20.12.2021 12:11:00\",20.12.2021,12:11:00,Montag,Gamescon,CA,karl@gmx.de,\"My daily concept.\",null,null,0,,0,7,2,0,0,0"
     And the response should not contain "angetroffene d 7-11"
 
   @api @wayPointExport
@@ -64,9 +64,9 @@ Feature: Testing wayPoint csv export resource
       | key | value |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "id,Ort,Ankunft,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\""
+    And the response should contain "id,Ort,Ankunft,Tag,Uhrzeit,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\""
     And the response should contain "Nutzende,Dudes,\"angetroffene w 2-3\",\"angetroffene m 2-3\",\"angetroffene d 2-3\""
-    And the response should contain "Ackis,\"20.12.2021 12:11:00\",Montag,Gamescon,CA,karl@gmx.de,\"My daily concept.\",null,null,0,,0,,,,,,,,,,7,2,0,0,0,Drogen"
+    And the response should contain "Ackis,\"20.12.2021 12:11:00\",20.12.2021,12:11:00,Montag,Gamescon,CA,karl@gmx.de,\"My daily concept.\",null,null,0,,0,,,,,,,,,,7,2,0,0,0,Drogen"
     And the response should contain "Spaziergang,Westhang,karl@gmx.de,\"My daily concept.\",null,null,0,,0,0,0,0,0,0,0,0,0,0,,,,,,Gewalt"
     And the response should contain "angetroffene d 3-12"
     And the response should not contain "angetroffene d 7-11"
@@ -79,8 +79,8 @@ Feature: Testing wayPoint csv export resource
       | key | value |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Ort,Ankunft,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\",Nutzende,Dudes,\"angetroffene w 7-11\",\"angetroffene m 7-11\",\"angetroffene d 7-11\""
-    And the response should contain "Others,\"20.12.2021 22:22:00\",Montag,Others,Others,others@gmx.de,\"My daily concept.\",null,null,0,,11,12,1,3,7,1"
+    And the response should contain "Ort,Ankunft,Tag,Uhrzeit,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\",Nutzende,Dudes,\"angetroffene w 7-11\",\"angetroffene m 7-11\",\"angetroffene d 7-11\""
+    And the response should contain "Others,\"20.12.2021 22:22:00\",20.12.2021,22:22:00,Montag,Others,Others,others@gmx.de,\"My daily concept.\",null,null,0,,11,12,1,3,7,1"
     And the response should not contain "angetroffene d 3-12"
     And the response should not contain "Ackis"
     And the response should not contain "Assieck"
@@ -93,8 +93,8 @@ Feature: Testing wayPoint csv export resource
       | key | value |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Ort,Ankunft,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\",Nutzende,Dudes,\"angetroffene w 7-11\",\"angetroffene m 7-11\",\"angetroffene d 7-11\",Tags"
-    And the response should contain "Others,\"20.12.2021 22:22:00\",Montag,Others,Others,others@gmx.de,\"My daily concept.\",null,null,0,,11,12,1,3,7,1,Sex"
+    And the response should contain "Ort,Ankunft,Tag,Uhrzeit,Wochentag,Rundenname,Teamname,Teilnehmende,Tageskonzept,Beobachtung,Einzelgespräch,Meeting?,\"direkte Kontakte\",\"Anzahl Personen vor Ort\",Nutzende,Dudes,\"angetroffene w 7-11\",\"angetroffene m 7-11\",\"angetroffene d 7-11\",Tags"
+    And the response should contain "Others,\"20.12.2021 22:22:00\",20.12.2021,22:22:00,Montag,Others,Others,others@gmx.de,\"My daily concept.\",null,null,0,,11,12,1,3,7,1,Sex"
     And the response should not contain "angetroffene d 3-12"
     And the response should not contain "Ackis"
     And the response should not contain "Assieck"

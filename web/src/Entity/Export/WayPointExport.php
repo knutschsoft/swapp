@@ -41,6 +41,12 @@ class WayPointExport
     #[SerializedName('Ankunft')]
     public string $visitedAt;
     #[Groups('wayPointExport:read')]
+    #[SerializedName('Tag')]
+    public string $visitedAtTag;
+    #[Groups('wayPointExport:read')]
+    #[SerializedName('Uhrzeit')]
+    public string $visitedAtUhrzeit;
+    #[Groups('wayPointExport:read')]
     #[SerializedName('Wochentag')]
     public string $visitedAtWochentag;
     #[Groups('wayPointExport:read')]

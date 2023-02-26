@@ -41,11 +41,23 @@ class WalkExport
     #[SerializedName('Beginn')]
     public string $startTime;
     #[Groups('walkExport:read')]
+    #[SerializedName('Beginn Tag')]
+    public string $startTimeTag;
+    #[Groups('walkExport:read')]
+    #[SerializedName('Beginn Uhrzeit')]
+    public string $startTimeUhrzeit;
+    #[Groups('walkExport:read')]
     #[SerializedName('Beginn Wochentag')]
     public string $startTimeWochentag;
     #[Groups('walkExport:read')]
     #[SerializedName('Ende')]
     public string $endTime;
+    #[Groups('walkExport:read')]
+    #[SerializedName('Ende Tag')]
+    public string $endTimeTag;
+    #[Groups('walkExport:read')]
+    #[SerializedName('Ende Uhrzeit')]
+    public string $endTimeUhrzeit;
     #[Groups('walkExport:read')]
     #[SerializedName('Ende Wochentag')]
     public string $endTimeWochentag;

@@ -16,6 +16,8 @@ final class WayPointExportDataTransformer
         $wayPointExport->id = $wayPoint->getId();
         $wayPointExport->locationName = $wayPoint->getLocationName();
         $wayPointExport->visitedAt = $wayPoint->getVisitedAt()->format('d.m.Y H:i:s');
+        $wayPointExport->visitedAtTag = $wayPoint->getVisitedAt()->format('d.m.Y');
+        $wayPointExport->visitedAtUhrzeit = $wayPoint->getVisitedAt()->format('H:i:s');
         $wayPointExport->visitedAtWochentag = (new Carbon($wayPoint->getVisitedAt()))->isoFormat('dddd');
         $wayPointExport->walkName = $wayPoint->getWalk()->getName();
         $wayPointExport->teamName = $wayPoint->getWalk()->getTeamName();
