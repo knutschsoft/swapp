@@ -5,16 +5,20 @@ namespace App\DataTransformer;
 
 use App\Entity\Export\WalkExport;
 use App\Entity\Walk;
+use Carbon\Carbon;
 
 final class WalkExportDataTransformer
 {
     public function transform(Walk $walk): WalkExport
     {
+        Carbon::setlocale('de');
         $walkExport = new WalkExport();
         $walkExport->id = $walk->getId();
         $walkExport->name = $walk->getName();
         $walkExport->startTime = $walk->getStartTime()->format('d.m.Y H:i:s');
+        $walkExport->startTimeWochentag = (new Carbon($walk->getStartTime()))->isoFormat('dddd');
         $walkExport->endTime = $walk->getEndTime() ? $walk->getEndTime()->format('d.m.Y H:i:s') : '';
+        $walkExport->endTimeWochentag = $walk->getEndTime() ? (new Carbon($walk->getEndTime()))->isoFormat('dddd') : '';
         $walkExport->walkReflection = $walk->getWalkReflection();
         $walkExport->rating = $walk->getRating();
         $walkExport->systemicQuestion = $walk->getSystemicQuestion();

@@ -5,15 +5,18 @@ namespace App\DataTransformer;
 
 use App\Entity\Export\WayPointExport;
 use App\Entity\WayPoint;
+use Carbon\Carbon;
 
 final class WayPointExportDataTransformer
 {
     public function transform(WayPoint $wayPoint): WayPointExport
     {
+        Carbon::setlocale('de');
         $wayPointExport = new WayPointExport();
         $wayPointExport->id = $wayPoint->getId();
         $wayPointExport->locationName = $wayPoint->getLocationName();
         $wayPointExport->visitedAt = $wayPoint->getVisitedAt()->format('d.m.Y H:i:s');
+        $wayPointExport->visitedAtWochentag = (new Carbon($wayPoint->getVisitedAt()))->isoFormat('dddd');
         $wayPointExport->walkName = $wayPoint->getWalk()->getName();
         $wayPointExport->teamName = $wayPoint->getWalk()->getTeamName();
         $users = [];
