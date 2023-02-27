@@ -48,6 +48,9 @@ final class WalkExportNormalizer implements NormalizerInterface, DenormalizerInt
                 $newData[$propertyName] = $propertyValue;
         }
 
+        foreach ($this->getCsvUserGroupCells($object) as $label => $csvUserGroupCell) {
+            $newData[$label] = $csvUserGroupCell;
+        }
         foreach ($this->getCsvAgeCells($object) as $label => $csvAgeCell) {
             $newData[$label] = $csvAgeCell;
         }
@@ -109,5 +112,27 @@ final class WalkExportNormalizer implements NormalizerInterface, DenormalizerInt
         }
 
         return $ageHeaders;
+    }
+
+    /**
+     * @param WalkExport $walkExport
+     *
+     * @return array<string, int>
+     */
+    private function getCsvUserGroupCells(WalkExport $walkExport): array
+    {
+        $userGroupHeaders = [];
+
+        foreach ($walkExport->userGroups as $userGroup) {
+            $label = $userGroup->getFrontendLabel();
+            $value = $userGroup->getPeopleCount()->getCount();
+            if (isset($userGroupHeaders[$label])) {
+                $userGroupHeaders[$label] += $value;
+            } else {
+                $userGroupHeaders[$label] = $value;
+            }
+        }
+
+        return $userGroupHeaders;
     }
 }

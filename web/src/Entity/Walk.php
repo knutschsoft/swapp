@@ -25,6 +25,7 @@ use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
+use App\Value\UserGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -711,5 +712,18 @@ class Walk
         }
 
         return  $ageGroups;
+    }
+
+    /**
+     * @return UserGroup[]
+     */
+    public function getUserGroups(): array
+    {
+        $userGroups = [];
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $userGroups = \array_merge($userGroups, $wayPoint->getUserGroups());
+        }
+
+        return  $userGroups;
     }
 }

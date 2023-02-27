@@ -9,6 +9,7 @@ use App\DataTransformer\WalkExportProvider;
 use App\Entity\Walk;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
+use App\Value\UserGroup;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -108,6 +109,8 @@ class WalkExport
     public int $peopleCount;
     /** @var AgeGroup[] */
     public array $ageGroups;
+    /** @var UserGroup[] */
+    public array $userGroups;
 
     public function getFemalesCountForAgeRange(AgeRange $ageRange): int
     {
