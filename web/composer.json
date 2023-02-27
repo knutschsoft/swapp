@@ -147,7 +147,7 @@
         "qa-ci": [
             "@compile-test",
             "mkdir -p var/log/qa-report",
-            "vendor/bin/phpcs --colors --report=checkstyle src tests > ./var/log/qa-report/phpcs.xml || true",
+            "vendor/bin/phpcs -d error_reporting=\"E_ALL&~E_DEPRECATED\" --colors --report=checkstyle src tests > ./var/log/qa-report/phpcs.xml || true",
             "vendor/bin/phpstan analyse --error-format=checkstyle --ansi --no-progress > ./var/log/qa-report/phpstan.xml || true",
             "vendor/bin/phpunit --colors --testdox-html ./var/log/qa-report/testdox.html --testdox-text ./var/log/qa-report/testdox.txt --log-junit ./var/log/qa-report/junit.xml || true",
             "mkdir -p public/images/screenshots var/log/qa-report/screenshots",
