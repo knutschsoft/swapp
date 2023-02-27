@@ -95,6 +95,9 @@ class WalkExport
     #[SerializedName('Teamname')]
     public string $teamName;
     #[Groups('walkExport:read')]
+    #[SerializedName('Teilnehmende')]
+    public string $users;
+    #[Groups('walkExport:read')]
     #[SerializedName('Anzahl direkter Kontakte')]
     public ?int $contactsCount;
     #[Groups('walkExport:read')]

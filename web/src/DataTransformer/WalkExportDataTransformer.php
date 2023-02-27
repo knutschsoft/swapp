@@ -34,6 +34,12 @@ final class WalkExportDataTransformer
         $walkExport->isHolidays = $walk->getHolidays();
         $walkExport->conceptOfDay = $walk->getConceptOfDay();
         $walkExport->teamName = $walk->getTeamName();
+        $users = [];
+        foreach ($walk->getWalkTeamMembers() as $walkTeamMember) {
+            $users[] = $walkTeamMember->getUsername();
+        }
+        $walkExport->users = \implode(',', $users);
+
         if ($walk->isWithContactsCount()) {
             $walkExport->contactsCount = $walk->getSumOfContactsCount();
         }
