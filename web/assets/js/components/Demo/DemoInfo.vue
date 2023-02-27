@@ -5,6 +5,7 @@
     >
         <hr class="mt-3 mb-4" />
         <b-alert
+            ref="wurst"
             variant="info"
             show
         >
@@ -20,7 +21,23 @@
             </p>
             <ul>
                 <li>
-                    <b>adelheid.administrator</b>
+                    <span
+                        class="cursor-pointer"
+                        @click="doCopyAdelheid()"
+                    >
+                        <b>adelheid.administrator</b>
+                        <mdicon
+                            v-if="!isCopiedAdelheid"
+                            class="mr-1"
+                            name="ContentCopy"
+
+                        />
+                        <mdicon
+                            v-else
+                            class="mr-1"
+                            name="CheckCircleOutline"
+                        />
+                    </span>
                     <ul>
                         <li>
                             <mdicon
@@ -28,21 +45,37 @@
                                 name="AccountCircleOutline"
                                 size="22"
                                 title="Benutzername oder E-Mail"
-                            />adelheid.administrator
+                            /><span :class="{'bg-info text-white': isCopiedAdelheid}">adelheid.administrator</span>
                             <br>
                             <mdicon
                                 class="mr-1"
                                 name="LockOutline"
                                 size="22"
                                 title="Passwort"
-                            />adelheid.administrator
+                            /><span :class="{'bg-info text-white': isCopiedAdelheid}">adelheid.administrator</span>
                         </li>
                         <li>adelheid.administrator ist <b>Administratorin</b> und kann Teams definieren sowie die Altersgruppen definieren, die für Wegpunkte einer Runde zu erfassen sind.</li>
                         <li>Zugleich ist adelheid.administrator auch Mitglied des Teams "Team Nord". Sie kann damit auch eigene Runden starten.</li>
                     </ul>
                 </li>
                 <li>
-                    <b>benno.benutzer</b>
+                    <span
+                        class="cursor-pointer"
+                        @click="doCopyBenno()"
+                    >
+                        <b>benno.benutzer</b>
+                        <mdicon
+                            v-if="!isCopiedBenno"
+                            class="mr-1"
+                            name="ContentCopy"
+
+                        />
+                        <mdicon
+                            v-else
+                            class="mr-1"
+                            name="CheckCircleOutline"
+                        />
+                    </span>
                     <ul>
                         <li>
                             <mdicon
@@ -50,20 +83,36 @@
                                 name="AccountCircleOutline"
                                 size="22"
                                 title="Benutzername oder E-Mail"
-                            />benno.benutzer
+                            /><span :class="{'bg-info text-white': isCopiedBenno}">benno.benutzer</span>
                             <br>
                             <mdicon
                                 class="mr-1"
                                 name="LockOutline"
                                 size="22"
                                 title="Passwort"
-                            />benno.benutzer
+                            /><span :class="{'bg-info text-white': isCopiedBenno}">benno.benutzer</span>
                         </li>
                         <li>benno.benutzer ist ein normaler Nutzender. Er ist dem Team "Team Altstadt" zugeordnet und kann eigene Runden starten.</li>
                     </ul>
                 </li>
                 <li>
-                    <b>tessa.administrator</b>
+                    <span
+                        class="cursor-pointer"
+                        @click="doCopyTessa()"
+                    >
+                        <b>tessa.administrator</b>
+                        <mdicon
+                            v-if="!isCopiedTessa"
+                            class="mr-1"
+                            name="ContentCopy"
+
+                        />
+                        <mdicon
+                            v-else
+                            class="mr-1"
+                            name="CheckCircleOutline"
+                        />
+                    </span>
                     <ul>
                         <li>
                             <mdicon
@@ -71,14 +120,14 @@
                                 name="AccountCircleOutline"
                                 size="22"
                                 title="Benutzername oder E-Mail"
-                            />tessa.administrator
+                            /><span :class="{'bg-info text-white': isCopiedTessa}">tessa.administrator</span>
                             <br>
                             <mdicon
                                 class="mr-1"
                                 name="LockOutline"
                                 size="22"
                                 title="Passwort"
-                            />tessa.administrator
+                            /><span :class="{'bg-info text-white': isCopiedTessa}">tessa.administrator</span>
                         </li>
                         <li>tessa.administrator ist <b>Administratorin</b> und kann Teams definieren sowie die Altersgruppen definieren, die für Wegpunkte einer Runde zu erfassen sind.</li>
                         <li>tessa.administrator ist jedoch kein Mitglied eines Teams. Sie kann also keine eigene Runden starten.</li>
@@ -111,6 +160,9 @@
 export default {
     name: "DemoInfo",
     data: () => ({
+        isCopiedAdelheid: false,
+        isCopiedBenno: false,
+        isCopiedTessa: false,
     }),
     computed: {
         isOnDemoPage() {
@@ -120,6 +172,41 @@ export default {
     created() {
     },
     methods: {
+        doCopyAdelheid() {
+            this.isCopiedAdelheid = true;
+            this.isCopiedBenno = false;
+            this.isCopiedTessa = false;
+            this.doCopy('adelheid.administrator');
+            window.setTimeout(() => this.isCopiedAdelheid = false, 3000);
+        },
+        doCopyBenno() {
+            this.isCopiedBenno = true;
+            this.isCopiedAdelheid = false;
+            this.isCopiedTessa = false;
+            this.doCopy('benno.benutzer');
+            window.setTimeout(() => this.isCopiedBenno = false, 3000);
+        },
+        doCopyTessa() {
+            this.isCopiedTessa = true;
+            this.isCopiedAdelheid = false;
+            this.isCopiedBenno = false;
+            this.doCopy('tessa.administrator');
+            window.setTimeout(() => this.isCopiedTessa = false, 3000);
+        },
+        doCopy(copyText) {
+            this.$copyText(copyText).then(() => {
+                this.$bvToast.toast(`"${copyText}" ist nun in deiner Zwischenablage.`, {
+                    title: 'Zugangsdaten in die Zwischenablage kopiert',
+                    toaster: 'b-toaster-top-right',
+                    autoHideDelay: 10000,
+                    appendToast: true,
+                    variant: 'info',
+                    solid: true,
+                });
+            }, function (e) {
+                console.log(e);
+            });
+        },
     },
 }
 </script>

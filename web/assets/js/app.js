@@ -25,6 +25,7 @@ import router from './router';
 import store from './store';
 import { AlertPlugin, BootstrapVue, CollapsePlugin, IconsPlugin, NavbarPlugin } from 'bootstrap-vue';
 import Storage from 'vue-web-storage';
+import VueClipboard from 'vue-clipboard2';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import mdiVue from 'mdi-vue';
@@ -53,6 +54,7 @@ Vue.use(VuePageTransition);
 Vue.use(mdiVue, {
     icons: mdijs
 });
+Vue.use(VueClipboard);
 
 Vue.config.errorHandler = function (err, vm, info) {
     let user = vm.$store.getters['security/currentUser'];
