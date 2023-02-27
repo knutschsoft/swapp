@@ -8,47 +8,80 @@
             variant="info"
             show
         >
-            <p>
-                <mdicon name="EmoticonHappyOutline" />
+            <p class="d-flex align-items-center">
+                <mdicon
+                    class="mr-1"
+                    name="EmoticonHappyOutline"
+                />
                 <b>Willkommen auf der Demo-Seite von Swapp</b>
             </p>
             <p>
-                Folgende Benutzer können sich anmelden:
+                Folgende Benutzende können sich anmelden:
             </p>
             <ul>
                 <li>
-                    <b>waldi_beta</b>
+                    <b>adelheid.administrator</b>
                     <ul>
                         <li>
-                            Benutzer: waldi_beta
+                            <mdicon
+                                class="mr-1"
+                                name="AccountCircleOutline"
+                                size="22"
+                                title="Benutzername oder E-Mail"
+                            />adelheid.administrator
                             <br>
-                            Passwort: waldi_beta
+                            <mdicon
+                                class="mr-1"
+                                name="LockOutline"
+                                size="22"
+                                title="Passwort"
+                            />adelheid.administrator
                         </li>
-                        <li>waldi_beta ist der <b>Teamleiter</b> und kann Teams definieren sowie die Altersgruppen definieren, die für Wegpunkte einer Runde zu erfassen sind.</li>
-                        <li>Zugleich ist waldi_beta auch Mitglied des Teams "Team Nord". Er kann also auch eigene Runden starten.</li>
+                        <li>adelheid.administrator ist <b>Administratorin</b> und kann Teams definieren sowie die Altersgruppen definieren, die für Wegpunkte einer Runde zu erfassen sind.</li>
+                        <li>Zugleich ist adelheid.administrator auch Mitglied des Teams "Team Nord". Sie kann damit auch eigene Runden starten.</li>
                     </ul>
                 </li>
                 <li>
-                    <b>jens_beta</b>
+                    <b>benno.benutzer</b>
                     <ul>
                         <li>
-                            Benutzer: jens_beta
+                            <mdicon
+                                class="mr-1"
+                                name="AccountCircleOutline"
+                                size="22"
+                                title="Benutzername oder E-Mail"
+                            />benno.benutzer
                             <br>
-                            Passwort: jens_beta
+                            <mdicon
+                                class="mr-1"
+                                name="LockOutline"
+                                size="22"
+                                title="Passwort"
+                            />benno.benutzer
                         </li>
-                        <li>jens_beta ist ein normaler Nutzer. Er ist dem Team "Team Altstadt" zugeordnet und kann eigene Runden starten.</li>
+                        <li>benno.benutzer ist ein normaler Nutzender. Er ist dem Team "Team Altstadt" zugeordnet und kann eigene Runden starten.</li>
                     </ul>
                 </li>
                 <li>
-                    <b>patrick_beta</b>
+                    <b>tessa.administrator</b>
                     <ul>
                         <li>
-                            Benutzer: patrick_beta
+                            <mdicon
+                                class="mr-1"
+                                name="AccountCircleOutline"
+                                size="22"
+                                title="Benutzername oder E-Mail"
+                            />tessa.administrator
                             <br>
-                            Passwort: patrick_beta
+                            <mdicon
+                                class="mr-1"
+                                name="LockOutline"
+                                size="22"
+                                title="Passwort"
+                            />tessa.administrator
                         </li>
-                        <li>patrick_beta ist der <b>Teamleiter</b> und kann Teams definieren sowie die Altersgruppen definieren, die für Wegpunkte einer Runde zu erfassen sind.</li>
-                        <li>patrick_beta ist jedoch kein Mitglied eines Teams. Er kann also keine eigene Runden starten.</li>
+                        <li>tessa.administrator ist <b>Administratorin</b> und kann Teams definieren sowie die Altersgruppen definieren, die für Wegpunkte einer Runde zu erfassen sind.</li>
+                        <li>tessa.administrator ist jedoch kein Mitglied eines Teams. Sie kann also keine eigene Runden starten.</li>
                     </ul>
                 </li>
             </ul>
@@ -58,11 +91,12 @@
             show
             class="mb-0"
         >
-            <p>
+            <p class="d-flex align-items-center">
                 <mdicon
-                    name="AlertCircle"
-                    class="mr-2"
-                /><b>BITTE NUR MIT UNSENSIBLEN DATEN TESTEN!</b>
+                    name="AlertDecagramOutline"
+                    class="mr-1"
+                />
+                <b>BITTE NUR MIT UNSENSIBLEN DATEN TESTEN!</b>
             </p>
             <p>
                 Auch andere Interessenten an Swapp bekommen diesen Demo-Zugang und sehen die gleichen Inhalte.

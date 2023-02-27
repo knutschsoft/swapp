@@ -21,9 +21,10 @@
                     >
                         <template v-slot:prepend>
                             <b-input-group-text>
-                                <b-icon
-                                    icon="envelope-fill"
-                                    class="dark"
+                                <mdicon
+                                    name="AccountCircleOutline"
+                                    size="22"
+                                    title="Benutzername oder E-Mail"
                                 />
                             </b-input-group-text>
                         </template>
@@ -57,9 +58,10 @@
                     >
                         <template v-slot:prepend>
                             <b-input-group-text>
-                                <b-icon
-                                    icon="lock-fill"
-                                    class="dark"
+                                <mdicon
+                                    name="LockOutline"
+                                    size="22"
+                                    tit !le="Passwort"
                                 />
                             </b-input-group-text>
                         </template>
@@ -78,9 +80,17 @@
                             <b-input-group-text
                                 @click="switchPasswordVisibility"
                             >
-                                <b-icon
-                                    :icon="eyeIcon"
-                                    class="dark"
+                                <mdicon
+                                    v-if="isPasswordVisible"
+                                    name="EyeOffOutline"
+                                    size="22"
+                                    title="Passwort verstecken"
+                                />
+                                <mdicon
+                                    v-else
+                                    name="EyeOutline"
+                                    size="22"
+                                    title="Passwort anzeigen"
                                 />
                             </b-input-group-text>
                         </template>
@@ -150,7 +160,7 @@
             passwordHelp: '',
             state: null,
             passwordFieldType: 'password',
-            eyeIcon: 'eye-fill',
+            isPasswordVisible: false,
         }),
         computed: {
             isLoading() {
@@ -200,7 +210,7 @@
             },
             switchPasswordVisibility() {
                 this.passwordFieldType = 'text' === this.passwordFieldType ? 'password' : 'text';
-                this.eyeIcon = 'text' === this.passwordFieldType ? 'eye-slash-fill' : 'eye-fill';
+                this.isPasswordVisible = 'text' === this.passwordFieldType;
             },
         },
     }
