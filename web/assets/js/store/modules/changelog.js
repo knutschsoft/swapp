@@ -11,6 +11,68 @@ const
 const state = {
     changelogs: [
         {
+            header: '25.03.2023',
+            avatarText: '&#129498;',
+            entries: [
+                {
+                    text: [
+                        'Feature: Die Filterung der Runden wirkt sich auf den Runden-CSV-Export aus.',
+                        'Alle Filtereinstellungen der Runden-Tabelle werden dabei berücksichtigt statt bisher nur der Rundenbeginn.',
+                        'Der Dateiname setzt sich aus den gewählten Filtern zusammen: "streetworkrunden_export.csv" bzw. bei mehreren gesetzten Filtern "20220101-20221231_BEENDET_ja_TEAM_Zugehende Sozialarbeit 1_streetworkrunden_export.csv"',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230325_Streetworkrunden_Export_vorher_small.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf dem Dashboard vor der Umstellung',
+                        },
+                        {
+                            src: '../changelog/20230325_Streetworkrunden_Export_nachher_small.png',
+                            thumbnailHeight: '100px',
+                            description: 'zusammengefasste Darstellung auf dem Dashboard nach der Umstellung',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'Feature: Beim Runden-CSV-Export werden weiterer Spalten mit ausgegeben.',
+                        'Die Personenanzahl von Nutzergruppen wird je Nutzergruppe als eigene Spalte mit ausgegeben.',
+                        'Die Teilnehmenden einer Runde werden in einer eigenen Spalte mit ausgegeben.',
+                        'Der Wochentag des Beginns und des Endes einer Runde wird als eigene Spalte mit ausgegeben.',
+                        'Das Datum des Beginns und des Endes einer Runde wird als eigene Spalte mit ausgegeben.',
+                        'Die Uhrzeit des Beginns und des Endes einer Runde wird als eigene Spalte mit ausgegeben.',
+                    ],
+                },
+                {
+                    text: [
+                        'Feature: Beim Wegpunkte-CSV-Export werden weitere Spalten mit ausgegeben.',
+                        'Der Wochentag der Ankunft eines Wegpunktes wird als eigene Spalte mit ausgegeben.',
+                        'Das Datum der Ankunft eines Wegpunktes wird als eigene Spalte mit ausgegeben.',
+                        'Die Uhrzeit der Ankunft eines Wegpunktes wird als eigene Spalte mit ausgegeben.',
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Alle Filterungen heben sich nun expliziter im von anderen Elementen Formular vom Rest ab.',
+                        'Dies verbessert das Erkennen und Zurücksetzen von gesetzten Filtern.',
+                        'Zusätzlich gibt es einen Button um alle gesetzten Filter mit einem Mal zurückzusetzen.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230325_Streetworkrunden_Filter_vorher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der gesetzten Filterung der Wegpunktetabelle vor der Umstellung',
+                        },
+                        {
+                            src: '../changelog/20230325_Streetworkrunden_Filter_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der gesetzten Filterung der Wegpunktetabelle nach der Umstellung',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
             header: '01.02.2023',
             avatarText: '&#129528;',
             entries: [
