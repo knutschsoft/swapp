@@ -18,7 +18,7 @@ const state = {
                     text: [
                         'Feature: Die Filterung der Runden wirkt sich auf den Runden-CSV-Export aus.',
                         'Alle Filtereinstellungen der Runden-Tabelle werden dabei berücksichtigt statt bisher nur der Rundenbeginn.',
-                        'Der Dateiname setzt sich aus den gewählten Filtern zusammen: "streetworkrunden_export.csv" bzw. bei mehreren gesetzten Filtern "20220101-20221231_BEENDET_ja_TEAM_Zugehende Sozialarbeit 1_streetworkrunden_export.csv"',
+                        'Der Dateiname setzt sich aus den gewählten Filtern zusammen: "streetworkrunden_export.csv" bzw. bei mehreren gesetzten Filtern "20220101-20221231&shy;_BEENDET_ja&shy;_TEAM_Zugehende Sozialarbeit 1&shy;_streetworkrunden_export.csv"',
                     ],
                     gallery: [
                         {
@@ -35,7 +35,7 @@ const state = {
                 },
                 {
                     text: [
-                        'Feature: Beim Runden-CSV-Export werden weiterer Spalten mit ausgegeben.',
+                        'Feature: Beim Runden-CSV-Export werden weitere Spalten mit ausgegeben.',
                         'Die Personenanzahl von Nutzergruppen wird je Nutzergruppe als eigene Spalte mit ausgegeben.',
                         'Die Teilnehmenden einer Runde werden in einer eigenen Spalte mit ausgegeben.',
                         'Der Wochentag des Beginns und des Endes einer Runde wird als eigene Spalte mit ausgegeben.',
@@ -358,7 +358,7 @@ const state = {
                     text: [
                         'Feature: Ein Bearbeiter kann die Wegpunkte als csv-Datei exportieren.',
                         'Die Filtereinstellungen der Wegpunkte-Tabelle werden dabei berücksichtigt.',
-                        'Der Dateiname setzt sich aus den gewählten Filtern zusammen: "streetworkwegpunkte_export.csv" bzw. bei Datumsfilterung "20220601-20220630_streetworkwegpunkte_export.csv"',
+                        'Der Dateiname setzt sich aus den gewählten Filtern zusammen: "streetworkwegpunkte_export.csv" bzw. bei Datumsfilterung "20220601-20220630&shy;_streetworkwegpunkte_export.csv"',
                     ],
                     gallery: [
                         {
