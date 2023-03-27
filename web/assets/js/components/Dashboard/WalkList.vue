@@ -544,7 +544,7 @@ export default {
                 title = `TEAM_${this.filter.teamName}_${title}`;
             }
             if (null !== this.filter.isResubmission) {
-                title = `WV_DB_${this.filter.isResubmission}_${this.filter.isResubmission ? 'ja' : 'nein'}_${title}`;
+                title = `WV_DB_${this.filter.isResubmission ? 'ja' : 'nein'}_${title}`;
             }
             if (null !== this.filter.isUnfinished) {
                 title = `BEENDET_${this.filter.isUnfinished ? 'nein' : 'ja'}_${title}`;
