@@ -40,6 +40,10 @@ Feature: An user can do a walk with preset walkTeamMembers
 
     When I click on element "walkTeamMember-pinky@gmx.de"
 
+    When I click on element "startTimeTime"
+    Then I wait for 'Schließen' to appear
+    When I click on aria label "Verringern"
+
     When I click on text "Runde beginnen"
     Then I wait for "Runde beginnen" to disappear
     And I wait for "Wegpunkte der Runde" to appear
@@ -60,6 +64,12 @@ Feature: An user can do a walk with preset walkTeamMembers
     When I enter "Mein zweiter Lauf" in "Name" field
     When I enter "Mein erster Lauf" in "Tageskonzept" field
     When I enter "Arschkalt" in "Wetter" field
+
+    When I click on element "startTimeDate"
+    Then I wait for 'Mit den Pfeiltasten durch den Kalender navigieren' to appear
+    When I click on aria label "Nächster Monat"
+    When I click on aria label "Nächster Monat"
+    When I click on text "26"
 
     When I click on element "walkTeamMember-karl@gmx.de"
 
