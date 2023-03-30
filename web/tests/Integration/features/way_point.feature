@@ -93,7 +93,7 @@ Feature: Testing way point resource
       | locationName      | Assieck                     |
       | note              | Bier!                       |
       | oneOnOneInterview | Gönnjamin                   |
-      | visitedAt         | date<now,Y-m-dTH:i:s+01:00> |
+      | visitedAt         | date<now,Y-m-dTH:i:s+02:00> |
 
   @api @wayPoint
   Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will not see this wayPoint cause it is not of my client
