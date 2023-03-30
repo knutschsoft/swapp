@@ -16,6 +16,7 @@ use ApiPlatform\Metadata\Post;
 use App\Dto\TeamName;
 use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkChangeStartTimeRequest;
+use App\Dto\Walk\WalkChangeUnfinishedRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\Walk\WalkRemoveRequest;
@@ -43,6 +44,14 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/walks/team_names',
             output: TeamName::class,
             forceEager: false,
+        ),
+        new Post(
+            uriTemplate: '/walks/change-unfinished',
+            status: 200,
+            securityPostDenormalize: 'is_granted("'.WalkVoter::EDIT.'", object.walk)',
+            input: WalkChangeUnfinishedRequest::class,
+            output: Walk::class,
+            messenger: 'input'
         ),
         new Post(
             uriTemplate: '/walks/change',

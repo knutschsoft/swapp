@@ -45,9 +45,16 @@
             :is-loading="!walk"
         >
             <walk-form
+                v-if="walk.isFinished"
                 submit-button-text="Runde speichern"
                 :initial-walk="walk"
                 @submit="handleSubmit"
+            />
+            <walk-unfinished-form
+                v-else
+                submit-button-text="Runde speichern"
+                :initial-walk="walk"
+                @submit="handleWalkUnfinishedSubmit"
             />
         </content-collapse>
         <content-collapse
@@ -73,6 +80,7 @@
     import WayPointList from './Walk/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
     import WalkForm from './Walk/WalkForm.vue';
+    import WalkUnfinishedForm from './Walk/WalkUnfinishedForm.vue';
     import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
 
     export default {
@@ -80,6 +88,7 @@
         components: {
             WalkForm,
             WalkRemoveForm,
+            WalkUnfinishedForm,
             ContentCollapse,
             WayPointList,
             WalkDetailData,
@@ -180,6 +189,30 @@
             async handleSubmit(payload) {
                 payload.walk = this.walk['@id'];
                 const walk = await this.$store.dispatch('walk/change', payload);
+                if (walk) {
+                    const message = `Die Runde "${walk.name}" wurde erfolgreich geändert.`;
+                    this.$bvToast.toast(message, {
+                        title: 'Runde geändert',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        variant: 'success',
+                        appendToast: true,
+                        solid: true,
+                    });
+                } else {
+                    this.$bvToast.toast('Upps! :-(', {
+                        title: 'Runde ändern fehlgeschlagen',
+                        toaster: 'b-toaster-top-right',
+                        autoHideDelay: 10000,
+                        variant: 'danger',
+                        appendToast: true,
+                        solid: true,
+                    });
+                }
+            },
+            async handleWalkUnfinishedSubmit(payload) {
+                payload.walk = this.walk['@id'];
+                const walk = await this.$store.dispatch('walk/changeUnfinished', payload);
                 if (walk) {
                     const message = `Die Runde "${walk.name}" wurde erfolgreich geändert.`;
                     this.$bvToast.toast(message, {

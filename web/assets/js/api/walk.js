@@ -45,6 +45,9 @@ export default {
     create(payload) {
         return axios.post(`/api/walks/create`, payload);
     },
+    changeUnfinished(payload) {
+        return axios.post(`/api/walks/change-unfinished`, payload);
+    },
     change(payload) {
         return axios.post(`/api/walks/change`, payload);
     },

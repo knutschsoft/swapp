@@ -242,6 +242,17 @@ const actions = {
             commit(CREATE_WALK_ERROR, error);
         }
     },
+    async changeUnfinished({ commit }, payload) {
+        commit(CHANGE_WALK);
+        try {
+            let response = await WalkAPI.changeUnfinished(payload);
+            commit(CHANGE_WALK_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(CHANGE_WALK_ERROR, error);
+        }
+    },
     async remove({commit, dispatch}, walk) {
         commit(REMOVE_WALK);
         try {

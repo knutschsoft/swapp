@@ -34,6 +34,11 @@ const state = {
                         },
                     ],
                 },
+                {
+                    text: [
+                        'Fix: Ein Admin kann eine noch nicht abgeschlossene Runde ändern. Dies war bisher nur für abgeschlossene Runden möglich und führte für nichtabgeschlossene Runden bisher zu einem Fehler.',
+                    ],
+                },
             ],
         },
         {
