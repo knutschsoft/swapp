@@ -252,11 +252,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $request = new WalkCreateRequest();
             $request->team = $team;
             $request->name = $row['name'];
-            if (isset($row['startTime'])) {
-                $request->startTime = new \DateTime($this->enrichText($row['startTime']));
-            } else {
-                $request->startTime = new \DateTime();
-            }
+            $request->startTime = isset($row['startTime']) ? new \DateTime($this->enrichText($row['startTime'])) : new \DateTime();
             $request->weather = $row['weather'] ?? 'Arschkalt';
             $request->holidays = isset($row['holidays']) ? (bool) $row['holidays'] : false;
             $request->conceptOfDay = $row['conceptOfDay'] ?? 'My daily concept.';
@@ -617,7 +613,8 @@ final class DomainIntegrationContext extends RawMinkContext
                         $endTime->format('H:i:s'),
                         $higherExpectedEndTime->format('H:i:s')
                     )
-                );            }
+                );
+            }
             if (isset($row['walkTeamMembers'])) {
                 $expectedUsers = $this->getUsersFromString($row['walkTeamMembers']);
                 $walkUsers = $walk->getWalkTeamMembers();
