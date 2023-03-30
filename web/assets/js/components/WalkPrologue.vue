@@ -180,6 +180,7 @@
         },
         data: function () {
             return {
+                isLoadingLastWalkOfTeam: false,
                 startTimeTime: null,
                 startTimeDate: null,
                 form: {
@@ -313,7 +314,7 @@
                 return this.$store.getters["security/currentUser"];
             },
             isLoading() {
-                return this.$store.getters["team/isLoading"] || this.$store.getters["walk/isLoadingCreate"];
+                return this.$store.getters["team/isLoading"] || this.$store.getters["walk/isLoadingCreate"] || this.isLoadingLastWalkOfTeam;
             },
             team() {
                 return this.$store.getters["team/getTeamById"](this.teamId);
@@ -390,6 +391,7 @@
         },
         methods: {
             async getWalkTeamMembersOfLastWalkOfTeam(team) {
+                this.isLoadingLastWalkOfTeam = true;
                 const response = await WalkAPI.findLastWalkByTeam(team);
                 const hits = response.data['hydra:totalItems'];
                 let result = [];
@@ -406,6 +408,7 @@
                 if (-1 === result.indexOf(this.currentUser['@id'])) {
                     result.push(this.currentUser['@id']);
                 }
+                this.isLoadingLastWalkOfTeam = false;
 
                 return result;
             },

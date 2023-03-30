@@ -1,4 +1,4 @@
-Feature: A user can do a walk with preset walkTeamMembers
+Feature: An user can do a walk with preset walkTeamMembers
 
   Background:
     Given the following clients exists:
@@ -22,7 +22,7 @@ Feature: A user can do a walk with preset walkTeamMembers
 
   @javascript
   @walkCreate
-  Scenario: I do a walk with one wayPoint
+  Scenario: I do a walk with one wayPoint and will have walkTeamMembers pre selected by my last walk
     Given I am authenticated as "karl@gmx.de"
     And I should be on "/dashboard"
     Then I wait for "Team 'Westhang'" to appear
@@ -82,10 +82,11 @@ Feature: A user can do a walk with preset walkTeamMembers
 
     Then I wait for "Name" to appear
     When I enter "Mein dritter Lauf" in "Name" field
-    When I enter "Mein erster Lauf" in "Tageskonzept" field
+    When I enter "Mein dritter Lauf" in "Tageskonzept" field
     When I enter "Arschkalt" in "Wetter" field
 
-    When I click on text "Runde beginnen"
+    Then I wait for field 'button-walk-create' to be not disabled
+    When I click on element "button-walk-create"
     Then I wait for "Runde beginnen" to disappear
     And I wait for "Wegpunkte der Runde" to appear
 
