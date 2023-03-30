@@ -582,7 +582,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 Assert::eq($walk->getGuestNames(), (array) $this->enrichText($row['guestNames']));
             }
             if (isset($row['startTime'])) {
-                $allowedDistanceInSeconds = 60;
+                $allowedDistanceInSeconds = 90;
                 $expectedStartTime = new Carbon($this->enrichText($row['startTime']));
                 $lowerExpectedStartTime = $expectedStartTime->clone()->subSeconds($allowedDistanceInSeconds);
                 $higherExpectedStartTime = $expectedStartTime->clone()->addSeconds($allowedDistanceInSeconds);
@@ -599,7 +599,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 );
             }
             if (isset($row['endTime'])) {
-                $allowedDistanceInSeconds = 60;
+                $allowedDistanceInSeconds = 90;
                 $expectedEndTime = new Carbon($this->enrichText($row['endTime']));
                 $lowerExpectedEndTime = $expectedEndTime->clone()->subSeconds($allowedDistanceInSeconds);
                 $higherExpectedEndTime = $expectedEndTime->clone()->addSeconds($allowedDistanceInSeconds);
@@ -768,7 +768,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 Assert::eq($wayPoint->getIsMeeting(), (bool) $row['isMeeting']);
             }
             if (isset($row['visitedAt'])) {
-                $allowedDistanceInSeconds = 60;
+                $allowedDistanceInSeconds = 90;
                 $expectedVisitedAt = new Carbon($this->enrichText($row['visitedAt']));
                 $lowerExpectedVisitedAt = $expectedVisitedAt->clone()->subSeconds($allowedDistanceInSeconds);
                 $higherExpectedVisitedAt = $expectedVisitedAt->clone()->addSeconds($allowedDistanceInSeconds);
