@@ -465,8 +465,8 @@ export default {
                 walk: '',
                 name: '',
                 conceptOfDay: '',
-                startTime: dayjs().format(),
-                endTime: dayjs().format(),
+                startTime: dayjs().startOf('minute').format(),
+                endTime: dayjs().endOf('minute').format(),
                 systemicAnswer: '',
                 walkReflection: '',
                 rating: 1,
@@ -695,6 +695,7 @@ export default {
             let startTime = dayjs(this.form.startTime);
             startTime = startTime.hour(Number(values[0]));
             startTime = startTime.minute(Number(values[1]));
+            startTime = startTime.startOf('minute');
             this.form.startTime = startTime.format();
         },
         startTimeDate(startTimeDate) {
@@ -703,6 +704,7 @@ export default {
             startTime = startTime.year(startTimeDateValue.year());
             startTime = startTime.month(startTimeDateValue.month());
             startTime = startTime.date(startTimeDateValue.date());
+            startTime = startTime.startOf('minute');
             this.form.startTime = startTime.format();
         },
         endTimeTime(endTimeTime) {

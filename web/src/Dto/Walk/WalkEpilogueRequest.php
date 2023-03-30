@@ -5,6 +5,7 @@ namespace App\Dto\Walk;
 
 use App\Entity\Walk;
 use App\Validator\Constraints as AppAssert;
+use Carbon\Carbon;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Assert\GroupSequence(['WalkEpilogueRequest', 'SecondGroup'])]
@@ -68,6 +69,18 @@ final class WalkEpilogueRequest
     public function isStartTimeBeforeEndTime(): bool
     {
         return $this->startTime <= $this->endTime;
+    }
+
+    #[Assert\IsTrue(message: 'walk.isStartTimeBeforeWayPointsVisitedAt', groups: ['SecondGroup'])]
+    public function isStartTimeBeforeAllWayPoints(): bool
+    {
+        foreach ($this->walk->getWayPoints() as $wayPoint) {
+            if ((new Carbon($wayPoint->getVisitedAt()))->endOfMinute() <= (new Carbon($this->startTime))->startOfMinute()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     #[Assert\IsTrue(message: 'walk.isEndTimeAfterWayPointsVisitedAt', groups: ['SecondGroup'])]

@@ -13,6 +13,7 @@ class WalkVoter extends Voter
 {
     public const READ = 'WALK_READ';
     public const EDIT = 'WALK_EDIT';
+    public const EDIT_START_TIME = 'WALK_EDIT_START_TIME';
     public const REMOVE = 'WALK_REMOVE';
 
     public function __construct(private readonly Security $security)
@@ -21,7 +22,7 @@ class WalkVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return \in_array($attribute, [self::EDIT, self::READ, self::REMOVE], true)
+        return \in_array($attribute, [self::EDIT, self::EDIT_START_TIME, self::READ, self::REMOVE], true)
             && $subject instanceof Walk;
     }
 
@@ -48,6 +49,7 @@ class WalkVoter extends Voter
                 }
 
                 return $walk->getClient()->getId() === $user->getClient()->getId();
+            case self::EDIT_START_TIME:
             case self::READ:
                 return $walk->getClient()->getId() === $user->getClient()->getId();
         }

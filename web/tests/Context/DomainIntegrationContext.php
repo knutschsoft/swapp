@@ -252,7 +252,11 @@ final class DomainIntegrationContext extends RawMinkContext
             $request = new WalkCreateRequest();
             $request->team = $team;
             $request->name = $row['name'];
-            $request->startTime = isset($row['startTime']) ? new \DateTime($row['startTime']) : new \DateTime();
+            if (isset($row['startTime'])) {
+                $request->startTime = new \DateTime($this->enrichText($row['startTime']));
+            } else {
+                $request->startTime = new \DateTime();
+            }
             $request->weather = $row['weather'] ?? 'Arschkalt';
             $request->holidays = isset($row['holidays']) ? (bool) $row['holidays'] : false;
             $request->conceptOfDay = $row['conceptOfDay'] ?? 'My daily concept.';
@@ -582,11 +586,38 @@ final class DomainIntegrationContext extends RawMinkContext
                 Assert::eq($walk->getGuestNames(), (array) $this->enrichText($row['guestNames']));
             }
             if (isset($row['startTime'])) {
-                Assert::eq($walk->getStartTime(), new \DateTime($row['startTime']));
+                $allowedDistanceInSeconds = 60;
+                $expectedStartTime = new Carbon($this->enrichText($row['startTime']));
+                $lowerExpectedStartTime = $expectedStartTime->clone()->subSeconds($allowedDistanceInSeconds);
+                $higherExpectedStartTime = $expectedStartTime->clone()->addSeconds($allowedDistanceInSeconds);
+                $startTime = new Carbon($walk->getStartTime());
+                Assert::true(
+                    $startTime->isBetween($lowerExpectedStartTime, $higherExpectedStartTime),
+                    \sprintf(
+                        "Distance is larger than %d seconds. lower: %s startTime: %s higher: %s",
+                        $allowedDistanceInSeconds,
+                        $lowerExpectedStartTime->format('H:i:s'),
+                        $startTime->format('H:i:s'),
+                        $higherExpectedStartTime->format('H:i:s')
+                    )
+                );
             }
             if (isset($row['endTime'])) {
-                Assert::eq($walk->getEndTime(), new \DateTime($row['endTime']));
-            }
+                $allowedDistanceInSeconds = 60;
+                $expectedEndTime = new Carbon($this->enrichText($row['endTime']));
+                $lowerExpectedEndTime = $expectedEndTime->clone()->subSeconds($allowedDistanceInSeconds);
+                $higherExpectedEndTime = $expectedEndTime->clone()->addSeconds($allowedDistanceInSeconds);
+                $endTime = new Carbon($walk->getEndTime());
+                Assert::true(
+                    $endTime->isBetween($lowerExpectedEndTime, $higherExpectedEndTime),
+                    \sprintf(
+                        "Distance is larger than %d seconds. lower: %s endTime: %s higher: %s",
+                        $allowedDistanceInSeconds,
+                        $lowerExpectedEndTime->format('H:i:s'),
+                        $endTime->format('H:i:s'),
+                        $higherExpectedEndTime->format('H:i:s')
+                    )
+                );            }
             if (isset($row['walkTeamMembers'])) {
                 $expectedUsers = $this->getUsersFromString($row['walkTeamMembers']);
                 $walkUsers = $walk->getWalkTeamMembers();

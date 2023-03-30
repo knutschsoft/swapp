@@ -44,8 +44,8 @@ Feature: An administrator can change startTime of a walk
 
 
     Then I can find the following walks in database:
-      | name   | startTime       | endTime         |
-      | Klippe | 10.01.2021 8:20 | 10.01.2021 9:00 |
+      | name   | startTime                         | endTime                           |
+      | Klippe | date<10.01.2021 8:20,d.m.Y H:i:s> | date<10.01.2021 9:00,d.m.Y H:i:s> |
 
 
     And there are exactly 1 walks in database

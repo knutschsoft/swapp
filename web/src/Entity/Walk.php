@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Dto\TeamName;
 use App\Dto\Walk\WalkChangeRequest;
+use App\Dto\Walk\WalkChangeStartTimeRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\Walk\WalkRemoveRequest;
@@ -48,6 +49,14 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             status: 200,
             securityPostDenormalize: 'is_granted("'.WalkVoter::EDIT.'", object.walk)',
             input: WalkChangeRequest::class,
+            output: Walk::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/walks/change-start-time',
+            status: 200,
+            securityPostDenormalize: 'is_granted("'.WalkVoter::EDIT_START_TIME.'", object.walk)',
+            input: WalkChangeStartTimeRequest::class,
             output: Walk::class,
             messenger: 'input'
         ),

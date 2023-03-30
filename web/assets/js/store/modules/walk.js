@@ -209,6 +209,17 @@ const actions = {
             commit(CHANGE_WALK_ERROR, error);
         }
     },
+    async changeStartTime({ commit }, payload) {
+        commit(CHANGE_WALK);
+        try {
+            let response = await WalkAPI.changeStartTime(payload);
+            commit(CHANGE_WALK_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(CHANGE_WALK_ERROR, error);
+        }
+    },
     async epilogue({ commit }, payload) {
         commit(CHANGE_WALK);
         try {

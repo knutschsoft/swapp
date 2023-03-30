@@ -48,6 +48,9 @@ export default {
     change(payload) {
         return axios.post(`/api/walks/change`, payload);
     },
+    changeStartTime(payload) {
+        return axios.post(`/api/walks/change-start-time`, payload);
+    },
     remove(payload) {
         return axios.post(`/api/walks/remove`, payload);
     },

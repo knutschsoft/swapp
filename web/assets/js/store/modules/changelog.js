@@ -11,6 +11,32 @@ const
 const state = {
     changelogs: [
         {
+            header: '09.04.2023',
+            avatarText: '&#x1F423;',
+            avatarTitle: 'Frohe Ostern!',
+            entries: [
+                {
+                    text: [
+                        'UX-Feature: Der Rundenbeginn kann vom Wegpunkthinzufügen-Formular aus auf die aktuell eingestellte Ankunftszeit gesetzt werden.',
+                        'Der Button zum Rundenbeginn ändern wird nur beim ersten Wegpunkt angezeigt und wenn die Ankunftszeit des Wegpunktes for dem Rundenbeginn liegt.',
+                        'Use Case: Ein Bearbeiter möchte nachträglich eine Runde von gestern protokollieren. Dabei startet er die Runde und vergisst den Rundenbeginn abzuändern. Nun möchte er den ersten Wegpunkt hinzufügen und stellt den gestrigen Tag ein. Der erste Wegpunkt liegt nun vor dem Rundenbeginn, was zu einem Fehler führen würde.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230409_Wegpunkte_Rundenstartzeit_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf dem Wegpunkt hinzufügen-Formular',
+                        },
+                        {
+                            src: '../changelog/20230409_Wegpunkte_Rundenstartzeit_nach_klick.png',
+                            thumbnailHeight: '100px',
+                            description: 'Nach Klick auf Rundenbeginn auf "Dienstag 28.03.2023 um 08:22" setzen',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
             header: '25.03.2023',
             avatarText: '&#129498;',
             entries: [

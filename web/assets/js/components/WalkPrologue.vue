@@ -188,7 +188,7 @@
                     walkTeamMembers: [],
                     guestNames: [],
                     conceptOfDay: '',
-                    startTime: dayjs().format(),
+                    startTime: dayjs().startOf('minute').format(),
                     holidays: false,
                     weather: '',
                 },
@@ -353,6 +353,7 @@
                 let startTime = dayjs(this.form.startTime);
                 startTime = startTime.hour(Number(values[0]));
                 startTime = startTime.minute(Number(values[1]));
+                startTime = startTime.startOf('minute');
                 this.form.startTime = startTime.format();
             },
             startTimeDate(startTimeDate) {
@@ -361,6 +362,7 @@
                 startTime = startTime.year(startTimeDateValue.year());
                 startTime = startTime.month(startTimeDateValue.month());
                 startTime = startTime.date(startTimeDateValue.date());
+                startTime = startTime.startOf('minute');
                 this.form.startTime = startTime.format();
             },
         },

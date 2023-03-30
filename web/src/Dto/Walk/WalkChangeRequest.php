@@ -71,6 +71,18 @@ final class WalkChangeRequest
         return $this->startTime <= $this->endTime;
     }
 
+    #[Assert\IsTrue(message: 'walk.isStartTimeBeforeWayPointsVisitedAt', groups: ['SecondGroup'])]
+    public function isStartTimeBeforeAllWayPoints(): bool
+    {
+        foreach ($this->walk->getWayPoints() as $wayPoint) {
+            if ($wayPoint->getVisitedAt() < $this->startTime) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     #[Assert\IsTrue(message: 'walk.isEndTimeAfterWayPointsVisitedAt', groups: ['SecondGroup'])]
     public function isEndTimeAfterWayPointsVisitedAt(): bool
     {

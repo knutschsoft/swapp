@@ -595,6 +595,7 @@ export default {
             let startTime = dayjs(this.walk.startTime);
             startTime = startTime.hour(Number(values[0]));
             startTime = startTime.minute(Number(values[1]));
+            startTime = startTime.startOf('minute');
             this.walk.startTime = startTime.format();
         },
         startTimeDate(startTimeDate) {
@@ -603,6 +604,7 @@ export default {
             startTime = startTime.year(startTimeDateValue.year());
             startTime = startTime.month(startTimeDateValue.month());
             startTime = startTime.date(startTimeDateValue.date());
+            startTime = startTime.startOf('minute');
             this.walk.startTime = startTime.format();
         },
         endTimeTime(endTimeTime) {

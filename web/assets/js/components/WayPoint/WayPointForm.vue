@@ -101,13 +101,44 @@
             </template>
         </b-form-group>
         <b-form-group
-            v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
+            v-if="isShowWalkStartTimeButton"
             content-cols="12"
             label-cols="12"
             content-cols-lg="10"
             label-cols-lg="2"
+            class="mt-n2"
         >
-
+            <b-row>
+                <b-col>
+                    <b-alert
+                        show
+                        class="mb-0"
+                        variant="warning"
+                    >
+                        Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffWalkStartTime }}</b> vor dem Rundenstart. Hier kannst du die Rundenstartzeit auf die aktuell gewählte Ankunftszeit ändern.
+                        <div class="bg-white">
+                            <b-button
+                                variant="outline-secondary"
+                                block
+                                size="sm"
+                                class="mt-2"
+                                data-test="button-set-walk-start-time"
+                                @click="handleSetWalkStartTime"
+                            >
+                                {{ setWalkStartTimeButtonLabel }}
+                            </b-button>
+                        </div>
+                    </b-alert>
+                </b-col>
+            </b-row>
+        </b-form-group>
+        <b-form-group
+                    v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
+                    content-cols="12"
+                    label-cols="12"
+                    content-cols-lg="10"
+                    label-cols-lg="2"
+                >
             <template v-slot:label>
                 <b v-text="walk.isWithAgeRanges ? `Altersgruppen` : `Anzahl der Personen vor Ort`" />
                 <br v-if="walk.isWithAgeRanges">
@@ -560,6 +591,18 @@ export default {
 
             return isBeforeEnd && isAfterStart;
         },
+        isFirstWayPoint() {
+            return 0 === this.walk.wayPoints.length;
+        },
+        isShowWalkStartTimeButton() {
+            return this.isFirstWayPoint && dayjs(this.walk.startTime).isAfter(this.wayPoint.visitedAt);
+        },
+        diffWalkStartTime() {
+            return dayjs(this.wayPoint.visitedAt).to(this.walk.startTime, true);
+        },
+        setWalkStartTimeButtonLabel() {
+            return `Rundenbeginn auf "${ dayjs(this.wayPoint.visitedAt).format('dddd DD.MM.YYYY [um] HH:mm') }" setzen`;
+        },
         hasLastWayPoint() {
             let hasLastWayPoint = false;
             this.walk.wayPoints.slice().reverse().every(wayPointIri => {
@@ -844,6 +887,35 @@ export default {
         async handleSubmit() {
             this.$emit('submit', { form: this.wayPoint, isWithFinish: false });
         },
+        async handleSetWalkStartTime() {
+            const dateTemplate = 'dddd DD.MM.YYYY [um] HH:mm';
+            const previousFormattedDate = dayjs(this.walk.startTime).format(dateTemplate);
+            const result = await this.$store.dispatch('walk/changeStartTime', {
+                walk: this.walk['@id'],
+                startTime: dayjs(this.wayPoint.visitedAt).startOf('minute').format(),
+            });
+
+            if (result) {
+                let message = `Der Rundenbeginn wurde erfolgreich von "${ previousFormattedDate }" auf "${ dayjs(this.walk.startTime).format(dateTemplate) }" geändert.`;
+                this.$bvToast.toast(message, {
+                    title: 'Rundenbeginn geändert',
+                    variant: 'success',
+                    toaster: 'b-toaster-top-right',
+                    autoHideDelay: 10000,
+                    appendToast: true,
+                    solid: true,
+                });
+            } else {
+                this.$bvToast.toast('Upps! :-(', {
+                    title: 'Rundenbeginn ändern fehlgeschlagen',
+                    toaster: 'b-toaster-top-right',
+                    autoHideDelay: 10000,
+                    variant: 'danger',
+                    appendToast: true,
+                    solid: true,
+                });
+            }
+        }
     },
 };
 </script>
