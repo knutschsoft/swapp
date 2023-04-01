@@ -229,6 +229,13 @@ final class DomainIntegrationContext extends RawMinkContext
             $request->color = $row['color'];
             $request->client = $this->getClientByEmail($row['client']);
             $tag = Tag::fromTagCreateRequest($request);
+            if (isset($row['isEnabled'])) {
+                if ($this->enrichText($row['isEnabled'])) {
+                    $tag->enable();
+                } else {
+                    $tag->disable();
+                }
+            }
             $this->em->persist($tag);
         }
         $this->em->flush();
@@ -801,6 +808,29 @@ final class DomainIntegrationContext extends RawMinkContext
                         \count($wayPointTags)
                     )
                 );
+            }
+        }
+    }
+
+    /**
+     * @Given /^I can find the following tags in database:$/
+     *
+     * @param TableNode $table
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function iCanFindTheFollowingTagsInDatabase(TableNode $table): void
+    {
+        $this->em->clear();
+        foreach ($table as $row) {
+            $tag = $this->getTagByName($row['name']);
+            if (isset($row['isEnabled'])) {
+                Assert::eq($tag->isEnabled(), (bool) $row['isEnabled']);
+            }
+            if (isset($row['color'])) {
+                Assert::eq($tag->getColor(), $row['color']);
             }
         }
     }

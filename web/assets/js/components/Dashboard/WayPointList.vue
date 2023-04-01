@@ -45,6 +45,24 @@
                             :class="filter.wayPointTags.length ? 'font-weight-bold' : ''"
                         >
                             Tags
+                            <div id="tag-filter-wayPoints">
+                                <mdicon
+                                    name="help-circle-outline"
+                                    class="text-muted ml-1"
+                                    size="22"
+                                />
+                            </div>
+                            <b-popover
+                                target="tag-filter-wayPoints"
+                                triggers="hover"
+                                placement="top"
+                            >
+                                <template #title>Welche Tags werden angezeigt?</template>
+                                <ul class="mb-0">
+                                    <li>Alle aktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
+                                    <li>Alle deaktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
+                                </ul>
+                            </b-popover>
                         </b-input-group-text>
                     </b-input-group-prepend>
                     <b-form-group
@@ -53,17 +71,46 @@
                         @change="handleFilterChange"
                     >
                         <div class="d-flex flex-wrap">
-                            <b-form-checkbox
+                            <template
                                 v-for="tag in tags"
-                                v-model="filter.wayPointTags"
-                                :key="tag['@id']"
-                                :value="tag['@id']"
-                                :aria-describedby="ariaDescribedby"
-                                name="tags"
-                                class="d-flex align-items-center flex-tags"
                             >
-                                {{ tag.name }}
-                            </b-form-checkbox>
+                                <b-form-checkbox
+                                    v-if="tag.isEnabled"
+                                    v-model="filter.wayPointTags"
+                                    :key="tag['@id']"
+                                    :value="tag['@id']"
+                                    :aria-describedby="ariaDescribedby"
+                                    name="tags"
+                                    class="d-flex align-items-center flex-tags"
+                                >
+                                    {{ tag.name }}
+                                </b-form-checkbox>
+                            </template>
+                            <hr
+                                v-if="hasDisabledTag"
+                                class="d-block w-100 my-1 mr-2"
+                            >
+                            <template
+                                v-for="tag in tags"
+                            >
+                                <b-form-checkbox
+                                    v-if="!tag.isEnabled"
+                                    v-model="filter.wayPointTags"
+                                    :key="tag['@id']"
+                                    :value="tag['@id']"
+                                    :aria-describedby="ariaDescribedby"
+                                    name="tags"
+                                    class="d-flex align-items-center flex-tags"
+                                >
+                                    {{ tag.name }}
+                                    <mdicon
+                                        name="TagOff"
+                                        class="text-muted"
+                                        title="deaktivierter Tag"
+                                        size="16"
+                                    />
+                                </b-form-checkbox>
+                            </template>
                         </div>
                     </b-form-group>
                     <my-input-group-append
@@ -368,6 +415,7 @@ import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import dayjs from 'dayjs';
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
+import TagAPI from '../../api/tag.js';
 
 export default {
     name: 'WayPointList',
@@ -473,6 +521,7 @@ export default {
             ],
             allTeamNames: [],
             totalRows: 0,
+            tags: [],
             currentPage: this.$localStorage.get('alle-wegpunkte-current-page', 1),
             perPage: this.$localStorage.get('alle-wegpunkte-per-page', 5),
             pageOptions: [5, 10, 25, 50, 100],
@@ -494,11 +543,13 @@ export default {
                 return teamName.teamName.toLowerCase().startsWith(filterTeamName);
             }).map((teamName) => teamName.teamName);
         },
+        hasDisabledTag() {
+            console.log('this.tags.find(tag => !tag.isEnabled)');
+            console.log(this.tags.find(tag => !tag.isEnabled));
+            return !!this.tags.find(tag => !tag.isEnabled);
+        },
         wayPoints() {
             return this.$store.getters['wayPoint/wayPoints'];
-        },
-        tags() {
-            return this.$store.getters['tag/tags'].slice(0).sort((tagA, tagB) => tagA.name > tagB.name ? 1 : -1);
         },
         isLoading() {
             return this.$store.getters['wayPoint/isLoading'];
@@ -508,6 +559,8 @@ export default {
         },
     },
     async mounted() {
+        const tagResult = await TagAPI.findAllWithWayPoints();
+        this.tags = tagResult.data['hydra:member'];
         this.$store.dispatch('tag/findAll');
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['hydra:member'];

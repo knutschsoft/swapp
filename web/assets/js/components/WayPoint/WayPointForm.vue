@@ -369,20 +369,50 @@
                 :disabled="isLoading"
                 class="row"
             >
-                <div
+                <template
                     v-for="tag in tags"
-                    :key="tag['@id']"
-                    class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
                 >
-                    <b-form-checkbox
-                        :value="tag['@id']"
+                    <div
+                        :key="tag['@id']"
+                        :class="{'d-none': !tag.isEnabled}"
+                        class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
                     >
-                        {{ tag.name }}
-                        <color-badge
-                            :color="tag.color"
-                        />
-                    </b-form-checkbox>
-                </div>
+                        <b-form-checkbox
+                            :value="tag['@id']"
+                        >
+                            {{ tag.name }}
+                            <color-badge
+                                :color="tag.color"
+                            />
+                        </b-form-checkbox>
+                    </div>
+                </template>
+                <hr
+                    v-if="hasDisabledTag"
+                    class="col-12"
+                >
+                <template
+                    v-for="tag in disabledTags"
+                >
+                    <div
+                        :key="`disabledTags-${tag['@id']}`"
+                        :class="tag.isEnabled || (initialWayPoint && initialWayPoint.wayPointTags.includes(tag['@id'])) ? 'col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3' : 'd-none'"
+                    >
+                        <b-form-checkbox
+                            :value="tag['@id']"
+                        >
+                            {{ tag.name }}
+                            <color-badge
+                                :color="tag.color"
+                            />
+                            <span
+                                class="text-muted"
+                            >
+                                (deaktivierter Tag)
+                            </span>
+                        </b-form-checkbox>
+                    </div>
+                </template>
             </b-form-checkbox-group>
         </b-form-group>
         <b-form-group
@@ -727,8 +757,18 @@ export default {
 
             return getViolationsFeedback(keys, this.error, true);
         },
+        hasDisabledTag() {
+            if (!this.initialWayPoint) {
+                return false;
+            }
+
+            return this.initialWayPoint.wayPointTags.find(tagIri => !this.getTagByIri(tagIri).isEnabled);
+        },
         tags() {
-            return this.$store.getters['tag/tags'];
+            return this.$store.getters['tag/tags'].slice().filter(tag => tag.isEnabled);
+        },
+        disabledTags() {
+            return this.$store.getters['tag/tags'].slice().filter(tag => !tag.isEnabled);
         },
         ageGroups() {
             let ageGroups = [];
@@ -850,6 +890,9 @@ export default {
         this.wayPoint.contactsCount = this.walk.isWithContactsCount ? 0 : null;
     },
     methods: {
+        getTagByIri(iri) {
+            return this.$store.getters['tag/getTagByIri'](iri);
+        },
         getWayPointByIri(iri) {
             return this.$store.getters['wayPoint/getWayPointByIri'](iri);
         },

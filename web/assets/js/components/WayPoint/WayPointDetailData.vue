@@ -57,6 +57,12 @@
                         v-for="tag in field.value"
                     >
                         {{ tag.name }}
+                        <span
+                            v-if="!tag.isEnabled"
+                            class="text-muted"
+                        >
+                            (deaktivierter Tag)
+                        </span>
                         <color-badge
                             v-if="tag"
                             :color="tag.color"

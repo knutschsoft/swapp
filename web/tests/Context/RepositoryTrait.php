@@ -359,6 +359,9 @@ trait RepositoryTrait
 
             return $ageRanges;
         }
+        if (\str_starts_with($text, 'tagIri<')) {
+            return \sprintf('/api/tags/%s', $this->gettagByName($referenceIdentifikator)->getId());
+        }
         if (\str_starts_with($text, 'tagIris<')) {
             $tagIris = [];
             foreach ($this->getTagsFromString($referenceIdentifikator) as $tag) {

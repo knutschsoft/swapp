@@ -36,6 +36,16 @@ const state = {
                 },
                 {
                     text: [
+                        'Feature: Ein Admin kann Tags deaktivieren und aktivieren.',
+                        'Nur aktivierte Tags werden einem Benutzer beim Erstellen eines Wegpunktes angezeigt.',
+                        'Neben aktivierten Tags werden beim Bearbeiten eines Wegpunktes auch die deaktivierten Tags mit angezeigt, die dem Wegpunkt zugeordnet sind.',
+                        'In der Wegpunkte-Tabelle auf der Startseite sind als Filtermöglichkeit alle Tags dargestellt, die mindestens einem Wegpunkt zugeordnet sind.',
+                    ],
+                    gallery: [
+                    ],
+                },
+                {
+                    text: [
                         'Fix: Ein Admin kann eine noch nicht abgeschlossene Runde ändern. Dies war bisher nur für abgeschlossene Runden möglich und führte für nichtabgeschlossene Runden bisher zu einem Fehler.',
                     ],
                 },

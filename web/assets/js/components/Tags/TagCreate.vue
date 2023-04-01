@@ -101,6 +101,19 @@
         <form-error
             :error="error"
         />
+        <b-alert
+            show
+            class="w-100 text-muted mb-0"
+            variant="debug"
+        >
+            <b>Hinweis:</b>
+            <ul class="mb-0">
+                <li>Ein Tag ist nach dem Erstellen standardmäßig aktiviert.</li>
+                <li>Aktivierte Tags können einem Wegpunkt zugeordnet werden.</li>
+                <li>Deaktivierte Tags können einem Wegpunkt nicht zugeordnet werden. Sie sind jedoch weiterhin an bereits zugeordneten Wegpunkten vorhanden.</li>
+                <li>Deaktivierte Tags werden nicht als Filter auf dem Dashboard angezeigt, wenn sie keinem Wegpunkt zugeordnet sind.</li>
+            </ul>
+        </b-alert>
     </b-form>
 </template>
 

@@ -7,16 +7,47 @@ const
     FETCHING_TAGS_ERROR = "FETCHING_TAGS_ERROR",
     CREATE_TAG = "CREATE_TAG",
     CREATE_TAG_SUCCESS = "CREATE_TAG_SUCCESS",
-    CREATE_TAG_ERROR = "CREATE_TAG_ERROR"
+    CREATE_TAG_ERROR = "CREATE_TAG_ERROR",
+    ENABLE_TAG = "ENABLE_TAG",
+    ENABLE_TAG_SUCCESS = "ENABLE_TAG_SUCCESS",
+    ENABLE_TAG_ERROR = "ENABLE_TAG_ERROR",
+    DISABLE_TAG = "DISABLE_TAG",
+    DISABLE_TAG_SUCCESS = "DISABLE_TAG_SUCCESS",
+    DISABLE_TAG_ERROR = "DISABLE_TAG_ERROR"
 ;
 
 const state = {
     tags: [],
     error: null,
     createTagError: null,
+    toggleTagStateError: false,
     isLoading: false,
     createTagIsLoading: false,
+    isLoadingToggleTagState: [],
 };
+
+function replaceObjectInState(state, object) {
+    let isReplaced = false;
+    state.tags.forEach(function (oldObject, key) {
+        if (oldObject['@id'] === object['@id']) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            state.tags.splice(key, 1, object);
+            isReplaced = true;
+        }
+    });
+    if (!isReplaced) {
+        state.tags = [ ...state.tags, object ];
+    }
+}
+
+function removeStringValueFromStateProperty(stateProperty, stringValue) {
+    stateProperty.forEach(function (oldStringValue, key) {
+        if (oldStringValue === stringValue) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            stateProperty.splice(key, 1);
+        }
+    });
+}
 
 const getters = {
     tags(state) {
@@ -54,6 +85,9 @@ const getters = {
     createTagIsLoading(state) {
         return state.createTagIsLoading;
     },
+    isLoadingToggleTagState(state) {
+        return iri => state.isLoadingToggleTagState.includes(iri);
+    },
 };
 
 const mutations = {
@@ -83,6 +117,32 @@ const mutations = {
         state.createTagError = error;
         state.createTagIsLoading = false;
     },
+    [ENABLE_TAG](state, tagIri) {
+        state.isLoadingToggleTagState = [ ...state.isLoadingToggleTagState, tagIri ];
+        state.toggleTagStateError = null;
+    },
+    [ENABLE_TAG_SUCCESS](state, tag) {
+        state.toggleTagStateError = null;
+        removeStringValueFromStateProperty(state.isLoadingToggleTagState, tag['@id']);
+        replaceObjectInState(state, tag);
+    },
+    [ENABLE_TAG_ERROR](state, error, tagIri) {
+        state.toggleTagStateError = error;
+        removeStringValueFromStateProperty(state.isLoadingToggleTagState, tagIri);
+    },
+    [DISABLE_TAG](state, tagIri) {
+        state.isLoadingToggleTagState = [ ...state.isLoadingToggleTagState, tagIri ];
+        state.toggleTagStateError = null;
+    },
+    [DISABLE_TAG_SUCCESS](state, tag) {
+        state.toggleTagStateError = null;
+        removeStringValueFromStateProperty(state.isLoadingToggleTagState, tag['@id']);
+        replaceObjectInState(state, tag);
+    },
+    [DISABLE_TAG_ERROR](state, error, tagIri) {
+        state.toggleTagStateError = error;
+        removeStringValueFromStateProperty(state.isLoadingToggleTagState, tagIri);
+    },
 };
 
 const actions = {
@@ -104,6 +164,30 @@ const actions = {
             return response.data;
         } catch (error) {
             commit(CREATE_TAG_ERROR, error);
+        }
+    },
+    async enable({commit}, payload) {
+        commit(ENABLE_TAG, payload.tag);
+        try {
+            let response = await TagAPI.enable(payload);
+            commit(ENABLE_TAG_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(ENABLE_TAG_ERROR, error, payload.tag);
+
+            return null;
+        }
+    },
+    async disable({commit}, payload) {
+        commit(DISABLE_TAG, payload.tag);
+        try {
+            let response = await TagAPI.disable(payload);
+            commit(DISABLE_TAG_SUCCESS, response.data);
+
+            return response.data;
+        } catch (error) {
+            commit(DISABLE_TAG_ERROR, error, payload.tag);
         }
     },
 };
