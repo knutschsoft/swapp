@@ -252,6 +252,11 @@
             :value="100"
             :animated="isLoading"
         />
+        <div
+            v-if="isOnDemoPage || isOnStagePage"
+            class="px-2 py-0 small text-center bg-info w-full text-white"
+            v-text="`Du befindest dich auf der ${isOnDemoPage ? 'Demo' : 'Stage'}-Version von Swapp.`"
+        />
     </div>
 </template>
 
@@ -269,6 +274,12 @@
             linkClasses: 'text-left text-lg-center pl-2 pl-lg-0',
         }),
         computed: {
+            isOnDemoPage() {
+                return window.location.host.includes('swapp.demo') || this.$route.query.demo;
+            },
+            isOnStagePage() {
+                return window.location.host.includes('swapp.stage') || this.$route.query.stage;
+            },
             isLoading() {
                 return this.$store.getters['client/isLoading']
                     || this.$store.getters['security/isLoading']

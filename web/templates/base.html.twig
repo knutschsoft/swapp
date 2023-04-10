@@ -45,6 +45,8 @@
                     Was ist Swapp, die Streetworkapp?
                 {%- elseif 'swapp.demo' in app.request.host or app.request.query.get('demo') -%}
                     Demo-Version mit allen Funktionen zum Ausprobieren
+                {%- elseif 'swapp.stage' in app.request.host or app.request.query.get('stage') -%}
+                    Stage-Version mit neuesten Funktionen zum Ausprobieren
                 {%- else -%}
                     Swapp: Die Streetworkapp
                 {%- endif -%}
