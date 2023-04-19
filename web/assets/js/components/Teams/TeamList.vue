@@ -95,6 +95,20 @@
                         class: 'text-center',
                     },
                     {
+                        key: 'walkNames',
+                        label: 'Namen für Runden',
+                        sortable: true,
+                        formatter: (walkNames) => {
+                            if (walkNames.length) {
+                                return walkNames.join(', ');
+                            }
+
+                            return '-';
+                        },
+                        sortByFormatted: true,
+                        class: 'text-center',
+                    },
+                    {
                         key: 'locationNames',
                         label: 'Orte für Wegpunkte',
                         sortable: true,
@@ -269,6 +283,7 @@
                     team: team['@id'],
                     name: team.name,
                     locationNames: team.locationNames,
+                    walkNames: team.walkNames,
                     users: team.users,
                     ageRanges: team.ageRanges,
                     userGroupNames: team.userGroupNames,

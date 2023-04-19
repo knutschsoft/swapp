@@ -31,17 +31,32 @@
                     :invalid-feedback="invalidNameFeedback"
                     :state="nameState"
                 >
-                    <b-input
-                        v-model="form.name"
-                        type="text"
-                        minlength="2"
-                        :disabled="isLoading"
-                        maxlength="300"
-                        placeholder="Name"
-                        description="Der Wert vom Rundenbeginn ist vorausgewählt."
-                        :state="nameState"
-                        data-test="name"
-                    />
+                    <b-input-group>
+                        <b-input
+                            v-model="form.name"
+                            required
+                            minlength="2"
+                            maxlength="300"
+                            placeholder="Name"
+                            description="Der Wert vom Rundenbeginn ist vorausgewählt."
+                            :state="nameState"
+                            :disabled="isLoading"
+                            data-test="name"
+                            autocomplete="off"
+                            list="walk-name-list"
+                        />
+                        <datalist id="walk-name-list">
+                            <option v-for="walkName in walkNames">{{ walkName }}</option>
+                        </datalist>
+                        <b-input-group-append>
+                            <b-button
+                                @click="form.name = ''"
+                                :disabled="form.name === ''"
+                            >
+                                <mdicon name="CloseCircleOutline" size="20"/>
+                            </b-button>
+                        </b-input-group-append>
+                    </b-input-group>
                 </b-form-group>
                 <b-form-group
                     content-cols="12"
@@ -453,6 +468,7 @@ export default {
     },
     data: function () {
         return {
+            initialWalkName: '',
             isWithoutSystemicAnswer: false,
             isWithoutWalkReflection: false,
             isWithoutCommitments: false,
@@ -608,6 +624,20 @@ export default {
         invalidEndTimeFeedback() {
             return getViolationsFeedback(['endTime', 'startTimeBeforeEndTime', 'endTimeAfterWayPointsVisitedAt'], this.error);
         },
+        team() {
+            return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);
+        },
+        walkNames() {
+            let walkNames = [];
+            if (!this.team) {
+                return walkNames;
+            }
+            walkNames = [this.initialWalkName, ...new Set(this.team.walkNames)];
+
+            return walkNames.filter((walkName) => {
+                return walkName.toLowerCase().startsWith(this.form.name.toLowerCase()) && walkName !== this.form.name;
+            }).map((walkName) => walkName);
+        },
         weatherState() {
             if ('' === this.form.weather) {
                 return null;
@@ -735,8 +765,12 @@ export default {
             this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
             return;
         }
+        if (!this.team) {
+            await this.$store.dispatch('team/findAll');
+        }
 
         this.form.walk = this.walk['@id'];
+        this.initialWalkName = this.walk.name;
         this.form.name = this.walk.name;
         this.form.conceptOfDay = this.walk.conceptOfDay;
         this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');

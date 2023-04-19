@@ -27,6 +27,10 @@ final class TeamChangeRequest
     #[AppAssert\LocationNamesRequirements]
     public array $locationNames;
 
+    /** @var string[] */
+    #[AppAssert\WalkNamesRequirements]
+    public array $walkNames;
+
     /** @var User[] */
     #[AppAssert\UsersRequirements]
     public array $users;

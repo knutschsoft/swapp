@@ -21,6 +21,7 @@ Feature: Testing team change resource with guests
       | ageRanges           | ageRanges<>               |
       | users               | userIris<admin@gmx.de>    |
       | locationNames       | array<City, Spielplatz>   |
+      | walkNames           | array<>                   |
       | isWithAgeRanges     | <true>                    |
       | isWithPeopleCount   | <true>                    |
       | isWithContactsCount | <false>                   |
@@ -45,6 +46,7 @@ Feature: Testing team change resource with guests
       | ageRanges           | ageRanges<1-3>            |
       | users               | userIris<admin@gmx.de>    |
       | locationNames       | array<City, Spielplatz>   |
+      | walkNames           | array<>                   |
       | isWithAgeRanges     | <true>                    |
       | isWithPeopleCount   | <false>                   |
       | isWithContactsCount | <false>                   |

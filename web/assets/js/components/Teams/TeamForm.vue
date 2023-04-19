@@ -80,6 +80,53 @@
             class="mb-4"
         >
             <b-form-group
+                label="Autocomplete-Vorschläge für den Namen einer Runde"
+                v-slot="{ ariaDescribedby }"
+                class="mb-0"
+            >
+                <b-row
+                    v-for="(walkName, i) in team.walkNames"
+                    :key="i"
+                >
+                    <b-col cols="8" class="mb-1">
+                        <b-input
+                            v-model="team.walkNames[i]"
+                            :aria-describedby="ariaDescribedby"
+                            :disabled="isDisabled"
+                            type="text"
+                            :state="team.walkNames[i] === '' ? null : (team.walkNames[i].length > 1 && team.walkNames[i].length <= 300)"
+                            trim
+                            required
+                            autocomplete="off"
+                            placeholder="neuer Rundenname..."
+                        />
+                    </b-col>
+                    <b-col cols="3" class="mb-1">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="removeWalkName(i)"
+                        >
+                            <mdicon
+                                name="DeleteCircleOutline"
+                            />
+                        </div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="12">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="addWalkName()"
+                        >
+                            <mdicon
+                                name="PlusCircleOutline"
+                            />
+                            neuen Autocomplete-Vorschlag hinzufügen
+                        </div>
+                    </b-col>
+                </b-row>
+            </b-form-group>
+            <b-form-group
                 label="Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?"
                 class="mb-0"
             >
@@ -125,7 +172,7 @@
                                                 trim
                                                 ref="guestNameInputs"
                                                 required
-                                                autocomplete="new-guest-name"
+                                                autocomplete="off"
                                                 placeholder="Vorname, Nachname, Pseudonym"
                                             />
                                         </b-col>
@@ -424,7 +471,7 @@
                             :state="team.locationNames[i] === '' ? null : (team.locationNames[i].length > 1 && team.locationNames[i].length <= 300)"
                             trim
                             required
-                            autocomplete="new-password"
+                            autocomplete="off"
                             placeholder="neuer Ort..."
                         />
                     </b-col>
@@ -507,6 +554,7 @@ export default {
                 users: [],
                 ageRanges: [],
                 locationNames: [],
+                walkNames: [],
                 guestNames: [],
                 userGroupNames: [],
             },
@@ -585,6 +633,12 @@ export default {
         addLocationName () {
             this.team.locationNames = [...this.team.locationNames, '']
         },
+        removeWalkName (index) {
+            this.$delete(this.team.walkNames, index)
+        },
+        addWalkName () {
+            this.team.walkNames = [...this.team.walkNames, '']
+        },
         removeGuestName (index) {
             this.$delete(this.team.guestNames, index)
         },
@@ -638,6 +692,7 @@ export default {
                 this.team.users = [];
                 this.team.ageRanges = [];
                 this.team.locationNames = [];
+                this.team.walkNames = [];
                 this.team.guestNames = [];
                 this.team.userGroupNames = [];
             }

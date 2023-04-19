@@ -48,16 +48,31 @@
             />
         </form-group>
         <form-group label="Name">
-            <b-input
-                v-model="walk.name"
-                :disabled="isLoading"
-                required
-                minlength="2"
-                maxlength="300"
-                placeholder="Ort"
-                :state="nameState"
-                data-test="name"
-            />
+            <b-input-group>
+                <b-input
+                    v-model="walk.name"
+                    required
+                    minlength="2"
+                    maxlength="300"
+                    placeholder="Name"
+                    :state="nameState"
+                    :disabled="isLoading"
+                    data-test="name"
+                    autocomplete="off"
+                    list="walk-name-list"
+                />
+                <datalist id="walk-name-list">
+                    <option v-for="walkName in walkNames">{{ walkName }}</option>
+                </datalist>
+                <b-input-group-append>
+                    <b-button
+                        @click="walk.name = ''"
+                        :disabled="walk.name === ''"
+                    >
+                        <mdicon name="CloseCircleOutline" size="20"/>
+                    </b-button>
+                </b-input-group-append>
+            </b-input-group>
         </form-group>
         <form-group label="Tageskonzept">
             <b-textarea
@@ -157,6 +172,7 @@ export default {
     },
     data: function () {
         return {
+            initialWalkName: '',
             startTimeDate: null,
             startTimeTime: null,
             walk: {
@@ -212,6 +228,17 @@ export default {
         },
         team() {
             return this.$store.getters['team/getTeamByTeamName'](this.initialWalk.teamName);
+        },
+        walkNames() {
+            let walkNames = [];
+            if (!this.team) {
+                return walkNames;
+            }
+            walkNames = [this.initialWalkName, ...new Set(this.team.walkNames)];
+
+            return walkNames.filter((walkName) => {
+                return walkName.toLowerCase().startsWith(this.walk.name.toLowerCase()) && walkName !== this.walk.name;
+            }).map((walkName) => walkName);
         },
         guestNames() {
             let guestNames = [];
@@ -321,6 +348,7 @@ export default {
     },
     async created() {
         this.walk.name = this.initialWalk.name;
+        this.initialWalkName = this.initialWalk.name;
         this.walk.conceptOfDay = this.initialWalk.conceptOfDay;
         this.walk.startTime = this.initialWalk.startTime;
         this.walk.holidays = this.initialWalk.holidays;

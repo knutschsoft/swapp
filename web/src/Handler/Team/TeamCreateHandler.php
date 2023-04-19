@@ -33,6 +33,7 @@ final class TeamCreateHandler
             $team->setGuestNames($request->guestNames);
         }
         $team->setLocationNames($request->locationNames);
+        $team->setWalkNames($request->walkNames);
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);
         $this->teamRepository->save($team);

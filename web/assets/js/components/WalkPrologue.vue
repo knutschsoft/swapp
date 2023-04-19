@@ -65,15 +65,30 @@
                         :invalid-feedback="invalidNameFeedback"
                         description=""
                     >
-                        <b-form-input
-                            v-model="form.name"
-                            type="text"
-                            :state="nameState"
-                            :disabled="isLoading"
-                            placeholder="Wie ist der Name der Runde?"
-                            data-test="Name"
-                            required
-                        ></b-form-input>
+                        <b-input-group>
+                            <b-input
+                                v-model="form.name"
+                                required
+                                maxlength="300"
+                                placeholder="Wie ist der Name der Runde?"
+                                :state="nameState"
+                                :disabled="isLoading"
+                                data-test="Name"
+                                autocomplete="off"
+                                list="walk-name-list"
+                            />
+                            <datalist id="walk-name-list">
+                                <option v-for="walkName in walkNames">{{ walkName }}</option>
+                            </datalist>
+                            <b-input-group-append>
+                                <b-button
+                                    @click="form.name = ''"
+                                    :disabled="form.name === ''"
+                                >
+                                    <mdicon name="CloseCircleOutline" size="20"/>
+                                </b-button>
+                            </b-input-group-append>
+                        </b-input-group>
                     </form-group>
 
                     <form-group
@@ -227,6 +242,14 @@
             }
         },
         computed: {
+            walkNames() {
+                if (!this.team) {
+                    return [];
+                }
+                return this.team.walkNames.filter((walkName) => {
+                    return walkName.toLowerCase().startsWith(this.form.name.toLowerCase()) && walkName !== this.form.name;
+                }).map((walkName) => walkName);
+            },
             isFormInvalid() {
                 return (!this.nameState && undefined === this.validationErrors.name)
                     || (!this.conceptOfDayState && undefined === this.validationErrors.conceptOfDay)

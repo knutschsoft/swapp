@@ -57,6 +57,7 @@ Feature: Testing team create resource
       | ageRanges           | ageRanges<1-3>           |
       | users               | userIris<two@pac.de>     |
       | locationNames       | array<City, Spielplatz>  |
+      | walkNames           | array<>                  |
       | isWithAgeRanges     | <true>                   |
       | isWithPeopleCount   | <true>                   |
       | isWithContactsCount | <false>                  |
@@ -91,6 +92,7 @@ Feature: Testing team create resource
       | ageRanges           | ageRanges<1-3>           |
       | users               | userIris<two@pac.de>     |
       | locationNames       | array<City, Spielplatz>  |
+      | walkNames           | array<>                  |
       | isWithAgeRanges     | <false>                  |
       | isWithPeopleCount   | <true>                   |
       | isWithContactsCount | <false>                  |
@@ -124,6 +126,7 @@ Feature: Testing team create resource
       | ageRanges           | ageRanges<1-3>                 |
       | users               | userIris<two@pac.de>           |
       | locationNames       | array<City, Spielplatz>        |
+      | walkNames           | array<>                        |
       | isWithAgeRanges     | <true>                         |
       | isWithPeopleCount   | <true>                         |
       | isWithContactsCount | <true>                         |
@@ -169,20 +172,22 @@ Feature: Testing team create resource
       | violations[2].message       | Dieser Wert sollte nicht null sein.                                    |
       | violations[3].propertyPath  | locationNames                                                          |
       | violations[3].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[4].propertyPath  | users                                                                  |
+      | violations[4].propertyPath  | walkNames                                                              |
       | violations[4].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath  | isWithAgeRanges                                                        |
+      | violations[5].propertyPath  | users                                                                  |
       | violations[5].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[6].propertyPath  | isWithPeopleCount                                                      |
+      | violations[6].propertyPath  | isWithAgeRanges                                                        |
       | violations[6].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[7].propertyPath  | ageRanges                                                              |
+      | violations[7].propertyPath  | isWithPeopleCount                                                      |
       | violations[7].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[8].propertyPath  | isWithGuests                                                           |
+      | violations[8].propertyPath  | ageRanges                                                              |
       | violations[8].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[9].propertyPath  | isWithContactsCount                                                    |
+      | violations[9].propertyPath  | isWithGuests                                                           |
       | violations[9].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[10].propertyPath | isWithUserGroups                                                       |
+      | violations[10].propertyPath | isWithContactsCount                                                    |
       | violations[10].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[11].propertyPath | isWithUserGroups                                                       |
+      | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team
