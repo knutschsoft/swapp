@@ -11,6 +11,61 @@ const
 const state = {
     changelogs: [
         {
+            header: '01.05.2023',
+            avatarText: '&#128119;',
+            avatarTitle: 'Tag der Arbeit',
+            entries: [
+                {
+                    text: [
+                        'UX-Feature: Der Name einer Runde kann mittels Autocomplete-Feld ausgewählt werden. Freitexteingaben sind weiterhin möglich.',
+                        'Dazu kann ein Administrator pro Team die Autocomplete-Vorschläge für den Namen einer Runde festlegen.',
+                        'Use Case: Beim Erstellen und Verändern einer Runde braucht ein Benutzender weniger Klicks und Eingaben zu machen. Zudem sind die gemachten Eingaben über alle Runden hinweg einheitlicher.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230501_Namen_einer_Runde_Runde_beginnen-Formular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf dem "Runde erstellen"-Formular',
+                        },
+                        {
+                            src: '../changelog/20230501_Namen_einer_Runde_Teamformular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf dem Teamformular',
+                        },
+                        {
+                            src: '../changelog/20230501_Namen_einer_Runde_Teamliste.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Teamliste',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Die Tageskonzepte einer Runde können mittels Autocomplete-Feld ausgewählt werden. Freitexteingaben sind weiterhin möglich.',
+                        'Dazu kann ein Administrator pro Team die Autocomplete-Vorschläge für das Tageskonzept einer Runde festlegen.',
+                        'Use Case: Beim Erstellen und Verändern einer Runde braucht ein Benutzender weniger Klicks und Eingaben zu machen. Zudem sind die gemachten Eingaben über alle Runden hinweg einheitlicher.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230501_Tageskonzept_einer_Runde_Runde_beginnen-Formular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf dem "Runde erstellen"-Formular',
+                        },
+                        {
+                            src: '../changelog/20230501_Tageskonzept_einer_Runde_Teamformular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf dem Teamformular',
+                        },
+                        {
+                            src: '../changelog/20230501_Tageskonzept_einer_Runde_Teamliste.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung in der Teamliste',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
             header: '09.04.2023',
             avatarText: '&#x1F423;',
             avatarTitle: 'Frohe Ostern!',
