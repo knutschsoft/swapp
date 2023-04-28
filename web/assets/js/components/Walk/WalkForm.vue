@@ -75,18 +75,31 @@
             </b-input-group>
         </form-group>
         <form-group label="Tageskonzept">
-            <b-textarea
-                v-model="walk.conceptOfDay"
-                :disabled="isLoading"
-                minlength="1"
-                maxlength="2500"
-                placeholder="Tageskonzept"
-                :state="conceptOfDayState"
-                data-test="conceptOfDay"
-                rows="3"
-                trim
-                max-rows="15"
-            />
+            <b-input-group>
+                <b-form-tags
+                    v-model="walk.conceptOfDay"
+                    :disabled="isLoading"
+                    tag-pills
+                    placeholder="Tageskonzept eintragen..."
+                    add-button-text="Hinzufügen"
+                    duplicate-tag-text="Tageskonzept ist schon dabei"
+                    remove-on-delete
+                    :input-attrs="{ list: 'concept-of-day-list', 'data-test': 'Tageskonzept' }"
+                    add-on-change
+                    :state="conceptOfDayState"
+                />
+                <datalist id="concept-of-day-list">
+                    <option v-for="conceptOfDaySuggestion in conceptOfDaySuggestions">{{ conceptOfDaySuggestion }}</option>
+                </datalist>
+                <b-input-group-append>
+                    <b-button
+                        @click="walk.conceptOfDay = []"
+                        :disabled="!walk.conceptOfDay.length"
+                    >
+                        <mdicon name="CloseCircleOutline" size="20"/>
+                    </b-button>
+                </b-input-group-append>
+            </b-input-group>
         </form-group>
         <form-group label="Rundenstartzeit">
             <b-row>
@@ -368,6 +381,7 @@ export default {
     },
     data: function () {
         return {
+            initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
             isWithoutWalkReflection: false,
@@ -487,6 +501,17 @@ export default {
             return walkNames.filter((walkName) => {
                 return walkName.toLowerCase().startsWith(this.walk.name.toLowerCase()) && walkName !== this.walk.name;
             }).map((walkName) => walkName);
+        },
+        conceptOfDaySuggestions() {
+            let conceptOfDaySuggestions = [];
+            if (!this.team) {
+                return conceptOfDaySuggestions;
+            }
+            conceptOfDaySuggestions = [...new Set(this.initialConceptOfDay), ...new Set(this.team.conceptOfDaySuggestions)];
+
+            return conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
+                return !this.walk.conceptOfDay.includes(conceptOfDaySuggestion);
+            });
         },
         guestNames() {
             let guestNames = [];
@@ -655,6 +680,7 @@ export default {
     },
     async created() {
         this.walk.name = this.initialWalk.name;
+        this.initialConceptOfDay = this.initialWalk.conceptOfDay;
         this.initialWalkName = this.initialWalk.name;
         this.walk.commitments = this.initialWalk.commitments;
         this.walk.conceptOfDay = this.initialWalk.conceptOfDay;

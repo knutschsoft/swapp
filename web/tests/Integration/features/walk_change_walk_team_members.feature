@@ -46,7 +46,7 @@ Feature: Testing walk change resource
       | key             | value                     |
       | walk            | walkIri<Gamescon>         |
       | name            | This is my Walk           |
-      | conceptOfDay    | High and out.             |
+      | conceptOfDay    | array<High and out.>      |
       | weather         | Sonne                     |
       | walkTeamMembers | userIris<karl@gmx.de>     |
       | isResubmission  | <false>                   |
@@ -77,7 +77,7 @@ Feature: Testing walk change resource
       | key             | value                     |
       | walk            | walkIri<Gamescon>         |
       | name            | This is my Walk           |
-      | conceptOfDay    | High and out.             |
+      | conceptOfDay    | array<High and out.>      |
       | weather         | Sonne                     |
       | walkTeamMembers | userIris<karl@gamer.de>   |
       | isResubmission  | <false>                   |

@@ -97,15 +97,32 @@
                         :invalid-feedback="invalidConceptOfDayFeedback"
                         description=""
                     >
-                        <b-form-textarea
-                            v-model="form.conceptOfDay"
-                            data-test="Tageskonzept"
-                            :state="conceptOfDayState"
-                            :disabled="isLoading"
-                            placeholder=""
-                            rows="3"
-                            max-rows="15"
-                        ></b-form-textarea>
+                        <b-input-group>
+                            <b-form-tags
+                                v-model="form.conceptOfDay"
+                                :disabled="isLoading"
+                                tag-pills
+                                placeholder="Tageskonzept eintragen..."
+                                add-button-text="Hinzufügen"
+                                duplicate-tag-text="Tageskonzept ist schon dabei"
+                                remove-on-delete
+                                :input-attrs="{ list: 'concept-of-day-list', 'data-test': 'Tageskonzept' }"
+                                add-on-change
+                            />
+                            <datalist id="concept-of-day-list"
+                              data-test="Tageskonzept2"
+                            >
+                                <option v-for="conceptOfDaySuggestion in conceptOfDaySuggestions">{{ conceptOfDaySuggestion }}</option>
+                            </datalist>
+                            <b-input-group-append>
+                                <b-button
+                                    @click="form.conceptOfDay = []"
+                                    :disabled="!form.conceptOfDay.length"
+                                >
+                                    <mdicon name="CloseCircleOutline" size="20"/>
+                                </b-button>
+                            </b-input-group-append>
+                        </b-input-group>
                     </form-group>
 
                     <form-group
@@ -202,7 +219,7 @@
                     team: null,
                     walkTeamMembers: [],
                     guestNames: [],
-                    conceptOfDay: '',
+                    conceptOfDay: [],
                     startTime: dayjs().startOf('minute').format(),
                     holidays: false,
                     weather: '',
@@ -272,6 +289,15 @@
 
                 return this.team.guestNames.filter((guestName) => {
                     return !this.form.guestNames.includes(guestName);
+                });
+            },
+            conceptOfDaySuggestions() {
+                if (!this.team) {
+                    return [];
+                }
+
+                return this.team.conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
+                    return !this.form.conceptOfDay.includes(conceptOfDaySuggestion);
                 });
             },
             invalidNameFeedback() {

@@ -79,7 +79,7 @@ Feature: Testing walk create resource
       | key             | value                 |
       | team            | teamIri<Westhang>     |
       | name            | This is my Walk       |
-      | conceptOfDay    | High and out.         |
+      | conceptOfDay    | array<High and out.>  |
       | weather         | Arschkalt             |
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
@@ -103,7 +103,7 @@ Feature: Testing walk create resource
       | key             | value                 |
       | team            | teamIri<CA>           |
       | name            | This is my Walk       |
-      | conceptOfDay    | High and out.         |
+      | conceptOfDay    | array<High and out.>  |
       | weather         | Arschkalt             |
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
@@ -123,7 +123,7 @@ Feature: Testing walk create resource
       | key             | value                     |
       | team            | teamIri<Westhang>         |
       | name            | This is my Walk           |
-      | conceptOfDay    | High and out.             |
+      | conceptOfDay    | array<High and out.>      |
       | weather         | Arschkalt                 |
       | startTime       | 2020-01-01T13:37:22+02:00 |
       | walkTeamMembers | userIris<karl@gmx.de>     |
@@ -149,7 +149,7 @@ Feature: Testing walk create resource
       | key             | value                 |
       | team            | teamIri<CA>           |
       | name            | This is my Walk       |
-      | conceptOfDay    | High and out.         |
+      | conceptOfDay    | array<High and out.>  |
       | weather         | Arschkalt             |
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
@@ -207,7 +207,7 @@ Feature: Testing walk create resource
       | key             | value                 |
       | team            | teamIri<Westhang>     |
       | name            | This is my Walk       |
-      | conceptOfDay    | High and out.         |
+      | conceptOfDay    | array<High and out.>  |
       | weather         | Arschkalt             |
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
@@ -227,7 +227,7 @@ Feature: Testing walk create resource
       | key             | value                                                         |
       | team            | teamIri<Westhang>                                             |
       | name            | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
-      | conceptOfDay    | High and out.                                                 |
+      | conceptOfDay    | array<High and out.>                                          |
       | weather         | Arschkalt                                                     |
       | startTime       | 01.01.2020                                                    |
       | walkTeamMembers | userIris<karl@gmx.de>                                         |
@@ -251,7 +251,7 @@ Feature: Testing walk create resource
       | key             | value                   |
       | team            | teamIri<Gamers>         |
       | name            | MyName                  |
-      | conceptOfDay    | High and out.           |
+      | conceptOfDay    | array<High and out.>    |
       | weather         | Arschkalt               |
       | startTime       | 01.01.2020              |
       | walkTeamMembers | userIris<karl@gamer.de> |
@@ -275,7 +275,7 @@ Feature: Testing walk create resource
       | key             | value                 |
       | team            | teamIri<Gamers>       |
       | name            | myName                |
-      | conceptOfDay    | High and out.         |
+      | conceptOfDay    | array<High and out.>  |
       | weather         | Arschkalt             |
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
@@ -298,7 +298,7 @@ Feature: Testing walk create resource
       | key             | value                 |
       | team            | teamIri<Westhang>     |
       | name            | string<300>           |
-      | conceptOfDay    | string<2500>          |
+      | conceptOfDay    | array<2500>           |
       | weather         | Arschkalt             |
       | startTime       | 01.01.2020            |
       | walkTeamMembers | userIris<karl@gmx.de> |
@@ -313,5 +313,5 @@ Feature: Testing walk create resource
       | weather          | Arschkalt      |
       | isUnfinished     | 1              |
       | teamName         | Westhang       |
-      | conceptOfDay     | string<2500>   |
+      | conceptOfDay     | array<2500>    |
     And there are exactly 3 walks in database

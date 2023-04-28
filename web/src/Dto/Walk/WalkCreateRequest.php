@@ -21,9 +21,9 @@ final class WalkCreateRequest
     #[Assert\Type(type: Team::class, groups: ['SecondGroup'])]
     public Team $team;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 1, max: 2500)]
-    public string $conceptOfDay;
+    /** @var string[] */
+    #[AppAssert\ConceptOfDaySuggestionsRequirements]
+    public array $conceptOfDay;
 
     #[Assert\NotNull]
     #[Assert\Choice(choices: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'])]

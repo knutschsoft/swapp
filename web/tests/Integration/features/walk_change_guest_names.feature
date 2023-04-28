@@ -32,7 +32,7 @@ Feature: Testing walk change resource with guests
       | key             | value                     |
       | walk            | walkIri<Spaziergang>      |
       | name            | This is my Walk           |
-      | conceptOfDay    | High and out.             |
+      | conceptOfDay    | array<High and out.>      |
       | weather         | Sonne                     |
       | walkTeamMembers | userIris<admin@gmx.de>    |
       | isResubmission  | <false>                   |

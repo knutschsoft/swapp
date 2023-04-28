@@ -26,7 +26,7 @@ Feature: Testing walk create resource with guest names
       | key             | value                   |
       | team            | teamIri<Westhang>       |
       | name            | This is my Walk         |
-      | conceptOfDay    | High and out.           |
+      | conceptOfDay    | array<High and out.>    |
       | weather         | Arschkalt               |
       | startTime       | 01.01.2020              |
       | walkTeamMembers | userIris<karl@gmx.de>   |
@@ -52,7 +52,7 @@ Feature: Testing walk create resource with guest names
       | key             | value                   |
       | team            | teamIri<CA>             |
       | name            | This is my Walk         |
-      | conceptOfDay    | High and out.           |
+      | conceptOfDay    | array<High and out.>    |
       | weather         | Arschkalt               |
       | startTime       | 01.01.2020              |
       | walkTeamMembers | userIris<karl@gmx.de>   |

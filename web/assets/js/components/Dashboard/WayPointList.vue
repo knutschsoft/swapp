@@ -544,8 +544,6 @@ export default {
             }).map((teamName) => teamName.teamName);
         },
         hasDisabledTag() {
-            console.log('this.tags.find(tag => !tag.isEnabled)');
-            console.log(this.tags.find(tag => !tag.isEnabled));
             return !!this.tags.find(tag => !tag.isEnabled);
         },
         wayPoints() {

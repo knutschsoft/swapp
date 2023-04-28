@@ -23,9 +23,9 @@ final class WalkEpilogueRequest
     #[Assert\Length(min: 0, max: 2500)]
     public string $commitments;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 1, max: 2500)]
-    public string $conceptOfDay;
+    /** @var string[] */
+    #[AppAssert\ConceptOfDaySuggestionsRequirements]
+    public array $conceptOfDay;
 
     #[Assert\NotNull]
     #[Assert\Length(min: 0, max: 2500)]

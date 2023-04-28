@@ -68,19 +68,31 @@
                     :invalid-feedback="invalidConceptOfDayFeedback"
                     :state="conceptOfDayState"
                 >
-                    <b-textarea
-                        v-model="form.conceptOfDay"
-                        minlength="1"
-                        maxlength="2500"
-                        placeholder="Tageskonzept"
-                        :disabled="isLoading"
-                        description="Der Wert vom Rundenbeginn ist vorausgewählt."
-                        :state="conceptOfDayState"
-                        data-test="conceptOfDay"
-                        rows="3"
-                        trim
-                        max-rows="15"
-                    />
+                    <b-input-group>
+                        <b-form-tags
+                            v-model="form.conceptOfDay"
+                            :disabled="isLoading"
+                            tag-pills
+                            placeholder="Tageskonzept eintragen..."
+                            add-button-text="Hinzufügen"
+                            duplicate-tag-text="Tageskonzept ist schon dabei"
+                            remove-on-delete
+                            :input-attrs="{ list: 'concept-of-day-list', 'data-test': 'Tageskonzept' }"
+                            add-on-change
+                            :state="conceptOfDayState"
+                        />
+                        <datalist id="concept-of-day-list">
+                            <option v-for="conceptOfDaySuggestion in conceptOfDaySuggestions">{{ conceptOfDaySuggestion }}</option>
+                        </datalist>
+                        <b-input-group-append>
+                            <b-button
+                                @click="form.conceptOfDay = []"
+                                :disabled="!form.conceptOfDay.length"
+                            >
+                                <mdicon name="CloseCircleOutline" size="20"/>
+                            </b-button>
+                        </b-input-group-append>
+                    </b-input-group>
                 </b-form-group>
                 <b-form-group
                     content-cols="12"
@@ -468,6 +480,7 @@ export default {
     },
     data: function () {
         return {
+            initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
             isWithoutWalkReflection: false,
@@ -480,7 +493,7 @@ export default {
             form: {
                 walk: '',
                 name: '',
-                conceptOfDay: '',
+                conceptOfDay: [],
                 startTime: dayjs().startOf('minute').format(),
                 endTime: dayjs().endOf('minute').format(),
                 systemicAnswer: '',
@@ -627,6 +640,17 @@ export default {
         team() {
             return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);
         },
+        conceptOfDaySuggestions() {
+            let conceptOfDaySuggestions = [];
+            if (!this.team) {
+                return conceptOfDaySuggestions;
+            }
+            conceptOfDaySuggestions = [...new Set(this.initialConceptOfDay), ...new Set(this.team.conceptOfDaySuggestions)];
+
+            return conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
+                return !this.form.conceptOfDay.includes(conceptOfDaySuggestion);
+            });
+        },
         walkNames() {
             let walkNames = [];
             if (!this.team) {
@@ -770,6 +794,7 @@ export default {
         }
 
         this.form.walk = this.walk['@id'];
+        this.initialConceptOfDay = this.walk.conceptOfDay;
         this.initialWalkName = this.walk.name;
         this.form.name = this.walk.name;
         this.form.conceptOfDay = this.walk.conceptOfDay;

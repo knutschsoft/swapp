@@ -30,6 +30,7 @@ use App\Value\AgeRange;
 use App\Value\UserGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -163,8 +164,9 @@ class Walk
     #[ORM\Column(type: 'boolean')]
     private bool $holidays;
 
-    #[ORM\Column(type: 'string', length: 4096)]
-    private string $conceptOfDay;
+    /** @var string[] */
+    #[ORM\Column(type: Types::JSON)]
+    private array $conceptOfDay;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $teamName;
@@ -207,7 +209,7 @@ class Walk
         $this->walkTeamMembers = new ArrayCollection();
         $this->wayPoints = new ArrayCollection();
         $this->holidays = false;
-        $this->conceptOfDay = '';
+        $this->conceptOfDay = [];
         $this->commitments = '';
         $this->insights = '';
         $this->systemicAnswer = '';
@@ -252,13 +254,15 @@ class Walk
         return $instance;
     }
 
+    /** @return string[] */
     #[Groups(['walk:read'])]
-    public function getConceptOfDay(): string
+    public function getConceptOfDay(): array
     {
         return $this->conceptOfDay;
     }
 
-    public function setConceptOfDay(string $conceptOfDay): void
+    /** @param string[] $conceptOfDay */
+    public function setConceptOfDay(array $conceptOfDay): void
     {
         $this->conceptOfDay = $conceptOfDay;
     }

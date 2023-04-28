@@ -32,7 +32,7 @@ final class WalkExportDataTransformer
         $walkExport->isResubmission = $walk->getIsResubmission();
         $walkExport->weather = $walk->getWeather();
         $walkExport->isHolidays = $walk->getHolidays();
-        $walkExport->conceptOfDay = $walk->getConceptOfDay();
+        $walkExport->conceptOfDay = \implode(',', $walk->getConceptOfDay());
         $walkExport->teamName = $walk->getTeamName();
         $users = [];
         foreach ($walk->getWalkTeamMembers() as $walkTeamMember) {

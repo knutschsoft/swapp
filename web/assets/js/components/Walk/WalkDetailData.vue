@@ -69,7 +69,7 @@
                     { name: 'angetroffene weibliche Personen', isHidden: !this.walk.isWithAgeRanges, value: this.walk.femalesCount ? this.walk.femalesCount : 'keine weiblichen Personen angetroffen' },
                     { name: 'angetroffene diverse Personen', isHidden: !this.walk.isWithAgeRanges, value: this.walk.queerCount ? this.walk.queerCount : 'keine diversen Personen angetroffen' },
                     { name: 'angetroffene Personen', isHidden: !this.walk.isWithPeopleCount, value: this.walk.peopleCount ? this.walk.peopleCount : 'keine Personen angetroffen' },
-                    { name: 'Tageskonzept', value: this.walk.conceptOfDay, nl2br: true },
+                    { name: 'Tageskonzept', value: this.walk.conceptOfDay ? this.walk.conceptOfDay.join(', ') : '' },
                     { name: 'Ferien', value: this.walk.holiday ? 'ja' : 'nein' },
                     { name: 'Wetter', value: this.walk.weather },
                     { name: 'Beginn', value: this.formatDate(this.walk.startTime) },

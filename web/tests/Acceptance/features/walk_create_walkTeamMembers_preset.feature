@@ -35,7 +35,7 @@ Feature: An user can do a walk with preset walkTeamMembers
     Then I wait for "Ferien" to appear
     Then I wait for "Wetter" to appear
     When I enter "Mein erster Lauf" in "Name" field
-    When I enter "Mein erster Lauf" in "Tageskonzept" field
+    When I enter "Freies Streetwork" in "Tageskonzept" field
     When I enter "Arschkalt" in "Wetter" field
 
     When I click on element "walkTeamMember-pinky@gmx.de"

@@ -19,9 +19,9 @@ final class WalkChangeUnfinishedRequest
     #[Assert\Length(min: 2, max: 300)]
     public string $name;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 1, max: 2500)]
-    public string $conceptOfDay;
+    /** @var string[] */
+    #[AppAssert\ConceptOfDaySuggestionsRequirements]
+    public array $conceptOfDay;
 
     #[Assert\NotNull]
     #[Assert\Choice(choices: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'])]

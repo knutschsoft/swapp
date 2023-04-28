@@ -50,7 +50,7 @@ Feature: Testing way point change resource
       | key             | value                                                         |
       | walk            | walkIri<Gamescon>                                             |
       | name            | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
-      | conceptOfDay    | High and out.                                                 |
+      | conceptOfDay    | array<High and out.>                                          |
       | weather         | Sonne                                                         |
       | walkTeamMembers | userIris<karl@gamer.de>                                       |
       | isResubmission  | <false>                                                       |
@@ -87,7 +87,7 @@ Feature: Testing way point change resource
       | key             | value                     |
       | walk            | walkIri<Gamescon>         |
       | name            | string<300>               |
-      | conceptOfDay    | string<2500>              |
+      | conceptOfDay    | array<2500>               |
       | weather         | Sonne                     |
       | walkTeamMembers | userIris<karl@gamer.de>   |
       | isResubmission  | <false>                   |
@@ -105,7 +105,7 @@ Feature: Testing way point change resource
     And the enriched JSON nodes should be equal to:
       | @type          | Walk         |
       | name           | string<300>  |
-      | conceptOfDay   | string<2500> |
+      | conceptOfDay   | array<2500>  |
       | commitments    | string<2500> |
       | insights       | string<2500> |
       | systemicAnswer | string<2500> |
@@ -113,6 +113,6 @@ Feature: Testing way point change resource
 
     Given I can find the following walks in database:
       | name        | walkTeamMembers | conceptOfDay | commitments  | insights     |              | systemicAnswer | walkReflection |
-      | string<300> | karl@gamer.de   | string<2500> | string<2500> | string<2500> | string<2500> | string<2500>   | string<2500>   |
+      | string<300> | karl@gamer.de   | array<2500>  | string<2500> | string<2500> | string<2500> | string<2500>   | string<2500>   |
 
     And there are exactly 2 walks in database

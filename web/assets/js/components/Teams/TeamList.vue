@@ -106,7 +106,7 @@
                             return '-';
                         },
                         sortByFormatted: true,
-                        class: 'text-center',
+                        class: this.hasAtLeastOneTeamWithWalkNameSuggestions ? 'text-center' : 'd-none',
                     },
                     {
                         key: 'conceptOfDaySuggestions',
@@ -120,7 +120,7 @@
                             return '-';
                         },
                         sortByFormatted: true,
-                        class: 'text-center',
+                        class: this.hasAtLeastOneTeamWithConceptOfDaySuggestions ? 'text-center' : 'd-none',
                     },
                     {
                         key: 'locationNames',
@@ -272,6 +272,12 @@
             },
             hasAtLeastOneTeamAgeRanges() {
                 return !this.teams.every(team => !team.isWithAgeRanges);
+            },
+            hasAtLeastOneTeamWithConceptOfDaySuggestions() {
+                return !this.teams.every(team => !team.conceptOfDaySuggestions.length);
+            },
+            hasAtLeastOneTeamWithWalkNameSuggestions() {
+                return !this.teams.every(team => !team.walkNames.length);
             },
         },
         async created() {
