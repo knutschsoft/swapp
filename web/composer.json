@@ -155,7 +155,7 @@
             "vendor/bin/phpunit --colors --testdox-html ./var/log/qa-report/testdox.html --testdox-text ./var/log/qa-report/testdox.txt --log-junit ./var/log/qa-report/junit.xml || true",
             "mkdir -p public/images/screenshots var/log/qa-report/screenshots",
             "vendor/bin/behat --suite acceptance --colors --format=pretty --out std --format=junit --out ./var/log/qa-report || true",
-            "vendor/bin/behat --parallel 16 --suite integration --colors --format=pretty --out std --format=junit --out ./var/log/qa-report || true",
+            "vendor/bin/behat --parallel 2 --suite integration --colors --format=pretty --out std --format=junit --out ./var/log/qa-report || true",
             "cp -R public/images/screenshots/* var/log/qa-report/screenshots/ || true",
             "vendor/bin/security-checker security:check --format=json > ./var/log/qa-report/security-checker.json"
         ],
