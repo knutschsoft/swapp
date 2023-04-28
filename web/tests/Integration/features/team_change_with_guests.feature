@@ -15,20 +15,21 @@ Feature: Testing team change resource with guests
   Scenario: I can request /api/teams/change as an admin and change a team with guests
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key                 | value                     |
-      | team                | teamIri<Westhang>         |
-      | name                | Religion                  |
-      | ageRanges           | ageRanges<1-3>            |
-      | users               | userIris<admin@gmx.de>    |
-      | locationNames       | array<City, Spielplatz>   |
-      | walkNames           | array<>                   |
-      | isWithAgeRanges     | <true>                    |
-      | isWithPeopleCount   | <true>                    |
-      | isWithContactsCount | <false>                   |
-      | isWithUserGroups    | <false>                   |
-      | isWithGuests        | <true>                    |
-      | guestNames          | array<Opa Manfred, Karla> |
-      | userGroupNames      | array<>                   |
+      | key                     | value                     |
+      | team                    | teamIri<Westhang>         |
+      | name                    | Religion                  |
+      | ageRanges               | ageRanges<1-3>            |
+      | users                   | userIris<admin@gmx.de>    |
+      | locationNames           | array<City, Spielplatz>   |
+      | walkNames               | array<>                   |
+      | conceptOfDaySuggestions | array<>                   |
+      | isWithAgeRanges         | <true>                    |
+      | isWithPeopleCount       | <true>                    |
+      | isWithContactsCount     | <false>                   |
+      | isWithUserGroups        | <false>                   |
+      | isWithGuests            | <true>                    |
+      | guestNames              | array<Opa Manfred, Karla> |
+      | userGroupNames          | array<>                   |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200

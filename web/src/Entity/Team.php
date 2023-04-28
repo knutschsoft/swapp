@@ -76,6 +76,10 @@ class Team
     #[ORM\Column(type: Types::JSON)]
     private array $walkNames;
 
+    /** @var string[] */
+    #[ORM\Column(type: Types::JSON)]
+    private array $conceptOfDaySuggestions;
+
     #[ORM\Column(type: 'boolean')]
     private bool $isWithAgeRanges;
 
@@ -101,6 +105,7 @@ class Team
         $this->isWithAgeRanges = true;
         $this->locationNames = [];
         $this->walkNames = [];
+        $this->conceptOfDaySuggestions = [];
         $this->users = new ArrayCollection();
     }
 
@@ -215,6 +220,25 @@ class Team
         $walkNames = \array_map('trim', $walkNames);
         \natcasesort($walkNames);
         $this->walkNames = \array_values(\array_unique($walkNames));
+    }
+
+    /**
+     * @return string[]
+     */
+    #[Groups(['team:read'])]
+    public function getConceptOfDaySuggestions(): array
+    {
+        return $this->conceptOfDaySuggestions;
+    }
+
+    /**
+     * @param string[] $conceptOfDaySuggestions
+     */
+    public function setConceptOfDaySuggestions(array $conceptOfDaySuggestions): void
+    {
+        $conceptOfDaySuggestions = \array_map('trim', $conceptOfDaySuggestions);
+        \natcasesort($conceptOfDaySuggestions);
+        $this->conceptOfDaySuggestions = \array_values(\array_unique($conceptOfDaySuggestions));
     }
 
     /**

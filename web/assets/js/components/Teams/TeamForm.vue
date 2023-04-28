@@ -81,8 +81,8 @@
         >
             <b-form-group
                 label="Autocomplete-Vorschläge für den Namen einer Runde"
+                description="Eine Freitexteingabe ist zusätzlich möglich."
                 v-slot="{ ariaDescribedby }"
-                class="mb-0"
             >
                 <b-row
                     v-for="(walkName, i) in team.walkNames"
@@ -117,6 +117,53 @@
                         <div
                             class="cursor-pointer mt-1"
                             @click="addWalkName()"
+                        >
+                            <mdicon
+                                name="PlusCircleOutline"
+                            />
+                            neuen Autocomplete-Vorschlag hinzufügen
+                        </div>
+                    </b-col>
+                </b-row>
+            </b-form-group>
+            <b-form-group
+                label="Autocomplete-Vorschläge für das Tageskonzept einer Runde"
+                description="Eine Mehrfachauswahl sowie Freitexteingabe ist möglich."
+                v-slot="{ ariaDescribedby }"
+            >
+                <b-row
+                    v-for="(conceptOfDaySuggestion, i) in team.conceptOfDaySuggestions"
+                    :key="i"
+                >
+                    <b-col cols="8" class="mb-1">
+                        <b-input
+                            v-model="team.conceptOfDaySuggestions[i]"
+                            :aria-describedby="ariaDescribedby"
+                            :disabled="isDisabled"
+                            type="text"
+                            :state="team.conceptOfDaySuggestions[i] === '' ? null : (team.conceptOfDaySuggestions[i].length > 1 && team.conceptOfDaySuggestions[i].length <= 300)"
+                            trim
+                            required
+                            autocomplete="off"
+                            placeholder="neues Tageskonzept..."
+                        />
+                    </b-col>
+                    <b-col cols="3" class="mb-1">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="removeConceptOfDaySuggestion(i)"
+                        >
+                            <mdicon
+                                name="DeleteCircleOutline"
+                            />
+                        </div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="12">
+                        <div
+                            class="cursor-pointer mt-1"
+                            @click="addConceptOfDaySuggestion()"
                         >
                             <mdicon
                                 name="PlusCircleOutline"
@@ -555,6 +602,7 @@ export default {
                 ageRanges: [],
                 locationNames: [],
                 walkNames: [],
+                conceptOfDaySuggestions: [],
                 guestNames: [],
                 userGroupNames: [],
             },
@@ -639,6 +687,12 @@ export default {
         addWalkName () {
             this.team.walkNames = [...this.team.walkNames, '']
         },
+        removeConceptOfDaySuggestion (index) {
+            this.$delete(this.team.conceptOfDaySuggestions, index)
+        },
+        addConceptOfDaySuggestion () {
+            this.team.conceptOfDaySuggestions = [...this.team.conceptOfDaySuggestions, '']
+        },
         removeGuestName (index) {
             this.$delete(this.team.guestNames, index)
         },
@@ -693,6 +747,7 @@ export default {
                 this.team.ageRanges = [];
                 this.team.locationNames = [];
                 this.team.walkNames = [];
+                this.team.conceptOfDaySuggestions = [];
                 this.team.guestNames = [];
                 this.team.userGroupNames = [];
             }

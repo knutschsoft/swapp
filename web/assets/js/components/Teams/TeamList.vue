@@ -109,6 +109,20 @@
                         class: 'text-center',
                     },
                     {
+                        key: 'conceptOfDaySuggestions',
+                        label: 'Tageskonzept für Runden',
+                        sortable: true,
+                        formatter: (conceptOfDaySuggestion) => {
+                            if (conceptOfDaySuggestion.length) {
+                                return conceptOfDaySuggestion.join(', ');
+                            }
+
+                            return '-';
+                        },
+                        sortByFormatted: true,
+                        class: 'text-center',
+                    },
+                    {
                         key: 'locationNames',
                         label: 'Orte für Wegpunkte',
                         sortable: true,
@@ -284,6 +298,7 @@
                     name: team.name,
                     locationNames: team.locationNames,
                     walkNames: team.walkNames,
+                    conceptOfDaySuggestions: team.conceptOfDaySuggestions,
                     users: team.users,
                     ageRanges: team.ageRanges,
                     userGroupNames: team.userGroupNames,

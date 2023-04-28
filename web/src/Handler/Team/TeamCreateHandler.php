@@ -34,6 +34,7 @@ final class TeamCreateHandler
         }
         $team->setLocationNames($request->locationNames);
         $team->setWalkNames($request->walkNames);
+        $team->setConceptOfDaySuggestions($request->conceptOfDaySuggestions);
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);
         $this->teamRepository->save($team);

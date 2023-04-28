@@ -58,20 +58,21 @@ Feature: Testing team change resource
   Scenario: I can request /api/teams/change as an admin and change a team
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key                 | value                   |
-      | team                | teamIri<Empties>        |
-      | name                | Religion                |
-      | ageRanges           | ageRanges<1-3>          |
-      | users               | userIris<two@pac.de>    |
-      | locationNames       | array<City, Spielplatz> |
-      | walkNames           | array<>                 |
-      | isWithAgeRanges     | <true>                  |
-      | isWithPeopleCount   | <true>                  |
-      | isWithContactsCount | <false>                 |
-      | isWithUserGroups    | <false>                 |
-      | isWithGuests        | <false>                 |
-      | guestNames          | array<>                 |
-      | userGroupNames      | array<>                 |
+      | key                     | value                   |
+      | team                    | teamIri<Empties>        |
+      | name                    | Religion                |
+      | ageRanges               | ageRanges<1-3>          |
+      | users                   | userIris<two@pac.de>    |
+      | locationNames           | array<City, Spielplatz> |
+      | walkNames               | array<>                 |
+      | conceptOfDaySuggestions | array<>                 |
+      | isWithAgeRanges         | <true>                  |
+      | isWithPeopleCount       | <true>                  |
+      | isWithContactsCount     | <false>                 |
+      | isWithUserGroups        | <false>                 |
+      | isWithGuests            | <false>                 |
+      | guestNames              | array<>                 |
+      | userGroupNames          | array<>                 |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -92,20 +93,21 @@ Feature: Testing team change resource
   Scenario: I can request /api/teams/change as an superadmin and change a team
     Given I am authenticated against api as "superadmin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key                 | value                          |
-      | team                | teamIri<Empties>               |
-      | name                | Religion                       |
-      | ageRanges           | ageRanges<1-3>                 |
-      | users               | userIris<two@pac.de>           |
-      | locationNames       | array<City, Spielplatz>        |
-      | walkNames           | array<>                        |
-      | isWithAgeRanges     | <true>                         |
-      | isWithPeopleCount   | <true>                         |
-      | isWithContactsCount | <true>                         |
-      | isWithUserGroups    | <true>                         |
-      | userGroupNames      | userGroupNames<Nutzende,Dudes> |
-      | isWithGuests        | <false>                        |
-      | guestNames          | array<>                        |
+      | key                     | value                          |
+      | team                    | teamIri<Empties>               |
+      | name                    | Religion                       |
+      | ageRanges               | ageRanges<1-3>                 |
+      | users                   | userIris<two@pac.de>           |
+      | locationNames           | array<City, Spielplatz>        |
+      | walkNames               | array<>                        |
+      | conceptOfDaySuggestions | array<>                        |
+      | isWithAgeRanges         | <true>                         |
+      | isWithPeopleCount       | <true>                         |
+      | isWithContactsCount     | <true>                         |
+      | isWithUserGroups        | <true>                         |
+      | userGroupNames          | userGroupNames<Nutzende,Dudes> |
+      | isWithGuests            | <false>                        |
+      | guestNames              | array<>                        |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -144,41 +146,44 @@ Feature: Testing team change resource
       | violations[3].message       | Dieser Wert sollte nicht null sein.                                    |
       | violations[4].propertyPath  | walkNames                                                              |
       | violations[4].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[5].propertyPath  | users                                                                  |
+      | violations[5].propertyPath  | conceptOfDaySuggestions                                                |
       | violations[5].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[6].propertyPath  | isWithAgeRanges                                                        |
+      | violations[6].propertyPath  | users                                                                  |
       | violations[6].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[7].propertyPath  | isWithPeopleCount                                                      |
+      | violations[7].propertyPath  | isWithAgeRanges                                                        |
       | violations[7].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[8].propertyPath  | ageRanges                                                              |
+      | violations[8].propertyPath  | isWithPeopleCount                                                      |
       | violations[8].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[9].propertyPath  | isWithGuests                                                           |
+      | violations[9].propertyPath  | ageRanges                                                              |
       | violations[9].message       | Dieser Wert sollte nicht null sein.                                    |
-      | violations[10].propertyPath | isWithContactsCount                                                    |
+      | violations[10].propertyPath | isWithGuests                                                           |
       | violations[10].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[11].propertyPath | isWithUserGroups                                                       |
+      | violations[11].propertyPath | isWithContactsCount                                                    |
       | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[12].propertyPath | userGroupNames                                                         |
+      | violations[12].propertyPath | isWithUserGroups                                                       |
       | violations[12].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[12].propertyPath | userGroupNames                                                         |
+      | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin and change isWithAgeRanges to false and the ageRanges are not changed
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/change" with parameters:
-      | key                 | value                   |
-      | team                | teamIri<Empties>        |
-      | name                | Religion                |
-      | ageRanges           | ageRanges<1-3>          |
-      | users               | userIris<two@pac.de>    |
-      | locationNames       | array<City, Spielplatz> |
-      | walkNames           | array<>                 |
-      | isWithAgeRanges     | <false>                 |
-      | isWithPeopleCount   | <false>                 |
-      | isWithContactsCount | <false>                 |
-      | isWithUserGroups    | <false>                 |
-      | isWithGuests        | <false>                 |
-      | guestNames          | array<>                 |
-      | userGroupNames      | array<>                 |
+      | key                     | value                   |
+      | team                    | teamIri<Empties>        |
+      | name                    | Religion                |
+      | ageRanges               | ageRanges<1-3>          |
+      | users                   | userIris<two@pac.de>    |
+      | locationNames           | array<City, Spielplatz> |
+      | walkNames               | array<>                 |
+      | conceptOfDaySuggestions | array<>                 |
+      | isWithAgeRanges         | <false>                 |
+      | isWithPeopleCount       | <false>                 |
+      | isWithContactsCount     | <false>                 |
+      | isWithUserGroups        | <false>                 |
+      | isWithGuests            | <false>                 |
+      | guestNames              | array<>                 |
+      | userGroupNames          | array<>                 |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200

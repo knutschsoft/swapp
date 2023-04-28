@@ -31,6 +31,10 @@ final class TeamCreateRequest
     #[AppAssert\WalkNamesRequirements]
     public array $walkNames;
 
+    /** @var string[] */
+    #[AppAssert\ConceptOfDaySuggestionsRequirements]
+    public array $conceptOfDaySuggestions;
+
     /** @var User[] */
     #[AppAssert\UsersRequirements]
     public array $users;

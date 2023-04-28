@@ -12,20 +12,21 @@ Feature: Testing team change resource with guests
   Scenario: I can request /api/teams/create as an admin and can not create a team without ageGroups
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/create" with parameters:
-      | key                 | value                     |
-      | client              | clientIri<client@gmx.de>  |
-      | name                | Religion                  |
-      | ageRanges           | ageRanges<>               |
-      | users               | userIris<admin@gmx.de>    |
-      | locationNames       | array<City, Spielplatz>   |
-      | walkNames           | array<>                   |
-      | isWithAgeRanges     | <true>                    |
-      | isWithPeopleCount   | <true>                    |
-      | isWithContactsCount | <false>                   |
-      | isWithUserGroups    | <false>                   |
-      | isWithGuests        | <true>                    |
-      | guestNames          | array<Opa Manfred, Karla> |
-      | userGroupNames      | array<>                   |
+      | key                     | value                     |
+      | client                  | clientIri<client@gmx.de>  |
+      | name                    | Religion                  |
+      | ageRanges               | ageRanges<>               |
+      | users                   | userIris<admin@gmx.de>    |
+      | locationNames           | array<City, Spielplatz>   |
+      | walkNames               | array<>                   |
+      | conceptOfDaySuggestions | array<>                   |
+      | isWithAgeRanges         | <true>                    |
+      | isWithPeopleCount       | <true>                    |
+      | isWithContactsCount     | <false>                   |
+      | isWithUserGroups        | <false>                   |
+      | isWithGuests            | <true>                    |
+      | guestNames              | array<Opa Manfred, Karla> |
+      | userGroupNames          | array<>                   |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 422
@@ -37,20 +38,21 @@ Feature: Testing team change resource with guests
   Scenario: I can request /api/teams/create as an admin and can not create a team with ageGroups enabled and isWithPeopleCount disabled
     Given I am authenticated against api as "admin@gmx.de"
     When I send an api platform "POST" request to "/api/teams/create" with parameters:
-      | key                 | value                     |
-      | client              | clientIri<client@gmx.de>  |
-      | name                | Religion                  |
-      | ageRanges           | ageRanges<1-3>            |
-      | users               | userIris<admin@gmx.de>    |
-      | locationNames       | array<City, Spielplatz>   |
-      | walkNames           | array<>                   |
-      | isWithAgeRanges     | <true>                    |
-      | isWithPeopleCount   | <false>                   |
-      | isWithContactsCount | <false>                   |
-      | isWithUserGroups    | <false>                   |
-      | isWithGuests        | <true>                    |
-      | guestNames          | array<Opa Manfred, Karla> |
-      | userGroupNames      | array<>                   |
+      | key                     | value                     |
+      | client                  | clientIri<client@gmx.de>  |
+      | name                    | Religion                  |
+      | ageRanges               | ageRanges<1-3>            |
+      | users                   | userIris<admin@gmx.de>    |
+      | locationNames           | array<City, Spielplatz>   |
+      | walkNames               | array<>                   |
+      | conceptOfDaySuggestions | array<>                   |
+      | isWithAgeRanges         | <true>                    |
+      | isWithPeopleCount       | <false>                   |
+      | isWithContactsCount     | <false>                   |
+      | isWithUserGroups        | <false>                   |
+      | isWithGuests            | <true>                    |
+      | guestNames              | array<Opa Manfred, Karla> |
+      | userGroupNames          | array<>                   |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 422
