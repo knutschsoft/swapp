@@ -162,7 +162,7 @@ Feature: Testing team change resource
       | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[12].propertyPath | isWithUserGroups                                                       |
       | violations[12].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[12].propertyPath | userGroupNames                                                         |
+      | violations[13].propertyPath | userGroupNames                                                         |
       | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange

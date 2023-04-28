@@ -17,8 +17,7 @@ default:
                 - behatch:context:system
                 - behatch:context:json
                 - behatch:context:rest
-                - App\Tests\Context\DatabaseContext:
-                      kernel: '@kernel'
+                - App\Tests\Context\DatabaseContext
         acceptance:
             paths:
                 - '%paths.base%/tests/Acceptance'
@@ -51,6 +50,63 @@ default:
                 trim: 1000
         FriendsOfBehat\SymfonyExtension:
             bootstrap: "tests/behat-bootstrap.php"
+#            kernel:
+#                class: ~
+#                path: ~
+#                environment: test
+#                debug: false
+        DMarynicz\BehatParallelExtension\Extension:
+            environments:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_1.db"
+                    # doc for APP_CACHE_DIR https://symfony.com/doc/current/configuration/override_dir_structure.html#override-the-cache-directory
+                    APP_CACHE_DIR: "var/cache/test/1"
+                    # SYMFONY_DOTENV_VARS does not have symfony's docs but without this tests will ignore env vars like DATABASE_URL, APP_CACHE_DIR and tests will not work
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_2.db"
+                    APP_CACHE_DIR: "var/cache/test/2"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_3.db"
+                    APP_CACHE_DIR: "var/cache/test/3"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_4.db"
+                    APP_CACHE_DIR: "var/cache/test/4"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_5.db"
+                    APP_CACHE_DIR: "var/cache/test/5"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_6.db"
+                    APP_CACHE_DIR: "var/cache/test/6"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_7.db"
+                    APP_CACHE_DIR: "var/cache/test/7"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_8.db"
+                    APP_CACHE_DIR: "var/cache/test/8"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_9.db"
+                    APP_CACHE_DIR: "var/cache/test/9"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_10.db"
+                    APP_CACHE_DIR: "var/cache/test/10"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_11.db"
+                    APP_CACHE_DIR: "var/cache/test/11"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_12.db"
+                    APP_CACHE_DIR: "var/cache/test/12"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_13.db"
+                    APP_CACHE_DIR: "var/cache/test/13"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_14.db"
+                    APP_CACHE_DIR: "var/cache/test/14"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/db_test_15.db"
+                    APP_CACHE_DIR: "var/cache/test/15"
+                    SYMFONY_DOTENV_VARS:
+                -   DATABASE_URL: "sqlite:///%%kernel.project_dir%%/var/cache/test_16.db"
+                    APP_CACHE_DIR: "var/cache/test/16"
+                    SYMFONY_DOTENV_VARS:
         Robertfausk\Behat\PantherExtension: ~
         Behat\MinkExtension:
             files_path: "tests/fixtures/"

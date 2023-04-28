@@ -4,62 +4,51 @@ declare(strict_types=1);
 namespace App\Tests\Context;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class DatabaseContext implements Context
 {
-    private Registry $doctrine;
-    private KernelInterface $kernel;
+    private SchemaTool $schemaTool;
+    /** @var ClassMetadata[] */
+    private array $classMetadatas;
+    private ObjectManager $entityManager;
 
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-        $this->doctrine = $this->kernel->getContainer()->get('test.service_container')->get('doctrine');
+    public function __construct(
+        ManagerRegistry $managerRegistry
+    ) {
+        $this->entityManager = $managerRegistry->getManager();
+        if (!$this->entityManager instanceof EntityManagerInterface) {
+            throw new \RuntimeException(
+                'Object manager is not instance of class EntityManager. Please check your configuration.'
+            );
+        }
+
+        $this->schemaTool = new SchemaTool($this->entityManager);
+        $this->classMetadatas = $this->entityManager->getMetadataFactory()->getAllMetadata();
     }
 
     /**
      * @BeforeScenario
      */
-    public function clearRepositories(): void
+    public function createDatabase(): void
     {
-        // Maybe by using the purger like in the example above? Up to you.
-        // It is also a good practice to clear all the repositories. How you collect all of the repositories: leveraging
-        // the framework or manually is up to you.
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetSequences(): void
-    {
-        //$connection = $this->doctrine->getConnection();
-
-        // If you are using auto-increment IDs, you might want to reset them. It is usually better to purge/reset
-        // things at the beginning of a test so that in case of a failure, you are not ending up in a broken state.
-        // With PostgreSQL:
-        // $connection->executeQuery('ALTER SEQUENCE dummy_sequence RESTART');
-        // With MySQL:
-        // $connection->executeQuery('ALTER TABLE dummy AUTO_INCREMENT = 1');
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function beginTransaction(): void
-    {
-        // $this->doctrine->getConnection()->beginTransaction();
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function rollbackTransaction(): void
-    {
-        // $this->doctrine->getConnection()->rollBack();
+        /** @var Connection $connection */
+        $connection = $this->entityManager->getConnection();
+        $params = $connection->getParams();
+        if (isset($params['path'])) {
+            $fs = new Filesystem();
+            if (!$fs->exists($params['path'])) {
+                $this->schemaTool->updateSchema($this->classMetadatas, true);
+            }
+        }
     }
 
     /**
@@ -67,29 +56,30 @@ final class DatabaseContext implements Context
      */
     public function purgeDatabase(): void
     {
-        $em = $this->getEntityManager();
-        $purger = self::createPurger($em);
+        /** @var Connection $connection */
+        $connection = $this->entityManager->getConnection();
+        $purger = $this->createPurger();
+        $isMySQL = $connection->getDriver()->getDatabasePlatform() instanceof AbstractMySQLPlatform;
+        if ($isMySQL) {
+            $connection->executeStatement('SET FOREIGN_KEY_CHECKS = 0;');
+        }
         $purger->purge();
+        if ($isMySQL) {
+            $connection->executeStatement('SET FOREIGN_KEY_CHECKS = 1;');
+        }
     }
 
-    private function getEntityManager(string $entityManagerName = 'default'): ObjectManager
+    private function createPurger(): ORMPurger
     {
-        return $this->doctrine->getManager($entityManagerName);
-    }
-
-    private static function createPurger(ObjectManager $manager): ORMPurger
-    {
-        $metaData = $manager->getMetadataFactory()->getAllMetadata();
-
         $excluded = [];
 
-        foreach ($metaData as $classMetadata) {
+        foreach ($this->classMetadatas as $classMetadata) {
             /** @var ClassMetadata $classMetadata */
             if ($classMetadata->isReadOnly) {
                 $excluded[] = $classMetadata->getTableName();
             }
         }
 
-        return new ORMPurger($manager, $excluded);
+        return new ORMPurger($this->entityManager, $excluded);
     }
 }

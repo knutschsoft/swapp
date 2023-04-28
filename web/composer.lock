@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f791bfaa348fbb59e3f13d79f3972c6",
+    "content-hash": "1d9a75030b05f42dc1746d55e030ea96",
     "packages": [
         {
             "name": "acsiomatic/device-detector-bundle",
@@ -10188,6 +10188,67 @@
                 "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
             },
             "time": "2022-02-04T12:51:07+00:00"
+        },
+        {
+            "name": "dmarynicz/behat-parallel-extension",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Daniel-Marynicz/BehatParallelExtension.git",
+                "reference": "bc3534510ca87104495fcd962e0f0089377dd514"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Daniel-Marynicz/BehatParallelExtension/zipball/bc3534510ca87104495fcd962e0f0089377dd514",
+                "reference": "bc3534510ca87104495fcd962e0f0089377dd514",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.6",
+                "php": ">=7.2",
+                "symfony/console": "^2.7.52 || ^2.8.33 || ^3.3.15 || ^3.4.3 || ^4.0 || ^5.0 || ^6.0",
+                "symfony/dependency-injection": "^2.7.52 || ^3.0 || ^4.0 || ^4.1.12 || ^5.0 || ^6.0",
+                "symfony/event-dispatcher": "^2.7.52 || ^3.0 || ^4.0 || ^5.0 || ^6.0",
+                "symfony/expression-language": "^2.7.52 || ^3.0 || ^4.0 || ^5.0 || ^6.0",
+                "symfony/process": "^2.7.52 || ^3.0 || ^4.0 || ^5.0 || ^6.0",
+                "symfony/serializer": "^2.7.52 || ^3.0 || ^4.0 || ^5.0 || ^6.0",
+                "symfony/yaml": "^2.7.52 || ^3.0 || ^4.0 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "dg/bypass-finals": "^1.1 || ^1.2",
+                "ext-json": "*",
+                "phpunit/phpunit": "^8.5 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DMarynicz\\BehatParallelExtension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Marynicz",
+                    "email": "daniel.marynicz@gmail.com"
+                }
+            ],
+            "description": "Parallel extension for Behat",
+            "homepage": "https://github.com/Daniel-Marynicz/BehatParallelExtension",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "Context",
+                "Symfony2",
+                "extension"
+            ],
+            "support": {
+                "issues": "https://github.com/Daniel-Marynicz/BehatParallelExtension/issues",
+                "source": "https://github.com/Daniel-Marynicz/BehatParallelExtension/tree/v1.0.0"
+            },
+            "time": "2022-06-03T11:59:54+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
