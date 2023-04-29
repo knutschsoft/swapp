@@ -322,11 +322,13 @@
                     description=""
                     :disabled="isLoading"
                 >
-                    <b-form-select
+                    <star-rating
                         v-model="form.rating"
-                        :disabled="isLoading"
-                        :options="[1, 2, 3, 4, 5]"
                         data-test="rating"
+                        :increment="1"
+                        :max-rating="5"
+                        :read-only="isLoading"
+                        :show-rating="true"
                     />
                 </b-form-group>
                 <b-form-group
@@ -458,6 +460,7 @@
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
 import WayPointList from './Walk/WayPointList';
+import StarRating from 'vue-star-rating';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
 
@@ -467,6 +470,7 @@ export default {
         ContentCollapse,
         GlobalFormError,
         WayPointList,
+        StarRating,
     },
     props: {
         walkId: {

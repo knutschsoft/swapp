@@ -17,6 +17,13 @@
                     tag="div"
                     class-name="text-left"
                 />
+                <star-rating
+                    v-else-if="'Bewertung' === field.name"
+                    v-model="field.value"
+                    :max-rating="5"
+                    :read-only="true"
+                    :show-rating="true"
+                />
                 <template
                     v-else
                 >
@@ -29,11 +36,12 @@
 
 <script>
     "use strict";
-    import formatter from '../../utils/formatter.js';
+    import StarRating from 'vue-star-rating';
 
     export default {
         name: "WalkDetailData",
         components: {
+            StarRating,
         },
         props: {
             walkId: {
@@ -77,7 +85,7 @@
                     { name: 'Systemische Frage', value: this.walk.systemicQuestion },
                     { name: 'Systemische Antwort', value: this.walk.systemicAnswer, nl2br: true },
                     { name: 'Reflexion', value: this.walk.walkReflection, nl2br: true },
-                    { name: 'Bewertung', value: formatter.formatRating(this.walk.rating) },
+                    { name: 'Bewertung', value: this.walk.rating },
                     { name: 'Termine, Besorgungen, Verabredungen', value: this.walk.commitments, nl2br: true },
                     { name: 'Erkenntnisse, Überlegungen, Zielsetzungen', value: this.walk.insights, nl2br: true },
                     { name: 'Wiedervorlage Dienstberatung', value: this.walk.isResubmission ? 'ja' : 'nein' },

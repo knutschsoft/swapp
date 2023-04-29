@@ -269,10 +269,13 @@
             />
         </form-group>
         <form-group label="Rundenbewertung">
-            <b-form-select
+            <star-rating
                 v-model="walk.rating"
-                :disabled="isLoading"
-                :options="[1, 2, 3, 4, 5]"
+                data-test="rating"
+                :increment="1"
+                :max-rating="5"
+                :read-only="isLoading"
+                :show-rating="true"
             />
         </form-group>
         <form-group>
@@ -361,6 +364,7 @@
 import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
+import StarRating from 'vue-star-rating';
 
 export default {
     name: 'WalkForm',
@@ -378,6 +382,7 @@ export default {
     components: {
         FormGroup,
         FormError,
+        StarRating,
     },
     data: function () {
         return {
