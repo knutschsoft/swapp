@@ -45,7 +45,7 @@
             :is-loading="!walk"
         >
             <walk-form
-                v-if="walk.isFinished"
+                v-if="!walk.isUnfinished"
                 submit-button-text="Runde speichern"
                 :initial-walk="walk"
                 @submit="handleSubmit"
