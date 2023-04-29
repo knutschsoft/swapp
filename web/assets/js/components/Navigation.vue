@@ -206,6 +206,12 @@
                                 Neue Einträge vorhanden!
                             </b-badge>
                         </b-dropdown-item>
+                        <b-dropdown-item
+                            :to="{ name: 'Faq'}"
+                            :active="$route.name === 'Faq'"
+                        >
+                            FAQ - Häufig gestellte Fragen
+                        </b-dropdown-item>
                         <b-dropdown-divider v-if="!isUserSwitched && isSuperAdmin" />
                         <b-dropdown-form
                             v-if="!isUserSwitched && isSuperAdmin"
