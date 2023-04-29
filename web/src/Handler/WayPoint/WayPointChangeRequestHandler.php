@@ -54,6 +54,9 @@ final class WayPointChangeRequestHandler
             if ($newImageName !== $oldImageName && $oldImageName) {
                 $this->wayPointImageStorage->delete($oldImageName);
             }
+        } elseif ($oldImageName) {
+            $this->wayPointImageStorage->delete($oldImageName);
+            $wayPoint->unsetImageName();
         }
         $this->wayPointRepository->save($wayPoint);
 

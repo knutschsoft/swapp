@@ -397,6 +397,11 @@ class WayPoint
         $this->imageName = $imageName;
     }
 
+    public function unsetImageName(): void
+    {
+        $this->imageName = null;
+    }
+
     #[Groups(['wayPoint:read'])]
     public function getId(): int
     {

@@ -295,11 +295,11 @@
             <div
                 v-if="wayPoint.imageFileData"
                 class="mt-3 position-relative"
-                style="max-width: 200px;"
+                style="max-width: 50px;"
             >
                 <div
                     class="cursor-pointer position-absolute top-0 start-100 translate-middle"
-                    @click="wayPoint.imageFileData = wayPoint.imageFileName = null"
+                    @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null"
                 >
                     <mdicon
                         name="close-circle-outline"
@@ -310,8 +310,8 @@
                     alt="Bildupload"
                     thumbnail
                     fluid
-                    width="200"
-                    height="200"
+                    width="50"
+                    height="50"
                     class=""
                 />
             </div>

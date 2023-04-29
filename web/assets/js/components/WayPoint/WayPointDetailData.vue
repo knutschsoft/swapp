@@ -163,7 +163,7 @@
                 }
                 return [{
                     src: this.wayPoint.imageSrc,
-                    thumbnailHeight: '220px',
+                    thumbnailHeight: '50px',
                     description: this.wayPoint.imageName,
                 }];
             },
