@@ -202,6 +202,7 @@
             <b-form-select
                 v-model="walk.weather"
                 :disabled="isLoading"
+                data-test="Wetter"
                 :options="['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt']"
             />
         </form-group>

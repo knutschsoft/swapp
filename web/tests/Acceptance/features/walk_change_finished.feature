@@ -1,4 +1,4 @@
-Feature: An administrator can change startTime of a walk
+Feature: An administrator can change a finished walk
 
   Background:
     Given the following clients exists:
@@ -18,12 +18,12 @@ Feature: An administrator can change startTime of a walk
       | Gewalt | Chocolate | client@gmx.de |
       | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
-      | name   | team     | startTime       | weather | isUnfinished |
-      | Klippe | Westhang | 02.01.2021 7:20 | Sonne   | true         |
+      | name   | team     | startTime       | endTime         | weather | isUnfinished |
+      | Klippe | Westhang | 02.01.2021 7:20 | 02.01.2021 9:20 | Sonne   | <false>      |
 
   @javascript
-  @walkChangeUnfinished
-  Scenario: I can change an unfinished walk as an admin
+  @walkChangeFinished
+  Scenario: I can change an finished walk as an admin
     And there are exactly 1 walks in database
     And I can find the following walks in database:
       | name   | startTime                         | weather |
@@ -31,6 +31,11 @@ Feature: An administrator can change startTime of a walk
     Given I am authenticated as "admin@gmx.de"
     When I go to swapp page "/runde/walkId<Klippe>/detail"
     Then I wait for 'Runde "Klippe" ändern' to appear
+
+    Then I wait for test element "walkReflection" to appear
+    Then I wait for test element "rating" to appear
+    Then I wait for test element "commitments" to appear
+    Then I wait for test element "insights" to appear
 
     When I enter "Arschkalt" in "Wetter" field
 

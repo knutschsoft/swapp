@@ -101,6 +101,39 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When  I wait for test element :selector to appear
+     *
+     * @param string   $selector
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForTestElementToAppear(string $selector): void
+    {
+        $testElement = $this->getTestElement($selector);
+        Assert::true($testElement->isVisible());
+    }
+
+    /**
+     * @When  I wait for test element :selector to disappear
+     *
+     * @param string   $selector
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForTestElementToDisappear(string $selector): void
+    {
+        $testElement = false;
+        try {
+            $testElement = $this->getTestElement($selector, 5);
+        } catch (\InvalidArgumentException) {
+
+        }
+        if ($testElement) {
+            Assert::false($testElement->isVisible());
+        }
+    }
+
+    /**
      * @Then (I )wait :count second(s)
      *
      * @param string $count
