@@ -103,7 +103,7 @@ final class AcceptanceContext extends MinkContext
     /**
      * @When  I wait for test element :selector to appear
      *
-     * @param string   $selector
+     * @param string $selector
      *
      * @throws \Throwable
      */
@@ -116,7 +116,7 @@ final class AcceptanceContext extends MinkContext
     /**
      * @When  I wait for test element :selector to disappear
      *
-     * @param string   $selector
+     * @param string $selector
      *
      * @throws \Throwable
      */
@@ -126,7 +126,7 @@ final class AcceptanceContext extends MinkContext
         try {
             $testElement = $this->getTestElement($selector, 5);
         } catch (\InvalidArgumentException) {
-
+            // all fine here
         }
         if ($testElement) {
             Assert::false($testElement->isVisible());
