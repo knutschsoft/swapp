@@ -19,7 +19,7 @@ const state = {
                     text: [
                         'UX-Feature: Der Name einer Runde kann mittels Autocomplete-Feld ausgewählt werden. Freitexteingaben sind weiterhin möglich.',
                         'Dazu kann ein Administrator pro Team die Autocomplete-Vorschläge für den Namen einer Runde festlegen.',
-                        'Use Case: Beim Erstellen und Verändern einer Runde braucht ein Benutzender weniger Klicks und Eingaben zu machen. Zudem sind die gemachten Eingaben über alle Runden hinweg einheitlicher.',
+                        'Use Case: Beim Erstellen und Verändern einer Runde braucht ein Benutzender weniger Klicks und Eingaben zu machen. Zudem sind die gemachten Eingaben über alle Runden hinweg einheitlicher und verschiedene Schreibweisen werden vermieden.',
                     ],
                     gallery: [
                         {
@@ -43,7 +43,7 @@ const state = {
                     text: [
                         'UX-Feature: Die Tageskonzepte einer Runde können mittels Autocomplete-Feld ausgewählt werden. Freitexteingaben sind weiterhin möglich.',
                         'Dazu kann ein Administrator pro Team die Autocomplete-Vorschläge für das Tageskonzept einer Runde festlegen.',
-                        'Use Case: Beim Erstellen und Verändern einer Runde braucht ein Benutzender weniger Klicks und Eingaben zu machen. Zudem sind die gemachten Eingaben über alle Runden hinweg einheitlicher.',
+                        'Use Case: Beim Erstellen und Verändern einer Runde braucht ein Benutzender weniger Klicks und Eingaben zu machen. Zudem sind die gemachten Eingaben über alle Runden hinweg einheitlicher und verschiedene Schreibweisen werden vermieden.',
                     ],
                     gallery: [
                         {
@@ -61,6 +61,43 @@ const state = {
                             thumbnailHeight: '100px',
                             description: 'Darstellung in der Teamliste',
                         },
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Die Auswahl der Bewertung erfolgt nun über eine Sternenauswahl anstatt über eine einfache Dropdown-Box.',
+                        'Dies verringert für die Auswahl der Bewertung die Anzahl der Klicks von 2 auf 1.',
+                        'Zusätzlich wird damit ein Stück Gamification bereitgestellt.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230501_Rundenbewertung_als_Stern_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung auf der Rundenbewertung (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'Einführung der "FAQ - Häufig gestellte Fragen" um (neuen) Nutzern häufig auftretende Fragen inkl. deren Antworten zu geben.',
+                        'Der Aufruf der FAQ erfolgt über das Hauptmenü.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230501_FAQ_Einführung.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung der FAQ mit den ersten Fragen und Antworten',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'Die Größe des Vorschaubildes eines Wegpunktes ist reduziert damit es vor allem auf kleinen Devices nicht zu viel Platz einnimmt und das Scrollen erleichtert.',
+                    ],
+                },
+                {
+                    text: [
+                        'Fix: Ein Admin kann nun ein existierendes Bild an einem Wegpunkt löschen. Dies funktionierte zuvor nicht.',
                     ],
                 },
             ],
