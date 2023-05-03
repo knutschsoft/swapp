@@ -365,7 +365,7 @@
 import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
-import StarRating from 'vue-star-rating';
+import { StarRating } from 'vue-rate-it';
 
 export default {
     name: 'WalkForm',

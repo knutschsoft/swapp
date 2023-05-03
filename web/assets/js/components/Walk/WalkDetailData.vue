@@ -36,7 +36,7 @@
 
 <script>
     "use strict";
-    import StarRating from 'vue-star-rating';
+    import { StarRating } from 'vue-rate-it';
 
     export default {
         name: "WalkDetailData",

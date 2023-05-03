@@ -460,7 +460,7 @@
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
 import WayPointList from './Walk/WayPointList';
-import StarRating from 'vue-star-rating';
+import { StarRating } from 'vue-rate-it';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
 
