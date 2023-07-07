@@ -45,7 +45,7 @@
             <b-input-group-append>
                 <b-button
                     @click="handleWalkPrologue"
-                    :disabled="!selectedTeam"
+                    :disabled="!hasSelectedTeamSystemicQuestionsAvailable"
                     variant=""
                 >
                     Runde beginnen
@@ -63,7 +63,7 @@
             v-else-if="!teams.length"
             class="p-2 text-muted"
         >
-            Um mit der Dokumentation zu beginnen, musst Du zuerst
+            Um eine neue Runde zu erstellen, musst Du zuerst
             <router-link
                 class="btn btn-link px-0"
                 :to="{ name: 'Teams' }"
@@ -76,6 +76,23 @@
         >
             Du bist aktuell keinem Team zugeordnet.
         </div>
+        <b-input-group
+            v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable"
+            class="px-2 pb-2"
+        >
+            <b-alert
+                show
+                variant="warning"
+                class="w-full mb-0"
+            >
+                Um für dieses Team eine neue Runde zu erstellen, musst Du zuerst mindestens
+                <router-link
+                    class="btn btn-link px-0"
+                    :to="{ name: 'SystemicQuestions' }"
+                    title="Systemische Fragen"
+                >eine Systemische Frage erstellen</router-link>.
+            </b-alert>
+        </b-input-group>
     </div>
 </template>
 
@@ -98,6 +115,16 @@
             }
         },
         computed: {
+            hasSelectedTeamSystemicQuestionsAvailable() {
+                if (!this.selectedTeam) {
+                    return false;
+                }
+                if (this.selectedTeam.isWithSystemicQuestion) {
+                    return this.$store.getters["systemicQuestion/systemicQuestions"].filter(systemicQuestion => systemicQuestion.isEnabled).length > 0;
+                }
+
+                return true;
+            },
             hasTeams() {
                 return this.$store.getters["team/hasTeams"];
             },

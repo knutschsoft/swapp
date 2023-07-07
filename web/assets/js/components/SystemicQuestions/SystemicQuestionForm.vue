@@ -54,6 +54,7 @@
         <form-error
             :error="error"
         />
+        <systemic-question-hint />
     </b-form>
 </template>
 
@@ -61,6 +62,8 @@
 'use strict';
 
 import FormError from '../Common/FormError.vue';
+import SystemicQuestionHint from './SystemicQuestionHint.vue';
+
 export default {
     name: 'SystemicQuestionForm',
     props: {
@@ -80,6 +83,7 @@ export default {
     },
     components: {
         FormError,
+        SystemicQuestionHint,
     },
     data: function () {
         return {

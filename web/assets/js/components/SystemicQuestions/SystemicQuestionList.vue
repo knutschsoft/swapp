@@ -55,30 +55,6 @@
                 :initial-question="editModalSystemicQuestion.selectedSystemicQuestion.question"
                 @submit="handleSubmit"
             />
-
-            <template #modal-footer>
-                <b-alert
-                    show
-                    class="w-100 text-muted mb-0"
-                    variant="debug"
-                >
-                    <b>Hinweis:</b>
-                    <ul class="mb-0">
-                        <li>
-                            Beim Abschluss jeder Runde gibt es ein Reflexionsprotokoll mit
-                            systemischen Reflexionsfragen, welche u.a. einen
-                            "psychohygienischen" Beitrag zum Abschluss der Streetwork leisten.
-                            Dazu wird bei Abschluss einer Runde zufällig eine dieser Fragen gestellt und muss beantwortet werden.
-                        </li>
-                        <li>
-                            Eine Änderung der Fragestellung ändert lediglich die Fragestellung für neue Runden.
-                        </li>
-                        <li>
-                            Bereits bestehende Runden bleiben von Änderungen an einer Frage unberührt.
-                        </li>
-                    </ul>
-                </b-alert>
-            </template>
         </b-modal>
     </div>
 </template>
@@ -164,6 +140,7 @@ export default {
     async created() {
         await Promise.all([
             this.$store.dispatch('systemicQuestion/findAll'),
+            this.$store.dispatch('team/findAll'),
         ]);
     },
     methods: {

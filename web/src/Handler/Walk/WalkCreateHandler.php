@@ -20,9 +20,9 @@ final class WalkCreateHandler
 
     public function __invoke(WalkCreateRequest $request): Walk
     {
-        $systemicQuestion = $this->systemicQuestionRepository->getRandomForClient($request->team->getClient());
         $walk = Walk::fromWalkCreateRequest($request);
         if ($request->team->isWithSystemicQuestion()) {
+            $systemicQuestion = $this->systemicQuestionRepository->getRandomForClient($request->team->getClient());
             $walk->setIsWithSystemicQuestion(true);
             $walk->setSystemicQuestion($systemicQuestion->getQuestion());
         }
