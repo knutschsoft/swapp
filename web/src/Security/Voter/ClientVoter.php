@@ -13,6 +13,7 @@ class ClientVoter extends Voter
 {
     public const READ = 'CLIENT_READ';
     public const EDIT = 'CLIENT_EDIT';
+    public const CREATE = 'CLIENT_CREATE';
 
     public function __construct(private readonly Security $security)
     {
@@ -34,6 +35,9 @@ class ClientVoter extends Voter
 
         if ($this->security->isGranted(User::ROLE_SUPER_ADMIN)) {
             return true;
+        }
+        if (self::READ === $attribute) {
+            return false;
         }
 
         /** @var Client $client */

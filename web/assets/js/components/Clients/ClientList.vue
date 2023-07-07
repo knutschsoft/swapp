@@ -59,7 +59,7 @@
                         </template>
                         <li
                             v-if="row.item.users.length >= 5"
-                        >{{ row.item.users.length - 5 }} weitere Benutzer</li>
+                        >{{ row.item.users.length - 5 }} weitere Benutzerasdf</li>
                     </ul>
                 </div>
             </template>
@@ -67,23 +67,42 @@
                 <div class="d-flex justify-content-around">
                     <b-button
                         size="sm"
-                        class="mr-2"
-                        @click=""
+                        @click="editClient(row.item)"
                     >
-                        Nutzer hinzufügen
+                        Klient bearbeiten
+                        <b-icon-pencil />
                     </b-button>
                 </div>
             </template>
         </b-table>
+        <b-modal
+            :id="editModalClient.id"
+            :title="editModalClient.title"
+            size="lg"
+            @hide="resetEditModalClient"
+            title="Klient ändern"
+            hide-footer
+        >
+            <client-form
+                v-if="editModalClient.selectedClient"
+                submit-button-text="Speichern"
+                :initial-client="editModalClient.selectedClient"
+                @submit="handleSubmit"
+            />
+        </b-modal>
     </div>
 </template>
 
 <script>
 'use strict';
 import dayjs from 'dayjs';
+import ClientForm from './ClientForm.vue';
 
 export default {
     name: 'ClientList',
+    components: {
+        ClientForm,
+    },
     data: function () {
         return {
             fields: [
@@ -124,11 +143,12 @@ export default {
                     },
                     class: 'text-center',
                 },
-                // { key: 'actions', label: 'Aktionen', class: 'text-center' },
+                { key: 'actions', label: 'Aktionen', class: 'text-center' },
             ],
-            editModalRolle: {
-                id: 'edit-modal-rolle',
+            editModalClient: {
+                id: 'edit-modal-client',
                 title: '',
+                selectedClient: null,
             },
         };
     },
@@ -143,19 +163,49 @@ export default {
             return this.$store.getters['client/error'];
         },
     },
-    created() {
-        this.$store.dispatch('client/findAll');
-        this.$store.dispatch('user/findAll');
+    async created() {
+        await Promise.all([
+            this.$store.dispatch('client/findAll'),
+            this.$store.dispatch('user/findAll'),
+        ]);
     },
     methods: {
         getUserByIri(userIri) {
             return this.$store.getters['user/getUserByIri'](userIri);
         },
-        editRolle(rolle, client) {
-            this.$root.$emit('bv::show::modal', this.editModalRolle.id);
+        editClient(client) {
+            this.$root.$emit('bv::show::modal', this.editModalClient.id);
+            this.editModalClient.selectedClient = client;
         },
-        resetEditModalRolle() {
-            this.editModalRolle.title = '';
+        resetEditModalClient() {
+            this.$root.$emit('bv::hide::modal', this.editModalClient.id);
+            this.editModalClient.selectedClient = '';
+        },
+        async handleSubmit(payload) {
+            payload.client = this.editModalClient.selectedClient['@id'];
+            const client = await this.$store.dispatch('client/change', payload);
+            if (client) {
+                const message = `Der Klient "${client.name}" wurde erfolgreich geändert.`;
+                this.$bvToast.toast(message, {
+                    title: 'Klient geändert',
+                    toaster: 'b-toaster-top-right',
+                    autoHideDelay: 10000,
+                    variant: 'info',
+                    appendToast: true,
+                    solid: true,
+                });
+
+                this.resetEditModalClient();
+            } else {
+                this.$bvToast.toast('Upps! :-(', {
+                    title: 'Klient ändern fehlgeschlagen',
+                    toaster: 'b-toaster-top-right',
+                    autoHideDelay: 10000,
+                    variant: 'danger',
+                    appendToast: true,
+                    solid: true,
+                });
+            }
         },
     },
 };

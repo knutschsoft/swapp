@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Post;
 use App\Dto\Client\ClientChangeRequest;
 use App\Dto\Client\ClientCreateRequest;
 use App\Repository\DoctrineORMClientRepository;
+use App\Security\Voter\ClientVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -19,12 +20,12 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ApiResource(
     operations: [
-        new Get(security: 'is_granted("CLIENT_READ", object)'),
+        new Get(security: 'is_granted("'.ClientVoter::READ.'", object)'),
         new GetCollection(),
         new Post(
             uriTemplate: '/clients/change',
             status: 200,
-            securityPostDenormalize: 'is_granted("CLIENT_EDIT", object.client)',
+            securityPostDenormalize: 'is_granted("'.ClientVoter::EDIT.'", object.client)',
             input: ClientChangeRequest::class,
             output: Client::class,
             messenger: 'input'
@@ -32,7 +33,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
         new Post(
             uriTemplate: '/clients/create',
             status: 200,
-            securityPostDenormalize: 'is_granted("ROLE_SUPER_ADMIN")',
+            securityPostDenormalize: 'is_granted("'.ClientVoter::CREATE.'")',
             input: ClientCreateRequest::class,
             output: Client::class,
             messenger: 'input'

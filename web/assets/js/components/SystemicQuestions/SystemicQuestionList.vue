@@ -47,6 +47,7 @@
             size="lg"
             @hide="resetEditModalSystemicQuestion"
             title="Systemische Frage ändern"
+            hide-footer
         >
             <systemic-question-form
                 v-if="editModalSystemicQuestion.selectedSystemicQuestion"

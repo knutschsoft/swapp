@@ -77,7 +77,7 @@ import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
 
 export default {
-    name: 'UserForm',
+    name: 'ClientForm',
     props: {
         initialClient: {
             type: Object,
