@@ -9,6 +9,7 @@
     <arg name="extensions" value="php"/>
 
     <rule ref="vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/ruleset.xml">
+        <exclude name="SlevomatCodingStandard.Attributes.AttributesOrder" />
     </rule>
 
     <exclude-pattern>./tests/object-manager.php</exclude-pattern>

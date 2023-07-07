@@ -26,7 +26,7 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function findAllOrderBy(string $order, string $sort = 'asc'): array
     {
