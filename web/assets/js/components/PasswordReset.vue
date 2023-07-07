@@ -97,6 +97,14 @@
                         </b-button>
                     </b-input-group>
                     <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
+                    <b-input-group class="form-group input-group mb-0 mt-3">
+                        <router-link
+                            class="btn btn-block btn-link"
+                            :to="{ name: 'Login' }"
+                        >
+                            Zurück zur Anmeldung
+                        </router-link>
+                    </b-input-group>
                 </b-form>
                 <div
                     v-if="isPasswordRequested && !hasError"

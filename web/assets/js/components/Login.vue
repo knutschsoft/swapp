@@ -6,7 +6,7 @@
             <h2
                 class="text-center mb-3"
             >
-                Login
+                Anmeldung
             </h2>
             <p class="text-center">
                 Bitte melde dich mit deiner E-Mail-Adresse (oder deinem Benutzername) und deinem selbst gewählten Passwort an.

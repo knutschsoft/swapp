@@ -34,7 +34,7 @@ Feature: A user can get a new password on his own
     And I should see "Zur Anmeldung" appear
 
     When I click on text "Zur Anmeldung"
-    Then I should see "Login" appear
+    Then I should see "Anmeldung" appear
 
     And I should be on "/anmeldung"
     When I enter "karl@gmx.de" in "username" field
