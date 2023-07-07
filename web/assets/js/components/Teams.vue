@@ -52,6 +52,7 @@
                     isWithUserGroups: team.isWithUserGroups,
                     userGroupNames: team.userGroupNames,
                     isWithGuests: team.isWithGuests,
+                    isWithSystemicQuestion: team.isWithSystemicQuestion,
                     guestNames: team.guestNames,
                 });
 

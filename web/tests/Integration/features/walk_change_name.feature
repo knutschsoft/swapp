@@ -17,10 +17,10 @@ Feature: Testing way point change resource
       | admin@gamer.de    | ROLE_ADMIN       | gamer@gmx.de  |
       | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following teams exists:
-      | name     | users                        | ageRanges          | client        |
-      | Westhang | karl@gmx.de,two@pac.de       | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | CA       | two@pac.de                   | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | Gamers   | karl@gamer.de,pinky@gamer.de |                    | gamer@gmx.de  |
+      | name     | users                        | ageRanges          | client        | isWithSystemicQuestion |
+      | Westhang | karl@gmx.de,two@pac.de       | 1-10,3-12, 13 - 90 | client@gmx.de | <true>                 |
+      | CA       | two@pac.de                   | 1-10,3-12, 13 - 90 | client@gmx.de | <true>                 |
+      | Gamers   | karl@gamer.de,pinky@gamer.de |                    | gamer@gmx.de  | <true>                 |
     Given the following systemic questions exists:
       | question       | client        |
       | Esta muy bien? | client@gmx.de |

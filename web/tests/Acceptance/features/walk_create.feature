@@ -9,8 +9,8 @@ Feature: A user can do a walk
       | karl@gmx.de   | client@gmx.de |
       | lonely@gmx.de | client@gmx.de |
     Given the following teams exists:
-      | name     | users       | ageRanges          | client        | locationNames   |
-      | Westhang | karl@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de | City,Spielplatz |
+      | name     | users       | ageRanges          | client        | locationNames   | isWithSystemicQuestion |
+      | Westhang | karl@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de | City,Spielplatz | <true>                 |
     Given the following systemic questions exists:
       | question | client        |
       | How old? | client@gmx.de |

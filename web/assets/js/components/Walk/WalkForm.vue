@@ -206,16 +206,28 @@
                 :options="['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt']"
             />
         </form-group>
-        <form-group label="Systemische Frage">
+        <form-group
+            v-if="walk.isWithSystemicQuestion"
+            label="Systemische Frage"
+        >
             <b-form-input
                 v-model="walk.systemicQuestion"
                 disabled
                 readonly
             />
         </form-group>
-        <form-group>
+        <b-form-group
+            v-if="walk.isWithSystemicQuestion"
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
+            :description="walk.systemicQuestion"
+            :disabled="isLoading"
+            :state="systemicAnswerState"
+        >
             <template v-slot:label>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between flex-wrap">
                     <div :class="isWithoutSystemicAnswer ? `text-muted` : ``">
                         Systemische Antwort
                     </div>
@@ -240,10 +252,19 @@
                 trim
                 max-rows="15"
             />
-        </form-group>
-        <form-group>
+        </b-form-group>
+        <b-form-group
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
+            label="Reflexion"
+            description=""
+            :disabled="isLoading"
+            :state="walkReflectionState"
+        >
             <template v-slot:label>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between flex-wrap">
                     <div :class="isWithoutWalkReflection ? `text-muted` : ``">
                         Reflexion
                     </div>
@@ -268,7 +289,7 @@
                 trim
                 max-rows="15"
             />
-        </form-group>
+        </b-form-group>
         <form-group label="Rundenbewertung">
             <star-rating
                 v-model="walk.rating"
@@ -279,10 +300,18 @@
                 :show-rating="true"
             />
         </form-group>
-        <form-group>
+        <b-form-group
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
+            description=""
+            :disabled="isLoading"
+            :state="commitmentsState"
+        >
             <template v-slot:label>
-                <div class="d-flex justify-content-between">
-                    <div :class="isWithoutCommitments ? `text-muted` : ``">
+                <div class="d-flex justify-content-between flex-wrap">
+                    <div :class="isWithoutCommitments ? `text-muted ` : ``">
                         Termine, Besorgungen, Verabredungen
                     </div>
                     <b-form-checkbox
@@ -306,10 +335,16 @@
                 trim
                 max-rows="15"
             />
-        </form-group>
-        <form-group>
+        </b-form-group>
+        <b-form-group
+            content-cols="12"
+            label-cols="12"
+            content-cols-lg="10"
+            label-cols-lg="2"
+            :state="insightsState"
+        >
             <template v-slot:label>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between flex-wrap">
                     <div :class="isWithoutInsights ? `text-muted` : ``">
                         Erkenntnisse, Überlegungen, Zielsetzungen
                     </div>
@@ -334,7 +369,7 @@
                 trim
                 max-rows="15"
             />
-        </form-group>
+        </b-form-group>
         <form-group label="">
             <b-form-checkbox
                 v-model="walk.isResubmission"
@@ -696,6 +731,7 @@ export default {
         this.walk.insights = this.initialWalk.insights;
         this.walk.isResubmission = this.initialWalk.isResubmission;
         this.walk.rating = this.initialWalk.rating;
+        this.isWithoutSystemicAnswer = !this.walk.isWithSystemicQuestion;
         this.walk.systemicAnswer = this.initialWalk.systemicAnswer;
         this.walk.systemicQuestion = this.initialWalk.systemicQuestion;
         this.walk.walkReflection = this.initialWalk.walkReflection;

@@ -36,6 +36,7 @@ final class TeamChangeHandler
         $team->setConceptOfDaySuggestions($request->conceptOfDaySuggestions);
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);
+        $team->setIsWithSystemicQuestion($request->isWithSystemicQuestion);
         $this->teamRepository->save($team);
 
         return $team;

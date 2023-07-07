@@ -21,6 +21,7 @@ Feature: Testing team create resource with guests
       | walkNames               | array<>                           |
       | conceptOfDaySuggestions | array<>                           |
       | isWithAgeRanges         | <true>                            |
+      | isWithSystemicQuestion  | <true>                            |
       | isWithPeopleCount       | <true>                            |
       | isWithContactsCount     | <false>                           |
       | isWithUserGroups        | <false>                           |

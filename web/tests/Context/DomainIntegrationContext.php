@@ -265,13 +265,19 @@ final class DomainIntegrationContext extends RawMinkContext
             $request->conceptOfDay = isset($row['conceptOfDay']) ? $this->enrichText($row['conceptOfDay']) : ['My daily concept.'];
             $request->walkTeamMembers = $team->getUsers()->toArray();
             $request->guestNames = $team->getGuestNames();
-            $walk = Walk::fromWalkCreateRequest($request, $systemicQuestion);
+            $walk = Walk::fromWalkCreateRequest($request);
 
             if (isset($row['endTime'])) {
                 $walk->setEndTime(new \DateTime($row['endTime']));
             }
-            if (isset($row['systemicAnswer'])) {
-                $walk->setSystemicAnswer($row['systemicAnswer']);
+            if (isset($row['isWithSystemicQuestion'])) {
+                $walk->setIsWithSystemicQuestion($this->enrichText($row['isWithSystemicQuestion']));
+            }
+            if ($walk->isWithSystemicQuestion()) {
+                $walk->setSystemicQuestion($systemicQuestion->getQuestion());
+                if (isset($row['systemicAnswer'])) {
+                    $walk->setSystemicAnswer($row['systemicAnswer']);
+                }
             }
             if (isset($row['reflection'])) {
                 $walk->setWalkReflection($row['reflection']);
@@ -590,6 +596,12 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['isWithGuests']) && '' !== $row['isWithGuests']) {
                 Assert::eq($walk->isWithGuests(), (bool) $this->enrichText($row['isWithGuests']));
             }
+            if (isset($row['isWithUserGroups']) && '' !== $row['isWithUserGroups']) {
+                Assert::eq($walk->isWithUserGroups(), (bool) $this->enrichText($row['isWithUserGroups']));
+            }
+            if (isset($row['isWithSystemicQuestion']) && '' !== $row['isWithSystemicQuestion']) {
+                Assert::eq($walk->isWithSystemicQuestion(), (bool) $this->enrichText($row['isWithSystemicQuestion']));
+            }
             if (isset($row['guestNames']) && '' !== $row['guestNames']) {
                 Assert::eq($walk->getGuestNames(), (array) $this->enrichText($row['guestNames']));
             }
@@ -864,6 +876,11 @@ final class DomainIntegrationContext extends RawMinkContext
                 $isWithAgeRanges = (bool) $this->enrichText($row['isWithAgeRanges']);
             }
             $team->setIsWithAgeRanges($isWithAgeRanges);
+            $isWithSystemicQuestion = false;
+            if (isset($row['isWithSystemicQuestion']) && '' !== $row['isWithSystemicQuestion']) {
+                $isWithSystemicQuestion = (bool) $this->enrichText($row['isWithSystemicQuestion']);
+            }
+            $team->setIsWithSystemicQuestion($isWithSystemicQuestion);
             if ($team->isWithAgeRanges()) {
                 $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '1-2,3-10');
                 $team->setAgeRanges($ageRanges);

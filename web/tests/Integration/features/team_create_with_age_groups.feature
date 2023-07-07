@@ -21,6 +21,7 @@ Feature: Testing team change resource with guests
       | walkNames               | array<>                   |
       | conceptOfDaySuggestions | array<>                   |
       | isWithAgeRanges         | <true>                    |
+      | isWithSystemicQuestion  | <true>                    |
       | isWithPeopleCount       | <true>                    |
       | isWithContactsCount     | <false>                   |
       | isWithUserGroups        | <false>                   |
@@ -47,6 +48,7 @@ Feature: Testing team change resource with guests
       | walkNames               | array<>                   |
       | conceptOfDaySuggestions | array<>                   |
       | isWithAgeRanges         | <true>                    |
+      | isWithSystemicQuestion  | <true>                    |
       | isWithPeopleCount       | <false>                   |
       | isWithContactsCount     | <false>                   |
       | isWithUserGroups        | <false>                   |

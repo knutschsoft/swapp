@@ -67,6 +67,7 @@ Feature: Testing team change resource
       | walkNames               | array<>                 |
       | conceptOfDaySuggestions | array<>                 |
       | isWithAgeRanges         | <true>                  |
+      | isWithSystemicQuestion  | <true>                  |
       | isWithPeopleCount       | <true>                  |
       | isWithContactsCount     | <false>                 |
       | isWithUserGroups        | <false>                 |
@@ -102,6 +103,7 @@ Feature: Testing team change resource
       | walkNames               | array<>                        |
       | conceptOfDaySuggestions | array<>                        |
       | isWithAgeRanges         | <true>                         |
+      | isWithSystemicQuestion  | <true>                         |
       | isWithPeopleCount       | <true>                         |
       | isWithContactsCount     | <true>                         |
       | isWithUserGroups        | <true>                         |
@@ -158,12 +160,14 @@ Feature: Testing team change resource
       | violations[9].message       | Dieser Wert sollte nicht null sein.                                    |
       | violations[10].propertyPath | isWithGuests                                                           |
       | violations[10].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[11].propertyPath | isWithContactsCount                                                    |
+      | violations[11].propertyPath | isWithSystemicQuestion                                                 |
       | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[12].propertyPath | isWithUserGroups                                                       |
+      | violations[12].propertyPath | isWithContactsCount                                                    |
       | violations[12].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[13].propertyPath | userGroupNames                                                         |
+      | violations[13].propertyPath | isWithUserGroups                                                       |
       | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[14].propertyPath | userGroupNames                                                         |
+      | violations[14].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin and change isWithAgeRanges to false and the ageRanges are not changed
@@ -178,6 +182,7 @@ Feature: Testing team change resource
       | walkNames               | array<>                 |
       | conceptOfDaySuggestions | array<>                 |
       | isWithAgeRanges         | <false>                 |
+      | isWithSystemicQuestion  | <true>                  |
       | isWithPeopleCount       | <false>                 |
       | isWithContactsCount     | <false>                 |
       | isWithUserGroups        | <false>                 |

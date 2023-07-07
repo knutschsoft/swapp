@@ -60,6 +60,7 @@ Feature: Testing team create resource
       | walkNames               | array<>                  |
       | conceptOfDaySuggestions | array<>                  |
       | isWithAgeRanges         | <true>                   |
+      | isWithSystemicQuestion  | <true>                   |
       | isWithPeopleCount       | <true>                   |
       | isWithContactsCount     | <false>                  |
       | isWithUserGroups        | <false>                  |
@@ -96,6 +97,7 @@ Feature: Testing team create resource
       | walkNames               | array<>                  |
       | conceptOfDaySuggestions | array<>                  |
       | isWithAgeRanges         | <false>                  |
+      | isWithSystemicQuestion  | <true>                   |
       | isWithPeopleCount       | <true>                   |
       | isWithContactsCount     | <false>                  |
       | isWithUserGroups        | <false>                  |
@@ -131,6 +133,7 @@ Feature: Testing team create resource
       | walkNames               | array<>                        |
       | conceptOfDaySuggestions | array<>                        |
       | isWithAgeRanges         | <true>                         |
+      | isWithSystemicQuestion  | <true>                         |
       | isWithPeopleCount       | <true>                         |
       | isWithContactsCount     | <true>                         |
       | isWithUserGroups        | <true>                         |
@@ -189,10 +192,12 @@ Feature: Testing team create resource
       | violations[9].message       | Dieser Wert sollte nicht null sein.                                    |
       | violations[10].propertyPath | isWithGuests                                                           |
       | violations[10].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[11].propertyPath | isWithContactsCount                                                    |
+      | violations[11].propertyPath | isWithSystemicQuestion                                                 |
       | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
-      | violations[12].propertyPath | isWithUserGroups                                                       |
+      | violations[12].propertyPath | isWithContactsCount                                                    |
       | violations[12].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[13].propertyPath | isWithUserGroups                                                       |
+      | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team

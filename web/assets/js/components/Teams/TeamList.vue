@@ -42,7 +42,7 @@
         <b-modal
             id="edit-modal-team"
             :title="`Team &quot;${editTeam ? editTeam.name : ''}&quot; bearbeiten`"
-            size="xl"
+            size="xxl"
             hide-footer
         >
             <team-form
@@ -201,6 +201,9 @@
                             if (item.isWithGuests) {
                                 additionalWayPointFields.push('Weitere Teilnehmende');
                             }
+                            if (item.isWithSystemicQuestion) {
+                                additionalWayPointFields.push('Systemische Frage');
+                            }
 
                             if (additionalWayPointFields.length) {
                                 return additionalWayPointFields.join(', ');
@@ -313,6 +316,7 @@
                     isWithContactsCount: team.isWithContactsCount,
                     isWithUserGroups: team.isWithUserGroups,
                     isWithGuests: team.isWithGuests,
+                    isWithSystemicQuestion: team.isWithSystemicQuestion,
                     guestNames: team.guestNames,
                 });
 

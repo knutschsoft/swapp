@@ -90,6 +90,9 @@ class Team
     private bool $isWithGuests;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithSystemicQuestion;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
 
     #[ORM\Column(type: 'boolean')]
@@ -101,6 +104,7 @@ class Team
         $this->userGroupNames = [];
         $this->guestNames = [];
         $this->isWithGuests = false;
+        $this->isWithSystemicQuestion = false;
         $this->isWithPeopleCount = false;
         $this->isWithAgeRanges = true;
         $this->locationNames = [];
@@ -270,6 +274,18 @@ class Team
     public function setIsWithGuests(bool $isWithGuests): void
     {
         $this->isWithGuests = $isWithGuests;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithSystemicQuestion')]
+    public function isWithSystemicQuestion(): bool
+    {
+        return $this->isWithSystemicQuestion;
+    }
+
+    public function setIsWithSystemicQuestion(bool $isWithSystemicQuestion): void
+    {
+        $this->isWithSystemicQuestion = $isWithSystemicQuestion;
     }
 
     #[Groups(['team:read'])]

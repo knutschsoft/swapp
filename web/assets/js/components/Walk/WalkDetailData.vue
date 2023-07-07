@@ -82,8 +82,12 @@
                     { name: 'Wetter', value: this.walk.weather },
                     { name: 'Beginn', value: this.formatDate(this.walk.startTime) },
                     { name: 'Ende', value: this.walk.isUnfinished ? '-' : this.formatDate(this.walk.endTime) },
-                    { name: 'Systemische Frage', value: this.walk.systemicQuestion },
-                    { name: 'Systemische Antwort', value: this.walk.systemicAnswer, nl2br: true },
+                 ];
+                if (this.walk.isWithSystemicQuestion) {
+                    fields.push({ name: 'Systemische Frage', value: this.walk.systemicQuestion });
+                    fields.push({ name: 'Systemische Antwort', value: this.walk.systemicAnswer, nl2br: true });
+                }
+                fields = fields.concat([
                     { name: 'Reflexion', value: this.walk.walkReflection, nl2br: true },
                     { name: 'Bewertung', value: this.walk.rating },
                     { name: 'Termine, Besorgungen, Verabredungen', value: this.walk.commitments, nl2br: true },
@@ -91,7 +95,7 @@
                     { name: 'Wiedervorlage Dienstberatung', value: this.walk.isResubmission ? 'ja' : 'nein' },
                     { name: 'Team', value: this.walk.teamName },
                     { name: 'Teilnehmende', value: this.walkTeamMembers.length ? this.walkTeamMembers.join(', ') : 'keine Teilnehmenden' },
-                ];
+                ]);
                 if (this.walk.isWithGuests) {
                     fields.push({ name: 'Weitere Teilnehmende', value: this.walk.guestNames && this.walk.guestNames.length ? this.walk.guestNames.join(', ') : 'keine weiteren Teilnehmenden' });
                 }

@@ -73,7 +73,7 @@ Feature: Testing tag enable resource
       | Gewalt | 1         |
 
   @api @apiTagEnable
-  Scenario: I can request /api/tags/enable as an superadmin and will enable a  tag
+  Scenario: I can request /api/tags/enable as an superadmin and will enable a tag
     And I can find the following tags in database:
       | name   | isEnabled |
       | Gewalt | 0         |

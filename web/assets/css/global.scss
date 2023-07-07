@@ -11,6 +11,8 @@ $grid-breakpoints: (
         xxl: 1600px
 );
 
+$modal-xxl: 1500px !default;
+
 $container-max-widths: (
         xxs: 320px,
         xs: 375px,
@@ -47,6 +49,12 @@ body {
     border: 0 !important;
     height: auto !important;
     width: 100% !important;
+  }
+}
+
+@include media-breakpoint-up(xxl) {
+  .modal-xxl {
+    max-width: $modal-xxl;
   }
 }
 

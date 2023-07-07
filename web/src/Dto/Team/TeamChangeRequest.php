@@ -52,6 +52,9 @@ final class TeamChangeRequest
     #[AppAssert\IsWithGuestsRequirements]
     public bool $isWithGuests;
 
+    #[AppAssert\IsWithSystemicQuestionRequirements]
+    public bool $isWithSystemicQuestion;
+
     #[AppAssert\IsWithContactsCountRequirements]
     public bool $isWithContactsCount;
 

@@ -180,7 +180,7 @@
             >
                 <b-row>
                     <b-col
-                        md="6"
+                        lg="6"
                     >
                         <b-card
                             bg-variant="light"
@@ -210,7 +210,7 @@
                                         v-for="(guestName, i) in team.guestNames"
                                         :key="i"
                                     >
-                                        <b-col cols="8" class="mb-1">
+                                        <b-col cols="10" class="mb-1">
                                             <b-input
                                                 v-model="team.guestNames[i]"
                                                 :aria-describedby="ariaDescribedby"
@@ -224,7 +224,7 @@
                                                 placeholder="Vorname, Nachname, Pseudonym"
                                             />
                                         </b-col>
-                                        <b-col cols="3" class="mb-1">
+                                        <b-col cols="2" class="mb-1">
                                             <div
                                                 class="cursor-pointer mt-1"
                                                 @click="removeGuestName(i)"
@@ -249,6 +249,49 @@
                                         </b-col>
                                     </b-row>
                                 </b-form-group>
+                            </b-card-body>
+                        </b-card>
+                    </b-col>
+                    <b-col
+                        lg="6"
+                    >
+                        <b-card
+                            bg-variant="light"
+                            no-body
+                        >
+                            <b-card-header>
+                                <b-form-checkbox
+                                    v-model="team.isWithSystemicQuestion"
+                                    :disabled="isDisabled"
+                                    switch
+                                >
+                                    Systemische Frage und Antwort darauf
+                                </b-form-checkbox>
+                            </b-card-header>
+                            <b-card-body
+                                v-if="team.isWithSystemicQuestion"
+                                tabindex="0"
+                                class="p-0"
+                            >
+                                <b-alert
+                                    show
+                                    class="w-100 text-muted mb-0"
+                                    variant="debug"
+                                >
+                                    <b>Hinweis:</b>
+                                    <ul class="mb-0">
+                                        <li>
+                                            Beim Abschluss einer Runde gibt es ein Reflexionsprotokoll mit einer systemischen Reflexionsfrage, welche u.a. einen
+                                            "psychohygienischen" Beitrag zum Abschluss der Streetwork leistet.
+                                        </li>
+                                        <li>
+                                            Dazu wird bei Abschluss einer Runde zufällig eine dieser Fragen gestellt, welche beantwortet werden muss.
+                                        </li>
+                                        <li>
+                                            Diese Fragen können im Navigations-Tab "Systemische Fragen" übergreifend für alle Teams definiert werden.
+                                        </li>
+                                    </ul>
+                                </b-alert>
                             </b-card-body>
                         </b-card>
                     </b-col>
@@ -598,6 +641,7 @@ export default {
                 isWithPeopleCount: isWithPeopleCountDefault,
                 isWithContactsCount: false,
                 isWithGuests: false,
+                isWithSystemicQuestion: false,
                 isWithUserGroups: false,
                 users: [],
                 ageRanges: [],
@@ -743,6 +787,7 @@ export default {
                 this.team.isWithPeopleCount = false;
                 this.team.isWithContactsCount = false;
                 this.team.isWithGuests = false;
+                this.team.isWithSystemicQuestion = false;
                 this.team.isWithUserGroups = false;
                 this.team.users = [];
                 this.team.ageRanges = [];

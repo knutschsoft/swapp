@@ -9,8 +9,8 @@ Feature: Testing walk change of time resource
       | karl@gamer.de  |            | gamer@gmx.de |
       | admin@gamer.de | ROLE_ADMIN | gamer@gmx.de |
     Given the following teams exists:
-      | name   | users         | ageRanges | client       |
-      | Gamers | karl@gamer.de |           | gamer@gmx.de |
+      | name   | users         | ageRanges | client       | isWithSystemicQuestion |
+      | Gamers | karl@gamer.de |           | gamer@gmx.de | <true>                 |
     Given the following systemic questions exists:
       | question     | client       |
       | How are you? | gamer@gmx.de |

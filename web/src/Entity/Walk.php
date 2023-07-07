@@ -186,6 +186,9 @@ class Walk
     private bool $isWithGuests;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithSystemicQuestion;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithAgeRanges;
 
     #[ORM\Column(type: 'boolean')]
@@ -212,13 +215,15 @@ class Walk
         $this->conceptOfDay = [];
         $this->commitments = '';
         $this->insights = '';
+        $this->isWithSystemicQuestion = false;
+        $this->systemicQuestion = '';
         $this->systemicAnswer = '';
         $this->walkReflection = '';
         $this->endTime = null;
         $this->isUnfinished = true;
     }
 
-    public static function fromWalkCreateRequest(WalkCreateRequest $request, SystemicQuestion $systemicQuestion): self
+    public static function fromWalkCreateRequest(WalkCreateRequest $request): self
     {
         $instance = new self();
         $team = $request->team;
@@ -241,8 +246,10 @@ class Walk
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
         $instance->setRating(1);
-        $instance->setSystemicAnswer('');
-        $instance->setSystemicQuestion($systemicQuestion->getQuestion());
+        $instance->setIsWithSystemicQuestion($team->isWithSystemicQuestion());
+        if ($instance->isWithSystemicQuestion()) {
+            $instance->setSystemicAnswer('');
+        }
         $instance->setWalkReflection('');
         $instance->setWeather($request->weather);
         $instance->setIsResubmission(false);
@@ -309,6 +316,18 @@ class Walk
     public function setSystemicQuestion(string $systemicQuestion): void
     {
         $this->systemicQuestion = $systemicQuestion;
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithSystemicQuestion')]
+    public function isWithSystemicQuestion(): bool
+    {
+        return $this->isWithSystemicQuestion;
+    }
+
+    public function setIsWithSystemicQuestion(bool $isWithSystemicQuestion): void
+    {
+        $this->isWithSystemicQuestion = $isWithSystemicQuestion;
     }
 
     #[Groups(['walk:read'])]

@@ -239,6 +239,7 @@
                     />
                 </b-form-group>
                 <b-form-group
+                    v-if="walk.isWithSystemicQuestion"
                     content-cols="12"
                     label-cols="12"
                     content-cols-lg="10"
@@ -249,7 +250,7 @@
                     :state="systemicAnswerState"
                 >
                     <template v-slot:label>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between flex-wrap">
                             <div :class="isWithoutSystemicAnswer ? `text-muted` : ``">
                                 Systemische Antwort
                             </div>
@@ -287,7 +288,7 @@
                     :state="walkReflectionState"
                 >
                     <template v-slot:label>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between flex-wrap">
                             <div :class="isWithoutWalkReflection ? `text-muted` : ``">
                                 Reflexion
                             </div>
@@ -342,7 +343,7 @@
                     :state="commitmentsState"
                 >
                     <template v-slot:label>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between flex-wrap">
                             <div :class="isWithoutCommitments ? `text-muted` : ``">
                                 Termine, Besorgungen, Verabredungen
                             </div>
@@ -377,7 +378,7 @@
                     :state="insightsState"
                 >
                     <template v-slot:label>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between flex-wrap">
                             <div :class="isWithoutInsights ? `text-muted` : ``">
                                 Erkenntnisse, Überlegungen, Zielsetzungen
                             </div>
@@ -796,7 +797,7 @@ export default {
         if (!this.team) {
             await this.$store.dispatch('team/findAll');
         }
-
+        this.isWithoutSystemicAnswer = !this.walk.isWithSystemicQuestion;
         this.form.walk = this.walk['@id'];
         this.initialConceptOfDay = this.walk.conceptOfDay;
         this.initialWalkName = this.walk.name;

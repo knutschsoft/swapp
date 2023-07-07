@@ -24,7 +24,9 @@ final class WalkChangeHandler
         $walk->setCommitments($request->commitments);
         $walk->setConceptOfDay($request->conceptOfDay);
         $walk->setInsights($request->insights);
-        $walk->setSystemicAnswer($request->systemicAnswer);
+        if ($walk->isWithSystemicQuestion()) {
+            $walk->setSystemicAnswer($request->systemicAnswer);
+        }
         $walk->setWalkReflection($request->walkReflection);
         $walk->setWeather($request->weather);
         $walk->setStartTime($request->startTime);

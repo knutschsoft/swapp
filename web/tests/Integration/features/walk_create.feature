@@ -15,10 +15,10 @@ Feature: Testing walk create resource
       | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
       | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following teams exists:
-      | name     | users                  | ageRanges          | client        |
-      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | Gamers   | karl@gamer.de          |                    | gamer@gmx.de  |
+      | name     | users                  | ageRanges          | client        | isWithSystemicQuestion |
+      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 | client@gmx.de | <true>                 |
+      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 | client@gmx.de | <true>                 |
+      | Gamers   | karl@gamer.de          |                    | gamer@gmx.de  | <true>                 |
     Given the following systemic questions exists:
       | question       | client        |
       | Esta muy bien? | client@gmx.de |
@@ -245,7 +245,7 @@ Feature: Testing walk create resource
     And there are exactly 3 walks in database
 
   @api @walkCreate @systemicQuestion
-  Scenario: I can request /api/walks/create as authenticated user of another client and will have this clients systemic question    Given I am authenticated against api as "karl@gmx.de"
+  Scenario: I can request /api/walks/create as authenticated user of another client and will have this clients systemic question
     Given I am authenticated against api as "karl@gamer.de"
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
       | key             | value                   |
