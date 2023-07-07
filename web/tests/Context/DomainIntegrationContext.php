@@ -482,7 +482,12 @@ final class DomainIntegrationContext extends RawMinkContext
                 Assert::eq($team->isWithUserGroups(), (bool) $this->enrichText($row['isWithUserGroups']));
             }
             if (isset($row['client']) && '' !== $row['client']) {
-                Assert::eq($team->getClient()->getId(), $this->getClientByEmail($row['client']));
+                $expectedClient = $this->getClientByEmail($row['client']);
+                Assert::eq(
+                    $team->getClient()->getId(),
+                    $expectedClient->getId(),
+                    \sprintf('Found client "%s" instead of "%s" for team with name "%s".', $team->getClient()->getName(), $expectedClient->getName(), $team->getName())
+                );
             }
             if (isset($row['users'])) {
                 $expectedUsers = $this->getUsersFromString($row['walkTeamMembers']);

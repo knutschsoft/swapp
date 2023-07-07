@@ -326,7 +326,7 @@ final class AcceptanceContext extends MinkContext
             $element->attachFile($path);
             // sleep(5); // maybe needed for big files but chrome is crashing nonetheless
         } else {
-            $element->setValue($value);
+            $element->setValue($this->enrichText($value));
         }
     }
 

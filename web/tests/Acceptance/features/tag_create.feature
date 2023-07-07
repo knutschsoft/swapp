@@ -1,4 +1,4 @@
-Feature: A user can do a walk
+Feature: An user can create a tag
 
   Background:
     Given the following clients exists:

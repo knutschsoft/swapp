@@ -39,6 +39,7 @@
                             :aria-describedby="ariaDescribedby"
                             :disabled="isDisabled"
                             :state="nameState"
+                            data-test="name"
                             trim
                         />
                     </b-form-group>

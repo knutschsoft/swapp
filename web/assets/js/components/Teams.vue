@@ -42,6 +42,8 @@
                     client: team['client'],
                     name: team.name,
                     locationNames: team.locationNames,
+                    walkNames: team.walkNames,
+                    conceptOfDaySuggestions: team.conceptOfDaySuggestions,
                     users: team.users,
                     ageRanges: team.ageRanges,
                     isWithAgeRanges: team.isWithAgeRanges,
