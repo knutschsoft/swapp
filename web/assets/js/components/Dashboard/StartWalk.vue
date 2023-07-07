@@ -60,6 +60,17 @@
             </b-input-group-append>
         </b-input-group>
         <div
+            v-else-if="!teams.length"
+            class="p-2 text-muted"
+        >
+            Um mit der Dokumentation zu beginnen, musst Du zuerst
+            <router-link
+                class="btn btn-link px-0"
+                :to="{ name: 'Teams' }"
+                title="Teamverwaltung"
+            >ein neues Team anlegen</router-link>.
+        </div>
+        <div
             v-else
             class="p-2 text-muted"
         >
