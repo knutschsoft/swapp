@@ -43,7 +43,7 @@
                                     class="text-info"
                                 />
                                 <mdicon
-                                    v-if="getUserByIri(userIri).roles.indexOf('ROLE_ADMIN') !== -1"
+                                    v-if="isUserAdminByIri(userIri)"
                                     name="AccountSupervisor"
                                     size="16"
                                     class="text-primary"
@@ -59,7 +59,7 @@
                         </template>
                         <li
                             v-if="row.item.users.length >= 5"
-                        >{{ row.item.users.length - 5 }} weitere Benutzerasdf</li>
+                        >{{ row.item.users.length - 5 }} weitere Benutzer</li>
                     </ul>
                 </div>
             </template>
@@ -172,6 +172,14 @@ export default {
     methods: {
         getUserByIri(userIri) {
             return this.$store.getters['user/getUserByIri'](userIri);
+        },
+        isUserAdminByIri(userIri) {
+            const user = this.getUserByIri(userIri);
+            if (!user) {
+                return false;
+            }
+
+            return user.roles.indexOf('ROLE_ADMIN') !== -1;
         },
         editClient(client) {
             this.$root.$emit('bv::show::modal', this.editModalClient.id);
