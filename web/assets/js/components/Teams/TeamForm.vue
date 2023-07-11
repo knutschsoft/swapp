@@ -469,6 +469,16 @@
                                                 <li>nie genutzt - nutzungsberechtigt</li>
                                                 <li>nie genutzt - nicht nutzungsberechtigt</li>
                                             </ul>
+                                            Alternativ können auch herausgegegebene Utensilien erfasst werden:
+                                            <ul class="mb-0">
+                                                <li>Spritzenvergabe</li>
+                                                <li>Alkoholtupfer</li>
+                                                <li>Filteraufsätze</li>
+                                                <li>sterile Wasserampullen</li>
+                                                <li>Einmallöffel</li>
+                                                <li>Kondome</li>
+                                            </ul>
+                                            Hinweis: Die Werte werden für beim Runden-CSV-Export zusammenaddiert.
                                         </b-form-text>
                                     </template>
                                     <template
@@ -482,7 +492,6 @@
                                             <b-col cols="8" class="mb-1">
                                                 <b-input
                                                     v-model="team.userGroupNames[i].name"
-                                                    :aria-describedby="ariaDescribedby"
                                                     :disabled="isDisabled"
                                                     type="text"
                                                     :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
