@@ -291,13 +291,12 @@
             />
         </b-form-group>
         <form-group label="Rundenbewertung">
-            <star-rating
-                v-model="walk.rating"
-                data-test="rating"
-                :increment="1"
-                :max-rating="5"
+            <walk-rating
+                v-if="walk.rating && walkClient"
+                :rating="walk.rating"
+                :client="walkClient"
                 :read-only="isLoading"
-                :show-rating="true"
+                @select-rating="walk.rating = $event"
             />
         </form-group>
         <b-form-group
@@ -401,6 +400,7 @@ import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
 import { StarRating } from 'vue-rate-it';
+import WalkRating from './WalkRating.vue';
 
 export default {
     name: 'WalkForm',
@@ -416,6 +416,7 @@ export default {
         },
     },
     components: {
+        WalkRating,
         FormGroup,
         FormError,
         StarRating,
@@ -481,6 +482,9 @@ export default {
         };
     },
     computed: {
+        walkClient() {
+            return this.$store.getters['client/getClientByIri'](this.initialWalk.client || this.currentUser.client);
+        },
         hasLastWayPoint() {
             return this.initialWalk.wayPoints.length > 0;
         },

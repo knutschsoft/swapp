@@ -259,6 +259,16 @@
             :sort-desc.sync="sortDesc"
             :sort-direction="sortDirection"
         >
+            <template v-slot:cell(rating)="row">
+                <walk-rating
+                    v-if="getClientByIri(row.item.client)"
+                    :rating="row.item.rating"
+                    :client="getClientByIri(row.item.client)"
+                    :item-size="30"
+                    :show-rating="false"
+                    read-only
+                />
+            </template>
             <template v-slot:cell(actions)="row">
                 <div class="d-flex justify-content-around">
                     <router-link
@@ -313,14 +323,15 @@
 'use strict';
 import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
-import formatter from '../../utils/formatter.js';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import WalkAPI from '../../api/walk.js';
 import dayjs from 'dayjs';
+import WalkRating from '../Walk/WalkRating.vue';
 
 export default {
     name: 'WalkList',
     components: {
+        WalkRating,
         DateRangePicker,
         MyInputGroupAppend,
     },
@@ -385,7 +396,7 @@ export default {
             ],
             fields: [
                 { key: 'name', label: 'Name', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'rating', label: 'Bewertung', sortable: true, class: 'text-center align-middle', formatter: (value) => {return formatter.formatRating(value);} },
+                { key: 'rating', label: 'Bewertung', sortable: true, class: 'text-center align-middle' },
                 { key: 'startTime', label: 'Beginn', sortable: true, class: 'text-center align-middle', formatter: (value) => {return this.formatStartDate(value);} },
                 { key: 'endTime', label: 'Ende', sortable: false, class: 'text-center align-middle',
                     formatter: (value, key, item) => {
@@ -465,6 +476,9 @@ export default {
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
     methods: {
+        getClientByIri(clientIri) {
+            return this.$store.getters['client/getClientByIri'](clientIri);
+        },
         formatStartDate: function (dateString) {
             let date = new Date(dateString);
             return date.toLocaleDateString('de-DE', { weekday: 'short', hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit' });

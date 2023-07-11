@@ -5,3 +5,7 @@ flysystem:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/public/images/way_points'
+        client-rating.image.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/public/images/client_rating'

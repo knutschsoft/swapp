@@ -21,7 +21,7 @@ class ClientVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return \in_array($attribute, [self::READ, self::EDIT], true)
+        return \in_array($attribute, [self::READ, self::EDIT, self::CREATE], true)
             && $subject instanceof Client;
     }
 
@@ -36,9 +36,6 @@ class ClientVoter extends Voter
         if ($this->security->isGranted(User::ROLE_SUPER_ADMIN)) {
             return true;
         }
-        if (self::READ === $attribute) {
-            return false;
-        }
 
         /** @var Client $client */
         $client = $subject;
@@ -47,6 +44,7 @@ class ClientVoter extends Voter
             case self::READ:
                 return $client->getUsers()->contains($user);
             case self::EDIT:
+            case self::CREATE:
                 return false;
         }
 

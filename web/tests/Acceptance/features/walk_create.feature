@@ -25,7 +25,7 @@ Feature: A user can do a walk
     Given I am authenticated as "lonely@gmx.de"
     And I should be on "/dashboard"
     Then I wait for "Neue Streetwork-Runde" to appear
-    Then I wait for "Du bist aktuell keinem Team zugeordnet." to appear
+    Then I wait for "Um eine neue Runde zu erstellen, musst Du zuerst ein neues Team anlegen." to appear
     Then I wait for "Runde beginnen" to disappear
 
   @javascript

@@ -115,16 +115,6 @@
             }
         },
         computed: {
-            hasSelectedTeamSystemicQuestionsAvailable() {
-                if (!this.selectedTeam) {
-                    return false;
-                }
-                if (this.selectedTeam.isWithSystemicQuestion) {
-                    return this.$store.getters["systemicQuestion/systemicQuestions"].filter(systemicQuestion => systemicQuestion.isEnabled).length > 0;
-                }
-
-                return true;
-            },
             hasTeams() {
                 return this.$store.getters["team/hasTeams"];
             },
@@ -172,7 +162,21 @@
         methods: {
             handleWalkPrologue: async function () {
                 this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam.id} })
-            }
+            },
+            async hasSelectedTeamSystemicQuestionsAvailable() {
+                if (!this.selectedTeam) {
+                    return false;
+                }
+                if (this.selectedTeam.isWithSystemicQuestion) {
+                    if (!this.$store.getters["systemicQuestion/hasSystemicQuestions"]) {
+                        await this.$store.dispatch('systemicQuestion/findAll');
+                    }
+
+                    return this.$store.getters["systemicQuestion/systemicQuestions"].filter(systemicQuestion => systemicQuestion.isEnabled).length > 0;
+                }
+
+                return true;
+            },
         }
     }
 </script>

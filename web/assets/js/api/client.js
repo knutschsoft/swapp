@@ -25,7 +25,10 @@ export default {
         return axios.get(`/api/clients?page=${params.page}&itemsPerPage=${params.itemsPerPage}` + sort);
     },
     findOneById(clientId) {
-        return axios.get('/api/clients/' + clientId);
+        return this.findOneByIri('/api/clients/' + clientId);
+    },
+    findOneByIri(clientIri) {
+        return axios.get(clientIri);
     },
     create(payload) {
         return axios.post('/api/clients/create', payload);

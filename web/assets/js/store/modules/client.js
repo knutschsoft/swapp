@@ -25,6 +25,20 @@ const state = {
     isLoadingChange: false,
 };
 
+function replaceObjectInState(state, object) {
+    let isReplaced = false;
+    state.clients.forEach(function (oldObject, key) {
+        if (oldObject['@id'] === object['@id']) {
+            // see: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+            state.clients.splice(key, 1, object);
+            isReplaced = true;
+        }
+    });
+    if (!isReplaced) {
+        state.clients = [ ...state.clients, object ];
+    }
+}
+
 const getters = {
     clients(state) {
         return state.clients;
@@ -82,7 +96,7 @@ const mutations = {
     [FETCHING_CLIENTS_SUCCESS](state, clients) {
         state.error = null;
         state.isLoading = false;
-        state.clients = clients['hydra:member'];
+        clients['hydra:member'].forEach(client => replaceObjectInState(state, client));
         state.totalClients = clients['hydra:totalItems'];
     },
     [FETCHING_CLIENTS_ERROR](state, error) {
@@ -96,14 +110,7 @@ const mutations = {
     [FETCHING_CLIENT_SUCCESS](state, client) {
         state.error = null;
         state.isLoading = false;
-        let fetchedClient = client;
-        state.clients.forEach((client, index) => {
-            if (String(fetchedClient.id) === String(client.id)) {
-                state.clients.splice(index, 1);
-            }
-        });
-
-        state.clients = [...state.clients, fetchedClient];
+        replaceObjectInState(state, client);
     },
     [FETCHING_CLIENT_ERROR](state, error) {
         state.error = error;
@@ -116,14 +123,7 @@ const mutations = {
     [ADDING_CLIENT_SUCCESS](state, client) {
         state.changeClientError = null;
         state.isLoadingChange = false;
-        let fetchedClient = client;
-        state.clients.forEach((client, index) => {
-            if (String(fetchedClient.id) === String(client.id)) {
-                state.clients.splice(index, 1);
-            }
-        });
-
-        state.clients = [...state.clients, fetchedClient];
+        replaceObjectInState(state, client);
     },
     [ADDING_CLIENT_ERROR](state, error) {
         state.changeClientError = error;
@@ -136,14 +136,7 @@ const mutations = {
     [CHANGING_CLIENT_SUCCESS](state, client) {
         state.changeClientError = null;
         state.isLoadingChange = false;
-        let fetchedClient = client;
-        state.clients.forEach((client, index) => {
-            if (String(fetchedClient.id) === String(client.id)) {
-                state.clients.splice(index, 1);
-            }
-        });
-
-        state.clients = [...state.clients, fetchedClient];
+        replaceObjectInState(state, client);
     },
     [CHANGING_CLIENT_ERROR](state, error) {
         state.changeClientError = error;
@@ -167,6 +160,15 @@ const actions = {
         commit(FETCHING_CLIENT);
         try {
             let response = await ClientAPI.findOneById(clientId);
+            commit(FETCHING_CLIENT_SUCCESS, response.data);
+        } catch (error) {
+            commit(FETCHING_CLIENT_ERROR, error);
+        }
+    },
+    async findByIri({ commit }, clientIri) {
+        commit(FETCHING_CLIENT);
+        try {
+            let response = await ClientAPI.findOneByIri(clientIri);
             commit(FETCHING_CLIENT_SUCCESS, response.data);
         } catch (error) {
             commit(FETCHING_CLIENT_ERROR, error);

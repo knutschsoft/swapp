@@ -2,14 +2,14 @@
     <div>
         <content-collapse
             title="Liste der Klienten"
-            collapse-key="client-list"
+            collapse-key="header-client-list"
             is-visible-by-default
         >
             <client-list />
         </content-collapse>
         <content-collapse
             title="Neuen Klienten erstellen"
-            collapse-key="client-list"
+            collapse-key="header-client-create"
             is-visible-by-default
         >
             <client-create />

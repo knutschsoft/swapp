@@ -17,12 +17,11 @@
                     tag="div"
                     class-name="text-left"
                 />
-                <star-rating
-                    v-else-if="'Bewertung' === field.name"
-                    v-model="field.value"
-                    :max-rating="5"
+                <walk-rating
+                    v-else-if="'Bewertung' === field.name && walkClient"
+                    :rating="field.value"
+                    :client="walkClient"
                     :read-only="true"
-                    :show-rating="true"
                 />
                 <template
                     v-else
@@ -36,12 +35,12 @@
 
 <script>
     "use strict";
-    import { StarRating } from 'vue-rate-it';
+    import WalkRating from './WalkRating.vue';
 
     export default {
         name: "WalkDetailData",
         components: {
-            StarRating,
+            WalkRating,
         },
         props: {
             walkId: {
@@ -53,6 +52,9 @@
             }
         },
         computed: {
+            walkClient() {
+                return this.$store.getters['client/getClientByIri'](this.walk.client);
+            },
             isLoading() {
                 return this.$store.getters["walk/isLoading"] || this.$store.getters["wayPoint/isLoading"];
             },

@@ -88,6 +88,10 @@ class Client
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Walk::class)]
     private Collection $walks;
 
+    #[ORM\Column(name: 'rating_image_name', type: 'string', length: 255, nullable: true)]
+    private ?string $ratingImageName = null;
+    private string $ratingImageSrc;
+
     public function __construct()
     {
         $this->systemicQuestions = new ArrayCollection();
@@ -95,6 +99,7 @@ class Client
         $this->tags = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->walks = new ArrayCollection();
+        $this->ratingImageSrc = '';
     }
 
     public static function fromClientInitRequest(ClientCreateRequest $request): self
@@ -103,6 +108,9 @@ class Client
         $instance->name = \trim($request->name);
         $instance->email = \trim($request->email);
         $instance->description = \trim($request->description);
+        if ($request->ratingImageFileName) {
+            $instance->setRatingImageName(\sprintf("%s_%s", \time(), $request->ratingImageFileName));
+        }
 
         return $instance;
     }
@@ -226,5 +234,30 @@ class Client
     {
         $walk->updateClient($this);
         $this->walks->add($walk);
+    }
+
+    public function getRatingImageName(): ?string
+    {
+        return $this->ratingImageName;
+    }
+
+    public function getRatingImageSrc(): string
+    {
+        return $this->ratingImageSrc;
+    }
+
+    public function setRatingImageSrc(string $ratingImageSrc): void
+    {
+        $this->ratingImageSrc = $ratingImageSrc;
+    }
+
+    public function setRatingImageName(string $ratingImageName): void
+    {
+        $this->ratingImageName = $ratingImageName;
+    }
+
+    public function unsetRatingImageName(): void
+    {
+        $this->ratingImageName = null;
     }
 }

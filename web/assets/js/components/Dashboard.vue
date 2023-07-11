@@ -80,11 +80,10 @@
                 return this.$store.getters["team/teams"];
             },
         },
-        async created() {
-            // await this.$store.dispatch("team/findAll");
-            // await this.$store.dispatch("walk/findAll");
+        created() {
         },
-        mounted() {
+        async mounted() {
+            await this.$store.dispatch("client/findAll");
         },
         methods: {
             updateTotalWayPoints(totalWayPoints) {

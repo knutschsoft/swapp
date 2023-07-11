@@ -142,6 +142,7 @@
                 this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
                 return;
             }
+            await this.$store.dispatch('client/findByIri', this.walk.client);
 
             let wayPointPromises = [];
             let wayPointPromiseIds = [];

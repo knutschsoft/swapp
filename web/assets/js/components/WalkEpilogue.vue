@@ -323,13 +323,11 @@
                     description=""
                     :disabled="isLoading"
                 >
-                    <star-rating
-                        v-model="form.rating"
-                        data-test="rating"
-                        :increment="1"
-                        :max-rating="5"
+                    <walk-rating
+                        v-if="walkClient && form.rating"
+                        :rating="form.rating"
+                        :client="walkClient"
                         :read-only="isLoading"
-                        :show-rating="true"
                     />
                 </b-form-group>
                 <b-form-group
@@ -461,7 +459,7 @@
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
 import WayPointList from './Walk/WayPointList';
-import { StarRating } from 'vue-rate-it';
+import WalkRating from './Walk/WalkRating';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
 
@@ -471,7 +469,7 @@ export default {
         ContentCollapse,
         GlobalFormError,
         WayPointList,
-        StarRating,
+        WalkRating,
     },
     props: {
         walkId: {
@@ -543,6 +541,9 @@ export default {
         };
     },
     computed: {
+        walkClient() {
+            return this.$store.getters['client/getClientByIri'](this.walk.client);
+        },
         hasLastWayPoint() {
             return this.walk.wayPoints.length > 0;
         },
@@ -796,6 +797,9 @@ export default {
         }
         if (!this.team) {
             await this.$store.dispatch('team/findAll');
+        }
+        if (!this.walkClient) {
+            await this.$store.dispatch('client/findByIri', this.walk.client);
         }
         this.isWithoutSystemicAnswer = !this.walk.isWithSystemicQuestion;
         this.form.walk = this.walk['@id'];
