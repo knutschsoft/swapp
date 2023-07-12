@@ -11,6 +11,43 @@ const
 const state = {
     changelogs: [
         {
+            header: 'xx.07.2023',
+            avatarText: '&#10067;',
+            avatarTitle: '',
+            entries: [
+                {
+                    text: [
+                        'Feature: Die systemischen Fragen am Ende einer Runde können deaktiviert werden.',
+                        'Dazu kann ein Administrator pro Team die systemischen Fragen und Antworten aktivieren bzw. deaktivieren.',
+                        'Bei bereits existierenden Teams sind die systemischen Fragen aktiviert.',
+                        'Use Case: Einige Teams benötigen die systemischen Fragen nicht. Dadurch werden beim Rundenabschluss weniger Klicks und Eingaben benötigt.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230712_Systemische_Frage_Teamformular_deaktiviert.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung von deaktivierten Systemischen Fragen auf dem "Team"-Formular (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20230712_Systemische_Frage_Teamformular_aktiviert.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung von aktivierten Systemischen Fragen auf dem "Team"-Formular (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20230712_Systemische_Frage_Runde_beenden_Formular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung im "Runde beenden"-Formular (links: vorher - rechts: neu mit deaktiverter Erfassung der systemischen Frage)',
+                        },
+                        {
+                            src: '../changelog/20230501_Systemische_Frage_Systemische_Fragen_Formular.png',
+                            thumbnailHeight: '100px',
+                            description: 'Neuer Hinweistext im "Systemische Fragen"-Formular (links: vorher - rechts: neu)',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
             header: '01.05.2023',
             avatarText: '&#128119;',
             avatarTitle: 'Tag der Arbeit',
@@ -34,7 +71,7 @@ const state = {
                         },
                         {
                             src: '../changelog/20230501_Namen_einer_Runde_Teamliste.png',
-                            thumbnailHeight: '100px',
+                            thumbnailHeight: '80px',
                             description: 'Darstellung in der Teamliste',
                         },
                     ],
@@ -58,7 +95,7 @@ const state = {
                         },
                         {
                             src: '../changelog/20230501_Tageskonzept_einer_Runde_Teamliste.png',
-                            thumbnailHeight: '100px',
+                            thumbnailHeight: '80px',
                             description: 'Darstellung in der Teamliste',
                         },
                     ],
