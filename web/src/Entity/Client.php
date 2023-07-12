@@ -50,7 +50,7 @@ class Client
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     protected $createdAt; // phpcs:ignore
 
-    /** @Gedmo\Timestampable(on="create") **/
+    /** @Gedmo\Timestampable(on="update") **/
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     protected $updatedAt; // phpcs:ignore
 
