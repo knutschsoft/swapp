@@ -212,6 +212,18 @@
                         >
                             FAQ - Häufig gestellte Fragen
                         </b-dropdown-item>
+                        <b-dropdown-divider />
+                        <b-dropdown-item
+                            href="https://streetworkapp.de"
+                            target="_blank"
+                        >
+                            Swapp-Homepage
+                            <mdicon
+                                name="open-in-new"
+                                size="14"
+                            />
+                            <span class="text-muted">https://streetworkapp.de</span>
+                        </b-dropdown-item>
                         <b-dropdown-divider v-if="!isUserSwitched && isSuperAdmin" />
                         <b-dropdown-form
                             v-if="!isUserSwitched && isSuperAdmin"
