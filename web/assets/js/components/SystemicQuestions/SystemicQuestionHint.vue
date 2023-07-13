@@ -14,7 +14,7 @@
             </li>
             <li>
                 Die systemischen Fragen sind nur für
-                <router-link to="{name: 'Teams'}">Teams</router-link>
+                <router-link :to="{name: 'Teams'}">Teams</router-link>
                 relevant, für die systemische Fragen aktiviert sind.
                 <br>
                 <template
