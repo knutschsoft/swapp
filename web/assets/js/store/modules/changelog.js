@@ -39,7 +39,7 @@ const state = {
                             description: 'Darstellung im "Runde beenden"-Formular (links: vorher - rechts: neu mit deaktiverter Erfassung der systemischen Frage)',
                         },
                         {
-                            src: '../changelog/20230501_Systemische_Frage_Systemische_Fragen_Formular.png',
+                            src: '../changelog/20230712_Systemische_Frage_Systemische_Fragen_Formular.png',
                             thumbnailHeight: '100px',
                             description: 'Neuer Hinweistext im "Systemische Fragen"-Formular (links: vorher - rechts: neu)',
                         },
