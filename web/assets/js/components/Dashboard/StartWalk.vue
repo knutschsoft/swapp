@@ -152,30 +152,29 @@
 
                 return options;
             },
+            hasSelectedTeamSystemicQuestionsAvailable() {
+                if (!this.selectedTeam) {
+                    return false;
+                }
+                if (this.selectedTeam.isWithSystemicQuestion) {
+                    return this.$store.getters["systemicQuestion/systemicQuestions"].filter(systemicQuestion => systemicQuestion.isEnabled).length > 0;
+                }
+
+                return true;
+            },
         },
         async created() {
             await this.$store.dispatch("team/findAll");
             if (this.selectableTeams.length) {
                 this.selectedTeam = this.selectableTeams[0].value;
             }
+            if (this.teams.some(team => team.isWithSystemicQuestion)) {
+                await this.$store.dispatch('systemicQuestion/findAll');
+            }
         },
         methods: {
             handleWalkPrologue: async function () {
                 this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam.id} })
-            },
-            async hasSelectedTeamSystemicQuestionsAvailable() {
-                if (!this.selectedTeam) {
-                    return false;
-                }
-                if (this.selectedTeam.isWithSystemicQuestion) {
-                    if (!this.$store.getters["systemicQuestion/hasSystemicQuestions"]) {
-                        await this.$store.dispatch('systemicQuestion/findAll');
-                    }
-
-                    return this.$store.getters["systemicQuestion/systemicQuestions"].filter(systemicQuestion => systemicQuestion.isEnabled).length > 0;
-                }
-
-                return true;
             },
         }
     }
