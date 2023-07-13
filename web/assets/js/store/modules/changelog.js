@@ -64,6 +64,12 @@ const state = {
                         },
                     ],
                 },
+                {
+                    text: [
+                        'Fix: Auf dem Dashboard in der Rundenliste wird keine Bewertung angezeigt, wenn die Runde noch nicht abgeschlossen ist.',
+                        'Bisher wurde immer die Bewertung von 1 angezeigt. Nun wird ein "-" angezeigt.',
+                    ],
+                },
             ],
         },
         {

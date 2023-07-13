@@ -261,13 +261,16 @@
         >
             <template v-slot:cell(rating)="row">
                 <walk-rating
-                    v-if="getClientByIri(row.item.client)"
+                    v-if="!row.item.isUnfinished && getClientByIri(row.item.client)"
                     :rating="row.item.rating"
                     :client="getClientByIri(row.item.client)"
                     :item-size="30"
                     :show-rating="false"
                     read-only
                 />
+                <template
+                    v-else
+                >-</template>
             </template>
             <template v-slot:cell(actions)="row">
                 <div class="d-flex justify-content-around">
