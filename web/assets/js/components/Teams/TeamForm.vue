@@ -478,7 +478,7 @@
                                                 <li>Einmallöffel</li>
                                                 <li>Kondome</li>
                                             </ul>
-                                            Hinweis: Die Werte werden für beim Runden-CSV-Export zusammenaddiert.
+                                            Hinweis: Die Werte werden beim Runden-CSV-Export zusammenaddiert.
                                         </b-form-text>
                                     </template>
                                     <template
