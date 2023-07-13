@@ -194,8 +194,10 @@ export default {
             window.setTimeout(() => this.isCopiedTessa = false, 3000);
         },
         doCopy(copyText) {
+            this.$emit('credentials-select', {username: copyText, password: copyText});
+
             this.$copyText(copyText).then(() => {
-                this.$bvToast.toast(`"${copyText}" ist nun in deiner Zwischenablage.`, {
+                this.$bvToast.toast(`"${copyText}" ist nun in deiner Zwischenablage sowie in den Anmeldefeldern.`, {
                     title: 'Zugangsdaten in die Zwischenablage kopiert',
                     toaster: 'b-toaster-top-right',
                     autoHideDelay: 10000,

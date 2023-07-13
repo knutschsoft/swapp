@@ -154,7 +154,9 @@
                     </b-input-group>
                 </b-form>
             </div>
-            <DemoInfo />
+            <DemoInfo
+                @credentials-select="handleCredentialsSelect($event)"
+            />
         </div>
     </div>
 </template>
@@ -208,6 +210,10 @@
             }
         },
         methods: {
+            handleCredentialsSelect(credentials) {
+                this.username = credentials.username;
+                this.password = credentials.password;
+            },
             async performLogin() {
                 if ('text' === this.passwordFieldType) {
                     // ensure that password can be saved via browser
