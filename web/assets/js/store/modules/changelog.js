@@ -45,6 +45,25 @@ const state = {
                         },
                     ],
                 },
+                {
+                    text: [
+                        'UX-Feature: Das Bild für die Auswahl der Bewertung kann nun über ein selbstgewähltes Bild anstelle eines Sternes ausgewählt werden.',
+                        'Damit wird ein weiteres Stück Gamification ermöglicht.',
+                        'Use Case: Der Träger kommt aus dem Drogenmilieu und identifiziert sich mehr mit Spritzen als mit Sternchen.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230712_Dashboard_Rundenbewertung_mit_eigenem_Bild_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des eigenen Bewertungsbildes auf dem Dashboard',
+                        },
+                        {
+                            src: '../changelog/20230712_Dashboard_Rundenbewertung_mit_eigenem_Bild_vorher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Bisherige Darstellung ohne eigenes Bewertungsbild auf dem Dashboard',
+                        },
+                    ],
+                },
             ],
         },
         {
