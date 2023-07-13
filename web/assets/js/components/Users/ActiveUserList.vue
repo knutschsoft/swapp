@@ -173,6 +173,7 @@ import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import UserAPI from '../../api/user';
 import dayjs from 'dayjs';
+import dateRangePicker from '../../utils/date-range-picker'
 
 export default {
     name: 'ActiveUserList',
@@ -184,20 +185,10 @@ export default {
         let now = dayjs();
         let defaultStartDate = now.subtract(5, 'month').startOf('month').toDate();
         let defaultEndDate = now.endOf('month').toDate();
+
         return {
             isLoadingEntries: [],
-            locale: {
-                direction: 'ltr',
-                format: 'dd.mm.yyyy',
-                separator: ' - ',
-                applyLabel: 'Übernehmen',
-                cancelLabel: 'Abbrechen',
-                weekLabel: 'W',
-                customRangeLabel: 'Custom Range',
-                daysOfWeek: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-                monthNames: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-                firstDay: 1
-            },
+            locale: dateRangePicker.locale,
             defaultDateRange: {
                 startDate: defaultStartDate,
                 endDate: defaultEndDate,
@@ -206,14 +197,7 @@ export default {
                 startDate: new Date(this.$localStorage.get('aktive-benutzer-startDate', defaultStartDate)),
                 endDate: new Date(this.$localStorage.get('aktive-benutzer-endDate', defaultEndDate)),
             },
-            ranges: {
-                'Dieser Monat': [dayjs().startOf('month').toDate(), dayjs().endOf('month').toDate()],
-                'Letzter Monat': [dayjs().subtract(1, 'month').startOf('month').toDate(), dayjs().subtract(1, 'month').endOf('month').toDate()],
-                'Letzte 6 Monate': [dayjs().subtract(5, 'month').startOf('month').toDate(), dayjs().endOf('month').toDate()],
-                'Dieses Jahr': [dayjs().startOf('year').toDate(), dayjs().endOf('year').toDate()],
-                // 'Letztes Jahr': [dayjs().subtract(1, 'year').startOf('year').toDate(), dayjs().subtract(1, 'year').endOf('year').toDate()],
-                // 'Vorletztes Jahr': [dayjs().subtract(2, 'year').startOf('year').toDate(), dayjs().subtract(2, 'year').endOf('year').toDate()],
-            },
+            ranges: dateRangePicker.ranges,
             dateFrom: now.subtract(6, 'month').startOf('month'),
             dateTo: now.add(1, 'month').endOf('month'),
             entries: [],

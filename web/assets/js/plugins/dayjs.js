@@ -15,6 +15,9 @@ dayjs.extend(customParseFormat);
 let updateLocale = require('dayjs/plugin/updateLocale');
 dayjs.extend(updateLocale);
 
+const quarterOfYear = require('dayjs/plugin/quarterOfYear')
+dayjs.extend(quarterOfYear);
+
 dayjs.updateLocale('de', {
     calendar: {
         lastDay: '[Gestern um] HH:mm',

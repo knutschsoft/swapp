@@ -413,6 +413,7 @@ import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import dayjs from 'dayjs';
+import dateRangePicker from '../../utils/date-range-picker'
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
 import TagAPI from '../../api/tag.js';
@@ -454,30 +455,12 @@ export default {
         return {
             isExportLoading: false,
             exportCtx: null,
-            locale: {
-                direction: 'ltr',
-                format: 'dd.mm.yyyy',
-                separator: ' - ',
-                applyLabel: 'Übernehmen',
-                cancelLabel: 'Abbrechen',
-                weekLabel: 'W',
-                customRangeLabel: 'Custom Range',
-                daysOfWeek: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-                monthNames: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-                firstDay: 1
-            },
+            locale: dateRangePicker.locale,
             defaultDateRange: {
                 startDate: defaultStartDate,
                 endDate: defaultEndDate,
             },
-            ranges: {
-                'Dieser Monat': [dayjs().startOf('month').toDate(), dayjs().endOf('month').toDate()],
-                'Letzter Monat': [dayjs().subtract(1, 'month').startOf('month').toDate(), dayjs().subtract(1, 'month').endOf('month').toDate()],
-                'Letzte 6 Monate': [dayjs().subtract(5, 'month').startOf('month').toDate(), dayjs().endOf('month').toDate()],
-                'Dieses Jahr': [dayjs().startOf('year').toDate(), dayjs().endOf('year').toDate()],
-                // 'Letztes Jahr': [dayjs().subtract(1, 'year').startOf('year').toDate(), dayjs().subtract(1, 'year').endOf('year').toDate()],
-                // 'Vorletztes Jahr': [dayjs().subtract(2, 'year').startOf('year').toDate(), dayjs().subtract(2, 'year').endOf('year').toDate()],
-            },
+            ranges: dateRangePicker.ranges,
             fields: [
                 { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
                 { key: 'malesCount', label: 'Männer', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk).isWithAgeRanges ? value : '-'} },
