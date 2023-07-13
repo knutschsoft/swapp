@@ -9,7 +9,20 @@
                 Anmeldung
             </h2>
             <p class="text-center">
-                Bitte melde dich mit deiner E-Mail-Adresse (oder deinem Benutzername) und deinem selbst gewählten Passwort an.
+                <template
+                    v-if="isOnDemoPage"
+                >
+                    Bitte melde dich mit einem der unten stehenden Zugangsdaten an
+                    <br>
+                    <span class="text-muted ">
+                        oder alternativ mit deiner E-Mail-Adresse (oder deinem Benutzername) und deinem selbst gewählten Passwort an.
+                   </span>
+                </template>
+                <template
+                    v-else
+                >
+                    Bitte melde dich mit deiner E-Mail-Adresse (oder deinem Benutzername) und deinem selbst gewählten Passwort an.
+                </template>
             </p>
             <div>
                 <b-form
@@ -163,6 +176,9 @@
             isPasswordVisible: false,
         }),
         computed: {
+            isOnDemoPage() {
+                return window.location.host.includes('swapp.demo') || this.$route.query.demo;
+            },
             isLoading() {
                 return this.$store.getters["security/isLoading"];
             },
