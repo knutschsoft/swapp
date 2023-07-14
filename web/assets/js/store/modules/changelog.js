@@ -11,9 +11,9 @@ const
 const state = {
     changelogs: [
         {
-            header: 'xx.07.2023',
-            avatarText: '&#10067;',
-            avatarTitle: '',
+            header: '14.07.2023',
+            avatarText: '&#129533;',
+            avatarTitle: 'Robert "Spongebob" Schwammkopfs 37. Geburtstag',
             entries: [
                 {
                     text: [
