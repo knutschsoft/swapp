@@ -35,7 +35,7 @@ const state = {
                         },
                         {
                             src: '../changelog/20230712_Systemische_Frage_Runde_beenden_Formular.png',
-                            thumbnailHeight: '100px',
+                            thumbnailHeight: '95px',
                             description: 'Darstellung im "Runde beenden"-Formular (links: vorher - rechts: neu mit deaktiverter Erfassung der systemischen Frage)',
                         },
                         {
@@ -61,6 +61,24 @@ const state = {
                             src: '../changelog/20230712_Dashboard_Rundenbewertung_mit_eigenem_Bild_vorher.png',
                             thumbnailHeight: '100px',
                             description: 'Bisherige Darstellung ohne eigenes Bewertungsbild auf dem Dashboard',
+                        },
+                    ],
+                },
+                {
+                    text: [
+                        'UX-Feature: Bei allen Datumsfiltern gibt es zusätzlich Schnellauswahlmöglichkeiten für Quartale und Halbjahre.',
+                        'Damit können schneller die Zeitspannen für Quartals- und Halbjahresbericht erstellt werden.',
+                    ],
+                    gallery: [
+                        {
+                            src: '../changelog/20230712_Dashboard_Datumsauswahl_Beginn_mobil_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des Datumsauswahl für den Beginn einer Runde mit neuen Schnellauswahlfeldern (links: vorher - rechts: neu)',
+                        },
+                        {
+                            src: '../changelog/20230712_Dashboard_Datumsauswahl_Ankunft_vorher_nachher.png',
+                            thumbnailHeight: '100px',
+                            description: 'Darstellung des Datumsauswahl für die Ankunft eines Wegpunktes mit neuen Schnellauswahlfeldern (links: vorher - rechts: neu)',
                         },
                     ],
                 },
@@ -96,7 +114,7 @@ const state = {
                         },
                         {
                             src: '../changelog/20230501_Namen_einer_Runde_Teamliste.png',
-                            thumbnailHeight: '80px',
+                            thumbnailHeight: '75px',
                             description: 'Darstellung in der Teamliste',
                         },
                     ],
