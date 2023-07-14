@@ -47,9 +47,10 @@ const state = {
                 },
                 {
                     text: [
-                        'UX-Feature: Das Bild für die Auswahl der Bewertung kann nun über ein selbstgewähltes Bild anstelle eines Sternes ausgewählt werden.',
+                        'UX-Feature: Die Bewertungssterne können durch ein selbstgewähltes Bild ersetzt und somit (pro Träger) personalisiert werden.',
                         'Damit wird ein weiteres Stück Gamification ermöglicht.',
-                        'Use Case: Der Träger kommt aus dem Drogenmilieu und identifiziert sich mehr mit Spritzen als mit Sternchen.',
+                        'Für App-Nutzer wird die Bewertung der Runden attraktiver, wenn sie das Bewertungsbild selbst auswählen dürfen.',
+                        'Use Case: Der Träger identifiziert sich aufgrund seiner Zielgruppe/inhaltlichen Ausrichtung eher mit anderen Symbolen als mit Sternchen.',
                     ],
                     gallery: [
                         {
@@ -777,7 +778,7 @@ const state = {
             avatarText: '💘🎁',
             entries: [
                 {
-                    text: 'Fix: Bei der Auswahl der systemischen Frage für eine Runde wurde der Klient nicht beachtet. Dies ist behoben worden, so dass beim Starten einer Runde eine zufällige Systemische Frage vom eigenen Klienten verwendet wird.',
+                    text: 'Fix: Bei der Auswahl der systemischen Frage für eine Runde wurde der Träger nicht beachtet. Dies ist behoben worden, so dass beim Starten einer Runde eine zufällige Systemische Frage vom eigenen Träger verwendet wird.',
                 },
                 { text: 'Feature: Ein Admin kann ein Team erstellen.' },
                 { text: 'Misc: Softwarebibliotheken geupdated. Symfony-Update von 5.3 auf 5.4. PHP-Upgrade von 8.0 auf 8.1.' },
