@@ -328,6 +328,7 @@
                         :rating="form.rating"
                         :client="walkClient"
                         :read-only="isLoading"
+                        @select-rating="form.rating = $event"
                     />
                 </b-form-group>
                 <b-form-group

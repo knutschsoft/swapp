@@ -11,6 +11,19 @@ const
 const state = {
     changelogs: [
         {
+            header: '28.07.2023',
+            avatarText: '&#x1F6E0;',
+            avatarTitle: 'Bug-Fix',
+            entries: [
+                {
+                    text: [
+                        'Fix: Das Setzen der Bewertung speicherte im "Runde beenden"-Formular immer den Wert "1".',
+                        'Als Workaround musste man die Bewertung nochmal im "Runde ändern"-Formular setzen und speichern.',
+                    ],
+                },
+            ],
+        },
+        {
             header: '14.07.2023',
             avatarText: '&#129533;',
             avatarTitle: 'Robert "Spongebob" Schwammkopfs 37. Geburtstag',

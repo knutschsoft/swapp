@@ -663,13 +663,20 @@ final class DomainIntegrationContext extends RawMinkContext
                 Assert::same($walk->getCommitments(), $this->enrichText($row['commitments']));
             }
             if (isset($row['insights'])) {
-                Assert::same($walk->getCommitments(), $this->enrichText($row['insights']));
+                Assert::same($walk->getInsights(), $this->enrichText($row['insights']));
             }
             if (isset($row['systemicAnswer'])) {
                 Assert::same($walk->getSystemicAnswer(), $this->enrichText($row['systemicAnswer']));
             }
             if (isset($row['walkReflection'])) {
                 Assert::same($walk->getWalkReflection(), $this->enrichText($row['walkReflection']));
+            }
+            if (isset($row['rating']) && '' !== $row['rating']) {
+                Assert::same(
+                    $walk->getRating(),
+                    $this->enrichText($row['rating']),
+                    'Got rating of "%s" but expected "%s".'
+                );
             }
         }
     }
