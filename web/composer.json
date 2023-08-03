@@ -125,14 +125,10 @@
             "vendor/bin/bdi detect drivers"
         ],
         "compile-newest": [
-            "bin/console doctrine:database:drop --env=dev --if-exists --no-interaction",
-            "bin/console doctrine:schema:update --dump-sql --env=test --ansi",
-            "bin/console doctrine:schema:update --force --env=test --ansi",
-            "chmod +x var/cache/test/test.db",
-            "chmod 777 var/cache/test/test.db",
-            "bin/console assets:install --env=test",
-            "bin/console lexik:jwt:generate-keypair --overwrite --no-interaction --env=test",
-            "vendor/bin/bdi detect drivers"
+            "bin/console doctrine:database:drop --env=dev --if-exists --no-interaction --force",
+            "bin/console doctrine:database:create --env=dev --no-interaction --ansi",
+            "mysql -uroot -p12345678 -hmysql swapp < dump.sql",
+            "bin/console doctrine:migrations:migrate --env=dev --no-interaction --ansi"
         ],
         "qa": [
             "@cbf",

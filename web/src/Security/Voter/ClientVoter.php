@@ -21,8 +21,9 @@ class ClientVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return \in_array($attribute, [self::READ, self::EDIT, self::CREATE], true)
-            && $subject instanceof Client;
+        return \in_array($attribute, [self::READ, self::EDIT], true)
+            && $subject instanceof Client
+            || \in_array($attribute, [self::CREATE], true);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

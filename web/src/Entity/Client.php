@@ -17,6 +17,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
@@ -38,7 +39,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
             output: Client::class,
             messenger: 'input'
         ),
-    ]
+    ],
+    normalizationContext: ['groups' => ['client:read']],
 )]
 #[ORM\Table(name: 'client')]
 #[ORM\Entity(repositoryClass: DoctrineORMClientRepository::class)]
@@ -122,11 +124,13 @@ class Client
         $this->description = \trim($request->description);
     }
 
+    #[Groups(['client:read'])]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[Groups(['client:read'])]
     public function getName(): string
     {
         return $this->name;
@@ -137,6 +141,7 @@ class Client
         $this->name = $name;
     }
 
+    #[Groups(['client:read'])]
     public function getEmail(): string
     {
         return $this->email;
@@ -156,6 +161,7 @@ class Client
         );
     }
 
+    #[Groups(['client:read'])]
     public function getDescription(): string
     {
         return $this->description;
@@ -169,6 +175,7 @@ class Client
     /**
      * @return Collection<int, SystemicQuestion>
      */
+    #[Groups(['client:read'])]
     public function getSystemicQuestions(): Collection
     {
         return $this->systemicQuestions;
@@ -183,6 +190,7 @@ class Client
     /**
      * @return Collection<int, User>
      */
+    #[Groups(['client:read'])]
     public function getUsers(): Collection
     {
         return $this->users;
@@ -197,6 +205,7 @@ class Client
     /**
      * @return Collection<int, Tag>
      */
+    #[Groups(['client:read'])]
     public function getTags(): Collection
     {
         return $this->tags;
@@ -211,6 +220,7 @@ class Client
     /**
      * @return Collection<int, Team>
      */
+    #[Groups(['client:read'])]
     public function getTeams(): Collection
     {
         return $this->teams;
@@ -225,6 +235,7 @@ class Client
     /**
      * @return Collection<int, Walk>
      */
+    #[Groups(['client:read'])]
     public function getWalks(): Collection
     {
         return $this->walks;
@@ -236,11 +247,13 @@ class Client
         $this->walks->add($walk);
     }
 
+    #[Groups(['client:read'])]
     public function getRatingImageName(): ?string
     {
         return $this->ratingImageName;
     }
 
+    #[Groups(['client:read'])]
     public function getRatingImageSrc(): string
     {
         return $this->ratingImageSrc;

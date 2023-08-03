@@ -55,7 +55,7 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 
 RUN apt-get update && apt-get install -y \
         wget \
-        netcat \
+        netcat-traditional \
         yarn \
         libicu-dev \
         libzip-dev \
