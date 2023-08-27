@@ -12,6 +12,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@ianwalter/vuex-reset": "^4.3.2",
     "@mdi/js": "^6.5.95",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@symfony/webpack-encore": "^4.4.0",
     "@vue/compiler-sfc": "^3.3.4",
     "autoprefixer": "^9.8.0",

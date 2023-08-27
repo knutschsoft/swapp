@@ -1,0 +1,19 @@
+{
+  "allowUnicodeIdentifiers": true,
+  "apiPackage": "swappApi",
+  "disallowAdditionalPropertiesIfNotPresent":  false,
+  "ensureUniqueParams":  true,
+  "modelPackage": "lunaModel",
+  "withInterfaces": false,
+  "withNodeImports": true,
+  "withSeparateModelsAndApi": true,
+  "identifierNamingConvention": "snake_case",
+  "npmName": "@swagger/typescript-axios-swapp",
+  "npmVersion": "1.0.0",
+  "nullSafeAdditionalProps": true,
+  "snapshot" : false,
+  "sortModelPropertiesByRequiredFlag": true,
+  "sortParamsByRequiredFlag": false,
+  "supportsES6": true,
+  "variableNamingConvention": "camelCase"
+}

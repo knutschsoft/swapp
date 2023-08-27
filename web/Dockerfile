@@ -55,6 +55,7 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 
 RUN apt-get update && apt-get install -y \
         wget \
+        openjdk-17-jre-headless \
         netcat-traditional \
         yarn \
         libicu-dev \
@@ -133,6 +134,7 @@ RUN cd /var/www/html && \
     if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
         chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html; \
         bin/set_acl.sh ${CONTAINER_USER}; \
+        gosu ${CONTAINER_USER} composer create-api-client; \
         gosu ${CONTAINER_USER} yarn encore production; \
         gosu ${CONTAINER_USER} php bin/console cache:clear --env="${APP_ENVIRONMENT}" --no-debug; \
     fi

@@ -130,6 +130,13 @@
             "mysql -uroot -p12345678 -hmysql swapp < dump.sql",
             "bin/console doctrine:migrations:migrate --env=dev --no-interaction --ansi"
         ],
+        "create-api-client": [
+            "rm -rf var/api-client && rm -rf assets/js/model",
+            "mkdir -p var/api-client",
+            "bin/console api:openapi:export --yaml --output=var/cache/dev/openapi.yaml",
+            "yarn openapi-generator-cli generate --output var/api-client --input-spec var/cache/dev/openapi.yaml --generator-name typescript-axios --config=openapigenerator.config.json  --api-package Api --model-package Model --invoker-package 'Example\\Api'",
+            "mv var/api-client/Model assets/js/model"
+        ],
         "qa": [
             "@cbf",
             "@cs",
