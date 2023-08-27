@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Webmozart\Assert\Assert;
 
 /**
  * @method SystemicQuestion|null find($id, $lockMode = null, $lockVersion = null)
@@ -49,6 +50,7 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
             ->setParameter('isEnabled', true)
             ->getQuery()
             ->getSingleScalarResult();
+        Assert::integer($count);
 
         return $this->createQueryBuilder('u')
             ->where('u.client = :client')
