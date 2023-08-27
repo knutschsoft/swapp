@@ -1,0 +1,20 @@
+{
+  "include": [
+    "assets"
+  ],
+  "compilerOptions": {
+    "target": "es2015", // pretty defensive setting for older browsers
+    "module": "commonjs",
+    "isolatedModules": true,
+    "strict": true,  // use 'strict'; e.g.
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist"
+  },
+  "typeRoots": [
+    "./assets/js/types",
+    "./node_modules/@types/"
+  ]
+}

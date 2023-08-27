@@ -82,6 +82,7 @@ Encore
 
     // enable vue-load
     .enableVueLoader(() => {}, { runtimeCompilerBuild: true })
+    .enableTypeScriptLoader()
 
     .enablePostCssLoader()
     .enableEslintPlugin()
