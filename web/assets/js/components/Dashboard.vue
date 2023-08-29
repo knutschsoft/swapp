@@ -45,6 +45,7 @@
     import WalkList from './Dashboard/WalkList';
     import WayPointList from './Dashboard/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
+    import { useClientStore } from '../stores/client';
 
     export default {
         name: "Dashboard",
@@ -62,6 +63,7 @@
         },
         data: function () {
             return {
+                clientStore: useClientStore(),
                 totalWayPoints: null,
                 totalWalks: null,
             }
@@ -83,7 +85,7 @@
         created() {
         },
         async mounted() {
-            await this.$store.dispatch("client/findAll");
+            await this.clientStore.fetchClients();
         },
         methods: {
             updateTotalWayPoints(totalWayPoints) {

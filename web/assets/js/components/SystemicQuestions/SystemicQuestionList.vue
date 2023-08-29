@@ -65,6 +65,7 @@
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import dayjs from 'dayjs';
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'SystemicQuestionList',
@@ -74,6 +75,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             editModalSystemicQuestion: {
                 id: 'edit-modal-systemic-question',
                 title: '',
@@ -146,7 +148,7 @@ export default {
     },
     methods: {
         clientFormatter(clientIri) {
-            return this.$store.getters['client/getClientByIri'](clientIri).name;
+            return this.clientStore.getClientByIri(clientIri).name;
         },
         editSystemicQuestion(systemicQuestion) {
             this.$root.$emit('bv::show::modal', this.editModalSystemicQuestion.id);

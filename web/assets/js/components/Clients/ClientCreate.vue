@@ -11,6 +11,8 @@
 'use strict';
 
 import ClientForm from './ClientForm.vue';
+import { useClientStore } from '../../stores/client';
+
 export default {
     name: 'ClientCreate',
     components: {
@@ -18,6 +20,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
         };
     },
     computed: {
@@ -29,7 +32,7 @@ export default {
     },
     methods: {
         async handleSubmit(payload) {
-            const client = await this.$store.dispatch('client/create', payload);
+            const client = await this.clientStore.createClient(payload);
             if (client) {
                 const message = `Der Klient "${client.name}" wurde erfolgreich erstellt.`;
                 this.$bvToast.toast(message, {

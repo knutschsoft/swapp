@@ -94,6 +94,7 @@
 'use strict';
 import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'UserForm',
@@ -113,6 +114,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             user: {
                 username: null,
                 email: null,
@@ -152,7 +154,7 @@ export default {
             return this.$store.getters['user/changeUserError'];
         },
         availableClients() {
-            return this.$store.getters['client/clients'];
+            return this.clientStore.getClients;
         },
         availableRoles() {
             const roles = [{ text: 'Administrator', value: 'ROLE_ADMIN' }];

@@ -174,6 +174,7 @@ import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import UserAPI from '../../api/user';
 import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'ActiveUserList',
@@ -187,6 +188,7 @@ export default {
         let defaultEndDate = now.endOf('month').toDate();
 
         return {
+            clientStore: useClientStore(),
             isLoadingEntries: [],
             locale: dateRangePicker.locale,
             defaultDateRange: {
@@ -218,7 +220,7 @@ export default {
             return this.$store.getters['security/isSuperAdmin'];
         },
         availableClients() {
-            return this.$store.getters['client/clients'];
+            return this.clientStore.getClients;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
@@ -293,7 +295,7 @@ export default {
     },
     methods: {
         clientFormatter(clientIri) {
-            return this.$store.getters['client/getClientByIri'](clientIri).name;
+            return this.clientStore.getClientByIri(clientIri).name;
         },
         getKeyOfDayjs(date) {
             return `${date.month()}-${date.year()}`;

@@ -28,6 +28,7 @@ import Storage from 'vue-web-storage';
 import VueClipboard from 'vue-clipboard2';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import { createPinia, PiniaVuePlugin } from 'pinia';
 import mdiVue from 'mdi-vue';
 import * as mdijs from '@mdi/js';
 import VuePageTransition from 'vue-page-transition';
@@ -45,6 +46,7 @@ Vue.use(Storage, {
     drivers: ['local', 'session'],
 });
 Vue.use(VueAxios, axios);
+Vue.use(PiniaVuePlugin);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(CollapsePlugin);
@@ -63,6 +65,7 @@ Vue.config.errorHandler = function (err, vm, info) {
     nelmioLog('error', message, {info: info, location: window.location, user: username});
     console.error(err);
 };
+const pinia = createPinia();
 
 const vueApp = (params) => {
     return new Vue({
@@ -84,7 +87,8 @@ const vueApp = (params) => {
         },
         render: h => h(Swapp),
         router: router,
-        store
+        store,
+        pinia,
     })
 };
 

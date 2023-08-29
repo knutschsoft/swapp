@@ -97,6 +97,7 @@
 'use strict';
 import dayjs from 'dayjs';
 import ClientForm from './ClientForm.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'ClientList',
@@ -105,6 +106,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             fields: [
                 {
                     key: 'name',
@@ -154,20 +156,22 @@ export default {
     },
     computed: {
         clients() {
-            return this.$store.getters['client/clients'];
+            return this.clientStore.getClients;
         },
         isLoading() {
-            return this.$store.getters['client/isLoading'];
+            return this.clientStore.isLoading
         },
         error() {
-            return this.$store.getters['client/error'];
+            return this.clientStore.getErrors;
         },
     },
     async created() {
         await Promise.all([
-            this.$store.dispatch('client/findAll'),
             this.$store.dispatch('user/findAll'),
+            this.clientStore.fetchClients(),
         ]);
+    },
+    mounted() {
     },
     methods: {
         getUserByIri(userIri) {
@@ -191,7 +195,7 @@ export default {
         },
         async handleSubmit(payload) {
             payload.client = this.editModalClient.selectedClient['@id'];
-            const client = await this.$store.dispatch('client/change', payload);
+            const client = await this.clientStore.changeClient(payload);
             if (client) {
                 const message = `Der Klient "${client.name}" wurde erfolgreich geändert.`;
                 this.$bvToast.toast(message, {

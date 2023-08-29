@@ -63,6 +63,7 @@
 
 import FormError from '../Common/FormError.vue';
 import SystemicQuestionHint from './SystemicQuestionHint.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'SystemicQuestionForm',
@@ -87,6 +88,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             question: null,
             client: null,
         };
@@ -115,7 +117,7 @@ export default {
             return this.$store.getters['systemicQuestion/createSystemicQuestionError'];
         },
         availableClients() {
-            return this.$store.getters['client/clients'];
+            return this.clientStore.getClients;
         },
     },
     async created() {

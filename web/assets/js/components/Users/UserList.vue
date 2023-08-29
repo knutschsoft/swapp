@@ -219,6 +219,7 @@
 import UserForm from './UserForm.vue';
 import dayjs from 'dayjs';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'UserList',
@@ -228,6 +229,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             editModal: {
                 selectedUser: {},
                 id: 'edit-modal-user',
@@ -246,7 +248,7 @@ export default {
     },
     computed: {
         availableClients() {
-            return this.$store.getters['client/clients'];
+            return this.clientStore.getClients;
         },
         fields() {
             return [
@@ -399,7 +401,7 @@ export default {
             return this.$store.getters['user/isLoadingToggleUserState'](userUri);
         },
         clientFormatter(clientIri) {
-            return this.$store.getters['client/getClientByIri'](clientIri).name;
+            return this.clientStore.getClientByIri(clientIri)?.name;
         },
         editUser(user) {
             this.editModal.title = `Benutzer "${user.username}" bearbeiten`;

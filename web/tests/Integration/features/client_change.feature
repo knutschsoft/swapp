@@ -63,18 +63,15 @@ Feature: Testing client change resource
       | email       | newclient@example.com    |
       | description | doing good stuff         |
     Then the response should be in JSON
-    And print last JSON response
+#    And print last JSON response
 #    And the response status code should be 200
     And the enriched JSON nodes should be equal to:
       | @type             | Client                |
       | name              | Streetworkers         |
       | email             | newclient@example.com |
       | description       | doing good stuff      |
-      | systemicQuestions | array<>               |
       | users[0]          | userIri<karl@gmx.de>  |
       | users[1]          | userIri<admin@gmx.de> |
-      | tags              | array<>               |
       | teams             | array<>               |
-      | walks             | array<>               |
       | ratingImageName   |                       |
 #      | ratingImageSrc    | <null>                |

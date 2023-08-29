@@ -3,6 +3,7 @@
 </template>
 
 <script>
+    import { useAuthStore } from '../stores/auth';
     export default {
         name: "Logout",
         created() {
@@ -18,6 +19,7 @@
                     user: null,
                 }
             );
+            useAuthStore().setToken('');
             this.$router.push({name: 'Login'});
         },
     }

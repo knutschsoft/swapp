@@ -69,7 +69,7 @@ Feature: Testing walk epilogue resource
 
     Given I can find the following walks in database:
       | name            | rating |
-      | \| Google holla | 2      |
+      | \| Google holla | int<2> |
 
     And there are exactly 2 walks in database
 

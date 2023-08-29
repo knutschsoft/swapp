@@ -3,7 +3,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexReset from '@ianwalter/vuex-reset';
 import Changelog from './modules/changelog';
-import Client from './modules/client';
 import Security from './modules/security';
 import User from './modules/user';
 import Walk from './modules/walk';
@@ -19,7 +18,6 @@ const debug = process.env.NODE_ENV !== 'production';
 export default new Vuex.Store({
     modules: {
         changelog: Changelog,
-        client: Client,
         user: User,
         security: Security,
         'systemicQuestion': SystemicQuestion,

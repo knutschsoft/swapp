@@ -122,6 +122,7 @@
 import ColorBadge from './ColorBadge.vue';
 import { html } from 'color_library';
 import FormError from '../Common/FormError.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'TagCreate',
@@ -131,6 +132,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             name: null,
             color: null,
             client: null,
@@ -174,7 +176,7 @@ export default {
             return this.$store.getters['tag/createTagError'];
         },
         availableClients() {
-          return this.$store.getters['client/clients']  ;
+          return this.clientStore.getClients;
         },
         availableColors() {
             return html.filter(htmlColor => (-1 === this.colors.indexOf(htmlColor.name)
@@ -221,7 +223,7 @@ export default {
         },
     },
     async created() {
-        await this.$store.dispatch('client/findAll');
+        await this.clientStore.fetchClients();
         this.client = this.currentUser.client;
     },
     methods: {

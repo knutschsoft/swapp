@@ -164,11 +164,13 @@
 <script>
     "use strict";
     import DemoInfo from './Demo/DemoInfo.vue';
+    import { useAuthStore } from '../stores/auth';
 
     export default {
         name: "Login",
         components: { DemoInfo },
         data: () => ({
+            authStore: useAuthStore(),
             username: '',
             password: '',
             usernameHelp: '',
@@ -221,8 +223,9 @@
                 }
                 let payload = {username: this.$data.username, password: this.$data.password},
                     redirect = this.$route.query.redirect;
-                await this.$store.dispatch("security/login", payload);
+                const loginResult = await this.$store.dispatch("security/login", payload);
                 if (!this.$store.getters["security/hasError"]) {
+                    this.authStore.setToken(loginResult.token);
                     if (typeof redirect !== "undefined") {
                         this.$router.push({path: redirect});
                     } else {

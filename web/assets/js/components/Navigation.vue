@@ -282,10 +282,12 @@
     "use strict";
     // import logo from '../../images/Logo_white_bg.png';
     import logo from '../../images/Swapp_hp_logo.jpg';
+    import { useClientStore } from '../stores/client';
 
     export default {
         name: "Navigation",
         data: () => ({
+            clientStore: useClientStore(),
             userFilter: '',
             users: [],
             swappLogo: logo,
@@ -299,7 +301,7 @@
                 return window.location.host.includes('swapp.stage') || this.$route.query.stage;
             },
             isLoading() {
-                return this.$store.getters['client/isLoading']
+                return this.clientStore.isLoading
                     || this.$store.getters['security/isLoading']
                     || this.$store.getters['systemicQuestion/isLoading']
                     || this.$store.getters['tag/isLoading']
@@ -360,13 +362,13 @@
                 this.$store.dispatch('security/exitSwitchUser');
             },
             getClientByIri(clientIri) {
-                return this.$store.getters['client/getClientByIri'](clientIri);
+                return this.clientStore.getClientByIri(clientIri);
             },
             async showUserMenu(bvEvent) {
                 if (this.isSuperAdmin && this.users.length <= 1) {
                     bvEvent.preventDefault();
                     this.users = (await this.$store.dispatch('user/findAll')).slice(0).filter(user => user.isEnabled);
-                    await this.$store.dispatch('client/findAll');
+                    await this.clientStore.fetchClients();
                     this.$refs.userMenu.show();
                 }
             },

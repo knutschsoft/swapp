@@ -58,12 +58,14 @@
 <script>
     "use strict";
     import TeamForm from './TeamForm.vue';
+    import { useClientStore } from '../../stores/client';
 
     export default {
         name: "TeamList",
         components: { TeamForm },
         data: function () {
             return {
+                clientStore: useClientStore(),
                 editTeam: null,
             };
         },
@@ -287,12 +289,12 @@
             await Promise.all([
                 this.$store.dispatch('team/findAll'),
                 this.$store.dispatch('user/findAll'),
-                this.$store.dispatch('client/findAll'),
+                this.clientStore.fetchClients(),
             ]);
         },
         methods: {
             clientFormatter(clientIri) {
-                return this.$store.getters['client/getClientByIri'](clientIri).name;
+                return this.clientStore.getClientByIri(clientIri)?.name;
             },
             getUserByIri(userIri) {
                 return this.$store.getters['user/getUserByIri'](userIri);

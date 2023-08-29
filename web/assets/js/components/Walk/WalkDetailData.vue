@@ -36,6 +36,7 @@
 <script>
     "use strict";
     import WalkRating from './WalkRating.vue';
+    import { useClientStore } from '../../stores/client';
 
     export default {
         name: "WalkDetailData",
@@ -49,11 +50,12 @@
         },
         data: function () {
             return {
+                clientStore: useClientStore(),
             }
         },
         computed: {
             walkClient() {
-                return this.$store.getters['client/getClientByIri'](this.walk.client);
+                return this.clientStore.getClientByIri(this.walk.client);
             },
             isLoading() {
                 return this.$store.getters["walk/isLoading"] || this.$store.getters["wayPoint/isLoading"];

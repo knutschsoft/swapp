@@ -56,7 +56,7 @@
         </b-form-group>
         <b-form-group
             label="Rating-Bild"
-            :label-for="`input-rating-image-${initialClient.id}`"
+            :label-for="`input-rating-image-${initialClient.clientId}`"
             :state="ratingImageState"
             :invalid-feedback="invalidRatingImageFeedback"
             content-cols="12"
@@ -65,7 +65,7 @@
             label-cols-lg="2"
         >
             <b-form-file
-                :id="`input-rating-image-${initialClient.id}`"
+                :id="`input-rating-image-${initialClient.clientId}`"
                 v-model="ratingFile"
                 accept="image/*"
                 aria-label="Rating-Bild"
@@ -129,7 +129,12 @@
             {{ submitButtonText }}
         </b-button>
         <form-error
-            :error="error"
+            v-if="initialClient.clientId"
+            :error="errorChange"
+        />
+        <form-error
+            v-else
+            :error="errorCreate"
         />
     </b-form>
 </template>
@@ -141,6 +146,7 @@ import FormError from '../Common/FormError.vue';
 import getViolationsFeedback from '../../utils/validation.js';
 import axios from 'axios';
 import WalkRating from '../Walk/WalkRating.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'ClientForm',
@@ -161,6 +167,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             ratingFile: null,
             client: {
                 name: null,
@@ -215,8 +222,11 @@ export default {
         isFormInvalid() {
             return !this.nameState || !this.emailState || !this.descriptionState || this.isLoading;
         },
-        error() {
-            return this.$store.getters['client/changeClientError'];
+        errorChange() {
+            return this.clientStore.getErrors.change;
+        },
+        errorCreate() {
+            return this.clientStore.getErrors.create;
         },
     },
     async created() {

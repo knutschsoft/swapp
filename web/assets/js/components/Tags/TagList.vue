@@ -140,12 +140,14 @@
 import ColorBadge from './ColorBadge.vue';
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import MyInputGroupAppend from '../../components/Common/MyInputGroupAppend.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'TagList',
     components: { ContentLoadingSpinner, ColorBadge, MyInputGroupAppend },
     data: function () {
         return {
+            clientStore: useClientStore(),
             isEnabledOptions: [
                 { value: null, text: 'egal' },
                 { value: true, text: 'ja' },
@@ -187,7 +189,7 @@ export default {
             ];
         },
         availableClients() {
-            return this.$store.getters['client/clients'];
+            return this.clientStore.getClients;
         },
         tags() {
             return this.$store.getters['tag/tags']
@@ -207,7 +209,7 @@ export default {
                 });
         },
         isLoading() {
-            return this.$store.getters['tag/isLoading'] || this.$store.getters['client/isLoading'];
+            return this.$store.getters['tag/isLoading'] || this.clientStore.isLoading;
         },
         error() {
             return this.$store.getters['tag/error'];
@@ -219,7 +221,7 @@ export default {
     async created() {
         await Promise.all([
             this.$store.dispatch('tag/findAll'),
-            this.$store.dispatch('client/findAll'),
+            this.clientStore.fetchClients(),
         ]);
     },
     methods: {
@@ -227,7 +229,7 @@ export default {
             return this.$store.getters['tag/isLoadingToggleTagState'](userUri);
         },
         clientFormatter(clientIri) {
-            return this.$store.getters['client/getClientByIri'](clientIri).name;
+            return this.clientStore.getClientByIri(clientIri).name;
         },
         toggleEnabled: function (tag, isEnabled) {
             let changedTag, message, title;

@@ -621,6 +621,7 @@
 <script>
 'use strict'
 import FormError from '../Common/FormError.vue'
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'TeamForm',
@@ -642,6 +643,7 @@ export default {
         let isWithPeopleCountDefault = true;
 
         return {
+            clientStore: useClientStore(),
             team: {
                 team: null,
                 client: '',
@@ -700,7 +702,7 @@ export default {
             return this.$store.getters['team/changeTeamError']
         },
         availableClients () {
-            return this.$store.getters['client/clients']
+            return this.clientStore.getClients;
         },
     },
     created () {

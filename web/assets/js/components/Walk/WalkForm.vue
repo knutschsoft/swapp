@@ -401,6 +401,7 @@ import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
 import { StarRating } from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'WalkForm',
@@ -423,6 +424,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
@@ -483,7 +485,7 @@ export default {
     },
     computed: {
         walkClient() {
-            return this.$store.getters['client/getClientByIri'](this.initialWalk.client || this.currentUser.client);
+            return this.clientStore.getClientByIri(this.initialWalk.client || this.currentUser.client);
         },
         hasLastWayPoint() {
             return this.initialWalk.wayPoints.length > 0;

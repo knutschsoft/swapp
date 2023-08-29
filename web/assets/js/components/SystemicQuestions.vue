@@ -22,6 +22,7 @@
     import SystemicQuestionList from './SystemicQuestions/SystemicQuestionList';
     import SystemicQuestionCreate from './SystemicQuestions/SystemicQuestionCreate';
     import ContentCollapse from './ContentCollapse.vue';
+    import { useClientStore } from '../stores/client';
 
     export default {
         name: "Teams",
@@ -31,7 +32,7 @@
             SystemicQuestionCreate,
         },
         async mounted() {
-            await this.$store.dispatch('client/findAll');
+            await useClientStore().fetchClients();
         },
     }
 </script>

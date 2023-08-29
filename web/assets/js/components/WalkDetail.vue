@@ -82,6 +82,7 @@
     import WalkForm from './Walk/WalkForm.vue';
     import WalkUnfinishedForm from './Walk/WalkUnfinishedForm.vue';
     import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
+    import { useClientStore } from '../stores/client';
 
     export default {
         name: "WalkDetail",
@@ -101,6 +102,7 @@
         },
         data: function () {
             return {
+                clientStore: useClientStore(),
             }
         },
         computed: {
@@ -142,7 +144,7 @@
                 this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
                 return;
             }
-            await this.$store.dispatch('client/findByIri', this.walk.client);
+            await this.clientStore.fetchByIri(this.walk.client);
 
             let wayPointPromises = [];
             let wayPointPromiseIds = [];

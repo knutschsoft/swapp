@@ -463,6 +463,7 @@ import WayPointList from './Walk/WayPointList';
 import WalkRating from './Walk/WalkRating';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
+import { useClientStore } from '../stores/client';
 
 export default {
     name: 'WalkEpilogue',
@@ -484,6 +485,7 @@ export default {
     },
     data: function () {
         return {
+            clientStore: useClientStore(),
             initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
@@ -543,7 +545,7 @@ export default {
     },
     computed: {
         walkClient() {
-            return this.$store.getters['client/getClientByIri'](this.walk.client);
+            return this.clientStore.getClientByIri(this.walk.client);
         },
         hasLastWayPoint() {
             return this.walk.wayPoints.length > 0;
@@ -800,7 +802,7 @@ export default {
             await this.$store.dispatch('team/findAll');
         }
         if (!this.walkClient) {
-            await this.$store.dispatch('client/findByIri', this.walk.client);
+            await this.clientStore.fetchByIri(this.walk.client);
         }
         this.isWithoutSystemicAnswer = !this.walk.isWithSystemicQuestion;
         this.form.walk = this.walk['@id'];

@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ApiResource(
     operations: [
@@ -125,6 +126,7 @@ class Client
     }
 
     #[Groups(['client:read'])]
+    #[SerializedName('clientId')]
     public function getId(): int
     {
         return $this->id;
@@ -175,7 +177,6 @@ class Client
     /**
      * @return Collection<int, SystemicQuestion>
      */
-    #[Groups(['client:read'])]
     public function getSystemicQuestions(): Collection
     {
         return $this->systemicQuestions;
@@ -205,7 +206,6 @@ class Client
     /**
      * @return Collection<int, Tag>
      */
-    #[Groups(['client:read'])]
     public function getTags(): Collection
     {
         return $this->tags;
@@ -235,7 +235,6 @@ class Client
     /**
      * @return Collection<int, Walk>
      */
-    #[Groups(['client:read'])]
     public function getWalks(): Collection
     {
         return $this->walks;
@@ -272,5 +271,17 @@ class Client
     public function unsetRatingImageName(): void
     {
         $this->ratingImageName = null;
+    }
+
+    #[Groups(['client:read'])]
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    #[Groups(['client:read'])]
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
     }
 }

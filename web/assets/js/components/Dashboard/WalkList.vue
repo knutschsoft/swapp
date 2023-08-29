@@ -331,6 +331,7 @@ import WalkAPI from '../../api/walk.js';
 import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import WalkRating from '../Walk/WalkRating.vue';
+import { useClientStore } from '../../stores/client';
 
 export default {
     name: 'WalkList',
@@ -363,6 +364,7 @@ export default {
         }
 
         return {
+            clientStore: useClientStore(),
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
@@ -463,7 +465,7 @@ export default {
     },
     methods: {
         getClientByIri(clientIri) {
-            return this.$store.getters['client/getClientByIri'](clientIri);
+            return this.clientStore.getClientByIri(clientIri);
         },
         formatStartDate: function (dateString) {
             let date = new Date(dateString);

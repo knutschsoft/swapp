@@ -114,6 +114,19 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When  I wait for element :selector to appear
+     *
+     * @param string $selector
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForElementToAppear(string $selector): void
+    {
+        $testElement = $this->getNodeElement($selector);
+        Assert::true($testElement->isVisible());
+    }
+
+    /**
      * @When  I wait for test element :selector to disappear
      *
      * @param string $selector

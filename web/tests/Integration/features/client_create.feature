@@ -66,10 +66,7 @@ Feature: Testing client create resource
       | name              | Streetworkers         |
       | email             | newclient@example.com |
       | description       | doing good stuff      |
-      | systemicQuestions | array<>               |
       | users             | array<>               |
-      | tags              | array<>               |
       | teams             | array<>               |
-      | walks             | array<>               |
       | ratingImageName   |                       |
       | ratingImageSrc    | <null>                |

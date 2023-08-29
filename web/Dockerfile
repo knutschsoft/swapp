@@ -13,7 +13,7 @@ ENV HOST_GID=${HOST_UID}
 ENV CONTAINER_GROUP=${CONTAINER_GROUP}
 ENV CONTAINER_USER=${CONTAINER_USER}
 ENV PANTHER_NO_SANDBOX 1
-ENV PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors'
+ENV PANTHER_CHROME_ARGUMENTS='--headless=new --ignore-certificate-errors'
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
@@ -90,9 +90,19 @@ RUN sh -c "echo 'xdebug.remote_enable=1' >> /usr/local/etc/php/conf.d/docker-php
     sed -i -e 's/zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini                                     >> /usr/local/etc/php/conf.d/xdebug.ini
 
 ### adjust panther ChromeDriver to installed chromium version
+ENV CHROME_VERSION=110.0.5481.177-1~deb11u1
+RUN apt update && apt upgrade -y && apt install -y wget gnupg2
+
 RUN  if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
-        apt-get update && apt-get install -y libzip-dev zlib1g-dev chromium; \
-    fi
+    wget -O /tmp/chromium.deb https://snapshot.debian.org/archive/debian-security/20230301T112952Z/pool/updates/main/c/chromium/chromium_${CHROME_VERSION}_amd64.deb && \
+    wget -O /tmp/chromium-common.deb https://snapshot.debian.org/archive/debian-security/20230301T112952Z/pool/updates/main/c/chromium/chromium-common_${CHROME_VERSION}_amd64.deb && \
+    wget -O /tmp/chromium-sandbox.deb https://snapshot.debian.org/archive/debian-security/20230301T112952Z/pool/updates/main/c/chromium/chromium-sandbox_${CHROME_VERSION}_amd64.deb && \
+    apt install --fix-broken -y \
+        /tmp/chromium.deb \
+        /tmp/chromium-common.deb \
+        /tmp/chromium-sandbox.deb && \
+    rm /tmp/chromium*.deb; \
+fi
 
 COPY .docker/web/etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/
 RUN a2enmod rewrite
