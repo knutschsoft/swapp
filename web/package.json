@@ -16,6 +16,7 @@
     "@symfony/webpack-encore": "^4.4.0",
     "@types/axios": "^0.14.0",
     "@vue/compiler-sfc": "^3.3.4",
+    "@vueuse/core": "^10.4.1",
     "autoprefixer": "^9.8.0",
     "axios": "^1.5.0",
     "bootstrap-vue": "^2.15.0",

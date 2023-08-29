@@ -41,7 +41,7 @@ final class AcceptanceContext extends MinkContext
         $this->fillField('password', $username);
 
         $this->pressButton('Anmelden');
-        $this->iSetBrowserWindowSizeToX('1250', '800');
+        $this->iSetBrowserWindowSizeToX('2000', '1024');
         $this->iWaitForTextToAppear($username);
     }
 
