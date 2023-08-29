@@ -1,19 +1,13 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
-import {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
+import {AxiosRequestConfig, AxiosResponse} from "axios";
 
-// coming from generated code of api client generator
-import {
-    ApiClientsGetCollection200Response as ClientsResponse,
-    ClientClientChangeRequestJsonld as ClientChangeRequest,
-    ClientClientCreateRequestJsonld as ClientCreateRequest,
-    ClientJsonldClientRead as Client
-} from '../model';
+import {Client, ClientChangeRequest, ClientCreateRequest, ClientsResponse} from '../model';
 
 type State = {
     clients: Client[],
     loadingArray: Array<string>,
-    errorArray: Record<'fetch'|'change'|'create', any>,
+    errorArray: Record<'fetch' | 'change' | 'create', any>,
 }
 
 function replaceObjectInState(state: State, object: Client) {
