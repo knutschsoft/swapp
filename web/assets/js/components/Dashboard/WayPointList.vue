@@ -417,6 +417,7 @@ import dateRangePicker from '../../utils/date-range-picker'
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
 import TagAPI from '../../api/tag.js';
+import { useTagStore } from '../../stores/tag';
 
 export default {
     name: 'WayPointList',
@@ -453,6 +454,7 @@ export default {
         }
 
         return {
+            tagStore: useTagStore(),
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
@@ -542,13 +544,13 @@ export default {
     async mounted() {
         const tagResult = await TagAPI.findAllWithWayPoints();
         this.tags = tagResult.data['hydra:member'];
-        this.$store.dispatch('tag/findAll');
+        this.tagStore.fetchTags();
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
     methods: {
         getTagByIri(iri) {
-            return this.$store.getters['tag/getTagByIri'](iri);
+            return this.tagStore.getTagByIri(iri);
         },
         getWalkByIri(iri) {
             const id = iri.replace('/api/walks/', '');

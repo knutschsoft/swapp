@@ -466,6 +466,7 @@ import ColorBadge from '../Tags/ColorBadge.vue';
 import getViolationsFeedback from '../../utils/validation.js';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useTagStore } from '../../stores/tag';
 
 export default {
     name: 'WayPointForm',
@@ -491,6 +492,7 @@ export default {
     },
     data: function () {
         return {
+            tagStore: useTagStore(),
             wayPoint: {
                 locationName: '',
                 visitedAt: dayjs(),
@@ -736,7 +738,7 @@ export default {
             return this.$store.getters['wayPoint/isLoadingChange']
                 || this.$store.getters['wayPoint/isLoading']
                 || this.$store.getters['walk/isLoading']
-                || this.$store.getters['tag/isLoading']
+                || this.tagStore.isLoading
                 || this.$store.getters['team/isLoading'];
         },
         currentUser() {
@@ -765,10 +767,10 @@ export default {
             return this.initialWayPoint.wayPointTags.find(tagIri => !this.getTagByIri(tagIri).isEnabled);
         },
         tags() {
-            return this.$store.getters['tag/tags'].slice().filter(tag => tag.isEnabled);
+            return this.tagStore.getTags.slice().filter(tag => tag.isEnabled);
         },
         disabledTags() {
-            return this.$store.getters['tag/tags'].slice().filter(tag => !tag.isEnabled);
+            return this.tagStore.getTags.slice().filter(tag => !tag.isEnabled);
         },
         ageGroups() {
             let ageGroups = [];
@@ -854,7 +856,7 @@ export default {
             await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
         }
         if (!this.tags.length) {
-            await this.$store.dispatch('tag/findAll');
+            await this.tagStore.fetchTags();
         }
         if (!this.team) {
             await this.$store.dispatch('team/findAll');
@@ -891,7 +893,7 @@ export default {
     },
     methods: {
         getTagByIri(iri) {
-            return this.$store.getters['tag/getTagByIri'](iri);
+            return this.tagStore.getTagByIri(iri);
         },
         getWayPointByIri(iri) {
             return this.$store.getters['wayPoint/getWayPointByIri'](iri);

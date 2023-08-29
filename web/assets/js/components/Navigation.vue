@@ -284,12 +284,14 @@
     import logo from '../../images/Swapp_hp_logo.jpg';
     import { useClientStore } from '../stores/client';
     import { useSystemicQuestionStore } from '../stores/systemic-question';
+    import { useTagStore } from '../stores/tag';
 
     export default {
         name: "Navigation",
         data: () => ({
             clientStore: useClientStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
+            tagStore: useTagStore(),
             userFilter: '',
             users: [],
             swappLogo: logo,
@@ -306,7 +308,7 @@
                 return this.clientStore.isLoading
                     || this.$store.getters['security/isLoading']
                     || this.systemicQuestionStore.isLoading
-                    || this.$store.getters['tag/isLoading']
+                    || this.tagStore.isLoading
                     || this.$store.getters['team/isLoading']
                     || this.$store.getters['user/isLoading']
                     || this.$store.getters['user/isLoadingChange']

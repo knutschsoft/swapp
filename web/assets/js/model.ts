@@ -8,5 +8,10 @@ export {
     type SystemicQuestionSystemicQuestionCreateRequestJsonld as SystemicQuestionCreateRequest,
     type SystemicQuestionSystemicQuestionEnableRequestJsonld as SystemicQuestionEnableRequest,
     type SystemicQuestionSystemicQuestionDisableRequestJsonld as SystemicQuestionDisableRequest,
-    type SystemicQuestionJsonldSystemicQuestionRead as SystemicQuestion
+    type SystemicQuestionJsonldSystemicQuestionRead as SystemicQuestion,
+    type ApiTagsGetCollection200Response as TagsResponse,
+    type TagTagCreateRequestJsonld as TagCreateRequest,
+    type TagTagEnableRequestJsonld as TagEnableRequest,
+    type TagTagDisableRequestJsonld as TagDisableRequest,
+    type TagJsonldTagRead as Tag,
 } from './models';

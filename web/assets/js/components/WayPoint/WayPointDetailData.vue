@@ -107,6 +107,7 @@
     import LocationLink from '../LocationLink.vue';
     import ColorBadge from '../Tags/ColorBadge.vue';
     import dayjs from 'dayjs';
+    import { useTagStore } from '../../stores/tag';
 
     export default {
         name: "WayPointDetailData",
@@ -125,6 +126,7 @@
         },
         data: function () {
             return {
+                tagStore: useTagStore(),
             };
         },
         computed: {
@@ -233,7 +235,7 @@
         },
         methods: {
             getTagByIri(iri) {
-                return this.$store.getters['tag/getTagByIri'](iri);
+                return this.tagStore.getTagByIri(iri);
             },
         },
     }

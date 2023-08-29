@@ -112,14 +112,14 @@
                 >
                     {{ row.item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
                 </b-button>
-                <span :id="`questionHeaderId-${row.item.id}`">
+                <span :id="`questionHeaderId-${row.item.tagId}`">
                     <mdicon
                         name="help-circle-outline"
                         class="text-muted"
                     />
                 </span>
                 <b-popover
-                    :target="`questionHeaderId-${row.item.id}`"
+                    :target="`questionHeaderId-${row.item.tagId}`"
                     triggers="hover"
                     placement="top"
                 >
@@ -141,6 +141,7 @@ import ColorBadge from './ColorBadge.vue';
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import MyInputGroupAppend from '../../components/Common/MyInputGroupAppend.vue';
 import { useClientStore } from '../../stores/client';
+import { useTagStore } from '../../stores/tag';
 
 export default {
     name: 'TagList',
@@ -148,6 +149,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            tagStore: useTagStore(),
             isEnabledOptions: [
                 { value: null, text: 'egal' },
                 { value: true, text: 'ja' },
@@ -192,7 +194,7 @@ export default {
             return this.clientStore.getClients;
         },
         tags() {
-            return this.$store.getters['tag/tags']
+            return this.tagStore.getTags
                 .filter(tag => !this.filter.client || this.filter.client === tag.client)
                 .filter(tag => null === this.filter.isEnabled || this.filter.isEnabled === tag.isEnabled)
                 .slice()
@@ -209,10 +211,10 @@ export default {
                 });
         },
         isLoading() {
-            return this.$store.getters['tag/isLoading'] || this.clientStore.isLoading;
+            return this.tagStore.loadingArray.includes('fetch') || this.clientStore.isLoading;
         },
         error() {
-            return this.$store.getters['tag/error'];
+            return this.tagStore.getErrors;
         },
         isSuperAdmin() {
             return this.$store.getters['security/isSuperAdmin'];
@@ -220,25 +222,25 @@ export default {
     },
     async created() {
         await Promise.all([
-            this.$store.dispatch('tag/findAll'),
+            this.tagStore.fetchTags(),
             this.clientStore.fetchClients(),
         ]);
     },
     methods: {
-        isLoadingToggleTagState(userUri) {
-            return this.$store.getters['tag/isLoadingToggleTagState'](userUri);
+        isLoadingToggleTagState(tagIri) {
+            return this.tagStore.isLoadingToggleTagState(tagIri);
         },
         clientFormatter(clientIri) {
-            return this.clientStore.getClientByIri(clientIri).name;
+            return this.clientStore.getClientByIri(clientIri)?.name;
         },
         toggleEnabled: function (tag, isEnabled) {
             let changedTag, message, title;
             if (isEnabled) {
-                changedTag = this.$store.dispatch('tag/disable', { tag: tag['@id'] });
+                changedTag = this.tagStore.disable({ tag: tag['@id'] });
                 message = `Der Tag "${tag.name}" wurde erfolgreich deaktiviert. Er kann nun nicht mehr zu einem Wegpunkt hinzugefügt verwendet.`;
                 title = `Tag deaktiviert`;
             } else {
-                changedTag = this.$store.dispatch('tag/enable', { tag: tag['@id'] });
+                changedTag = this.tagStore.enable({ tag: tag['@id'] });
                 message = `Der Tag "${tag.name}" wurde erfolgreich aktiviert. Er kann nun zu einem Wegpunkt hinzugefügt verwendet.`;
                 title = `Tag aktiviert`;
             }

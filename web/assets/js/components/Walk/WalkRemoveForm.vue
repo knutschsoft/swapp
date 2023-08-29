@@ -73,6 +73,7 @@
 'use strict';
 import GlobalFormError from '../Common/GlobalFormError.vue';
 import getViolationsFeedback from '../../utils/validation.js';
+import { useTagStore } from '../../stores/tag';
 
 export default {
     name: 'WalkRemoveForm',
@@ -91,6 +92,7 @@ export default {
     },
     data: function () {
         return {
+            tagStore: useTagStore(),
             walkName: '',
         };
     },
@@ -113,7 +115,7 @@ export default {
                 || this.$store.getters['walk/isLoading']
                 || this.$store.getters['walk/isLoading']
                 || this.$store.getters['wayPoint/isLoading']
-                || this.$store.getters['tag/isLoading']
+                || this.tagStore.isLoading
                 || this.$store.getters['team/isLoading'];
         },
         isSubmitDisabled() {

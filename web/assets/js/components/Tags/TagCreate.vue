@@ -123,6 +123,7 @@ import ColorBadge from './ColorBadge.vue';
 import { html } from 'color_library';
 import FormError from '../Common/FormError.vue';
 import { useClientStore } from '../../stores/client';
+import { useTagStore } from '../../stores/tag';
 
 export default {
     name: 'TagCreate',
@@ -132,6 +133,7 @@ export default {
     },
     data: function () {
         return {
+            tagStore: useTagStore(),
             clientStore: useClientStore(),
             name: null,
             color: null,
@@ -141,10 +143,10 @@ export default {
     },
     computed: {
         colors() {
-            return this.$store.getters['tag/tags'].map(tag => tag.color);
+            return this.tagStore.getTags.map(tag => tag.color);
         },
         names() {
-            return this.$store.getters['tag/tags'].map(tag => tag.name);
+            return this.tagStore.getTags.map(tag => tag.name);
         },
         colorState() {
             if (null === this.color) {
@@ -161,7 +163,7 @@ export default {
             return -1 === this.names.indexOf(this.name);
         },
         isLoading() {
-            return this.$store.getters['tag/isLoading'];
+            return this.tagStore.isLoading;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
@@ -173,7 +175,7 @@ export default {
             return !this.name || !this.color || !this.colorState || !this.nameState || this.isLoading;
         },
         error() {
-            return this.$store.getters['tag/createTagError'];
+            return this.tagStore.getErrors.create;
         },
         availableClients() {
           return this.clientStore.getClients;
@@ -239,7 +241,7 @@ export default {
                 client: this.client,
             };
 
-            const tag = await this.$store.dispatch('tag/create', payload);
+            const tag = await this.tagStore.create(payload);
             if (tag) {
                 this.resetForm();
                 const message = `Der Tag ${tag.name} (${tag.color}) wurde erfolgreich erstellt.`;
@@ -250,7 +252,7 @@ export default {
                     appendToast: true,
                 });
 
-                this.$store.dispatch('tag/findAll');
+                this.tagStore.fetchTags();
 
                 this.name = null;
                 this.color = null;

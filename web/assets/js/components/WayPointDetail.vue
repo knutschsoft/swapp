@@ -47,6 +47,7 @@
     import ContentCollapse from './ContentCollapse.vue';
     import WayPointForm from './WayPoint/WayPointForm.vue';
     import WayPointRemoveForm from './WayPoint/WayPointRemoveForm.vue';
+    import { useTagStore } from '../stores/tag';
 
     export default {
         name: "WayPointDetail",
@@ -66,6 +67,7 @@
         },
         data: function () {
             return {
+                tagStore: useTagStore(),
                 redirectToastId: 'way-point-detail-redirect-toast',
             };
         },
@@ -114,7 +116,7 @@
                 promises.push(this.$store.dispatch('wayPoint/findById', this.wayPointId));
             }
             if (!this.hasTags) {
-                promises.push(this.$store.dispatch('tag/findAll'));
+                promises.push(this.tagStore.fetchTags());
             }
             await Promise.all(promises);
             if (!this.walk || !this.wayPoint) {

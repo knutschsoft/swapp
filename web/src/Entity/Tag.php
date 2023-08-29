@@ -207,6 +207,7 @@ class Tag
     }
 
     #[Groups(['tag:read', 'walk:read'])]
+    #[SerializedName('tagId')]
     public function getId(): int
     {
         return $this->id;
