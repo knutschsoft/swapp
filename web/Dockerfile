@@ -64,6 +64,7 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libssl-dev \
         git-core \
+        libflac-dev \
         gosu \
         acl \
         unzip \
