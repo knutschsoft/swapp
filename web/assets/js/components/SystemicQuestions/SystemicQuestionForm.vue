@@ -64,6 +64,7 @@
 import FormError from '../Common/FormError.vue';
 import SystemicQuestionHint from './SystemicQuestionHint.vue';
 import { useClientStore } from '../../stores/client';
+import { useSystemicQuestionStore } from '../../stores/systemic-question';
 
 export default {
     name: 'SystemicQuestionForm',
@@ -89,6 +90,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            systemicQuestionStore: useSystemicQuestionStore(),
             question: null,
             client: null,
         };
@@ -102,7 +104,7 @@ export default {
             return this.question.length >= 3 && this.question.length <=4000;
         },
         isLoading() {
-            return this.$store.getters['systemicQuestion/isLoading'];
+            return this.systemicQuestionStore.isLoading;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
@@ -114,7 +116,7 @@ export default {
             return !this.question || !this.questionState || this.isLoading;
         },
         error() {
-            return this.$store.getters['systemicQuestion/createSystemicQuestionError'];
+            return this.systemicQuestionStore.getErrors.create;
         },
         availableClients() {
             return this.clientStore.getClients;

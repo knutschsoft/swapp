@@ -101,6 +101,8 @@ class SystemicQuestion
         return new self($question, $client);
     }
 
+    #[Groups(['systemicQuestion:read'])]
+    #[SerializedName('systemicQuestionId')]
     public function getId(): int
     {
         return $this->id;

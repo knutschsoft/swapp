@@ -11,6 +11,7 @@
 'use strict';
 
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
+import { useSystemicQuestionStore } from '../../stores/systemic-question';
 export default {
     name: 'SystemicQuestionCreate',
     components: {
@@ -18,6 +19,7 @@ export default {
     },
     data: function () {
         return {
+            systemicQuestionStore: useSystemicQuestionStore(),
         };
     },
     computed: {
@@ -32,7 +34,7 @@ export default {
     },
     methods: {
         async handleSubmit(payload) {
-            const systemicQuestion = await this.$store.dispatch('systemicQuestion/create', payload);
+            const systemicQuestion = await this.systemicQuestionStore.create(payload);
             if (systemicQuestion) {
                 this.$refs.systemicQuestionForm.resetForm();
                 const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich erstellt.`;

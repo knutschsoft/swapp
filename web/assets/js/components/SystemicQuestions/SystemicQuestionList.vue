@@ -66,6 +66,7 @@ import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import dayjs from 'dayjs';
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
 import { useClientStore } from '../../stores/client';
+import { useSystemicQuestionStore } from '../../stores/systemic-question';
 
 export default {
     name: 'SystemicQuestionList',
@@ -76,6 +77,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            systemicQuestionStore: useSystemicQuestionStore(),
             editModalSystemicQuestion: {
                 id: 'edit-modal-systemic-question',
                 title: '',
@@ -128,13 +130,13 @@ export default {
             ];
         },
         systemicQuestions() {
-            return this.$store.getters['systemicQuestion/systemicQuestions'];
+            return this.systemicQuestionStore.systemicQuestions;
         },
         isLoading() {
-            return this.$store.getters['systemicQuestion/isLoading'];
+            return this.systemicQuestionStore.isLoading;
         },
         error() {
-            return this.$store.getters['systemicQuestion//error'];
+            return this.systemicQuestionStore.getErrors;
         },
         isSuperAdmin() {
             return this.$store.getters['security/isSuperAdmin'];
@@ -142,13 +144,13 @@ export default {
     },
     async created() {
         await Promise.all([
-            this.$store.dispatch('systemicQuestion/findAll'),
+            this.systemicQuestionStore.fetchSystemicQuestions(),
             this.$store.dispatch('team/findAll'),
         ]);
     },
     methods: {
         clientFormatter(clientIri) {
-            return this.clientStore.getClientByIri(clientIri).name;
+            return this.clientStore.getClientByIri(clientIri)?.name;
         },
         editSystemicQuestion(systemicQuestion) {
             this.$root.$emit('bv::show::modal', this.editModalSystemicQuestion.id);
@@ -160,7 +162,7 @@ export default {
         },
         async toggleEnabled(iri, isEnabled) {
             if (isEnabled) {
-                const systemicQuestion = await this.$store.dispatch('systemicQuestion/disable', { systemicQuestion: iri });
+                const systemicQuestion = await this.systemicQuestionStore.disable({ systemicQuestion: iri });
                 const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich deaktiviert. Sie wird nun nicht mehr automatisch für neue Runden verwendet.`;
                 this.$bvToast.toast(message, {
                     title: 'Systemische Frage geändert',
@@ -171,7 +173,7 @@ export default {
                     solid: true,
                 });
             } else {
-                const systemicQuestion = await this.$store.dispatch('systemicQuestion/enable', { systemicQuestion: iri });
+                const systemicQuestion = await this.systemicQuestionStore.enable({ systemicQuestion: iri });
                 const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich aktiviert. Sie wird nun automatisch für neue Runden verwendet.`;
                 this.$bvToast.toast(message, {
                     title: 'Systemische Frage geändert',
@@ -185,7 +187,7 @@ export default {
         },
         async handleSubmit(payload) {
             payload.systemicQuestion = this.editModalSystemicQuestion.selectedSystemicQuestion['@id'];
-            const systemicQuestion = await this.$store.dispatch('systemicQuestion/change', payload);
+            const systemicQuestion = await this.systemicQuestionStore.change(payload);
             if (systemicQuestion) {
                 const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich geändert.`;
                 this.$bvToast.toast(message, {

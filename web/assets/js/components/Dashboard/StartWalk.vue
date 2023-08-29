@@ -98,6 +98,7 @@
 
 <script>
     "use strict";
+    import { useSystemicQuestionStore } from '../../stores/systemic-question';
 
     export default {
         name: "StartWalk",
@@ -110,6 +111,7 @@
         },
         data: function () {
             return {
+                systemicQuestionStore: useSystemicQuestionStore(),
                 selectedTeam: null,
                 selectedUnfinishedWalk: null,
             }
@@ -157,7 +159,7 @@
                     return false;
                 }
                 if (this.selectedTeam.isWithSystemicQuestion) {
-                    return this.$store.getters["systemicQuestion/systemicQuestions"].filter(systemicQuestion => systemicQuestion.isEnabled).length > 0;
+                    return this.systemicQuestionStore.getSystemicQuestions.filter(systemicQuestion => systemicQuestion.isEnabled).length > 0;
                 }
 
                 return true;
@@ -169,7 +171,7 @@
                 this.selectedTeam = this.selectableTeams[0].value;
             }
             if (this.teams.some(team => team.isWithSystemicQuestion)) {
-                await this.$store.dispatch('systemicQuestion/findAll');
+                await this.systemicQuestionStore.fetchSystemicQuestions();
             }
         },
         methods: {
