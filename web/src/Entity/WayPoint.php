@@ -31,6 +31,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ApiResource(
     operations: [
@@ -403,6 +404,7 @@ class WayPoint
     }
 
     #[Groups(['wayPoint:read'])]
+    #[SerializedName('wayPointId')]
     public function getId(): int
     {
         return $this->id;

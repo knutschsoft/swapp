@@ -18,4 +18,9 @@ export {
     type TeamTeamCreateRequestJsonld as TeamCreateRequest,
     type TeamTeamChangeRequestJsonld as TeamChangeRequest,
     type TeamJsonldTeamRead as Team,
+    type ApiWayPointsGetCollection200Response as WayPointsResponse,
+    type WayPointWayPointCreateRequestJsonld as WayPointCreateRequest,
+    type WayPointWayPointChangeRequestJsonld as WayPointChangeRequest,
+    type WayPointWayPointRemoveRequestJsonld as WayPointRemoveRequest,
+    type WayPointJsonldWayPointRead as WayPoint,
 } from './models';

@@ -287,6 +287,7 @@
     import { useTagStore } from '../stores/tag';
     import { useTeamStore } from '../stores/team';
     import { useChangelogStore } from '../stores/changelog';
+    import { useWayPointStore } from '../stores/way-point';
 
     export default {
         name: "Navigation",
@@ -296,6 +297,7 @@
             teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
             tagStore: useTagStore(),
+            wayPointStore: useWayPointStore(),
             userFilter: '',
             users: [],
             swappLogo: logo,
@@ -317,7 +319,7 @@
                     || this.$store.getters['user/isLoading']
                     || this.$store.getters['user/isLoadingChange']
                     || this.$store.getters['walk/isLoading']
-                    || this.$store.getters['wayPoint/isLoading'];
+                    || this.wayPointStore.isLoading;
             },
             isAuthenticated() {
                 return this.$store.getters['security/isAuthenticated'];

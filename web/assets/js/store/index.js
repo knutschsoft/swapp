@@ -5,7 +5,6 @@ import VuexReset from '@ianwalter/vuex-reset';
 import Security from './modules/security';
 import User from './modules/user';
 import Walk from './modules/walk';
-import WayPoint from './modules/way-point';
 
 Vue.use(Vuex);
 
@@ -16,7 +15,6 @@ export default new Vuex.Store({
         user: User,
         security: Security,
         'walk': Walk,
-        'wayPoint': WayPoint,
     },
     strict: debug,
     plugins: [VuexReset()],

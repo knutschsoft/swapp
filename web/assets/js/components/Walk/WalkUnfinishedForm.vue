@@ -167,6 +167,7 @@ import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
 import { useTeamStore } from '../../stores/team';
+import { useWayPointStore } from '../../stores/way-point';
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -187,6 +188,7 @@ export default {
     data: function () {
         return {
             teamStore: useTeamStore(),
+            wayPointStore: useWayPointStore(),
             initialWalkName: '',
             initialConceptOfDay: [],
             startTimeDate: null,
@@ -396,7 +398,7 @@ export default {
     },
     methods: {
         getWayPointByIri(iri) {
-            return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+            return this.wayPointStore.getWayPointByIri(iri);
         },
         async handleSubmit() {
             this.$emit('submit', this.walk);

@@ -83,6 +83,7 @@
     import WalkUnfinishedForm from './Walk/WalkUnfinishedForm.vue';
     import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
     import { useClientStore } from '../stores/client';
+    import { useWayPointStore } from '../stores/way-point';
 
     export default {
         name: "WalkDetail",
@@ -103,6 +104,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                wayPointStore: useWayPointStore(),
             }
         },
         computed: {
@@ -152,7 +154,7 @@
                 if (!this.getWayPointByIri(wayPointIri)) {
                     const id = wayPointIri.replace('/api/way_points/', '');
                     if (!wayPointPromiseIds.includes(id)) {
-                        wayPointPromises.push(this.$store.dispatch('wayPoint/findById', id));
+                        wayPointPromises.push(this.wayPointStore.fetchByIri(wayPointIri));
                         wayPointPromiseIds.push(id);
                     }
                 }
@@ -187,7 +189,7 @@
                 }
             },
             getWayPointByIri(iri) {
-                return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+                return this.wayPointStore.getWayPointByIri(iri);
             },
             async handleSubmit(payload) {
                 payload.walk = this.walk['@id'];

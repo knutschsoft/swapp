@@ -75,6 +75,7 @@ import GlobalFormError from '../Common/GlobalFormError.vue';
 import getViolationsFeedback from '../../utils/validation.js';
 import { useTagStore } from '../../stores/tag';
 import { useTeamStore } from '../../stores/team';
+import { useWayPointStore } from '../../stores/way-point';
 
 export default {
     name: 'WayPointRemoveForm',
@@ -99,12 +100,13 @@ export default {
         return {
             tagStore: useTagStore(),
             teamStore: useTeamStore(),
+            wayPointStore: useWayPointStore(),
             wayPointName: '',
         };
     },
     computed: {
         error() {
-            return this.$store.getters['wayPoint/errorChange'];
+            return this.wayPointStore.getErrors.change;
         },
         walk() {
             return this.initialWalk ? this.initialWalk : this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
@@ -120,8 +122,7 @@ export default {
             return getViolationsFeedback(['wayPoint'], this.error);
         },
         isLoading() {
-            return this.$store.getters['wayPoint/isLoadingChange']
-                || this.$store.getters['wayPoint/isLoading']
+            return this.wayPointStore.isLoading
                 || this.$store.getters['walk/isLoading']
                 || this.tagStore.isLoading
                 || this.teamStore.isLoading;
@@ -144,7 +145,7 @@ export default {
     watch: {
     },
     async mounted() {
-        await this.$store.dispatch('wayPoint/resetChangeError');
+        await this.wayPointStore.resetChangeError();
         this.wayPointName = '';
         if (!this.walk && this.initialWayPoint) {
             await this.$store.dispatch('walk/find', this.initialWayPoint.walk);

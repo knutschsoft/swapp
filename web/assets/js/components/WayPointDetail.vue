@@ -48,6 +48,7 @@
     import WayPointForm from './WayPoint/WayPointForm.vue';
     import WayPointRemoveForm from './WayPoint/WayPointRemoveForm.vue';
     import { useTagStore } from '../stores/tag';
+    import { useWayPointStore } from '../stores/way-point';
 
     export default {
         name: "WayPointDetail",
@@ -68,6 +69,7 @@
         data: function () {
             return {
                 tagStore: useTagStore(),
+                wayPointStore: useWayPointStore(),
                 redirectToastId: 'way-point-detail-redirect-toast',
             };
         },
@@ -79,7 +81,7 @@
                 return this.$store.getters["walk/getWalkById"](this.walkId);
             },
             wayPoint() {
-                return this.$store.getters["wayPoint/getWayPointById"](this.wayPointId);
+                return this.wayPointStore.getWayPointById(this.wayPointId);
             },
             title() {
                 return `Wegpunkt: ${this.wayPoint.locationName} <small>vom ${(new Date(this.wayPoint.visitedAt)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
@@ -94,7 +96,7 @@
                 return this.$store.getters["walk/error"];
             },
             changeError() {
-                return this.$store.getters['wayPoint/errorChange'];
+                return this.wayPointStore.getErrors.change;
             },
             hasWalks() {
                 return this.$store.getters["walk/hasWalks"];
@@ -113,7 +115,7 @@
                 promises.push(this.$store.dispatch('walk/findById', this.walkId));
             }
             if (!this.wayPoint) {
-                promises.push(this.$store.dispatch('wayPoint/findById', this.wayPointId));
+                promises.push(this.wayPointStore.fetchById(this.wayPointId));
             }
             if (!this.hasTags) {
                 promises.push(this.tagStore.fetchTags());
@@ -125,7 +127,7 @@
         },
         methods: {
             async handleRemove({wayPoint}) {
-                await this.$store.dispatch('wayPoint/remove', wayPoint);
+                await this.wayPointStore.remove({wayPoint: wayPoint['@id']});
                 if (!this.changeError) {
                     const message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich gelöscht.`;
                     this.$bvToast.toast(message, {
@@ -151,7 +153,7 @@
             },
             async handleSubmit({form}) {
                 form.wayPoint = this.wayPoint['@id'];
-                const wayPoint = await this.$store.dispatch('wayPoint/change', form);
+                const wayPoint = await this.wayPointStore.change(form);
                 if (wayPoint) {
                     const message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich geändert.`;
                     this.$bvToast.toast(message, {

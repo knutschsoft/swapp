@@ -347,7 +347,7 @@
         >
             <template v-slot:cell(note)="row">
                 <div
-                    :id="`tooltip-target-note-${ row.item.id }`"
+                    :id="`tooltip-target-note-${ row.item.wayPointId }`"
                     class="mw-25"
                 >
                     <nl2br
@@ -356,7 +356,7 @@
                         class-name="text-truncate"
                     />
                 </div>
-                <b-tooltip :target="`tooltip-target-note-${ row.item.id }`" triggers="hover click">
+                <b-tooltip :target="`tooltip-target-note-${ row.item.wayPointId }`" triggers="hover click">
                     <nl2br
                         tag="div"
                         :text="row.item.note ? row.item.note.trim() : ''"
@@ -365,7 +365,7 @@
             </template>
             <template v-slot:cell(oneOnOneInterview)="row">
                 <div
-                    :id="`tooltip-target-oneOnOneInterview-${ row.item.id }`"
+                    :id="`tooltip-target-oneOnOneInterview-${ row.item.wayPointId }`"
                     class="mw-25"
                 >
                     <nl2br
@@ -374,7 +374,7 @@
                         class-name="text-truncate"
                     />
                 </div>
-                <b-tooltip :target="`tooltip-target-oneOnOneInterview-${ row.item.id }`" triggers="hover click">
+                <b-tooltip :target="`tooltip-target-oneOnOneInterview-${ row.item.wayPointId }`" triggers="hover click">
                     <nl2br
                         tag="div"
                         :text="row.item.oneOnOneInterview.trim()"
@@ -384,7 +384,7 @@
             <template v-slot:cell(actions)="row">
                 <div class="d-flex justify-content-around">
                     <router-link
-                        :to="{name: 'WayPointDetail', params: { wayPointId: row.item.id, walkId: getWalkByIri(row.item.walk).id }}"
+                        :to="{name: 'WayPointDetail', params: { wayPointId: row.item.wayPointId, walkId: getWalkByIri(row.item.walk).id }}"
                         :data-test="`button-wegpunkt-ansehen-${ row.item.lcoationName }`"
                     >
                         <b-button
@@ -418,6 +418,7 @@ import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
 import TagAPI from '../../api/tag.js';
 import { useTagStore } from '../../stores/tag';
+import { useWayPointStore } from '../../stores/way-point';
 
 export default {
     name: 'WayPointList',
@@ -455,6 +456,7 @@ export default {
 
         return {
             tagStore: useTagStore(),
+            wayPointStore: useWayPointStore(),
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
@@ -532,10 +534,10 @@ export default {
             return !!this.tags.find(tag => !tag.isEnabled);
         },
         wayPoints() {
-            return this.$store.getters['wayPoint/wayPoints'];
+            return this.wayPointStore.getWayPoints;
         },
         isLoading() {
-            return this.$store.getters['wayPoint/isLoading'];
+            return this.wayPointStore.isLoading;
         },
         hasFilter() {
             return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);

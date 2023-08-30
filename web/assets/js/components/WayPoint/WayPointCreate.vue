@@ -11,6 +11,7 @@
 'use strict';
 
 import WayPointForm from './WayPointForm.vue';
+import { useWayPointStore } from '../../stores/way-point';
 export default {
     name: 'WayPointCreate',
     components: {
@@ -24,6 +25,7 @@ export default {
     },
     data: function () {
         return {
+            wayPointStore: useWayPointStore(),
             componentKey: 0,
         };
     },
@@ -40,7 +42,7 @@ export default {
             this.componentKey += 1;
         },
         async handleSubmit({ form, isWithFinish }) {
-            const wayPoint = await this.$store.dispatch('wayPoint/create', form);
+            const wayPoint = await this.wayPointStore.create(form);
             if (wayPoint) {
                 let message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich zur Runde hinzugefügt.`;
                 if (isWithFinish) {

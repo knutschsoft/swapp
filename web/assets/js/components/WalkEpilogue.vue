@@ -465,6 +465,7 @@ import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
 import { useClientStore } from '../stores/client';
 import { useTeamStore } from '../stores/team';
+import { useWayPointStore } from '../stores/way-point';
 
 export default {
     name: 'WalkEpilogue',
@@ -488,6 +489,7 @@ export default {
         return {
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
+            wayPointStore: useWayPointStore(),
             initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
@@ -824,7 +826,7 @@ export default {
     },
     methods: {
         getWayPointByIri(iri) {
-            return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+            return this.wayPointStore.getWayPointByIri(iri);
         },
         selectCurrentTime() {
             this.endTimeTime = dayjs().format('HH:mm');

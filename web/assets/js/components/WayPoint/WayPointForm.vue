@@ -468,6 +468,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useTagStore } from '../../stores/tag';
 import { useTeamStore } from '../../stores/team';
+import { useWayPointStore } from '../../stores/way-point';
 
 export default {
     name: 'WayPointForm',
@@ -495,6 +496,7 @@ export default {
         return {
             tagStore: useTagStore(),
             teamStore: useTeamStore(),
+            wayPointStore: useWayPointStore(),
             wayPoint: {
                 locationName: '',
                 visitedAt: dayjs(),
@@ -572,7 +574,7 @@ export default {
     },
     computed: {
         error() {
-            return this.$store.getters['wayPoint/errorChange'];
+            return this.wayPointStore.getErrors.change;
         },
         locationNames() {
             if (!this.team) {
@@ -737,8 +739,7 @@ export default {
             return getViolationsFeedback(['decodedImageData', 'imageFileData', 'imageFileName'], this.error);
         },
         isLoading() {
-            return this.$store.getters['wayPoint/isLoadingChange']
-                || this.$store.getters['wayPoint/isLoading']
+            return this.wayPointStore.isLoading
                 || this.$store.getters['walk/isLoading']
                 || this.tagStore.isLoading
                 || this.teamStore.isLoading;
@@ -853,7 +854,7 @@ export default {
         },
     },
     async created() {
-        await this.$store.dispatch('wayPoint/resetChangeError');
+        await this.wayPointStore.resetChangeError();
         if (!this.walk && this.initialWayPoint) {
             await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
         }
@@ -898,7 +899,7 @@ export default {
             return this.tagStore.getTagByIri(iri);
         },
         getWayPointByIri(iri) {
-            return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+            return this.wayPointStore.getWayPointByIri(iri);
         },
         selectCurrentTime() {
             this.visitedAtTime = dayjs().format('HH:mm');

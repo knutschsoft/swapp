@@ -37,6 +37,7 @@
     "use strict";
     import WalkRating from './WalkRating.vue';
     import { useClientStore } from '../../stores/client';
+    import { useWayPointStore } from '../../stores/way-point';
 
     export default {
         name: "WalkDetailData",
@@ -51,6 +52,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                wayPointStore: useWayPointStore(),
             }
         },
         computed: {
@@ -58,7 +60,7 @@
                 return this.clientStore.getClientByIri(this.walk.client);
             },
             isLoading() {
-                return this.$store.getters["walk/isLoading"] || this.$store.getters["wayPoint/isLoading"];
+                return this.$store.getters["walk/isLoading"] || this.wayPointStore.isLoading;
             },
             walk() {
                 return this.$store.getters["walk/getWalkById"](this.walkId);

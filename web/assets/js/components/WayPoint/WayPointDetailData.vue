@@ -108,6 +108,7 @@
     import ColorBadge from '../Tags/ColorBadge.vue';
     import dayjs from 'dayjs';
     import { useTagStore } from '../../stores/tag';
+    import { useWayPointStore } from '../../stores/way-point';
 
     export default {
         name: "WayPointDetailData",
@@ -127,29 +128,30 @@
         data: function () {
             return {
                 tagStore: useTagStore(),
+                wayPointStore: useWayPointStore(),
             };
         },
         computed: {
             isLoading() {
-                return this.$store.getters["wayPoint/isLoading"] || this.$store.getters["wayPoint/isLoading"];
+                return this.wayPointStore.isLoading;
             },
             hasError() {
-                return this.$store.getters["wayPoint/hasError"] || this.$store.getters["wayPoint/hasError"];
+                return this.wayPointStore.hasError;
             },
             error() {
-                return this.$store.getters["wayPoint/error"] || this.$store.getters["wayPoint/error"];
+                return this.wayPointStore.getErrors;
             },
             hasWayPoints() {
-                return this.$store.getters["wayPoint/hasWayPoints"];
+                return this.wayPointStore.hasWayPoints;
             },
             wayPoints() {
-                return this.$store.getters["wayPoint/wayPoints"];
+                return this.wayPointStore.getWayPoints;
             },
             walk() {
                 return this.$store.getters["walk/getWalkById"](this.walkId);
             },
             wayPoint() {
-                return this.$store.getters["wayPoint/getWayPointById"](this.wayPointId);
+                return this.wayPointStore.getWayPointById(this.wayPointId);
             },
             wayPointTags() {
                 let wayPointTags = [];
@@ -224,7 +226,7 @@
                 promises.push(this.$store.dispatch('walk/findById', this.walkId));
             }
             if (!this.wayPoint) {
-                promises.push(this.$store.dispatch('wayPoint/findById', this.wayPointId));
+                promises.push(this.wayPointStore.findById(this.wayPointId));
             }
             await Promise.all(promises);
         },

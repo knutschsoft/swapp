@@ -18,7 +18,7 @@
             </template>
             <template v-slot:cell(actions)="row">
                 <router-link
-                    :to="{name: 'WayPointDetail', params: { walkId: walk.id, wayPointId: row.item.id}}"
+                    :to="{name: 'WayPointDetail', params: { walkId: walk.id, wayPointId: row.item.wayPointId}}"
                     :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
                 >
                     <b-button size="sm">
@@ -41,6 +41,7 @@
 
 import LocationLink from '../LocationLink.vue';
 import dayjs from 'dayjs';
+import { useWayPointStore } from '../../stores/way-point';
 
 export default {
     name: 'WayPointList',
@@ -53,7 +54,9 @@ export default {
         },
     },
     data: function () {
-        return {};
+        return {
+            wayPointStore: useWayPointStore(),
+        };
     },
     computed: {
         fields () {
@@ -90,13 +93,13 @@ export default {
             ];
         },
         isLoading () {
-            return this.$store.getters['walk/isLoading'] || this.$store.getters['wayPoint/isLoading'];
+            return this.$store.getters['walk/isLoading'] || this.wayPointStore.isLoading;
         },
         walk() {
             return this.$store.getters['walk/getWalkById'](this.walkId);
         },
         hasWayPoints() {
-            return this.$store.getters['wayPoint/hasWayPoints'];
+            return this.wayPointStore.hasWayPoints;
         },
         wayPoints() {
             const wayPoints = [];
@@ -123,7 +126,7 @@ export default {
             await this.$store.dispatch('walk/findById', this.walkId);
         }
         if (this.walk && this.walk.wayPoints.length !== this.wayPoints.length) {
-            await this.$store.dispatch('wayPoint/find', {
+            await this.wayPointStore.fetchWayPoints({
                 filter: {
                     walk: this.walk['@id'],
                 },
@@ -134,7 +137,7 @@ export default {
     },
     methods: {
         getWayPointByIri(iri) {
-            return this.$store.getters['wayPoint/getWayPointByIri'](iri);
+            return this.wayPointStore.getWayPointByIri(iri);
         },
     },
 };
