@@ -116,7 +116,7 @@ export default {
                 || this.$store.getters['walk/isLoading']
                 || this.$store.getters['wayPoint/isLoading']
                 || this.tagStore.isLoading
-                || this.$store.getters['team/isLoading'];
+                || this.teamStore.isLoading;
         },
         isSubmitDisabled() {
             return this.isLoading || !this.walkNameState;

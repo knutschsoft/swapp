@@ -464,6 +464,7 @@ import WalkRating from './Walk/WalkRating';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
 import { useClientStore } from '../stores/client';
+import { useTeamStore } from '../stores/team';
 
 export default {
     name: 'WalkEpilogue',
@@ -486,6 +487,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            teamStore: useTeamStore(),
             initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
@@ -647,7 +649,7 @@ export default {
             return getViolationsFeedback(['endTime', 'startTimeBeforeEndTime', 'endTimeAfterWayPointsVisitedAt'], this.error);
         },
         team() {
-            return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);
+            return this.teamStore.getTeamByTeamName(this.walk.teamName);
         },
         conceptOfDaySuggestions() {
             let conceptOfDaySuggestions = [];
@@ -799,7 +801,7 @@ export default {
             return;
         }
         if (!this.team) {
-            await this.$store.dispatch('team/findAll');
+            await this.teamStore.fetchTeams();
         }
         if (!this.walkClient) {
             await this.clientStore.fetchByIri(this.walk.client);

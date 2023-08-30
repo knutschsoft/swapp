@@ -402,6 +402,7 @@ import FormGroup from '../Common/FormGroup.vue';
 import { StarRating } from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
 import { useClientStore } from '../../stores/client';
+import { useTeamStore } from '../../stores/team';
 
 export default {
     name: 'WalkForm',
@@ -425,6 +426,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            teamStore: useTeamStore(),
             initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
@@ -536,7 +538,7 @@ export default {
                 || !this.walk.insights && !this.isWithoutInsights
         },
         team() {
-            return this.$store.getters['team/getTeamByTeamName'](this.initialWalk.teamName);
+            return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
         },
         walkNames() {
             let walkNames = [];
@@ -754,7 +756,7 @@ export default {
             await this.$store.dispatch('user/findAll');
         }
         if (!this.team) {
-            await this.$store.dispatch('team/findAll');
+            await this.teamStore.fetchTeams();
         }
 
         this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');

@@ -67,6 +67,7 @@ import dayjs from 'dayjs';
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
 import { useClientStore } from '../../stores/client';
 import { useSystemicQuestionStore } from '../../stores/systemic-question';
+import { useTeamStore } from '../../stores/team';
 
 export default {
     name: 'SystemicQuestionList',
@@ -77,6 +78,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
             editModalSystemicQuestion: {
                 id: 'edit-modal-systemic-question',
@@ -145,7 +147,7 @@ export default {
     async created() {
         await Promise.all([
             this.systemicQuestionStore.fetchSystemicQuestions(),
-            this.$store.dispatch('team/findAll'),
+            this.teamStore.fetchTeams(),
         ]);
     },
     methods: {

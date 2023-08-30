@@ -99,6 +99,7 @@
 <script>
     "use strict";
     import { useSystemicQuestionStore } from '../../stores/systemic-question';
+    import { useTeamStore } from '../../stores/team';
 
     export default {
         name: "StartWalk",
@@ -112,16 +113,17 @@
         data: function () {
             return {
                 systemicQuestionStore: useSystemicQuestionStore(),
+                teamStore: useTeamStore(),
                 selectedTeam: null,
                 selectedUnfinishedWalk: null,
             }
         },
         computed: {
             hasTeams() {
-                return this.$store.getters["team/hasTeams"];
+                return this.teamStore.hasTeams;
             },
             teams() {
-                return this.$store.getters["team/teams"];
+                return this.teamStore.getTeams;
             },
             currentUser() {
                 return this.$store.getters["security/currentUser"];
@@ -166,7 +168,7 @@
             },
         },
         async created() {
-            await this.$store.dispatch("team/findAll");
+            await this.teamStore.fetchTeams();
             if (this.selectableTeams.length) {
                 this.selectedTeam = this.selectableTeams[0].value;
             }
@@ -176,7 +178,7 @@
         },
         methods: {
             handleWalkPrologue: async function () {
-                this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam.id} })
+                this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam.teamId} })
             },
         }
     }

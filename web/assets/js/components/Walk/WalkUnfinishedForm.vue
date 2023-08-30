@@ -166,6 +166,7 @@
 import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
+import { useTeamStore } from '../../stores/team';
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -185,6 +186,7 @@ export default {
     },
     data: function () {
         return {
+            teamStore: useTeamStore(),
             initialWalkName: '',
             initialConceptOfDay: [],
             startTimeDate: null,
@@ -241,7 +243,7 @@ export default {
                 || this.isLoading;
         },
         team() {
-            return this.$store.getters['team/getTeamByTeamName'](this.initialWalk.teamName);
+            return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
         },
         walkNames() {
             let walkNames = [];
@@ -386,7 +388,7 @@ export default {
             await this.$store.dispatch('user/findAll');
         }
         if (!this.team) {
-            await this.$store.dispatch('team/findAll');
+            await this.teamStore.fetchTeams();
         }
 
         this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');

@@ -198,6 +198,7 @@
     import ContentCollapse from './ContentCollapse.vue';
     import WalkAPI from '../api/walk.js';
     import dayjs from 'dayjs';
+    import { useTeamStore } from '../stores/team';
 
     export default {
         name: "WalkPrologue",
@@ -212,6 +213,7 @@
         },
         data: function () {
             return {
+                teamStore: useTeamStore(),
                 startTimeTime: null,
                 startTimeDate: null,
                 form: {
@@ -362,10 +364,10 @@
                 return this.$store.getters["security/currentUser"];
             },
             isLoading() {
-                return this.$store.getters["team/isLoading"] || this.$store.getters["user/isLoading"] || this.$store.getters["walk/isLoadingCreate"];
+                return this.teamStore.isLoading || this.$store.getters["user/isLoading"] || this.$store.getters["walk/isLoadingCreate"];
             },
             team() {
-                return this.$store.getters["team/getTeamById"](this.teamId);
+                return this.teamStore.getTeamById(this.teamId);
             },
             error() {
                 return this.$store.getters['walk/errorCreate'];
@@ -417,7 +419,7 @@
         },
         async mounted() {
             if (!this.team) {
-                await this.$store.dispatch('team/findAll');
+                await this.teamStore.fetchTeams();
             }
             if (!this.team) {
                 this.$router.push({ name: 'Dashboard', params: { redirect: 'Dieses Team existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });

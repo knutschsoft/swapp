@@ -467,6 +467,7 @@ import getViolationsFeedback from '../../utils/validation.js';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useTagStore } from '../../stores/tag';
+import { useTeamStore } from '../../stores/team';
 
 export default {
     name: 'WayPointForm',
@@ -493,6 +494,7 @@ export default {
     data: function () {
         return {
             tagStore: useTagStore(),
+            teamStore: useTeamStore(),
             wayPoint: {
                 locationName: '',
                 visitedAt: dayjs(),
@@ -587,7 +589,7 @@ export default {
             return sumPeopleCount;
         },
         team() {
-            return this.$store.getters['team/getTeamByTeamName'](this.walk.teamName);
+            return this.teamStore.getTeamByTeamName(this.walk.teamName);
         },
         walk() {
             return this.initialWalk ? this.initialWalk : this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
@@ -739,7 +741,7 @@ export default {
                 || this.$store.getters['wayPoint/isLoading']
                 || this.$store.getters['walk/isLoading']
                 || this.tagStore.isLoading
-                || this.$store.getters['team/isLoading'];
+                || this.teamStore.isLoading;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
@@ -859,7 +861,7 @@ export default {
             await this.tagStore.fetchTags();
         }
         if (!this.team) {
-            await this.$store.dispatch('team/findAll');
+            await this.teamStore.fetchTeams();
         }
         if (this.initialWayPoint) {
             this.wayPoint.locationName = this.initialWayPoint.locationName;

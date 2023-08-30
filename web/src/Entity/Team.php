@@ -114,6 +114,7 @@ class Team
     }
 
     #[Groups(['user:read', 'team:read'])]
+    #[SerializedName('teamId')]
     public function getId(): int
     {
         return $this->id;

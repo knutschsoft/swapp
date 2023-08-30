@@ -46,6 +46,7 @@
     import WayPointList from './Dashboard/WayPointList';
     import ContentCollapse from './ContentCollapse.vue';
     import { useClientStore } from '../stores/client';
+    import { useTeamStore } from '../stores/team';
 
     export default {
         name: "Dashboard",
@@ -64,6 +65,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                teamStore: useTeamStore(),
                 totalWayPoints: null,
                 totalWalks: null,
             }
@@ -76,10 +78,10 @@
                 return this.$store.getters["walk/walks"];
             },
             hasTeams() {
-                return this.$store.getters["team/hasTeams"];
+                return this.teamStore.hasTeams;
             },
             teams() {
-                return this.$store.getters["team/teams"];
+                return this.teamStore.getTeams;
             },
         },
         created() {

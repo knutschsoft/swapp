@@ -59,6 +59,7 @@
     "use strict";
     import TeamForm from './TeamForm.vue';
     import { useClientStore } from '../../stores/client';
+    import { useTeamStore } from '../../stores/team';
 
     export default {
         name: "TeamList",
@@ -66,6 +67,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                teamStore: useTeamStore(),
                 editTeam: null,
             };
         },
@@ -247,11 +249,8 @@
                     {key: 'actions', label: 'Aktionen', class: 'text-center',}
                 ];
             },
-            isDisabled() {
-                return this.$store.getters["team/changeTeamIsLoading"];
-            },
             teams() {
-                return this.$store.getters['team/teams'];
+                return this.teamStore.getTeams;
             },
             users() {
                 return this.$store.getters['user/users']
@@ -261,13 +260,13 @@
                     });
             },
             isLoading() {
-                return this.$store.getters["team/isLoading"];
+                return this.teamStore.isLoading;
             },
             isUserLoading() {
                 return this.$store.getters["user/isLoading"];
             },
             error() {
-                return this.$store.getters["team/error"];
+                return this.teamStore.getErrors;
             },
             isSuperAdmin() {
                 return this.$store.getters['security/isSuperAdmin'];
@@ -287,7 +286,7 @@
         },
         async created() {
             await Promise.all([
-                this.$store.dispatch('team/findAll'),
+                this.teamStore.fetchTeams(),
                 this.$store.dispatch('user/findAll'),
                 this.clientStore.fetchClients(),
             ]);
@@ -304,7 +303,7 @@
                 this.$root.$emit('bv::show::modal', 'edit-modal-team');
             },
             async handleSubmit(team) {
-                const changedTeam = await this.$store.dispatch('team/change', {
+                const changedTeam = await this.teamStore.change({
                     team: team['@id'],
                     name: team.name,
                     locationNames: team.locationNames,

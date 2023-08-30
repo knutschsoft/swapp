@@ -26,6 +26,7 @@
     import TeamList from './Teams/TeamList';
     import TeamForm from './Teams/TeamForm';
     import ContentCollapse from './ContentCollapse.vue';
+    import { useTeamStore } from '../stores/team';
 
     export default {
         name: "Teams",
@@ -34,11 +35,16 @@
             TeamList,
             TeamForm,
         },
+        data: () => {
+            return {
+                teamStore: useTeamStore()
+            };
+        },
         mounted() {
         },
         methods: {
             async handleSubmit(team) {
-                const createdTeam = await this.$store.dispatch('team/create', {
+                const createdTeam = await this.teamStore.create({
                     client: team['client'],
                     name: team.name,
                     locationNames: team.locationNames,

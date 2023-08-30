@@ -6,7 +6,6 @@ import Changelog from './modules/changelog';
 import Security from './modules/security';
 import User from './modules/user';
 import Walk from './modules/walk';
-import Team from './modules/team';
 import WayPoint from './modules/way-point';
 
 Vue.use(Vuex);
@@ -18,7 +17,6 @@ export default new Vuex.Store({
         changelog: Changelog,
         user: User,
         security: Security,
-        team: Team,
         'walk': Walk,
         'wayPoint': WayPoint,
     },

@@ -14,4 +14,8 @@ export {
     type TagTagEnableRequestJsonld as TagEnableRequest,
     type TagTagDisableRequestJsonld as TagDisableRequest,
     type TagJsonldTagRead as Tag,
+    type ApiTeamsGetCollection200Response as TeamsResponse,
+    type TeamTeamCreateRequestJsonld as TeamCreateRequest,
+    type TeamTeamChangeRequestJsonld as TeamChangeRequest,
+    type TeamJsonldTeamRead as Team,
 } from './models';

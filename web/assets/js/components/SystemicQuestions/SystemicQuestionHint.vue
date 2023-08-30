@@ -41,19 +41,23 @@
 <script>
 'use strict';
 
+import { useTeamStore } from '../../stores/team';
+
 export default {
     name: 'SystemicQuestionHint',
     props: {},
     components: {},
     data: function () {
-        return {};
+        return {
+            teamStore: useTeamStore(),
+        };
     },
     computed: {
         teamsWithSystemicQuestions() {
             return this.teams.filter(team => team.isWithSystemicQuestion).map(team => '"' + team.name + '"').join(', ');
         },
         teams() {
-            return this.$store.getters['team/teams'];
+            return this.teamStore.getTeams;
         },
     },
     async created() {

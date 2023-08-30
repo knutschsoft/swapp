@@ -622,6 +622,7 @@
 'use strict'
 import FormError from '../Common/FormError.vue'
 import { useClientStore } from '../../stores/client';
+import { useTeamStore } from '../../stores/team';
 
 export default {
     name: 'TeamForm',
@@ -644,6 +645,7 @@ export default {
 
         return {
             clientStore: useClientStore(),
+            teamStore: useTeamStore(),
             team: {
                 team: null,
                 client: '',
@@ -677,7 +679,7 @@ export default {
             return this.team.isWithAgeRanges || this.isDisabled;
         },
         isDisabled () {
-            return this.$store.getters['team/changeTeamIsLoading']
+            return this.teamStore.isLoadingCreate || this.teamStore.isLoadingChange(this.team['@id']);
         },
         nameState () {
             if (null === this.team.name || '' === this.team.name) {
@@ -687,7 +689,7 @@ export default {
             return this.team.name.length >= 3 && this.team.name.length <= 100
         },
         isLoading () {
-            return this.$store.getters['team/isLoading']
+            return this.teamStore.isLoading
         },
         currentUser () {
             return this.$store.getters['security/currentUser']
@@ -699,7 +701,7 @@ export default {
             return !(this.nameState && this.team.client && !this.isLoading)
         },
         error () {
-            return this.$store.getters['team/changeTeamError']
+            return this.teamStore.getErrors.change;
         },
         availableClients () {
             return this.clientStore.getClients;

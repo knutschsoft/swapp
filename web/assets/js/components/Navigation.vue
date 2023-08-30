@@ -285,11 +285,13 @@
     import { useClientStore } from '../stores/client';
     import { useSystemicQuestionStore } from '../stores/systemic-question';
     import { useTagStore } from '../stores/tag';
+    import { useTeamStore } from '../stores/team';
 
     export default {
         name: "Navigation",
         data: () => ({
             clientStore: useClientStore(),
+            teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
             tagStore: useTagStore(),
             userFilter: '',
@@ -309,7 +311,7 @@
                     || this.$store.getters['security/isLoading']
                     || this.systemicQuestionStore.isLoading
                     || this.tagStore.isLoading
-                    || this.$store.getters['team/isLoading']
+                    || this.teamStore.isLoading
                     || this.$store.getters['user/isLoading']
                     || this.$store.getters['user/isLoadingChange']
                     || this.$store.getters['walk/isLoading']
