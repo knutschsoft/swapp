@@ -2,7 +2,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexReset from '@ianwalter/vuex-reset';
-import Changelog from './modules/changelog';
 import Security from './modules/security';
 import User from './modules/user';
 import Walk from './modules/walk';
@@ -14,7 +13,6 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
     modules: {
-        changelog: Changelog,
         user: User,
         security: Security,
         'walk': Walk,

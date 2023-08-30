@@ -99,6 +99,7 @@
 import Navigation from './components/Navigation';
 import FrameError from './components/FrameError';
 import dayjs from 'dayjs';
+import { useChangelogStore } from './stores/changelog';
 
 export default {
     name: 'Swapp',
@@ -106,6 +107,7 @@ export default {
     props: {},
     data() {
         return {
+            changelogStore: useChangelogStore(),
             errorData: '',
             isUpdateLoading: false,
             showUpdateUI: false,
@@ -119,8 +121,8 @@ export default {
             return this.$store.getters['security/currentUser'];
         },
     },
-    created() {
-        if (!this.$store.getters['changelog/lastVisitedAt']) {
+    mounted() {
+        if (!this.changelogStore.lastVisitedAt) {
             let lastVisitedAt;
             const storageLastVisitedAtValue = this.$localStorage.get(this.storageChangelogLastVisitedAt);
             if (storageLastVisitedAtValue) {
@@ -130,9 +132,10 @@ export default {
             } else {
                 lastVisitedAt = dayjs().subtract(1, 'month');
             }
-            this.$store.dispatch('changelog/updateLastVisitedAt', lastVisitedAt)
+            this.changelogStore.updateLastVisitedAt(lastVisitedAt);
         }
-
+    },
+    created() {
         if (this.$workbox) {
             this.$workbox.addEventListener("waiting", () => {
                 this.showUpdateUI = true;

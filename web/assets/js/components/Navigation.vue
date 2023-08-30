@@ -286,10 +286,12 @@
     import { useSystemicQuestionStore } from '../stores/systemic-question';
     import { useTagStore } from '../stores/tag';
     import { useTeamStore } from '../stores/team';
+    import { useChangelogStore } from '../stores/changelog';
 
     export default {
         name: "Navigation",
         data: () => ({
+            changelogStore: useChangelogStore(),
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
@@ -347,7 +349,7 @@
                 return -1 !== ['PasswordChangeRequest', 'Login', 'PasswordReset'].indexOf(this.$route.name);
             },
             hasNewChangelogItems() {
-                return this.$store.getters['changelog/hasNewChangelogItems'];
+                return this.changelogStore.hasNewChangelogItems;
             },
         },
         watch: {

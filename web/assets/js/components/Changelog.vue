@@ -66,6 +66,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import dayjs from 'dayjs';
+import { useChangelogStore } from '../stores/changelog';
 
 export default {
     name: 'Changelog',
@@ -74,17 +75,18 @@ export default {
     },
     data: () => {
         return {
+            changelogStore: useChangelogStore(),
             lastVisitedAt: false,
         };
     },
     computed: {
         items() {
-            return this.$store.getters['changelog/changelogs'];
+            return this.changelogStore.getChangelogs;
         },
     },
     created() {
-        this.lastVisitedAt = this.$store.getters['changelog/lastVisitedAt'];
-        this.$store.dispatch('changelog/updateLastVisitedAt', dayjs());
+        this.lastVisitedAt = this.changelogStore.getLastVisitedAt;
+        this.changelogStore.updateLastVisitedAt(dayjs());
     },
     methods: {
         hasItemNewBadge(header) {
