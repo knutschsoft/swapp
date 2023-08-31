@@ -47,8 +47,6 @@ const emit = defineEmits(['select-rating']);
 
 <template>
     <div>
-        {{imageSrc}}
-        {{rating}}
         <image-rating
             v-if="imageSrc"
             :rating="rating"
