@@ -1,6 +1,6 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
-import {AxiosRequestConfig, AxiosResponse} from "axios";
+import {AxiosResponse} from "axios";
 
 import {Client, ClientChangeRequest, ClientCreateRequest, ClientsResponse} from '../model';
 
@@ -37,9 +37,9 @@ export const useClientStore = defineStore("client", {
         getClients({clients}): Client[] {
             return clients;
         },
-        getClientById({clients}): (id: number) => Client | undefined {
-            return (id: number): Client | undefined => {
-                return clients.find(client => client.clientId === id);
+        getClientById({clients}): (id: number | string) => Client | undefined {
+            return (id: number | string): Client | undefined => {
+                return clients.find(client => String(client.clientId) === String(id));
             }
         },
         getClientByIri({clients}): (iri: string) => Client | undefined {
@@ -64,7 +64,7 @@ export const useClientStore = defineStore("client", {
                 this.loadingArray.splice(this.loadingArray.indexOf('fetchByIri'), 1);
             }
         },
-        async changeClient(payload: AxiosRequestConfig<ClientChangeRequest>): Promise<Client | void> {
+        async changeClient(payload: ClientChangeRequest): Promise<Client | void> {
             this.loadingArray.push('change');
             this.errorArray.change = false;
             try {
@@ -79,7 +79,7 @@ export const useClientStore = defineStore("client", {
                 this.loadingArray.splice(this.loadingArray.indexOf('change'), 1);
             }
         },
-        async createClient(payload: AxiosRequestConfig<ClientCreateRequest>): Promise<Client | void> {
+        async createClient(payload: ClientCreateRequest): Promise<Client | void> {
             this.loadingArray.push('create');
             this.errorArray.create = false;
             try {

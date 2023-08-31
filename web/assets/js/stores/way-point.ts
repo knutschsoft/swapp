@@ -3,7 +3,7 @@ import apiClient from '../api'
 import dayjs from 'dayjs';
 import {AxiosResponse} from "axios";
 
-import {WayPoint, WayPointCreateRequest, WayPointChangeRequest, WayPointRemoveRequest, WayPointsResponse} from '../model';
+import {WayPoint, WayPointChangeRequest, WayPointCreateRequest, WayPointRemoveRequest, WayPointsResponse} from '../model';
 
 type State = {
     wayPoints: WayPoint[],
@@ -15,6 +15,9 @@ const updateFilterParams = function (params: any) {
     let sort: string = '';
     if (params.sortBy) {
         sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
+    }
+    if (typeof params.filter !== "object") {
+        return sort;
     }
     for (const [key, value] of Object.entries(params.filter)) {
         if (value === null || value === undefined) {
@@ -46,6 +49,7 @@ function removeObjectFromState(state: State, object: WayPoint) {
         }
     });
 }
+
 function replaceObjectInState(state: State, object: WayPoint) {
     let isReplaced = false;
     state.wayPoints.forEach(function (oldObject: WayPoint, key: number) {
@@ -78,9 +82,9 @@ export const useWayPointStore = defineStore("wayPoint", {
         hasWayPoints({wayPoints}): boolean {
             return wayPoints.length > 0;
         },
-        getWayPointById({wayPoints}): (id: number) => WayPoint | undefined {
-            return (id: number): WayPoint | undefined => {
-                return wayPoints.find(wayPoint => wayPoint.wayPointId === id);
+        getWayPointById({wayPoints}): (id: number | string) => WayPoint | undefined {
+            return (id: number | string): WayPoint | undefined => {
+                return wayPoints.find(wayPoint => String(wayPoint.wayPointId) === String(id));
             }
         },
         getWayPointByIri({wayPoints}): (iri: string) => WayPoint | undefined {
@@ -95,7 +99,7 @@ export const useWayPointStore = defineStore("wayPoint", {
         },
     },
     actions: {
-        async fetchById(id: string): Promise<WayPoint | void> {
+        async fetchById(id: number | string): Promise<WayPoint | void> {
             return this.fetchByIri(`/api/way_points/${id}`)
         },
         async fetchByIri(iri: string): Promise<WayPoint | void> {
@@ -145,6 +149,9 @@ export const useWayPointStore = defineStore("wayPoint", {
         },
         resetChangeError(): void {
             this.errorArray.change = false;
+        },
+        resetCreateError(): void {
+            this.errorArray.create = false;
         },
         async remove(payload: WayPointRemoveRequest): Promise<void> {
             this.loadingArray.push(`remove-${payload.wayPoint}`);

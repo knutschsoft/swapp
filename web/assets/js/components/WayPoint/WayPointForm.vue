@@ -574,7 +574,7 @@ export default {
     },
     computed: {
         error() {
-            return this.wayPointStore.getErrors.change;
+            return this.wayPointStore.getErrors.change || this.wayPointStore.getErrors.create;
         },
         locationNames() {
             if (!this.team) {
@@ -651,25 +651,36 @@ export default {
 
             return hasLastWayPoint;
         },
+        wayPointsOfWalk() {
+            let wayPoints = [];
+            this.walk.wayPoints.forEach(wayPointIri =>{
+                const wayPoint = this.wayPointStore.getWayPointByIri(wayPointIri);
+                if (wayPoint) {
+                    wayPoints.push(wayPoint);
+                }
+            });
+
+            return wayPoints;
+        },
         lastWayPointOrRoundTime() {
             let time = false;
-            this.walk.wayPoints
+            this.wayPointsOfWalk
                 .slice()
                 .sort((a, b) => {
-                        if (dayjs(this.getWayPointByIri(a).visitedAt).isAfter(dayjs(this.getWayPointByIri(b).visitedAt))) {
+                    if (dayjs(a.visitedAt).isAfter(dayjs(b.visitedAt))) {
                             return -1;
                         }
                         return 1;
                     },
                 )
-                .every(wayPointIri => {
-                if (!this.initialWayPoint || this.initialWayPoint['@id'] !== wayPointIri) {
-                    const wayPoint = this.getWayPointByIri(wayPointIri);
-                    time = dayjs(wayPoint.visitedAt);
+                .every(wayPoint => {
+                    if (!this.initialWayPoint || this.initialWayPoint['@id'] !== wayPoint['@id']) {
+                        time = dayjs(wayPoint.visitedAt);
 
-                    return false;
+                        return false;
+                    }
                 }
-            });
+            );
 
             if (time) {
                 return time;
@@ -767,7 +778,7 @@ export default {
                 return false;
             }
 
-            return this.initialWayPoint.wayPointTags.find(tagIri => !this.getTagByIri(tagIri).isEnabled);
+            return this.initialWayPoint.wayPointTags.find(tagIri => !this.getTagByIri(tagIri)?.isEnabled);
         },
         tags() {
             return this.tagStore.getTags.slice().filter(tag => tag.isEnabled);
@@ -854,7 +865,11 @@ export default {
         },
     },
     async created() {
-        await this.wayPointStore.resetChangeError();
+        this.wayPointStore.resetChangeError();
+        this.wayPointStore.resetCreateError();
+        if (this.initialWayPoint) {
+            await this.wayPointStore.fetchWayPoints({filter: {walk: this.initialWayPoint.walk}, currentPage: 1, perPage: 1000});
+        }
         if (!this.walk && this.initialWayPoint) {
             await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
         }

@@ -563,7 +563,11 @@ export default {
             let formattedTags = '';
             let tagList = [];
             iriList.forEach((iri) => {
-                tagList.push(this.getTagByIri(iri));
+                const tagByIri = this.getTagByIri(iri);
+                if (!tagByIri) {
+                    return;
+                }
+                tagList.push(tagByIri);
             });
             tagList = tagList.sort((tagA, tagB) => tagA.name > tagB.name ? 1 : -1);
             tagList.forEach((tag, key) => {

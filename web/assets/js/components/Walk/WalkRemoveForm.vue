@@ -75,6 +75,7 @@ import GlobalFormError from '../Common/GlobalFormError.vue';
 import getViolationsFeedback from '../../utils/validation.js';
 import { useTagStore } from '../../stores/tag';
 import { useWayPointStore } from '../../stores/way-point';
+import { useTeamStore } from '../../stores/team';
 
 export default {
     name: 'WalkRemoveForm',
@@ -94,6 +95,7 @@ export default {
     data: function () {
         return {
             tagStore: useTagStore(),
+            teamStore: useTeamStore(),
             wayPointStore: useWayPointStore(),
             walkName: '',
         };

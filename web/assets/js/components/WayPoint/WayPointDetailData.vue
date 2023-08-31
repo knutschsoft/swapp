@@ -226,7 +226,7 @@
                 promises.push(this.$store.dispatch('walk/findById', this.walkId));
             }
             if (!this.wayPoint) {
-                promises.push(this.wayPointStore.findById(this.wayPointId));
+                promises.push(this.wayPointStore.fetchById(this.wayPointId));
             }
             await Promise.all(promises);
         },

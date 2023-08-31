@@ -1,6 +1,6 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
-import {AxiosRequestConfig, AxiosResponse} from "axios";
+import {AxiosResponse} from "axios";
 
 import {Tag, TagCreateRequest, TagEnableRequest, TagDisableRequest, TagsResponse} from '../model';
 
@@ -38,9 +38,9 @@ export const useTagStore = defineStore("tag", {
         getTags({tags}): Tag[] {
             return tags;
         },
-        getTagById({tags}): (id: number) => Tag | undefined {
-            return (id: number): Tag | undefined => {
-                return tags.find(tag => tag.tagId === id);
+        getTagById({tags}): (id: number | string) => Tag | undefined {
+            return (id: number | string): Tag | undefined => {
+                return tags.find(tag => String(tag.tagId) === String(id));
             }
         },
         getTagByIri({tags}): (iri: string) => Tag | undefined {

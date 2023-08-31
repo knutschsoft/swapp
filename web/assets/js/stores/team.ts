@@ -42,9 +42,9 @@ export const useTeamStore = defineStore("team", {
         hasTeams({teams}): boolean {
             return teams.length > 0;
         },
-        getTeamById({teams}): (id: number) => Team | undefined {
-            return (id: number): Team | undefined => {
-                return teams.find(team => team.teamId === id);
+        getTeamById({teams}): (id: number | string) => Team | undefined {
+            return (id: number | string): Team | undefined => {
+                return teams.find(team => String(team.teamId) === String(id));
             }
         },
         getTeamByIri({teams}): (iri: string) => Team | undefined {

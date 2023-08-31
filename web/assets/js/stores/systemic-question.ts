@@ -1,6 +1,6 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
-import {AxiosRequestConfig, AxiosResponse} from "axios";
+import {AxiosResponse} from "axios";
 
 import {SystemicQuestion, SystemicQuestionChangeRequest, SystemicQuestionCreateRequest, SystemicQuestionEnableRequest, SystemicQuestionDisableRequest, SystemicQuestionsResponse} from '../model';
 
@@ -37,8 +37,8 @@ export const useSystemicQuestionStore = defineStore("systemicQuestion", {
         getSystemicQuestions({systemicQuestions}): SystemicQuestion[] {
             return systemicQuestions;
         },
-        getSystemicQuestionById({systemicQuestions}): (id: number) => SystemicQuestion | undefined {
-            return (id: number): SystemicQuestion | undefined => {
+        getSystemicQuestionById({systemicQuestions}): (id: number | string) => SystemicQuestion | undefined {
+            return (id: number | string): SystemicQuestion | undefined => {
                 return systemicQuestions.find(systemicQuestion => systemicQuestion.systemicQuestionId === id);
             }
         },
@@ -64,7 +64,7 @@ export const useSystemicQuestionStore = defineStore("systemicQuestion", {
                 this.loadingArray.splice(this.loadingArray.indexOf('fetchByIri'), 1);
             }
         },
-        async change(payload: AxiosRequestConfig<SystemicQuestionChangeRequest>): Promise<SystemicQuestion | void> {
+        async change(payload: SystemicQuestionChangeRequest): Promise<SystemicQuestion | void> {
             this.loadingArray.push('change');
             this.errorArray.change = false;
             try {
@@ -79,7 +79,7 @@ export const useSystemicQuestionStore = defineStore("systemicQuestion", {
                 this.loadingArray.splice(this.loadingArray.indexOf('change'), 1);
             }
         },
-        async create(payload: AxiosRequestConfig<SystemicQuestionCreateRequest>): Promise<SystemicQuestion | void> {
+        async create(payload: SystemicQuestionCreateRequest): Promise<SystemicQuestion | void> {
             this.loadingArray.push('create');
             this.errorArray.create = false;
             try {
@@ -94,7 +94,7 @@ export const useSystemicQuestionStore = defineStore("systemicQuestion", {
                 this.loadingArray.splice(this.loadingArray.indexOf('create'), 1);
             }
         },
-        async enable(payload: AxiosRequestConfig<SystemicQuestionEnableRequest>): Promise<SystemicQuestion | void> {
+        async enable(payload: SystemicQuestionEnableRequest): Promise<SystemicQuestion | void> {
             this.loadingArray.push('change');
             this.errorArray.change = false;
             try {
@@ -109,7 +109,7 @@ export const useSystemicQuestionStore = defineStore("systemicQuestion", {
                 this.loadingArray.splice(this.loadingArray.indexOf('change'), 1);
             }
         },
-        async disable(payload: AxiosRequestConfig<SystemicQuestionDisableRequest>): Promise<SystemicQuestion | void> {
+        async disable(payload: SystemicQuestionDisableRequest): Promise<SystemicQuestion | void> {
             this.loadingArray.push('change');
             this.errorArray.change = false;
             try {
