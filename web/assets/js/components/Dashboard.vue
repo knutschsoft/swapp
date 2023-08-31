@@ -47,6 +47,7 @@
     import ContentCollapse from './ContentCollapse.vue';
     import { useClientStore } from '../stores/client';
     import { useTeamStore } from '../stores/team';
+    import { useWalkStore } from '../stores/walk';
 
     export default {
         name: "Dashboard",
@@ -66,16 +67,17 @@
             return {
                 clientStore: useClientStore(),
                 teamStore: useTeamStore(),
+                walkStore: useWalkStore(),
                 totalWayPoints: null,
                 totalWalks: null,
             }
         },
         computed: {
             hasWalks() {
-                return this.$store.getters["walk/hasWalks"];
+                return this.walkStore.hasWalks;
             },
             walks() {
-                return this.$store.getters["walk/walks"];
+                return this.walkStore.getWalks;
             },
             hasTeams() {
                 return this.teamStore.hasTeams;

@@ -76,6 +76,7 @@ import getViolationsFeedback from '../../utils/validation.js';
 import { useTagStore } from '../../stores/tag';
 import { useWayPointStore } from '../../stores/way-point';
 import { useTeamStore } from '../../stores/team';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WalkRemoveForm',
@@ -96,13 +97,14 @@ export default {
         return {
             tagStore: useTagStore(),
             teamStore: useTeamStore(),
+            walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             walkName: '',
         };
     },
     computed: {
         error() {
-            return this.$store.getters['walk/errorChange'];
+            return this.walkStore.getErrors.change;
         },
         walkNameState() {
             if (!this.walkName) {
@@ -115,9 +117,9 @@ export default {
             return getViolationsFeedback(['walk'], this.error);
         },
         isLoading() {
-            return this.$store.getters['walk/isLoadingChange']
-                || this.$store.getters['walk/isLoading']
-                || this.$store.getters['walk/isLoading']
+            return this.walkStore.isLoadingChange
+                || this.walkStore.isLoading
+                || this.walkStore.isLoading
                 || this.wayPointStore.isLoading
                 || this.tagStore.isLoading
                 || this.teamStore.isLoading;
@@ -134,7 +136,7 @@ export default {
     watch: {
     },
     async mounted() {
-        await this.$store.dispatch('walk/resetChangeError');
+        await this.walkStore.resetChangeError();
         this.walkName = '';
     },
     methods: {

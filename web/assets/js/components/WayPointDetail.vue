@@ -49,6 +49,7 @@
     import WayPointRemoveForm from './WayPoint/WayPointRemoveForm.vue';
     import { useTagStore } from '../stores/tag';
     import { useWayPointStore } from '../stores/way-point';
+    import { useWalkStore } from '../stores/walk';
 
     export default {
         name: "WayPointDetail",
@@ -70,6 +71,7 @@
             return {
                 tagStore: useTagStore(),
                 wayPointStore: useWayPointStore(),
+                walkStore: useWalkStore(),
                 redirectToastId: 'way-point-detail-redirect-toast',
             };
         },
@@ -78,7 +80,7 @@
                 return this.$store.getters['security/isAdmin'];
             },
             walk() {
-                return this.$store.getters["walk/getWalkById"](this.walkId);
+                return this.walkStore.getWalkById(this.walkId);
             },
             wayPoint() {
                 return this.wayPointStore.getWayPointById(this.wayPointId);
@@ -87,32 +89,32 @@
                 return `Wegpunkt: ${this.wayPoint.locationName} <small>vom ${(new Date(this.wayPoint.visitedAt)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
             },
             isLoading() {
-                return this.$store.getters["walk/isLoading"];
+                return this.walkStore.isLoading;
             },
             hasError() {
-                return this.$store.getters["walk/hasError"];
+                return this.walkStore.hasError;
             },
             error() {
-                return this.$store.getters["walk/error"];
+                return this.walkStore.getErrors;
             },
             changeError() {
                 return this.wayPointStore.getErrors.change;
             },
             hasWalks() {
-                return this.$store.getters["walk/hasWalks"];
+                return this.walkStore.hasWalks;
             },
             hasTags() {
                 return this.$store.getters["tag/hasTags"];
             },
             walks() {
-                return this.$store.getters["walk/walks"];
+                return this.walkStore.getWalks;
             },
         },
         watch: {},
         async mounted() {
             const promises = [];
             if (!this.walk) {
-                promises.push(this.$store.dispatch('walk/findById', this.walkId));
+                promises.push(this.walkStore.fetchById(this.walkId));
             }
             if (!this.wayPoint) {
                 promises.push(this.wayPointStore.fetchById(this.wayPointId));
@@ -139,7 +141,7 @@
                         solid: true,
                     });
 
-                    this.$router.push({name: 'WalkDetail', params: { walkId: this.walk.id }});
+                    this.$router.push({name: 'WalkDetail', params: { walkId: this.walk.walkId }});
                 } else {
                     this.$bvToast.toast('Upps! :-(', {
                         title: 'Wegpunkt löschen fehlgeschlagen',

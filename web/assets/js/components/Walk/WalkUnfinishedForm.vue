@@ -168,6 +168,7 @@ import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
 import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -188,6 +189,7 @@ export default {
     data: function () {
         return {
             teamStore: useTeamStore(),
+            walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             initialWalkName: '',
             initialConceptOfDay: [],
@@ -335,7 +337,7 @@ export default {
             return errors;
         },
         isLoading() {
-            return this.$store.getters['walk/isLoadingChange'];
+            return this.walkStore.isLoadingChange;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
@@ -350,7 +352,7 @@ export default {
                 || this.isLoading;
         },
         error() {
-            return this.$store.getters['walk/errorChange'];
+            return this.walkStore.getErrors.change;
         },
     },
     watch: {

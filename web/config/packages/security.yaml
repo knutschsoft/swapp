@@ -10,7 +10,7 @@ security:
         confirmation-token:
             pattern: ^/api/users/is-confirmation-token-valid
             security: false
-        chnage-password:
+        change-password:
             pattern: ^/api/users/change-password
             security: false
         request-password-reset:

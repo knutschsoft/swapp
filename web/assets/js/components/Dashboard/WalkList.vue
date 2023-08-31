@@ -275,7 +275,7 @@
             <template v-slot:cell(actions)="row">
                 <div class="d-flex justify-content-around">
                     <router-link
-                        :to="{name: 'WalkDetail', params: { walkId: row.item.id}}"
+                        :to="{name: 'WalkDetail', params: { walkId: row.item.walkId}}"
                         :data-test="`button-runde-ansehen-${ row.item.name }`"
                     >
                         <b-button
@@ -294,7 +294,7 @@
                     </router-link>
                     <router-link
                         v-if="row.item.isUnfinished"
-                        :to="{name: 'WalkAddWayPoint', params: { walkId: row.item.id}}"
+                        :to="{name: 'WalkAddWayPoint', params: { walkId: row.item.walkId}}"
                         :data-test="`button-runde-fortsetzen-${ row.item.name }`"
                         class="mt-ml-0 ml-1"
                     >
@@ -332,6 +332,7 @@ import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import WalkRating from '../Walk/WalkRating.vue';
 import { useClientStore } from '../../stores/client';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WalkList',
@@ -365,6 +366,7 @@ export default {
 
         return {
             clientStore: useClientStore(),
+            walkStore: useWalkStore(),
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
@@ -442,16 +444,16 @@ export default {
             }).map((teamName) => teamName.teamName);
         },
         hasWalks() {
-            return this.$store.getters['walk/hasWalks'];
+            return this.walkStore.hasWalks;
         },
         walks() {
-            return this.$store.getters['walk/walks'];
+            return this.walkStore.getWalks;
         },
         totalWalks() {
-            return this.$store.getters['walk/totalWalks'];
+            return this.walkStore.getTotalWalks;
         },
         isLoading() {
-            return this.$store.getters['walk/isLoading'];
+            return this.walkStore.isLoading;
         },
         hasFilter() {
             return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);

@@ -1,7 +1,7 @@
 <template>
-    <div v-if="!isLoading">
+    <div v-if="!isLoading && walk">
         <div
-            v-if="walk && !field.isHidden"
+            v-if="!field.isHidden"
             v-for="(field, index2) in fields"
             :key="index2"
         >
@@ -38,6 +38,7 @@
     import WalkRating from './WalkRating.vue';
     import { useClientStore } from '../../stores/client';
     import { useWayPointStore } from '../../stores/way-point';
+    import { useWalkStore } from '../../stores/walk';
 
     export default {
         name: "WalkDetailData",
@@ -52,6 +53,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                walkStore: useWalkStore(),
                 wayPointStore: useWayPointStore(),
             }
         },
@@ -60,10 +62,10 @@
                 return this.clientStore.getClientByIri(this.walk.client);
             },
             isLoading() {
-                return this.$store.getters["walk/isLoading"] || this.wayPointStore.isLoading;
+                return this.walkStore.isLoading || this.wayPointStore.isLoading;
             },
             walk() {
-                return this.$store.getters["walk/getWalkById"](this.walkId);
+                return this.walkStore.getWalkById(this.walkId);
             },
             walkTeamMembers() {
                 let users = [];

@@ -469,6 +469,7 @@ import dayjs from 'dayjs';
 import { useTagStore } from '../../stores/tag';
 import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WayPointForm',
@@ -496,6 +497,7 @@ export default {
         return {
             tagStore: useTagStore(),
             teamStore: useTeamStore(),
+            walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             wayPoint: {
                 locationName: '',
@@ -594,7 +596,7 @@ export default {
             return this.teamStore.getTeamByTeamName(this.walk.teamName);
         },
         walk() {
-            return this.initialWalk ? this.initialWalk : this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
+            return this.initialWalk ? this.initialWalk : this.walkStore.getWalkByIri(this.initialWayPoint.walk);
         },
         locationNameState() {
             if ((null === this.wayPoint.locationName || '' === this.wayPoint.locationName || undefined === this.wayPoint.locationName) && '' === this.invalidLocationNameState) {
@@ -751,7 +753,7 @@ export default {
         },
         isLoading() {
             return this.wayPointStore.isLoading
-                || this.$store.getters['walk/isLoading']
+                || this.walkStore.isLoading
                 || this.tagStore.isLoading
                 || this.teamStore.isLoading;
         },
@@ -871,7 +873,7 @@ export default {
             await this.wayPointStore.fetchWayPoints({filter: {walk: this.initialWayPoint.walk}, currentPage: 1, perPage: 1000});
         }
         if (!this.walk && this.initialWayPoint) {
-            await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
+            await this.walkStore.fetchByIri(this.initialWayPoint.walk);
         }
         if (!this.tags.length) {
             await this.tagStore.fetchTags();
@@ -953,7 +955,7 @@ export default {
         async handleSetWalkStartTime() {
             const dateTemplate = 'dddd DD.MM.YYYY [um] HH:mm';
             const previousFormattedDate = dayjs(this.walk.startTime).format(dateTemplate);
-            const result = await this.$store.dispatch('walk/changeStartTime', {
+            const result = await this.walkStore.changeStartTime({
                 walk: this.walk['@id'],
                 startTime: dayjs(this.wayPoint.visitedAt).startOf('minute').format(),
             });

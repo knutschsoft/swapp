@@ -4,7 +4,6 @@ import Vuex from 'vuex';
 import VuexReset from '@ianwalter/vuex-reset';
 import Security from './modules/security';
 import User from './modules/user';
-import Walk from './modules/walk';
 
 Vue.use(Vuex);
 
@@ -14,7 +13,6 @@ export default new Vuex.Store({
     modules: {
         user: User,
         security: Security,
-        'walk': Walk,
     },
     strict: debug,
     plugins: [VuexReset()],

@@ -199,6 +199,7 @@
     import WalkAPI from '../api/walk.js';
     import dayjs from 'dayjs';
     import { useTeamStore } from '../stores/team';
+    import { useWalkStore } from '../stores/walk';
 
     export default {
         name: "WalkPrologue",
@@ -214,6 +215,7 @@
         data: function () {
             return {
                 teamStore: useTeamStore(),
+                walkStore: useWalkStore(),
                 startTimeTime: null,
                 startTimeDate: null,
                 form: {
@@ -364,13 +366,13 @@
                 return this.$store.getters["security/currentUser"];
             },
             isLoading() {
-                return this.teamStore.isLoading || this.$store.getters["user/isLoading"] || this.$store.getters["walk/isLoadingCreate"];
+                return this.teamStore.isLoading || this.$store.getters["user/isLoading"] || this.walkStore.isLoadingCreate;
             },
             team() {
                 return this.teamStore.getTeamById(this.teamId);
             },
             error() {
-                return this.$store.getters['walk/errorCreate'];
+                return this.walkStore.getErrors.create;
             },
             hasError() {
                 return !!this.error;
@@ -466,7 +468,7 @@
             onSubmit: async function () {
                 this.isFormLoading = true;
 
-                const walk = await this.$store.dispatch('walk/create', this.form);
+                const walk = await this.walkStore.create(this.form);
                 window.scrollTo({
                     top: 0,
                     left: 0,
@@ -482,7 +484,7 @@
                         appendToast: true,
                         solid: true,
                     });
-                    this.$router.push({ name: 'WalkAddWayPoint', params: { walkId: walk.id } });
+                    this.$router.push({ name: 'WalkAddWayPoint', params: { walkId: walk.walkId } });
                 } else {
                     this.$bvToast.toast('Upps! :-(', {
                         title: 'Runde erstellen fehlgeschlagen',

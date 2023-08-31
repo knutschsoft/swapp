@@ -76,6 +76,7 @@ import getViolationsFeedback from '../../utils/validation.js';
 import { useTagStore } from '../../stores/tag';
 import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WayPointRemoveForm',
@@ -101,6 +102,7 @@ export default {
             tagStore: useTagStore(),
             teamStore: useTeamStore(),
             wayPointStore: useWayPointStore(),
+            walkStore: useWalkStore(),
             wayPointName: '',
         };
     },
@@ -109,7 +111,7 @@ export default {
             return this.wayPointStore.getErrors.change;
         },
         walk() {
-            return this.initialWalk ? this.initialWalk : this.$store.getters['walk/getWalkByIri'](this.initialWayPoint.walk);
+            return this.initialWalk ? this.initialWalk : this.walkStore.getWalkByIri(this.initialWayPoint.walk);
         },
         wayPointNameState() {
             if (!this.wayPointName) {
@@ -123,7 +125,7 @@ export default {
         },
         isLoading() {
             return this.wayPointStore.isLoading
-                || this.$store.getters['walk/isLoading']
+                || this.walkStore.isLoading
                 || this.tagStore.isLoading
                 || this.teamStore.isLoading;
         },
@@ -148,7 +150,7 @@ export default {
         await this.wayPointStore.resetChangeError();
         this.wayPointName = '';
         if (!this.walk && this.initialWayPoint) {
-            await this.$store.dispatch('walk/find', this.initialWayPoint.walk);
+            await this.walkStore.fetchByIri(this.initialWayPoint.walk);
         }
     },
     methods: {

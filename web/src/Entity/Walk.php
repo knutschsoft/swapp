@@ -375,6 +375,7 @@ class Walk
     }
 
     #[Groups(['walk:read'])]
+    #[SerializedName('walkId')]
     public function getId(): int
     {
         return $this->id;

@@ -13,7 +13,7 @@
         </b-alert>
         <content-collapse
             v-if="walk"
-            :title="`Runde &quot;${walk.name}&quot; abschließen`"
+            :title="`Runde &quot;${walk?.name}&quot; abschließen`"
             collapse-key="walk-epilogue"
             is-visible-by-default
         >
@@ -443,7 +443,7 @@
         </content-collapse>
 
         <content-collapse
-            :title="`Wegpunkte der Runde &quot;${walk.name}&quot;`"
+            :title="`Wegpunkte der Runde &quot;${walk?.name}&quot;`"
             collapse-key="waypoints-of-round"
             is-visible-by-default
             :is-loading="!walk"
@@ -466,6 +466,7 @@ import getViolationsFeedback from '../utils/validation.js';
 import { useClientStore } from '../stores/client';
 import { useTeamStore } from '../stores/team';
 import { useWayPointStore } from '../stores/way-point';
+import { useWalkStore } from '../stores/walk';
 
 export default {
     name: 'WalkEpilogue',
@@ -489,6 +490,7 @@ export default {
         return {
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
+            walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             initialConceptOfDay: [],
             initialWalkName: '',
@@ -554,23 +556,34 @@ export default {
         hasLastWayPoint() {
             return this.walk.wayPoints.length > 0;
         },
+        wayPointsOfWalk() {
+            let wayPoints = [];
+            this.walk.wayPoints.forEach(wayPointIri =>{
+                const wayPoint = this.wayPointStore.getWayPointByIri(wayPointIri);
+                if (wayPoint) {
+                    wayPoints.push(wayPoint);
+                }
+            });
+
+            return wayPoints;
+        },
         lastWayPointOrRoundTime() {
             let time = false;
-            this.walk.wayPoints
+            this.wayPointsOfWalk
                 .slice()
                 .sort((a, b) => {
-                        if (dayjs(this.getWayPointByIri(a).visitedAt).isAfter(dayjs(this.getWayPointByIri(b).visitedAt))) {
+                        if (dayjs(a.visitedAt).isAfter(dayjs(b.visitedAt))) {
                             return -1;
                         }
                         return 1;
                     },
                 )
-                .every(wayPointIri => {
-                const wayPoint = this.getWayPointByIri(wayPointIri);
-                time = dayjs(wayPoint.visitedAt);
+                .every(wayPoint => {
+                    time = dayjs(wayPoint.visitedAt);
 
-                return false;
-            });
+                    return false;
+                }
+            );
 
             if (time) {
                 return time;
@@ -738,19 +751,19 @@ export default {
             return getViolationsFeedback(['commitments'], this.error);
         },
         isLoading() {
-            return this.$store.getters['walk/isLoading'];
+            return this.walkStore.isLoading;
         },
         hasWalks() {
-            return this.$store.getters['walk/hasWalks'];
+            return this.walkStore.hasWalks;
         },
         walks() {
-            return this.$store.getters['walk/walks'];
+            return this.walkStore.getWalks;
         },
         walk() {
-            return this.$store.getters["walk/getWalkById"](this.walkId);
+            return this.walkStore.getWalkById(this.walkId);
         },
         error() {
-            return this.$store.getters["walk/errorChange"];
+            return this.walkStore.getErrors.change;
         },
     },
     watch: {
@@ -794,7 +807,7 @@ export default {
         },
     },
     async mounted() {
-        await this.$store.dispatch('walk/resetChangeError');
+        await this.walkStore.resetChangeError();
         if (!this.walk) {
             await this.refreshWalk();
         }
@@ -841,10 +854,10 @@ export default {
             this.endTimeDate = time.format('YYYY-MM-DD');
         },
         refreshWalk: async function() {
-            await this.$store.dispatch('walk/findById', this.walkId);
+            await this.walkStore.fetchById(this.walkId);
         },
         async handleSubmit() {
-            const walk = await this.$store.dispatch('walk/epilogue', this.form);
+            const walk = await this.walkStore.epilogue(this.form);
             if (walk) {
                 const message = `Die Runde "${walk.name}" wurde erfolgreich erstellt.`;
                 this.$bvToast.toast(message, {

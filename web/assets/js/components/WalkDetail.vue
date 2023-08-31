@@ -28,33 +28,13 @@
             />
         </content-collapse>
         <content-collapse
-            :title="`Wegpunkte der Runde &quot;${walk.name}&quot;`"
+            :title="`Wegpunkte der Runde &quot;${walk?.name}&quot;`"
             collapse-key="waypoints-of-round"
             is-visible-by-default
             :is-loading="!walk"
         >
             <WayPointList
                 :walk-id="walkId"
-            />
-        </content-collapse>
-        <content-collapse
-            v-if="isAdmin && walk"
-            :title="`Runde &quot;${walk.name}&quot; ändern`"
-            collapse-key="walk-edit"
-            is-visible-by-default
-            :is-loading="!walk"
-        >
-            <walk-form
-                v-if="!walk.isUnfinished"
-                submit-button-text="Runde speichern"
-                :initial-walk="walk"
-                @submit="handleSubmit"
-            />
-            <walk-unfinished-form
-                v-else
-                submit-button-text="Runde speichern"
-                :initial-walk="walk"
-                @submit="handleWalkUnfinishedSubmit"
             />
         </content-collapse>
         <content-collapse
@@ -84,6 +64,7 @@
     import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
     import { useClientStore } from '../stores/client';
     import { useWayPointStore } from '../stores/way-point';
+    import { useWalkStore } from '../stores/walk';
 
     export default {
         name: "WalkDetail",
@@ -104,6 +85,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                walkStore: useWalkStore(),
                 wayPointStore: useWayPointStore(),
             }
         },
@@ -112,35 +94,39 @@
                 return this.$store.getters['security/isAdmin'];
             },
             isLoading() {
-                return this.$store.getters["walk/isLoading"];
+                return this.walkStore.isLoading;
             },
             hasError() {
-                return this.$store.getters["walk/hasError"];
+                return this.walkStore.hasError;
             },
             error() {
-                return this.$store.getters["walk/error"];
+                return this.walkStore.getErrors;
             },
             changeError() {
-                return this.$store.getters['walk/errorChange'];
+                return this.walkStore.getErrors.change;
             },
             hasWalks() {
-                return this.$store.getters["walk/hasWalks"];
+                return this.walkStore.hasWalks;
             },
             walks() {
-                return this.$store.getters["walk/walks"];
+                return this.walkStore.getWalks;
             },
             title() {
+                if (!this.walk) {
+                    return '';
+                }
+
                 return `Streetwork-Runde: "${this.walk.name}" <small>von ${(new Date(this.walk.startTime)).toLocaleDateString('de-DE', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' })}</small>`;
             },
             walk() {
-                return this.$store.getters["walk/getWalkById"](this.walkId);
+                return this.walkStore.getWalkById(this.walkId);
             },
         },
         watch: {},
         async mounted() {
-            await this.$store.dispatch('walk/resetChangeError');
+            await this.walkStore.resetChangeError();
             if (!this.walk) {
-                await this.$store.dispatch('walk/findById', this.walkId);
+                await this.walkStore.fetchById(this.walkId);
             }
             if (!this.walk) {
                 this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
@@ -164,7 +150,7 @@
         },
         methods: {
             async handleRemove({walk}) {
-                await this.$store.dispatch('walk/remove', walk);
+                await this.walkStore.remove(walk);
                 if (!this.changeError) {
                     const message = `Die Runde "${walk.name}" wurde erfolgreich gelöscht.`;
                     this.$bvToast.toast(message, {
@@ -193,7 +179,7 @@
             },
             async handleSubmit(payload) {
                 payload.walk = this.walk['@id'];
-                const walk = await this.$store.dispatch('walk/change', payload);
+                const walk = await this.walkStore.change(payload);
                 if (walk) {
                     const message = `Die Runde "${walk.name}" wurde erfolgreich geändert.`;
                     this.$bvToast.toast(message, {
@@ -217,7 +203,7 @@
             },
             async handleWalkUnfinishedSubmit(payload) {
                 payload.walk = this.walk['@id'];
-                const walk = await this.$store.dispatch('walk/changeUnfinished', payload);
+                const walk = await this.walkStore.changeUnfinished(payload);
                 if (walk) {
                     const message = `Die Runde "${walk.name}" wurde erfolgreich geändert.`;
                     this.$bvToast.toast(message, {

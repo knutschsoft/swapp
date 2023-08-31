@@ -39,27 +39,6 @@ export default {
             perPage: 1,
         });
     },
-    findOneById(walkId) {
-        return axios.get('/api/walks/' + walkId);
-    },
-    create(payload) {
-        return axios.post(`/api/walks/create`, payload);
-    },
-    changeUnfinished(payload) {
-        return axios.post(`/api/walks/change-unfinished`, payload);
-    },
-    change(payload) {
-        return axios.post(`/api/walks/change`, payload);
-    },
-    changeStartTime(payload) {
-        return axios.post(`/api/walks/change-start-time`, payload);
-    },
-    remove(payload) {
-        return axios.post(`/api/walks/remove`, payload);
-    },
-    epilogue(payload) {
-        return axios.post(`/api/walks/epilogue`, payload);
-    },
     export(params) {
         const sort = updateFilterParams(params);
 

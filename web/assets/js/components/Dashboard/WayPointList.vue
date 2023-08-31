@@ -384,7 +384,7 @@
             <template v-slot:cell(actions)="row">
                 <div class="d-flex justify-content-around">
                     <router-link
-                        :to="{name: 'WayPointDetail', params: { wayPointId: row.item.wayPointId, walkId: getWalkByIri(row.item.walk).id }}"
+                        :to="{name: 'WayPointDetail', params: { wayPointId: row.item.wayPointId, walkId: getWalkByIri(row.item.walk).walkId }}"
                         :data-test="`button-wegpunkt-ansehen-${ row.item.lcoationName }`"
                     >
                         <b-button
@@ -419,6 +419,7 @@ import WalkAPI from '../../api/walk.js';
 import TagAPI from '../../api/tag.js';
 import { useTagStore } from '../../stores/tag';
 import { useWayPointStore } from '../../stores/way-point';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WayPointList',
@@ -457,6 +458,7 @@ export default {
         return {
             tagStore: useTagStore(),
             wayPointStore: useWayPointStore(),
+            walkStore: useWalkStore(),
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
@@ -555,9 +557,7 @@ export default {
             return this.tagStore.getTagByIri(iri);
         },
         getWalkByIri(iri) {
-            const id = iri.replace('/api/walks/', '');
-
-            return this.$store.getters['walk/getWalkById'](id);
+            return this.walkStore.getWalkByIri(iri);
         },
         formatTags: function (iriList) {
             let formattedTags = '';
@@ -593,7 +593,7 @@ export default {
                 if (!this.getWalkByIri(wayPoint.walk)) {
                     const id = wayPoint.walk.replace('/api/walks/', '');
                     if (!walkPromiseIds.includes(id)) {
-                        walkPromises.push(this.$store.dispatch('walk/findById', id));
+                        walkPromises.push(this.walkStore.fetchById(id));
                         walkPromiseIds.push(id);
                     }
                 }

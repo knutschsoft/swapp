@@ -59,7 +59,7 @@ export default {
                 if (isWithFinish) {
                     this.$router.push({
                         name: 'WalkEpilogue',
-                        params: { walkId: this.walk.id, successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
+                        params: { walkId: this.walk.walkId, successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
                     });
                 } else {
                     this.forceRerender();

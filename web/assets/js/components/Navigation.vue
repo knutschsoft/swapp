@@ -288,6 +288,7 @@
     import { useTeamStore } from '../stores/team';
     import { useChangelogStore } from '../stores/changelog';
     import { useWayPointStore } from '../stores/way-point';
+    import { useWalkStore } from '../stores/walk';
 
     export default {
         name: "Navigation",
@@ -297,6 +298,7 @@
             teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
             tagStore: useTagStore(),
+            walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             userFilter: '',
             users: [],
@@ -318,7 +320,8 @@
                     || this.teamStore.isLoading
                     || this.$store.getters['user/isLoading']
                     || this.$store.getters['user/isLoadingChange']
-                    || this.$store.getters['walk/isLoading']
+                    || this.walkStore.isLoading
+                    || this.walkStore.isLoading
                     || this.wayPointStore.isLoading;
             },
             isAuthenticated() {

@@ -7,7 +7,7 @@
             class="d-inline-flex p-2 bd-highlight"
         >
             <router-link
-                :to="{name: 'WalkDetail', params: { walkId: walk.id}}"
+                :to="{name: 'WalkDetail', params: { walkId: walk.walkId}}"
             >
                 {{ walk.name }}
             </router-link>
@@ -109,6 +109,7 @@
     import dayjs from 'dayjs';
     import { useTagStore } from '../../stores/tag';
     import { useWayPointStore } from '../../stores/way-point';
+    import { useWalkStore } from '../../stores/walk';
 
     export default {
         name: "WayPointDetailData",
@@ -128,6 +129,7 @@
         data: function () {
             return {
                 tagStore: useTagStore(),
+                walkStore: useWalkStore(),
                 wayPointStore: useWayPointStore(),
             };
         },
@@ -148,7 +150,7 @@
                 return this.wayPointStore.getWayPoints;
             },
             walk() {
-                return this.$store.getters["walk/getWalkById"](this.walkId);
+                return this.walkStore.getWalkById(this.walkId);
             },
             wayPoint() {
                 return this.wayPointStore.getWayPointById(this.wayPointId);
@@ -223,7 +225,7 @@
         async mounted() {
             const promises = [];
             if (!this.walk) {
-                promises.push(this.$store.dispatch('walk/findById', this.walkId));
+                promises.push(this.walkStore.fetchById(this.walkId));
             }
             if (!this.wayPoint) {
                 promises.push(this.wayPointStore.fetchById(this.wayPointId));

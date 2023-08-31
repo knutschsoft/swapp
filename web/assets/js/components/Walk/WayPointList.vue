@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-table
-            v-if="!isLoading"
+            v-if="!isLoading && walk"
             show-empty
             emptyText="Für diese Runde gibt es keine Wegpunkte."
             small
@@ -18,7 +18,7 @@
             </template>
             <template v-slot:cell(actions)="row">
                 <router-link
-                    :to="{name: 'WayPointDetail', params: { walkId: walk.id, wayPointId: row.item.wayPointId}}"
+                    :to="{name: 'WayPointDetail', params: { walkId: walk.walkId, wayPointId: row.item.wayPointId}}"
                     :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
                 >
                     <b-button size="sm">
@@ -42,6 +42,7 @@
 import LocationLink from '../LocationLink.vue';
 import dayjs from 'dayjs';
 import { useWayPointStore } from '../../stores/way-point';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WayPointList',
@@ -55,6 +56,7 @@ export default {
     },
     data: function () {
         return {
+            walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
         };
     },
@@ -93,10 +95,10 @@ export default {
             ];
         },
         isLoading () {
-            return this.$store.getters['walk/isLoading'] || this.wayPointStore.isLoading;
+            return this.walkStore.isLoading || this.wayPointStore.isLoading;
         },
         walk() {
-            return this.$store.getters['walk/getWalkById'](this.walkId);
+            return this.walkStore.getWalkById(this.walkId);
         },
         hasWayPoints() {
             return this.wayPointStore.hasWayPoints;
@@ -123,7 +125,7 @@ export default {
     },
     async mounted() {
         if (!this.walk) {
-            await this.$store.dispatch('walk/findById', this.walkId);
+            await this.walkStore.fetchById(this.walkId);
         }
         if (this.walk && this.walk.wayPoints.length !== this.wayPoints.length) {
             await this.wayPointStore.fetchWayPoints({

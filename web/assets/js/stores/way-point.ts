@@ -2,6 +2,7 @@ import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
 import dayjs from 'dayjs';
 import {AxiosResponse} from "axios";
+import {useWalkStore} from "./walk";
 
 import {WayPoint, WayPointChangeRequest, WayPointCreateRequest, WayPointRemoveRequest, WayPointsResponse} from '../model';
 
@@ -124,6 +125,7 @@ export const useWayPointStore = defineStore("wayPoint", {
                 const response: AxiosResponse<any, any> = await apiClient.post('/api/way_points/create', payload);
                 const wayPoint: WayPoint = response.data;
                 replaceObjectInState(this, wayPoint);
+                await useWalkStore().fetchByIri(String(wayPoint.walk));
 
                 return wayPoint;
             } catch (error: any) {
@@ -159,6 +161,7 @@ export const useWayPointStore = defineStore("wayPoint", {
             try {
                 const response: AxiosResponse<any, any> = await apiClient.post('/api/way_points/remove', payload);
                 const wayPoint: WayPoint = response.data;
+                await useWalkStore().fetchByIri(String(wayPoint.walk));
                 removeObjectFromState(this, wayPoint);
             } catch (error: any) {
                 this.errorArray.remove = error.response;

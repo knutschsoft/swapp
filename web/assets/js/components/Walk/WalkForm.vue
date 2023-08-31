@@ -404,6 +404,7 @@ import WalkRating from './WalkRating.vue';
 import { useClientStore } from '../../stores/client';
 import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
+import { useWalkStore } from '../../stores/walk';
 
 export default {
     name: 'WalkForm',
@@ -428,6 +429,7 @@ export default {
         return {
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
+            walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             initialConceptOfDay: [],
             initialWalkName: '',
@@ -494,26 +496,37 @@ export default {
         hasLastWayPoint() {
             return this.initialWalk.wayPoints.length > 0;
         },
+        wayPointsOfInitialWalk() {
+            let wayPoints = [];
+            this.initialWalk.wayPoints.forEach(wayPointIri =>{
+                const wayPoint = this.wayPointStore.getWayPointByIri(wayPointIri);
+                if (wayPoint) {
+                    wayPoints.push(wayPoint);
+                }
+            });
+
+            return wayPoints;
+        },
         lastWayPointOrRoundTime() {
             let time = false;
-            this.initialWalk.wayPoints
+            this.wayPointsOfInitialWalk
                 .slice()
                 .sort((a, b) => {
-                        if (dayjs(this.getWayPointByIri(a).visitedAt).isAfter(dayjs(this.getWayPointByIri(b).visitedAt))) {
+                        if (dayjs(a.visitedAt).isAfter(dayjs(b.visitedAt))) {
                             return -1;
                         }
                         return 1;
                     },
                 )
-                .every(wayPointIri => {
-                const wayPoint = this.getWayPointByIri(wayPointIri);
-                if (false === wayPoint) {
-                    return true;
-                }
-                time = dayjs(wayPoint.visitedAt);
+                .every(wayPoint => {
+                    if (false === wayPoint) {
+                        return true;
+                    }
+                    time = dayjs(wayPoint.visitedAt);
 
-                return false;
-            });
+                    return false;
+                }
+            );
 
             if (time) {
                 return time;
@@ -663,7 +676,7 @@ export default {
             return errors;
         },
         isLoading() {
-            return this.$store.getters['walk/isLoadingChange'];
+            return this.walkStore.isLoadingChange;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
@@ -686,7 +699,7 @@ export default {
                 || this.isLoading;
         },
         error() {
-            return this.$store.getters['walk/errorChange'];
+            return this.walkStore.getErrors.change;
         },
     },
     watch: {
