@@ -38,6 +38,26 @@
             />
         </content-collapse>
         <content-collapse
+            v-if="isAdmin && walk"
+            :title="`Runde &quot;${walk.name}&quot; ändern`"
+            collapse-key="walk-edit"
+            is-visible-by-default
+            :is-loading="!walk"
+        >
+            <walk-form
+                v-if="!walk.isUnfinished"
+                submit-button-text="Runde speichern"
+                :initial-walk="walk"
+                @submit="handleSubmit"
+            />
+            <walk-unfinished-form
+                v-else
+                submit-button-text="Runde speichern"
+                :initial-walk="walk"
+                @submit="handleWalkUnfinishedSubmit"
+            />
+        </content-collapse>
+        <content-collapse
             v-if="walk && isAdmin"
             title="Runde löschen"
             collapse-key="walk-delete"
@@ -150,7 +170,7 @@
         },
         methods: {
             async handleRemove({walk}) {
-                await this.walkStore.remove(walk);
+                await this.walkStore.remove({walk: walk['@id']});
                 if (!this.changeError) {
                     const message = `Die Runde "${walk.name}" wurde erfolgreich gelöscht.`;
                     this.$bvToast.toast(message, {

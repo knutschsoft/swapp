@@ -117,9 +117,7 @@ export default {
             return getViolationsFeedback(['walk'], this.error);
         },
         isLoading() {
-            return this.walkStore.isLoadingChange
-                || this.walkStore.isLoading
-                || this.walkStore.isLoading
+            return this.walkStore.isLoading
                 || this.wayPointStore.isLoading
                 || this.tagStore.isLoading
                 || this.teamStore.isLoading;

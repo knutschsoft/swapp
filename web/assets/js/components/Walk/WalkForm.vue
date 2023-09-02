@@ -676,7 +676,11 @@ export default {
             return errors;
         },
         isLoading() {
-            return this.walkStore.isLoadingChange;
+            if (this.initialWalk) {
+                return this.walkStore.isLoadingChange(this.initialWalk['@id'])
+            }
+
+            return this.walkStore.isLoadingCreate;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
