@@ -95,6 +95,7 @@
 import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
 import { useClientStore } from '../../stores/client';
+import { useUserStore } from '../../stores/user';
 
 export default {
     name: 'UserForm',
@@ -115,6 +116,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            userStore: useUserStore(),
             user: {
                 username: null,
                 email: null,
@@ -139,7 +141,11 @@ export default {
             return this.user.email.length >= 4 && this.user.email.length <= 100 && EmailValidator.validate(this.user.email);
         },
         isLoading() {
-            return this.$store.getters['user/isLoadingChange'];
+            if (this.initialUser && this.initialUser['@id']) {
+                return this.userStore.isLoadingChange(this.initialUser['@id'])
+            }
+
+            return this.userStore.isLoadingCreate;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];
@@ -151,7 +157,11 @@ export default {
             return !this.usernameState || !this.emailState || this.isLoading;
         },
         error() {
-            return this.$store.getters['user/changeUserError'];
+            if (this.initialUser?.userId) {
+                return this.userStore.getErrors.change;
+            }
+
+            return this.userStore.getErrors.create;
         },
         availableClients() {
             return this.clientStore.getClients;

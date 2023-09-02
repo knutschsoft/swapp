@@ -211,7 +211,11 @@ export default {
             return getViolationsFeedback(['decodedRatingImageData', 'ratingImageFileData', 'ratingImageFileName'], this.error);
         },
         isLoading() {
-            return this.$store.getters['user/isLoadingChange'];
+            if (this.initialClient['@id']) {
+                return this.clientStore.isLoadingChange(this.initialWalk['@id'])
+            }
+
+            return this.clientStore.isLoadingCreate;
         },
         currentUser() {
             return this.$store.getters['security/currentUser'];

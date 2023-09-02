@@ -405,6 +405,7 @@ import { useClientStore } from '../../stores/client';
 import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
 import { useWalkStore } from '../../stores/walk';
+import { useUserStore } from '../../stores/user';
 
 export default {
     name: 'WalkForm',
@@ -429,6 +430,7 @@ export default {
         return {
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
+            userStore: useUserStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             initialConceptOfDay: [],
@@ -686,7 +688,7 @@ export default {
             return this.$store.getters['security/currentUser'];
         },
         users() {
-            return this.$store.getters['user/users'];
+            return this.userStore.getUsers;
         },
         isSuperAdmin() {
             return this.$store.getters['security/isSuperAdmin'];
@@ -772,7 +774,7 @@ export default {
         this.isWithoutInsights = !this.walk.insights.length;
 
         if (!this.users.length) {
-            await this.$store.dispatch('user/findAll');
+            await this.userStore.fetchUsers();
         }
         if (!this.team) {
             await this.teamStore.fetchTeams();

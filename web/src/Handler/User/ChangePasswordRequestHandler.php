@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Handler\User;
 
-use App\Dto\User\PasswordChangeRequest;
+use App\Dto\User\ChangePasswordRequest;
 use App\Entity\User;
 use App\Notifier\ChangePasswordNotification;
 use App\Repository\UserRepository;
@@ -13,7 +13,7 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsMessageHandler]
-final class PasswordChangeHandler
+final readonly class ChangePasswordRequestHandler
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $userPasswordHasher,
@@ -22,7 +22,7 @@ final class PasswordChangeHandler
     ) {
     }
 
-    public function __invoke(PasswordChangeRequest $request): User
+    public function __invoke(ChangePasswordRequest $request): User
     {
         $request->user->changePassword($request->password, $this->userPasswordHasher);
         $this->userRepository->save($request->user);

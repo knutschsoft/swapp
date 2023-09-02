@@ -2,9 +2,6 @@
 import axios from 'axios';
 
 export default {
-    find(id) {
-        return axios.get(`/api/users/${id}`);
-    },
     findAll(params) {
         if (params === undefined) {
             params = {
@@ -25,17 +22,5 @@ export default {
         }
 
         return axios.get(`/api/users?page=${params.page}&itemsPerPage=${params.itemsPerPage}` + sort);
-    },
-    create(user) {
-        return axios.post('/api/users/create', user);
-    },
-    change(user) {
-        return axios.post('/api/users/change', user);
-    },
-    enable(userIri) {
-        return axios.post('/api/users/enable', { 'user': userIri });
-    },
-    disable(userIri) {
-        return axios.post('/api/users/disable', { 'user': userIri });
     },
 };

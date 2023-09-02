@@ -9,8 +9,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Dto\User\ChangePasswordRequest;
 use App\Dto\User\IsConfirmationTokenValidRequest;
-use App\Dto\User\PasswordChangeRequest;
 use App\Dto\User\RequestPasswordResetRequest;
 use App\Dto\User\UserChangeRequest;
 use App\Dto\User\UserCreateRequest;
@@ -68,7 +68,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/users/change-password',
             status: 200,
             openapiContext: ['summary' => 'Change password of an user.'],
-            input: PasswordChangeRequest::class,
+            input: ChangePasswordRequest::class,
             output: User::class,
             messenger: 'input'
         ),
@@ -246,6 +246,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     }
 
     #[Groups(['user:read'])]
+    #[SerializedName('userId')]
     public function getId(): int
     {
         return $this->id;

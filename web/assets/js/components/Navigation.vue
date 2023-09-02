@@ -289,6 +289,7 @@
     import { useChangelogStore } from '../stores/changelog';
     import { useWayPointStore } from '../stores/way-point';
     import { useWalkStore } from '../stores/walk';
+    import { useUserStore } from '../stores/user';
 
     export default {
         name: "Navigation",
@@ -298,6 +299,7 @@
             teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
             tagStore: useTagStore(),
+            userStore: useUserStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             userFilter: '',
@@ -318,8 +320,7 @@
                     || this.systemicQuestionStore.isLoading
                     || this.tagStore.isLoading
                     || this.teamStore.isLoading
-                    || this.$store.getters['user/isLoading']
-                    || this.$store.getters['user/isLoadingChange']
+                    || this.userStore.isLoading
                     || this.walkStore.isLoading
                     || this.walkStore.isLoading
                     || this.wayPointStore.isLoading;
@@ -380,7 +381,7 @@
             async showUserMenu(bvEvent) {
                 if (this.isSuperAdmin && this.users.length <= 1) {
                     bvEvent.preventDefault();
-                    this.users = (await this.$store.dispatch('user/findAll')).slice(0).filter(user => user.isEnabled);
+                    this.users = (await this.userStore.fetchUsers()).slice(0).filter(user => user.isEnabled);
                     await this.clientStore.fetchClients();
                     this.$refs.userMenu.show();
                 }

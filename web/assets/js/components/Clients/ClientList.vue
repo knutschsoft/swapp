@@ -98,6 +98,7 @@
 import dayjs from 'dayjs';
 import ClientForm from './ClientForm.vue';
 import { useClientStore } from '../../stores/client';
+import { useUserStore } from '../../stores/user';
 
 export default {
     name: 'ClientList',
@@ -107,6 +108,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            userStore: useUserStore(),
             fields: [
                 {
                     key: 'name',
@@ -167,7 +169,7 @@ export default {
     },
     async created() {
         await Promise.all([
-            this.$store.dispatch('user/findAll'),
+            this.userStore.fetchUsers(),
             this.clientStore.fetchClients(),
         ]);
     },
@@ -175,7 +177,7 @@ export default {
     },
     methods: {
         getUserByIri(userIri) {
-            return this.$store.getters['user/getUserByIri'](userIri);
+            return this.userStore.getUserByIri(userIri);
         },
         isUserAdminByIri(userIri) {
             const user = this.getUserByIri(userIri);

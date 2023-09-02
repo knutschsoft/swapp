@@ -623,6 +623,7 @@
 import FormError from '../Common/FormError.vue'
 import { useClientStore } from '../../stores/client';
 import { useTeamStore } from '../../stores/team';
+import { useUserStore } from '../../stores/user';
 
 export default {
     name: 'TeamForm',
@@ -646,6 +647,7 @@ export default {
         return {
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
+            userStore: useUserStore(),
             team: {
                 team: null,
                 client: '',
@@ -669,7 +671,7 @@ export default {
     },
     computed: {
         users () {
-            return this.$store.getters['user/users'].slice(0).filter(user => {
+            return this.userStore.getUsers.slice(0).filter(user => {
                 return user.client === this.team.client
             }).sort((a, b) => {
                 return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1

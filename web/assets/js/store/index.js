@@ -3,7 +3,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexReset from '@ianwalter/vuex-reset';
 import Security from './modules/security';
-import User from './modules/user';
 
 Vue.use(Vuex);
 
@@ -11,7 +10,6 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
     modules: {
-        user: User,
         security: Security,
     },
     strict: debug,

@@ -39,6 +39,7 @@
     import { useClientStore } from '../../stores/client';
     import { useWayPointStore } from '../../stores/way-point';
     import { useWalkStore } from '../../stores/walk';
+    import { useUserStore } from '../../stores/user';
 
     export default {
         name: "WalkDetailData",
@@ -53,6 +54,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                userStore: useUserStore(),
                 walkStore: useWalkStore(),
                 wayPointStore: useWayPointStore(),
             }
@@ -73,7 +75,7 @@
                     return users;
                 }
                 this.walk.walkTeamMembers.forEach(iri => {
-                    users.push(this.getUserByIri(iri).username);
+                    users.push(this.getUserByIri(iri)?.username);
                 })
 
                 return users.sort((a, b) => a > b ? 1 : -1);
@@ -116,7 +118,7 @@
         },
         methods: {
             getUserByIri(userIri) {
-                return this.$store.getters['user/getUserByIri'](userIri);
+                return this.userStore.getUserByIri(userIri);
             },
             formatDate: function(dateString) {
                 let date = new Date(dateString);

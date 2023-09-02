@@ -220,6 +220,7 @@ import UserForm from './UserForm.vue';
 import dayjs from 'dayjs';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import { useClientStore } from '../../stores/client';
+import { useUserStore } from '../../stores/user';
 
 export default {
     name: 'UserList',
@@ -230,6 +231,7 @@ export default {
     data: function () {
         return {
             clientStore: useClientStore(),
+            userStore: useUserStore(),
             editModal: {
                 selectedUser: {},
                 id: 'edit-modal-user',
@@ -369,7 +371,7 @@ export default {
             return this.$store.getters['security/isAdmin'];
         },
         users() {
-            return this.$store.getters['user/users']
+            return this.userStore.getUsers
                 .filter(user => !this.filter.client || this.filter.client === user.client)
                 .filter(user => null === this.filter.isEnabled || this.filter.isEnabled === user.isEnabled)
                 .slice()
@@ -387,18 +389,15 @@ export default {
                 ;
         },
         isLoading() {
-            return this.$store.getters['user/isLoading'];
-        },
-        error() {
-            return this.$store.getters['user/error'];
+            return this.userStore.isLoading;
         },
     },
     created() {
-        this.$store.dispatch('user/findAll');
+        this.userStore.fetchUsers();
     },
     methods: {
         isLoadingToggleUserState(userUri) {
-            return this.$store.getters['user/isLoadingToggleUserState'](userUri);
+            return this.userStore.isLoadingChange(userUri);
         },
         clientFormatter(clientIri) {
             return this.clientStore.getClientByIri(clientIri)?.name;
@@ -414,7 +413,7 @@ export default {
         },
         async handleSubmit(payload) {
             payload.user = this.editModal.selectedUser['@id'];
-            const user = await this.$store.dispatch('user/change', payload);
+            const user = await this.userStore.change(payload);
             if (user) {
                 const message = `Der Benutzer "${user.username}" wurde erfolgreich geändert.`;
                 this.$bvToast.toast(message, {
@@ -439,9 +438,9 @@ export default {
         },
         toggleEnabled: function (user, isEnabled) {
             if (isEnabled) {
-                this.$store.dispatch('user/disable', user['@id']);
+                this.userStore.disable({user: user['@id']});
             } else {
-                this.$store.dispatch('user/enable', user['@id']);
+                this.userStore.enable({user: user['@id']});
             }
         },
         switchUser(user) {

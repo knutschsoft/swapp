@@ -11,6 +11,7 @@
 'use strict';
 
 import UserForm from './UserForm.vue';
+import { useUserStore } from '../../stores/user';
 export default {
     name: 'UserCreate',
     components: {
@@ -18,6 +19,7 @@ export default {
     },
     data: function () {
         return {
+            userStore: useUserStore(),
         };
     },
     computed: {
@@ -32,7 +34,7 @@ export default {
     },
     methods: {
         async handleSubmit(payload) {
-            const user = await this.$store.dispatch('user/create', payload);
+            const user = await this.userStore.create(payload);
             if (user) {
                 this.$refs.userForm.resetForm();
                 const message = `Der Benutzer "${user.username}" wurde erfolgreich erstellt. Er hat eine E-Mail an "${user.email}" mit seinen Kontoinformationen erhalten.`;

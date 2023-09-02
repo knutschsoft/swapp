@@ -8,8 +8,8 @@ use App\Validator\Constraints as AppAssert;
 use App\Value\ConfirmationToken;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(['PasswordChangeRequest', 'SecondGroup', 'ThirdGroup'])]
-final class PasswordChangeRequest
+#[Assert\GroupSequence(['ChangePasswordRequest', 'SecondGroup', 'ThirdGroup'])]
+final class ChangePasswordRequest
 {
     #[AppAssert\PasswordRequirements]
     public string $password;

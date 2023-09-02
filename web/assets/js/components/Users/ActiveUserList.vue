@@ -175,6 +175,7 @@ import UserAPI from '../../api/user';
 import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import { useClientStore } from '../../stores/client';
+import { useUserStore } from '../../stores/user';
 
 export default {
     name: 'ActiveUserList',
@@ -189,6 +190,7 @@ export default {
 
         return {
             clientStore: useClientStore(),
+            userStore: useUserStore(),
             isLoadingEntries: [],
             locale: dateRangePicker.locale,
             defaultDateRange: {
@@ -254,7 +256,7 @@ export default {
             return fields;
         },
         users() {
-            return this.$store.getters['user/users'].slice().sort((userA, userB) => {
+            return this.userStore.getUsers.slice().sort((userA, userB) => {
                 if (userA.isEnabled === userB.isEnabled) {
                     if (userA.username.toUpperCase() < userB.username.toUpperCase()) {
                         return -1;
@@ -267,7 +269,7 @@ export default {
             });
         },
         isLoading() {
-            return this.$store.getters['user/isLoading'];
+            return this.userStore.isLoading;
         },
     },
     watch: {
@@ -281,7 +283,7 @@ export default {
         },
     },
     async created() {
-        await this.$store.dispatch('user/findAll');
+        await this.userStore.fetchUsers();
 
         this.users.forEach((user) => {
             let item = {
@@ -295,7 +297,7 @@ export default {
     },
     methods: {
         clientFormatter(clientIri) {
-            return this.clientStore.getClientByIri(clientIri).name;
+            return this.clientStore.getClientByIri(clientIri)?.name;
         },
         getKeyOfDayjs(date) {
             return `${date.month()}-${date.year()}`;

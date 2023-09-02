@@ -169,6 +169,7 @@ import FormGroup from '../Common/FormGroup.vue';
 import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
 import { useWalkStore } from '../../stores/walk';
+import { useUserStore } from '../../stores/user';
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -189,6 +190,7 @@ export default {
     data: function () {
         return {
             teamStore: useTeamStore(),
+            userStore: useUserStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
             initialWalkName: '',
@@ -343,7 +345,7 @@ export default {
             return this.$store.getters['security/currentUser'];
         },
         users() {
-            return this.$store.getters['user/users'];
+            return this.userStore.getUsers;
         },
         isFormInvalid() {
             return !this.nameState
@@ -389,7 +391,7 @@ export default {
         this.walk.guestNames = this.initialWalk.guestNames.slice();
 
         if (!this.users.length) {
-            await this.$store.dispatch('user/findAll');
+            await this.userStore.fetchUsers();
         }
         if (!this.team) {
             await this.teamStore.fetchTeams();

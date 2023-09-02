@@ -83,6 +83,7 @@
     import WalkUnfinishedForm from './Walk/WalkUnfinishedForm.vue';
     import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
     import { useClientStore } from '../stores/client';
+    import { useUserStore } from '../stores/user';
     import { useWayPointStore } from '../stores/way-point';
     import { useWalkStore } from '../stores/walk';
 
@@ -105,6 +106,7 @@
         data: function () {
             return {
                 clientStore: useClientStore(),
+                userStore: useUserStore(),
                 walkStore: useWalkStore(),
                 wayPointStore: useWayPointStore(),
             }
@@ -165,7 +167,7 @@
                     }
                 }
             });
-            wayPointPromises.push(this.$store.dispatch('user/findAll'));
+            wayPointPromises.push(this.userStore.fetchUsers());
             await Promise.all(wayPointPromises);
         },
         methods: {

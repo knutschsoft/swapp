@@ -60,6 +60,7 @@
     import TeamForm from './TeamForm.vue';
     import { useClientStore } from '../../stores/client';
     import { useTeamStore } from '../../stores/team';
+    import { useUserStore } from '../../stores/user';
 
     export default {
         name: "TeamList",
@@ -68,6 +69,7 @@
             return {
                 clientStore: useClientStore(),
                 teamStore: useTeamStore(),
+                userStore: useUserStore(),
                 editTeam: null,
             };
         },
@@ -253,7 +255,7 @@
                 return this.teamStore.getTeams;
             },
             users() {
-                return this.$store.getters['user/users']
+                return this.userStore.getUsers
                     .slice(0)
                     .sort((a, b) => {
                         return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1;
@@ -263,7 +265,7 @@
                 return this.teamStore.isLoading;
             },
             isUserLoading() {
-                return this.$store.getters["user/isLoading"];
+                return this.userStore.isLoading;
             },
             error() {
                 return this.teamStore.getErrors;
@@ -287,7 +289,7 @@
         async created() {
             await Promise.all([
                 this.teamStore.fetchTeams(),
-                this.$store.dispatch('user/findAll'),
+                this.userStore.fetchUsers(),
                 this.clientStore.fetchClients(),
             ]);
         },
@@ -296,7 +298,7 @@
                 return this.clientStore.getClientByIri(clientIri)?.name;
             },
             getUserByIri(userIri) {
-                return this.$store.getters['user/getUserByIri'](userIri);
+                return this.userStore.getUserByIri(userIri);
             },
             openEditModal: function (team) {
                 this.editTeam = team;

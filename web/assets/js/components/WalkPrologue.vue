@@ -200,6 +200,7 @@
     import dayjs from 'dayjs';
     import { useTeamStore } from '../stores/team';
     import { useWalkStore } from '../stores/walk';
+    import { useUserStore } from '../stores/user';
 
     export default {
         name: "WalkPrologue",
@@ -215,6 +216,7 @@
         data: function () {
             return {
                 teamStore: useTeamStore(),
+                userStore: useUserStore(),
                 walkStore: useWalkStore(),
                 startTimeTime: null,
                 startTimeDate: null,
@@ -366,7 +368,7 @@
                 return this.$store.getters["security/currentUser"];
             },
             isLoading() {
-                return this.teamStore.isLoading || this.$store.getters["user/isLoading"] || this.walkStore.isLoadingCreate;
+                return this.teamStore.isLoading || this.userStore.isLoading || this.walkStore.isLoadingCreate;
             },
             team() {
                 return this.teamStore.getTeamById(this.teamId);
@@ -433,7 +435,7 @@
             }
             this.team.users.forEach((userIri) => {
                 if (!this.getUserByIri(userIri)) {
-                    this.$store.dispatch('user/findByIri', userIri);
+                    this.userStore.fetchByIri(userIri);
                 }
             });
             this.form.walkTeamMembers = await this.getWalkTeamMembersOfLastWalkOfTeam(this.team);
@@ -463,7 +465,7 @@
                 return result;
             },
             getUserByIri(userIri) {
-                return this.$store.getters['user/getUserByIri'](userIri);
+                return this.userStore.getUserByIri(userIri);
             },
             onSubmit: async function () {
                 this.isFormLoading = true;
