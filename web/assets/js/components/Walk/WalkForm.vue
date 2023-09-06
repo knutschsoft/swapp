@@ -685,7 +685,7 @@ export default {
             return this.walkStore.isLoadingCreate;
         },
         currentUser() {
-            return this.$store.getters['security/currentUser'];
+            return this.authStore.currentUser;
         },
         users() {
             return this.userStore.getUsers;

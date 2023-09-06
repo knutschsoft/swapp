@@ -6,20 +6,14 @@
     import { useAuthStore } from '../stores/auth';
     export default {
         name: "Logout",
+        data() {
+            return {
+                authStore: useAuthStore()
+            };
+        },
         created() {
-            if (this.$store.getters['security/isUserSwitched']) {
-                this.$store.dispatch('security/exitSwitchUser');
-            }
-            this.$store.commit('reset');
-            this.$store.dispatch(
-                'security/onRefresh',
-                {
-                    token: null,
-                    isAuthenticated: false,
-                    user: null,
-                }
-            );
-            useAuthStore().setToken('');
+            // reset stores
+            this.authStore.logout();
             this.$router.push({name: 'Login'});
         },
     }

@@ -282,6 +282,7 @@
     "use strict";
     // import logo from '../../images/Logo_white_bg.png';
     import logo from '../../images/Swapp_hp_logo.jpg';
+    import { useAuthStore } from '../stores/auth';
     import { useClientStore } from '../stores/client';
     import { useSystemicQuestionStore } from '../stores/systemic-question';
     import { useTagStore } from '../stores/tag';
@@ -294,6 +295,7 @@
     export default {
         name: "Navigation",
         data: () => ({
+            authStore: useAuthStore(),
             changelogStore: useChangelogStore(),
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
@@ -316,7 +318,7 @@
             },
             isLoading() {
                 return this.clientStore.isLoading
-                    || this.$store.getters['security/isLoading']
+                    || this.authStore.isLoading
                     || this.systemicQuestionStore.isLoading
                     || this.tagStore.isLoading
                     || this.teamStore.isLoading
@@ -326,16 +328,16 @@
                     || this.wayPointStore.isLoading;
             },
             isAuthenticated() {
-                return this.$store.getters['security/isAuthenticated'];
+                return this.authStore.isAuthenticated;
             },
             isAdmin() {
-                return this.$store.getters['security/isAdmin'] || this.isSuperAdmin;
+                return this.authStore.isAdmin || this.isSuperAdmin;
             },
             isSuperAdmin() {
-                return this.$store.getters['security/isSuperAdmin'];
+                return this.authStore.isSuperAdmin;
             },
             isUserSwitched() {
-                return this.$store.getters['security/isUserSwitched'];
+                return this.authStore.isUserSwitched;
             },
             displayedUserList() {
                 if (!this.users || !this.users.length) {
@@ -349,7 +351,7 @@
                 });
             },
             currentUser() {
-                return this.$store.getters['security/currentUser'];
+                return this.authStore.currentUser;
             },
             isUserMenuActive() {
                 return -1 !== ['PasswordChangeRequest', 'Login', 'PasswordReset'].indexOf(this.$route.name);
@@ -370,7 +372,7 @@
         },
         methods: {
             switchUser(user) {
-                this.$store.dispatch('security/switchUser', user);
+                this.authStore.switchUser(user);
             },
             exitSwitchUser() {
                 this.$store.dispatch('security/exitSwitchUser');

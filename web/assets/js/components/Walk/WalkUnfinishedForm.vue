@@ -342,7 +342,7 @@ export default {
             return this.walkStore.isLoadingChange(this.initialWalk['@id']);
         },
         currentUser() {
-            return this.$store.getters['security/currentUser'];
+            return this.authStore.currentUser;
         },
         users() {
             return this.userStore.getUsers;

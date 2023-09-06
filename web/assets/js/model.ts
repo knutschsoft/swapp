@@ -26,6 +26,7 @@ export {
     type UserUserEnableRequestJsonld as UserEnableRequest,
     type UserRequestPasswordResetRequestJsonld as UserRequestPasswordResetRequest,
     type UserIsConfirmationTokenValidRequestJsonld as UserIsConfirmationTokenValidRequest,
+    type LoginCheckPostRequest as LoginCheckRequest,
     type UserJsonldUserRead as User,
     type ApiWalksGetCollection200Response as WalksResponse,
     type WalkWalkCreateRequestJsonld as WalkCreateRequest,

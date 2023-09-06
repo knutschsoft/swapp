@@ -225,7 +225,7 @@ export default {
             return this.clientStore.getClients;
         },
         currentUser() {
-            return this.$store.getters['security/currentUser'];
+            return this.authStore.currentUser;
         },
         tableData() {
             return this.entries.filter(entry =>  !this.client || this.client === entry.user.client);

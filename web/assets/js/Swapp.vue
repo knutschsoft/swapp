@@ -100,6 +100,7 @@ import Navigation from './components/Navigation';
 import FrameError from './components/FrameError';
 import dayjs from 'dayjs';
 import { useChangelogStore } from './stores/changelog';
+import { useAuthStore } from './stores/auth';
 
 export default {
     name: 'Swapp',
@@ -107,6 +108,7 @@ export default {
     props: {},
     data() {
         return {
+            authStore: useAuthStore(),
             changelogStore: useChangelogStore(),
             errorData: '',
             isUpdateLoading: false,
@@ -118,7 +120,7 @@ export default {
     },
     computed: {
         currentUser() {
-            return this.$store.getters['security/currentUser'];
+            return this.authStore.user;
         },
     },
     mounted() {

@@ -31,7 +31,7 @@ export default {
     },
     computed: {
         currentUser() {
-            return this.$store.getters['security/currentUser'];
+            return this.authStore.currentUser;
         },
     },
     async created() {

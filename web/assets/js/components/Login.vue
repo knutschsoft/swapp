@@ -187,10 +187,10 @@
                 return this.$store.getters["security/isLoading"];
             },
             hasError() {
-                return this.$store.getters["security/hasError"];
+                return !!this.authStore.getErrors.login;
             },
             error() {
-                return this.$store.getters["security/error"];
+                return this.authStore.getErrors.login;
             },
             validation() {
                 if (this.username.trim().length <= 2) {
@@ -203,7 +203,7 @@
         created() {
             let redirect = this.$route.query.redirect;
 
-            if (this.$store.getters["security/isAuthenticated"]) {
+            if (this.authStore.isAuthenticated) {
                 if (typeof redirect !== "undefined") {
                     this.$router.push({path: redirect});
                 } else {
@@ -223,9 +223,8 @@
                 }
                 let payload = {username: this.$data.username, password: this.$data.password},
                     redirect = this.$route.query.redirect;
-                const loginResult = await this.$store.dispatch("security/login", payload);
-                if (!this.$store.getters["security/hasError"]) {
-                    this.authStore.setToken(loginResult.token);
+                const loginResult = await this.authStore.login(payload);
+                if (!this.errorLogin) {
                     if (typeof redirect !== "undefined") {
                         this.$router.push({path: redirect});
                     } else {

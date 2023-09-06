@@ -59,7 +59,7 @@ Vue.use(mdiVue, {
 Vue.use(VueClipboard);
 
 Vue.config.errorHandler = function (err, vm, info) {
-    let user = vm.$store.getters['security/currentUser'];
+    let user = vm.authStore.currentUser;
     let username = user ? user.email : 'anonymous';
     let message = err.message ? err.message : JSON.stringify(err);
     nelmioLog('error', message, {info: info, location: window.location, user: username});

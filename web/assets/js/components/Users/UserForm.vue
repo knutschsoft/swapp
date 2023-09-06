@@ -148,7 +148,7 @@ export default {
             return this.userStore.isLoadingCreate;
         },
         currentUser() {
-            return this.$store.getters['security/currentUser'];
+            return this.authStore.currentUser;
         },
         isSuperAdmin() {
             return this.$store.getters['security/isSuperAdmin'];
