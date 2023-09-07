@@ -11,6 +11,7 @@
 'use strict';
 
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
+import { useAuthStore } from '../../stores/auth';
 import { useSystemicQuestionStore } from '../../stores/systemic-question';
 export default {
     name: 'SystemicQuestionCreate',
@@ -19,6 +20,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
         };
     },

@@ -96,6 +96,7 @@ import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
 import { useClientStore } from '../../stores/client';
 import { useUserStore } from '../../stores/user';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'UserForm',
@@ -115,6 +116,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             userStore: useUserStore(),
             user: {
@@ -151,7 +153,7 @@ export default {
             return this.authStore.currentUser;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
             return !this.usernameState || !this.emailState || this.isLoading;

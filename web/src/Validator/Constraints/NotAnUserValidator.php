@@ -24,10 +24,10 @@ class NotAnUserValidator extends ConstraintValidator
     public function validate($username, Constraint $constraint): void
     {
         try {
-            $this->userRepository->findOneByEmailOrUsername($username);
+            $this->userRepository->findOneByEmailOrUsername((string) $username);
         } catch (NotFoundException) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $username)
+                ->setParameter('{{ value }}', (string) $username)
                 ->addViolation();
         }
     }

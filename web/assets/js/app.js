@@ -22,7 +22,6 @@ import { faEye, faMapSigns, faShoePrints, faWalking } from '@fortawesome/free-so
 import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';
 import router from './router';
-import store from './store';
 import { AlertPlugin, BootstrapVue, CollapsePlugin, IconsPlugin, NavbarPlugin } from 'bootstrap-vue';
 import Storage from 'vue-web-storage';
 import VueClipboard from 'vue-clipboard2';
@@ -34,6 +33,8 @@ import * as mdijs from '@mdi/js';
 import VuePageTransition from 'vue-page-transition';
 import Nl2br from 'vue-nl2br';
 import Swapp from './Swapp';
+import VueRouter from 'vue-router';
+import { useAuthStore } from './stores/auth';
 
 library.add(faWalking, faShoePrints, faEye, faMapSigns)
 
@@ -47,6 +48,7 @@ Vue.use(Storage, {
 });
 Vue.use(VueAxios, axios);
 Vue.use(PiniaVuePlugin);
+Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(CollapsePlugin);
@@ -59,7 +61,8 @@ Vue.use(mdiVue, {
 Vue.use(VueClipboard);
 
 Vue.config.errorHandler = function (err, vm, info) {
-    let user = vm.authStore.currentUser;
+    const authStore = useAuthStore();
+    let user = authStore.currentUser;
     let username = user ? user.email : 'anonymous';
     let message = err.message ? err.message : JSON.stringify(err);
     nelmioLog('error', message, {info: info, location: window.location, user: username});
@@ -87,7 +90,6 @@ const vueApp = (params) => {
         },
         render: h => h(Swapp),
         router: router,
-        store,
         pinia,
     })
 };

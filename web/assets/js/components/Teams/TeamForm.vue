@@ -624,6 +624,7 @@ import FormError from '../Common/FormError.vue'
 import { useClientStore } from '../../stores/client';
 import { useTeamStore } from '../../stores/team';
 import { useUserStore } from '../../stores/user';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'TeamForm',
@@ -645,6 +646,7 @@ export default {
         let isWithPeopleCountDefault = true;
 
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
             userStore: useUserStore(),
@@ -697,7 +699,7 @@ export default {
             return this.authStore.currentUser
         },
         isSuperAdmin () {
-            return this.$store.getters['security/isSuperAdmin']
+            return this.authStore.isSuperAdmin
         },
         isFormInvalid () {
             return !(this.nameState && this.team.client && !this.isLoading)

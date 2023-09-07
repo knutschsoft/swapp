@@ -63,6 +63,7 @@
 
 import FormError from '../Common/FormError.vue';
 import SystemicQuestionHint from './SystemicQuestionHint.vue';
+import { useAuthStore } from '../../stores/auth';
 import { useClientStore } from '../../stores/client';
 import { useSystemicQuestionStore } from '../../stores/systemic-question';
 
@@ -89,6 +90,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
             question: null,
@@ -110,7 +112,7 @@ export default {
             return this.authStore.currentUser;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
             return !this.question || !this.questionState || this.isLoading;

@@ -101,6 +101,7 @@ import FrameError from './components/FrameError';
 import dayjs from 'dayjs';
 import { useChangelogStore } from './stores/changelog';
 import { useAuthStore } from './stores/auth';
+import apiClient from './api';
 
 export default {
     name: 'Swapp',
@@ -144,9 +145,12 @@ export default {
             });
         }
 
-        this.axios.interceptors.response.use(undefined, (err) => {
+        apiClient.interceptors.response.use(undefined, (err) => {
             if (this.$route.name === 'Logout') {
-                return Promise.reject(err.response);
+                return Promise.reject(err);
+            }
+            if (this.$route.name === 'Login') {
+                return Promise.reject(err);
             }
             if (err.response && err.response.status && err.response.data) {
                 if (403 === err.response.status && 'Your token is invalid, please login again to get a new one' === err.response.data.message && this.$route.name !== 'Logout'
@@ -168,7 +172,7 @@ export default {
                 }
             }
 
-            return Promise.reject(err.response);
+            return Promise.reject(err);
         });
     },
     methods: {

@@ -124,6 +124,7 @@ import { html } from 'color_library';
 import FormError from '../Common/FormError.vue';
 import { useClientStore } from '../../stores/client';
 import { useTagStore } from '../../stores/tag';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'TagCreate',
@@ -133,6 +134,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             tagStore: useTagStore(),
             clientStore: useClientStore(),
             name: null,
@@ -169,7 +171,7 @@ export default {
             return this.authStore.currentUser;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
             return !this.name || !this.color || !this.colorState || !this.nameState || this.isLoading;

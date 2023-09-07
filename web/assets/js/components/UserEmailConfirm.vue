@@ -37,6 +37,7 @@
 <script>
 'use strict';
 import SecurityAPI from '../api/security';
+import { useAuthStore } from '../stores/auth';
 
 export default {
     name: 'UserEmailConfirm',
@@ -52,11 +53,12 @@ export default {
         },
     },
     data: () => ({
+        authStore: useAuthStore(),
         user: false,
     }),
     computed: {
         isLoading() {
-            return this.$store.getters['security/isLoading'];
+            return this.authStore.isLoading;
         },
     },
     async created() {

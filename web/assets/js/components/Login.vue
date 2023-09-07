@@ -164,6 +164,7 @@
 <script>
     "use strict";
     import DemoInfo from './Demo/DemoInfo.vue';
+    import SecurityApi from '../api/security';
     import { useAuthStore } from '../stores/auth';
 
     export default {
@@ -184,7 +185,7 @@
                 return window.location.host.includes('swapp.demo') || this.$route.query.demo;
             },
             isLoading() {
-                return this.$store.getters["security/isLoading"];
+                return this.authStore.isLoading;
             },
             hasError() {
                 return !!this.authStore.getErrors.login;
@@ -224,7 +225,7 @@
                 let payload = {username: this.$data.username, password: this.$data.password},
                     redirect = this.$route.query.redirect;
                 const loginResult = await this.authStore.login(payload);
-                if (!this.errorLogin) {
+                if (!this.error && loginResult) {
                     if (typeof redirect !== "undefined") {
                         this.$router.push({path: redirect});
                     } else {

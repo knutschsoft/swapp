@@ -32,9 +32,16 @@
     import UserList from './Users/UserList';
     import ContentCollapse from './ContentCollapse.vue';
     import { useClientStore } from '../stores/client';
+    import { useAuthStore } from '../stores/auth';
 
     export default {
         name: "Users",
+        data() {
+            return {
+                authStore: useAuthStore(),
+                clientStore: useClientStore(),
+            };
+        },
         components: {
             ActiveUserList,
             ContentCollapse,
@@ -43,11 +50,11 @@
         },
         computed: {
             isSuperAdmin() {
-                return this.$store.getters['security/isSuperAdmin'];
+                return this.authStore.isSuperAdmin;
             },
         },
         async mounted() {
-            await useClientStore().fetchClients();
+            await this.clientStore.fetchClients();
         },
     }
 </script>

@@ -1,6 +1,5 @@
 'use strict';
-
-import axios from 'axios';
+import apiClient from '../api';
 import dayjs from 'dayjs';
 
 const updateFilterParams = function (params) {
@@ -32,12 +31,12 @@ export default {
     find(params) {
         let sort = updateFilterParams(params);
 
-        return axios.get(`/api/way_points?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
+        return apiClient.get(`/api/way_points?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
     export(params) {
         const sort = updateFilterParams(params);
 
-        return axios.get(
+        return apiClient.get(
             '/api/way_points/export?page=1&itemsPerPage=5000' + sort,
             {
                 headers: { accept: 'text/csv' },

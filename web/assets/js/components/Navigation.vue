@@ -147,7 +147,7 @@
                             <span
                                 v-if="isAuthenticated"
                             >
-                                {{ currentUser.username }}
+                                {{ currentUser?.username }}
                             </span>
                         </template>
                         <b-dropdown-item
@@ -375,7 +375,7 @@
                 this.authStore.switchUser(user);
             },
             exitSwitchUser() {
-                this.$store.dispatch('security/exitSwitchUser');
+                this.authStore.exitSwitchUser();
             },
             getClientByIri(clientIri) {
                 return this.clientStore.getClientByIri(clientIri);

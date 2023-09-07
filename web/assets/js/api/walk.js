@@ -1,6 +1,5 @@
 'use strict';
-
-import axios from 'axios';
+import apiClient from '../api';
 import dayjs from 'dayjs';
 
 const updateFilterParams = function (params) {
@@ -26,7 +25,7 @@ export default {
     find(params) {
         let sort = updateFilterParams(params);
 
-        return axios.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
+        return apiClient.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
     findLastWalkByTeam(team) {
         return this.find({
@@ -42,7 +41,7 @@ export default {
     export(params) {
         const sort = updateFilterParams(params);
 
-        return axios.get(
+        return apiClient.get(
             '/api/walks/export?page=1&itemsPerPage=5000' + sort,
             {
                 headers: { accept: 'text/csv' },
@@ -51,6 +50,6 @@ export default {
         );
     },
     findAllTeamNames() {
-        return axios.get("/api/walks/team_names");
+        return apiClient.get("/api/walks/team_names");
     },
 };

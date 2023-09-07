@@ -142,12 +142,14 @@ import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import MyInputGroupAppend from '../../components/Common/MyInputGroupAppend.vue';
 import { useClientStore } from '../../stores/client';
 import { useTagStore } from '../../stores/tag';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'TagList',
     components: { ContentLoadingSpinner, ColorBadge, MyInputGroupAppend },
     data: function () {
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             tagStore: useTagStore(),
             isEnabledOptions: [
@@ -217,7 +219,7 @@ export default {
             return this.tagStore.getErrors;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
     },
     async created() {

@@ -48,6 +48,7 @@ Feature: An admin can change visited at of a wayPoint
     Then I wait for 'Die Ankunftszeit muss nach Rundenstartzeit (' to disappear
 
     Then I go to swapp page "/abmeldung"
+    And I wait for 'Anmeldung' to appear
     Given I am authenticated as "admin@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Assieck>/detail"
     Then I wait for 'Die Ankunftszeit muss nach der Rundenstartzeit (' to appear

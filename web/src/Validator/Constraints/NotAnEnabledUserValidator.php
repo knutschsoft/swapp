@@ -24,10 +24,10 @@ class NotAnEnabledUserValidator extends ConstraintValidator
     public function validate($username, Constraint $constraint): void
     {
         try {
-            $user = $this->userRepository->findOneByEmailOrUsername($username);
+            $user = $this->userRepository->findOneByEmailOrUsername((string) $username);
         } catch (NotFoundException) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $username)
+                ->setParameter('{{ value }}', (string) $username)
                 ->addViolation();
 
             return;

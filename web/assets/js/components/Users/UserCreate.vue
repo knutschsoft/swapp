@@ -12,6 +12,7 @@
 
 import UserForm from './UserForm.vue';
 import { useUserStore } from '../../stores/user';
+import { useAuthStore } from '../../stores/auth';
 export default {
     name: 'UserCreate',
     components: {
@@ -19,6 +20,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             userStore: useUserStore(),
         };
     },

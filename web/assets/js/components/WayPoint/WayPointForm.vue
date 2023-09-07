@@ -470,6 +470,7 @@ import { useTagStore } from '../../stores/tag';
 import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
 import { useWalkStore } from '../../stores/walk';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'WayPointForm',
@@ -495,6 +496,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             tagStore: useTagStore(),
             teamStore: useTeamStore(),
             walkStore: useWalkStore(),
@@ -761,7 +763,7 @@ export default {
             return this.authStore.currentUser;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         isSubmitDisabled() {
             return this.isLoading || !this.visitedAtState;

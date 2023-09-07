@@ -176,6 +176,7 @@ import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import { useClientStore } from '../../stores/client';
 import { useUserStore } from '../../stores/user';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'ActiveUserList',
@@ -189,6 +190,7 @@ export default {
         let defaultEndDate = now.endOf('month').toDate();
 
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             userStore: useUserStore(),
             isLoadingEntries: [],
@@ -219,7 +221,7 @@ export default {
             return 'sm';
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         availableClients() {
             return this.clientStore.getClients;

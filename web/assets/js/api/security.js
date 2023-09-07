@@ -1,27 +1,9 @@
 import axios from 'axios';
-import apiClient from '../api'
+import apiClient from '../api';
 
 export default {
     findUserWithToken(id, token) {
         return axios.get(id, { headers: { Authorization: 'Bearer ' + token } });
-    },
-    find(id) {
-        return apiClient.get(id);
-    },
-    login(username, password) {
-        return apiClient.post('/api/users/getToken', {
-            username: username,
-            password: password,
-        });
-    },
-    changePassword(user, password, confirmationToken) {
-        return apiClient.post('/api/users/change-password', {
-            user,
-            password: password,
-            confirmationToken: {
-                token: confirmationToken,
-            },
-        }, { headers: { Authorization: '' } });
     },
     isConfirmationTokenValid(user, confirmationToken) {
         return apiClient.post('/api/users/is-confirmation-token-valid', {
@@ -37,12 +19,6 @@ export default {
             confirmationToken: {
                 token: confirmationToken,
             },
-        }, { headers: { Authorization: '' } });
-    },
-    requestPasswordReset(username, honeypotEmail) {
-        return apiClient.post('/api/users/request-password-reset', {
-            username: username,
-            email: honeypotEmail,
         }, { headers: { Authorization: '' } });
     },
 };

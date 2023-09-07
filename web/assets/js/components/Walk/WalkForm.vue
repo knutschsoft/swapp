@@ -406,6 +406,7 @@ import { useTeamStore } from '../../stores/team';
 import { useWayPointStore } from '../../stores/way-point';
 import { useWalkStore } from '../../stores/walk';
 import { useUserStore } from '../../stores/user';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'WalkForm',
@@ -428,6 +429,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
             userStore: useUserStore(),
@@ -691,7 +693,7 @@ export default {
             return this.userStore.getUsers;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
             return !this.nameState

@@ -221,7 +221,7 @@ export default {
             return this.authStore.currentUser;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
             return !this.nameState || !this.emailState || !this.descriptionState || this.isLoading;

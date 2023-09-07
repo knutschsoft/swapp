@@ -1,6 +1,5 @@
 "use strict";
-
-import axios from 'axios';
+import apiClient from '../api';
 
 const updateFilterParams = function (params) {
     let sort = '';
@@ -36,6 +35,6 @@ export default {
 
         const sort = updateFilterParams(params);
 
-        return axios.get(`/api/tags?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
+        return apiClient.get(`/api/tags?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
 };

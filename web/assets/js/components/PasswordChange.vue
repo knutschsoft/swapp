@@ -179,6 +179,8 @@
     "use strict";
     import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
     import SecurityAPI from '../api/security';
+    import { useAuthStore } from '../stores/auth';
+    import { useUserStore } from '../stores/user';
 
     export default {
         name: "RequestPasswordChange",
@@ -194,6 +196,8 @@
             },
         },
         data: () => ({
+            authStore: useAuthStore(),
+            userStore: useUserStore(),
             password: '',
             passwordRepeat: '',
             passwordHelp: '',
@@ -208,16 +212,16 @@
         }),
         computed: {
             isLoading() {
-                return this.$store.getters["security/isLoading"];
+                return this.userStore.isLoading;
             },
             hasError() {
-                return this.$store.getters["security/hasError"];
+                return this.userStore.hasError;
             },
             error() {
-                return this.$store.getters["security/error"];
+                return this.userStore.getErrors.change;
             },
             user() {
-                return this.$store.getters["security/currentUser"];
+                return this.authStore.currentUser['@id'] ? this.authStore.currentUser : false;
             },
             passwordRepeatValidation() {
                 if (this.password.trim().length < 7 || this.passwordRepeat.trim().length < 7) {
@@ -280,10 +284,13 @@
                     // ensure that password can be saved via browser
                     this.switchPasswordVisibility();
                 }
-                let result = await this.$store.dispatch(
-                    "security/changePassword",
-                    {user: `/api/users/${this.userId}`, password: this.password, confirmationToken: this.confirmationToken}
-                );
+                let result = await this.userStore.changePassword({
+                    user: `/api/users/${this.userId}`,
+                    password: this.password,
+                    confirmationToken: {
+                        token: this.confirmationToken
+                    },
+                });
 
                 if (result) {
                     this.isPasswordChanged = true;

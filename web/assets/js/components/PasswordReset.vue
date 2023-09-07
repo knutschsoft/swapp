@@ -133,11 +133,15 @@
 <script>
     "use strict";
     import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
+    import { useAuthStore } from '../stores/auth';
+    import { useUserStore } from '../stores/user';
 
     export default {
         name: "PasswordReset",
         components: { GeneralErrorAlert },
         data: () => ({
+            authStore: useAuthStore(),
+            userStore: useUserStore(),
             username: '',
             honeypotEmail: '',
             usernameHelp: '',
@@ -146,13 +150,13 @@
         }),
         computed: {
             isLoading() {
-                return this.$store.getters["security/isLoading"];
+                return this.userStore.isLoading;
             },
             hasError() {
-                return this.$store.getters["security/hasError"];
+                return this.userStore.hasError;
             },
             error() {
-                return this.$store.getters["security/error"];
+                return this.userStore.getErrors.change;
             },
             validation() {
                 if (this.username.trim().length <= 4) {
@@ -187,7 +191,7 @@
         created() {
             let redirect = this.$route.query.redirect;
 
-            if (this.$store.getters["security/isAuthenticated"]) {
+            if (this.authStore.isAuthenticated) {
                 if (typeof redirect !== "undefined") {
                     this.$router.push({path: redirect});
                 } else {
@@ -197,11 +201,10 @@
         },
         methods: {
             async requestPasswordReset() {
-                await this.$store.dispatch(
-                    "security/requestPasswordReset",
+                await this.userStore.requestPasswordReset(
                     {
-                        email: this.username,
-                        honeypotEmail: this.honeypotEmail
+                        username: this.username,
+                        email: this.honeypotEmail
                     }
                 );
                 if (!this.hasError) {

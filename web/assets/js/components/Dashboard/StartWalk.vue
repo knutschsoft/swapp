@@ -100,6 +100,7 @@
     "use strict";
     import { useSystemicQuestionStore } from '../../stores/systemic-question';
     import { useTeamStore } from '../../stores/team';
+    import { useAuthStore } from '../../stores/auth';
 
     export default {
         name: "StartWalk",
@@ -112,6 +113,7 @@
         },
         data: function () {
             return {
+                authStore: useAuthStore(),
                 systemicQuestionStore: useSystemicQuestionStore(),
                 teamStore: useTeamStore(),
                 selectedTeam: null,
@@ -126,10 +128,14 @@
                 return this.teamStore.getTeams;
             },
             currentUser() {
-                return this.$store.getters["security/currentUser"];
+                return this.authStore.currentUser;
             },
             selectableTeams() {
                 let options = [];
+                if (!this.currentUser) {
+                    return options;
+                }
+
                 this.teams.forEach((team) => {
                     team.users.forEach(userIri => {
                         if (userIri === this.currentUser['@id']) {

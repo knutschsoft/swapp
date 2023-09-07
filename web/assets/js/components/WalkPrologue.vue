@@ -30,9 +30,9 @@
                                 <b-form-checkbox
                                     :value="walkTeamMember"
                                     :disabled="currentUser['@id'] === walkTeamMember"
-                                    :data-test="`walkTeamMember-${getUserByIri(walkTeamMember).username}`"
+                                    :data-test="`walkTeamMember-${getUserByIri(walkTeamMember)?.username}`"
                                 >
-                                    {{ getUserByIri(walkTeamMember).username }}
+                                    {{ getUserByIri(walkTeamMember)?.username }}
                                     <template v-if="currentUser['@id'] === walkTeamMember">(Rundenersteller)</template>
                                 </b-form-checkbox>
                             </div>
@@ -201,6 +201,7 @@
     import { useTeamStore } from '../stores/team';
     import { useWalkStore } from '../stores/walk';
     import { useUserStore } from '../stores/user';
+    import { useAuthStore } from '../stores/auth';
 
     export default {
         name: "WalkPrologue",
@@ -215,6 +216,7 @@
         },
         data: function () {
             return {
+                authStore: useAuthStore(),
                 teamStore: useTeamStore(),
                 userStore: useUserStore(),
                 walkStore: useWalkStore(),
@@ -365,7 +367,7 @@
                 return this.weatherOptions.indexOf(this.form.weather) !== -1;
             },
             currentUser() {
-                return this.$store.getters["security/currentUser"];
+                return this.authStore.currentUser;
             },
             isLoading() {
                 return this.teamStore.isLoading || this.userStore.isLoading || this.walkStore.isLoadingCreate;

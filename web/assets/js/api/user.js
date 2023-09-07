@@ -1,5 +1,5 @@
 'use strict';
-import axios from 'axios';
+import apiClient from '../api';
 
 export default {
     findAll(params) {
@@ -21,6 +21,6 @@ export default {
             }
         }
 
-        return axios.get(`/api/users?page=${params.page}&itemsPerPage=${params.itemsPerPage}` + sort);
+        return apiClient.get(`/api/users?page=${params.page}&itemsPerPage=${params.itemsPerPage}` + sort);
     },
 };

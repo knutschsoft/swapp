@@ -221,6 +221,7 @@ import dayjs from 'dayjs';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend';
 import { useClientStore } from '../../stores/client';
 import { useUserStore } from '../../stores/user';
+import { useAuthStore } from '../../stores/auth';
 
 export default {
     name: 'UserList',
@@ -230,6 +231,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             userStore: useUserStore(),
             editModal: {
@@ -362,13 +364,13 @@ export default {
             ];
         },
         isUserSwitched() {
-            return this.$store.getters['security/isUserSwitched'];
+            return this.authStore.isUserSwitched;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
         isAdmin() {
-            return this.$store.getters['security/isAdmin'];
+            return this.authStore.isAdmin;
         },
         users() {
             return this.userStore.getUsers
@@ -444,10 +446,10 @@ export default {
             }
         },
         switchUser(user) {
-            this.$store.dispatch('security/switchUser', user);
+            this.authStore.switchUser(user);
         },
         exitSwitchUser() {
-            this.$store.dispatch('security/exitSwitchUser');
+            this.authStore.exitSwitchUser();
         },
     },
 };

@@ -61,12 +61,14 @@
     import { useClientStore } from '../../stores/client';
     import { useTeamStore } from '../../stores/team';
     import { useUserStore } from '../../stores/user';
+    import { useAuthStore } from '../../stores/auth';
 
     export default {
         name: "TeamList",
         components: { TeamForm },
         data: function () {
             return {
+                authStore: useAuthStore(),
                 clientStore: useClientStore(),
                 teamStore: useTeamStore(),
                 userStore: useUserStore(),
@@ -271,7 +273,7 @@
                 return this.teamStore.getErrors;
             },
             isSuperAdmin() {
-                return this.$store.getters['security/isSuperAdmin'];
+                return this.authStore.isSuperAdmin;
             },
             hasAtLeastOneTeamGuestNames() {
                 return !this.teams.every(team => !team.isWithGuests);

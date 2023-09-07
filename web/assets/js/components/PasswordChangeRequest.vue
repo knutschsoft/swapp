@@ -69,24 +69,28 @@
     "use strict";
 
     import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
+    import { useUserStore } from '../stores/user';
+    import { useAuthStore } from '../stores/auth';
     export default {
         name: "PasswordChangeRequest",
         components: { GeneralErrorAlert },
         data: () => ({
+            authStore: useAuthStore(),
+            userStore: useUserStore(),
             isPasswordRequested: false,
         }),
         computed: {
             isLoading() {
-                return this.$store.getters["security/isLoading"];
+                return this.userStore.isLoading;
             },
             hasError() {
-                return this.$store.getters["security/hasError"];
+                return this.userStore.hasError;
             },
             error() {
-                return this.$store.getters["security/error"];
+                return this.userStore.getErrors.change;
             },
             user() {
-                return this.$store.getters["security/currentUser"];
+                return this.authStore.currentUser;
             },
         },
         created() {
@@ -94,9 +98,8 @@
         },
         methods: {
             async requestPasswordReset() {
-                await this.$store.dispatch(
-                    "security/requestPasswordReset",
-                    {email: this.user.email, honeypotEmail: ''}
+                await this.userStore.requestPasswordReset(
+                    {username: this.user.email, email: ''}
                 );
                 this.isPasswordRequested = true;
             }

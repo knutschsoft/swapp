@@ -13,7 +13,7 @@ ENV HOST_GID=${HOST_UID}
 ENV CONTAINER_GROUP=${CONTAINER_GROUP}
 ENV CONTAINER_USER=${CONTAINER_USER}
 ENV PANTHER_NO_SANDBOX 1
-ENV PANTHER_CHROME_ARGUMENTS='--headless=new --ignore-certificate-errors'
+ENV PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors'
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 

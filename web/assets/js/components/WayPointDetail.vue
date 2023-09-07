@@ -50,6 +50,7 @@
     import { useTagStore } from '../stores/tag';
     import { useWayPointStore } from '../stores/way-point';
     import { useWalkStore } from '../stores/walk';
+    import { useAuthStore } from '../stores/auth';
 
     export default {
         name: "WayPointDetail",
@@ -69,6 +70,7 @@
         },
         data: function () {
             return {
+                authStore: useAuthStore(),
                 tagStore: useTagStore(),
                 wayPointStore: useWayPointStore(),
                 walkStore: useWalkStore(),
@@ -77,7 +79,7 @@
         },
         computed: {
             isAdmin() {
-                return this.$store.getters['security/isAdmin'];
+                return this.authStore.isAdmin;
             },
             walk() {
                 return this.walkStore.getWalkById(this.walkId);
@@ -104,7 +106,7 @@
                 return this.walkStore.hasWalks;
             },
             hasTags() {
-                return this.$store.getters["tag/hasTags"];
+                return this.tagStore.hasTags;
             },
             walks() {
                 return this.walkStore.getWalks;

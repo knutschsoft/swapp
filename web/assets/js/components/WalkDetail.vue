@@ -82,6 +82,7 @@
     import WalkForm from './Walk/WalkForm.vue';
     import WalkUnfinishedForm from './Walk/WalkUnfinishedForm.vue';
     import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
+    import { useAuthStore } from '../stores/auth';
     import { useClientStore } from '../stores/client';
     import { useUserStore } from '../stores/user';
     import { useWayPointStore } from '../stores/way-point';
@@ -105,6 +106,7 @@
         },
         data: function () {
             return {
+                authStore: useAuthStore(),
                 clientStore: useClientStore(),
                 userStore: useUserStore(),
                 walkStore: useWalkStore(),
@@ -113,7 +115,7 @@
         },
         computed: {
             isAdmin() {
-                return this.$store.getters['security/isAdmin'];
+                return this.authStore.isAdmin;
             },
             isLoading() {
                 return this.walkStore.isLoading;

@@ -65,6 +65,7 @@
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import dayjs from 'dayjs';
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
+import { useAuthStore } from '../../stores/auth';
 import { useClientStore } from '../../stores/client';
 import { useSystemicQuestionStore } from '../../stores/systemic-question';
 import { useTeamStore } from '../../stores/team';
@@ -77,6 +78,7 @@ export default {
     },
     data: function () {
         return {
+            authStore: useAuthStore(),
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
@@ -141,7 +143,7 @@ export default {
             return this.systemicQuestionStore.getErrors;
         },
         isSuperAdmin() {
-            return this.$store.getters['security/isSuperAdmin'];
+            return this.authStore.isSuperAdmin;
         },
     },
     async created() {

@@ -19,6 +19,7 @@ security:
         refresh:
             pattern:  ^/api/users/refreshToken
             stateless: true
+            user_checker: App\Security\UserChecker
         login:
             pattern:  ^/api/users/getToken
             stateless: true
@@ -29,6 +30,7 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            user_checker: App\Security\UserChecker
 
         main:
             pattern:  ^/api
