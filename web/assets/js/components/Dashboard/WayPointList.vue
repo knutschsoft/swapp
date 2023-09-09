@@ -68,7 +68,6 @@
                     <b-form-group
                         v-slot="{ ariaDescribedby }"
                         class="pl-2 border-top border-bottom mb-0"
-                        @change="handleFilterChange"
                     >
                         <div class="d-flex flex-wrap">
                             <template
@@ -138,7 +137,6 @@
                         placeholder="Beobachtung"
                         debounce="500"
                         size="sm"
-                        @update="handleFilterChange"
                     />
                     <my-input-group-append
                         @click="unsetFilterNote"
@@ -165,7 +163,6 @@
                         placeholder="Einzelgespräch"
                         debounce="500"
                         size="sm"
-                        @update="handleFilterChange"
                     />
                     <my-input-group-append
                         @click="unsetFilterOneOnOneInterview"
@@ -192,7 +189,6 @@
                         placeholder="Ort"
                         debounce="500"
                         size="sm"
-                        @update="handleFilterChange"
                     />
                     <my-input-group-append
                         @click="unsetFilterLocationName"
@@ -223,7 +219,6 @@
                         autocomplete="off"
                         debounce="500"
                         size="sm"
-                        @update="handleFilterChange"
                     ></b-form-input>
                     <datalist id="team-name-for-wayPoint-list">
                         <option v-for="teamName in teamNames">{{ teamName }}</option>
@@ -262,7 +257,6 @@
                         opens="right"
                         :readonly="isLoading"
                         :disabled="isLoading"
-                        @update="handleFilterChange"
                     >
                     </date-range-picker>
                     <b-input-group-append
@@ -420,6 +414,7 @@ import TagAPI from '../../api/tag.js';
 import { useTagStore } from '../../stores/tag';
 import { useWayPointStore } from '../../stores/way-point';
 import { useWalkStore } from '../../stores/walk';
+import { useGeneralStore } from '../../stores/general';
 
 export default {
     name: 'WayPointList',
@@ -429,43 +424,16 @@ export default {
     },
     props: {},
     data: function () {
-        let defaultStartDate = null;
-        let defaultEndDate = null;
-
-        const defaultFilter = {
-            wayPointTags: [],
-            locationName: '',
-            note: '',
-            teamName: '',
-            oneOnOneInterview: '',
-            visitedAt: {
-                startDate: defaultStartDate,
-                endDate: defaultEndDate,
-            },
-        };
-        let filter = this.$localStorage.get('alle-wegpunkte-filter', defaultFilter);
-        if (!filter.visitedAt) {
-            filter.visitedAt = {
-                startDate: defaultStartDate,
-                endDate: defaultEndDate,
-            };
-        }
-        if (filter.visitedAt.startDate && filter.visitedAt.endDate) {
-            filter.visitedAt.startDate = new Date(filter.visitedAt.startDate);
-            filter.visitedAt.endDate = new Date(filter.visitedAt.endDate);
-        }
+        const generalStore = useGeneralStore();
 
         return {
+            generalStore: generalStore,
             tagStore: useTagStore(),
             wayPointStore: useWayPointStore(),
             walkStore: useWalkStore(),
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
-            defaultDateRange: {
-                startDate: defaultStartDate,
-                endDate: defaultEndDate,
-            },
             ranges: dateRangePicker.ranges,
             fields: [
                 { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
@@ -511,14 +479,12 @@ export default {
             allTeamNames: [],
             totalRows: 0,
             tags: [],
-            currentPage: this.$localStorage.get('alle-wegpunkte-current-page', 1),
-            perPage: this.$localStorage.get('alle-wegpunkte-per-page', 5),
+            currentPage: 1,
+            perPage: 5,
             pageOptions: [5, 10, 25, 50, 100],
             sortBy: 'walk.startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: filter,
-            defaultFilter: defaultFilter,
             storagePerPageId: 'alle-wegpunkte-per-page',
             storageCurrentPageId: 'alle-wegpunkte-current-page',
             storageFilterId: 'alle-wegpunkte-filter',
@@ -526,6 +492,15 @@ export default {
         };
     },
     computed: {
+        filter() {
+            return this.generalStore.wayPointFilter;
+        },
+        defaultFilter() {
+            return this.generalStore.defaultWayPointFilter;
+        },
+        defaultDateRange() {
+            return this.generalStore.defaultWayPointFilter.visitedAt;
+        },
         teamNames() {
             const filterTeamName = this.filter.teamName ? this.filter.teamName.toLowerCase() : '';
             return this.allTeamNames.filter((teamName) => {
@@ -546,6 +521,8 @@ export default {
         },
     },
     async mounted() {
+        this.perPage = this.generalStore.wayPointPerPage;
+        this.currentPage = this.generalStore.wayPointCurrentPage;
         const tagResult = await TagAPI.findAllWithWayPoints();
         this.tags = tagResult.data['hydra:member'];
         this.tagStore.fetchTags();
@@ -601,47 +578,37 @@ export default {
             await Promise.all(walkPromises);
 
             this.totalRows = result.data['hydra:totalItems'];
-            this.$localStorage.set(this.storageWayPointsId, wayPoints);
+            this.generalStore.updateWayPointFilterResult(wayPoints);
             await this.$emit('refresh-total-way-points', this.totalRows);
 
             return wayPoints;
         },
         handleCurrentPageChange(value) {
-            this.$localStorage.set(this.storageCurrentPageId, value);
+            this.generalStore.updateWayPointCurrentPage(Number(value));
         },
         handlePerPageChange(value) {
-            this.$localStorage.set(this.storagePerPageId, value);
-        },
-        handleFilterChange() {
-            this.$localStorage.set(this.storageFilterId, this.filter);
+            this.generalStore.updateWayPointPerPage(Number(value));
         },
         unsetFilterWayPointTags() {
             this.filter.wayPointTags = [];
-            this.handleFilterChange();
         },
         unsetFilterLocationName() {
             this.filter.locationName = '';
-            this.handleFilterChange();
         },
         unsetFilterNote() {
             this.filter.note = '';
-            this.handleFilterChange();
         },
         unsetFilterOneOnOneInterview() {
             this.filter.oneOnOneInterview = '';
-            this.handleFilterChange();
         },
         unsetFilterTeamName() {
             this.filter.teamName = '';
-            this.handleFilterChange();
         },
         unsetFilterVisitedAt() {
             this.filter.visitedAt = this.defaultDateRange;
-            this.handleFilterChange();
         },
         unsetAllFilter() {
             this.filter = JSON.parse(JSON.stringify(this.defaultFilter));
-            this.handleFilterChange();
         },
         togglePicker() {
             this.$refs.picker.togglePicker(!this.$refs.picker.open);

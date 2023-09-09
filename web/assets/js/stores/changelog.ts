@@ -1,9 +1,10 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import dayjs, {Dayjs} from 'dayjs';
+import {type RemovableRef, useLocalStorage } from "@vueuse/core";
 
 type State = {
     changelogs: Array<any>,
-    lastVisitedAt: Dayjs | boolean,
+    lastVisitedAt: RemovableRef<Dayjs>;
 }
 
 export const useChangelogStore = defineStore("changelog", {
@@ -909,7 +910,7 @@ export const useChangelogStore = defineStore("changelog", {
                 ],
             },
         ],
-        lastVisitedAt: false,
+        lastVisitedAt: useLocalStorage('swapp-store-changelog-last-visited-at', dayjs().subtract(1, 'month')),
     }),
     getters: {
         getChangelogs({changelogs}): any[] {
@@ -932,9 +933,7 @@ export const useChangelogStore = defineStore("changelog", {
     },
     actions: {
         updateLastVisitedAt(lastVisitedAt: Dayjs): void {
-            const swappStoreChangelogLastVisitedAt = 'swapp-store-changelog-last-visited-at';
             this.lastVisitedAt = lastVisitedAt;
-            localStorage.setItem(swappStoreChangelogLastVisitedAt, JSON.stringify(lastVisitedAt));
         },
     },
 })

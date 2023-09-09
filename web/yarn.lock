@@ -2868,7 +2868,7 @@ date-fns@^2.16.1:
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-dayjs@^1.10.4:
+dayjs@^1.11.9:
   version "1.11.9"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
   integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
@@ -7229,11 +7229,6 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
-
-vue-web-storage@^4.0.2:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/vue-web-storage/-/vue-web-storage-4.0.3.tgz#36936263f5d1619ecc68fc8e6a3c90709b1bad66"
-  integrity sha512-FFF0DKGJqLOPSgAwyR/mo/sTz7FnwjlNuB8TTPTSBalni1tDwrKSo4GRvGSorcLPdFwiY3dbSarUEHPZdn7fxA==
 
 vue2-daterange-picker@^0.6.7:
   version "0.6.8"

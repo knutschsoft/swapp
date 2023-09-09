@@ -177,6 +177,7 @@ import dateRangePicker from '../../utils/date-range-picker'
 import { useClientStore } from '../../stores/client';
 import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
+import { useGeneralStore } from '../../stores/general';
 
 export default {
     name: 'ActiveUserList',
@@ -185,27 +186,24 @@ export default {
         MyInputGroupAppend,
     },
     data: function () {
-        let now = dayjs();
-        let defaultStartDate = now.subtract(5, 'month').startOf('month').toDate();
-        let defaultEndDate = now.endOf('month').toDate();
+        const generalStore = useGeneralStore();
 
         return {
             authStore: useAuthStore(),
             clientStore: useClientStore(),
+            generalStore: generalStore,
             userStore: useUserStore(),
             isLoadingEntries: [],
             locale: dateRangePicker.locale,
             defaultDateRange: {
-                startDate: defaultStartDate,
-                endDate: defaultEndDate,
+                startDate: generalStore.defaultActiveUsersDateRange.startDate.toDate(),
+                endDate: generalStore.defaultActiveUsersDateRange.endDate.toDate(),
             },
             dateRange: {
-                startDate: new Date(this.$localStorage.get('aktive-benutzer-startDate', defaultStartDate)),
-                endDate: new Date(this.$localStorage.get('aktive-benutzer-endDate', defaultEndDate)),
+                startDate: new Date(generalStore.activeUsersDateRange.startDate),
+                endDate: new Date(generalStore.activeUsersDateRange.endDate),
             },
             ranges: dateRangePicker.ranges,
-            dateFrom: now.subtract(6, 'month').startOf('month'),
-            dateTo: now.add(1, 'month').endOf('month'),
             entries: [],
             client: null,
         };
@@ -276,8 +274,7 @@ export default {
     },
     watch: {
         dateRange: async function (dateRange) {
-            this.$localStorage.set('aktive-benutzer-startDate', dateRange.startDate);
-            this.$localStorage.set('aktive-benutzer-endDate', dateRange.endDate);
+            this.generalStore.updateActiveUsersDateRange(dateRange);
             await this.updateEntries();
         },
         client: async function () {

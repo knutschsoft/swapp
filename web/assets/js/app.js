@@ -23,7 +23,7 @@ import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome
 import Vue from 'vue';
 import router from './router';
 import { AlertPlugin, BootstrapVue, CollapsePlugin, IconsPlugin, NavbarPlugin } from 'bootstrap-vue';
-import Storage from 'vue-web-storage';
+import { useStorage } from '@vueuse/core';
 import VueClipboard from 'vue-clipboard2';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -42,10 +42,6 @@ Vue.prototype.$workbox = wb;
 Vue.component('nl2br', Nl2br);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
-Vue.use(Storage, {
-    prefix: 'swapp-store-',
-    drivers: ['local', 'session'],
-});
 Vue.use(VueAxios, axios);
 Vue.use(PiniaVuePlugin);
 Vue.use(VueRouter);
@@ -83,7 +79,8 @@ const vueApp = (params) => {
         },
         async mounted() {
             this.$root.$on('bv::collapse::state', (collapseId, isJustShown) => {
-                this.$localStorage.set(collapseId, isJustShown);
+                const state = useStorage(`swapp-store-${collapseId}`, isJustShown);
+                state.value = isJustShown;
             });
         },
         async created() {

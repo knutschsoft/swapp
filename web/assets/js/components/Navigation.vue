@@ -235,7 +235,7 @@
                             >
                                 <b-form-input
                                     id="nutzerwechsel-form-email"
-                                    v-model="userFilter"
+                                    v-model="generalStore.navUserFilter"
                                     type="search"
                                     trim
                                     autocomplete="off"
@@ -291,12 +291,14 @@
     import { useWayPointStore } from '../stores/way-point';
     import { useWalkStore } from '../stores/walk';
     import { useUserStore } from '../stores/user';
+    import { useGeneralStore } from '../stores/general';
 
     export default {
         name: "Navigation",
         data: () => ({
             authStore: useAuthStore(),
             changelogStore: useChangelogStore(),
+            generalStore: useGeneralStore(),
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
@@ -304,7 +306,6 @@
             userStore: useUserStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
-            userFilter: '',
             users: [],
             swappLogo: logo,
             linkClasses: 'text-left text-lg-center pl-2 pl-lg-0',
@@ -345,7 +346,7 @@
                 }
 
                 return this.users.slice(0).filter((user) => {
-                    return -1 !== user.username.toLowerCase().indexOf(this.userFilter.toLowerCase());
+                    return -1 !== user.username.toLowerCase().indexOf(this.generalStore.navUserFilter.toLowerCase());
                 }).sort((a, b) => {
                     return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1;
                 });
@@ -361,14 +362,10 @@
             },
         },
         watch: {
-            userFilter() {
-                this.$localStorage.set('nav-user-filter', this.userFilter);
-            },
         },
         created() {
         },
         mounted: async function () {
-            this.userFilter = this.$localStorage.get('nav-user-filter', '');
         },
         methods: {
             switchUser(user) {

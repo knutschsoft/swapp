@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { useStorage } from '@vueuse/core';
 export default {
     name: 'ContentCollapse',
     props: {
@@ -54,6 +55,12 @@ export default {
             default: false,
         },
     },
+    data() {
+        return {
+            titleLengthState: false,
+            visibleState: false,
+        };
+    },
     computed: {
         getCollapseId() {
             return `collapse-${this.collapseKey}`;
@@ -62,26 +69,21 @@ export default {
             return `${this.getCollapseId}-title-width-in-px`;
         },
         isVisible() {
-            return this.$localStorage.get(
-                this.getCollapseId,
-                this.isVisibleByDefault
-            );
+            return this.visibleState;
         },
         titleWidth() {
-            return this.$localStorage.get(
-                this.getTitleLengthId,
-                '100px'
-            );
+            return this.titleLengthState;
         },
+    },
+    mounted() {
+        this.titleLengthState = useStorage(`swapp-store-${this.getTitleLengthId}`, '100px');
+        this.visibleState = useStorage(`swapp-store-${this.getCollapseId}`, this.isVisibleByDefault);
     },
     watch: {
         isLoading() {
             if (!this.isLoading) {
                 this.$nextTick(() => {
-                    this.$localStorage.set(
-                        this.getTitleLengthId,
-                        `${this.$refs.title.getBoundingClientRect().width}px`
-                    );
+                    this.titleLengthState.value = `${this.$refs.title.getBoundingClientRect().width}px`;
                 });
             }
         },

@@ -55,7 +55,6 @@
                     <b-form-select
                         v-model="filter.isResubmission"
                         :options="isResubmissionOptions"
-                        @change="handleFilterChange"
                     />
                     <my-input-group-append
                         @click="unsetFilterIsResubmission"
@@ -80,7 +79,6 @@
                     <b-form-select
                         v-model="filter.isUnfinished"
                         :options="isUnfinishedOptions"
-                        @change="handleFilterChange"
                     />
                     <my-input-group-append
                         @click="unsetFilterIsUnfinished"
@@ -106,7 +104,6 @@
                         placeholder="Name"
                         debounce="500"
                         size="sm"
-                        @update="handleFilterChange"
                     />
                     <my-input-group-append
                         @click="unsetFilterName"
@@ -136,7 +133,6 @@
                         autocomplete="off"
                         debounce="500"
                         size="sm"
-                        @update="handleFilterChange"
                     ></b-form-input>
                     <datalist id="team-name-for-walk-list">
                         <option v-for="teamName in teamNames">{{ teamName }}</option>
@@ -176,7 +172,6 @@
                         opens="right"
                         :readonly="isLoading"
                         :disabled="isLoading"
-                        @update="handleFilterChange"
                     >
                     </date-range-picker>
                     <b-input-group-append
@@ -332,6 +327,7 @@ import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import WalkRating from '../Walk/WalkRating.vue';
 import { useClientStore } from '../../stores/client';
+import { useGeneralStore } from '../../stores/general';
 import { useWalkStore } from '../../stores/walk';
 
 export default {
@@ -343,34 +339,15 @@ export default {
     },
     props: {},
     data: function () {
-        const defaultDateRange = {
-            startDate: null,
-            endDate: null,
-        }
-        const defaultFilter = {
-            isResubmission: null,
-            isUnfinished: null,
-            name: '',
-            teamName: '',
-            startTime: defaultDateRange,
-        };
-
-        let filter = this.$localStorage.get('abgeschlossene-runden-filter', defaultFilter);
-        if (!filter.startTime) {
-            filter.startTime = defaultDateRange;
-        }
-        if (filter.startTime.startDate && filter.startTime.endDate) {
-            filter.startTime.startDate = new Date(filter.startTime.startDate);
-            filter.startTime.endDate = new Date(filter.startTime.endDate);
-        }
+        const generalStore = useGeneralStore();
 
         return {
             clientStore: useClientStore(),
+            generalStore: generalStore,
             walkStore: useWalkStore(),
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
-            defaultDateRange: defaultDateRange,
             ranges: dateRangePicker.ranges,
             isResubmission: null,
             isUnfinished: null,
@@ -422,21 +399,24 @@ export default {
             ],
             allTeamNames: [],
             totalRows: 0,
-            currentPage: null,
-            perPage: null,
+            currentPage: 1,
+            perPage: 5,
             pageOptions: [5, 10, 25, 50, 100],
             sortBy: 'startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            filter: filter,
-            defaultFilter: defaultFilter,
-            storagePerPageId: 'abgeschlossene-runden-per-page',
-            storageCurrentPageId: 'abgeschlossene-runden-current-page',
-            storageFilterId: 'abgeschlossene-runden-filter',
-            storageWalksId: 'abgeschlossene-runden-walks',
         };
     },
     computed: {
+        filter() {
+            return this.generalStore.walkFilter;
+        },
+        defaultFilter() {
+            return this.generalStore.defaultWalkFilter;
+        },
+        defaultDateRange() {
+            return this.generalStore.defaultWalkFilter.startTime;
+        },
         teamNames() {
             const filterTeamName = this.filter.teamName ? this.filter.teamName.toLowerCase() : '';
             return this.allTeamNames.filter((teamName) => {
@@ -460,8 +440,8 @@ export default {
         },
     },
     async mounted() {
-        this.perPage = this.$localStorage.get(this.storagePerPageId, 5);
-        this.currentPage = this.$localStorage.get(this.storageCurrentPageId, 1);
+        this.perPage = this.generalStore.walkPerPage;
+        this.currentPage = this.generalStore.walkCurrentPage;
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
@@ -486,43 +466,34 @@ export default {
             const result = await WalkAPI.find(ctx);
             const walks = result.data['hydra:member']
             this.totalRows = result.data['hydra:totalItems'];
-            this.$localStorage.set(this.storageWalksId, walks);
+            this.generalStore.updateWalkFilterResult(walks);
             await this.$emit('refresh-total-walks', this.totalRows);
 
             return walks;
         },
         handleCurrentPageChange(value) {
-            this.$localStorage.set(this.storageCurrentPageId, value);
+            this.generalStore.updateWalkCurrentPage(Number(value));
         },
         handlePerPageChange(value) {
-            this.$localStorage.set(this.storagePerPageId, value);
-        },
-        handleFilterChange() {
-            this.$localStorage.set(this.storageFilterId, this.filter);
+            this.generalStore.updateWalkPerPage(Number(value));
         },
         unsetFilterIsResubmission() {
             this.filter.isResubmission = null;
-            this.handleFilterChange();
         },
         unsetFilterIsUnfinished() {
             this.filter.isUnfinished = null;
-            this.handleFilterChange();
         },
         unsetFilterName() {
             this.filter.name = '';
-            this.handleFilterChange();
         },
         unsetFilterTeamName() {
             this.filter.teamName = '';
-            this.handleFilterChange();
         },
         unsetFilterStartTime() {
             this.filter.startTime = this.defaultDateRange;
-            this.handleFilterChange();
         },
         unsetAllFilter() {
-            this.filter = JSON.parse(JSON.stringify(this.defaultFilter));
-            this.handleFilterChange();
+            this.generalStore.updateWalkFilter(this.defaultFilter);
         },
         togglePicker() {
             this.$refs.picker.togglePicker(!this.$refs.picker.open);

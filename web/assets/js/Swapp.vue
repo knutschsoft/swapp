@@ -116,7 +116,6 @@ export default {
             showUpdateUI: false,
             showError: false,
             oldToasterValue: '',
-            storageChangelogLastVisitedAt: 'changelog-last-visited-at',
         }
     },
     computed: {
@@ -125,18 +124,14 @@ export default {
         },
     },
     mounted() {
-        if (!this.changelogStore.lastVisitedAt) {
-            let lastVisitedAt;
-            const storageLastVisitedAtValue = this.$localStorage.get(this.storageChangelogLastVisitedAt);
-            if (storageLastVisitedAtValue) {
-                lastVisitedAt = dayjs(storageLastVisitedAtValue);
-            } else if (this.currentUser) {
-                lastVisitedAt = dayjs(this.currentUser.lastLoginAt);
-            } else {
-                lastVisitedAt = dayjs().subtract(1, 'month');
-            }
-            this.changelogStore.updateLastVisitedAt(lastVisitedAt);
+        if (!this.currentUser) {
+            return;
         }
+        const lastVisitedAtOfUserLogin = dayjs(this.currentUser.lastLoginAt);
+        if (lastVisitedAtOfUserLogin.isBefore(this.changelogStore.getLastVisitedAt)) {
+            return;
+        }
+        this.changelogStore.updateLastVisitedAt(lastVisitedAtOfUserLogin);
     },
     created() {
         if (this.$workbox) {
