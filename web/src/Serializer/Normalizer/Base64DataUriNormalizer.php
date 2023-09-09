@@ -8,7 +8,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
 use Webmozart\Assert\Assert;
 
 class Base64DataUriNormalizer extends DataUriNormalizer
