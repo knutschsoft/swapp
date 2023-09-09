@@ -117,7 +117,7 @@
                         class="form-group input-group"
                     >
                         <b-button
-                            :disabled="username.length < 5 || password.length < -1 || isLoading"
+                            :disabled="username.length < 3 || password.length < -1 || isLoading"
                             block
                             variant="dark"
                             type="submit"
