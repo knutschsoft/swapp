@@ -16,7 +16,7 @@
                 required
                 minlength="4"
                 maxlength="100"
-                placeholder="Benutzername"
+                placeholder="vorname.nachname"
                 :state="usernameState"
                 data-test="username"
             />
@@ -33,7 +33,7 @@
                 required
                 minlength="4"
                 maxlength="100"
-                placeholder="E-Mail"
+                placeholder="vorname.nachname@domain.de"
                 :state="emailState"
                 data-test="email"
             />
