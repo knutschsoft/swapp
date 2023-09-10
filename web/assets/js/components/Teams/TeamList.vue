@@ -16,7 +16,7 @@
             :fields="fields"
             small
             striped
-            stacked="md"
+            :stacked="isSuperAdmin ? 'xl' : 'lg'"
             class="mb-0"
         >
             <template #cell(users)="data">

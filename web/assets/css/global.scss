@@ -1,3 +1,10 @@
+
+$modal-sm: 520px !default;
+$modal-md: 700px !default;
+$modal-lg: 940px !default;
+$modal-xl: 1150px !default;
+$modal-xxl: 1550px !default;
+
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
@@ -10,8 +17,6 @@ $grid-breakpoints: (
         xl: 1200px,
         xxl: 1600px
 );
-
-$modal-xxl: 1500px !default;
 
 $container-max-widths: (
         xxs: 320px,
@@ -49,12 +54,6 @@ body {
     border: 0 !important;
     height: auto !important;
     width: 100% !important;
-  }
-}
-
-@include media-breakpoint-up(xxl) {
-  .modal-xxl {
-    max-width: $modal-xxl;
   }
 }
 
@@ -159,13 +158,27 @@ body {
   }
 }
 
-@media (min-width: 576px) {  }
+@media (min-width: 576px) {
+  .modal-xxl { max-width: $modal-sm; }
+}
 
 // Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {  }
+@media (min-width: 768px) {
+  .modal-xxl { max-width: $modal-md; }
+}
 
 // Large devices (desktops, 992px and up)
-@media (min-width: 992px) {  }
+@media (min-width: 992px) {
+  .modal-xxl { max-width: $modal-lg; }
+}
 
 // Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {  }
+@media (min-width: 1200px) {
+  .modal-xxl { max-width: $modal-xl; }
+}
+
+@include media-breakpoint-up(xxl) {
+  .modal-xxl {
+    max-width: $modal-xxl;
+  }
+}
