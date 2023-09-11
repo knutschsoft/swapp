@@ -72,7 +72,7 @@ export default {
             return this.visibleState;
         },
         titleWidth() {
-            return this.titleLengthState;
+            return this.titleLengthState ? this.titleLengthState : '100px';
         },
     },
     mounted() {
@@ -83,7 +83,7 @@ export default {
         isLoading() {
             if (!this.isLoading) {
                 this.$nextTick(() => {
-                    this.titleLengthState.value = `${this.$refs.title.getBoundingClientRect().width}px`;
+                    this.titleLengthState = `${this.$refs.title.getBoundingClientRect().width}px`;
                 });
             }
         },
