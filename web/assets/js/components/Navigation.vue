@@ -275,6 +275,15 @@
             class="px-2 py-0 small text-center bg-info w-full text-white"
             v-text="`Du befindest dich auf der ${isOnDemoPage ? 'Demo' : 'Stage'}-Version von Swapp.`"
         />
+        <UseNetwork v-slot="{ isOnline }">
+            <div
+                v-if="!isOnline"
+                class="px-2 py-0 small text-center bg-danger w-full text-white font-weight-bold"
+            >
+                <mdicon name="WifiOff" size="18"/>
+                Keine Internetverbindung.
+            </div>
+        </UseNetwork>
     </div>
 </template>
 
@@ -282,6 +291,7 @@
     "use strict";
     // import logo from '../../images/Logo_white_bg.png';
     import logo from '../../images/Swapp_hp_logo.jpg';
+    import { UseNetwork } from '@vueuse/components';
     import { useAuthStore } from '../stores/auth';
     import { useClientStore } from '../stores/client';
     import { useSystemicQuestionStore } from '../stores/systemic-question';
@@ -295,6 +305,9 @@
 
     export default {
         name: "Navigation",
+        components: {
+            UseNetwork,
+        },
         data: () => ({
             authStore: useAuthStore(),
             changelogStore: useChangelogStore(),

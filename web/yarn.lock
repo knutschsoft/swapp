@@ -1644,7 +1644,16 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.3.4.tgz#06e83c5027f464eef861c329be81454bc8b70780"
   integrity sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==
 
-"@vueuse/core@^10.4.1":
+"@vueuse/components@^10.3.0":
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/components/-/components-10.4.1.tgz#d6b51c60783da49eaa1a9d8014e1be53874f7dbc"
+  integrity sha512-hEWeumCfH394fkEYc/hng6T5VcjVkdqx7b75Sd6z4Uw3anjeo93Zp9qqtzFOv5bAmHls3Zy04Kowo1glrxDFRQ==
+  dependencies:
+    "@vueuse/core" "10.4.1"
+    "@vueuse/shared" "10.4.1"
+    vue-demi ">=0.14.5"
+
+"@vueuse/core@10.4.1", "@vueuse/core@^10.4.1":
   version "10.4.1"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.4.1.tgz#fc2c8a83a571c207aaedbe393b22daa6d35123f2"
   integrity sha512-DkHIfMIoSIBjMgRRvdIvxsyboRZQmImofLyOHADqiVbQVilP8VVHDhBX2ZqoItOgu7dWa8oXiNnScOdPLhdEXg==
@@ -4700,6 +4709,11 @@ launch-editor@^2.6.0:
     picocolors "^1.0.0"
     shell-quote "^1.7.3"
 
+leaflet@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.9.4.tgz#23fae724e282fa25745aff82ca4d394748db7d8d"
+  integrity sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
@@ -7265,6 +7279,11 @@ vue2-daterange-picker@^0.6.7:
   integrity sha512-8/YnxpInyYgjfpffxMP06UaPFYEiXATMq2WcO568fv5BNJQNffMQoBCswwxcma4exW+FrbqQUWQCdTRPtKDrNw==
   dependencies:
     vue "^2.6.10"
+
+vue2-leaflet@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/vue2-leaflet/-/vue2-leaflet-2.7.1.tgz#2f95c287621bf778f10804c88223877f5c049257"
+  integrity sha512-K7HOlzRhjt3Z7+IvTqEavIBRbmCwSZSCVUlz9u4Rc+3xGCLsHKz4TAL4diAmfHElCQdPPVdZdJk8wPUt2fu6WQ==
 
 vue@^2.6.10, vue@^2.7:
   version "2.7.14"
