@@ -53,7 +53,7 @@ Feature: Testing walk create resource
     When I send an api platform "POST" request to "/api/walks/create" with parameters:
       | key  | value             |
       | team | teamIri<Westhang> |
-#    And print last response
+#    And print last JSON response
     Then the response status code should be 422
     And the JSON nodes should be equal to:
       | violations[0].propertyPath | name                                |
@@ -68,8 +68,10 @@ Feature: Testing walk create resource
       | violations[4].message      | Dieser Wert sollte nicht null sein. |
       | violations[5].propertyPath | walkTeamMembers                     |
       | violations[5].message      | Dieser Wert sollte nicht null sein. |
-      | violations[6].propertyPath | guestNames                          |
+      | violations[6].propertyPath | walkCreator                         |
       | violations[6].message      | Dieser Wert sollte nicht null sein. |
+      | violations[7].propertyPath | guestNames                          |
+      | violations[7].message      | Dieser Wert sollte nicht null sein. |
     And there are exactly 2 walks in database
 
   @api @walkCreate
@@ -85,6 +87,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
       | guestNames      | array<>               |
+      | walkCreator     | userIri<karl@gmx.de>  |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -109,6 +112,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
       | guestNames      | array<>               |
+      | walkCreator     | userIri<karl@gmx.de>  |
 #    And print last response
     Then the response status code should be 400
     And the JSON nodes should be equal to:
@@ -129,6 +133,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de>     |
       | holidays        | <false>                   |
       | guestNames      | array<>                   |
+      | walkCreator     | userIri<karl@gmx.de>      |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
@@ -155,6 +160,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
       | guestNames      | array<>               |
+      | walkCreator     | userIri<karl@gmx.de>  |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -213,6 +219,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
       | guestNames      | array<>               |
+      | walkCreator     | userIri<karl@gmx.de>  |
 #    And print last response
     Then the response status code should be 200
     And I can find the following walks in database:
@@ -233,6 +240,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de>                                         |
       | holidays        | <false>                                                       |
       | guestNames      | array<>                                                       |
+      | walkCreator     | userIri<karl@gmx.de>                                          |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -257,6 +265,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gamer.de> |
       | holidays        | <false>                 |
       | guestNames      | array<>                 |
+      | walkCreator     | userIri<karl@gamer.de>  |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -281,6 +290,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
       | guestNames      | array<>               |
+      | walkCreator     | userIri<karl@gmx.de>  |
 #    And print last response
     Then the response status code should be 400
     And the JSON nodes should be equal to:
@@ -304,6 +314,7 @@ Feature: Testing walk create resource
       | walkTeamMembers | userIris<karl@gmx.de> |
       | holidays        | <false>               |
       | guestNames      | array<>               |
+      | walkCreator     | userIri<karl@gmx.de>  |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:

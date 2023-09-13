@@ -43,20 +43,13 @@ final class WalkChangeRequest
     #[Assert\Range(min: 1, max: 5)]
     public int $rating;
 
-    #[Assert\NotNull]
-    #[Assert\Choice(choices: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'])]
+    #[AppAssert\WeatherRequirements]
     public string $weather;
 
-    #[Assert\Sequentially([
-        new Assert\NotNull(),
-        new Assert\Type(type: \DateTime::class),
-    ])]
+    #[AppAssert\DateTimeRequirements]
     public \DateTime $startTime;
 
-    #[Assert\Sequentially([
-        new Assert\NotNull(),
-        new Assert\Type(type: \DateTime::class),
-    ])]
+    #[AppAssert\DateTimeRequirements]
     public \DateTime $endTime;
 
     #[Assert\NotNull]
@@ -95,19 +88,33 @@ final class WalkChangeRequest
         return true;
     }
 
-    /**
-     * @var User[]
-     *
-     * @Assert\All({
-     *     @Assert\NotBlank,
-     *     @Assert\NotNull,
-     *     @Assert\Type(type="App\Entity\User", groups="{'SecondGroup'}")
-     * })
-     */
-    #[Assert\NotNull]
+    /** @var User[] */
+    #[AppAssert\UsersRequirements]
     public array $walkTeamMembers;
+
+    #[AppAssert\UserOptionalRequirements]
+    public ?User $walkCreator;
 
     /** @var string[] */
     #[AppAssert\GuestNamesRequirements]
     public array $guestNames;
+
+    #[Assert\IsTrue(message: 'walk.isWalkCreatorInWalkMembers', groups: ['SecondGroup'])]
+    public function isWalkCreatorInWalkMembers(): bool
+    {
+        if ($this->walk->getWalkCreator() && !$this->walkCreator) {
+            return false;
+        }
+        if (!$this->walkCreator) {
+            return true;
+        }
+
+        foreach ($this->walkTeamMembers as $walkTeamMember) {
+            if ($walkTeamMember->getId() === $this->walkCreator->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -71,10 +71,7 @@ final class WayPointChangeRequest
     #[AppAssert\PeopleCountRequirements]
     public int $peopleCount;
 
-    #[Assert\Sequentially([
-        new Assert\NotNull(),
-        new Assert\Type(type: \DateTime::class),
-    ])]
+    #[AppAssert\DateTimeRequirements]
     public \DateTime $visitedAt;
 
     #[AppAssert\WayPointImageRequirements]

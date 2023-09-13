@@ -33,6 +33,6 @@ Feature: Testing walk export resource with UserGroups
       | key | value |
 #    And print last response
     Then the response status code should be 200
-    And the response should contain "Teilnehmende,\"Anzahl Personen vor Ort\",\"Aktuell Nutzende\",\"jemals genutzt - nutzungsberechtigt\",\"jemals genutzt - nicht nutzungsberechtigt\",\"angetroffene w 1-10\""
-    And the response should contain "karl@gamer.de,4,2,3,5,2"
-    And the response should contain "karl@gamer.de,17,5,2,7,13"
+    And the response should contain "Teilnehmende,Rundenersteller,\"Anzahl Personen vor Ort\",\"Aktuell Nutzende\",\"jemals genutzt - nutzungsberechtigt\",\"jemals genutzt - nicht nutzungsberechtigt\",\"angetroffene w 1-10\""
+    And the response should contain "karl@gamer.de,,4,2,3,5,2"
+    And the response should contain "karl@gamer.de,,17,5,2,7,13"

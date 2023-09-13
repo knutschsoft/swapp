@@ -39,6 +39,7 @@ final class WalkExportDataTransformer
             $users[] = $walkTeamMember->getUsername();
         }
         $walkExport->users = \implode(',', $users);
+        $walkExport->walkCreator = (string) $walk->getWalkCreator()?->getUsername();
 
         if ($walk->isWithContactsCount()) {
             $walkExport->contactsCount = $walk->getSumOfContactsCount();

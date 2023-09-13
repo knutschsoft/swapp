@@ -11,7 +11,7 @@ Feature: Testing client change resource with rating image
       | admin@gmx.de      | ROLE_ADMIN       | client@gmx.de |
       | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
 
-  @api @apiClientChange @suw2
+  @api @apiClientChange
   Scenario: I can request /api/clients/change as a superadmin and change a client with ratingImage
     Given I am authenticated against api as "superadmin@gmx.de"
     When I send an api platform "POST" request to "/api/clients/change" with parameters:

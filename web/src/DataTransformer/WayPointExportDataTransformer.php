@@ -26,6 +26,7 @@ final class WayPointExportDataTransformer
             $users[] = $walkTeamMember->getUsername();
         }
         $wayPointExport->users = \implode(',', $users);
+        $wayPointExport->walkCreator = (string) $wayPoint->getWalk()->getWalkCreator()?->getUsername();
         $wayPointExport->conceptOfDay = \implode(',', $wayPoint->getWalk()->getConceptOfDay());
         $wayPointExport->note = (string) $wayPoint->getNote();
         $wayPointExport->oneOnOneInterview = $wayPoint->getOneOnOneInterview();

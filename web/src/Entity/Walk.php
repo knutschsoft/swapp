@@ -136,6 +136,9 @@ class Walk
     #[ORM\OrderBy(value: ['username' => 'ASC'])]
     private Collection $walkTeamMembers;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'createdWalks')]
+    private ?User $walkCreator;
+
     /** @var Collection<int, Tag> */
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'walks')]
     private Collection $walkTags;
@@ -210,6 +213,7 @@ class Walk
         $this->guestNames = [];
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
+        $this->walkCreator = null;
         $this->wayPoints = new ArrayCollection();
         $this->holidays = false;
         $this->conceptOfDay = [];
@@ -482,6 +486,17 @@ class Walk
         foreach ($walkTeamMembers as $walkTeamMember) {
             $walkTeamMember->addWalk($this);
         }
+    }
+
+    #[Groups(['walk:read'])]
+    public function getWalkCreator(): ?User
+    {
+        return $this->walkCreator;
+    }
+
+    public function setWalkCreator(User $walkCreator): void
+    {
+        $this->walkCreator = $walkCreator;
     }
 
     /**

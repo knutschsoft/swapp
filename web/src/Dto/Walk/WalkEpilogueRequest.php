@@ -43,20 +43,13 @@ final class WalkEpilogueRequest
     #[Assert\Range(min: 1, max: 5)]
     public int $rating;
 
-    #[Assert\NotNull]
-    #[Assert\Choice(choices: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'])]
+    #[AppAssert\WeatherRequirements]
     public string $weather;
 
-    #[Assert\Sequentially([
-        new Assert\NotNull(),
-        new Assert\Type(type: \DateTime::class),
-    ])]
+    #[AppAssert\DateTimeRequirements]
     public \DateTime $startTime;
 
-    #[Assert\Sequentially([
-        new Assert\NotNull(),
-        new Assert\Type(type: \DateTime::class),
-    ])]
+    #[AppAssert\DateTimeRequirements]
     public \DateTime $endTime;
 
     #[Assert\NotNull]

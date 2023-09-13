@@ -13,10 +13,7 @@ final class WalkChangeStartTimeRequest
     #[AppAssert\WalkRequirements]
     public Walk $walk;
 
-    #[Assert\Sequentially([
-        new Assert\NotNull(),
-        new Assert\Type(type: \DateTime::class),
-    ])]
+    #[AppAssert\DateTimeRequirements]
     public \DateTime $startTime;
 
     #[Assert\IsTrue(message: 'walk.isStartTimeBeforeEndTime', groups: ['SecondGroup'])]

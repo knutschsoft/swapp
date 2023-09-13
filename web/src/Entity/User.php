@@ -195,6 +195,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'users')]
     private Client $client;
 
+    /** @var Collection<int, Walk> **/
+    #[ORM\OneToMany(mappedBy: 'walkCreator', targetEntity: Walk::class)]
+    private Collection $createdWalks;
+
     public function __construct()
     {
         $this->username = '';
@@ -202,6 +206,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
         $this->enabled = false;
         $this->roles = [];
         $this->walks = new ArrayCollection();
+        $this->createdWalks = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->confirmationToken = ConfirmationToken::createEmpty();
     }
@@ -267,6 +272,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     public function setWalks(Collection $walks): void
     {
         $this->walks = $walks;
+    }
+
+    /** @return Collection<int,Walk> */
+    public function getCreatedWalks(): Collection
+    {
+        return $this->createdWalks;
+    }
+
+    /** @param Collection<int, Walk> $createdWalks */
+    public function setCreatedWalks(Collection $createdWalks): void
+    {
+        $this->createdWalks = $createdWalks;
     }
 
     public function hasTeam(Team $team): bool

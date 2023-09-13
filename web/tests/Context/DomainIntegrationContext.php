@@ -267,6 +267,9 @@ final class DomainIntegrationContext extends RawMinkContext
             $request->guestNames = $team->getGuestNames();
             $walk = Walk::fromWalkCreateRequest($request);
 
+            if (isset($row['walkCreator']) && '' !== $row['walkCreator']) {
+                $walk->setWalkCreator($this->enrichText($row['walkCreator']));
+            }
             if (isset($row['endTime'])) {
                 $walk->setEndTime(new \DateTime($row['endTime']));
             }
@@ -638,6 +641,9 @@ final class DomainIntegrationContext extends RawMinkContext
                         $higherExpectedEndTime->format('H:i:s')
                     )
                 );
+            }
+            if (isset($row['walkCreator']) && '' !== $row['walkCreator']) {
+                Assert::eq($walk->getWalkCreator(), $this->enrichText($row['walkCreator']));
             }
             if (isset($row['walkTeamMembers'])) {
                 $expectedUsers = $this->getUsersFromString($row['walkTeamMembers']);

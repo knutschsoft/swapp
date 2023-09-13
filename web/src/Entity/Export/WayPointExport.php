@@ -59,6 +59,9 @@ class WayPointExport
     #[SerializedName('Teilnehmende')]
     public string $users;
     #[Groups('wayPointExport:read')]
+    #[SerializedName('Rundenersteller')]
+    public string $walkCreator;
+    #[Groups('wayPointExport:read')]
     #[SerializedName('Tageskonzept')]
     public string $conceptOfDay;
     #[Groups('wayPointExport:read')]

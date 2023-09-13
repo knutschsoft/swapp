@@ -45,6 +45,7 @@ Feature: Testing walk change resource with guests
       | startTime       | 2021-05-11T15:51:06+00:00 |
       | endTime         | 2030-05-11T15:51:08+00:00 |
       | guestNames      | array<Opa Manfred,Karla>  |
+      | walkCreator     | userIri<admin@gmx.de>     |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:

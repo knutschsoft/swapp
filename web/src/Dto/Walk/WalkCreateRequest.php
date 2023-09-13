@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Assert\GroupSequence(['WalkCreateRequest', 'SecondGroup', 'ThirdGroup'])]
+#[Assert\GroupSequence(['WalkCreateRequest', 'SecondGroup'])]
 final class WalkCreateRequest
 {
     #[Assert\NotBlank]
@@ -16,39 +16,41 @@ final class WalkCreateRequest
     #[Assert\Length(min: 2, max: 300)]
     public string $name;
 
-    #[Assert\NotNull]
-    #[Assert\NotBlank]
-    #[Assert\Type(type: Team::class, groups: ['SecondGroup'])]
+    #[AppAssert\TeamRequirements]
     public Team $team;
 
     /** @var string[] */
     #[AppAssert\ConceptOfDaySuggestionsRequirements]
     public array $conceptOfDay;
 
-    #[Assert\NotNull]
-    #[Assert\Choice(choices: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'])]
-    #[Assert\Type(type: 'string')]
+    #[AppAssert\WeatherRequirements]
     public string $weather;
 
-    #[Assert\NotNull]
-    #[Assert\Type(type: \DateTime::class, groups: ['SecondGroup'])]
+    #[AppAssert\DateTimeRequirements]
     public \DateTime $startTime;
 
-    /**
-     * @var User[]
-     *
-     * @Assert\All({
-     *     @Assert\NotBlank,
-     *     @Assert\NotNull,
-     *     @Assert\Type(type="App\Entity\User", groups="{'SecondGroup'}")
-     * })
-     */
-    #[Assert\NotNull]
+    /** @var User[] */
+    #[AppAssert\UsersRequirements]
     public array $walkTeamMembers;
+
+    #[AppAssert\UserRequirements]
+    public User $walkCreator;
 
     public bool $holidays;
 
     /** @var string[] */
     #[AppAssert\GuestNamesRequirements]
     public array $guestNames;
+
+    #[Assert\IsTrue(message: 'walk.isWalkCreatorInWalkMembers', groups: ['SecondGroup'])]
+    public function isWalkCreatorInWalkMembers(): bool
+    {
+        foreach ($this->walkTeamMembers as $walkTeamMember) {
+            if ($walkTeamMember->getId() === $this->walkCreator->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

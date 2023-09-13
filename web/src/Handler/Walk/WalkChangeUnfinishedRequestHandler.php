@@ -29,6 +29,9 @@ final class WalkChangeUnfinishedRequestHandler
         if ($walk->isWithGuests()) {
             $walk->setGuestNames($request->guestNames);
         }
+        if ($request->walkCreator) {
+            $walk->setWalkCreator($request->walkCreator);
+        }
         $this->walkRepository->save($walk);
 
         return $walk;

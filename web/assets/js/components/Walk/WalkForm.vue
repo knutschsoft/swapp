@@ -4,6 +4,24 @@
         class="p-1 p-sm-2 p-lg-3"
     >
         <form-group
+            :label="`Rundenersteller`"
+            :description="``"
+            :state="walkCreatorState"
+            :invalid-feedback="walkCreatorFeedback"
+            col-md="6"
+        >
+            <b-form-select
+                v-model="walk.walkCreator"
+                :disabled="isLoading"
+                :state="walkCreatorState"
+                :options="walkCreatorOptions"
+                data-test="Rundenersteller"
+                value-field="@id"
+                text-field="username"
+                @change="handleWalkCreatorChange"
+            />
+        </form-group>
+        <form-group
             :label="`Teilnehmende der Runde`"
             description="Wer war mit dabei?"
         >
@@ -20,8 +38,12 @@
                     <b-form-checkbox
                         :value="walkTeamMember['@id']"
                         :data-test="`walkTeamMember-${walkTeamMember.username}`"
+                        :disabled="walk.walkCreator && walk.walkCreator === walkTeamMember['@id']"
+                        class="rounded"
+                        :ref="`walkTeamMember-${walkTeamMember.username}`"
                     >
                         {{ walkTeamMember.username }}
+                        <template v-if="walk.walkCreator && walk.walkCreator === walkTeamMember['@id']">(Rundenersteller)</template>
                     </b-form-checkbox>
                 </div>
             </b-form-checkbox-group>
@@ -445,6 +467,7 @@ export default {
             startTimeTime: null,
             endTimeDate: null,
             endTimeTime: null,
+            isInitiallyWithoutWalkCreator: false,
             walk: {
                 name: null,
                 commitments: null,
@@ -460,6 +483,7 @@ export default {
                 walkReflection: null,
                 weather: null,
                 walkTeamMembers: [],
+                walkCreator: null,
                 guestNames: [],
             },
             dateLabels: {
@@ -592,6 +616,31 @@ export default {
                 return !this.walk.guestNames.includes(guestName);
             });
         },
+        walkCreatorOptions() {
+            const users = this.users.slice();
+            if (this.isInitiallyWithoutWalkCreator) {
+                users.unshift({'@id': null, 'username': '-- Rundenersteller ist unbekannt --'})
+            }
+
+            return users;
+        },
+        walkCreatorFeedback() {
+            let message = '';
+            ['walkCreator'].forEach(key => {
+                if (this.validationErrors[key]) {
+                    message += ` ${this.validationErrors[key]}`;
+                }
+            });
+
+            return message;
+        },
+        walkCreatorState() {
+            if (this.walk.walkCreator === '') {
+                return null;
+            }
+
+            return !this.walkCreatorOptions.some(user => this.walk.walkCreator === user['id']);
+        },
         nameState() {
             if (null === this.walk.name || '' === this.walk.name || undefined === this.walk.name) {
                 return;
@@ -704,6 +753,7 @@ export default {
                 || !this.endTimeState
                 || !this.systemicAnswerState
                 || !this.walkReflectionState
+                || !this.walkCreatorState
                 || this.isLoading;
         },
         error() {
@@ -768,6 +818,8 @@ export default {
         this.walk.walkReflection = this.initialWalk.walkReflection;
         this.walk.weather = this.initialWalk.weather;
         this.walk.walkTeamMembers = this.initialWalk.walkTeamMembers.slice();
+        this.walk.walkCreator = this.initialWalk.walkCreator;
+        this.isInitiallyWithoutWalkCreator = !Boolean(this.initialWalk.walkCreator);
         this.walk.guestNames = this.initialWalk.guestNames.slice();
 
         this.isWithoutSystemicAnswer = !this.walk.systemicAnswer.length;
@@ -788,6 +840,25 @@ export default {
         this.endTimeDate = dayjs(this.walk.endTime).format('YYYY-MM-DD');
     },
     methods: {
+        handleWalkCreatorChange(newWalkCreator) {
+            if (!newWalkCreator) {
+                return;
+            }
+            if (!this.walk.walkTeamMembers.includes(newWalkCreator)) {
+                this.walk.walkTeamMembers.push(newWalkCreator)
+            }
+            const checkedElement = this.$refs[`walkTeamMember-${this.getUserByIri(newWalkCreator)?.username}`];
+            console.log(newWalkCreator);
+            console.log(checkedElement);
+            const classList = checkedElement[0].$el ? checkedElement[0].$el.classList : checkedElement[0].classList;
+            classList.add('blinking');
+            window.setTimeout(() => {
+                classList.remove('blinking');
+            }, 1500);
+        },
+        getUserByIri(userIri) {
+            return this.userStore.getUserByIri(userIri);
+        },
         getWayPointByIri(iri) {
             return this.wayPointStore.getWayPointByIri(iri);
         },

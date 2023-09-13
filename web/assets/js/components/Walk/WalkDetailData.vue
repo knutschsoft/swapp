@@ -75,7 +75,12 @@
                     return users;
                 }
                 this.walk.walkTeamMembers.forEach(iri => {
-                    users.push(this.getUserByIri(iri)?.username);
+                    let user = this.getUserByIri(iri)?.username;
+                    if (this.walk.walkCreator === iri) {
+                        user += ' (Rundenersteller)';
+                    }
+
+                    users.push(user);
                 })
 
                 return users.sort((a, b) => a > b ? 1 : -1);

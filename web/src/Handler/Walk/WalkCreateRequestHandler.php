@@ -10,7 +10,7 @@ use App\Repository\WalkRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WalkCreateHandler
+final class WalkCreateRequestHandler
 {
     public function __construct(
         private readonly WalkRepository $walkRepository,
@@ -21,6 +21,7 @@ final class WalkCreateHandler
     public function __invoke(WalkCreateRequest $request): Walk
     {
         $walk = Walk::fromWalkCreateRequest($request);
+        $walk->setWalkCreator($request->walkCreator);
         if ($request->team->isWithSystemicQuestion()) {
             $systemicQuestion = $this->systemicQuestionRepository->getRandomForClient($request->team->getClient());
             $walk->setIsWithSystemicQuestion(true);

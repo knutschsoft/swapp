@@ -158,6 +158,21 @@ body {
   }
 }
 
+@keyframes blinking {
+  0% {
+    background-color: white;
+  }
+  50% {
+    background-color: lighten($success, 40);
+  }
+  100% {
+    background-color: white;
+  }
+}
+.blinking {
+  animation: blinking 1.5s ease-in-out;
+}
+
 @media (min-width: 576px) {
   .modal-xxl { max-width: $modal-sm; }
 }

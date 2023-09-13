@@ -14,7 +14,26 @@
                     class="pt-2 px-2"
                 >
                     <form-group
-                        :label="`Teilnehmende des Teams &quot;${team.name}&quot;`"
+                        :label="`Rundenersteller`"
+                        :description="`Du bist vorausgewählt.`"
+                        :state="walkCreatorState"
+                        :invalid-feedback="walkCreatorFeedback"
+                        col-md="6"
+                    >
+                        <b-form-select
+                            v-model="form.walkCreator"
+                            :disabled="isLoading"
+                            :state="walkCreatorState"
+                            :options="walkCreatorOptions"
+                            data-test="Rundenersteller"
+                            value-field="@id"
+                            text-field="username"
+                            required
+                            @change="handleWalkCreatorChange"
+                        />
+                    </form-group>
+                    <form-group
+                        :label="`Teilnehmende des Teams &quot;${team?.name}&quot;`"
                         description="Wer ist heute mit dabei?"
                     >
                         <b-form-checkbox-group
@@ -23,23 +42,25 @@
                             class="row mt-lg-1 pt-lg-1"
                         >
                             <div
-                                v-for="walkTeamMember in team.users"
+                                v-for="walkTeamMember in team?.users"
                                 :key="walkTeamMember"
                                 class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
                             >
                                 <b-form-checkbox
                                     :value="walkTeamMember"
-                                    :disabled="currentUser['@id'] === walkTeamMember"
+                                    :disabled="form.walkCreator === walkTeamMember"
                                     :data-test="`walkTeamMember-${getUserByIri(walkTeamMember)?.username}`"
+                                    class="rounded"
+                                    :ref="`walkTeamMember-${getUserByIri(walkTeamMember)?.username}`"
                                 >
                                     {{ getUserByIri(walkTeamMember)?.username }}
-                                    <template v-if="currentUser['@id'] === walkTeamMember">(Rundenersteller)</template>
+                                    <template v-if="form.walkCreator === walkTeamMember">(Rundenersteller)</template>
                                 </b-form-checkbox>
                             </div>
                         </b-form-checkbox-group>
                     </form-group>
                     <form-group
-                        v-if="team.isWithGuests"
+                        v-if="team?.isWithGuests"
                         :label="`Weitere Teilnehmende`"
                     >
                         <b-form-tags
@@ -231,6 +252,7 @@
                     startTime: dayjs().startOf('minute').format(),
                     holidays: false,
                     weather: '',
+                    walkCreator: '',
                 },
                 walkId: false,
                 isFormLoading: false,
@@ -280,6 +302,7 @@
                     || (!this.conceptOfDayState && undefined === this.validationErrors.conceptOfDay)
                     || (!this.startTimeState && undefined === this.validationErrors.startTime)
                     || !this.walkTeamMembersState
+                    || !this.walkCreatorState
                     || !this.weatherState
                     || this.isLoading;
             },
@@ -366,6 +389,33 @@
 
                 return this.weatherOptions.indexOf(this.form.weather) !== -1;
             },
+            walkCreatorOptions() {
+                if (!this.team) {
+                    return [];
+                }
+
+                return this.team.users
+                    .map(userIri => this.getUserByIri(userIri))
+                    .filter(user => undefined !== user)
+                    ;
+            },
+            walkCreatorFeedback() {
+                let message = '';
+                ['walkCreator'].forEach(key => {
+                    if (this.validationErrors[key]) {
+                        message += ` ${this.validationErrors[key]}`;
+                    }
+                });
+
+                return message;
+            },
+            walkCreatorState() {
+                if (this.form.walkCreator === '') {
+                    return null;
+                }
+
+                return !this.walkCreatorOptions.some(user => this.form.walkCreator === user['id']);
+            },
             currentUser() {
                 return this.authStore.currentUser;
             },
@@ -442,10 +492,22 @@
             });
             this.form.walkTeamMembers = await this.getWalkTeamMembersOfLastWalkOfTeam(this.team);
             this.form.team = this.team['@id'];
+            this.form.walkCreator = this.currentUser['@id'];
             this.startTimeTime = dayjs().format('HH:mm');
             this.startTimeDate = dayjs().format('YYYY-MM-DD');
         },
         methods: {
+            handleWalkCreatorChange(newWalkCreator) {
+                if (!this.form.walkTeamMembers.includes(newWalkCreator)) {
+                    this.form.walkTeamMembers.push(newWalkCreator)
+                }
+                const checkedElement = this.$refs[`walkTeamMember-${this.getUserByIri(newWalkCreator)?.username}`];
+                const classList = checkedElement[0].$el ? checkedElement[0].$el.classList : checkedElement[0].classList;
+                classList.add('blinking');
+                window.setTimeout(() => {
+                    classList.remove('blinking');
+                }, 1500);
+            },
             async getWalkTeamMembersOfLastWalkOfTeam(team) {
                 const response = await WalkAPI.findLastWalkByTeam(team);
                 const hits = response.data['hydra:totalItems'];

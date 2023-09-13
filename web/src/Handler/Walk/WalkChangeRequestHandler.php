@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WalkChangeHandler
+final class WalkChangeRequestHandler
 {
     public function __construct(
         private readonly WalkRepository $walkRepository
@@ -37,6 +37,9 @@ final class WalkChangeHandler
         $walk->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));
         if ($walk->isWithGuests()) {
             $walk->setGuestNames($request->guestNames);
+        }
+        if ($request->walkCreator) {
+            $walk->setWalkCreator($request->walkCreator);
         }
         $this->walkRepository->save($walk);
 

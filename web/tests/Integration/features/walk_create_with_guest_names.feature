@@ -32,6 +32,7 @@ Feature: Testing walk create resource with guest names
       | walkTeamMembers | userIris<karl@gmx.de>   |
       | holidays        | <false>                 |
       | guestNames      | array<Miranda,Alex,Tom> |
+      | walkCreator     | userIri<karl@gmx.de>    |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
@@ -58,6 +59,7 @@ Feature: Testing walk create resource with guest names
       | walkTeamMembers | userIris<karl@gmx.de>   |
       | holidays        | <false>                 |
       | guestNames      | array<Miranda,Alex,Tom> |
+      | walkCreator     | userIri<karl@gmx.de>    |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:

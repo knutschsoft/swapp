@@ -63,6 +63,7 @@ Feature: Testing way point change resource
       | startTime       | 2021-05-11T15:51:06+00:00                                     |
       | endTime         | 2030-05-11T15:51:08+00:00                                     |
       | guestNames      | array<>                                                       |
+      | walkCreator     | userIri<karl@gamer.de>                                        |
 #    And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
@@ -100,6 +101,7 @@ Feature: Testing way point change resource
       | startTime       | 2021-05-11T15:51:06+00:00 |
       | endTime         | 2030-05-11T15:51:08+00:00 |
       | guestNames      | array<>                   |
+      | walkCreator     | userIri<karl@gamer.de>    |
 #    And print last response
     Then the response status code should be 200
     And the enriched JSON nodes should be equal to:
