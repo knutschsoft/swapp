@@ -15,6 +15,9 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig): Interna
     const token = authStore.getToken;
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
+        if (authStore.switchUsername) {
+            config.headers['-SWITCH-USER'] = authStore.switchUsername;
+        }
     } else {
         config.headers['Authorization'] = ``;
     }

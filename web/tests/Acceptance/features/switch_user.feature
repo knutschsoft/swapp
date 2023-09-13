@@ -4,8 +4,10 @@ Feature: An superadmin can impersonate any user
     Given the following clients exists:
       | email         |
       | client@gmx.de |
+      | gamers@gmx.de |
     Given the following users exists:
       | email             | roles            | isEnabled | client        |
+      | gamer@gmx.de      | ROLE_ADMIN       | 1         | gamers@gmx.de |
       | old_karl@gmx.de   |                  | 0         | client@gmx.de |
       | karl@gmx.de       |                  | 1         | client@gmx.de |
       | admin@gmx.de      | ROLE_ADMIN       | 1         | client@gmx.de |
@@ -35,6 +37,22 @@ Feature: An superadmin can impersonate any user
     When I click on element "nav-user-item"
     Then I should see "Nutzerwechsel beenden" disappear
     Then I should see "Nutzerwechsel" appear
+
+  @javascript
+  @switchUser
+  Scenario: I can switch user when I am a superadmin
+    Given I am authenticated as "superadmin@gmx.de"
+    Given I am on "/benutzer"
+    Then I wait for "admin@gmx.de" to appear
+    Then I wait for "gamer@gmx.de" to appear
+    And I wait for "Nutzer wechseln" to appear
+
+    When I click on element "switch-user-admin@gmx.de"
+    And I wait 1 second
+    Then I should be on "/benutzer"
+
+    Then I wait for "admin@gmx.de" to appear
+    Then I wait for "gamer@gmx.de" to disappear
 
   @javascript
   @switchUser
