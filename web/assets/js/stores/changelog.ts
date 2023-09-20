@@ -49,7 +49,7 @@ export const useChangelogStore = defineStore("changelog", {
                     },
                     {
                         text: [
-                            'UX-Feature: Ein Nutzende sieht, ob sein Gerät gerade keine Internetverbindung hat.',
+                            'UX-Feature: Ein Nutzender sieht, ob sein Gerät gerade keine Internetverbindung hat.',
                         ],
                         gallery: [
                             {
