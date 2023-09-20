@@ -281,7 +281,7 @@
                 class="px-2 py-0 small text-center bg-danger w-full text-white font-weight-bold"
             >
                 <mdicon name="WifiOff" size="18"/>
-                Keine Internetverbindung.
+                Keine Internetverbindung
             </div>
         </UseNetwork>
     </div>
