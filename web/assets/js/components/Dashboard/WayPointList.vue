@@ -378,8 +378,8 @@
             <template v-slot:cell(actions)="row">
                 <div class="d-flex justify-content-around">
                     <router-link
-                        :to="{name: 'WayPointDetail', params: { wayPointId: row.item.wayPointId, walkId: getWalkByIri(row.item.walk).walkId }}"
-                        :data-test="`button-wegpunkt-ansehen-${ row.item.lcoationName }`"
+                        :to="{name: 'WayPointDetail', params: { wayPointId: row.item.wayPointId, walkId: getWalkByIri(row.item.walk)?.walkId }}"
+                        :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
                     >
                         <b-button
                             size="sm"
@@ -437,12 +437,12 @@ export default {
             ranges: dateRangePicker.ranges,
             fields: [
                 { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'malesCount', label: 'Männer', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk).isWithAgeRanges ? value : '-'} },
-                { key: 'femalesCount', label: 'Frauen', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk).isWithAgeRanges ? value : '-'}  },
-                { key: 'queerCount', label: 'Andere', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk).isWithAgeRanges ? value : '-'}  },
+                { key: 'malesCount', label: 'Männer', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk)?.isWithAgeRanges ? value : '-'} },
+                { key: 'femalesCount', label: 'Frauen', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk)?.isWithAgeRanges ? value : '-'}  },
+                { key: 'queerCount', label: 'Andere', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk)?.isWithAgeRanges ? value : '-'}  },
                 { key: 'peopleCount', label: 'Anzahl Personen', sortable: false, class: 'text-center align-middle',
                     formatter: (value, key, item) => {
-                        return this.getWalkByIri(item.walk).isWithPeopleCount ? value : '-';
+                        return this.getWalkByIri(item.walk)?.isWithPeopleCount ? value : '-';
                     }
                 },
                 { key: 'note', label: 'Beobachtung', sortable: true, class: 'text-left align-middle' },
@@ -451,9 +451,7 @@ export default {
                 {
                     key: 'walk.teamName', label: 'Team', sortable: true, class: 'text-center align-middle',
                     formatter: (value, key, item) => {
-                        let walk = this.getWalkByIri(item.walk);
-
-                        return walk.teamName;
+                        return this.getWalkByIri(item.walk)?.teamName;
                     },
                 },
                 {
@@ -469,9 +467,7 @@ export default {
                     sortable: true,
                     class: 'text-center align-middle',
                     formatter: (value, key, item) => {
-                        let walk = this.getWalkByIri(item.walk);
-
-                        return walk.name;
+                        return this.getWalkByIri(item.walk)?.name;
                     },
                 },
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
@@ -633,7 +629,7 @@ export default {
             if (this.filter.wayPointTags.length) {
                 const tags = [];
                 this.filter.wayPointTags.forEach((tagIri) => {
-                    tags.push(this.getTagByIri(tagIri).name);
+                    tags.push(this.getTagByIri(tagIri)?.name);
                 });
                 title = `TAGS_${tags.join('_')}_${title}`;
             }

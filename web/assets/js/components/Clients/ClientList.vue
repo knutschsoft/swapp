@@ -29,9 +29,9 @@
                     <ul>
                         <template v-for="(userIri, i) in row.item.users">
                             <li v-if="i < 5">
-                                {{ getUserByIri(userIri).username }}
+                                {{ getUserByIri(userIri)?.username }}
                                 <mdicon
-                                    v-if="getUserByIri(userIri).isEnabled"
+                                    v-if="getUserByIri(userIri)?.isEnabled"
                                     name="Account"
                                     size="16"
                                     class="text-success"
@@ -49,12 +49,12 @@
                                     class="text-primary"
                                 />
                                 <mdicon
-                                    v-if="getUserByIri(userIri).isSuperAdmin"
+                                    v-if="getUserByIri(userIri)?.isSuperAdmin"
                                     name="AccountSupervisor"
                                     size="16"
                                     class="text-danger"
                                 />
-                                <small class="text-muted">{{ getUserByIri(userIri).email }}</small>
+                                <small class="text-muted">{{ getUserByIri(userIri)?.email }}</small>
                             </li>
                         </template>
                         <li

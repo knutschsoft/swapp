@@ -90,7 +90,11 @@
                         formatter: (userIris, key, item) => {
                             let usernames = [];
                             userIris.forEach(userIri => {
-                                usernames.push(this.getUserByIri(userIri).username)
+                                const user = this.getUserByIri(userIri);
+                                if (!user) {
+                                    return;
+                                }
+                                usernames.push(user.username)
                             })
 
                             if (usernames.length) {

@@ -158,7 +158,10 @@
             wayPointTags() {
                 let wayPointTags = [];
                 this.wayPoint.wayPointTags.forEach(iri => {
-                    wayPointTags.push(this.getTagByIri(iri));
+                    const tag = this.getTagByIri(iri);
+                    if (tag) {
+                        wayPointTags.push(tag);
+                    }
                 })
 
                 return wayPointTags.sort((a, b) => a.name > b.name ? 1 : -1);

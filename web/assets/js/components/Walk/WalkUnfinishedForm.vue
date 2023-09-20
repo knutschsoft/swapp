@@ -462,8 +462,6 @@ export default {
                 this.walk.walkTeamMembers.push(newWalkCreator)
             }
             const checkedElement = this.$refs[`walkTeamMember-${this.getUserByIri(newWalkCreator)?.username}`];
-            console.log(newWalkCreator);
-            console.log(checkedElement);
             const classList = checkedElement[0].$el ? checkedElement[0].$el.classList : checkedElement[0].classList;
             classList.add('blinking');
             window.setTimeout(() => {
