@@ -11,6 +11,67 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '20.09.2023',
+                avatarText: '&#x1F6B6;',
+                avatarTitle: 'Rundenersteller',
+                entries: [
+                    {
+                        text: [
+                            'Feature: Der Rundenersteller einer Runde muss explizit festgehalten werden.',
+                            'Für bereits existierenden Runden ist ein leerer Wert gesetzt.',
+                            'Bei bereits existierenden Teams sind die systemischen Fragen aktiviert.',
+                            'Als voreingestellter Wert ist immer der aktuell eingeloggte Nutzende gesetzt, so dass kein weiterer Klick notwendig ist.',
+                            'Der voreingestellte Wert kann auch geändert werden, da zum Beispiel während einer Runde das Handy einem anderen Teilnehmenden gegeben wird, damit dieser dokumentiert.',
+                            'Use Case: Die Teamleitung hat einige Tage nach Abschluss einer Runde Rückfragen und wendet sich an den Rundenersteller als Hauptansprechpartner für eine Runde.',
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/20230920_Rundenersteller_Runde_beginnen_Formular_vorher_nachher.png',
+                                thumbnailHeight: '100px',
+                                description: 'Darstellung des Rundenerstellers auf dem "Runde beginnen"-Formular (links: vorher - rechts: neu)',
+                            },
+                            {
+                                src: '../changelog/20230920_Rundenersteller_Runde_bearbeiten_Formular.png',
+                                thumbnailHeight: '100px',
+                                description: 'Darstellung des Rundenerstellers auf dem "Runde bearbeiten"-Formular',
+                            },
+                            {
+                                src: '../changelog/20230920_Rundenersteller_Rundendetailseite_vorher_nachher.png',
+                                thumbnailHeight: '100px',
+                                description: 'Darstellung des Rundenerstellers auf der Rundendetailseite (links: vorher - rechts: neu)',
+                            },
+                            {
+                                src: '../changelog/20230920_Rundenersteller_Runde_bearbeiten-Formular.png',
+                                thumbnailHeight: '80px',
+                                description: 'Darstellung des Rundenerstellers auf der Rundendetailseite (links: vorher - rechts: neu)',
+                            },
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Ein Nutzende sieht, ob sein Gerät gerade keine Internetverbindung hat.',
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/20230920_Keine_Internetverbindung_vorher_nachher.png',
+                                thumbnailHeight: '100px',
+                                description: 'Darstellung von "Keine Internetverbindung" auf der Anmeldungs-Seite (links: vorher - rechts: neu)',
+                            },
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Das Team-Editieren-Modal nimmt nun auf verschiedenen Bildschirmgrößen mehr vom verfügbaren Platz ein.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: Größere Softwarebibliothek-Änderung // Vuex-Store durch Pinia-Store ersetzt.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '28.07.2023',
                 avatarText: '&#x1F6E0;',
                 avatarTitle: 'Bug-Fix',
