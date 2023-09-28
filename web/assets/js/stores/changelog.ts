@@ -11,6 +11,18 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '28.09.2023',
+                avatarText: '&#x1F6E0;',
+                avatarTitle: 'Bug-Fix',
+                entries: [
+                    {
+                        text: [
+                            'Fix: Die Filterung der Runden auf der Startseite nach Rundenbeginn führte bei manchen Nutzern zu einem Fehler, der verhinderte, dass die Runden angezeigt wurden.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '20.09.2023',
                 avatarText: '&#x1F6B6;',
                 avatarTitle: 'Rundenersteller',
