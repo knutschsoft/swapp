@@ -155,7 +155,7 @@
                         @click.stop="togglePicker"
                     >
                         <b-input-group-text
-                            :class="(filter.startTime.startDate !== defaultDateRange.startDate || filter.startTime.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
+                            :class="(filter.startTime?.startDate !== defaultDateRange.startDate || filter.startTime?.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
                         >
                             Beginn
                         </b-input-group-text>
@@ -193,7 +193,7 @@
                     </b-input-group-append>
                     <my-input-group-append
                         @click="unsetFilterStartTime"
-                        :is-active="!((filter.startTime.startDate === defaultDateRange.startDate && filter.startTime.endDate === defaultDateRange.endDate) || isLoading)"
+                        :is-active="!((filter.startTime?.startDate === defaultDateRange.startDate && filter.startTime?.endDate === defaultDateRange.endDate) || isLoading)"
                     />
                 </b-input-group>
             </b-col>
@@ -527,7 +527,7 @@ export default {
             if (this.filter.name) {
                 title = `NAME_${this.filter.name}_${title}`;
             }
-            if (this.filter.startTime.startDate && this.filter.startTime.endDate) {
+            if (this.filter.startTime?.startDate && this.filter?.startTime.endDate) {
                 const formattedStartDate = dayjs(this.filter.startTime.startDate).format('YYYYMMDD');
                 const formattedEndDate = dayjs(this.filter.startTime.endDate).format('YYYYMMDD');
                 if (formattedStartDate === formattedEndDate) {
