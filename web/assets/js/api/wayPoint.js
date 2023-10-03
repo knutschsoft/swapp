@@ -8,7 +8,7 @@ const updateFilterParams = function (params) {
         sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
     }
     for (const [key, value] of Object.entries(params.filter)) {
-        if (value === null) {
+        if (value === null || value === undefined) {
         } else if ('wayPointTags' === key) {
             value.forEach(iri => {
                 sort += `&${key}[]=${iri}`;
