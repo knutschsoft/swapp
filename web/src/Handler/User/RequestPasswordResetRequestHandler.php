@@ -12,7 +12,7 @@ use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
 #[AsMessageHandler]
-final class RequestPasswordResetHandler
+final class RequestPasswordResetRequestHandler
 {
     public function __construct(
         private readonly UserRepository $userRepository,
