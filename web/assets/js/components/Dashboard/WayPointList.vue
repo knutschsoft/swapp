@@ -241,7 +241,7 @@
                         @click.stop="togglePicker"
                     >
                         <b-input-group-text
-                            :class="(filter.visitedAt.startDate !== defaultDateRange.startDate || filter.visitedAt.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
+                            :class="(filter?.visitedAt?.startDate !== defaultDateRange.startDate || filter?.visitedAt?.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
                         >
                             Ankunft
                         </b-input-group-text>
@@ -278,7 +278,7 @@
                     </b-input-group-append>
                     <my-input-group-append
                         @click="unsetFilterVisitedAt"
-                        :is-active="!((filter.visitedAt.startDate === defaultDateRange.startDate && filter.visitedAt.endDate === defaultDateRange.endDate) || isLoading)"
+                        :is-active="!((filter?.visitedAt?.startDate === defaultDateRange.startDate && filter?.visitedAt?.endDate === defaultDateRange.endDate) || isLoading)"
                     />
                 </b-input-group>
             </b-col>
@@ -645,7 +645,7 @@ export default {
             if (this.filter.locationName) {
                 title = `ORT_${this.filter.locationName}_${title}`;
             }
-            if (this.filter.visitedAt.startDate && this.filter.visitedAt.endDate) {
+            if (this.filter?.visitedAt?.startDate && this.filter?.visitedAt?.endDate) {
                 const formattedStartDate = dayjs(this.filter.visitedAt.startDate).format('YYYYMMDD');
                 const formattedEndDate = dayjs(this.filter.visitedAt.endDate).format('YYYYMMDD');
                 if (formattedStartDate === formattedEndDate) {
