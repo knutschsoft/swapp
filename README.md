@@ -1,13 +1,11 @@
 Swapp - Die Streetwork-App
 ==========================
 
-[![build status of swapp](https://img.shields.io/travis/knutschsoft/swapp/develop?style=flat-square&logo=travis)](https://travis-ci.org/knutschsoft/swapp)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-![PHP Compatible](https://img.shields.io/packagist/php-v/knutschsoft/swapp?style=flat-square)
 [![Open Issues](https://img.shields.io/github/issues-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/issues?q=is%3Aissue+is%3Aclosed)
 [![Contributors](https://img.shields.io/github/contributors/knutschsoft/swapp?style=flat-square)](https://github.com/knutschsoft/swapp/graphs/contributors)
-![Contributors](https://img.shields.io/maintenance/yes/2022?style=flat-square)
+![Contributors](https://img.shields.io/maintenance/yes/2024?style=flat-square)
 
 Swapp is a project to ease documentation of streetworkers which are on their way.
 
