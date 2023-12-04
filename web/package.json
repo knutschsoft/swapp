@@ -12,7 +12,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@mdi/js": "^6.5.95",
     "@openapitools/openapi-generator-cli": "^2.7.0",
-    "@symfony/webpack-encore": "^4.4.0",
+    "@symfony/webpack-encore": "^4.5.0",
     "@types/axios": "^0.14.0",
     "@vue/compiler-sfc": "^3.3.4",
     "@vueuse/components": "^10.3.0",
