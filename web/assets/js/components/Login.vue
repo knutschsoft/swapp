@@ -164,7 +164,6 @@
 <script>
     "use strict";
     import DemoInfo from './Demo/DemoInfo.vue';
-    import SecurityApi from '../api/security';
     import { useAuthStore } from '../stores/auth';
 
     export default {
