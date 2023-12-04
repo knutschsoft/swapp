@@ -50,20 +50,55 @@
                         v-slot="{ ariaDescribedby }"
                         content-cols="12"
                     >
-                        <b-form-checkbox-group
-                            v-model="team.users"
-                            class="check-boxes d-flex flex-row flex-wrap justify-content-start"
-                            switch
-                            data-test="users"
-                            button-variant="secondary rounded-0 mt-1 mr-1 px-4"
-                            :options="users"
-                            :aria-describedby="ariaDescribedby"
-                            name="users"
-                            :disabled="isDisabled"
-                            value-field="@id"
-                            text-field="username"
-                        >
-                        </b-form-checkbox-group>
+                            <div
+                                class="d-flex flex-wrap"
+                                data-test="users"
+                            >
+                                <template
+                                    v-for="user in users"
+                                >
+                                    <b-form-checkbox
+                                        v-if="user.isEnabled"
+                                        v-model="team.users"
+                                        :key="user['@id']"
+                                        :value="user['@id']"
+                                        :aria-describedby="ariaDescribedby"
+                                        name="users"
+                                        switch
+                                        :disabled="isDisabled"
+                                        class="d-flex align-items-center flex-users"
+                                    >
+                                        {{ user.username }}
+                                    </b-form-checkbox>
+                                </template>
+                                <hr
+                                    v-if="hasDisabledUser"
+                                    class="d-block w-100 my-1 mr-2"
+                                >
+                                <template
+                                    v-for="user in users"
+                                >
+                                    <b-form-checkbox
+                                        v-if="!user.isEnabled"
+                                        v-model="team.users"
+                                        :key="user['@id']"
+                                        :value="user['@id']"
+                                        :aria-describedby="ariaDescribedby"
+                                        name="users"
+                                        switch
+                                        :disabled="isDisabled"
+                                        class="d-flex align-items-center flex-users text-muted"
+                                    >
+                                        {{ user.username }}
+                                        <mdicon
+                                            name="AccountOff"
+                                            class="text-muted"
+                                            title="Account ist aktuell nicht aktiviert."
+                                            size="16"
+                                        />
+                                    </b-form-checkbox>
+                                </template>
+                            </div>
                         <b-alert
                             v-model="users.length === 0"
                             class="mb-0"
@@ -678,6 +713,9 @@ export default {
             }).sort((a, b) => {
                 return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1
             })
+        },
+        hasDisabledUser () {
+            return this.users.some(user => !user.isEnabled);
         },
         isPeopleCountDisabled () {
             return this.team.isWithAgeRanges || this.isDisabled;

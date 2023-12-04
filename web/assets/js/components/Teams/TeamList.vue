@@ -25,7 +25,36 @@
                     small
                     type="grow"
                 />
-                <span v-else>{{ data.value }}</span>
+                <div
+                    v-else-if="0 === data.value.length"
+                >
+                    -
+                </div>
+                <div
+                    v-else
+                >
+                    <template
+                        v-for="(user,key) in data.value"
+                    >
+                        <span
+                            :class="{'text-muted': !user.isEnabled}"
+                            class="d-inline-flex align-items-center"
+                        >
+                          <span>
+                            {{ user.username }}
+                          </span>
+                          <mdicon
+                            v-if="!user.isEnabled"
+                            name="AccountOff"
+                            class="text-muted d-inline-flex align-items-center"
+                            title="Account ist aktuell nicht aktiviert."
+                            size="16"
+                          /><span class="d-inline-block mr-1">
+                            {{ key < data.value.length - 1 ? ', ' : '' }}
+                          </span>
+                        </span>
+                    </template>
+                </div>
             </template>
 
             <template v-slot:cell(actions)="row">
@@ -88,20 +117,15 @@
                         label: 'Benutzer',
                         sortable: true,
                         formatter: (userIris, key, item) => {
-                            let usernames = [];
-                            userIris.forEach(userIri => {
-                                const user = this.getUserByIri(userIri);
-                                if (!user) {
-                                    return;
-                                }
-                                usernames.push(user.username)
-                            })
+                            return userIris
+                                .map(userIri => this.getUserByIri(userIri))
+                                .sort((userA, userB) => {
+                                  if (userA.isEnabled === userB.isEnabled) {
+                                    return userA.username.toLowerCase() > userB.username.toLowerCase() ? 1 : -1;
+                                  }
 
-                            if (usernames.length) {
-                                return usernames.join(', ')
-                            }
-
-                            return '-';
+                                  return userA.isEnabled && !userB.isEnabled ? -1 : 1;
+                                });
                         },
                         sortByFormatted: true,
                         class: 'text-center',

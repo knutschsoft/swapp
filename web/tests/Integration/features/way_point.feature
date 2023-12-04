@@ -32,12 +32,12 @@ Feature: Testing way point resource
       | Gorbitz     | Westhang |
       | Gamescon    | Gamers   |
     Given the following way points exists:
-      | locationName | walkName    | beobachtung | einzelgespraech | visitedAt |
-      | Assieck      | Spaziergang | Bier!       | Gönnjamin       | now       |
-      | Elbamare     | Gorbitz     |             |                 | now       |
-      | Block17      | Gorbitz     |             |                 | now       |
-      | BOTW         | Gamescon    |             |                 | now       |
-      | BOTW2        | Gamescon    |             |                 | now       |
+      | locationName | walkName    | beobachtung | einzelgespraech | visitedAt           |
+      | Assieck      | Spaziergang | Bier!       | Gönnjamin       | 2023-04-12 07:49:53 |
+      | Elbamare     | Gorbitz     |             |                 | now                 |
+      | Block17      | Gorbitz     |             |                 | now                 |
+      | BOTW         | Gamescon    |             |                 | now                 |
+      | BOTW2        | Gamescon    |             |                 | now                 |
 
   @api @wayPoint
   Scenario: I can request /api/way_points as a not authenticated user and an auth error will occur
@@ -90,10 +90,10 @@ Feature: Testing way point resource
     Then the response should be in JSON
 #    And print last JSON response
     And the enriched JSON nodes should be equal to:
-      | locationName      | Assieck                     |
-      | note              | Bier!                       |
-      | oneOnOneInterview | Gönnjamin                   |
-      | visitedAt         | date<now,Y-m-dTH:i:s+02:00> |
+      | locationName      | Assieck                   |
+      | note              | Bier!                     |
+      | oneOnOneInterview | Gönnjamin                 |
+      | visitedAt         | 2023-04-12T07:49:53+02:00 |
 
   @api @wayPoint
   Scenario: I can request /api/way_points/wayPointId<Assieck> as authenticated user and will not see this wayPoint cause it is not of my client
