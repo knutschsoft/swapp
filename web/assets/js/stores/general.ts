@@ -92,6 +92,13 @@ export const useGeneralStore = defineStore("general", {
         getApiUrl({apiUrl}): string {
             return apiUrl;
         },
+        getWayPointFilter({wayPointFilter}): WayPointFilter {
+            if (!wayPointFilter.visitedAt || !dayjs(wayPointFilter.visitedAt.startDate).isValid() || !dayjs(wayPointFilter.visitedAt.endDate).isValid()) {
+                wayPointFilter.visitedAt = defaultWayPointFilter.visitedAt;
+            }
+
+            return wayPointFilter;
+        },
     },
     actions: {
         setApiUrl(apiUrl: string): void {

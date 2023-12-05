@@ -491,7 +491,7 @@ export default {
     },
     computed: {
         filter() {
-            return this.generalStore.wayPointFilter;
+            return this.generalStore.getWayPointFilter;
         },
         defaultFilter() {
             return this.generalStore.defaultWayPointFilter;
