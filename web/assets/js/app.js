@@ -62,7 +62,7 @@ Vue.config.errorHandler = function (err, vm, info) {
     let username = user ? user.email : 'anonymous';
     let message = err.message ? err.message : JSON.stringify(err);
     nelmioLog('error', message, {info: info, location: window.location, user: username});
-    console.error(err);
+    throw new Error(err);
 };
 const pinia = createPinia();
 
