@@ -292,8 +292,9 @@
                 <b-button
                     size="sm"
                     block
-                    :disabled="isLoading || isExportLoading || !this.hasFilter"
+                    :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
                     @click="unsetAllFilter"
+                    data-test="reset-way-point-filter"
                 >
                     Alle Filter zurücksetzen
                     <mdicon
@@ -431,6 +432,7 @@ export default {
             tagStore: useTagStore(),
             wayPointStore: useWayPointStore(),
             walkStore: useWalkStore(),
+            isLoading: false,
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
@@ -473,7 +475,7 @@ export default {
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
             ],
             allTeamNames: [],
-            totalRows: 0,
+            totalRows: 10000,
             tags: [],
             currentPage: 1,
             perPage: 5,
@@ -508,9 +510,6 @@ export default {
         },
         wayPoints() {
             return this.wayPointStore.getWayPoints;
-        },
-        isLoading() {
-            return this.wayPointStore.isLoading;
         },
         hasFilter() {
             return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);
@@ -557,7 +556,9 @@ export default {
         },
         async itemProvider(ctx) {
             this.exportCtx = ctx;
+            this.isLoading = true;
             const result = await WayPointAPI.find(ctx);
+            this.isLoading = false;
             const wayPoints = result.data['hydra:member'];
 
             let walkPromises = [];
@@ -604,7 +605,9 @@ export default {
             this.filter.visitedAt = this.defaultDateRange;
         },
         unsetAllFilter() {
-            this.filter = JSON.parse(JSON.stringify(this.defaultFilter));
+            this.generalStore.updateWayPointFilter(this.defaultFilter);
+            this.currentPage = 1;
+            this.handleCurrentPageChange(1);
         },
         togglePicker() {
             this.$refs.picker.togglePicker(!this.$refs.picker.open);

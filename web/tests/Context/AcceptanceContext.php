@@ -225,6 +225,29 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When /^I wait for aria label "([^"]*)" to be active$/
+     *
+     * @param string $arg1
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForAriaLabelToBeActive(string $arg1): void
+    {
+        $locator = '[aria-label="'.$arg1.'"]';
+        $session = $this->getSession();
+        $element = $session->getPage()->find('css', $locator);
+        if (!$element) {
+            Assert::false(true, \sprintf('Element with aria label selector "%s" could not be found.', $locator));
+        }
+        $this->spin(
+            static function () use ($element): void {
+                Assert::same($element->getAttribute('aria-checked'), 'true');
+            }
+        );
+        Assert::same($element->getAttribute('aria-checked'), 'true');
+    }
+
+    /**
      * @When /^I click on text "([^"]*)"$/
      *
      * @param string $arg1

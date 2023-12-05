@@ -11,6 +11,28 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '06.12.2023',
+                avatarText: '&#127877;',
+                avatarTitle: 'Nikolaus-Bug-Fix',
+                entries: [
+                    {
+                        text: [
+                            'UX-Feature: Deaktivierte Nutzer sind als solche kenntlich beim Bearbeiten eines Teams sowie beim Erstellen und Ändern einer Runde.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Die Filterung der Wegpunkte auf der Startseite verursachte bei manchen Nutzern einen Fehler, der verhinderte, dass die Wegpunkttabelle angezeigt wurde.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Wenn die Paginierung der Runden- bzw. Wegpunktliste nicht auf 1 stand, dann wurde nach einem Neuladen der Seite 1 angezeigt und die Werte in der Tabelle waren nicht die der Seite 1.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '28.09.2023',
                 avatarText: '&#x1F6E0;',
                 avatarTitle: 'Bug-Fix',

@@ -49,3 +49,18 @@ Feature: An administrator can change a walk
     Then I wait for "09:10" to disappear
     Then I wait for "Fr., 01.01.2021, 07:20" to appear
     Then I wait for "So., 10.01.2021, 07:20" to disappear
+    And I wait for aria label "Go to page 2" to be active
+
+    # prevent page from totalRows filter issue
+    When I go to "/dashboard"
+    Then I wait for "Klippe6" to disappear
+    Then I wait for "Klippe1 " to appear
+    And I wait for aria label "Go to page 2" to be active
+    Then I wait for "Klippe6" to disappear
+    Then I wait for "Klippe1 " to appear
+
+
+    When I click on element "reset-walk-filter"
+    Then I wait for "Klippe6" to appear
+    Then I wait for "Klippe1 " to disappear
+

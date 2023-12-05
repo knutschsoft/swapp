@@ -26,6 +26,7 @@
                     v-model="currentPage"
                     :total-rows="totalRows"
                     :per-page="perPage"
+                    :disabled="isLoading"
                     @change="handleCurrentPageChange"
                     align="fill"
                     size="sm"
@@ -207,7 +208,8 @@
                 <b-button
                     size="sm"
                     block
-                    :disabled="isLoading || isExportLoading || !this.hasFilter"
+                    :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
+                    data-test="reset-walk-filter"
                     @click="unsetAllFilter"
                 >
                     Alle Filter zurücksetzen
@@ -345,6 +347,7 @@ export default {
             clientStore: useClientStore(),
             generalStore: generalStore,
             walkStore: useWalkStore(),
+            isLoading: false,
             isExportLoading: false,
             exportCtx: null,
             locale: dateRangePicker.locale,
@@ -398,7 +401,7 @@ export default {
                 { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
             ],
             allTeamNames: [],
-            totalRows: 0,
+            totalRows: 10000,
             currentPage: 1,
             perPage: 5,
             pageOptions: [5, 10, 25, 50, 100],
@@ -432,9 +435,6 @@ export default {
         totalWalks() {
             return this.walkStore.getTotalWalks;
         },
-        isLoading() {
-            return this.walkStore.isLoading;
-        },
         hasFilter() {
             return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);
         },
@@ -443,6 +443,7 @@ export default {
         this.perPage = this.generalStore.walkPerPage;
         this.currentPage = this.generalStore.walkCurrentPage;
         const allTeamNames = await WalkAPI.findAllTeamNames();
+        this.currentPage = this.generalStore.walkCurrentPage;
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
     methods: {
@@ -455,7 +456,6 @@ export default {
         },
         formatEndDate: function (dateString, startDateString) {
             let date = new Date(dateString);
-            let startDate = new Date(startDateString);
             if (dayjs(dateString).isSame(dayjs(startDateString), 'day')) {
                 return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
             }
@@ -463,7 +463,9 @@ export default {
         },
         async itemProvider(ctx) {
             this.exportCtx = ctx;
+            this.isLoading = true;
             const result = await WalkAPI.find(ctx);
+            this.isLoading = false;
             const walks = result.data['hydra:member']
             this.totalRows = result.data['hydra:totalItems'];
             this.generalStore.updateWalkFilterResult(walks);
@@ -494,6 +496,8 @@ export default {
         },
         unsetAllFilter() {
             this.generalStore.updateWalkFilter(this.defaultFilter);
+            this.currentPage = 1;
+            this.handleCurrentPageChange(1);
         },
         togglePicker() {
             this.$refs.picker.togglePicker(!this.$refs.picker.open);
