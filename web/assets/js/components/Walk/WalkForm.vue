@@ -21,33 +21,14 @@
                 @change="handleWalkCreatorChange"
             />
         </form-group>
-        <form-group
-            :label="`Teilnehmende der Runde`"
+        <walk-team-members-field
+            v-model="walk.walkTeamMembers"
+            :users="users"
+            :walk-creator="getUserByIri(walk.walkCreator)"
+            :is-loading="isLoading"
+            label="Teilnehmende der Runde"
             description="Wer war mit dabei?"
-        >
-            <b-form-checkbox-group
-                v-model="walk.walkTeamMembers"
-                :disabled="isLoading"
-                class="row mt-lg-1 pt-lg-1"
-            >
-                <div
-                    v-for="walkTeamMember in users"
-                    :key="walkTeamMember['@id']"
-                    class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
-                >
-                    <b-form-checkbox
-                        :value="walkTeamMember['@id']"
-                        :data-test="`walkTeamMember-${walkTeamMember.username}`"
-                        :disabled="walk.walkCreator && walk.walkCreator === walkTeamMember['@id']"
-                        class="rounded"
-                        :ref="`walkTeamMember-${walkTeamMember.username}`"
-                    >
-                        {{ walkTeamMember.username }}
-                        <template v-if="walk.walkCreator && walk.walkCreator === walkTeamMember['@id']">(Rundenersteller)</template>
-                    </b-form-checkbox>
-                </div>
-            </b-form-checkbox-group>
-        </form-group>
+        />
         <form-group
             v-if="walk.isWithGuests"
             :label="`Weitere Teilnehmende`"
@@ -429,6 +410,7 @@ import { useWayPointStore } from '../../stores/way-point';
 import { useWalkStore } from '../../stores/walk';
 import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
+import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
 
 export default {
     name: 'WalkForm',
@@ -444,6 +426,7 @@ export default {
         },
     },
     components: {
+        WalkTeamMembersField,
         WalkRating,
         FormGroup,
         FormError,
@@ -847,12 +830,6 @@ export default {
             if (!this.walk.walkTeamMembers.includes(newWalkCreator)) {
                 this.walk.walkTeamMembers.push(newWalkCreator)
             }
-            const checkedElement = this.$refs[`walkTeamMember-${this.getUserByIri(newWalkCreator)?.username}`];
-            const classList = checkedElement[0].$el ? checkedElement[0].$el.classList : checkedElement[0].classList;
-            classList.add('blinking');
-            window.setTimeout(() => {
-                classList.remove('blinking');
-            }, 1500);
         },
         getUserByIri(userIri) {
             return this.userStore.getUserByIri(userIri);

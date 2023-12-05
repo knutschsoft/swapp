@@ -89,7 +89,7 @@ export const useUserStore = defineStore("user", {
         hasError: (state) => state.errorArray.fetch || state.errorArray.change || state.errorArray.create,
         getErrors: (state) => state.errorArray,
         getUsers({users}): User[] {
-            return users;
+            return users.sort((userA: User, userB: User) => String(userA.username).toLowerCase() > String(userB.username).toLowerCase() ? 1 : -1);
         },
         hasUsers({users}): boolean {
             return users.length > 0;

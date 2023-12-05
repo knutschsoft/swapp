@@ -24,6 +24,30 @@
                     :read-only="true"
                 />
                 <template
+                    v-else-if="'Teilnehmende' === field.name"
+                >
+                    <span v-for="(user, key) in field.value">
+                                   <span
+                                       :class="{'text-muted': !user.isEnabled}"
+                                       class="d-inline-flex align-items-center"
+                                   >
+                          <span>
+                            {{ user.username }}
+                              <template v-if="walk.walkCreator === user['@id']">(Rundenersteller)</template>
+                          </span>
+                          <mdicon
+                              v-if="!user.isEnabled"
+                              name="AccountOff"
+                              class="text-muted d-inline-flex align-items-center"
+                              title="Account ist aktuell nicht aktiviert."
+                              size="16"
+                          /><span class="d-inline-block mr-1">
+                            {{ key < field.value.length - 1 ? ', ' : '' }}
+                          </span>
+                        </span>
+                    </span>
+                </template>
+                <template
                     v-else
                 >
                     {{ field.value }}
@@ -74,16 +98,14 @@
                 if (!this.walk) {
                     return users;
                 }
-                this.walk.walkTeamMembers.forEach(iri => {
-                    let user = this.getUserByIri(iri)?.username;
-                    if (this.walk.walkCreator === iri) {
-                        user += ' (Rundenersteller)';
+                this.walk.walkTeamMembers.forEach(userIri => {
+                    let user = this.getUserByIri(userIri);
+                    if (user) {
+                        users.push(user);
                     }
-
-                    users.push(user);
                 })
 
-                return users.sort((a, b) => a > b ? 1 : -1);
+                return users.sort((userA, userB) => userA.username.toLowerCase() > userB.username.toLowerCase() ? 1 : -1);
             },
             fields() {
                 let fields = [
@@ -109,7 +131,7 @@
                     { name: 'Erkenntnisse, Überlegungen, Zielsetzungen', value: this.walk.insights, nl2br: true },
                     { name: 'Wiedervorlage Dienstberatung', value: this.walk.isResubmission ? 'ja' : 'nein' },
                     { name: 'Team', value: this.walk.teamName },
-                    { name: 'Teilnehmende', value: this.walkTeamMembers.length ? this.walkTeamMembers.join(', ') : 'keine Teilnehmenden' },
+                    { name: 'Teilnehmende', value: this.walkTeamMembers },
                 ]);
                 if (this.walk.isWithGuests) {
                     fields.push({ name: 'Weitere Teilnehmende', value: this.walk.guestNames && this.walk.guestNames.length ? this.walk.guestNames.join(', ') : 'keine weiteren Teilnehmenden' });

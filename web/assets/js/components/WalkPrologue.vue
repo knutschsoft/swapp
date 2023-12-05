@@ -32,33 +32,14 @@
                             @change="handleWalkCreatorChange"
                         />
                     </form-group>
-                    <form-group
+                    <walk-team-members-field
+                        v-model="form.walkTeamMembers"
+                        :users="usersOfTeam"
+                        :walk-creator="getUserByIri(form.walkCreator)"
+                        :is-loading="isLoading"
                         :label="`Teilnehmende des Teams &quot;${team?.name}&quot;`"
                         description="Wer ist heute mit dabei?"
-                    >
-                        <b-form-checkbox-group
-                            v-model="form.walkTeamMembers"
-                            :disabled="isLoading"
-                            class="row mt-lg-1 pt-lg-1"
-                        >
-                            <div
-                                v-for="walkTeamMember in team?.users"
-                                :key="walkTeamMember"
-                                class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
-                            >
-                                <b-form-checkbox
-                                    :value="walkTeamMember"
-                                    :disabled="form.walkCreator === walkTeamMember"
-                                    :data-test="`walkTeamMember-${getUserByIri(walkTeamMember)?.username}`"
-                                    class="rounded"
-                                    :ref="`walkTeamMember-${getUserByIri(walkTeamMember)?.username}`"
-                                >
-                                    {{ getUserByIri(walkTeamMember)?.username }}
-                                    <template v-if="form.walkCreator === walkTeamMember">(Rundenersteller)</template>
-                                </b-form-checkbox>
-                            </div>
-                        </b-form-checkbox-group>
-                    </form-group>
+                    />
                     <form-group
                         v-if="team?.isWithGuests"
                         :label="`Weitere Teilnehmende`"
@@ -223,10 +204,12 @@
     import { useWalkStore } from '../stores/walk';
     import { useUserStore } from '../stores/user';
     import { useAuthStore } from '../stores/auth';
+    import WalkTeamMembersField from "./Common/Walk/WalkTeamMembersField.vue";
 
     export default {
         name: "WalkPrologue",
         components: {
+            WalkTeamMembersField,
             FormGroup,
             ContentCollapse,
         },
@@ -296,6 +279,22 @@
                 return this.team.walkNames.filter((walkName) => {
                     return walkName.toLowerCase().startsWith(this.form.name.toLowerCase()) && walkName !== this.form.name;
                 }).map((walkName) => walkName);
+            },
+            usersOfTeam() {
+                if (!this.team) {
+                    return [];
+                }
+
+                let users = [];
+                this.team.users.forEach(userIri => {
+                    const user = this.getUserByIri(userIri);
+                    if (user) {
+                        users.push(user);
+                    }
+                });
+                users.sort((userA, userB) => (userA.username.toLowerCase() > userB.username.toLowerCase()) ? 1 : - 1 );
+
+                return users;
             },
             isFormInvalid() {
                 return (!this.nameState && undefined === this.validationErrors.name)
@@ -501,12 +500,6 @@
                 if (!this.form.walkTeamMembers.includes(newWalkCreator)) {
                     this.form.walkTeamMembers.push(newWalkCreator)
                 }
-                const checkedElement = this.$refs[`walkTeamMember-${this.getUserByIri(newWalkCreator)?.username}`];
-                const classList = checkedElement[0].$el ? checkedElement[0].$el.classList : checkedElement[0].classList;
-                classList.add('blinking');
-                window.setTimeout(() => {
-                    classList.remove('blinking');
-                }, 1500);
             },
             async getWalkTeamMembersOfLastWalkOfTeam(team) {
                 const response = await WalkAPI.findLastWalkByTeam(team);
