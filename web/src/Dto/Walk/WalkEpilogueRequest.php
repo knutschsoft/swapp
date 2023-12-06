@@ -14,33 +14,26 @@ final class WalkEpilogueRequest
     #[AppAssert\WalkRequirements]
     public Walk $walk;
 
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
-    #[Assert\Length(min: 2, max: 300)]
+    #[AppAssert\WalkNameRequirements]
     public string $name;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 0, max: 2500)]
+    #[AppAssert\TextareaRequirements]
     public string $commitments;
 
     /** @var string[] */
     #[AppAssert\ConceptOfDaySuggestionsRequirements]
     public array $conceptOfDay;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 0, max: 2500)]
+    #[AppAssert\TextareaRequirements]
     public string $insights;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 0, max: 2500)]
+    #[AppAssert\TextareaRequirements]
     public string $systemicAnswer;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 0, max: 2500)]
+    #[AppAssert\TextareaRequirements]
     public string $walkReflection;
 
-    #[Assert\NotNull]
-    #[Assert\Range(min: 1, max: 5)]
+    #[AppAssert\RatingRequirements]
     public int $rating;
 
     #[AppAssert\WeatherRequirements]

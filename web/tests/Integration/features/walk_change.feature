@@ -76,7 +76,7 @@ Feature: Testing walk change resource
       | key  | value             |
       | walk | walkIri<Gamescon> |
       | team | teamIri<Westhang> |
-#    And print last response
+#    And print last JSON response
     Then the response status code should be 422
     And the JSON nodes should be equal to:
       | violations[0].propertyPath  | name                                |
@@ -85,6 +85,7 @@ Feature: Testing walk change resource
       | violations[1].message       | Dieser Wert sollte nicht null sein. |
       | violations[2].propertyPath  | commitments                         |
       | violations[2].message       | Dieser Wert sollte nicht null sein. |
+    And the JSON nodes should be equal to:
       | violations[3].propertyPath  | conceptOfDay                        |
       | violations[3].message       | Dieser Wert sollte nicht null sein. |
       | violations[4].propertyPath  | insights                            |
@@ -93,6 +94,7 @@ Feature: Testing walk change resource
       | violations[5].message       | Dieser Wert sollte nicht null sein. |
       | violations[6].propertyPath  | walkReflection                      |
       | violations[6].message       | Dieser Wert sollte nicht null sein. |
+    And the JSON nodes should be equal to:
       | violations[7].propertyPath  | rating                              |
       | violations[7].message       | Dieser Wert sollte nicht null sein. |
       | violations[8].propertyPath  | weather                             |

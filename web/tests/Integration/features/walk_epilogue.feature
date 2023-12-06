@@ -101,7 +101,7 @@ Feature: Testing walk epilogue resource
     When I send an api platform "POST" request to "/api/walks/epilogue" with parameters:
       | key  | value             |
       | walk | walkIri<Gamescon> |
-#    And print last response
+#    And print last JSON response
     Then the response status code should be 422
     And the JSON nodes should be equal to:
       | violations[0].propertyPath  | name                                |
@@ -116,6 +116,7 @@ Feature: Testing walk epilogue resource
       | violations[4].message       | Dieser Wert sollte nicht null sein. |
       | violations[5].propertyPath  | systemicAnswer                      |
       | violations[5].message       | Dieser Wert sollte nicht null sein. |
+    And the JSON nodes should be equal to:
       | violations[6].propertyPath  | walkReflection                      |
       | violations[6].message       | Dieser Wert sollte nicht null sein. |
       | violations[7].propertyPath  | rating                              |

@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 
 #[\Attribute]
-class TextareaRequirements extends Compound
+class WalkNameRequirements extends Compound
 {
     /**
      * @inheritDoc
@@ -15,8 +15,10 @@ class TextareaRequirements extends Compound
     protected function getConstraints(array $options): array
     {
         return [
+            new Assert\NotBlank(),
             new Assert\NotNull(),
-            new Assert\Length(min: 0, max: 3000, normalizer: 'trim'),
+            new Assert\Type('string'),
+            new Assert\Length(min: 3, max: 300, normalizer: 'trim'),
         ];
     }
 }

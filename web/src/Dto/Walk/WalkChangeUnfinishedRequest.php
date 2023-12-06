@@ -14,9 +14,7 @@ final class WalkChangeUnfinishedRequest
     #[AppAssert\WalkRequirements]
     public Walk $walk;
 
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
-    #[Assert\Length(min: 2, max: 300)]
+    #[AppAssert\WalkNameRequirements]
     public string $name;
 
     /** @var string[] */

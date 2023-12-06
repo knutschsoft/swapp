@@ -11,9 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Assert\GroupSequence(['WalkCreateRequest', 'SecondGroup'])]
 final class WalkCreateRequest
 {
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
-    #[Assert\Length(min: 2, max: 300)]
+    #[AppAssert\WalkNameRequirements]
     public string $name;
 
     #[AppAssert\TeamRequirements]

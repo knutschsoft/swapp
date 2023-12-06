@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 
 #[\Attribute]
-class TextareaRequirements extends Compound
+class RatingRequirements extends Compound
 {
     /**
      * @inheritDoc
@@ -16,7 +16,7 @@ class TextareaRequirements extends Compound
     {
         return [
             new Assert\NotNull(),
-            new Assert\Length(min: 0, max: 3000, normalizer: 'trim'),
+            new Assert\Range(min: 1, max: 5),
         ];
     }
 }

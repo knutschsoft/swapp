@@ -20,8 +20,7 @@ class WalkNamesRequirements extends Compound
                 new Assert\Count(min: 0, max: 100),
                 new Assert\Type('array'),
                 new Assert\All([
-                    new Assert\NotBlank(),
-                    new Assert\Length(min: 2, max: 100, normalizer: 'trim'),
+                    new WalkNameRequirements(),
                 ]),
             ]),
         ];
