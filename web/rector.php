@@ -20,7 +20,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     // define sets of rules
         $rectorConfig->sets([
-            \Rector\Set\ValueObject\SetList::PHP_82
+            \Rector\Doctrine\Set\DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES,
         ]);
     $rectorConfig->skip([
         \Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector::class,

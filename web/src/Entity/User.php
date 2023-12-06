@@ -131,20 +131,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
         self::ROLE_ALLOWED_TO_SWITCH,
     ];
 
-    /** @Gedmo\Timestampable(on="create") **/
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
     protected $createdAt; // phpcs:ignore
-
-    /** @Gedmo\Timestampable(on="update") **/
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'update')]
     protected $updatedAt; // phpcs:ignore
-
-    /** @Gedmo\Blameable(on="create") */
     #[ORM\Column(nullable: true)]
+    #[Gedmo\Blameable(on: 'create')]
     protected $createdBy; // phpcs:ignore
-
-    /** @Gedmo\Blameable(on="update") */
     #[ORM\Column(nullable: true)]
+    #[Gedmo\Blameable(on: 'update')]
     protected $updatedBy; // phpcs:ignore
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]

@@ -65,12 +65,11 @@ class SystemicQuestion
 {
     use TimestampableEntity;
 
-    /** @Gedmo\Timestampable(on="create") **/
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
     protected $createdAt; // phpcs:ignore
-
-    /** @Gedmo\Timestampable(on="update") **/
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'update')]
     protected $updatedAt; // phpcs:ignore
 
     #[ORM\Id]
