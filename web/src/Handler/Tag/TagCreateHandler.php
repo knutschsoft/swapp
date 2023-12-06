@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Handler\Tag;
 
 use App\Dto\TagCreateRequest;
 use App\Entity\Tag;
