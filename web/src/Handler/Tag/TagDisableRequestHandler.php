@@ -9,10 +9,10 @@ use App\Repository\TagRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class TagDisableRequestHandler
+final readonly class TagDisableRequestHandler
 {
     public function __construct(
-        private readonly TagRepository $tagRepository
+        private TagRepository $tagRepository
     ) {
     }
 

@@ -9,9 +9,9 @@ use ApiPlatform\OpenApi\Model\Info;
 use ApiPlatform\OpenApi\OpenApi;
 use Webmozart\Assert\Assert;
 
-final class OpenApiFactory implements OpenApiFactoryInterface
+final readonly class OpenApiFactory implements OpenApiFactoryInterface
 {
-    public function __construct(private readonly OpenApiFactoryInterface $decorated)
+    public function __construct(private OpenApiFactoryInterface $decorated)
     {
     }
 

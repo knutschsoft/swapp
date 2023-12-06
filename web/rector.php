@@ -20,7 +20,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     // define sets of rules
         $rectorConfig->sets([
-            \Rector\Set\ValueObject\SetList::DEAD_CODE
+            \Rector\Set\ValueObject\SetList::PHP_82
         ]);
     $rectorConfig->skip([
         \Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector::class,

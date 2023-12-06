@@ -10,11 +10,11 @@ use App\Repository\WalkRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WalkCreateRequestHandler
+final readonly class WalkCreateRequestHandler
 {
     public function __construct(
-        private readonly WalkRepository $walkRepository,
-        private readonly SystemicQuestionRepository $systemicQuestionRepository
+        private WalkRepository $walkRepository,
+        private SystemicQuestionRepository $systemicQuestionRepository
     ) {
     }
 

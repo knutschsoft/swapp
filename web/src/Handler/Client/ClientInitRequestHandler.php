@@ -11,11 +11,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
-final class ClientInitRequestHandler
+final readonly class ClientInitRequestHandler
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
-        private readonly FilesystemOperator $clientRatingImageStorage
+        private ClientRepository $clientRepository,
+        private FilesystemOperator $clientRatingImageStorage
     ) {
     }
 

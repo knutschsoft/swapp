@@ -12,11 +12,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
-final class WayPointChangeRequestHandler
+final readonly class WayPointChangeRequestHandler
 {
     public function __construct(
-        private readonly WayPointRepository $wayPointRepository,
-        private readonly FilesystemOperator $wayPointImageStorage
+        private WayPointRepository $wayPointRepository,
+        private FilesystemOperator $wayPointImageStorage
     ) {
     }
 

@@ -9,10 +9,10 @@ use App\Repository\SystemicQuestionRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class SystemicQuestionDisableRequestHandler
+final readonly class SystemicQuestionDisableRequestHandler
 {
     public function __construct(
-        private readonly SystemicQuestionRepository $systemicQuestionRepository
+        private SystemicQuestionRepository $systemicQuestionRepository
     ) {
     }
 

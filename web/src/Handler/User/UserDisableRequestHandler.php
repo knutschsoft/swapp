@@ -9,10 +9,10 @@ use App\Repository\UserRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class UserDisableRequestHandler
+final readonly class UserDisableRequestHandler
 {
     public function __construct(
-        private readonly UserRepository $userRepository
+        private UserRepository $userRepository
     ) {
     }
 

@@ -9,11 +9,11 @@ use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WayPointRemoveRequestHandler
+final readonly class WayPointRemoveRequestHandler
 {
     public function __construct(
-        private readonly WayPointRepository $wayPointRepository,
-        private readonly FilesystemOperator $wayPointImageStorage
+        private WayPointRepository $wayPointRepository,
+        private FilesystemOperator $wayPointImageStorage
     ) {
     }
 

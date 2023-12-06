@@ -13,12 +13,12 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsMessageHandler]
-final class UserCreateRequestHandler
+final readonly class UserCreateRequestHandler
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly UserPasswordHasherInterface $userPasswordHasher,
-        private readonly NotifierInterface $notifier
+        private UserRepository $userRepository,
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private NotifierInterface $notifier
     ) {
     }
 

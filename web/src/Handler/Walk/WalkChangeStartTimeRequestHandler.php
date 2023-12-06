@@ -9,10 +9,10 @@ use App\Repository\WalkRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WalkChangeStartTimeRequestHandler
+final readonly class WalkChangeStartTimeRequestHandler
 {
     public function __construct(
-        private readonly WalkRepository $walkRepository
+        private WalkRepository $walkRepository
     ) {
     }
 

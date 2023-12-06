@@ -10,10 +10,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WalkChangeRequestHandler
+final readonly class WalkChangeRequestHandler
 {
     public function __construct(
-        private readonly WalkRepository $walkRepository
+        private WalkRepository $walkRepository
     ) {
     }
 
