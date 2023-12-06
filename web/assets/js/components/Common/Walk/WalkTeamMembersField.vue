@@ -90,6 +90,7 @@ const hasDisabledUser = computed(() => {
                     :aria-describedby="ariaDescribedby"
                     name="users"
                     switch
+                    :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
                     v-model="value"
                     :key="user['@id']"
                     :value="user['@id']"
@@ -115,7 +116,7 @@ const hasDisabledUser = computed(() => {
                     :aria-describedby="ariaDescribedby"
                     name="users"
                     switch
-                    :disabled="isLoading || walkCreator && walkCreator['@id'] === user['@id']"
+                    :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
                     :data-test="`walkTeamMember-${user.username}`"
                     ref="selectedWalkCreator"
                     class="min-w-[250px] text-muted"
