@@ -18,36 +18,25 @@ final class WayPointChangeRequest
     #[AppAssert\WayPointRequirements]
     public WayPoint $wayPoint;
 
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
-    #[Assert\Length(min: 2, max: 300)]
+    #[AppAssert\LocationNameRequirements]
     public string $locationName;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 0, max: 2500)]
+    #[AppAssert\TextareaRequirements]
     public string $note;
 
-    #[Assert\NotNull]
-    #[Assert\Length(min: 0, max: 2500)]
+    #[AppAssert\TextareaRequirements]
     public string $oneOnOneInterview;
 
     public ?string $imageFileData = null;
 
-    #[Assert\Length(min: 5, max: 200)]
+    #[AppAssert\ImageFileNameRequirements]
     public ?string $imageFileName = null;
 
     #[Assert\Type(type: 'bool')]
     public bool $isMeeting;
 
     /** @var AgeGroup[] */
-    #[Assert\All(
-        [
-            new Assert\NotNull(),
-            new Assert\NotBlank(),
-            new Assert\Type(type: AgeGroup::class),
-        ]
-    )]
-    #[Assert\NotNull]
+    #[AppAssert\AgeGroupsRequirements]
     public array $ageGroups;
 
     /** @var UserGroup[] */
@@ -55,14 +44,7 @@ final class WayPointChangeRequest
     public array $userGroups;
 
     /** @var Tag[] */
-    #[Assert\All(
-        [
-            new Assert\NotNull(),
-            new Assert\NotBlank(),
-            new Assert\Type(type: Tag::class),
-        ]
-    )]
-    #[Assert\NotNull]
+    #[AppAssert\TagsRequirements]
     public array $wayPointTags;
 
     #[AppAssert\ContactsCountRequirements]
