@@ -138,7 +138,7 @@ class Tag
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $name;
+    private string $name = '';
 
     /** @var Collection<int, Walk> */
     #[ORM\ManyToMany(targetEntity: Walk::class, inversedBy: 'walkTags')]
@@ -149,18 +149,15 @@ class Tag
     private Collection $wayPoints;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $color;
+    private string $color = '';
 
     #[ORM\Column(type: 'boolean')]
-    protected bool $isEnabled;
+    protected bool $isEnabled = true;
 
     public function __construct()
     {
         $this->wayPoints = new ArrayCollection();
         $this->walks = new ArrayCollection();
-        $this->color = '';
-        $this->name = '';
-        $this->isEnabled = true;
     }
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'tags')]

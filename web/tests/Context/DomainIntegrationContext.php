@@ -261,7 +261,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $request->name = $row['name'];
             $request->startTime = isset($row['startTime']) ? new \DateTime($this->enrichText($row['startTime'])) : new \DateTime();
             $request->weather = $row['weather'] ?? 'Arschkalt';
-            $request->holidays = isset($row['holidays']) ? (bool) $row['holidays'] : false;
+            $request->holidays = isset($row['holidays']) && (bool) $row['holidays'];
             $request->conceptOfDay = isset($row['conceptOfDay']) ? $this->enrichText($row['conceptOfDay']) : ['My daily concept.'];
             $request->walkTeamMembers = $team->getUsers()->toArray();
             $request->guestNames = $team->getGuestNames();

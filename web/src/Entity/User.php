@@ -148,10 +148,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     protected $updatedBy; // phpcs:ignore
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    protected string $email;
+    protected string $email = '';
 
     #[ORM\Column(type: 'boolean')]
-    protected bool $enabled;
+    protected bool $enabled = false;
 
     #[ORM\Column(type: 'string', nullable: true)]
     protected ?string $salt = null;
@@ -173,7 +173,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
 
     /** @var string[] */
     #[ORM\Column(type: 'array')]
-    protected array $roles;
+    protected array $roles = [];
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -181,7 +181,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     private int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private string $username;
+    private string $username = '';
 
     /** @var Collection<int, Walk> */
     #[ORM\ManyToMany(targetEntity: Walk::class, inversedBy: 'walkTeamMembers')]
@@ -201,10 +201,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
 
     public function __construct()
     {
-        $this->username = '';
-        $this->email = '';
-        $this->enabled = false;
-        $this->roles = [];
         $this->walks = new ArrayCollection();
         $this->createdWalks = new ArrayCollection();
         $this->teams = new ArrayCollection();

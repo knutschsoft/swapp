@@ -82,7 +82,7 @@ class SystemicQuestion
     private string $question = '';
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isEnabled;
+    private bool $isEnabled = true;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'systemicQuestions')]
     private Client $client;
@@ -93,7 +93,6 @@ class SystemicQuestion
         Assert::maxLength($question, 4096);
         $this->question = $question;
         $this->client = $client;
-        $this->isEnabled = true;
     }
 
     public static function fromString(string $question, Client $client): self

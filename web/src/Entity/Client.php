@@ -93,7 +93,7 @@ class Client
 
     #[ORM\Column(name: 'rating_image_name', type: 'string', length: 255, nullable: true)]
     private ?string $ratingImageName = null;
-    private string $ratingImageSrc;
+    private string $ratingImageSrc = '';
 
     public function __construct()
     {
@@ -102,7 +102,6 @@ class Client
         $this->tags = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->walks = new ArrayCollection();
-        $this->ratingImageSrc = '';
     }
 
     public static function fromClientInitRequest(ClientCreateRequest $request): self

@@ -108,54 +108,45 @@ class WayPoint
 
     #[ORM\Column(name: 'image_name', type: 'string', length: 255, nullable: true)]
     private ?string $imageName = null;
-    private string $imageSrc;
+    private string $imageSrc = '';
 
     /** @MaxDepth(2) */
     #[ORM\ManyToOne(targetEntity: Walk::class, inversedBy: 'wayPoints')]
     private Walk $walk;
 
     #[ORM\Column(type: 'string', length: 4096)]
-    private string $locationName;
+    private string $locationName = '';
 
     /** @var AgeGroup[] */
     #[ORM\Column(type: 'json_document')]
-    private array $ageGroups;
+    private array $ageGroups = [];
 
     /** @var UserGroup[] */
     #[ORM\Column(type: 'json_document')]
-    private array $userGroups;
+    private array $userGroups = [];
 
     #[ORM\Column(type: 'string', length: 4096, nullable: true)]
-    private ?string $note = null;
+    private ?string $note = '';
 
     #[ORM\Column(type: 'string', length: 4096)]
-    private string $oneOnOneInterview;
+    private string $oneOnOneInterview = '';
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isMeeting;
+    private bool $isMeeting = false;
 
     /** @var Collection<int, Tag> */
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'wayPoints')]
     private Collection $wayPointTags;
 
     #[ORM\Column(type: 'integer', nullable: false)]
-    private int $peopleCount;
+    private int $peopleCount = 0;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $contactsCount;
+    private ?int $contactsCount = null;
 
     public function __construct()
     {
         $this->wayPointTags = new ArrayCollection();
-        $this->ageGroups = [];
-        $this->userGroups = [];
-        $this->locationName = '';
-        $this->isMeeting = false;
-        $this->note = '';
-        $this->oneOnOneInterview = '';
-        $this->imageSrc = '';
-        $this->contactsCount = null;
-        $this->peopleCount = 0;
     }
 
     public static function fromWalk(Walk $walk): self

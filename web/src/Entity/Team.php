@@ -66,31 +66,31 @@ class Team
 
     /** @var string[] */
     #[ORM\Column(type: 'array')]
-    private array $guestNames;
+    private array $guestNames = [];
 
     /** @var string[] */
     #[ORM\Column(type: 'array')]
-    private array $locationNames;
+    private array $locationNames = [];
 
     /** @var string[] */
     #[ORM\Column(type: Types::JSON)]
-    private array $walkNames;
+    private array $walkNames = [];
 
     /** @var string[] */
     #[ORM\Column(type: Types::JSON)]
-    private array $conceptOfDaySuggestions;
+    private array $conceptOfDaySuggestions = [];
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isWithAgeRanges;
+    private bool $isWithAgeRanges = true;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isWithPeopleCount;
+    private bool $isWithPeopleCount = false;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isWithGuests;
+    private bool $isWithGuests = false;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isWithSystemicQuestion;
+    private bool $isWithSystemicQuestion = false;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
@@ -102,14 +102,6 @@ class Team
     {
         $this->ageRanges = [];
         $this->userGroupNames = [];
-        $this->guestNames = [];
-        $this->isWithGuests = false;
-        $this->isWithSystemicQuestion = false;
-        $this->isWithPeopleCount = false;
-        $this->isWithAgeRanges = true;
-        $this->locationNames = [];
-        $this->walkNames = [];
-        $this->conceptOfDaySuggestions = [];
         $this->users = new ArrayCollection();
     }
 

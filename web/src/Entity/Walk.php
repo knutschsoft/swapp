@@ -126,10 +126,10 @@ class Walk
     private \DateTimeInterface $startTime;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $endTime;
+    private ?\DateTimeInterface $endTime = null;
 
     #[ORM\Column(type: 'string', length: 4096)]
-    private string $walkReflection;
+    private string $walkReflection = '';
 
     /** @var Collection<int, User> */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'walks', cascade: ['persist'], orphanRemoval: false)]
@@ -137,7 +137,7 @@ class Walk
     private Collection $walkTeamMembers;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'createdWalks')]
-    private ?User $walkCreator;
+    private ?User $walkCreator = null;
 
     /** @var Collection<int, Tag> */
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'walks')]
@@ -147,16 +147,16 @@ class Walk
     private int $rating;
 
     #[ORM\Column(type: 'string', length: 4096)]
-    private string $systemicQuestion;
+    private string $systemicQuestion = '';
 
     #[ORM\Column(type: 'string', length: 4096)]
-    private string $systemicAnswer;
+    private string $systemicAnswer = '';
 
     #[ORM\Column(type: 'text', length: 4096)]
-    private string $insights;
+    private string $insights = '';
 
     #[ORM\Column(type: 'text', length: 4096)]
-    private string $commitments;
+    private string $commitments = '';
 
     #[ORM\Column(type: 'boolean')]
     private bool $isResubmission;
@@ -165,11 +165,11 @@ class Walk
     private string $weather;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $holidays;
+    private bool $holidays = false;
 
     /** @var string[] */
     #[ORM\Column(type: Types::JSON)]
-    private array $conceptOfDay;
+    private array $conceptOfDay = [];
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $teamName;
@@ -183,13 +183,13 @@ class Walk
 
     /** @var string[] */
     #[ORM\Column(type: 'array')]
-    private array $guestNames;
+    private array $guestNames = [];
 
     #[ORM\Column(type: 'boolean')]
     private bool $isWithGuests;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isWithSystemicQuestion;
+    private bool $isWithSystemicQuestion = false;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isWithAgeRanges;
@@ -204,27 +204,15 @@ class Walk
     private bool $isWithUserGroups;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isUnfinished;
+    private bool $isUnfinished = true;
 
     public function __construct()
     {
         $this->ageRanges = [];
         $this->userGroupNames = [];
-        $this->guestNames = [];
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
-        $this->walkCreator = null;
         $this->wayPoints = new ArrayCollection();
-        $this->holidays = false;
-        $this->conceptOfDay = [];
-        $this->commitments = '';
-        $this->insights = '';
-        $this->isWithSystemicQuestion = false;
-        $this->systemicQuestion = '';
-        $this->systemicAnswer = '';
-        $this->walkReflection = '';
-        $this->endTime = null;
-        $this->isUnfinished = true;
     }
 
     public static function fromWalkCreateRequest(WalkCreateRequest $request): self
