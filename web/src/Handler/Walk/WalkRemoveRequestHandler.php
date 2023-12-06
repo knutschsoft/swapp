@@ -10,7 +10,7 @@ use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WalkRemoveHandler
+final class WalkRemoveRequestHandler
 {
     public function __construct(
         private readonly WalkRepository $walkRepository,

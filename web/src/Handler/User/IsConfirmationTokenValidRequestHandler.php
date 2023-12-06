@@ -8,7 +8,7 @@ use App\Entity\User;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class IsConfirmationTokenValidHandler
+final class IsConfirmationTokenValidRequestHandler
 {
     public function __invoke(IsConfirmationTokenValidRequest $request): User
     {

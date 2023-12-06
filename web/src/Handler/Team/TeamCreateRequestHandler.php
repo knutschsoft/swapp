@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class TeamCreateHandler
+final class TeamCreateRequestHandler
 {
     public function __construct(private readonly TeamRepository $teamRepository)
     {

@@ -9,7 +9,7 @@ use App\Repository\WalkRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class WalkEpilogueHandler
+final class WalkEpilogueRequestHandler
 {
     public function __construct(
         private readonly WalkRepository $walkRepository

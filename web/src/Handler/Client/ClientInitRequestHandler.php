@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
-final class ClientInitHandler
+final class ClientInitRequestHandler
 {
     public function __construct(
         private readonly ClientRepository $clientRepository,

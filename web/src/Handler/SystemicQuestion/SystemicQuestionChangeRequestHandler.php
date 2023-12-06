@@ -9,7 +9,7 @@ use App\Repository\SystemicQuestionRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class SystemicQuestionChangeHandler
+final class SystemicQuestionChangeRequestHandler
 {
     public function __construct(
         private readonly SystemicQuestionRepository $systemicQuestionRepository

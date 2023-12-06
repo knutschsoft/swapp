@@ -3,22 +3,23 @@ declare(strict_types=1);
 
 namespace App\Handler\SystemicQuestion;
 
-use App\Dto\SystemicQuestion\SystemicQuestionCreateRequest;
+use App\Dto\SystemicQuestion\SystemicQuestionDisableRequest;
 use App\Entity\SystemicQuestion;
 use App\Repository\SystemicQuestionRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class SystemicQuestionCreateHandler
+final class SystemicQuestionDisableRequestHandler
 {
     public function __construct(
         private readonly SystemicQuestionRepository $systemicQuestionRepository
     ) {
     }
 
-    public function __invoke(SystemicQuestionCreateRequest $request): SystemicQuestion
+    public function __invoke(SystemicQuestionDisableRequest $request): SystemicQuestion
     {
-        $systemicQuestion = SystemicQuestion::fromString($request->question, $request->client);
+        $systemicQuestion = $request->systemicQuestion;
+        $systemicQuestion->disable();
         $this->systemicQuestionRepository->save($systemicQuestion);
 
         return $systemicQuestion;

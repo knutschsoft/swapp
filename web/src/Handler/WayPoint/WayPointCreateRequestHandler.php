@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
-final class WayPointCreateHandler
+final class WayPointCreateRequestHandler
 {
     public function __construct(
         private readonly WayPointRepository $wayPointRepository,
