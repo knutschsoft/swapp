@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Handler\Tag;
 
-use App\Dto\TagCreateRequest;
+use App\Dto\Tag\TagCreateRequest;
 use App\Entity\Tag;
 use App\Repository\TagRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

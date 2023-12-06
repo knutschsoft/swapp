@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Context;
 
 use App\Dto\Client\ClientCreateRequest;
-use App\Dto\TagCreateRequest;
+use App\Dto\Tag\TagCreateRequest;
 use App\Dto\User\UserCreateRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Entity\Client;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
-use App\Dto\TagCreateRequest;
+use App\Dto\Tag\TagCreateRequest;
 use App\Repository\Exception\NotFoundException;
 use App\Repository\TagRepository;
 use Symfony\Component\Validator\Constraint;
