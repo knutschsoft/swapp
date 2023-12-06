@@ -8,9 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 class AgeRangeTest extends TestCase
 {
-    private const START = 3;
+    private const int START = 3;
 
-    private const END = 7;
+    private const int END = 7;
 
     /**
      * @param array $count

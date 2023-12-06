@@ -12,12 +12,8 @@ use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 
 class UserCreatedNotification extends Notification implements EmailNotificationInterface
 {
-    private User $user;
-
-    public function __construct(User $user)
+    public function __construct(private readonly User $user)
     {
-        $this->user = $user;
-
         parent::__construct();
     }
 

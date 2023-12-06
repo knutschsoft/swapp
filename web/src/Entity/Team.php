@@ -44,7 +44,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 )]
 #[ORM\Table(name: 'team')]
 #[ORM\Entity(repositoryClass: DoctrineORMTeamRepository::class)]
-class Team
+class Team implements \Stringable
 {
     use AgeRangeField;
     use UserGroupNamesField;

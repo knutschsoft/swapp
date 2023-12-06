@@ -10,12 +10,14 @@ final class Version20221019085642 extends AbstractMigration
 {
     private $wayPoints = [];
 
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
 
+    #[\Override]
     public function preUp(Schema $schema): void
     {
         $query = $this->connection->createQueryBuilder()
@@ -29,6 +31,7 @@ final class Version20221019085642 extends AbstractMigration
     }
 
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE team ADD isWithPeopleCount TINYINT(1) NOT NULL DEFAULT 0');
@@ -41,6 +44,7 @@ final class Version20221019085642 extends AbstractMigration
         $this->addSql('ALTER TABLE way_point CHANGE peopleCount peopleCount INT NOT NULL');
     }
 
+    #[\Override]
     public function postUp(Schema $schema): void
     {
         foreach ($this->wayPoints as $wayPoint) {
@@ -49,7 +53,7 @@ final class Version20221019085642 extends AbstractMigration
             if (\is_null($peopleCountList)) {
                 continue;
             }
-            $peopleCount = \array_sum(\json_decode($peopleCountList));
+            $peopleCount = \array_sum(\json_decode((string) $peopleCountList, null, 512, JSON_THROW_ON_ERROR));
 
             $query = $this->connection->createQueryBuilder()
                 ->update('way_point')
@@ -61,6 +65,7 @@ final class Version20221019085642 extends AbstractMigration
         }
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE way_point DROP peopleCount');

@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
 #[ORM\Embeddable]
-class ConfirmationToken
+class ConfirmationToken implements \Stringable
 {
     #[ORM\Column(type: 'string', length: 180, name: 'confirmation_token')]
     private string $token;
 
-    private const EMPTY_TOKEN = '01234567890123456789012345678912';
+    private const string EMPTY_TOKEN = '01234567890123456789012345678912';
 
     public function __construct(string $token)
     {

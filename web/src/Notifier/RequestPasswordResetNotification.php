@@ -12,19 +12,11 @@ use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 
 class RequestPasswordResetNotification extends Notification implements EmailNotificationInterface
 {
-    private ConfirmationToken $confirmationToken;
-    private string $username;
-    private int $userId;
-
     public function __construct(
-        ConfirmationToken $confirmationToken,
-        int $userId,
-        string $username
+        private readonly ConfirmationToken $confirmationToken,
+        private readonly int $userId,
+        private readonly string $username
     ) {
-        $this->confirmationToken = $confirmationToken;
-        $this->username = $username;
-        $this->userId = $userId;
-
         parent::__construct();
     }
 

@@ -8,11 +8,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20200619171023 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -35,6 +37,7 @@ final class Version20200619171023 extends AbstractMigration
         //$this->addSql('ALTER TABLE walk CHANGE ageRanges ageRanges JSON NOT NULL COMMENT \'(DC2Type:json_document)\'');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

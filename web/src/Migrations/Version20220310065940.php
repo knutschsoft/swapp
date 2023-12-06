@@ -12,11 +12,13 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20220310065940 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -26,6 +28,7 @@ final class Version20220310065940 extends AbstractMigration
         $this->addSql('ALTER TABLE way_point ADD contactsCount INT DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE team CHANGE isWithContactsCount isWithContactsCount TINYINT(1) DEFAULT 0 NOT NULL');

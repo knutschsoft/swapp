@@ -8,11 +8,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20220620040149 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE team ADD userGroupNames JSON NOT NULL COMMENT \'(DC2Type:json_document)\'');
@@ -25,6 +27,7 @@ final class Version20220620040149 extends AbstractMigration
         $this->addSql('ALTER TABLE walk CHANGE isWithUserGroups isWithUserGroups TINYINT(1) NOT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

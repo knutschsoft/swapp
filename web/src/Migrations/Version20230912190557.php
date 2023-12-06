@@ -8,11 +8,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20230912190557 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE walk ADD walkCreator_id INT DEFAULT NULL');
@@ -20,6 +22,7 @@ final class Version20230912190557 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_8D917A551E24366C ON walk (walkCreator_id)');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE walk DROP FOREIGN KEY FK_8D917A551E24366C');

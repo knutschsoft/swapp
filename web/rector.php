@@ -20,10 +20,12 @@ return static function (RectorConfig $rectorConfig): void {
 
     // define sets of rules
         $rectorConfig->sets([
-            \Rector\Doctrine\Set\DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES,
+            LevelSetList::UP_TO_PHP_83,
         ]);
     $rectorConfig->skip([
         \Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector::class,
         \Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector::class,
+        \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
+        \Rector\Php80\Rector\FunctionLike\MixedTypeRector::class,
     ]);
 };

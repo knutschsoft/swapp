@@ -12,6 +12,7 @@ class WalkNameRequirements extends Compound
     /**
      * @inheritDoc
      */
+    #[\Override]
     protected function getConstraints(array $options): array
     {
         return [

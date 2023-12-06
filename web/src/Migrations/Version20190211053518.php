@@ -18,6 +18,7 @@ final class Version20190211053518 extends AbstractMigration
 {
     private $wayPoints = [];
 
+    #[\Override]
     public function preUp(Schema $schema): void
     {
         $this->abortIf(
@@ -35,6 +36,7 @@ final class Version20190211053518 extends AbstractMigration
         $this->wayPoints = $this->connection->executeQuery($query)->fetchAllAssociative();
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -47,6 +49,7 @@ final class Version20190211053518 extends AbstractMigration
         );
     }
 
+    #[\Override]
     public function postUp(Schema $schema): void
     {
         $this->abortIf(
@@ -61,7 +64,7 @@ final class Version20190211053518 extends AbstractMigration
             $ageGroups = $this->connection->convertToDatabaseValue($ageGroups, 'json_document');
 
             // need to do some conversions
-            $ageGroups = str_replace('\\', '\\\\', $ageGroups);
+            $ageGroups = str_replace('\\', '\\\\', (string) $ageGroups);
             $ageGroups = '\''.$ageGroups.'\'';
 
             $query = $this->connection->createQueryBuilder()
@@ -76,6 +79,7 @@ final class Version20190211053518 extends AbstractMigration
         }
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
@@ -149,26 +153,11 @@ final class Version20190211053518 extends AbstractMigration
 
     private function getGender(string $oldInternalName): Gender
     {
-        switch ($oldInternalName) {
-            case 'malesKidCount':
-            case 'malesChildCount':
-            case 'malesYoungAdultCount':
-            case 'malesYouthCount':
-            case 'malesAdultCount':
-                $gender = Gender::GENDER_MALE;
-
-                break;
-            case 'femalesChildCount':
-            case 'femalesYoungAdultCount':
-            case 'femalesYouthCount':
-            case 'femalesKidCount':
-            case 'femalesAdultCount':
-                $gender = Gender::GENDER_FEMALE;
-
-                break;
-            default:
-                throw new AbortMigration('Unknown old internal name in migration: '.$oldInternalName);
-        }
+        $gender = match ($oldInternalName) {
+            'malesKidCount', 'malesChildCount', 'malesYoungAdultCount', 'malesYouthCount', 'malesAdultCount' => Gender::GENDER_MALE,
+            'femalesChildCount', 'femalesYoungAdultCount', 'femalesYouthCount', 'femalesKidCount', 'femalesAdultCount' => Gender::GENDER_FEMALE,
+            default => throw new AbortMigration('Unknown old internal name in migration: '.$oldInternalName),
+        };
 
         return Gender::fromString($gender);
     }

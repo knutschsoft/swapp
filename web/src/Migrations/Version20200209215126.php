@@ -12,11 +12,13 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200209215126 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -36,6 +38,7 @@ final class Version20200209215126 extends AbstractMigration
         );
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
     }

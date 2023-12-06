@@ -8,11 +8,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20220930082635 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('DROP TABLE guest');
@@ -20,6 +22,7 @@ final class Version20220930082635 extends AbstractMigration
         $this->addSql('UPDATE walk SET guestNames = \'a:0:{}\'');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql(

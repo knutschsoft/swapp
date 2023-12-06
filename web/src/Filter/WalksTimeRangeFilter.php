@@ -12,6 +12,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 final class WalksTimeRangeFilter extends AbstractFilter
 {
+    #[\Override]
     public function getDescription(string $resourceClass): array
     {
         // This function is only used to hook in documentation generators (supported by Swagger and Hydra)
@@ -37,6 +38,7 @@ final class WalksTimeRangeFilter extends AbstractFilter
     }
 
     /** @inheritDoc */
+    #[\Override]
     protected function filterProperty(
         string $property,
         $value,

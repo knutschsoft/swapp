@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5001e13ce51358b283c9fe74e913c3d",
+    "content-hash": "aa4972efd0bb0190c38d99bb141165a9",
     "packages": [
         {
             "name": "acsiomatic/device-detector-bundle",
@@ -1400,16 +1400,16 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "3.7.1",
+            "version": "3.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "e4e0855ea993d169c8adb50e19b014e64bbdda46"
+                "reference": "47af29eef49f29ebee545947e8b2a4b3be318c8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/e4e0855ea993d169c8adb50e19b014e64bbdda46",
-                "reference": "e4e0855ea993d169c8adb50e19b014e64bbdda46",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/47af29eef49f29ebee545947e8b2a4b3be318c8a",
+                "reference": "47af29eef49f29ebee545947e8b2a4b3be318c8a",
                 "shasum": ""
             },
             "require": {
@@ -1482,7 +1482,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/migrations/issues",
-                "source": "https://github.com/doctrine/migrations/tree/3.7.1"
+                "source": "https://github.com/doctrine/migrations/tree/3.7.2"
             },
             "funding": [
                 {
@@ -1498,7 +1498,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-19T06:55:22+00:00"
+            "time": "2023-12-05T11:35:05+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -2525,16 +2525,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.22.0",
+            "version": "3.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "d18526ee587f265f091f47bb83f1d9a001ef6f36"
+                "reference": "d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d18526ee587f265f091f47bb83f1d9a001ef6f36",
-                "reference": "d18526ee587f265f091f47bb83f1d9a001ef6f36",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc",
+                "reference": "d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc",
                 "shasum": ""
             },
             "require": {
@@ -2599,7 +2599,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.22.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.23.0"
             },
             "funding": [
                 {
@@ -2611,7 +2611,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-03T18:35:53+00:00"
+            "time": "2023-12-04T10:16:17+00:00"
         },
         {
             "name": "league/flysystem-bundle",
@@ -2677,16 +2677,16 @@
         },
         {
             "name": "league/flysystem-local",
-            "version": "3.22.0",
+            "version": "3.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-local.git",
-                "reference": "42dfb4eaafc4accd248180f0dd66f17073b40c4c"
+                "reference": "5cf046ba5f059460e86a997c504dd781a39a109b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/42dfb4eaafc4accd248180f0dd66f17073b40c4c",
-                "reference": "42dfb4eaafc4accd248180f0dd66f17073b40c4c",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/5cf046ba5f059460e86a997c504dd781a39a109b",
+                "reference": "5cf046ba5f059460e86a997c504dd781a39a109b",
                 "shasum": ""
             },
             "require": {
@@ -2721,7 +2721,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-local/issues",
-                "source": "https://github.com/thephpleague/flysystem-local/tree/3.22.0"
+                "source": "https://github.com/thephpleague/flysystem-local/tree/3.23.0"
             },
             "funding": [
                 {
@@ -2733,7 +2733,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-18T20:52:53+00:00"
+            "time": "2023-12-04T10:14:46+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -2793,16 +2793,16 @@
         },
         {
             "name": "lexik/jwt-authentication-bundle",
-            "version": "v2.20.1",
+            "version": "v2.20.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikJWTAuthenticationBundle.git",
-                "reference": "8a13662c4e9bed0b1257ab34b193cac3f763c8ae"
+                "reference": "3df8317555ea899a81b5c6b7558e421838f2f926"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/8a13662c4e9bed0b1257ab34b193cac3f763c8ae",
-                "reference": "8a13662c4e9bed0b1257ab34b193cac3f763c8ae",
+                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/3df8317555ea899a81b5c6b7558e421838f2f926",
+                "reference": "3df8317555ea899a81b5c6b7558e421838f2f926",
                 "shasum": ""
             },
             "require": {
@@ -2896,7 +2896,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lexik/LexikJWTAuthenticationBundle/issues",
-                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.20.1"
+                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.20.2"
             },
             "funding": [
                 {
@@ -2908,7 +2908,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-01T12:06:26+00:00"
+            "time": "2023-12-05T22:22:51+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -5382,16 +5382,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.21.2",
+            "version": "v1.21.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "f1cf4014ffac79e0c031cc40d6d66354e7de5da5"
+                "reference": "f96b8bf5390bb073aff773ee2aa39c64fb60e59d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/f1cf4014ffac79e0c031cc40d6d66354e7de5da5",
-                "reference": "f1cf4014ffac79e0c031cc40d6d66354e7de5da5",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/f96b8bf5390bb073aff773ee2aa39c64fb60e59d",
+                "reference": "f96b8bf5390bb073aff773ee2aa39c64fb60e59d",
                 "shasum": ""
             },
             "require": {
@@ -5427,7 +5427,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v1.21.2"
+                "source": "https://github.com/symfony/flex/tree/v1.21.3"
             },
             "funding": [
                 {
@@ -5443,7 +5443,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-30T18:34:59+00:00"
+            "time": "2023-12-05T14:09:05+00:00"
         },
         {
             "name": "symfony/form",
@@ -15025,7 +15025,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*"
@@ -15033,5 +15033,5 @@
     "platform-dev": {
         "ext-zip": "*"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

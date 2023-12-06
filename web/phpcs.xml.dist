@@ -10,6 +10,7 @@
 
     <rule ref="vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/ruleset.xml">
         <exclude name="SlevomatCodingStandard.Attributes.AttributesOrder" />
+        <exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
     </rule>
 
     <exclude-pattern>./tests/object-manager.php</exclude-pattern>

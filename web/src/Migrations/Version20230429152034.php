@@ -8,11 +8,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20230429152034 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE team ADD isWithSystemicQuestion TINYINT(1) NOT NULL DEFAULT 1');
@@ -21,6 +23,7 @@ final class Version20230429152034 extends AbstractMigration
         $this->addSql('ALTER TABLE walk ALTER isWithSystemicQuestion DROP DEFAULT');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE team DROP isWithSystemicQuestion');

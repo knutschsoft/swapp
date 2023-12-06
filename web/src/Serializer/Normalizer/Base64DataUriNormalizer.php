@@ -15,6 +15,7 @@ class Base64DataUriNormalizer extends DataUriNormalizer
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function denormalize($data, $type = File::class, $format = null, array $context = []): File
     {
         parent::denormalize($data, $type, $format, $context);

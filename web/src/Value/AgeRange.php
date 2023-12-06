@@ -8,9 +8,9 @@ use Webmozart\Assert\Assert;
 
 class AgeRange
 {
-    private int $rangeStart;
+    private readonly int $rangeStart;
 
-    private int $rangeEnd;
+    private readonly int $rangeEnd;
 
     public function __construct(int|string $rangeStart, int|string $rangeEnd)
     {

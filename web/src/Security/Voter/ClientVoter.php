@@ -11,14 +11,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ClientVoter extends Voter
 {
-    public const READ = 'CLIENT_READ';
-    public const EDIT = 'CLIENT_EDIT';
-    public const CREATE = 'CLIENT_CREATE';
+    final public const READ = 'CLIENT_READ';
+    final public const EDIT = 'CLIENT_EDIT';
+    final public const CREATE = 'CLIENT_CREATE';
 
     public function __construct(private readonly Security $security)
     {
     }
 
+    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         return \in_array($attribute, [self::READ, self::EDIT], true)
@@ -26,6 +27,7 @@ class ClientVoter extends Voter
             || \in_array($attribute, [self::CREATE], true);
     }
 
+    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -41,14 +43,10 @@ class ClientVoter extends Voter
         /** @var Client $client */
         $client = $subject;
 
-        switch ($attribute) {
-            case self::READ:
-                return $client->getUsers()->contains($user);
-            case self::EDIT:
-            case self::CREATE:
-                return false;
-        }
-
-        return false;
+        return match ($attribute) {
+            self::READ => $client->getUsers()->contains($user),
+            self::EDIT, self::CREATE => false,
+            default => false,
+        };
     }
 }

@@ -11,17 +11,15 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class IsUserEmailUniqueValidator extends ConstraintValidator
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private readonly UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     /**
      * @param UserCreateRequest|UserChangeRequest $request
      * @param Constraint                          $constraint
      */
+    #[\Override]
     public function validate($request, Constraint $constraint): void
     {
         if (isset($request->user) && \strtolower($request->user->getEmail()) === \strtolower($request->email)) {

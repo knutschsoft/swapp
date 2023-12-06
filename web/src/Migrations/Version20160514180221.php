@@ -11,6 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 class Version20160514180221 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -40,6 +41,7 @@ class Version20160514180221 extends AbstractMigration
         $this->addSql('ALTER TABLE user_walk ADD CONSTRAINT FK_F710369C5EEE1B48 FOREIGN KEY (walk_id) REFERENCES walk (id) ON DELETE CASCADE');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

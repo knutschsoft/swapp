@@ -11,20 +11,22 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class WayPointVoter extends Voter
 {
-    public const READ = 'WAY_POINT_READ';
-    public const EDIT = 'WAY_POINT_EDIT';
-    public const REMOVE = 'WAY_POINT_REMOVE';
+    final public const READ = 'WAY_POINT_READ';
+    final public const EDIT = 'WAY_POINT_EDIT';
+    final public const REMOVE = 'WAY_POINT_REMOVE';
 
     public function __construct(private readonly Security $security)
     {
     }
 
+    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         return \in_array($attribute, [self::EDIT, self::READ, self::REMOVE], true)
             && $subject instanceof WayPoint;
     }
 
+    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

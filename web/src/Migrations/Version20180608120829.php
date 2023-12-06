@@ -11,6 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 class Version20180608120829 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -19,6 +20,7 @@ class Version20180608120829 extends AbstractMigration
         $this->addSql('CREATE TABLE age_range (id INT AUTO_INCREMENT NOT NULL, rangeStart SMALLINT NOT NULL, rangeEnd SMALLINT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

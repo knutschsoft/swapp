@@ -11,11 +11,13 @@ final class Version20230428111526 extends AbstractMigration
 {
     private array $walks = [];
 
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function preUp(Schema $schema): void
     {
         $query = $this->connection->createQueryBuilder()
@@ -28,22 +30,24 @@ final class Version20230428111526 extends AbstractMigration
         $this->walks = $this->connection->executeQuery($query)->fetchAllAssociative();
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('UPDATE walk SET conceptOfDay=\'[]\' WHERE id > 0;');
         $this->addSql('ALTER TABLE walk CHANGE conceptOfDay conceptOfDay JSON NOT NULL;');
     }
 
+    #[\Override]
     public function postUp(Schema $schema): void
     {
         foreach ($this->walks as $walk) {
             $id = $walk['id'];
             $conceptOfDayString = $walk['conceptOfDay'];
 
-            $conceptOfDayArray = \explode(PHP_EOL, $conceptOfDayString);
+            $conceptOfDayArray = \explode(PHP_EOL, (string) $conceptOfDayString);
             $conceptOfDayArray = \array_map('trim', $conceptOfDayArray);
             $conceptOfDayArray = \array_filter($conceptOfDayArray);
-            $value = \str_replace('\\"', '\\\\"', $this->connection->convertToDatabaseValue($conceptOfDayArray, Types::JSON));
+            $value = \str_replace('\\"', '\\\\"', (string) $this->connection->convertToDatabaseValue($conceptOfDayArray, Types::JSON));
             $value = \str_replace('\\u00', '\\\\\\u00', $value);
             $value = \str_replace('\'', '\\\'', $value);
 
@@ -60,6 +64,7 @@ final class Version20230428111526 extends AbstractMigration
     }
 
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE walk CHANGE conceptOfDay conceptOfDay VARCHAR(4096) NOT NULL');

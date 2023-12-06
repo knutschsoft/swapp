@@ -18,8 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 final class Version20210731165918 extends AbstractMigration implements ContainerAwareInterface
 {
-    /** @var ContainerInterface */
-    private $container;
+    private ?\Psr\Container\ContainerInterface $container = null;
 
     /**
      * @param ContainerInterface|null $container
@@ -28,11 +27,13 @@ final class Version20210731165918 extends AbstractMigration implements Container
     {
         $this->container = $container;
     }
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         /** @var EntityManagerInterface $em */
@@ -59,6 +60,7 @@ final class Version20210731165918 extends AbstractMigration implements Container
         $em->flush();
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('TRUNCATE TABLE user_walk;');

@@ -16,10 +16,10 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class DatabaseContext implements Context
 {
-    private SchemaTool $schemaTool;
+    private readonly SchemaTool $schemaTool;
     /** @var ClassMetadata[] */
-    private array $classMetadatas;
-    private ObjectManager $entityManager;
+    private readonly array $classMetadatas;
+    private readonly ObjectManager $entityManager;
 
     public function __construct(
         ManagerRegistry $managerRegistry

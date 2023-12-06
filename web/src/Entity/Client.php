@@ -45,7 +45,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 )]
 #[ORM\Table(name: 'client')]
 #[ORM\Entity(repositoryClass: DoctrineORMClientRepository::class)]
-class Client
+class Client implements \Stringable
 {
     use TimestampableEntity;
 

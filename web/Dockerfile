@@ -1,5 +1,5 @@
-FROM composer:2.5 as composer
-FROM php:8.2-apache
+FROM composer:2.6 as composer
+FROM php:8.3-apache
 
 ARG APP_ENVIRONMENT=prod
 ARG HOST_UID=1000

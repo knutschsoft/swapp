@@ -11,15 +11,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter extends Voter
 {
-    public const CREATE = 'USER_CREATE';
-    public const READ = 'USER_READ';
-    public const EDIT = 'USER_EDIT';
-    public const DELETE = 'USER_DELETE';
+    final public const CREATE = 'USER_CREATE';
+    final public const READ = 'USER_READ';
+    final public const EDIT = 'USER_EDIT';
+    final public const DELETE = 'USER_DELETE';
 
     public function __construct(private readonly Security $security)
     {
     }
 
+    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         $supportsAttribute = \in_array($attribute, [self::CREATE, self::READ, self::EDIT, self::DELETE], true);
@@ -28,6 +29,7 @@ class UserVoter extends Voter
         return $supportsAttribute && $supportsSubject;
     }
 
+    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

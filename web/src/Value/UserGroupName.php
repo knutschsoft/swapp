@@ -5,13 +5,10 @@ namespace App\Value;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-final class UserGroupName
+final readonly class UserGroupName
 {
-    private string $name;
-
-    public function __construct(string $name)
+    public function __construct(private string $name)
     {
-        $this->name = $name;
     }
 
     public static function fromString(string $name): self

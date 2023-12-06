@@ -13,7 +13,7 @@ final class WayPointImageNormalizer implements ContextAwareNormalizerInterface, 
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'WAY_POINT_IMAGE_NORMALIZER_ALREADY_CALLED';
+    private const string ALREADY_CALLED = 'WAY_POINT_IMAGE_NORMALIZER_ALREADY_CALLED';
 
     public function __construct(
         private readonly UrlHelper $urlHelper,

@@ -11,19 +11,21 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class SystemicQuestionVoter extends Voter
 {
-    public const READ = 'SYSTEMIC_QUESTION_READ';
-    public const EDIT = 'SYSTEMIC_QUESTION_EDIT';
+    final public const READ = 'SYSTEMIC_QUESTION_READ';
+    final public const EDIT = 'SYSTEMIC_QUESTION_EDIT';
 
     public function __construct(private readonly Security $security)
     {
     }
 
+    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         return \in_array($attribute, [self::READ, self::EDIT], true)
             && $subject instanceof SystemicQuestion;
     }
 
+    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

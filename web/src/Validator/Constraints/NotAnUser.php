@@ -10,6 +10,7 @@ class NotAnUser extends Constraint
 {
     public string $message = 'user.not_found';
 
+    #[\Override]
     public function validatedBy(): string
     {
         return NotAnUserValidator::class;

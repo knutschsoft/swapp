@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class WalkExportNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
 {
-    private NormalizerInterface $decorated;
+    private readonly NormalizerInterface $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {

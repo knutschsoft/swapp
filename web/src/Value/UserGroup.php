@@ -5,16 +5,10 @@ namespace App\Value;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-final class UserGroup
+final readonly class UserGroup
 {
-    private UserGroupName $userGroupName;
-
-    private PeopleCount $peopleCount;
-
-    public function __construct(UserGroupName $userGroupName, PeopleCount $peopleCount)
+    public function __construct(private UserGroupName $userGroupName, private PeopleCount $peopleCount)
     {
-        $this->userGroupName = $userGroupName;
-        $this->peopleCount = $peopleCount;
     }
 
     public static function fromUserGroupNameAndCount(UserGroupName $range, PeopleCount $peopleCount): self

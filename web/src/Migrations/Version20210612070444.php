@@ -8,11 +8,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20210612070444 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE systemic_question ADD createdAt DATETIME NOT NULL DEFAULT NOW(), ADD updatedAt DATETIME NOT NULL DEFAULT NOW(), ADD isEnabled BOOLEAN NOT NULL DEFAULT TRUE');
@@ -22,6 +24,7 @@ final class Version20210612070444 extends AbstractMigration
 
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE systemic_question DROP createdAt, DROP updatedAt, DROP isEnabled');

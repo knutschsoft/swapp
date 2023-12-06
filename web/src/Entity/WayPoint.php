@@ -86,7 +86,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     'walk.teamName' => 'partial',
     'walk' => 'exact',
 ])]
-class WayPoint
+class WayPoint implements \Stringable
 {
     use TimestampableEntity;
 

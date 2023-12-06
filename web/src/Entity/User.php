@@ -115,22 +115,21 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\Entity(repositoryClass: DoctrineORMUserRepository::class)]
 #[ApiFilter(filterClass: WalksTimeRangeFilter::class, properties: ['timeRange' => 'exclude_null'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['client' => 'exact'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Stringable
 {
     use TimestampableEntity;
     use BlameableEntity;
 
-    private const ROLE_DEFAULT = 'ROLE_USER';
-    public const ROLE_ADMIN = 'ROLE_ADMIN';
-    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-    public const ROLE_ALLOWED_TO_SWITCH = 'ROLE_ALLOWED_TO_SWITCH';
+    private const string ROLE_DEFAULT = 'ROLE_USER';
+    final public const string ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    final public const string ROLE_ALLOWED_TO_SWITCH = 'ROLE_ALLOWED_TO_SWITCH';
     public const ROLES = [
         self::ROLE_DEFAULT,
         self::ROLE_ADMIN,
         self::ROLE_SUPER_ADMIN,
         self::ROLE_ALLOWED_TO_SWITCH,
     ];
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
     protected $createdAt; // phpcs:ignore

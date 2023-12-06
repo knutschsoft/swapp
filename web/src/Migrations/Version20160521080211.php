@@ -11,6 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 class Version20160521080211 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -112,6 +113,7 @@ class Version20160521080211 extends AbstractMigration
         );
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

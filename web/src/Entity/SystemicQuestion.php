@@ -61,7 +61,7 @@ use Webmozart\Assert\Assert;
 )]
 #[ORM\Table(name: 'systemic_question')]
 #[ORM\Entity(repositoryClass: DoctrineORMSystemicQuestionRepository::class)]
-class SystemicQuestion
+class SystemicQuestion implements \Stringable
 {
     use TimestampableEntity;
 
@@ -83,15 +83,12 @@ class SystemicQuestion
     #[ORM\Column(type: 'boolean')]
     private bool $isEnabled = true;
 
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'systemicQuestions')]
-    private Client $client;
-
-    private function __construct(string $question, Client $client)
+    private function __construct(string $question, #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'systemicQuestions')]
+    private Client $client)
     {
         Assert::minLength($question, 5);
         Assert::maxLength($question, 4096);
         $this->question = $question;
-        $this->client = $client;
     }
 
     public static function fromString(string $question, Client $client): self

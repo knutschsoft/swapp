@@ -13,15 +13,16 @@ use Webmozart\Assert\Assert;
 
 class TeamVoter extends Voter
 {
-    public const TEAM_CREATE = 'TEAM_CREATE';
-    public const TEAM_READ = 'TEAM_READ';
-    public const TEAM_EDIT = 'TEAM_EDIT';
-    public const TEAM_DELETE = 'TEAM_DELETE';
+    final public const TEAM_CREATE = 'TEAM_CREATE';
+    final public const TEAM_READ = 'TEAM_READ';
+    final public const TEAM_EDIT = 'TEAM_EDIT';
+    final public const TEAM_DELETE = 'TEAM_DELETE';
 
     public function __construct(private readonly Security $security)
     {
     }
 
+    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         $supportsAttribute = \in_array($attribute, [self::TEAM_CREATE, self::TEAM_READ, self::TEAM_EDIT, self::TEAM_DELETE], true);
@@ -30,6 +31,7 @@ class TeamVoter extends Voter
         return $supportsAttribute && $supportsSubject;
     }
 
+    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

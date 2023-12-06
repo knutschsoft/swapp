@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
-    private const SUPPORTED_TYPES = [
+    private const array SUPPORTED_TYPES = [
         \SplFileInfo::class => true,
         \SplFileObject::class => true,
         File::class => true,
@@ -41,7 +41,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
 
     public function getSupportedTypes(?string $format): array
     {
-        $isCacheable = __CLASS__ === static::class || $this->hasCacheableSupportsMethod();
+        $isCacheable = self::class === static::class || $this->hasCacheableSupportsMethod();
 
         return [
             \SplFileInfo::class => $isCacheable,
@@ -91,7 +91,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
      */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = []): \SplFileInfo
     {
-        if (null === $data || !preg_match('/^data:([a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}\/[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}(;[a-z0-9\-]+\=[a-z0-9\-]+)?)?(;base64)?,[a-z0-9\!\$\&\\\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i', $data)) {
+        if (null === $data || !preg_match('/^data:([a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}\/[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}(;[a-z0-9\-]+\=[a-z0-9\-]+)?)?(;base64)?,[a-z0-9\!\$\&\\\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i', (string) $data)) {
             throw NotNormalizableValueException::createForUnexpectedDataType('The provided "data:" URI is not valid.', $data, ['string'], $context['deserialization_path'] ?? null, true);
         }
 
@@ -130,7 +130,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
     {
         trigger_deprecation('symfony/serializer', '6.3', 'The "%s()" method is deprecated, implement "%s::getSupportedTypes()" instead.', __METHOD__, get_debug_type($this));
 
-        return __CLASS__ === static::class;
+        return self::class === static::class;
     }
 
     /**

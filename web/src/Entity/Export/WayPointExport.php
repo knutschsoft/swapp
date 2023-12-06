@@ -75,7 +75,7 @@ class WayPointExport
     public bool $isMeeting;
     #[Groups('wayPointExport:read')]
     #[SerializedName('direkte Kontakte')]
-    public ?int $contactsCount;
+    public ?int $contactsCount = null;
     #[Groups('wayPointExport:read')]
     #[SerializedName('Anzahl Personen vor Ort')]
     public int $peopleCount;

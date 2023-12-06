@@ -10,6 +10,7 @@ class NotAnEnabledUser extends Constraint
 {
     public string $message = 'user.not_found_or_disabled';
 
+    #[\Override]
     public function validatedBy(): string
     {
         return NotAnEnabledUserValidator::class;

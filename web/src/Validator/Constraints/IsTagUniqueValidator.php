@@ -11,17 +11,15 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class IsTagUniqueValidator extends ConstraintValidator
 {
-    private TagRepository $tagRepository;
-
-    public function __construct(TagRepository $tagRepository)
+    public function __construct(private readonly TagRepository $tagRepository)
     {
-        $this->tagRepository = $tagRepository;
     }
 
     /**
      * @param TagCreateRequest $value
      * @param Constraint       $constraint
      */
+    #[\Override]
     public function validate($value, Constraint $constraint): void
     {
         $tagRequest = $value;

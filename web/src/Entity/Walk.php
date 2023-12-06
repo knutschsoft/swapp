@@ -104,7 +104,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isResubmission', 'isUnfinished'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['startTime', 'endTime'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
-class Walk
+class Walk implements \Stringable
 {
     use AgeRangeField;
     use UserGroupNamesField;

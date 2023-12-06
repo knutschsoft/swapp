@@ -8,11 +8,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20200211102256 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->abortIf(
@@ -23,6 +25,7 @@ final class Version20200211102256 extends AbstractMigration
         $this->addSql('ALTER TABLE systemic_question DROP deletedAt');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->abortIf(

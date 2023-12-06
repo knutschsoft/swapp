@@ -18,7 +18,7 @@ final class EmailContext implements Context
     use RepositoryTrait;
 
     protected RestContext $restContext;
-    private KernelInterface $kernel;
+    private readonly KernelInterface $kernel;
 
     public function __construct(KernelInterface $kernel)
     {

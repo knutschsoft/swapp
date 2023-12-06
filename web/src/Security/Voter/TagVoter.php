@@ -11,19 +11,21 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class TagVoter extends Voter
 {
-    public const READ = 'TAG_READ';
-    public const EDIT = 'TAG_EDIT';
+    final public const READ = 'TAG_READ';
+    final public const EDIT = 'TAG_EDIT';
 
     public function __construct(private readonly Security $security)
     {
     }
 
+    #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         return \in_array($attribute, [self::EDIT, self::READ], true)
             && $subject instanceof Tag;
     }
 
+    #[\Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

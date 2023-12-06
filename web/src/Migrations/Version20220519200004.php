@@ -11,11 +11,13 @@ final class Version20220519200004 extends AbstractMigration
 {
     private array $walks = [];
 
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function preUp(Schema $schema): void
     {
 
@@ -29,11 +31,13 @@ final class Version20220519200004 extends AbstractMigration
         $this->walks = $this->connection->executeQuery($query)->fetchAllAssociative();
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE way_point ADD visitedAt DATETIME NOT NULL DEFAULT NOW()');
     }
 
+    #[\Override]
     public function postUp(Schema $schema): void
     {
         foreach ($this->walks as $walk) {
@@ -52,6 +56,7 @@ final class Version20220519200004 extends AbstractMigration
         }
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE way_point DROP visitedAt');

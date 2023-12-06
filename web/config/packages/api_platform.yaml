@@ -22,3 +22,5 @@ api_platform:
         pagination_items_per_page: 10
         normalization_context:
             skip_null_values: false
+#        extra_properties:
+#            rfc_7807_compliant_errors: true

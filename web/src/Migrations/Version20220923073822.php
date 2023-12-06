@@ -9,11 +9,13 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20220923073822 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE team ADD guestNames LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', CHANGE isWithAgeRanges isWithAgeRanges TINYINT(1) NOT NULL');
@@ -26,6 +28,7 @@ final class Version20220923073822 extends AbstractMigration
 
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE team DROP guestNames, CHANGE isWithAgeRanges isWithAgeRanges TINYINT(1) DEFAULT 1 NOT NULL');

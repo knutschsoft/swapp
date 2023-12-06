@@ -11,11 +11,13 @@ class ContactsCount extends Constraint
     public string $messageShouldBeSet = 'way_point.contacts_count_not_set';
     public string $messageShouldNotBeSet = 'way_point.contacts_count_set';
 
+    #[\Override]
     public function validatedBy(): string
     {
         return ContactsCountValidator::class;
     }
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

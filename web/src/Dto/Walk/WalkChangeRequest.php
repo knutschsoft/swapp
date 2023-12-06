@@ -86,7 +86,7 @@ final class WalkChangeRequest
     public array $walkTeamMembers;
 
     #[AppAssert\UserOptionalRequirements]
-    public ?User $walkCreator;
+    public ?User $walkCreator = null;
 
     /** @var string[] */
     #[AppAssert\GuestNamesRequirements]

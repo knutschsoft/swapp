@@ -5,19 +5,10 @@ namespace App\Value;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-final class AgeGroup
+final readonly class AgeGroup
 {
-    private AgeRange $ageRange;
-
-    private Gender $gender;
-
-    private PeopleCount $peopleCount;
-
-    public function __construct(AgeRange $ageRange, Gender $gender, PeopleCount $peopleCount)
+    public function __construct(private AgeRange $ageRange, private Gender $gender, private PeopleCount $peopleCount)
     {
-        $this->ageRange = $ageRange;
-        $this->gender = $gender;
-        $this->peopleCount = $peopleCount;
     }
 
     public static function fromRangeGenderAndCount(AgeRange $range, Gender $gender, PeopleCount $peopleCount): self

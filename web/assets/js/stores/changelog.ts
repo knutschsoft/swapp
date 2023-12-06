@@ -13,7 +13,7 @@ export const useChangelogStore = defineStore("changelog", {
             {
                 header: '06.12.2023',
                 avatarText: '&#127877;',
-                avatarTitle: 'Nikolaus-Bug-Fix',
+                avatarTitle: 'Nikolaus-Update',
                 entries: [
                     {
                         text: [
@@ -30,6 +30,7 @@ export const useChangelogStore = defineStore("changelog", {
                             'Fix: Wenn die Paginierung der Runden- bzw. Wegpunktliste nicht auf 1 stand, dann wurde nach einem Neuladen der Seite 1 angezeigt und die Werte in der Tabelle waren nicht die der Seite 1.',
                         ],
                     },
+                    {text: 'Misc: Softwarebibliotheken geupdated.'},
                 ],
             },
             {

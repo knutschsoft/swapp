@@ -11,6 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 class Version20170222232845 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -21,6 +22,7 @@ class Version20170222232845 extends AbstractMigration
         $this->addSql('ALTER TABLE way_point CHANGE note note VARCHAR(4096) DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

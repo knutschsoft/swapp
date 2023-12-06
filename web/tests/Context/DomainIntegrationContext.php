@@ -35,10 +35,10 @@ final class DomainIntegrationContext extends RawMinkContext
     use RepositoryTrait;
 
     private EntityManagerInterface $em;
-    private UserPasswordHasherInterface $passwordEncoder;
+    private readonly UserPasswordHasherInterface $passwordEncoder;
     private RestContext $restContext;
-    private JWTTokenManagerInterface $jwtManager;
-    private string $publicDir;
+    private readonly JWTTokenManagerInterface $jwtManager;
+    private readonly string $publicDir;
 
     public function __construct(KernelInterface $kernel)
     {
@@ -183,7 +183,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 $user->disable();
             }
             $rolesString = $row['roles'] ?? '';
-            $roles = \explode(',', $rolesString);
+            $roles = \explode(',', (string) $rolesString);
             foreach ($roles as $role) {
                 $user->addRole($role);
             }
@@ -736,7 +736,7 @@ final class DomainIntegrationContext extends RawMinkContext
                     Assert::null($wayPoint->getImageName());
                 } else {
                     Assert::notNull($wayPoint->getImageName());
-                    $imageNameList = \explode('_', $imageName);
+                    $imageNameList = \explode('_', (string) $imageName);
                     Assert::count($imageNameList, 2);
                     $timestamp = $this->enrichText($imageNameList[0]);
                     Assert::contains($wayPoint->getImageName(), $imageNameList[1]);
@@ -878,7 +878,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $team->setName($row['name'] ?? 'Clari@narf.de'.$key);
             $users = $this->getUsersFromString($row['users'] ?? '');
             $team->setUsers(new ArrayCollection($users));
-            $team->setLocationNames(isset($row['locationNames']) && $row['locationNames'] ? \explode(',', $row['locationNames']) : []);
+            $team->setLocationNames(isset($row['locationNames']) && $row['locationNames'] ? \explode(',', (string) $row['locationNames']) : []);
             $isWithContactsCount = false;
             if (isset($row['isWithContactsCount']) && '' !== $row['isWithContactsCount']) {
                 $isWithContactsCount = (bool) $this->enrichText($row['isWithContactsCount']);

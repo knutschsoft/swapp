@@ -16,7 +16,7 @@ final class AcceptanceContext extends MinkContext
 {
     use RepositoryTrait;
 
-    private RouterInterface $router;
+    private readonly RouterInterface $router;
 
     public function __construct(KernelInterface $kernel)
     {
@@ -354,7 +354,7 @@ final class AcceptanceContext extends MinkContext
         if (\str_starts_with($value, '@')) {
             $path = \sprintf(
                 "%s%s%s",
-                \rtrim($this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR),
+                \rtrim((string) $this->getMinkParameter('files_path'), \DIRECTORY_SEPARATOR),
                 \DIRECTORY_SEPARATOR,
                 \substr($value, 1)
             );

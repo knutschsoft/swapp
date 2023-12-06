@@ -8,13 +8,13 @@ use Webmozart\Assert\Assert;
 
 final class Gender
 {
-    public const GENDER_QUEER = 'x';
+    public const string GENDER_QUEER = 'x';
 
-    public const GENDER_FEMALE = 'w';
+    public const string GENDER_FEMALE = 'w';
 
-    public const GENDER_MALE = 'm';
+    public const string GENDER_MALE = 'm';
 
-    private string $gender;
+    private readonly string $gender;
 
     public function __construct(string $gender)
     {

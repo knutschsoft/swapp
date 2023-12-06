@@ -57,7 +57,7 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
             ->setParameter('client', $client)
             ->andWhere('u.isEnabled = :isEnabled')
             ->setParameter('isEnabled', true)
-            ->setFirstResult(\rand(0, $count - 1))
+            ->setFirstResult(\random_int(0, $count - 1))
             ->setMaxResults(1)
             ->getQuery()
             ->getSingleResult();

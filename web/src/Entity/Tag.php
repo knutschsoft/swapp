@@ -62,9 +62,9 @@ use Webmozart\Assert\Assert;
 #[ApiFilter(OrderFilter::class, properties: ['name'])]
 #[ORM\Table(name: 'tag')]
 #[ORM\Entity(repositoryClass: DoctrineORMTagRepository::class)]
-class Tag
+class Tag implements \Stringable
 {
-    public const COLORS = [
+    final public const COLORS = [
         "Navy",
         "MediumBlue",
         "Blue",
