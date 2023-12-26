@@ -99,6 +99,13 @@ export const useGeneralStore = defineStore("general", {
 
             return wayPointFilter;
         },
+        getWalkFilter({walkFilter}): WalkFilter {
+            if (!walkFilter.startTime || !dayjs(walkFilter.startTime.startDate).isValid() || !dayjs(walkFilter.startTime.endDate).isValid()) {
+                walkFilter.startTime = defaultWalkFilter.startTime;
+            }
+
+            return walkFilter;
+        },
     },
     actions: {
         setApiUrl(apiUrl: string): void {

@@ -412,7 +412,7 @@ export default {
     },
     computed: {
         filter() {
-            return this.generalStore.walkFilter;
+            return this.generalStore.getWalkFilter;
         },
         defaultFilter() {
             return this.generalStore.defaultWalkFilter;
@@ -531,15 +531,17 @@ export default {
             if (this.filter.name) {
                 title = `NAME_${this.filter.name}_${title}`;
             }
-            if (this.filter?.startTime?.startDate && this.filter?.startTime?.endDate) {
-                const formattedStartDate = dayjs(this.filter.startTime.startDate).format('YYYYMMDD');
-                const formattedEndDate = dayjs(this.filter.startTime.endDate).format('YYYYMMDD');
+
+            const startDate = dayjs(this.filter?.startTime?.startDate);
+            const endDate = dayjs(this.filter?.startTime?.endDate);
+            if (startDate.isValid() && endDate.isValid()) {
+                const formattedStartDate = startDate.format('YYYYMMDD');
+                const formattedEndDate = endDate.format('YYYYMMDD');
                 if (formattedStartDate === formattedEndDate) {
                     title = `${formattedStartDate}_${title}`;
                 } else {
                     title = `${formattedStartDate}-${formattedEndDate}_${title}`;
                 }
-
             }
 
             return title;
