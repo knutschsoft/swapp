@@ -87,6 +87,7 @@
     import { useUserStore } from '../stores/user';
     import { useWayPointStore } from '../stores/way-point';
     import { useWalkStore } from '../stores/walk';
+    import { useTagStore } from "../stores/tag";
 
     export default {
         name: "WalkDetail",
@@ -108,6 +109,7 @@
             return {
                 authStore: useAuthStore(),
                 clientStore: useClientStore(),
+                tagStore: useTagStore(),
                 userStore: useUserStore(),
                 walkStore: useWalkStore(),
                 wayPointStore: useWayPointStore(),
@@ -131,6 +133,9 @@
             },
             hasWalks() {
                 return this.walkStore.hasWalks;
+            },
+            hasTags() {
+                return this.tagStore.hasTags;
             },
             walks() {
                 return this.walkStore.getWalks;
@@ -156,7 +161,13 @@
                 this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
                 return;
             }
-            await this.clientStore.fetchByIri(this.walk.client);
+            const promises = [
+                this.clientStore.fetchByIri(this.walk.client),
+            ];
+            if (!this.hasTags) {
+                promises.push(this.tagStore.fetchTags());
+            }
+            await Promise.all(promises);
 
             let wayPointPromises = [];
             let wayPointPromiseIds = [];

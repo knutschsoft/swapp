@@ -20,6 +20,11 @@ export const useChangelogStore = defineStore("changelog", {
                             'Fix: Beim Aufruf der Wegpunkt-Detailseite konnte es passieren, dass die Tags nicht korrekt geladen wurden und eine Fehlermeldung erschien.',
                         ],
                     },
+                    {
+                        text: [
+                            'Fix: Beim Aufruf der Runden-Detailseite konnte es passieren, dass die Tags nicht korrekt geladen und nicht dargestellt wurden.',
+                        ],
+                    },
                     {text: 'Misc: Softwarebibliotheken geupdated.'},
                 ],
             },
