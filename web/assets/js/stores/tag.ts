@@ -38,6 +38,9 @@ export const useTagStore = defineStore("tag", {
         getTags({tags}): Tag[] {
             return tags;
         },
+        hasTags({tags}): boolean {
+            return tags.length > 0;
+        },
         getTagById({tags}): (id: number | string) => Tag | undefined {
             return (id: number | string): Tag | undefined => {
                 return tags.find(tag => String(tag.tagId) === String(id));

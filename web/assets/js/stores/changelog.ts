@@ -11,6 +11,19 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '01.06.2024',
+                avatarText: '&#127877;',
+                avatarTitle: 'Kindertags-Update',
+                entries: [
+                    {
+                        text: [
+                            'Fix: Beim Aufruf der Wegpunkt-Detailseite konnte es passieren, dass die Tags nicht korrekt geladen wurden und eine Fehlermeldung erschien.',
+                        ],
+                    },
+                    {text: 'Misc: Softwarebibliotheken geupdated.'},
+                ],
+            },
+            {
                 header: '06.12.2023',
                 avatarText: '&#127877;',
                 avatarTitle: 'Nikolaus-Update',
