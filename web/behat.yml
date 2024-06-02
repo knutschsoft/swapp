@@ -42,7 +42,7 @@ default:
                 mode: default
                 autoClean: true
                 # size: 1444x1280
-                hostUrl: "https://swapp.local/images/screenshots/"
+                hostUrl: "$BEHAT_HOST_URL"
             trackJs:
                 errors: true
                 warns: true

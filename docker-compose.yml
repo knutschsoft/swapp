@@ -31,6 +31,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is not set or empty}
       - DB_USER=${DB_USER:?DB_USER is not set or empty}
       - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+      - BEHAT_HOST_URL=${BEHAT_HOST_URL:-https://swapp.local/images/screenshots/}
     restart: "always"
     depends_on:
       - mysql
