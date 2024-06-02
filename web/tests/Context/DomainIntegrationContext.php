@@ -316,8 +316,8 @@ final class DomainIntegrationContext extends RawMinkContext
             $walk = $this->getWalkByName($row['walkName']);
             $wayPoint = WayPoint::fromWalk($walk);
             $wayPoint->setLocationName($row['locationName']);
-            $wayPoint->setNote($row['beobachtung'] ?? 'null');
-            $wayPoint->setOneOnOneInterview($row['einzelgespraech'] ?? 'null');
+            $wayPoint->setNote($row['beobachtung'] ?? '');
+            $wayPoint->setOneOnOneInterview($row['einzelgespraech'] ?? '');
             $wayPoint->setVisitedAt(isset($row['visitedAt']) ? new \DateTime($row['visitedAt']) : new \DateTime());
             if ($walk->isWithContactsCount()) {
                 $wayPoint->setContactsCount($this->enrichText($row['contactsCount'] ?? 'int<7>'));

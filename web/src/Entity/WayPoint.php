@@ -408,12 +408,12 @@ class WayPoint implements \Stringable
     #[Groups(['wayPoint:read'])]
     public function getNote(): ?string
     {
-        return $this->note;
+        return (string) $this->note;
     }
 
     public function setNote(?string $note): void
     {
-        $this->note = $note;
+        $this->note = (string) $note;
     }
 
     #[Groups(['wayPoint:read'])]
