@@ -1,5 +1,6 @@
 <template>
     <b-form
+        v-if="walk"
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
