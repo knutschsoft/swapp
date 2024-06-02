@@ -12,9 +12,31 @@ export const useChangelogStore = defineStore("changelog", {
         changelogs: [
             {
                 header: '01.06.2024',
-                avatarText: '&#127877;',
+                avatarText: '&#129490;',
                 avatarTitle: 'Kindertags-Update',
                 entries: [
+                    {
+                        text: [
+                            'UX-Feature: Die Tabelle mit den Wegpunkten auf der Runden-Detailseite ist aufklappbar, so dass ein Nutzer alle Daten eines Wegpunktes in der Tabelle sieht und sich schnell einen Überblick übr die gesamte letzte Runde machen kann.',
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/20240601_Rundendetailseite_Wegpunktetabelle_vorher_nachher.png',
+                                thumbnailHeight: '100px',
+                                description: 'Darstellung der aufgeklappten Wegpunkte-Tabelle auf der Runden-Detailseite (links: vorher - rechts: neu)',
+                            },
+                            {
+                                src: '../changelog/20240601_Rundendetailseite_Wegpunktetabelle.png',
+                                thumbnailHeight: '100px',
+                                description: 'Darstellung der aufgeklappten Wegpunkte-Tabelle auf der Runden-Detailseite',
+                            },
+                            {
+                                src: '../changelog/20240601_Rundendetailseite_Wegpunktetabelle_groß.png',
+                                thumbnailHeight: '100px',
+                                description: 'Darstellung der aufgeklappten Wegpunkte-Tabelle auf der Runden-Detailseite (breiter Bildschirm)',
+                            },
+                        ],
+                    },
                     {
                         text: [
                             'Fix: Beim Aufruf der Wegpunkt-Detailseite konnte es passieren, dass die Tags nicht korrekt geladen wurden und eine Fehlermeldung erschien.',

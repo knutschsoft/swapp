@@ -1,6 +1,6 @@
 <template>
     <b-badge
-        class="font-weight-bold"
+        class="font-weight-bold d-flex align-items-center"
         :style="`background-color: ${ color }`"
         pill
         font-scale="2"

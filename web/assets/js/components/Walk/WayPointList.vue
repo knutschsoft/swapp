@@ -1,7 +1,31 @@
 <template>
     <div>
+        <div class="p-2">
+            <b-row>
+                <b-col
+                    class="my-1"
+                    xs="12"
+                    sm="12"
+                    md="12"
+                    xl="12"
+                >
+                    <b-button
+                        size="sm"
+                        block
+                        @click="isDetailsShowing = !isDetailsShowing"
+                        data-test="toggle-waypoint-details"
+                    >
+                        Alle Details {{ isDetailsShowing ? 'verbergen' : 'anzeigen' }}
+                        <mdicon
+                            :name="isDetailsShowing ? 'EyeOffOutline' : 'EyeOutline'"
+                        />
+                    </b-button>
+                </b-col>
+            </b-row>
+        </div>
         <b-table
             v-if="!isLoading && walk"
+            ref="waypointsTable"
             show-empty
             emptyText="Für diese Runde gibt es keine Wegpunkte."
             small
@@ -16,6 +40,15 @@
                     :value="data.value"
                 />
             </template>
+            <template #row-details="row">
+                <WayPointDetailData
+                    :walk-id="walk.walkId"
+                    :way-point-id="row.item.wayPointId"
+                    :excluded-attributes="['walk', 'locationName', 'visitedAt', 'isMeeting']"
+                    :hide-empty-age-groups="true"
+                />
+            </template>
+
             <template v-slot:cell(actions)="row">
                 <router-link
                     :to="{name: 'WayPointDetail', params: { walkId: walk.walkId, wayPointId: row.item.wayPointId}}"
@@ -43,10 +76,12 @@ import LocationLink from '../LocationLink.vue';
 import dayjs from 'dayjs';
 import { useWayPointStore } from '../../stores/way-point';
 import { useWalkStore } from '../../stores/walk';
+import WayPointDetailData from "../WayPoint/WayPointDetailData.vue";
 
 export default {
     name: 'WayPointList',
     components: {
+        WayPointDetailData,
         LocationLink,
     },
     props: {
@@ -56,6 +91,7 @@ export default {
     },
     data: function () {
         return {
+            isDetailsShowing: false,
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
         };
@@ -109,8 +145,9 @@ export default {
                 return wayPoints;
             }
             this.walk.wayPoints.forEach(iri => {
-                const wayPoint = this.getWayPointByIri(iri);
+                let wayPoint = this.getWayPointByIri(iri);
                 if (wayPoint) {
+                    this.$set(wayPoint, '_showDetails', this.isDetailsShowing);
                     wayPoints.push(wayPoint);
                 }
             });

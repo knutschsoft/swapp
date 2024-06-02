@@ -1,103 +1,171 @@
 <template>
-    <div>
-        <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
-            Runde:
-        </div>
+    <div v-if="walk">
         <div
-            class="d-inline-flex p-2 bd-highlight"
-        >
-            <router-link
-                :to="{name: 'WalkDetail', params: { walkId: walk.walkId}}"
-            >
-                {{ walk.name }}
-            </router-link>
-        </div>
-        <div
-            v-for="(field, index2) in fields"
-            :key="index2"
-            :class="{'text-muted': field.isAgeGroup && !field.value}"
+            v-if="!excludedAttributes.includes('walk')"
         >
             <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
-                {{ field.name }}:
+                Runde:
+            </div>
+            <div
+                class="d-inline-flex p-2 bd-highlight"
+            >
+                <router-link
+                    :to="{name: 'WalkDetail', params: { walkId: walk.walkId}}"
+                >
+                    {{ walk.name }}
+                </router-link>
+            </div>
+        </div>
+        <div
+            v-if="!excludedAttributes.includes('locationName')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Ort:
             </div>
             <div
                 class="d-inline-flex p-2 bd-highlight"
             >
                 <location-link
-                    v-if="field.name === 'Ort'"
-                    :value="field.value"
+                    :value="wayPoint.locationName"
                 />
-                <nl2br
-                    v-else-if="field.name === 'Beobachtung'"
-                    tag="div"
-                    :text="field.value.trim()"
-                    class-name="text-left"
-                />
-                <div
-                    v-else-if="field.name === 'Anzahl direkter Kontakte'"
-                >
-                    {{ field.value === null ? 'nicht erfasst' : field.value}}
-                </div>
-                <nl2br
-                    v-else-if="field.name === 'Einzelgespräch'"
-                    tag="div"
-                    :text="field.value.trim()"
-                    class-name="text-left"
-                />
-                <div
-                    v-else-if="field.name === 'Tags'"
-                    class="text-left"
-                >
-                    <template
-                        v-if="0 === field.value.length"
-                    >
-                        keine Tags vergeben
-                    </template>
-                    <template
-                        v-for="tag in field.value"
-                    >
-                        {{ tag.name }}
-                        <span
-                            v-if="!tag.isEnabled"
-                            class="text-muted"
-                        >
-                            (deaktivierter Tag)
-                        </span>
-                        <color-badge
-                            v-if="tag"
-                            :color="tag.color"
-                            class="mr-2"
-                        />
-                    </template>
-                </div>
-                <template
-                    v-else-if="field.name === 'Bild'"
-                >
-                    <silent-box
-                        v-if="field.value"
-                        :gallery="gallery"
-                    />
-
-                    <template v-else>
-                        kein Bild hochgeladen
-                    </template>
-                </template>
-                <div
-                    v-else-if="field.name === 'Personenanzahl von Nutzergruppen'"
-                    class="d-flex flex-wrap"
-                >
-                    <div
-                        v-for="userGroup in field.value"
-                        class="mr-2 flex-fill"
-                        :class="{'text-muted': userGroup.peopleCount.count === 0}"
-                    >
-                        {{ userGroup.userGroupName.name }}:&nbsp;{{ userGroup.peopleCount.count }}
-                    </div>
-                </div>
-                <template v-else>
-                    {{ field.value }}
-                </template>
             </div>
+        </div>
+        <div
+            v-if="!excludedAttributes.includes('visitedAt')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Ankunft:
+            </div>
+            <div
+                class="d-inline-flex p-2 bd-highlight"
+            >
+                {{ visitedAt }}
+            </div>
+        </div>
+        <div
+            v-if="!excludedAttributes.includes('note')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Beobachtung:
+            </div>
+            <nl2br
+                tag="div"
+                :text="wayPoint.note.trim()"
+                class-name="d-inline-flex p-2 bd-highlight"
+            />
+        </div>
+        <div
+            v-if="!excludedAttributes.includes('oneOnOneInterview')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Einzelgespräch:
+            </div>
+            <nl2br
+                tag="div"
+                :text="wayPoint.oneOnOneInterview.trim()"
+                class-name="d-inline-flex p-2 bd-highlight"
+            />
+        </div>
+        <div
+            v-if="!excludedAttributes.includes('imageName')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Bild:
+            </div>
+            <silent-box
+                v-if="wayPoint.imageName"
+                :gallery="gallery"
+            />
+            <template v-else>
+                kein Bild hochgeladen
+            </template>
+        </div>
+        <div
+            v-if="!excludedAttributes.includes('isMeeting')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Meeting:
+            </div>
+            {{ wayPoint.isMeeting ? 'ja' : 'nein' }}
+        </div>
+        <div
+            v-if="!excludedAttributes.includes('wayPointTags')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Tags:
+            </div>
+            <div
+                class="d-inline-flex flex-wrap p-2 bd-highlight"
+            >
+                <template
+                    v-if="0 === wayPoint.wayPointTags.length"
+                >
+                    keine Tags vergeben
+                </template>
+                <div
+                    v-for="tag in wayPointTags"
+                    class="d-flex flex-nowrap"
+                >
+                    {{ tag.name }}
+                    <span
+                        v-if="!tag.isEnabled"
+                        class="text-muted"
+                    >
+                        (deaktivierter Tag)
+                    </span>
+                    <color-badge
+                        :color="tag.color"
+                        class="mr-3 ml-1"
+                    />
+                </div>
+            </div>
+        </div>
+        <div
+            v-if="walk.isWithAgeRanges && !excludedAttributes.includes('ageRanges')"
+        >
+            <div
+                v-for="ageGroup in ageGroups"
+            >
+                <div
+                    class="d-inline-flex p-2 bd-highlight font-weight-bold"
+                    :class="{'text-muted': !ageGroup.value}"
+                >
+                    {{ ageGroup.name }}:
+                </div>
+                {{ ageGroup.value }}
+            </div>
+
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Anzahl Personen vor Ort:
+            </div>
+            {{ wayPoint.peopleCount }}
+        </div>
+        <div
+            v-else-if="walk.isWithPeopleCount && !excludedAttributes.includes('peopleCount')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Anzahl Personen vor Ort:
+            </div>
+            {{ wayPoint.peopleCount }}
+        </div>
+
+        <div
+            v-if="walk.isWithUserGroups && !excludedAttributes.includes('userGroups')"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Personenanzahl von Nutzergruppen:
+            </div>
+
+            {{ wayPoint.userGroups === null ? 'nicht erfasst' : wayPoint.userGroups.value }}
+        </div>
+        <div
+            v-if="walk.isWithContactsCount && !excludedAttributes.includes('contactsCount')"
+            class="d-flex flex-wrap"
+        >
+            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+                Anzahl direkter Kontakte:
+            </div>
+            {{ this.wayPoint.contactsCount }}
         </div>
     </div>
 </template>
@@ -124,6 +192,14 @@
             },
             wayPointId: {
                 required: true,
+            },
+            excludedAttributes: {
+                required: false,
+                default: () => [],
+            },
+            hideEmptyAgeGroups: {
+                required: false,
+                default: false,
             }
         },
         data: function () {
@@ -176,52 +252,40 @@
                     description: this.wayPoint.imageName,
                 }];
             },
-            fields() {
-                if (!this.wayPoint) {
-                    return [];
-                }
-                let ageGroups = [];
+            ageGroupsSorted() {
                 let ageGroupsSorted = [];
-                let sumPeopleCount = 0;
                 this.wayPoint.ageGroups.forEach(ageGroup => {
-                        ageGroupsSorted[String(ageGroup.ageRange.rangeEnd)+String(ageGroup.gender.gender.charCodeAt(0))] = ageGroup;
-                    });
-                ageGroupsSorted
+                    ageGroupsSorted[String(ageGroup.ageRange.rangeEnd)+String(ageGroup.gender.gender.charCodeAt(0))] = ageGroup;
+                });
+
+                return ageGroupsSorted;
+            },
+            ageGroups() {
+                let ageGroups = [];
+                this.ageGroupsSorted
                     .forEach(ageGroup => {
-                    ageGroups.push({
-                        name: ageGroup.ageRange.rangeStart+'-'+ageGroup.ageRange.rangeEnd+ageGroup.gender.gender,
-                        value: ageGroup.peopleCount.count,
-                        isAgeGroup: true,
-                    })
+                        if (this.hideEmptyAgeGroups && !ageGroup.peopleCount.count) {
+                            return;
+                        }
+
+                        ageGroups.push({
+                            name: ageGroup.ageRange.rangeStart+'-'+ageGroup.ageRange.rangeEnd+ageGroup.gender.gender,
+                            value: ageGroup.peopleCount.count,
+                        })
+                    });
+
+                return ageGroups;
+            },
+            sumPeopleCount() {
+                let sumPeopleCount = 0;
+                this.ageGroups.forEach(ageGroup => {
                     sumPeopleCount += ageGroup.peopleCount.count;
                 });
 
-                let fields = [
-                    { name: 'Ort', value: this.wayPoint.locationName },
-                    { name: 'Ankunft', value: dayjs(this.wayPoint.visitedAt).format('ddd, DD.MM.YYYY HH:mm') },
-                    { name: 'Beobachtung', value: this.wayPoint.note },
-                    { name: 'Einzelgespräch', value: this.wayPoint.oneOnOneInterview },
-                    { name: 'Bild', value: this.wayPoint.imageName },
-                    { name: 'Meeting', value: this.wayPoint.isMeeting ? 'ja' : 'nein' },
-                    { name: 'Tags', value: this.wayPointTags },
-                ];
-
-                if (this.walk.isWithAgeRanges) {
-                    fields = fields.concat(ageGroups);
-
-                    fields.push({ name: 'Anzahl Personen vor Ort', value: sumPeopleCount});
-                } else if (this.walk.isWithPeopleCount) {
-                    fields.push({ name: 'Anzahl Personen vor Ort', value: this.wayPoint.peopleCount});
-                }
-
-                if (this.walk.isWithUserGroups) {
-                    fields.push({ name: 'Personenanzahl von Nutzergruppen', value: this.wayPoint.userGroups });
-                }
-                if (this.walk.isWithContactsCount) {
-                    fields.push({ name: 'Anzahl direkter Kontakte', value: this.wayPoint.contactsCount });
-                }
-
-                return fields;
+                return sumPeopleCount;
+            },
+            visitedAt() {
+                return dayjs(this.wayPoint.visitedAt).format('ddd, DD.MM.YYYY HH:mm');
             },
         },
         watch: {},
