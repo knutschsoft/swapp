@@ -99,6 +99,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     paginationItemsPerPage: 5
 )]
 #[ORM\Table(name: 'walk')]
+#[ORM\Index(columns: ["name"], name: "idx_walk_name")]
+#[ORM\Index(columns: ["teamName"], name: "idx_walk_teamName")]
+#[ORM\Index(columns: ["name", "teamName"], name: "idx_walk_name_teamName")]
 #[ORM\Entity(repositoryClass: DoctrineORMWalkRepository::class)]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['id', 'name', 'rating', 'teamName', 'startTime', 'endTime', 'isResubmission'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isResubmission', 'isUnfinished'])]
@@ -171,7 +174,7 @@ class Walk implements \Stringable
     #[ORM\Column(type: Types::JSON)]
     private array $conceptOfDay = [];
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 100)]
     private string $teamName;
 
     #[ORM\Column(name: 'deletedAt', type: 'datetime', nullable: true)]

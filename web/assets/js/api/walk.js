@@ -8,7 +8,7 @@ const updateFilterParams = function (params) {
         sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
     }
     for (const [key, value] of Object.entries(params.filter)) {
-        if (value === null || value === undefined) {
+        if (value === null || value === undefined || '' === value) {
         } else if ('startTime' === key) {
             if (value.startDate && value.endDate) {
                 sort += `&${key}[after]=${dayjs(value.startDate).startOf('day').toISOString()}&${key}[before]=${dayjs(value.endDate).endOf('day').toISOString()}`;

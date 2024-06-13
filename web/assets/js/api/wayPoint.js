@@ -8,12 +8,12 @@ const updateFilterParams = function (params) {
         sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
     }
     for (const [key, value] of Object.entries(params.filter)) {
-        if (value === null || value === undefined) {
+        if (value === null || value === undefined || '' === value) {
         } else if ('wayPointTags' === key) {
             value.forEach(iri => {
                 sort += `&${key}[]=${iri}`;
             });
-        } else if ('teamName' === key) {
+        } else if ('teamName' === key && '' !== value) {
             sort += `&walk.${key}=${value}`;
         } else if ('visitedAt' === key) {
             if (value.startDate && value.endDate) {

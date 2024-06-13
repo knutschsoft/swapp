@@ -86,6 +86,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     'walk.teamName' => 'partial',
     'walk' => 'exact',
 ])]
+#[ORM\Index(columns: ["locationName", "note", "oneOnOneInterview"], name: "idx_search")]
 class WayPoint implements \Stringable
 {
     use TimestampableEntity;

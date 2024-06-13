@@ -21,12 +21,12 @@ const updateFilterParams = function (params: any) {
         return sort;
     }
     for (const [key, value] of Object.entries(params.filter)) {
-        if (value === null || value === undefined) {
+        if (value === null || value === undefined || '' === value) {
         } else if ('wayPointTags' === key && Array.isArray(value)) {
             value.forEach((iri: String) => {
                 sort += `&${key}[]=${iri}`;
             });
-        } else if ('teamName' === key) {
+        } else if ('teamName' === key && '' !== value) {
             sort += `&walk.${key}=${value}`;
         } else if ('visitedAt' === key) {
             // @ts-ignore
