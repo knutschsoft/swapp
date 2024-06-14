@@ -19,7 +19,7 @@ class TeamNameRequirements extends Compound
             new Assert\NotBlank(),
             new Assert\NotNull(),
             new Assert\Type('string'),
-            new Assert\Length(min: 3, max: 100, normalizer: 'trim'),
+            new Assert\Length(min: 3, max: 50, normalizer: 'trim'),
         ];
     }
 }

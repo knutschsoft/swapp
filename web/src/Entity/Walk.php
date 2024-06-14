@@ -118,7 +118,7 @@ class Walk implements \Stringable
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 1024)]
+    #[ORM\Column(length: 50)]
     private string $name;
 
     /** @var Collection<int, WayPoint> **/

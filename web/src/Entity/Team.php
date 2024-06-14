@@ -58,7 +58,7 @@ class Team implements \Stringable
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 50)]
     private string $name = '';
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'teams')]

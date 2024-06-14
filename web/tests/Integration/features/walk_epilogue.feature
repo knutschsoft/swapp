@@ -47,31 +47,31 @@ Feature: Testing walk epilogue resource
       | Gamescon | karl@gamer.de,pinky@gamer.de |
     Given I am authenticated against api as "admin@gamer.de"
     When I send an api platform "POST" request to "/api/walks/epilogue" with parameters:
-      | key            | value                                                         |
-      | walk           | walkIri<Gamescon>                                             |
-      | name           | \| <br><br><a href=“https:///www.google.com”>Google</a> holla |
-      | conceptOfDay   | array<High and out.>                                          |
-      | weather        | Sonne                                                         |
-      | isResubmission | <false>                                                       |
-      | holidays       | <false>                                                       |
-      | commitments    | narf                                                          |
-      | insights       | zorp                                                          |
-      | systemicAnswer | zorp                                                          |
-      | walkReflection | zorp                                                          |
-      | rating         | int<2>                                                        |
-      | startTime      | 2021-05-11T15:51:06+00:00                                     |
-      | endTime        | 2030-05-11T15:51:08+00:00                                     |
-#    And print last response
+        | key            | value                                             |
+        | walk           | walkIri<Gamescon>                                 |
+        | name           | \| <br><a href=“https:///www.go.com”>Go</a> holla |
+        | conceptOfDay   | array<High and out.>                              |
+        | weather        | Sonne                                             |
+        | isResubmission | <false>                                           |
+        | holidays       | <false>                                           |
+        | commitments    | narf                                              |
+        | insights       | zorp                                              |
+        | systemicAnswer | zorp                                              |
+        | walkReflection | zorp                                              |
+        | rating         | int<2>                                            |
+        | startTime      | 2021-05-11T15:51:06+00:00                         |
+        | endTime        | 2030-05-11T15:51:08+00:00                         |
+#      And print last response
     Then the response status code should be 200
     And the JSON nodes should be equal to:
-      | @type | Walk            |
-      | name  | \| Google holla |
+        | @type | Walk  |
+        | name  | \| Go holla|
 
-    Given I can find the following walks in database:
-      | name            | rating |
-      | \| Google holla | int<2> |
+      Given I can find the following walks in database:
+          | name        | rating |
+          | \| Go holla | int<2> |
 
-    And there are exactly 2 walks in database
+      And there are exactly 2 walks in database
 
 
   @api @walkChange

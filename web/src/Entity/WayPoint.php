@@ -86,7 +86,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     'walk.teamName' => 'partial',
     'walk' => 'exact',
 ])]
-#[ORM\Index(columns: ["locationName", "note", "oneOnOneInterview"], name: "idx_search")]
+#[ORM\Index(columns: ["locationName"], name: "idx_wayPoint_locationName")]
 class WayPoint implements \Stringable
 {
     use TimestampableEntity;
@@ -114,7 +114,7 @@ class WayPoint implements \Stringable
     #[ORM\ManyToOne(targetEntity: Walk::class, inversedBy: 'wayPoints')]
     private Walk $walk;
 
-    #[ORM\Column(type: 'string', length: 4096)]
+    #[ORM\Column(length: 150)]
     private string $locationName = '';
 
     /** @var AgeGroup[] */
@@ -125,10 +125,10 @@ class WayPoint implements \Stringable
     #[ORM\Column(type: 'json_document')]
     private array $userGroups = [];
 
-    #[ORM\Column(type: 'string', length: 4096, nullable: true)]
+    #[ORM\Column(length: 4096, nullable: true)]
     private ?string $note = '';
 
-    #[ORM\Column(type: 'string', length: 4096)]
+    #[ORM\Column(length: 4096)]
     private string $oneOnOneInterview = '';
 
     #[ORM\Column(type: 'boolean')]

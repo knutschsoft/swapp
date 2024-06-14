@@ -17,7 +17,7 @@ class LocationNameRequirements extends Compound
     {
         return [
             new Assert\NotBlank(),
-            new Assert\Length(min: 2, max: 300, normalizer: 'trim'),
+            new Assert\Length(min: 2, max: 150, normalizer: 'trim'),
         ];
     }
 }
