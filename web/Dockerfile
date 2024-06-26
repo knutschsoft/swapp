@@ -116,7 +116,7 @@ COPY .docker /
 # USE DOCKER CACHE FOR VENDORS:
 # 1st: copy composer-files & run composer install
 # 2nd: copy project sources => changing of project sources does'n break cache for previous step
-COPY composer.json composer.lock package.json yarn.lock symfony.lock /var/www/html/
+COPY composer.json composer.lock package.json yarn.lock .yarnrc.yml symfony.lock /var/www/html/
 RUN if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
         chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
         cd /var/www/html && \
