@@ -120,7 +120,7 @@ COPY composer.json composer.lock package.json yarn.lock symfony.lock /var/www/ht
 RUN if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
         chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
         cd /var/www/html && \
-        gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction && \
+        gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction --no-scripts && \
         gosu ${CONTAINER_USER} yarn install; \
     fi
 
