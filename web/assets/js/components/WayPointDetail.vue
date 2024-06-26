@@ -12,7 +12,7 @@
             />
         </content-collapse>
         <content-collapse
-            v-if="walk && wayPoint && isAdmin"
+            v-if="walk && wayPoint && isAllowedToEdit"
             title="Wegpunkt bearbeiten"
             collapse-key="way-point-edit"
             is-visible-by-default
@@ -25,7 +25,7 @@
             />
         </content-collapse>
         <content-collapse
-            v-if="walk && wayPoint && isAdmin"
+            v-if="walk && wayPoint && isAllowedToDelete"
             title="Wegpunkt löschen"
             collapse-key="way-point-delete"
             is-visible-by-default
@@ -78,8 +78,11 @@
             };
         },
         computed: {
-            isAdmin() {
-                return this.authStore.isAdmin;
+            isAllowedToEdit() {
+                return this.authStore.isAdmin || this.authStore.currentUser['@id'] === this.walk.walkCreator;
+            },
+            isAllowedToDelete() {
+                return this.authStore.isAdmin || this.authStore.currentUser['@id'] === this.walk.walkCreator;
             },
             walk() {
                 return this.walkStore.getWalkById(this.walkId);

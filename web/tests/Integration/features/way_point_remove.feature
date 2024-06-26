@@ -17,11 +17,11 @@ Feature: Testing wayPoint delete resource
       | admin@gamer.de    | ROLE_ADMIN       | gamer@gmx.de  |
       | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following teams exists:
-      | name     | users                        | ageRanges          | client        |
-      | Westhang | karl@gmx.de,two@pac.de       | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | CA       | two@pac.de                   | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | Gamers   | karl@gamer.de,pinky@gamer.de |                    | gamer@gmx.de  |
-    Given the following systemic questions exists:
+        | name     | users                        | ageRanges          | client        |
+        | Westhang | karl@gmx.de,two@pac.de       | 1-10,3-12, 13 - 90 | client@gmx.de |
+        | CA       | two@pac.de,lonely@gmx.de     | 1-10,3-12, 13 - 90 | client@gmx.de |
+        | Gamers   | karl@gamer.de,pinky@gamer.de |                    | gamer@gmx.de  |
+      Given the following systemic questions exists:
       | question       | client        |
       | Esta muy bien? | client@gmx.de |
       | How are you?   | gamer@gmx.de  |
@@ -31,17 +31,37 @@ Feature: Testing wayPoint delete resource
       | Drogen      | Blue      | client@gmx.de |
       | Kulleraugen | Blue      | gamer@gmx.de  |
     Given the following walks exists:
-      | name        | team   | ageRanges |
-      | Spaziergang | CA     | 1-2,3-10  |
-      | Gamescon    | Gamers | 1-2,3-10  |
-    Given the following way points exists:
+        | name        | team   | ageRanges | walkCreator         |
+        | Spaziergang | CA     | 1-2,3-10  | user<lonely@gmx.de> |
+        | Gamescon    | Gamers | 1-2,3-10  |                     |
+      Given the following way points exists:
       | locationName | walkName    | tags           |
       | Assieck      | Spaziergang | Drogen, Gewalt |
       | Spass        | Spaziergang | Drogen, Gewalt |
 
   @api @wayPoint @remove
-  Scenario: I can request /api/way_points/remove as authenticated user and will delete a wayPoint including its tags
+  Scenario: I can request /api/way_points/remove as authenticated admin and will delete a wayPoint including its tags
     Given I am authenticated against api as "admin@gmx.de"
+    Given I can find the following wayPoints in database:
+      | locationName | imageName | contactsCount |
+      | Assieck      | <null>    | <null>        |
+    And there are exactly 4 tagWayPoints in database
+    And there are exactly 2 wayPoints in database
+    When I send an api platform "POST" request to "/api/way_points/remove" with parameters:
+      | key      | value                |
+      | wayPoint | wayPointIri<Assieck> |
+#    And print last response
+    Then the response status code should be 200
+
+    And I can not find the following wayPoints in database:
+      | locationName |
+      | Assieck      |
+    And there are exactly 1 wayPoints in database
+    And there are exactly 2 tagWayPoints in database
+
+  @api @wayPoint @remove
+  Scenario: I can request /api/way_points/remove as authenticated user which is walkCreator of wayPoints walk and will delete a wayPoint including its tags
+    Given I am authenticated against api as "lonely@gmx.de"
     Given I can find the following wayPoints in database:
       | locationName | imageName | contactsCount |
       | Assieck      | <null>    | <null>        |

@@ -16,10 +16,10 @@ Feature: Testing walk change resource
       | admin@gamer.de    | ROLE_ADMIN       | gamer@gmx.de  |
       | superadmin@gmx.de | ROLE_SUPER_ADMIN | main@gmx.de   |
     Given the following teams exists:
-      | name     | users                  | ageRanges          | client        |
-      | Westhang | karl@gmx.de,two@pac.de | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | CA       | two@pac.de             | 1-10,3-12, 13 - 90 | client@gmx.de |
-      | Gamers   | karl@gamer.de          |                    | gamer@gmx.de  |
+        | name     | users                    | ageRanges          | client        |
+        | Westhang | karl@gmx.de,two@pac.de   | 1-10,3-12, 13 - 90 | client@gmx.de |
+        | CA       | two@pac.de,lonely@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de |
+        | Gamers   | karl@gamer.de            |                    | gamer@gmx.de  |
     Given the following systemic questions exists:
       | question       | client        |
       | Esta muy bien? | client@gmx.de |
@@ -29,9 +29,9 @@ Feature: Testing walk change resource
       | Gewalt | Chocolate | client@gmx.de |
       | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
-      | name        | team   |
-      | Spaziergang | CA     |
-      | Gamescon    | Gamers |
+        | name        | team   | walkCreator         |
+        | Spaziergang | CA     | user<lonely@gmx.de> |
+        | Gamescon    | Gamers |                     |
     Given the following way points exists:
       | locationName | walkName    |
       | Assieck      | Spaziergang |
@@ -70,7 +70,7 @@ Feature: Testing walk change resource
       | hydra:description | Item not found for "/api/walks/ |
 
   @api @walkChange
-  Scenario: I can request /api/walks/change as authenticated user and will try to change a walk
+  Scenario: I can request /api/walks/change as authenticated admin and will try to change a walk
     Given I am authenticated against api as "admin@gamer.de"
     When I send an api platform "POST" request to "/api/walks/change" with parameters:
       | key  | value             |
@@ -111,3 +111,16 @@ Feature: Testing walk change resource
       | violations[13].message      | Dieser Wert sollte nicht null sein. |
       | violations[14].propertyPath | guestNames                          |
       | violations[14].message      | Dieser Wert sollte nicht null sein. |
+
+    @api @walkChange
+    Scenario: I can request /api/walks/change as authenticated user which is walkCreator and will try to change this walk
+        Given I am authenticated against api as "lonely@gmx.de"
+        When I send an api platform "POST" request to "/api/walks/change" with parameters:
+            | key  | value                |
+            | walk | walkIri<Spaziergang> |
+            | team | teamIri<Westhang>    |
+#    And print last JSON response
+        Then the response status code should be 422
+        And the JSON nodes should be equal to:
+            | violations[0].propertyPath  | name                                |
+            | violations[0].message       | Dieser Wert sollte nicht leer sein. |

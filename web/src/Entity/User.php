@@ -554,4 +554,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     {
         return (string) $this->updatedBy;
     }
+
+    public function equal(self $user): bool
+    {
+        return $this->getId() === $user->getId();
+    }
+
 }

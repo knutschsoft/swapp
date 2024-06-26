@@ -46,11 +46,15 @@ class WalkVoter extends Voter
         switch ($attribute) {
             case self::EDIT:
             case self::REMOVE:
-                if (!$this->security->isGranted(User::ROLE_ADMIN)) {
+                if (!$walk->getClient()->getId() === $user->getClient()->getId()) {
                     return false;
                 }
+                $walkCreator = $walk->getWalkCreator();
+                if ($walkCreator && $walkCreator->equal($user)) {
+                    return true;
+                }
 
-                return $walk->getClient()->getId() === $user->getClient()->getId();
+                return $this->security->isGranted(User::ROLE_ADMIN);
             case self::EDIT_START_TIME:
             case self::READ:
                 return $walk->getClient()->getId() === $user->getClient()->getId();

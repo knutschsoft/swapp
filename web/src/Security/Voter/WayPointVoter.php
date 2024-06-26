@@ -41,17 +41,22 @@ class WayPointVoter extends Voter
 
         /** @var WayPoint $wayPoint */
         $wayPoint = $subject;
+        $walk = $wayPoint->getWalk();
 
         switch ($attribute) {
             case self::REMOVE:
             case self::EDIT:
-                if (!$this->security->isGranted(User::ROLE_ADMIN)) {
+                if (!$walk->getClient()->equal($user->getClient())) {
                     return false;
                 }
+                $walkCreator = $walk->getWalkCreator();
+                if ($walkCreator && $walkCreator->equal($user)) {
+                    return true;
+                }
 
-                return $wayPoint->getWalk()->getClient()->getId() === $user->getClient()->getId();
+                return $this->security->isGranted(User::ROLE_ADMIN);
             case self::READ:
-                return $wayPoint->getWalk()->getClient()->getId() === $user->getClient()->getId();
+                return $walk->getClient()->equal($user->getClient());
         }
 
         return false;

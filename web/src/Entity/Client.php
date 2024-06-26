@@ -282,4 +282,9 @@ class Client implements \Stringable
     {
         return $this->updatedAt;
     }
+
+    public function equal(self $client): bool
+    {
+        return $this->getId() === $client->getId();
+    }
 }

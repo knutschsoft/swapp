@@ -466,6 +466,9 @@ trait RepositoryTrait
         if (\str_starts_with($text, 'userIri<')) {
             return \sprintf('/api/users/%s', (string) $this->getUserByEmail($referenceIdentifikator)->getId());
         }
+        if (\str_starts_with($text, 'user<')) {
+            return $this->getUserByEmail($referenceIdentifikator);
+        }
         if (\str_starts_with($text, 'userId<')) {
             return (string) $this->getUserByEmail($referenceIdentifikator)->getId();
         }

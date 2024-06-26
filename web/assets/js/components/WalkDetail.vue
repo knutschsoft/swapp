@@ -38,7 +38,7 @@
             />
         </content-collapse>
         <content-collapse
-            v-if="isAdmin && walk"
+            v-if="isAllowedToEdit && walk"
             :title="`Runde &quot;${walk.name}&quot; ändern`"
             collapse-key="walk-edit"
             is-visible-by-default
@@ -58,7 +58,7 @@
             />
         </content-collapse>
         <content-collapse
-            v-if="walk && isAdmin"
+            v-if="walk && isAllowedToDelete"
             title="Runde löschen"
             collapse-key="walk-delete"
             is-visible-by-default
@@ -116,8 +116,11 @@
             }
         },
         computed: {
-            isAdmin() {
-                return this.authStore.isAdmin;
+            isAllowedToEdit() {
+                return this.authStore.isAdmin || this.authStore.currentUser['@id'] === this.walk.walkCreator;
+            },
+            isAllowedToDelete() {
+                return this.authStore.isAdmin || this.authStore.currentUser['@id'] === this.walk.walkCreator;
             },
             isLoading() {
                 return this.walkStore.isLoading;
