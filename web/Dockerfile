@@ -1,4 +1,4 @@
-FROM composer:2.6 as composer
+FROM composer:2.7 as composer
 FROM node:21-bookworm-slim AS node
 FROM php:8.3.7-apache
 
