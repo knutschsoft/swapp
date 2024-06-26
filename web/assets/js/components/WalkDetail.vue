@@ -117,10 +117,10 @@
         },
         computed: {
             isAllowedToEdit() {
-                return this.authStore.isAdmin || this.authStore.currentUser['@id'] === this.walk.walkCreator;
+                return this.authStore.isAdmin || this.walk && this.authStore.currentUser['@id'] === this.walk.walkCreator;
             },
             isAllowedToDelete() {
-                return this.authStore.isAdmin || this.authStore.currentUser['@id'] === this.walk.walkCreator;
+                return this.authStore.isAdmin || this.walk && this.authStore.currentUser['@id'] === this.walk.walkCreator;
             },
             isLoading() {
                 return this.walkStore.isLoading;
