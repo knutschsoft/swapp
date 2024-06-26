@@ -358,8 +358,14 @@
                     return [];
                 }
 
+                const searchString = this.generalStore.navUserFilter.toLowerCase();
                 return this.users.slice(0).filter((user) => {
-                    return -1 !== user.username.toLowerCase().indexOf(this.generalStore.navUserFilter.toLowerCase());
+                    if (-1 !== user.username.toLowerCase().indexOf(searchString)) {
+                        return true;
+                    }
+                    const client = this.getClientByIri(user.client);
+
+                    return client && -1 !== client.name.toLowerCase().indexOf(searchString);
                 }).sort((a, b) => {
                     return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1;
                 });
