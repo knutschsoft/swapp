@@ -44,6 +44,8 @@ elif [ "${APP_ENVIRONMENT}" = "prod" ]; then
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}
 fi
 
+gosu ${CONTAINER_USER} phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/
+
 if [ "${APP_ENVIRONMENT}" != "dev" ]; then
     #setfacl -R -m u:www-data:rwx -m m:rwx var public/uploads
     #setfacl -dR -m u:www-data:rwx -m m:rwx var public/uploads

@@ -183,8 +183,7 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     },
     "extra": {
