@@ -559,5 +559,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     {
         return $this->getId() === $user->getId();
     }
-
 }
