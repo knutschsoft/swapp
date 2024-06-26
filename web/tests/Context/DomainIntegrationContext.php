@@ -185,6 +185,9 @@ final class DomainIntegrationContext extends RawMinkContext
             $rolesString = $row['roles'] ?? '';
             $roles = \explode(',', (string) $rolesString);
             foreach ($roles as $role) {
+                if (!$role) {
+                    continue;
+                }
                 $user->addRole($role);
             }
 
