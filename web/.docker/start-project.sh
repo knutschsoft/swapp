@@ -27,6 +27,8 @@ done
 bin/set_owner.sh
 bin/set_acl.sh ${CONTAINER_USER}
 
+yes y | yarn set version berry
+
 if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     APP_ENVIRONMENT=${APP_ENVIRONMENT} gosu ${CONTAINER_USER} composer install
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}

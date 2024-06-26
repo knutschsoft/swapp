@@ -1,4 +1,5 @@
 FROM composer:2.6 as composer
+FROM node:21-bookworm-slim AS node
 FROM php:8.3.7-apache
 
 ARG APP_ENVIRONMENT=prod
@@ -17,6 +18,14 @@ ENV PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors'
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/bin /usr/local/bin
+RUN rm /usr/local/bin/yarn
+RUN rm /usr/local/bin/yarnpkg
+RUN corepack enable yarn
+RUN yes y | yarn set version berry
+
 # replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -29,35 +38,10 @@ RUN apt-get update && apt-get install -y \
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# nvm environment variables
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 16.15.1
-ENV NVM_VERSION 0.39.1
-RUN mkdir $NVM_DIR
-
-# install nvm
-# https://github.com/creationix/nvm#install-script
-RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
-
-# install node and npm
-RUN source $NVM_DIR/nvm.sh \
-    && nvm install $NODE_VERSION \
-    && nvm alias default $NODE_VERSION \
-    && nvm use default
-
-# add node and npm to path so the commands are available
-ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-# yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
 RUN apt-get update && apt-get install -y \
         wget \
         openjdk-17-jre-headless \
         netcat-traditional \
-        yarn \
         libicu-dev \
         libzip-dev \
         libjpeg-dev \
@@ -134,19 +118,19 @@ COPY .docker /
 # 2nd: copy project sources => changing of project sources does'n break cache for previous step
 COPY composer.json composer.lock package.json yarn.lock symfony.lock /var/www/html/
 RUN if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
-        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html; \
-        cd /var/www/html; \
-        gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction; \
+        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
+        cd /var/www/html && \
+        gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction && \
         gosu ${CONTAINER_USER} yarn install; \
     fi
 
 COPY . /var/www/html
 RUN cd /var/www/html && \
     if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
-        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html; \
-        bin/set_acl.sh ${CONTAINER_USER}; \
-        gosu ${CONTAINER_USER} composer create-api-client; \
-        gosu ${CONTAINER_USER} yarn encore production; \
+        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
+        bin/set_acl.sh ${CONTAINER_USER} && \
+        gosu ${CONTAINER_USER} composer create-api-client && \
+        gosu ${CONTAINER_USER} yarn encore production && \
         gosu ${CONTAINER_USER} php bin/console cache:clear --env="${APP_ENVIRONMENT}" --no-debug; \
     fi
 

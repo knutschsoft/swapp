@@ -6,7 +6,7 @@
     "@babel/core": "^7.22.8",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.22.7",
-    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/fontawesome-svg-core": "^1.2",
     "@fortawesome/free-brands-svg-icons": "^5.13.1",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/vue-fontawesome": "^0.1.10",
@@ -22,18 +22,19 @@
     "bootstrap-vue": "^2.15.0",
     "color_library": "^0.0.2",
     "core-js": "^3.6.5",
+    "css-loader": "^7.1.2",
     "dayjs": "^1.11.9",
     "email-validator": "^2.0.4",
-    "eslint": "^8.23.1",
-    "eslint-loader": "^4.0.0",
+    "eslint": "^8.0",
     "eslint-plugin-vue": "^9.5.1",
     "eslint-webpack-plugin": "^3.2.0",
     "file-loader": "^6.0.0",
     "font-awesome-animation": "^0.2.1",
     "ionicons": "^4.6",
     "mdi-vue": "^3.0.13",
-    "node-sass": "^6.0.0",
+    "node-sass": "^9.0.0",
     "pinia": "^2.1.6",
+    "postcss": "^8.4",
     "postcss-loader": "^7.0.1",
     "regenerator-runtime": "^0.13.5",
     "sass-loader": "^13.0.2",
@@ -50,11 +51,11 @@
     "vue-silentbox": "^2.4.5",
     "vue2-daterange-picker": "^0.6.7",
     "vue2-leaflet": "^2.7.1",
-    "webpack": "^5.88.1",
+    "webpack": "^5.91",
     "webpack-cli": "^5.1.4",
     "webpack-notifier": "^1.8",
-    "workbox-webpack-plugin": "^6.5.1",
-    "workbox-window": "^6.5.1"
+    "workbox-webpack-plugin": "^7.0.0",
+    "workbox-window": "^7.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -66,5 +67,5 @@
   },
   "author": "robertfausk <robertfreigang@gmx.de>",
   "license": "MIT",
-  "devDependencies": {}
+  "packageManager": "yarn@4.3.1"
 }
