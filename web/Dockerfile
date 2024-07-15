@@ -109,7 +109,7 @@ RUN groupadd --gid ${HOST_GID} ${CONTAINER_GROUP} && \
 
 # contains dev-mode packages
 RUN gosu ${CONTAINER_USER} composer global config --no-plugins allow-plugins.pyrech/composer-changelogs true
-RUN gosu ${CONTAINER_USER} composer global require "pyrech/composer-changelogs:^1.6" --prefer-dist --no-progress --classmap-authoritative
+RUN gosu ${CONTAINER_USER} composer global require "pyrech/composer-changelogs:^2.1" --prefer-dist --no-progress --classmap-authoritative
 
 COPY .docker /
 
@@ -121,7 +121,7 @@ RUN if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
         chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
         cd /var/www/html && \
         gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction --no-scripts && \
-        gosu ${CONTAINER_USER} yarn install; \
+        gosu ${CONTAINER_USER} yarn; \
     fi
 
 COPY . /var/www/html
