@@ -11,6 +11,25 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '17.07.2024',
+                avatarText: '&#128055;',
+                avatarTitle: 'Tag des gelben Schweins-Update',
+                entries: [
+                    {
+                        text: [
+                            'UX-Feature: Ein Benutzender kann nun auch von ihm selbst erstellte Wegpunkt sowie Runden ändern sowie löschen.',
+                            'Dazu muss er Rundenersteller einer Runde sein bzw. Rundenersteller der Runde eines Wegpunktes.',
+                            'Das Ändern und Löschen war zuvor nur Benutzenden mit der Rolle "Admin" erlaubt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Die Tags in allen Wegpunkt-Formularen sind nun alphabetisch sortiert damit ein bestimmter Tag schneller gefunden werden kann.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '01.06.2024',
                 avatarText: '&#129490;',
                 avatarTitle: 'Kindertags-Update',

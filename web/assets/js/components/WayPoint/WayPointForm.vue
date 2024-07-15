@@ -786,10 +786,16 @@ export default {
             return this.initialWayPoint.wayPointTags.find(tagIri => !this.getTagByIri(tagIri)?.isEnabled);
         },
         tags() {
-            return this.tagStore.getTags.slice().filter(tag => tag.isEnabled);
+            return this.tagStore.getTags
+                .slice()
+                .sort((tagA, tagB) => tagA.name > tagB.name ? 1 : -1)
+                .filter(tag => tag.isEnabled);
         },
         disabledTags() {
-            return this.tagStore.getTags.slice().filter(tag => !tag.isEnabled);
+            return this.tagStore.getTags
+                .slice()
+                .sort((tagA, tagB) => tagA.name > tagB.name ? 1 : -1)
+                .filter(tag => !tag.isEnabled);
         },
         ageGroups() {
             let ageGroups = [];
