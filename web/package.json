@@ -32,6 +32,7 @@
     "file-loader": "^6.0.0",
     "font-awesome-animation": "^0.2.1",
     "ionicons": "^4.6",
+    "jquery": "^3.7.1",
     "leaflet": "^1.9.4",
     "mdi-vue": "^3.0.13",
     "node-sass": "^9.0",
@@ -69,5 +70,8 @@
   },
   "author": "robertfausk <robertfreigang@gmx.de>",
   "license": "MIT",
-  "packageManager": "yarn@4.3.1"
+  "packageManager": "yarn@4.3.1",
+  "devDependencies": {
+    "@types/jquery": "^3"
+  }
 }
