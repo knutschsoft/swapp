@@ -46,7 +46,7 @@ class WalkVoter extends Voter
         switch ($attribute) {
             case self::EDIT:
             case self::REMOVE:
-                if (!$walk->getClient()->getId() === $user->getClient()->getId()) {
+                if ($walk->getClient()->getId() !== $user->getClient()->getId()) {
                     return false;
                 }
                 $walkCreator = $walk->getWalkCreator();
