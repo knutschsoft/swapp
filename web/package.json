@@ -34,7 +34,7 @@
     "ionicons": "^4.6",
     "leaflet": "^1.9.4",
     "mdi-vue": "^3.0.13",
-    "node-sass": "^8.0",
+    "node-sass": "^9.0",
     "pinia": "^2.1.6",
     "postcss": "^8.4",
     "postcss-loader": "^7.0.1",
