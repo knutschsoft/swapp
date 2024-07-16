@@ -1,5 +1,5 @@
 FROM composer:2.7 as composer
-FROM node:21-bookworm-slim AS node
+FROM node:20-bookworm-slim AS node
 FROM php:8.3.7-apache
 
 ARG APP_ENVIRONMENT=prod
@@ -121,7 +121,7 @@ RUN if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
         chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
         cd /var/www/html && \
         gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction --no-scripts && \
-        gosu ${CONTAINER_USER} yarn; \
+        gosu ${CONTAINER_USER} yarn install; \
     fi
 
 COPY . /var/www/html
