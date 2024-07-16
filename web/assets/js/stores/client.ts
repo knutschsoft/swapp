@@ -31,7 +31,8 @@ export const useClientStore = defineStore("client", {
         errorArray: {'fetch': false, 'change': false, 'create': false},
     }),
     getters: {
-        isLoading: (state) => state.loadingArray.length > 0,
+        isLoadingChange: (state) => (clientIri: string) => state.loadingArray.includes(`change-${clientIri}`),
+        isLoadingCreate: (state) => state.loadingArray.includes(`create`),
         hasError: (state) => state.errorArray.fetch || state.errorArray.change || state.errorArray.create,
         getErrors: (state) => state.errorArray,
         getClients({clients}): Client[] {

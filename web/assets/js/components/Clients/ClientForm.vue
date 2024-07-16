@@ -212,7 +212,7 @@ export default {
         },
         isLoading() {
             if (this.initialClient['@id']) {
-                return this.clientStore.isLoadingChange(this.initialWalk['@id'])
+                return this.clientStore.isLoadingChange(this.initialClient['@id'])
             }
 
             return this.clientStore.isLoadingCreate;
