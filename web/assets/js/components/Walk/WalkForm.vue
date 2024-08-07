@@ -105,7 +105,7 @@
             </b-input-group>
         </form-group>
         <form-group label="Rundenstartzeit">
-            <b-row>
+            <b-row class="mb-1 mt-0">
                 <b-col>
                     <b-datepicker
                         v-model="startTimeDate"
@@ -131,7 +131,7 @@
             </b-row>
         </form-group>
         <form-group label="Rundenendzeit">
-            <b-row>
+            <b-row class="mb-1 mt-0">
                 <b-col>
                     <b-datepicker
                         v-model="endTimeDate"
@@ -156,30 +156,33 @@
                 </b-col>
             </b-row>
             <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top" />
-            <b-row>
+            <b-row class="mb-1 mt-0">
                 <b-col
                     class="mt-2"
                 >
-                    <b-button
-                        variant="outline-secondary"
+
+                    <v-btn
+                        color="secondary"
+                        outlined
                         block
-                        size="sm"
+                        small
                         @click="selectCurrentTime"
                     >
                         Schnellauswahl: aktueller Zeitpunkt
-                    </b-button>
+                    </v-btn>
                 </b-col>
                 <b-col
                     class="mt-2"
                 >
-                    <b-button
-                        variant="outline-secondary"
+                    <v-btn
+                        color="secondary"
+                        outlined
                         block
-                        size="sm"
+                        small
                         @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
                     >
                         Schnellauswahl: {{ initialWalk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
-                    </b-button>
+                    </v-btn>
                 </b-col>
             </b-row>
             <template v-slot:valid-feedback>
@@ -380,17 +383,16 @@
                 Wiedervorlage Dienstberatung
             </b-form-checkbox>
         </form-group>
-        <b-button
+        <v-btn
             type="submit"
-            variant="secondary"
+            color="secondary"
             :disabled="isFormInvalid || isSubmitDisabled"
             data-test="button-walk-submit"
             block
-            class="col-12"
             :tabindex="isFormInvalid ? '-1' : ''"
         >
             {{ submitButtonText }}
-        </b-button>
+        </v-btn>
         <form-error
             :error="error"
         />

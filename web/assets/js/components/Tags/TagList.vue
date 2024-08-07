@@ -5,7 +5,7 @@
         />
         <b-row
             v-if="!isLoading"
-            class="p-2"
+            class="p-2 mb-0 mt-0"
         >
             <b-col
                 v-if="isSuperAdmin"
@@ -74,29 +74,32 @@
             stacked="sm"
         >
             <template v-slot:cell(isEnabled)="row">
-                <mdicon
+                <v-progress-circular
                     v-if="isLoadingToggleTagState(row.item['@id'])"
-                    name="loading"
-                    class="text-muted"
-                    spin
-                />
+                    indeterminate
+                    :size="20"
+                    :width="2"
+                    color="secondary"
+                ></v-progress-circular>
                 <div
                     v-else
                     @click="toggleEnabled(row.item, row.item.isEnabled)"
                     :title="`Tag ${ row.item.isEnabled ? 'de' : '' }aktivieren`"
                     class="cursor-pointer"
                 >
-                    <mdicon
+                    <v-icon
                         v-if="row.item.isEnabled"
-                        name="check"
-                        class="text-success"
-                    />
-                    <mdicon
+                        color="success"
+                    >
+                        mdi-check
+                    </v-icon>
+                    <v-icon
                         v-else
-                        name="TagOff"
-                        class="text-info"
+                        color="info"
                         disabled
-                    />
+                    >
+                        mdi-tag-off
+                    </v-icon>
                 </div>
             </template>
             <template v-slot:cell(color)="data">
@@ -106,17 +109,19 @@
             </template>
 
             <template v-slot:cell(actions)="row">
-                <b-button
-                    size="sm"
+                <v-btn
+                    small
+                    color="secondary"
                     @click="toggleEnabled(row.item, row.item.isEnabled)"
                 >
                     {{ row.item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
-                </b-button>
+                </v-btn>
                 <span :id="`questionHeaderId-${row.item.tagId}`">
-                    <mdicon
-                        name="help-circle-outline"
+                    <v-icon
                         class="text-muted"
-                    />
+                    >
+                        mdi-help-circle-outline
+                    </v-icon>
                 </span>
                 <b-popover
                     :target="`questionHeaderId-${row.item.tagId}`"

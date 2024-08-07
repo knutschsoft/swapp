@@ -147,17 +147,16 @@
                 data-test="Wetter"
             />
         </form-group>
-        <b-button
+        <v-btn
+            color="secondary"
             type="submit"
-            variant="secondary"
             :disabled="isFormInvalid || isSubmitDisabled"
             data-test="button-walk-submit"
             block
-            class="col-12"
             :tabindex="isFormInvalid ? '-1' : ''"
         >
             {{ submitButtonText }}
-        </b-button>
+        </v-btn>
         <form-error
             :error="error"
         />

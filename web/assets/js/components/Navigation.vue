@@ -120,18 +120,18 @@
                         :to="{ name: 'Changelog' }"
                         :title="`Es gibt ${ hasNewChangelogItems ? '' : 'keine ' }Neuigkeiten für dich!`"
                     >
-                        <mdicon
+                        <v-icon
                             v-if="hasNewChangelogItems"
-                            name="BellBadgeOutline"
-                            size="20"
-                            class="text-primary"
-                        />
-                        <mdicon
+                            color="primary"
+                        >
+                            mdi-bell-badge-outline
+                        </v-icon>
+                        <v-icon
                             v-else
-                            name="BellOutline"
-                            size="20"
-                            class="text-muted"
-                        />
+                            color="secondary lighten-2"
+                        >
+                            mdi-bell-outline
+                        </v-icon>
                     </b-button>
                     <b-nav-item-dropdown
                         ref="userMenu"
@@ -218,10 +218,11 @@
                             target="_blank"
                         >
                             Swapp-Homepage
-                            <mdicon
-                                name="open-in-new"
-                                size="14"
-                            />
+                            <v-icon
+                                small
+                            >
+                                mdi-open-in-new
+                            </v-icon>
                             <span class="text-muted">https://streetworkapp.de</span>
                         </b-dropdown-item>
                         <b-dropdown-divider v-if="!isUserSwitched && isSuperAdmin" />

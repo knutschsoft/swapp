@@ -58,13 +58,19 @@
             </template>
 
             <template v-slot:cell(actions)="row">
-                <b-button
-                    size="sm"
+                <v-btn
+                    small
+                    color="secondary"
                     @click="openEditModal(row.item)"
                 >
                     Team bearbeiten
-                    <b-icon-pencil />
-                </b-button>
+                    <v-icon
+                        small
+                        class="ml-2"
+                    >
+                        mdi-pencil-outline
+                    </v-icon>
+                </v-btn>
             </template>
         </b-table>
 

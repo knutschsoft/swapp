@@ -1,6 +1,6 @@
 <template>
     <div class="p-2">
-        <b-row>
+        <b-row class="px-1 py-2">
             <b-col
                 class="mb-1"
                 xs="12"
@@ -36,17 +36,18 @@
                         @click.stop="togglePicker"
                     >
                         <b-input-group-text>
-                            <mdicon
+                            <v-progress-circular
                                 v-if="isLoading || isLoadingEntries.length > 0"
-                                name="loading"
                                 size="18"
-                                spin
+                                indeterminate
+                                color="secondary"
                             />
-                            <mdicon
+                            <v-icon
                                 v-else
                                 size="18"
-                                name="calendar"
-                            />
+                            >
+                                mdi-calendar
+                            </v-icon>
                         </b-input-group-text>
                     </b-input-group-append>
                     <my-input-group-append
@@ -111,12 +112,13 @@
                         :title="!row.value.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
                     >
                         {{ row.value.username }}
-                        <mdicon
+                        <v-icon
                             v-if="!row.value.isEnabled"
-                            name="AccountOff"
                             class="text-muted"
                             size="16"
-                        />
+                        >
+                            mdi-account-off
+                        </v-icon>
                     </span>
                     <small
                         v-if="isSuperAdmin && !client"
@@ -132,13 +134,14 @@
                     spin
                     size="18"
                 />
-                <mdicon
+                <v-icon
                     v-else-if="row.value"
-                    name="account-check-outline"
                     title="Benutzer hat in diesem Monat an mindestens einer Runde teilgenommen."
-                    class="text-info"
+                    color="info"
                     size="18"
-                />
+                >
+                    mdi-account-check-outline
+                </v-icon>
             </template>
 
             <template #foot(user)="data">

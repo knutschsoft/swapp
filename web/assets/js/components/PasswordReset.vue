@@ -79,22 +79,19 @@
                     <b-input-group
                         class="form-group input-group mb-0"
                     >
-                        <b-button
+                        <v-btn
                             :disabled="username.length < 10 || isLoading || isPasswordRequested"
                             block
-                            variant="dark"
+                            color="secondary"
                             type="submit"
                             @click="requestPasswordReset()"
                         >
-                            <b-spinner
+                            <v-progress-circular
                                 v-if="isLoading"
-                                variant="secondary"
-                                small
-                                class="mr-auto position-relative"
-                                label="Spinning"
-                            />
+                                indeterminate
+                            ></v-progress-circular>
                             Passwortänderung beantragen
-                        </b-button>
+                        </v-btn>
                     </b-input-group>
                     <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
                     <b-input-group class="form-group input-group mb-0 mt-3">
@@ -106,26 +103,22 @@
                         </router-link>
                     </b-input-group>
                 </b-form>
-                <div
+                <v-alert
                     v-if="isPasswordRequested && !hasError"
-                    class="mt-3"
+                    prominent
+                    type="success"
                 >
-                    <div
-                        class="alert alert-success w-100 mb-0"
-                        role="alert"
-                    >
-                        <p class="font-weight-bold">
-                            Herzlichen Glückwunsch!
-                        </p>
-                        <p class="mb-0">
-                            Du solltest eine Mail bekommen haben.
-                            <br>
-                            Bitte schaue ggfs. auch in deinem Spam-Ordner nach.
-                            <br>
-                            Alle weiteren Schritte stehen in der Mail.
-                        </p>
-                    </div>
-                </div>
+                    <p class="font-weight-bold">
+                        Herzlichen Glückwunsch!
+                    </p>
+                    <p class="mb-0">
+                        Du solltest eine E-Mail bekommen haben.
+                        <br>
+                        Bitte schaue ggfs. auch in deinem Spam-Ordner nach.
+                        <br>
+                        Alle weiteren Schritte stehen in der E-Mail.
+                    </p>
+                </v-alert>
             </div>
         </div>
     </div>

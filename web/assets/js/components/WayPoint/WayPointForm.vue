@@ -46,7 +46,7 @@
             :invalid-feedback="invalidVisitedAtState"
             :state="visitedAtState"
         >
-            <b-row>
+            <b-row class="mt-0 mb-0">
                 <b-col>
                     <b-timepicker
                         v-model="visitedAtTime"
@@ -73,32 +73,37 @@
                 <b-col
                     class="border-top-0 border-bottom-0 border-right-0 border-secondary border-dashed border-left"
                 >
-                    <b-button
-                        variant="outline-secondary"
+                    <v-btn
                         block
-                        size="sm"
+                        color="secondary"
+                        outlined
+                        small
                         @click="selectCurrentTime"
+                        class="mb-3"
                     >
                         Schnellauswahl: aktueller Zeitpunkt
-                    </b-button>
-                    <b-button
-                        variant="outline-secondary"
+                    </v-btn>
+                    <v-btn
+                        color="secondary"
                         block
-                        size="sm"
+                        outlined
+                        small
                         @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
+                        class="mt-2"
                     >
                         Schnellauswahl: {{ walk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
-                    </b-button>
+                    </v-btn>
                 </b-col>
             </b-row>
             <template v-slot:valid-feedback>
-                <b-alert
-                    :show="!!diffLastWayPointOrRound"
+                <v-alert
+                    v-if="!!diffLastWayPointOrRound"
                     class="mb-0"
-                    variant="warning"
+                    text
+                    color="warning"
                 >
                     Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
-                </b-alert>
+                </v-alert>
             </template>
         </b-form-group>
         <b-form-group
@@ -111,25 +116,26 @@
         >
             <b-row>
                 <b-col>
-                    <b-alert
-                        show
+                    <v-alert
                         class="mb-0"
-                        variant="warning"
+                        text
+                        color="warning"
                     >
                         Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffWalkStartTime }}</b> vor dem Rundenstart. Hier kannst du die Rundenstartzeit auf die aktuell gewählte Ankunftszeit ändern.
                         <div class="bg-white">
-                            <b-button
-                                variant="outline-secondary"
+                            <v-btn
+                                colot="secondary"
+                                outlined
                                 block
-                                size="sm"
+                                small
                                 class="mt-2"
                                 data-test="button-set-walk-start-time"
                                 @click="handleSetWalkStartTime"
                             >
                                 {{ setWalkStartTimeButtonLabel }}
-                            </b-button>
+                            </v-btn>
                         </div>
-                    </b-alert>
+                    </v-alert>
                 </b-col>
             </b-row>
         </b-form-group>
@@ -302,9 +308,9 @@
                     class="cursor-pointer position-absolute top-0 start-100 translate-middle"
                     @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null"
                 >
-                    <mdicon
-                        name="close-circle-outline"
-                    />
+                    <v-icon>
+                        mdi-close-circle-outline
+                    </v-icon>
                 </div>
                 <b-img
                     :src="wayPoint.imageFileData"
@@ -430,30 +436,29 @@
                 mobiler Treff
             </b-form-checkbox>
         </b-form-group>
-        <b-button
+        <v-btn
+            color="secondary"
             type="submit"
-            variant="secondary"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit"
             block
-            class="col-12"
+            class="mb-2"
             :tabindex="isSubmitDisabled ? '-1' : ''"
         >
             {{ submitButtonText }}
-        </b-button>
-        <b-button
+        </v-btn>
+        <v-btn
             v-if="initialWalk"
-            variant="secondary"
+            color="secondary"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit-and-finish"
             data-with-finish
             @click="handleSubmitWithFinish"
             block
-            class="col-12"
             :tabindex="isSubmitDisabled ? '-1' : ''"
         >
             Wegpunkt speichern und Runde abschließen
-        </b-button>
+        </v-btn>
         <global-form-error
             :error="globalErrors"
         />

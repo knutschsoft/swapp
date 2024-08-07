@@ -12,12 +12,12 @@
                 data-test="select-walk"
             />
             <b-input-group-append>
-                <b-button
+                <v-btn
+                    small
                     :disabled="!selectedUnfinishedWalk"
-                    variant=""
                 >
                     Runde fortsetzen
-                </b-button>
+                </v-btn>
                 <b-input-group-text>
                     <font-awesome-layers>
                         <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" size="xs" transform="shrink-8 down-7" style="animation-delay: 1s;"  flip="vertical" />
@@ -43,13 +43,14 @@
                 data-test="select-team"
             />
             <b-input-group-append>
-                <b-button
+                <v-btn
+                    color="secondary"
                     @click="handleWalkPrologue"
                     :disabled="!hasSelectedTeamSystemicQuestionsAvailable"
-                    variant=""
+                    class="rounded-0"
                 >
                     Runde beginnen
-                </b-button>
+                </v-btn>
                 <b-input-group-text>
                     <font-awesome-icon icon="walking" />
                     <font-awesome-layers>

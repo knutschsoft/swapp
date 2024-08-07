@@ -5,10 +5,12 @@
         class="text-nowrap"
     >
         {{ value }}
-        <mdicon
-            name="open-in-new"
+        <v-icon
             size="14"
-        />
+            color="primary"
+        >
+            mdi-open-in-new
+        </v-icon>
     </a>
 </template>
 

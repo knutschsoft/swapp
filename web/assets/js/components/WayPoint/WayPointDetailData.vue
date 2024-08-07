@@ -74,6 +74,7 @@
             </div>
             <silent-box
                 v-if="wayPoint.imageName"
+                class="ml-2"
                 :gallery="gallery"
             />
             <template v-else>

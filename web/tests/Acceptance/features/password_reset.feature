@@ -18,9 +18,9 @@ Feature: A user can get a new password on his own
     And I fill in "username" with "karl@gmx.de"
     When I click on text "Passwortänderung beantragen"
     Then I wait for "Herzlichen Glückwunsch!" to appear
-    Then I wait for "Du solltest eine Mail bekommen haben." to appear
+    Then I wait for "Du solltest eine E-Mail bekommen haben." to appear
     Then I wait for "Bitte schaue ggfs. auch in deinem Spam-Ordner nach." to appear
-    Then I wait for "Alle weiteren Schritte stehen in der Mail." to appear
+    Then I wait for "Alle weiteren Schritte stehen in der E-Mail." to appear
     And there is a non empty confirmationToken for "karl@gmx.de"
 
     Given I am on page passwort-aendern for "karl@gmx.de"
@@ -50,9 +50,9 @@ Feature: A user can get a new password on his own
     Then I should see "Um dein Passwort zu ändern, drücke bitte folgenden Knopf." appear
     When I click on text "Neues Passwort beantragen"
     Then I wait for "Herzlichen Glückwunsch!" to appear
-    Then I wait for "Du solltest eine Mail bekommen haben." to appear
+    Then I wait for "Du solltest eine E-Mail bekommen haben." to appear
     Then I wait for "Bitte schaue ggfs. auch in deinem Spam-Ordner nach." to appear
-    Then I wait for "Alle weiteren Schritte stehen in der Mail." to appear
+    Then I wait for "Alle weiteren Schritte stehen in der E-Mail." to appear
     And there is a non empty confirmationToken for "karl@gmx.de"
 
     Given I am on page passwort-aendern for "karl@gmx.de"
@@ -76,7 +76,7 @@ Feature: A user can get a new password on his own
     When I click on text "Passwortänderung beantragen"
     Then I wait for 'Der Nutzer "old_karl@gmx.de" existiert nicht oder sein Account ist inaktiv.' to appear
     Then I wait for "Herzlichen Glückwunsch!" to disappear
-    Then I wait for "Du solltest eine Mail bekommen haben." to disappear
+    Then I wait for "Du solltest eine E-Mail bekommen haben." to disappear
     Then I wait for "Bitte schaue ggfs. auch in deinem Spam-Ordner nach." to disappear
-    Then I wait for "Alle weiteren Schritte stehen in der Mail." to disappear
+    Then I wait for "Alle weiteren Schritte stehen in der E-Mail." to disappear
     And there is an empty confirmationToken for "old_karl@gmx.de"

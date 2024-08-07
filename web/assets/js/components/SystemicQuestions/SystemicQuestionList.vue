@@ -30,14 +30,19 @@
                 </span>
             </template>
             <template v-slot:cell(actions)="row">
-                <b-button
-                    size="sm"
+                <v-btn
+                    small
+                    color="secondary"
                     @click="editSystemicQuestion(row.item)"
                 >
                     Systemische Frage<br>
                     bearbeiten
-                    <b-icon-pencil />
-                </b-button>
+                    <v-icon
+                        small
+                    >
+                        mdi-pencil-outline
+                    </v-icon>
+                </v-btn>
             </template>
         </b-table>
 

@@ -167,12 +167,12 @@ export default {
             return this.clientStore.getErrors;
         },
     },
-    async created() {
-        await Promise.all([
-            this.userStore.fetchUsers(),
-            this.clientStore.fetchClients(),
-        ]);
-    },
+async created() {
+    await Promise.all([
+        this.userStore.fetchUsers(),
+        this.clientStore.fetchClients(),
+    ]);
+},
     mounted() {
     },
     methods: {

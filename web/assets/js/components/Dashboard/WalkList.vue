@@ -1,6 +1,6 @@
 <template>
     <div class="p-2">
-        <b-row>
+        <b-row class="mt-0 mb-0">
             <b-col
                 class="my-1"
                 xs="5"
@@ -179,17 +179,19 @@
                         @click.stop="togglePicker"
                     >
                         <b-input-group-text>
-                            <mdicon
+                            <v-progress-circular
                                 v-if="isLoading"
-                                name="loading"
-                                size="18"
-                                spin
+                                :width="2"
+                                :size="20"
+                                indeterminate
+                                class="mr-2"
                             />
-                            <mdicon
+                            <v-icon
                                 v-else
                                 size="18"
-                                name="calendar"
-                            />
+                            >
+                                mdi-calendar
+                            </v-icon>
                         </b-input-group-text>
                     </b-input-group-append>
                     <my-input-group-append
@@ -205,8 +207,9 @@
                 md="12"
                 xl="12"
             >
-                <b-button
-                    size="sm"
+                <v-btn
+                    small
+                    color="secondary"
                     block
                     :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
                     data-test="reset-walk-filter"
@@ -216,7 +219,7 @@
                     <mdicon
                         :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
                     />
-                </b-button>
+                </v-btn>
             </b-col>
             <b-col cols="12">
                 <hr class="my-1" />
@@ -228,8 +231,9 @@
                 md="12"
                 xl="12"
             >
-                <b-button
-                    size="sm"
+                <v-btn
+                    small
+                    color="secondary"
                     block
                     :disabled="isLoading || isExportLoading || this.totalRows === 0"
                     @click="exportWalks"
@@ -239,7 +243,7 @@
                         :name="isExportLoading ? 'Loading' : 'Download'"
                         :spin="isExportLoading"
                     />
-                </b-button>
+                </v-btn>
             </b-col>
         </b-row>
         <b-table
@@ -275,19 +279,17 @@
                         :to="{name: 'WalkDetail', params: { walkId: row.item.walkId}}"
                         :data-test="`button-runde-ansehen-${ row.item.name }`"
                     >
-                        <b-button
-                            size="sm"
+                        <v-btn
+                            small
+                            color="secondary"
                             :disabled="isLoading"
                         >
                             Runde ansehen
                             <span class="text-nowrap">
-                                <font-awesome-icon
-                                    icon="walking"
-                                    class="bg-secondary ml-2"
-                                />
-                                <font-awesome-icon icon="eye" class="ml-2"/>
+                                <font-awesome-icon icon="walking" class="ml-2" />
+                                <font-awesome-icon icon="eye" class="ml-2" />
                             </span>
-                        </b-button>
+                        </v-btn>
                     </router-link>
                     <router-link
                         v-if="row.item.isUnfinished"
@@ -295,8 +297,9 @@
                         :data-test="`button-runde-fortsetzen-${ row.item.name }`"
                         class="mt-ml-0 ml-1"
                     >
-                        <b-button
-                            size="sm"
+                        <v-btn
+                            small
+                            color="secondary"
                             :disabled="isLoading"
                         >
                             Runde fortsetzen
@@ -311,7 +314,7 @@
                                                        transform="shrink-8 down-7"/>
                                 </font-awesome-layers>
                             </span>
-                        </b-button>
+                        </v-btn>
                     </router-link>
                 </div>
             </template>

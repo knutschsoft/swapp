@@ -1,22 +1,20 @@
 <template>
-    <div class="">
-        <b-alert
-            :show="walk && walk.isUnfinished"
-            class="mt-2 mb-0"
-            variant="info"
+    <div class="pt-3">
+        <v-alert
+            v-if="walk && walk.isUnfinished"
+            prominent
+            dense
+            type="info"
         >
-            <mdicon
-                name="information-outline"
-            />
             Die Runde ist noch nicht abgeschlossen.
-            <b-button
-                variant=""
+            <v-btn
+                color="secondary"
                 class="ml-2"
                 :to="{name:'WalkAddWayPoint', params: {walkId: walkId}}"
             >
                 Runde fortsetzen
-            </b-button>
-        </b-alert>
+            </v-btn>
+        </v-alert>
         <content-collapse
             :title="title"
             collapse-key="walk-detail"

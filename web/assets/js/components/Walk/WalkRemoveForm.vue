@@ -5,16 +5,15 @@
     >
         Wenn die Runde gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
         <b-form-group>
-            <b-button
-                variant="danger"
+            <v-btn
+                color="error"
                 v-b-modal.modal-remove
                 data-test="button-walk-remove"
                 :disabled="isLoading"
                 block
-                class="col-12"
             >
                 Runde löschen und zum Dashboard zurückkehren
-            </b-button>
+            </v-btn>
         </b-form-group>
         <global-form-error
             :error="globalErrors"

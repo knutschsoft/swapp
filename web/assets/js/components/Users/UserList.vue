@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-row class="p-2">
+        <b-row class="p-2 mt-0 mb-1">
             <b-col
                 v-if="isSuperAdmin"
                 xs="12"
@@ -82,20 +82,20 @@
                     :title="!row.item.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
                 >
                     {{ row.item.username }}
-                    <mdicon
+                    <v-icon
                         v-if="!row.item.isEnabled"
-                        name="AccountOff"
                         class="text-muted"
                         size="16"
-                    />
+                    >
+                        MdiAccountOff
+                    </v-icon>
                 </span>
             </template>
             <template v-slot:cell(isEnabled)="row">
-                <mdicon
+                <v-progress-circular
                     v-if="isLoadingToggleUserState(row.item['@id'])"
-                    name="loading"
-                    class="text-muted"
-                    spin
+                    indeterminate
+                    color="secondary"
                 />
                 <div
                     v-else
@@ -103,17 +103,18 @@
                     :title="`Account ${ row.item.isEnabled ? 'de' : '' }aktivieren`"
                     class="cursor-pointer"
                 >
-                    <mdicon
+                    <v-icon
                         v-if="row.item.isEnabled"
-                        name="check"
-                        class="text-success"
-                    />
-                    <mdicon
+                        color="success"
+                    >
+                        mdi-account-check-outline
+                    </v-icon>
+                    <v-icon
                         v-else
-                        name="AccountOff"
-                        class="text-info"
-                        disabled
-                    />
+                        color="info"
+                    >
+                        mdi-account-off-outline
+                    </v-icon>
                 </div>
             </template>
             <template v-slot:cell(actions)="row">
@@ -154,44 +155,38 @@
                             Löschen
                         </b-dropdown-item-button>
                     </b-dropdown>
-                    <b-button
+                    <v-btn
                         v-if="isSuperAdmin && !isUserSwitched"
-                        size="sm"
+                        small
                         class="flex-item d-flex align-items-center ml-2"
                         :data-test="`switch-user-${row.item.username}`"
                         @click="switchUser(row.item)"
                     >
-                        <b-icon
-                            icon="people-fill"
-                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                            font-scale="1.5"
-                        />
+                        <v-icon
+                            color="secondary"
+                            small
+                            class="p-1 mr-1 cursor-pointer flex-item"
+                        >
+                            mdi-account-switch
+                        </v-icon>
                         Nutzer wechseln
-                    </b-button>
-                    <b-button
+                    </v-btn>
+                    <v-btn
                         v-else-if="isUserSwitched"
-                        size="sm"
+                        small
+                        color="secondary"
                         class="flex-item d-flex align-items-center ml-2"
                         data-test="exit-switch-user"
                         @click="exitSwitchUser()"
                     >
-                        <b-icon
-                            icon="person-fill"
-                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                            font-scale="1.5"
-                        />
-                        <b-icon
-                            icon="box-arrow-left"
-                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                            font-scale="1.5"
-                        />
-                        <b-icon
-                            icon="person-square"
-                            class="rounded-circle bg-secondary p-1 mr-1 cursor-pointer flex-item"
-                            font-scale="1.5"
-                        />
+                        <v-icon
+                            small
+                            class="p-1 mr-1 cursor-pointer flex-item"
+                        >
+                            mdi-account-switch-outline
+                        </v-icon>
                         Nutzerwechsel beenden
-                    </b-button>
+                    </v-btn>
                 </div>
             </template>
         </b-table>

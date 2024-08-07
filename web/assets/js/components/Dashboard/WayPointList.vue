@@ -1,6 +1,6 @@
 <template>
     <div class="p-2">
-        <b-row>
+        <b-row class="mt-0 mb-0">
             <b-col
                 class="my-1"
                 xs="5"
@@ -263,17 +263,19 @@
                         @click.stop="togglePicker"
                     >
                         <b-input-group-text>
-                            <mdicon
+                            <v-progress-circular
                                 v-if="isLoading"
-                                name="loading"
-                                size="18"
-                                spin
+                                :width="2"
+                                :size="20"
+                                indeterminate
+                                class="mr-2"
                             />
-                            <mdicon
+                            <v-icon
                                 v-else
                                 size="18"
-                                name="calendar"
-                            />
+                            >
+                                mdi-calendar
+                            </v-icon>
                         </b-input-group-text>
                     </b-input-group-append>
                     <my-input-group-append
@@ -289,8 +291,9 @@
                 md="12"
                 xl="12"
             >
-                <b-button
-                    size="sm"
+                <v-btn
+                    small
+                    color="secondary"
                     block
                     :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
                     @click="unsetAllFilter"
@@ -300,7 +303,7 @@
                     <mdicon
                         :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
                     />
-                </b-button>
+                </v-btn>
             </b-col>
             <b-col cols="12">
                 <hr class="my-1" />
@@ -312,7 +315,9 @@
                 md="12"
                 xl="12"
             >
-                <b-button
+                <v-btn
+                    small
+                    color="secondary"
                     size="sm"
                     block
                     :disabled="isLoading || isExportLoading || this.totalRows === 0"
@@ -323,7 +328,7 @@
                         :name="isExportLoading ? 'Loading' : 'Download'"
                         :spin="isExportLoading"
                     />
-                </b-button>
+                </v-btn>
             </b-col>
         </b-row>
         <b-table
@@ -382,19 +387,17 @@
                         :to="{name: 'WayPointDetail', params: { wayPointId: row.item.wayPointId, walkId: getWalkByIri(row.item.walk)?.walkId }}"
                         :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
                     >
-                        <b-button
-                            size="sm"
+                        <v-btn
+                            small
                             :disabled="isLoading"
+                            color="secondary"
                         >
                             Wegpunkt ansehen
                             <span class="text-nowrap">
-                                <font-awesome-icon
-                                    icon="map-signs"
-                                    class="bg-secondary ml-2"
-                                />
-                                <font-awesome-icon icon="eye" class="ml-2"/>
+                                <font-awesome-icon icon="map-signs" class="ml-2" />
+                                <font-awesome-icon icon="eye" class="ml-2" />
                             </span>
-                        </b-button>
+                        </v-btn>
                     </router-link>
                 </div>
             </template>

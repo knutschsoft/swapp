@@ -86,9 +86,9 @@
                     class="cursor-pointer position-absolute top-0 start-100 translate-middle"
                     @click="client.ratingImageFileData = client.ratingImageFileName = client.ratingImageName = null"
                 >
-                    <mdicon
-                        name="close-circle-outline"
-                    />
+                    <v-icon>
+                        mdi-close-circle-outline
+                    </v-icon>
                 </div>
                 <b-img
                     :src="client.ratingImageFileData"

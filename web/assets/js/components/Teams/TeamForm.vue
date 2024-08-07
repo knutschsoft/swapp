@@ -66,7 +66,7 @@
                                         name="users"
                                         switch
                                         :disabled="isDisabled"
-                                        class="d-flex align-items-center flex-users"
+                                        class="d-flex align-items-center flex-users mr-4"
                                     >
                                         {{ user.username }}
                                     </b-form-checkbox>
@@ -87,7 +87,7 @@
                                         name="users"
                                         switch
                                         :disabled="isDisabled"
-                                        class="d-flex align-items-center flex-users text-muted"
+                                        class="d-flex align-items-center flex-users text-muted mr-4"
                                     >
                                         {{ user.username }}
                                         <mdicon
@@ -151,7 +151,7 @@
                 <b-row>
                     <b-col cols="12">
                         <div
-                            class="cursor-pointer mt-1"
+                            class="cursor-pointer mt-1 mb-2"
                             @click="addWalkName()"
                         >
                             <mdicon
@@ -198,7 +198,7 @@
                 <b-row>
                     <b-col cols="12">
                         <div
-                            class="cursor-pointer mt-1"
+                            class="cursor-pointer mt-1 mb-2"
                             @click="addConceptOfDaySuggestion()"
                         >
                             <mdicon
@@ -211,7 +211,7 @@
             </b-form-group>
             <b-form-group
                 label="Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?"
-                class="mb-0"
+                class="mb-0 pt-1"
             >
                 <b-row>
                     <b-col
@@ -273,7 +273,7 @@
                                     <b-row>
                                         <b-col cols="12">
                                             <div
-                                                class="cursor-pointer mt-1"
+                                                class="cursor-pointer mt-1 mb-2"
                                                 @click="addGuestName()"
                                             >
                                                 <mdicon
@@ -341,7 +341,7 @@
         >
             <b-form-group
                 label="Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?"
-                class="mb-0"
+                class="mb-0 pt-1"
             >
                 <b-row>
                     <b-col
@@ -591,7 +591,7 @@
             <b-form-group
                 label="Autocomplete-Vorschläge für den Ort eines Wegpunktes"
                 v-slot="{ ariaDescribedby }"
-                class="mb-0"
+                class="mb-1 mt-2"
             >
                 <b-row
                     v-for="(locationName, i) in team.locationNames"
@@ -639,10 +639,11 @@
         <b-button
             type="submit"
             variant="secondary"
+            color="secondary"
+            class="btn btn-secondary"
             data-test="button-team-form"
             block
             :disabled="isFormInvalid || isDisabled"
-            class="col-12"
             :tabindex="isFormInvalid ? '-1' : ''"
         >
             {{ buttonLabel }}
@@ -685,6 +686,7 @@ export default {
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
             userStore: useUserStore(),
+            items: ['Arial', 'Calibri', 'Courier', 'Verdana'],
             team: {
                 team: null,
                 client: '',

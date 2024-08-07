@@ -3,6 +3,7 @@ const path = require('path');
 
 let Encore = require('@symfony/webpack-encore');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 
 Encore
     // directory where all compiled assets will be stored
@@ -68,7 +69,9 @@ Encore
     .enableSingleRuntimeChunk()
 
     // allow sass/scss files to be processed
-    .enableSassLoader()
+    .enableSassLoader(options => {
+        options.implementation = require('sass')
+    })
 
     // allow legacy applications to use $/jQuery as a global variable
     // .autoProvidejQuery()
@@ -99,6 +102,9 @@ Encore
         options.host = '0.0.0.0';
         options.port = '8874';
     })
+
+    // Add Vuetify Loader Plugin
+    .addPlugin(new VuetifyLoaderPlugin())
 ;
 
 if (!Encore.isDevServer()) {

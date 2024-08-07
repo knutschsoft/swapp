@@ -1,7 +1,10 @@
 <template>
     <div>
-        <div class="p-2">
-            <b-row>
+        <div
+            v-if="hasWayPoints"
+            class="p-2"
+        >
+            <b-row class="mt-0 mb-0">
                 <b-col
                     class="my-1"
                     xs="12"
@@ -9,8 +12,8 @@
                     md="12"
                     xl="12"
                 >
-                    <b-button
-                        size="sm"
+                    <v-btn
+                        color="secondary"
                         block
                         @click="isDetailsShowing = !isDetailsShowing"
                         data-test="toggle-waypoint-details"
@@ -19,7 +22,7 @@
                         <mdicon
                             :name="isDetailsShowing ? 'EyeOffOutline' : 'EyeOutline'"
                         />
-                    </b-button>
+                    </v-btn>
                 </b-col>
             </b-row>
         </div>
@@ -54,15 +57,14 @@
                     :to="{name: 'WayPointDetail', params: { walkId: walk.walkId, wayPointId: row.item.wayPointId}}"
                     :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
                 >
-                    <b-button size="sm">
+                    <v-btn
+                        small
+                        color="secondary"
+                    >
                         Wegpunkt ansehen
-
-                        <font-awesome-icon
-                            icon="map-signs"
-                            class="bg-secondary ml-2"
-                        />
-                        <font-awesome-icon icon="eye" class="ml-2"/>
-                    </b-button>
+                        <font-awesome-icon icon="map-signs" class="ml-2" />
+                        <font-awesome-icon icon="eye" class="ml-2" />
+                    </v-btn>
                 </router-link>
             </template>
         </b-table>

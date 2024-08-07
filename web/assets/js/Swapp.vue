@@ -1,13 +1,14 @@
 <template>
     <FrameError @error="showSnackbar">
-        <div>
-            <b-alert
+        <v-app>
+            <v-alert
                 v-if="showUpdateUI"
-                show
-                class="p-8 pl-0 mb-0"
+                type="info"
+                prominent
+                class="mb-0 rounded-0"
             >
-                <div class="d-sm-flex">
-                    <div>
+                <v-row no-gutters>
+                    <v-col align-self="center">
                         <div class="ml-2 mb-1 mb-sm-0">
                             <b>Es gibt eine neue Version von Swapp!</b>
                         </div>
@@ -15,41 +16,38 @@
                             <li>Ggfs. funktioniert die aktuelle Version momentan nicht mehr ordnungsgemäß.</li>
                             <li>Bitte sichere vorher deine ungespeicherten Eingaben.</li>
                         </ul>
-                    </div>
-                    <b-button
-                        class="btn-info btn-sm ml-sm-auto mr-sm-0 ml-4 d-none d-sm-block"
-                        secondary
-                        :disabled="isUpdateLoading"
-                        @click="update"
-                    >
-                        <mdicon
-                            name="Autorenew"
-                            :spin="isUpdateLoading"
-                        />
-                        Versionsupdate
-                    </b-button>
-                    <b-button
-                        class="btn-info btn-sm ml-sm-auto mr-sm-0 d-sm-none mx-2 mt-2 btn-block"
-                        secondary
-                        :disabled="isUpdateLoading"
-                        @click="update"
-                    >
-                        <mdicon
-                            name="Autorenew"
-                            :spin="isUpdateLoading"
-                        />
-                        Versionsupdate
-                    </b-button>
-                </div>
-            </b-alert>
-            <b-alert
-                v-model="showError"
+                    </v-col>
+                    <v-col align-self="center" cols="12">
+                        <v-btn
+                            small
+                            color="secondary"
+                            block
+                            :disabled="isUpdateLoading"
+                            @click="update"
+                        >
+                            <v-progress-circular
+                                v-if="isUpdateLoading"
+                                :width="2"
+                                :size="20"
+                                indeterminate
+                                class="mr-2"
+                            />
+                            <v-icon v-if="!isUpdateLoading" class="mr-2">mdi-update</v-icon>
+                            Versionsupdate
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-alert>
+            <v-alert
+                v-if="showError"
+                type="error"
+                prominent
                 class="position-fixed fixed-top m-0 rounded-0"
                 style="z-index: 2000;"
                 dismissible
             >
                 {{ errorData }}
-            </b-alert>
+            </v-alert>
             <navigation />
 
             <div
@@ -61,37 +59,7 @@
                     />
                 </vue-page-transition>
             </div>
-
-            <b-navbar
-                v-if="false"
-                fixed="bottom"
-                type="dark"
-                variant="dark"
-                class="py-0 px-5"
-            >
-                <b-navbar-nav
-                    justified
-                    class="w-100"
-                >
-                    <b-nav-item
-                        :to="{ name: 'Impressum' }"
-                        link-classes=""
-                        exact
-                        exact-active-class="active"
-                    >
-                        Impressum
-                    </b-nav-item>
-                    <b-nav-item
-                        :to="{ name: 'Datenschutz' }"
-                        link-classes=""
-                        exact
-                        exact-active-class="active"
-                    >
-                        Datenschutz
-                    </b-nav-item>
-                </b-navbar-nav>
-            </b-navbar>
-        </div>
+        </v-app>
     </FrameError>
 </template>
 

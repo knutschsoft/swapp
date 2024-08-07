@@ -116,22 +116,22 @@
                     <b-input-group
                         class="form-group input-group"
                     >
-                        <b-button
+                        <v-btn
                             :disabled="username.length < 3 || password.length < -1 || isLoading"
                             block
-                            variant="dark"
+                            color="secondary"
                             type="submit"
                             @click="performLogin()"
                         >
-                            <b-spinner
+                            <v-progress-circular
                                 v-if="isLoading"
-                                variant="secondary"
-                                small
-                                class="mr-auto position-relative"
-                                label="Spinning"
-                            />
+                                :width="2"
+                                :size="20"
+                                indeterminate
+                                class="mr-2 position-relative"
+                            ></v-progress-circular>
                             Anmelden
-                        </b-button>
+                        </v-btn>
                     </b-input-group>
                     <b-input-group
                         v-if="hasError"
