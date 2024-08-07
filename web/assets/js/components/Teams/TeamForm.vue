@@ -115,6 +115,22 @@
             header="Einstellungen für die Dokumentation einer Runde"
             class="mb-4"
         >
+            <v-radio-group
+                v-model="team.initialMembersConfig"
+            >
+                <template v-slot:label>
+                    <div class="font-weight-bold secondary--text"><strong>Welche Mitglieder sollen beim Rundenstart vorausgewählt sein?</strong></div>
+                </template>
+                <v-radio
+                    label="nur der aktuelle Rundenersteller"
+                    value="rundenersteller"
+                    class="secondary--text"
+                />
+                <v-radio
+                    label="die Mitglieder, welche bei der letzten Runde dabei waren"
+                    value="mitglieder"
+                />
+            </v-radio-group>
             <b-form-group
                 label="Autocomplete-Vorschläge für den Namen einer Runde"
                 description="Eine Freitexteingabe ist zusätzlich möglich."
@@ -691,6 +707,7 @@ export default {
                 team: null,
                 client: '',
                 name: '',
+                initialMembersConfig: 'rundenersteller',
                 isWithAgeRanges: !isWithPeopleCountDefault,
                 isWithPeopleCount: isWithPeopleCountDefault,
                 isWithContactsCount: false,
@@ -846,6 +863,7 @@ export default {
                 this.team.isWithGuests = false;
                 this.team.isWithSystemicQuestion = false;
                 this.team.isWithUserGroups = false;
+                this.team.initialMembersConfig = 'rundenersteller';
                 this.team.users = [];
                 this.team.ageRanges = [];
                 this.team.locationNames = [];

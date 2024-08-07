@@ -67,6 +67,7 @@ Feature: Testing team create resource
       | isWithGuests            | <false>                  |
       | guestNames              | array<>                  |
       | userGroupNames          | array<>                  |
+      | initialMembersConfig    | mitglieder               |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -104,6 +105,7 @@ Feature: Testing team create resource
       | isWithGuests            | <false>                  |
       | guestNames              | array<>                  |
       | userGroupNames          | array<>                  |
+      | initialMembersConfig    | mitglieder               |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -140,6 +142,7 @@ Feature: Testing team create resource
       | userGroupNames          | userGroupNames<Nutzende,Dudes> |
       | isWithGuests            | <false>                        |
       | guestNames              | array<>                        |
+      | initialMembersConfig    | mitglieder                     |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -198,6 +201,10 @@ Feature: Testing team create resource
       | violations[12].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[13].propertyPath | isWithUserGroups                                                       |
       | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[14].propertyPath | userGroupNames                                                         |
+      | violations[14].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[15].propertyPath | initialMembersConfig                                                   |
+      | violations[15].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamCreate
   Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team

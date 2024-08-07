@@ -74,6 +74,7 @@ Feature: Testing team change resource
       | isWithGuests            | <false>                 |
       | guestNames              | array<>                 |
       | userGroupNames          | array<>                 |
+      | initialMembersConfig    | mitglieder              |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -110,6 +111,7 @@ Feature: Testing team change resource
       | userGroupNames          | userGroupNames<Nutzende,Dudes> |
       | isWithGuests            | <false>                        |
       | guestNames              | array<>                        |
+      | initialMembersConfig    | mitglieder                     |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200
@@ -168,6 +170,8 @@ Feature: Testing team change resource
       | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
       | violations[14].propertyPath | userGroupNames                                                         |
       | violations[14].message      | Dieser Wert sollte nicht null sein.                                    |
+      | violations[15].propertyPath | initialMembersConfig                                                   |
+      | violations[15].message      | Dieser Wert sollte nicht null sein.                                    |
 
   @api @apiTeamChange
   Scenario: I can request /api/teams/change as an admin and change isWithAgeRanges to false and the ageRanges are not changed
@@ -189,6 +193,7 @@ Feature: Testing team change resource
       | isWithGuests            | <false>                 |
       | guestNames              | array<>                 |
       | userGroupNames          | array<>                 |
+      | initialMembersConfig    | mitglieder              |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200

@@ -65,6 +65,9 @@ final class TeamCreateRequest
     #[AppAssert\UserGroupNameRequirements]
     public array $userGroupNames;
 
+    #[AppAssert\InitialMembersConfigRequirements]
+    public string $initialMembersConfig;
+
     #[Assert\IsTrue(message: 'team.hasAgeRangesWhenIsWithAgeRangesIsTrue', groups: ['SecondGroup'])]
     public function hasAltersgruppen(): bool
     {

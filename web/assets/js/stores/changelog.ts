@@ -11,7 +11,7 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
-                header: '17.07.2024',
+                header: 'xx.08.2024',
                 avatarText: '&#128055;',
                 avatarTitle: 'Tag des gelben Schweins-Update',
                 entries: [
@@ -24,7 +24,19 @@ export const useChangelogStore = defineStore("changelog", {
                     },
                     {
                         text: [
+                            'UX-Feature: Ein Team-Leiter kann für ein Team festlegen, ob beim Rundenstart die letzten Mitglieder einer Runde vorausgefüllt sind oder nur der aktuelle Rundenersteller.',
+                            'Dies erspart Klicks beim Rundenerstellen, wenn sich die Teilnehmer der Runden eines Teams öfter ändern.'
+                        ],
+                    },
+                    {
+                        text: [
                             'UX-Feature: Die Tags in allen Wegpunkt-Formularen sind nun alphabetisch sortiert damit ein bestimmter Tag schneller gefunden werden kann.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: Beginn der Ablösung der Grafikbibliothek bootstrap-vue durch Vuetify 2.',
+                            'Dies ist Voraussetzung - um nach den Entfernen von bootstrap-vue - die Javascript-Bibliothek vue von Version 2 auf Version 3 upzugraden.'
                         ],
                     },
                 ],

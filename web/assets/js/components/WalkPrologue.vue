@@ -489,7 +489,11 @@
                     this.userStore.fetchByIri(userIri);
                 }
             });
-            this.form.walkTeamMembers = await this.getWalkTeamMembersOfLastWalkOfTeam(this.team);
+            if (this.team.initialMembersConfig === 'mitglieder') {
+                this.form.walkTeamMembers = await this.getWalkTeamMembersOfLastWalkOfTeam(this.team);
+            } else {
+                this.form.walkTeamMembers = [this.currentUser['@id']];
+            }
             this.form.team = this.team['@id'];
             this.form.walkCreator = this.currentUser['@id'];
             this.startTimeTime = dayjs().format('HH:mm');

@@ -37,6 +37,7 @@ final readonly class TeamChangeRequestHandler
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);
         $team->setIsWithSystemicQuestion($request->isWithSystemicQuestion);
+        $team->setInitialMembersConfig($request->initialMembersConfig);
         $this->teamRepository->save($team);
 
         return $team;

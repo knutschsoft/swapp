@@ -31,6 +31,7 @@ Feature: Testing team change resource with guests
       | isWithGuests            | <true>                    |
       | guestNames              | array<Opa Manfred, Karla> |
       | userGroupNames          | array<>                   |
+      | initialMembersConfig    | mitglieder                |
     Then the response should be in JSON
 #    And print last JSON response
     And the response status code should be 200

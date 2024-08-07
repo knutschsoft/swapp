@@ -38,6 +38,7 @@ final readonly class TeamCreateRequestHandler
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);
         $team->setIsWithSystemicQuestion($request->isWithSystemicQuestion);
+        $team->setInitialMembersConfig($request->initialMembersConfig);
         $this->teamRepository->save($team);
 
         return $team;

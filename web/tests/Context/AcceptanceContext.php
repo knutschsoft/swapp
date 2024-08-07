@@ -114,6 +114,32 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When  I wait for test element :selector to be selected
+     *
+     * @param string $selector
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForTestElementToBeSelected(string $selector): void
+    {
+        $testElement = $this->getTestElement($selector);
+        Assert::true($testElement->isSelected());
+    }
+
+    /**
+     * @When  I wait for test element :selector to be not selected
+     *
+     * @param string $selector
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForTestElementToBeNotSelected(string $selector): void
+    {
+        $testElement = $this->getTestElement($selector);
+        Assert::false($testElement->isSelected());
+    }
+
+    /**
      * @When  I wait for element :selector to appear
      *
      * @param string $selector

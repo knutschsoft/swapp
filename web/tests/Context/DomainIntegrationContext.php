@@ -917,11 +917,22 @@ final class DomainIntegrationContext extends RawMinkContext
                 $team->setGuestNames((array) $this->enrichText($row['guestNames']));
             }
             $team->setIsWithGuests($isWithGuests);
+            $team->setInitialMembersConfig($row['initialMembersConfig'] ?? Team::getInitialMembersConfigChoices()[0]);
             $team->updateClient($this->getClientByEmail($row['client']));
 
             $this->em->persist($team);
         }
         $this->em->flush();
+    }
+
+    /**
+     * @When /^initialMembersConfig of team "([^"]*)" is "([^"]*)"$/
+     */
+    public function setInitialMembersConfigOfTeamTo(string $teamName, string $initialMembersConfig): void
+    {
+        $team = $this->getTeamByName($teamName);
+        $team->setInitialMembersConfig($initialMembersConfig);
+        $this->teamRepository->save($team);
     }
 
     /**

@@ -98,6 +98,9 @@ class Team implements \Stringable
     #[ORM\Column(type: 'boolean')]
     private bool $isWithUserGroups;
 
+    #[ORM\Column(length: 10)]
+    private string $initialMembersConfig;
+
     public function __construct()
     {
         $this->ageRanges = [];
@@ -327,5 +330,22 @@ class Team implements \Stringable
     public function setIsWithPeopleCount(bool $isWithPeopleCount): void
     {
         $this->isWithPeopleCount = $isWithPeopleCount;
+    }
+
+    #[Groups(['team:read'])]
+    public function getInitialMembersConfig(): string
+    {
+        return $this->initialMembersConfig;
+    }
+
+    public function setInitialMembersConfig(string $initialMembersConfig): void
+    {
+        $this->initialMembersConfig = $initialMembersConfig;
+    }
+
+    /** @return string[] */
+    public static function getInitialMembersConfigChoices(): array
+    {
+        return ['mitglieder', 'rundenersteller'];
     }
 }
