@@ -60,6 +60,7 @@
                     isWithGuests: team.isWithGuests,
                     isWithSystemicQuestion: team.isWithSystemicQuestion,
                     guestNames: team.guestNames,
+                    initialMembersConfig: team.initialMembersConfig,
                 });
 
                 if (createdTeam) {
