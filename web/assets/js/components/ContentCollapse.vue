@@ -2,7 +2,7 @@
     <v-expansion-panels
         v-model="expansionPanelsModel"
         flat
-        class="mt-0 mt-sm-2 mt-lg-3"
+        class="mt-1 mt-sm-2 mt-lg-3"
     >
         <v-expansion-panel>
             <v-expansion-panel-header
