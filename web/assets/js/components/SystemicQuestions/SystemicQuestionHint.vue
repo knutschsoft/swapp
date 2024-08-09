@@ -1,8 +1,6 @@
 <template>
-    <b-alert
-        show
-        class="w-100 text-muted mb-0"
-        variant="debug"
+    <v-alert
+        class="w-100 text-muted mt-2 mb-0"
     >
         <b>Hinweis:</b>
         <ul class="mb-0">
@@ -35,7 +33,7 @@
                 Bereits bestehende Runden bleiben von Änderungen an einer Frage unberührt.
             </li>
         </ul>
-    </b-alert>
+    </v-alert>
 </template>
 
 <script>

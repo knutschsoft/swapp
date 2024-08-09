@@ -25,12 +25,11 @@
             centered
             size="lg"
         >
-            <b-alert
-                variant="warning"
-                show
+            <v-alert
+                type="warning"
             >
                 Unerwarte Dinge können passieren, wenn du dies nicht liest.
-            </b-alert>
+            </v-alert>
             <p>
                 Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.
                 Dies wird permanent die Runde <b>{{ initialWalk.name }}</b> und der ihr zugeordneten Wegpunkte (inklusive deren Bilder und Tags) löschen.

@@ -99,12 +99,12 @@
                                     </b-form-checkbox>
                                 </template>
                             </div>
-                        <b-alert
+                        <v-alert
                             v-model="users.length === 0"
                             class="mb-0"
                         >
                             Dieser Klient hat noch keine Benutzer.
-                        </b-alert>
+                        </v-alert>
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -324,10 +324,8 @@
                                 tabindex="0"
                                 class="p-0"
                             >
-                                <b-alert
-                                    show
+                                <v-alert
                                     class="w-100 text-muted mb-0"
-                                    variant="debug"
                                 >
                                     <b>Hinweis:</b>
                                     <ul class="mb-0">
@@ -342,7 +340,7 @@
                                             Diese Fragen können im Navigations-Tab "Systemische Fragen" übergreifend für alle Teams definiert werden.
                                         </li>
                                     </ul>
-                                </b-alert>
+                                </v-alert>
                             </b-card-body>
                         </b-card>
                     </b-col>

@@ -1,7 +1,7 @@
 <template>
-    <b-alert
-        :show="hasError"
-        variant="danger"
+    <v-alert
+        v-if="hasError"
+        type="danger"
         class="mt-2 mb-0"
     >
         <ul
@@ -14,7 +14,7 @@
                 {{ validationError }}<span v-if="index + 1 !== validationErrors.length">.</span>
             </li>
         </ul>
-    </b-alert>
+    </v-alert>
 </template>
 
 <script>

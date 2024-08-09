@@ -186,13 +186,13 @@
                 </b-col>
             </b-row>
             <template v-slot:valid-feedback>
-                <b-alert
-                    :show="!!diffLastWayPointOrRound"
+                <v-alert
+                    v-if="!!diffLastWayPointOrRound"
                     class="mb-0 mt-2"
-                    variant="warning"
+                    color="warning"
                 >
                     Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
-                </b-alert>
+                </v-alert>
             </template>
         </form-group>
         <form-group label="Ferien">

@@ -1,16 +1,12 @@
 <template>
     <div>
-        <b-alert
-            :show="!!successMessage"
-            variant="success"
+        <v-alert
+            v-if="!!successMessage"
+            type="success"
             class="mt-1 mt-sm-2 mt-lg-3 mb-0"
         >
-            <mdicon
-                name="check-circle-outline"
-                class="mr-2"
-            />
             {{ successMessage }}
-        </b-alert>
+        </v-alert>
         <content-collapse
             v-if="walk"
             :title="`Runde &quot;${walk?.name}&quot; abschließen`"
@@ -199,13 +195,13 @@
                         </b-col>
                     </b-row>
                     <template v-slot:valid-feedback>
-                        <b-alert
-                            :show="!!diffLastWayPointOrRound"
+                        <v-alert
+                            v-if="!!diffLastWayPointOrRound"
                             class="mb-0"
-                            variant="warning"
+                            color="warning"
                         >
                             Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
-                        </b-alert>
+                        </v-alert>
                     </template>
                 </b-form-group>
                 <b-form-group

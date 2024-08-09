@@ -4,10 +4,9 @@
         class="text-muted"
     >
         <hr class="mt-3 mb-4" />
-        <b-alert
+        <v-alert
             ref="wurst"
-            variant="info"
-            show
+            color="info"
         >
             <p class="d-flex align-items-center">
                 <mdicon
@@ -134,10 +133,9 @@
                     </ul>
                 </li>
             </ul>
-        </b-alert>
-        <b-alert
-            variant="warning"
-            show
+        </v-alert>
+        <v-alert
+            type="warning"
             class="mb-0"
         >
             <p class="d-flex align-items-center">
@@ -150,7 +148,7 @@
             <p>
                 Auch andere Interessenten an Swapp bekommen diesen Demo-Zugang und sehen die gleichen Inhalte.
             </p>
-        </b-alert>
+        </v-alert>
     </div>
 </template>
 

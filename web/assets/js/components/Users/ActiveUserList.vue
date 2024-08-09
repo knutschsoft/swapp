@@ -152,10 +152,8 @@
                 {{ getSumOfColumn(data.column)}}
             </template>
         </b-table>
-        <b-alert
-            show
-            class="w-100 text-muted mb-0"
-            variant="debug"
+        <v-alert
+            class="w-100 text-muted mt-2 mb-0"
         >
             <b>
                 Hinweis:
@@ -165,7 +163,7 @@
                     Ein Nutzer gilt als aktiv, wenn er in einem Monat an mindestens einer Runde teilgenommen hat.
                 </li>
             </ul>
-        </b-alert>
+        </v-alert>
     </div>
 </template>
 

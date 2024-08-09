@@ -81,9 +81,8 @@
             v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable"
             class="px-2 pb-2"
         >
-            <b-alert
-                show
-                variant="warning"
+            <v-alert
+                type="warning"
                 class="w-full mb-0"
             >
                 Um für dieses Team eine neue Runde zu erstellen, musst Du zuerst mindestens
@@ -92,7 +91,7 @@
                     :to="{ name: 'SystemicQuestions' }"
                     title="Systemische Fragen"
                 >eine Systemische Frage erstellen</router-link>.
-            </b-alert>
+            </v-alert>
         </b-input-group>
     </div>
 </template>

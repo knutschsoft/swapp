@@ -1,16 +1,16 @@
 <template>
     <div>
-        <b-alert
-            :show="!!redirect"
+        <v-alert
+            v-if="!!redirect"
             class="position-fixed fixed-top m-0 rounded-0"
             style="z-index: 2000;"
-            variant="warning"
-            fade
+            type="warning"
+            transition="fade-transition"
             dismissible
             data-test="redirect-alert"
         >
             {{ redirect }}
-        </b-alert>
+        </v-alert>
         <content-collapse
             title="Neue Streetwork-Runde"
             collapse-key="walk-start"

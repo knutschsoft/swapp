@@ -94,7 +94,7 @@ export default {
         isLoading() {
             if (!this.isLoading) {
                 this.$nextTick(() => {
-                    this.titleLengthState = `${this.$refs.title.getBoundingClientRect().width}`;
+                    this.titleLengthState = `${this.$refs?.title?.getBoundingClientRect()?.width}`;
                 });
             }
         },

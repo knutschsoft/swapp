@@ -103,9 +103,8 @@
             <div
                 class="mt-2"
             >
-                <b-alert
-                    show
-                    variant="info"
+                <v-alert
+                    color="info"
                 >
                     Vorschau:
                     <div class="bg-white p-2 text-black">
@@ -114,7 +113,7 @@
                             :client="client"
                         />
                     </div>
-                </b-alert>
+                </v-alert>
             </div>
         </b-form-group>
         <b-button
