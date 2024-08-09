@@ -24,7 +24,7 @@ import { faEye, faMapSigns, faShoePrints, faWalking } from '@fortawesome/free-so
 import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';
 import router from './router';
-import { AlertPlugin, BootstrapVue, CollapsePlugin, IconsPlugin, NavbarPlugin } from 'bootstrap-vue';
+import { AlertPlugin, BootstrapVue, IconsPlugin, NavbarPlugin } from 'bootstrap-vue';
 import { useStorage } from '@vueuse/core';
 import VueClipboard from 'vue-clipboard2';
 import axios from 'axios';
@@ -49,7 +49,6 @@ Vue.use(PiniaVuePlugin);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
-Vue.use(CollapsePlugin);
 Vue.use(AlertPlugin);
 Vue.use(NavbarPlugin);
 Vue.use(VuePageTransition);

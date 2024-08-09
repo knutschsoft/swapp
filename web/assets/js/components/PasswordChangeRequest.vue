@@ -19,32 +19,33 @@
                     Mit Hilfe dieses Links kannst du dir dann ein neues Passwort setzen.
                 </li>
             </ul>
-            <div>
+            <div class="">
                 <div
-                    class="mt-3"
+                    class="mt-3 pb-2"
                 >
-                    <b-button
+                    <v-btn
                         :disabled="isLoading || isPasswordRequested"
                         block
-                        variant="dark"
+                        color="secondary"
                         type="submit"
                         @click="requestPasswordReset()"
                     >
-                        <b-spinner
+                        <v-progress-circular
                             v-if="isLoading"
-                            variant="secondary"
-                            small
-                            class="mr-auto position-relative"
-                            label="Spinning"
+                            :width="2"
+                            :size="20"
+                            indeterminate
+                            class="mr-2 position-relative"
                         />
                         Neues Passwort beantragen
-                    </b-button>
+                    </v-btn>
                 </div>
                 <GeneralErrorAlert v-if="hasError" />
                 <v-alert
                     v-if="isPasswordRequested && !hasError"
                     prominent
                     type="success"
+                    class="mt-2"
                 >
                     <p class="font-weight-bold">
                         Herzlichen Glückwunsch!

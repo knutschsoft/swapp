@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-3">
+    <div>
         <v-alert
             v-if="walk && walk.isUnfinished"
             prominent

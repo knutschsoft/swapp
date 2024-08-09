@@ -1,34 +1,40 @@
 <template>
-    <div class="w-100 border border-dark p-0 mt-1 mt-sm-2 mt-lg-3 flex-shrink-1">
-        <div
-            v-b-toggle="getCollapseId"
-            class="bg-dark text-white p-2 font-weight-bold d-flex cursor-pointer no-select"
-            :data-test="getCollapseId"
-        >
-            <b-skeleton
-                v-if="isLoading"
-                :width="titleWidth"
-            />
-            <div
-                v-else
-                ref="title"
-                class="my-auto"
-                v-html="title"
-            />
-            <b-icon-chevron-up
-                class="my-auto ml-auto when-opened collapse-icon"
-            />
-            <b-icon-chevron-down
-                class="my-auto ml-auto when-closed collapse-icon"
-            />
-        </div>
-        <b-collapse
-            :id="getCollapseId"
-            :visible="isVisible"
-        >
-            <slot />
-        </b-collapse>
-    </div>
+    <v-expansion-panels
+        v-model="expansionPanelsModel"
+        flat
+        class="mt-0 mt-sm-2 mt-lg-3"
+    >
+        <v-expansion-panel>
+            <v-expansion-panel-header
+                color="secondary"
+                class="force-white"
+                :data-test="getCollapseId"
+            >
+                <v-skeleton-loader
+                    v-if="isLoading"
+                    v-bind="attrs"
+                    type="text"
+                    color="secondary"
+                    :width="titleWidth"
+                    :max-width="titleWidth"
+                ></v-skeleton-loader>
+                <div
+                    v-else
+                    v-html="title"
+                />
+                <template v-slot:actions>
+                    <v-icon color="white">
+                        $expand
+                    </v-icon>
+                </template>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content
+                class="border border-secondary"
+            >
+                <slot />
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+    </v-expansion-panels>
 </template>
 
 <script>
@@ -59,6 +65,7 @@ export default {
         return {
             titleLengthState: false,
             visibleState: false,
+            expansionPanelsModel: null,
         };
     },
     computed: {
@@ -72,21 +79,30 @@ export default {
             return this.visibleState;
         },
         titleWidth() {
-            return this.titleLengthState ? this.titleLengthState : '100px';
+            return this.titleLengthState ? this.titleLengthState : '100';
         },
     },
     mounted() {
-        this.titleLengthState = useStorage(`swapp-store-${this.getTitleLengthId}`, '100px');
+        this.titleLengthState = useStorage(`swapp-store-${this.getTitleLengthId}`, '100');
         this.visibleState = useStorage(`swapp-store-${this.getCollapseId}`, this.isVisibleByDefault);
+
+        if (this.visibleState) {
+            this.expansionPanelsModel = 0;
+        }
     },
     watch: {
         isLoading() {
             if (!this.isLoading) {
                 this.$nextTick(() => {
-                    this.titleLengthState = `${this.$refs.title.getBoundingClientRect().width}px`;
+                    this.titleLengthState = `${this.$refs.title.getBoundingClientRect().width}`;
                 });
             }
         },
+        expansionPanelsModel() {
+            const isJustShown = 0 === this.expansionPanelsModel;
+            const state = useStorage(`swapp-store-${this.getCollapseId}`, isJustShown);
+            state.value = isJustShown;
+        }
     }
 };
 </script>
