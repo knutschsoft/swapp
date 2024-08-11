@@ -4,11 +4,19 @@ import dayjs from 'dayjs';
 
 const updateFilterParams = function (params) {
     let sort = '';
+    console.log(params);
     if (params.sortBy) {
         sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
     }
+    if (typeof params?.filter !== "object") {
+        return sort;
+    }
     for (const [key, value] of Object.entries(params.filter)) {
         if (value === null || value === undefined || '' === value) {
+        }  else if (Array.isArray(value)) {
+            value.forEach((iri) => {
+                sort += `&${key}[]=${iri}`;
+            });
         } else if ('startTime' === key) {
             if (value.startDate && value.endDate) {
                 sort += `&${key}[after]=${dayjs(value.startDate).startOf('day').toISOString()}&${key}[before]=${dayjs(value.endDate).endOf('day').toISOString()}`;
@@ -51,5 +59,18 @@ export default {
     },
     findAllTeamNames() {
         return apiClient.get("/api/walks/team_names");
+    },
+    findAllUnfinishedWalks(teams) {
+        console.log(teams);
+        return this.find({
+            sortBy: 'startTime',
+            sortDesc: true,
+            filter: {
+                teamName: teams.map(team => team.name),
+                isUnfinished: true,
+            },
+            currentPage: 1,
+            perPage: 1000,
+        });
     },
 };

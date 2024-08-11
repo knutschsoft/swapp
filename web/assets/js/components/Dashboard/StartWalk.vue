@@ -1,48 +1,57 @@
 <template>
-    <div>
-        <b-input-group
-            v-if="hasUnfinishedWalks"
-            class="p-2"
+    <div
+        class="p-2"
+    >
+        <v-card
+            v-if="hasUnfinishedWalks && !isLoading"
+            class="mb-2"
         >
-            <b-form-select
-                v-model="selectedUnfinishedWalk"
-                :options="selectableUnfinishedWalks"
-                aria-placeholder="Runde wählen..."
-                class="w-10"
-                data-test="select-walk"
-            />
-            <b-input-group-append>
+            <v-toolbar
+                dense
+            >
+                <v-overflow-btn
+                    v-model="selectedUnfinishedWalk"
+                    :items="selectableUnfinishedWalks"
+                    data-test="select-walk"
+                    label="Nicht beendete Runde wählen..."
+                    overflow
+                    hide-details
+                    dense
+                    class="pa-0"
+                />
                 <v-btn
-                    small
                     :disabled="!selectedUnfinishedWalk"
+                    @click="handleWalkContinue"
+                    class="rounded-0"
+                    data-test="runde-fortsetzen"
+                    color="secondary"
                 >
                     Runde fortsetzen
+                    <v-icon>mdi-shoe-print</v-icon>
+                    <v-icon>mdi-walk</v-icon>
+                    <v-icon>mdi-shoe-print</v-icon>
                 </v-btn>
-                <b-input-group-text>
-                    <font-awesome-layers>
-                        <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" size="xs" transform="shrink-8 down-7" style="animation-delay: 1s;"  flip="vertical" />
-                        <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" size="xs" transform="shrink-8 down-7" />
-                    </font-awesome-layers>
-                    <font-awesome-icon icon="walking" />
-                    <font-awesome-layers>
-                        <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" size="xs" transform="shrink-8 down-7" flip="vertical" />
-                        <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" style="animation-delay: 1s;" size="xs" transform="shrink-8 down-7" />
-                    </font-awesome-layers>
-                </b-input-group-text>
-            </b-input-group-append>
-        </b-input-group>
-        <b-input-group
-            v-if="selectableTeams.length"
-            class="p-2"
+            </v-toolbar>
+        </v-card>
+        <v-divider
+            v-if="hasUnfinishedWalks && !isLoading"
+        />
+        <v-card
+            v-if="selectableTeams.length && !isLoading"
         >
-            <b-form-select
-                v-model="selectedTeam"
-                :options="selectableTeams"
-                aria-placeholder="Team wählen..."
-                class="w-10"
-                data-test="select-team"
-            />
-            <b-input-group-append>
+            <v-toolbar
+                dense
+            >
+                <v-overflow-btn
+                    v-model="selectedTeam"
+                    :items="selectableTeams"
+                    label="Team wählen..."
+                    data-test="select-team"
+                    overflow
+                    hide-details
+                    dense
+                    class="pa-0"
+                />
                 <v-btn
                     color="secondary"
                     @click="handleWalkPrologue"
@@ -50,49 +59,66 @@
                     class="rounded-0"
                 >
                     Runde beginnen
+                    <v-icon>mdi-walk</v-icon>
+                    <v-icon>mdi-shoe-print</v-icon>
                 </v-btn>
-                <b-input-group-text>
-                    <font-awesome-icon icon="walking" />
-                    <font-awesome-layers>
-                        <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" size="xs" transform="shrink-8 down-7" flip="vertical" />
-                        <font-awesome-icon animation="fade" icon="shoe-prints" class="faa-blink animated" style="animation-delay: 1s;" size="xs" transform="shrink-8 down-7" />
-                    </font-awesome-layers>
-                </b-input-group-text>
-            </b-input-group-append>
-        </b-input-group>
-        <div
-            v-else-if="!teams.length"
-            class="p-2 text-muted"
+            </v-toolbar>
+        </v-card>
+        <v-alert
+            v-else-if="!teams.length && !isLoading && isAllowedToCreateTeam"
+            class="mb-0"
+            type="info"
+            outlined
+            prominent
         >
             Um eine neue Runde zu erstellen, musst Du zuerst
-            <router-link
-                class="btn btn-link px-0"
+            <v-btn
                 :to="{ name: 'Teams' }"
+                color="info"
+                small
+                outlined
                 title="Teamverwaltung"
-            >ein neues Team anlegen</router-link>.
-        </div>
-        <div
-            v-else
-            class="p-2 text-muted"
+            >ein neues Team anlegen</v-btn>.
+        </v-alert>
+        <v-alert
+            v-else-if="!isLoading"
+            type="info"
+            outlined
+            prominent
         >
             Du bist aktuell keinem Team zugeordnet.
-        </div>
-        <b-input-group
-            v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable"
-            class="px-2 pb-2"
-        >
-            <v-alert
-                type="warning"
-                class="w-full mb-0"
+            <p
+                v-if="isAllowedToCreateTeam"
             >
-                Um für dieses Team eine neue Runde zu erstellen, musst Du zuerst mindestens
-                <router-link
-                    class="btn btn-link px-0"
-                    :to="{ name: 'SystemicQuestions' }"
-                    title="Systemische Fragen"
-                >eine Systemische Frage erstellen</router-link>.
-            </v-alert>
-        </b-input-group>
+                Bitte einen Admin dich einem Team zuzuordnen um eine Runde starten zu können.
+            </p>
+            <template
+                v-else
+            >
+                Ordne dich selber
+                <v-btn
+                    :to="{ name: 'Teams' }"
+                    title="Teamverwaltung"
+                    color="info"
+                    outlined
+                >einem Team zu</v-btn>
+                um eine Runde starten zu können.
+            </template>
+        </v-alert>
+        <v-alert
+            v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable && !isLoading"
+            type="warning"
+            prominent
+            outlined
+        >
+            Um für dieses Team eine neue Runde zu erstellen, musst Du zuerst mindestens
+            <v-btn
+                :to="{ name: 'SystemicQuestions' }"
+                title="Systemische Fragen"
+                color="warning"
+                outlined
+            >eine Systemische Frage erstellen</v-btn>.
+        </v-alert>
     </div>
 </template>
 
@@ -101,15 +127,13 @@
     import { useSystemicQuestionStore } from '../../stores/systemic-question';
     import { useTeamStore } from '../../stores/team';
     import { useAuthStore } from '../../stores/auth';
+    import WalkAPI from '../../api/walk.js';
+    import dayjs from "dayjs";
 
     export default {
         name: "StartWalk",
         components: {},
         props: {
-            // teams: {
-            //     required: true,
-            //     type: Object,
-            // },
         },
         data: function () {
             return {
@@ -118,17 +142,25 @@
                 teamStore: useTeamStore(),
                 selectedTeam: null,
                 selectedUnfinishedWalk: null,
+                unfinishedWalks: [],
+                isInnerLoading: true,
             }
         },
         computed: {
             hasTeams() {
                 return this.teamStore.hasTeams;
             },
+            isLoading() {
+                return this.teamStore.isLoading || this.authStore.isLoading || this.systemicQuestionStore.isLoading || this.isInnerLoading;
+            },
             teams() {
                 return this.teamStore.getTeams;
             },
             currentUser() {
                 return this.authStore.currentUser;
+            },
+            isAllowedToCreateTeam() {
+                return this.currentUser.isAdmin;
             },
             selectableTeams() {
                 let options = [];
@@ -147,17 +179,19 @@
                 return options;
             },
             hasUnfinishedWalks() {
-                return false;
-            },
-            unfinishedWalks() {
-                return [];
+                return this.unfinishedWalks.length > 0;
             },
             selectableUnfinishedWalks() {
                 let options = [
                     {text: 'Runde wählen...', value: null}
                 ];
+                if (!this.hasUnfinishedWalks) {
+                    return options;
+                }
+                console.log(this.unfinishedWalks);
                 this.unfinishedWalks.forEach((walk) => {
-                    options.push({ text: walk.name, value: walk });
+                    const text = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - ${walk.wayPoints.length} Runde${walk.wayPoints.length !== 1 ? 'n' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
+                    options.push({ text: text, value: walk });
                 });
 
                 return options;
@@ -181,10 +215,18 @@
             if (this.teams.some(team => team.isWithSystemicQuestion)) {
                 await this.systemicQuestionStore.fetchSystemicQuestions();
             }
+            this.unfinishedWalks = (await WalkAPI.findAllUnfinishedWalks(this.currentUser.teams)).data['hydra:member'];
+            this.isInnerLoading = false;
         },
         methods: {
             handleWalkPrologue: async function () {
                 this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam.teamId} })
+            },
+            handleWalkContinue: async function () {
+                if (!this.selectedUnfinishedWalk) {
+                    return
+                }
+                this.$router.push({name: 'WalkAddWayPoint', params: { walkId: this.selectedUnfinishedWalk.walkId}} )
             },
         }
     }

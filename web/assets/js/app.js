@@ -56,14 +56,14 @@ Vue.use(mdiVue, {
 });
 Vue.use(VueClipboard);
 
-Vue.config.errorHandler = function (err, vm, info) {
-    const authStore = useAuthStore();
-    let user = authStore.currentUser;
-    let username = user ? user.email : 'anonymous';
-    let message = err.message ? err.message : JSON.stringify(err);
-    nelmioLog('error', message, {info: info, location: window.location, user: username});
-    throw new Error(err);
-};
+// Vue.config.errorHandler = function (err, vm, info) {
+//     const authStore = useAuthStore();
+//     let user = authStore.currentUser;
+//     let username = user ? user.email : 'anonymous';
+//     let message = err.message ? err.message : JSON.stringify(err);
+//     nelmioLog('error', message, {info: info, location: window.location, user: username});
+//     throw new Error(err);
+// };
 const pinia = createPinia();
 
 const vueApp = (params) => {
