@@ -27,9 +27,9 @@
 
 <script>
     "use strict";
-    import ActiveUserList from './Users/ActiveUserList';
-    import UserCreate from './Users/UserCreate';
-    import UserList from './Users/UserList';
+    import ActiveUserList from './Users/ActiveUserList.vue';
+    import UserCreate from './Users/UserCreate.vue';
+    import UserList from './Users/UserList.vue';
     import ContentCollapse from './ContentCollapse.vue';
     import { useClientStore } from '../stores/client';
     import { useAuthStore } from '../stores/auth';

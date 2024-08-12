@@ -456,8 +456,8 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import WayPointList from './Walk/WayPointList';
-import WalkRating from './Walk/WalkRating';
+import WayPointList from './Walk/WayPointList.vue';
+import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
 import { useClientStore } from '../stores/client';

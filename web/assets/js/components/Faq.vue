@@ -48,7 +48,6 @@
 <script>
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
-import dayjs from 'dayjs';
 
 export default {
     name: 'Faq',

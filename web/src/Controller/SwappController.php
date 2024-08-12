@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SwappController extends AbstractController
 {
-    #[Route(path: '/{vueRouting}', name: 'swapp_home', requirements: ['vueRouting' => '^(?!pdf|api|js-logger|form|walkexport|_(profiler|wdt)).*'])]
+    #[Route(path: '/{vueRouting}', name: 'swapp_home', requirements: ['vueRouting' => '^(?!pdf|api|js-logger|form|walkexport|offline|_(profiler|wdt)).*'])]
     #[Route(path: '/passwort-aendern/{userId}/{confirmationToken}', name: 'user_password_reset')]
     #[Route(path: '/email-bestaetigen/{userId}/{confirmationToken}', name: 'user_email_confirm')]
     #[Route(path: '/', name: 'fallback')]

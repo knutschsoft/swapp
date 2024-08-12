@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">
     <head>
-        <link type="application/manifest+json" rel="manifest" href="/build/manifest.json">
+        <link type="application/manifest+json" rel="manifest" href="/build/manifest.webmanifest">
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -80,7 +80,7 @@
 
         {% block meta_description %}{% endblock %}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            {{ vite_entry_link_tags('app') }}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -119,14 +119,10 @@
         {% endblock body %}
 
         {% block javascripts %}
+            {{ vite_entry_script_tags('app') }}
             <script>
                 {{ nelmio_js_error_logger('ERROR', false) }}
                 {{ nelmio_js_logger('nelmioLog', false) }}
-            </script>
-            {{ encore_entry_script_tags('app') }}
-            <script type="application/javascript">
-                const params = {};
-                new window.App(params);
             </script>
         {% endblock %}
     </body>

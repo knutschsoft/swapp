@@ -20,8 +20,8 @@
 
 <script>
     "use strict";
-    import TagList from './Tags/TagList';
-    import TagCreate from './Tags/TagCreate';
+    import TagList from './Tags/TagList.vue';
+    import TagCreate from './Tags/TagCreate.vue';
     import ContentCollapse from './ContentCollapse.vue';
 
     export default {

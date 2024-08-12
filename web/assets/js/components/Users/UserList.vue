@@ -213,7 +213,7 @@
 'use strict';
 import UserForm from './UserForm.vue';
 import dayjs from 'dayjs';
-import MyInputGroupAppend from '../Common/MyInputGroupAppend';
+import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
 import { useClientStore } from '../../stores/client';
 import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';

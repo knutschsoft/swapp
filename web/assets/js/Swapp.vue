@@ -1,43 +1,7 @@
 <template>
     <FrameError @error="showSnackbar">
         <v-app>
-            <v-alert
-                v-if="showUpdateUI"
-                type="info"
-                prominent
-                class="mb-0 rounded-0"
-            >
-                <v-row no-gutters>
-                    <v-col align-self="center">
-                        <div class="ml-2 mb-1 mb-sm-0">
-                            <b>Es gibt eine neue Version von Swapp!</b>
-                        </div>
-                        <ul class="ml-0 mb-0 mr-4">
-                            <li>Ggfs. funktioniert die aktuelle Version momentan nicht mehr ordnungsgemäß.</li>
-                            <li>Bitte sichere vorher deine ungespeicherten Eingaben.</li>
-                        </ul>
-                    </v-col>
-                    <v-col align-self="center" cols="12">
-                        <v-btn
-                            small
-                            color="secondary"
-                            block
-                            :disabled="isUpdateLoading"
-                            @click="update"
-                        >
-                            <v-progress-circular
-                                v-if="isUpdateLoading"
-                                :width="2"
-                                :size="20"
-                                indeterminate
-                                class="mr-2"
-                            />
-                            <v-icon v-if="!isUpdateLoading" class="mr-2">mdi-update</v-icon>
-                            Versionsupdate
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-alert>
+            <ReloadPrompt />
             <v-alert
                 v-if="showError"
                 type="error"
@@ -64,8 +28,9 @@
 </template>
 
 <script>
-import Navigation from './components/Navigation';
+import Navigation from './components/Navigation.vue';
 import FrameError from './components/FrameError';
+import ReloadPrompt from "./components/ReloadPrompt.vue";
 import dayjs from 'dayjs';
 import { useChangelogStore } from './stores/changelog';
 import { useAuthStore } from './stores/auth';
@@ -73,7 +38,7 @@ import apiClient from './api';
 
 export default {
     name: 'Swapp',
-    components: {FrameError, Navigation},
+    components: {ReloadPrompt, FrameError, Navigation},
     props: {},
     data() {
         return {
@@ -102,12 +67,6 @@ export default {
         this.changelogStore.updateLastVisitedAt(lastVisitedAtOfUserLogin);
     },
     created() {
-        if (this.$workbox) {
-            this.$workbox.addEventListener("waiting", () => {
-                this.showUpdateUI = true;
-            });
-        }
-
         apiClient.interceptors.response.use(undefined, (err) => {
             if (this.$route.name === 'Logout') {
                 return Promise.reject(err);
@@ -139,10 +98,6 @@ export default {
         });
     },
     methods: {
-        async update() {
-            this.isUpdateLoading = true;
-            await this.$workbox.messageSW({ type: "SKIP_WAITING" });
-        },
         showSnackbar(error) {
             if (this.$route.name === 'Logout') {
                 return;

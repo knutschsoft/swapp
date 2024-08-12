@@ -4,7 +4,6 @@
 
 <script>
     import { useAuthStore } from '../stores/auth';
-    import { useChangelogStore } from '../stores/changelog';
     import { useClientStore } from '../stores/client';
     import { useTeamStore } from '../stores/team';
     import { useSystemicQuestionStore } from '../stores/systemic-question';

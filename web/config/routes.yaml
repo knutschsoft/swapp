@@ -12,3 +12,8 @@ gesdinet_jwt_refresh_token:
 NelmioJsLoggerBundle:
     resource: "@NelmioJsLoggerBundle/Resources/config/routing.xml"
     prefix:   /js-logger
+
+when@dev:
+    _pentatrion_vite:
+        prefix: /build
+        resource: "@PentatrionViteBundle/Resources/config/routing.yaml"

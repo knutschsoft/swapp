@@ -41,9 +41,9 @@
 
 <script>
     "use strict";
-    import StartWalk from './Dashboard/StartWalk';
-    import WalkList from './Dashboard/WalkList';
-    import WayPointList from './Dashboard/WayPointList';
+    import StartWalk from './Dashboard/StartWalk.vue';
+    import WalkList from './Dashboard/WalkList.vue';
+    import WayPointList from './Dashboard/WayPointList.vue';
     import ContentCollapse from './ContentCollapse.vue';
     import { useClientStore } from '../stores/client';
     import { useTeamStore } from '../stores/team';

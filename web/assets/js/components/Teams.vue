@@ -23,8 +23,8 @@
 
 <script>
     "use strict";
-    import TeamList from './Teams/TeamList';
-    import TeamForm from './Teams/TeamForm';
+    import TeamList from './Teams/TeamList.vue';
+    import TeamForm from './Teams/TeamForm.vue';
     import ContentCollapse from './ContentCollapse.vue';
     import { useTeamStore } from '../stores/team';
 

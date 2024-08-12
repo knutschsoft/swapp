@@ -2,26 +2,26 @@
 
 import VueRouter from 'vue-router';
 
-import Clients from '../components/Clients';
-import Users from '../components/Users';
-import Login from '../components/Login';
-import Logout from '../components/Logout';
-import PasswordChangeRequest from '../components/PasswordChangeRequest';
-import PasswordChange from '../components/PasswordChange';
-import UserEmailConfirm from '../components/UserEmailConfirm';
-import PasswordReset from '../components/PasswordReset';
-import Dashboard from '../components/Dashboard';
-import About from '../components/About';
-import Changelog from '../components/Changelog';
-import Faq from '../components/Faq';
-import WalkDetail from '../components/WalkDetail';
-import WayPointDetail from '../components/WayPointDetail';
-import SystemicQuestions from '../components/SystemicQuestions';
-import Teams from '../components/Teams';
-import Tags from '../components/Tags';
-import WalkPrologue from '../components/WalkPrologue';
-import WalkAddWayPoint from '../components/WalkAddWayPoint';
-import WalkEpilogue from '../components/WalkEpilogue';
+import Clients from '../components/Clients.vue';
+import Users from '../components/Users.vue';
+import Login from '../components/Login.vue';
+import Logout from '../components/Logout.vue';
+import PasswordChangeRequest from '../components/PasswordChangeRequest.vue';
+import PasswordChange from '../components/PasswordChange.vue';
+import UserEmailConfirm from '../components/UserEmailConfirm.vue';
+import PasswordReset from '../components/PasswordReset.vue';
+import Dashboard from '../components/Dashboard.vue';
+import About from '../components/About.vue';
+import Changelog from '../components/Changelog.vue';
+import Faq from '../components/Faq.vue';
+import WalkDetail from '../components/WalkDetail.vue';
+import WayPointDetail from '../components/WayPointDetail.vue';
+import SystemicQuestions from '../components/SystemicQuestions.vue';
+import Teams from '../components/Teams.vue';
+import Tags from '../components/Tags.vue';
+import WalkPrologue from '../components/WalkPrologue.vue';
+import WalkAddWayPoint from '../components/WalkAddWayPoint.vue';
+import WalkEpilogue from '../components/WalkEpilogue.vue';
 import { useAuthStore } from '../stores/auth';
 
 let routes = [

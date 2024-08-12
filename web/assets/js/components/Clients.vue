@@ -19,8 +19,8 @@
 
 <script>
     "use strict";
-    import ClientCreate from './Clients/ClientCreate';
-    import ClientList from './Clients/ClientList';
+    import ClientCreate from './Clients/ClientCreate.vue';
+    import ClientList from './Clients/ClientList.vue';
     import ContentCollapse from './ContentCollapse.vue';
 
     export default {

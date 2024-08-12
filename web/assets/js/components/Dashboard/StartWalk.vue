@@ -188,7 +188,6 @@
                 if (!this.hasUnfinishedWalks) {
                     return options;
                 }
-                console.log(this.unfinishedWalks);
                 this.unfinishedWalks.forEach((walk) => {
                     const text = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - ${walk.wayPoints.length} Runde${walk.wayPoints.length !== 1 ? 'n' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
                     options.push({ text: text, value: walk });
@@ -215,7 +214,9 @@
             if (this.teams.some(team => team.isWithSystemicQuestion)) {
                 await this.systemicQuestionStore.fetchSystemicQuestions();
             }
-            this.unfinishedWalks = (await WalkAPI.findAllUnfinishedWalks(this.currentUser.teams)).data['hydra:member'];
+            if (this.currentUser.teams.length) {
+                this.unfinishedWalks = (await WalkAPI.findAllUnfinishedWalks(this.currentUser.teams)).data['hydra:member'];
+            }
             this.isInnerLoading = false;
         },
         methods: {

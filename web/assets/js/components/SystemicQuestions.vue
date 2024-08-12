@@ -19,8 +19,8 @@
 
 <script>
     "use strict";
-    import SystemicQuestionList from './SystemicQuestions/SystemicQuestionList';
-    import SystemicQuestionCreate from './SystemicQuestions/SystemicQuestionCreate';
+    import SystemicQuestionList from './SystemicQuestions/SystemicQuestionList.vue';
+    import SystemicQuestionCreate from './SystemicQuestions/SystemicQuestionCreate.vue';
     import ContentCollapse from './ContentCollapse.vue';
     import { useClientStore } from '../stores/client';
 

@@ -73,9 +73,9 @@
 
 <script>
     "use strict";
-    import Error from './Error';
-    import WalkDetailData from './Walk/WalkDetailData';
-    import WayPointList from './Walk/WayPointList';
+    import Error from './Error.vue';
+    import WalkDetailData from './Walk/WalkDetailData.vue';
+    import WayPointList from './Walk/WayPointList.vue';
     import ContentCollapse from './ContentCollapse.vue';
     import WalkForm from './Walk/WalkForm.vue';
     import WalkUnfinishedForm from './Walk/WalkUnfinishedForm.vue';

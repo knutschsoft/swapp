@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 const updateFilterParams = function (params) {
     let sort = '';
-    console.log(params);
     if (params.sortBy) {
         sort = `&order[${params.sortBy}]=${params.sortDesc ? 'desc' : 'asc'}`;
     }
@@ -61,7 +60,6 @@ export default {
         return apiClient.get("/api/walks/team_names");
     },
     findAllUnfinishedWalks(teams) {
-        console.log(teams);
         return this.find({
             sortBy: 'startTime',
             sortDesc: true,

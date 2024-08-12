@@ -39,14 +39,6 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-
-###> symfony/webpack-encore-bundle ###
-/node_modules/
-/public/build/
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-bundle ###
-
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache
@@ -64,3 +56,8 @@ yarn-error.log
 
 ###> friends-of-behat/symfony-extension ###
 ###< friends-of-behat/symfony-extension ###
+
+###> pentatrion/vite-bundle ###
+/node_modules/
+/public/build/
+###< pentatrion/vite-bundle ###

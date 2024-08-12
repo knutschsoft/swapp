@@ -27,9 +27,9 @@ $container-max-widths: (
         xl: 1200px,
         xxl: 1600px
 );
-@import '~bootstrap';
-@import '~bootstrap-vue';
-@import '~font-awesome-animation/dist/font-awesome-animation.css';
+@import 'bootstrap';
+@import 'bootstrap-vue';
+@import 'font-awesome-animation/dist/font-awesome-animation.css';
 @import 'bootstrap-pre-migrate';
 @import './fixes/prevent-ios-input-zoom.scss';
 

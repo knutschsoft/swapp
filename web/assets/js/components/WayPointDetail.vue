@@ -43,7 +43,7 @@
 
 <script>
     "use strict";
-    import WayPointDetailData from './WayPoint/WayPointDetailData';
+    import WayPointDetailData from './WayPoint/WayPointDetailData.vue';
     import ContentCollapse from './ContentCollapse.vue';
     import WayPointForm from './WayPoint/WayPointForm.vue';
     import WayPointRemoveForm from './WayPoint/WayPointRemoveForm.vue';
