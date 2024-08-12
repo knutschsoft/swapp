@@ -15,14 +15,14 @@ Feature: An user can request a non existing walk and get redirected
     And I go to swapp page "/runde/0815/wegpunkt-hinzufuegen"
     Then I wait for "Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet." to appear
     And I should be on "/dashboard"
-    When I click on element with selector "[data-test='redirect-alert'].alert-dismissible button"
+    When I click on element with selector "[data-test='redirect-alert'] .v-alert__dismissible"
     Then I wait for "Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet." to disappear
 
     And I go to swapp page "/runde/0815/abschliessen"
     Then I wait for "Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet." to appear
     And I should be on "/dashboard"
 
-    When I click on element with selector "[data-test='redirect-alert'].alert-dismissible button"
+    When I click on element with selector "[data-test='redirect-alert'] .v-alert__dismissible"
     Then I wait for "Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet." to disappear
 
 
@@ -30,5 +30,5 @@ Feature: An user can request a non existing walk and get redirected
     Then I wait for "Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet." to appear
     And I should be on "/dashboard"
 
-    When I click on element with selector "[data-test='redirect-alert'].alert-dismissible button"
+    When I click on element with selector "[data-test='redirect-alert'] .v-alert__dismissible"
     Then I wait for "Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet." to disappear

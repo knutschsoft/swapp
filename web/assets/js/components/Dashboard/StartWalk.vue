@@ -90,11 +90,6 @@
             <p
                 v-if="isAllowedToCreateTeam"
             >
-                Bitte einen Admin dich einem Team zuzuordnen um eine Runde starten zu können.
-            </p>
-            <template
-                v-else
-            >
                 Ordne dich selber
                 <v-btn
                     :to="{ name: 'Teams' }"
@@ -103,7 +98,12 @@
                     outlined
                 >einem Team zu</v-btn>
                 um eine Runde starten zu können.
-            </template>
+            </p>
+            <p
+                v-else
+            >
+                Bitte einen Admin dich einem Team zuzuordnen um eine Runde starten zu können.
+            </p>
         </v-alert>
         <v-alert
             v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable && !isLoading"
