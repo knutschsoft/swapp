@@ -11,6 +11,18 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: 'xx.08.2024',
+                avatarText: '&#128055;',
+                avatarTitle: 'Tag der Drehtür-Update',
+                entries: [
+                    {
+                        text: [
+                            'UX-Feature: Ein Nutzer kann eine bereits begonnene und noch nicht abgeschlossene Runde vom Dashboard aus starten.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '07.08.2024',
                 avatarText: '&#128055;',
                 avatarTitle: 'Tag der Drehtür-Update',
