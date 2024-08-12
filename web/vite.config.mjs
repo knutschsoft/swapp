@@ -47,7 +47,7 @@ export default defineConfig({
                 'display': 'standalone',
                 'display_overrides': ['tabbed', 'fullscreen'],
                 'description': 'Swapp für Fachkräfte der Streetwork/Mobilen Jugendarbeit.\nDokumentation und Reflexion für unterwegs.\nsince 2015',
-                'start_url': '/offline',
+                'start_url': '/',
                 'lang': 'de',
                 'dir': 'ltr',
                 'id': '/',
