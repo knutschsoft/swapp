@@ -501,7 +501,7 @@ final class DomainIntegrationContext extends RawMinkContext
                     \sprintf('Found client "%s" instead of "%s" for team with name "%s".', $team->getClient()->getName(), $expectedClient->getName(), $team->getName())
                 );
             }
-            if (isset($row['users'])) {
+            if (isset($row['walkTeamMembers'])) {
                 $expectedUsers = $this->getUsersFromString($row['walkTeamMembers']);
                 $users = $team->getUsers();
                 foreach ($expectedUsers as $expectedUser) {
