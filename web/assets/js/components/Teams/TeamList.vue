@@ -356,6 +356,7 @@
                     isWithUserGroups: team.isWithUserGroups,
                     isWithGuests: team.isWithGuests,
                     isWithSystemicQuestion: team.isWithSystemicQuestion,
+                    initialMembersConfig: team.initialMembersConfig,
                     guestNames: team.guestNames,
                 });
 

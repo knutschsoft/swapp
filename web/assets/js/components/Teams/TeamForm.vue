@@ -39,7 +39,7 @@
                             :aria-describedby="ariaDescribedby"
                             :disabled="isDisabled"
                             :state="nameState"
-                            data-test="name"
+                            :data-test="`${ initialTeam ? 'name-change' : 'name'}`"
                             trim
                         />
                     </b-form-group>
@@ -65,6 +65,7 @@
                                         :aria-describedby="ariaDescribedby"
                                         name="users"
                                         switch
+                                        :data-test="`${ initialTeam ? 'change-users-' + user.username : 'create-users-' + user.username }`"
                                         :disabled="isDisabled"
                                         class="d-flex align-items-center flex-users mr-4"
                                     >
@@ -657,7 +658,7 @@
             variant="secondary"
             color="secondary"
             class="btn btn-secondary"
-            data-test="button-team-form"
+            :data-test="`${ initialTeam ? 'button-team-form-change' : 'button-team-form-create'}`"
             block
             :disabled="isFormInvalid || isDisabled"
             :tabindex="isFormInvalid ? '-1' : ''"
@@ -714,7 +715,6 @@ export default {
                 isWithGuests: false,
                 isWithSystemicQuestion: false,
                 isWithUserGroups: false,
-                users: [],
                 ageRanges: [],
                 locationNames: [],
                 walkNames: [],
