@@ -21,7 +21,7 @@ export default {
                         <b>Es gibt eine neue Version von Swapp!</b>
                     </div>
                     <ul class="ml-0 mb-0 mr-4">
-                        <li>Ggfs. funktioniert die aktuelle Version momentan nicht mehr ordnungsgemäß.</li>
+                        <li>Ggfs. funktioniert die aktuelle Version nicht mehr ordnungsgemäß.</li>
                         <li>Bitte sichere vorher deine ungespeicherten Eingaben.</li>
                     </ul>
                 </v-col>
