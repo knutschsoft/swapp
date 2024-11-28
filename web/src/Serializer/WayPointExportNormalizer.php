@@ -4,38 +4,25 @@ declare(strict_types=1);
 namespace App\Serializer;
 
 use App\Entity\Export\WayPointExport;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use Webmozart\Assert\Assert;
 
-final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
+final class WayPointExportNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
-    private readonly NormalizerInterface $decorated;
+    use NormalizerAwareTrait;
 
-    public function __construct(NormalizerInterface $decorated)
-    {
-        if (!$decorated instanceof DenormalizerInterface) {
-            throw new \InvalidArgumentException(\sprintf('The decorated normalizer must implement the %s.', DenormalizerInterface::class));
-        }
+    private const string ALREADY_CALLED = 'WAY_POINT_EXPORT_NORMALIZER_ALREADY_CALLED';
 
-        $this->decorated = $decorated;
-    }
-
-    public function supportsNormalization(mixed $data, ?string $format = null): bool
-    {
-        return $this->decorated->supportsNormalization($data, $format);
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = $this->decorated->normalize($object, $format, $context);
-        if (!\is_array($data)) {
-            return $data;
-        }
-        if (!$object instanceof WayPointExport) {
-            return $data;
-        }
+        \assert($object instanceof WayPointExport);
+        $context[self::ALREADY_CALLED] = true;
+        $data = $this->normalizer->normalize($object, $format, $context);
         if (!isset($context['output'])
             || !isset($context['output']['class'])
             || $context['output']['class'] !== WayPointExport::class
@@ -44,8 +31,9 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         }
 
         $newData = [];
+        Assert::isArray($data);
         foreach ($data as $propertyName => $propertyValue) {
-                $newData[$propertyName] = $propertyValue;
+            $newData[$propertyName] = $propertyValue;
         }
 
         foreach ($this->getCsvUserGroupCells($object) as $label => $csvUserGroupCell) {
@@ -65,21 +53,21 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         return $newData;
     }
 
-    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
+    /**
+     * @param mixed                $data
+     * @param string|null          $format
+     * @param array<string, mixed> $context
+     *
+     * @return bool
+     */
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return $this->decorated->supportsDenormalization($data, $type, $format);
-    }
-
-    public function denormalize($data, $class, $format = null, array $context = []): mixed
-    {
-        return $this->decorated->denormalize($data, $class, $format, $context);
-    }
-
-    public function setSerializer(SerializerInterface $serializer): void
-    {
-        if ($this->decorated instanceof SerializerAwareInterface) {
-            $this->decorated->setSerializer($serializer);
+        // Make sure we're not called twice
+        if (isset($context[self::ALREADY_CALLED])) {
+            return false;
         }
+
+        return $data instanceof WayPointExport;
     }
 
     /**

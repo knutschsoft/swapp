@@ -1,6 +1,6 @@
-FROM composer:2.7 as composer
+FROM composer:2.8 as composer
 FROM node:20-bookworm-slim AS node
-FROM php:8.3.7-apache
+FROM php:8.3-apache
 
 ARG APP_ENVIRONMENT=prod
 ARG HOST_UID=1000

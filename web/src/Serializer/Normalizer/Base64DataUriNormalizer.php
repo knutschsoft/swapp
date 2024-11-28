@@ -35,7 +35,7 @@ class Base64DataUriNormalizer extends DataUriNormalizer
 
         $filesystem = new Filesystem();
         $tempfile = "{$filesystem->tempnam('/tmp', 'symfony')}.$extensions[0]";
-        $content = \base64_decode($match['encoded'], true);
+        $content = \base64_decode($match['encoded'] ?? '', true);
         Assert::string($content);
         if (\str_starts_with(\strtolower($extensions[0]), 'svg')) {
             $sanitizer = new Sanitizer();

@@ -79,7 +79,7 @@
   },
   "author": "robertfausk <robertfreigang@gmx.de>",
   "license": "MIT",
-  "packageManager": "yarn@4.4.0",
+  "packageManager": "yarn@4.5.3",
   "devDependencies": {
     "@types/jquery": "^3"
   }

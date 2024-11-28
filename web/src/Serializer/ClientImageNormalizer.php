@@ -5,11 +5,11 @@ namespace App\Serializer;
 
 use App\Entity\Client;
 use Symfony\Component\HttpFoundation\UrlHelper;
-use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class ClientImageNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface
+final class ClientImageNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
