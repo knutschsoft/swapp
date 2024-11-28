@@ -51,6 +51,7 @@ export default defineConfig({
                 'lang': 'de',
                 'dir': 'ltr',
                 'id': '/',
+                scope: '/',
                 'background_color': '#fff',
                 'theme_color': '#b2b3b5',
                 'icons': [

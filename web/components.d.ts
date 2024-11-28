@@ -26,6 +26,7 @@ declare module 'vue' {
     VRadioGroup: typeof import('vuetify/lib')['VRadioGroup']
     VRow: typeof import('vuetify/lib')['VRow']
     VSkeletonLoader: typeof import('vuetify/lib')['VSkeletonLoader']
+    VSnackbar: typeof import('vuetify/lib')['VSnackbar']
     VToolbar: typeof import('vuetify/lib')['VToolbar']
   }
 }

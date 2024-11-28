@@ -71,7 +71,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "watch": "vite watch"
   },
   "repository": {
     "type": "git",

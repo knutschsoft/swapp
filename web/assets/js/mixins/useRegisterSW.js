@@ -1,5 +1,4 @@
 const reloadSW = '__RELOAD_SW__'
-// const reloadSW: any = '__RELOAD_SW__'
 
 export default {
     name: 'useRegisterSW',
@@ -8,6 +7,7 @@ export default {
             updateSW: undefined,
             offlineReady: false,
             isUpdateLoading: false,
+            showErrorSnackbar: false,
             needRefresh: false
         }
     },
@@ -62,10 +62,29 @@ export default {
             console.log('onNeedRefresh')
         },
         async updateServiceWorker() {
-            console.log('updateServiceWorker');
-            this.isUpdateLoading = true
-            this.updateSW && this.updateSW(true)
-            await this.closePromptUpdateSW
+            try {
+                console.log('updateServiceWorker // Start updating Service Worker');
+
+                // Ladeanimation aktivieren
+                this.isUpdateLoading = true;
+
+                // Service Worker-Update anstoßen
+                if (this.updateSW) {
+                    await this.updateSW(true);
+                    console.log('updateServiceWorker // Service Worker updated successfully');
+                } else {
+                    console.warn('updateServiceWorker // No updateSW function available');
+                }
+            } catch (error) {
+                console.error('updateServiceWorker // Failed to update Service Worker:', error);
+
+                // Snackbar anzeigen
+                this.showErrorSnackbar = true;
+            } finally {
+                // Ladeanimation deaktivieren und Prompt schließen
+                this.isUpdateLoading = false;
+                await this.closePromptUpdateSW();
+            }
         },
         handleSWRegisterError(error) {}
     }
