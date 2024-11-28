@@ -45,7 +45,8 @@
                     </b-form-group>
                 </b-col>
                 <b-col sm="6">
-                    <b-form-group
+                    <b-form-checkbox-group
+                        v-model="team.users"
                         label="Mitglieder"
                         v-slot="{ ariaDescribedby }"
                         content-cols="12"
@@ -59,7 +60,6 @@
                                 >
                                     <b-form-checkbox
                                         v-if="user.isEnabled"
-                                        v-model="team.users"
                                         :key="user['@id']"
                                         :value="user['@id']"
                                         :aria-describedby="ariaDescribedby"
@@ -81,7 +81,6 @@
                                 >
                                     <b-form-checkbox
                                         v-if="!user.isEnabled"
-                                        v-model="team.users"
                                         :key="user['@id']"
                                         :value="user['@id']"
                                         :aria-describedby="ariaDescribedby"
@@ -106,7 +105,7 @@
                         >
                             Dieser Klient hat noch keine Benutzer.
                         </v-alert>
-                    </b-form-group>
+                    </b-form-checkbox-group>
                 </b-col>
             </b-row>
         </b-card>
@@ -771,6 +770,7 @@ export default {
             this.team = JSON.parse(JSON.stringify(this.initialTeam));
         }
         this.team.client = this.team.client || this.currentUser.client;
+        this.userStore.fetchUsers();
     },
     watch: {
         'team.isWithAgeRanges': function (newValue) {
