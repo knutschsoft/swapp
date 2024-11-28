@@ -98,7 +98,7 @@ class Team implements \Stringable
     #[ORM\Column(type: 'boolean')]
     private bool $isWithUserGroups;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 15)]
     private string $initialMembersConfig;
 
     public function __construct()
