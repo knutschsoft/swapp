@@ -1,5 +1,3 @@
-const reloadSW = '__RELOAD_SW__'
-
 export default {
     name: 'useRegisterSW',
     data() {
@@ -13,39 +11,35 @@ export default {
     },
     async mounted() {
         try {
-            const { registerSW } = await import('virtual:pwa-register')
+            const {registerSW} = await import('virtual:pwa-register')
             const vm = this
             this.updateSW = registerSW({
                 immediate: true,
                 onOfflineReady() {
-                    console.log('onOfflineReady');
+                    // alert('onOfflineReady');
                     vm.offlineReady = true
                     vm.onOfflineReadyFn()
                 },
                 onNeedRefresh() {
-                    console.log('onNeedRefresh');
+                    // alert('onNeedRefresh');
                     vm.needRefresh = true
                     vm.onNeedRefreshFn()
                 },
                 onRegisteredSW(swUrl, r) {
-                    console.log(`onRegisteredSW // Service Worker at: ${swUrl}`)
-                    if (reloadSW === 'true') {
-                        r && setInterval(async () => {
-                            console.log('onRegisteredSW // Checking for sw update')
-                            await r.update()
-                        }, 20000 /* 20s for testing purposes */)
-                    }
-                    else {
-                        console.log(`onRegisteredSW // SW Registered: ${r}`)
-                    }
+                    // alert(`onRegisteredSW // Service Worker at: ${swUrl}`)
+                    // if (r) {
+                    //     alert('Service Worker Registrierung erfolgreich.')
+                    // } else {
+                    //     alert(`Service Worker Registrierung NICHT erfolgreich`)
+                    // }
                 },
                 onRegisterError(e) {
+                    // alert(`Service Worker onRegisterError`)
                     vm.handleSWRegisterError(e)
                 }
             })
-        }
-        catch {
-            console.log('PWA disabled.')
+        } catch {
+            // alert('PWA ist deaktiviert oder wird nicht unterstützt')
         }
     },
     methods: {
@@ -53,17 +47,17 @@ export default {
             this.offlineReady = false
             this.needRefresh = false
             this.isUpdateLoading = false
-            console.log('closePromptUpdateSW closed')
+            // alert('closePromptUpdateSW closed')
         },
         onOfflineReadyFn() {
-            console.log('onOfflineReady')
+            // alert('onOfflineReadyFn')
         },
         onNeedRefreshFn() {
-            console.log('onNeedRefresh')
+            // alert('onNeedRefreshFn')
         },
         async updateServiceWorker() {
             try {
-                console.log('updateServiceWorker // Start updating Service Worker');
+                // alert('updateServiceWorker // Start updating Service Worker');
 
                 // Ladeanimation aktivieren
                 this.isUpdateLoading = true;
@@ -71,12 +65,12 @@ export default {
                 // Service Worker-Update anstoßen
                 if (this.updateSW) {
                     await this.updateSW(true);
-                    console.log('updateServiceWorker // Service Worker updated successfully');
-                } else {
-                    console.warn('updateServiceWorker // No updateSW function available');
+                    // alert('updateServiceWorker // Service Worker updated successfully');
+                    // } else {
+                    //     alert('updateServiceWorker // No updateSW function available');
                 }
             } catch (error) {
-                console.error('updateServiceWorker // Failed to update Service Worker:', error);
+                // alert('updateServiceWorker // Failed to update Service Worker:', error);
 
                 // Snackbar anzeigen
                 this.showErrorSnackbar = true;
@@ -86,6 +80,10 @@ export default {
                 await this.closePromptUpdateSW();
             }
         },
-        handleSWRegisterError(error) {}
+        handleSWRegisterError(error) {
+            // Snackbar anzeigen
+            // alert('Fehler beim Registrieren des Service Workers:', error)
+            this.showErrorSnackbar = true;
+        }
     }
 }
