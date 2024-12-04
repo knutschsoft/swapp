@@ -84,11 +84,13 @@
             v-else-if="!isLoading"
             type="info"
             outlined
+            class="mb-0"
             prominent
         >
             Du bist aktuell keinem Team zugeordnet.
             <p
                 v-if="isAllowedToCreateTeam"
+                class="mb-0"
             >
                 Ordne dich selber
                 <v-btn
@@ -101,6 +103,7 @@
             </p>
             <p
                 v-else
+                class="mb-0"
             >
                 Bitte einen Admin dich einem Team zuzuordnen um eine Runde starten zu können.
             </p>
@@ -127,6 +130,7 @@
     import { useSystemicQuestionStore } from '../../stores/systemic-question';
     import { useTeamStore } from '../../stores/team';
     import { useAuthStore } from '../../stores/auth';
+    import { useUserStore } from '../../stores/user';
     import WalkAPI from '../../api/walk.js';
     import dayjs from "dayjs";
 
@@ -140,6 +144,7 @@
                 authStore: useAuthStore(),
                 systemicQuestionStore: useSystemicQuestionStore(),
                 teamStore: useTeamStore(),
+                userStore: useUserStore(),
                 selectedTeam: null,
                 selectedUnfinishedWalk: null,
                 unfinishedWalks: [],
@@ -189,7 +194,7 @@
                     return options;
                 }
                 this.unfinishedWalks.forEach((walk) => {
-                    const text = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - ${walk.wayPoints.length} Runde${walk.wayPoints.length !== 1 ? 'n' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
+                    const text = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - Rundenersteller: ${walk.walkCreator ? this.getUserByUserIri(walk.walkCreator).username : 'nicht gesetzt' } - ${walk.wayPoints.length} Wegpunkt${walk.wayPoints.length !== 1 ? 'e' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
                     options.push({ text: text, value: walk });
                 });
 
@@ -217,6 +222,12 @@
             if (this.currentUser.teams.length) {
                 this.unfinishedWalks = (await WalkAPI.findAllUnfinishedWalks(this.currentUser.teams)).data['hydra:member'];
             }
+            this.unfinishedWalks.forEach(unfinishedWalk => {
+                if (!unfinishedWalk.walkCreator) {
+                    return
+                }
+                this.userStore.fetchByIri(unfinishedWalk.walkCreator);
+            })
             this.isInnerLoading = false;
         },
         methods: {
@@ -228,6 +239,9 @@
                     return
                 }
                 this.$router.push({name: 'WalkAddWayPoint', params: { walkId: this.selectedUnfinishedWalk.walkId}} )
+            },
+            getUserByUserIri: function (userIri) {
+                return this.userStore.getUserByIri(userIri);
             },
         }
     }
