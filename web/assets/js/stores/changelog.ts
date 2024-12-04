@@ -11,9 +11,9 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
-                header: 'xx.12.2024',
-                avatarText: '&#128055;',
-                avatarTitle: 'Nikolaus-Update',
+                header: '04.12.2024',
+                avatarText: '&#127877;',
+                avatarTitle: 'Pre-Nikolaus-Update',
                 entries: [
                     {
                         text: [
