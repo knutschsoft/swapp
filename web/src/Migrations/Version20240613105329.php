@@ -18,7 +18,7 @@ final class Version20240613105329 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE team CHANGE name name VARCHAR(50) NOT NULL');
         $this->addSql('ALTER TABLE walk CHANGE name name VARCHAR(50) NOT NULL');
-        $this->addSql('CREATE INDEX idx_walk_name_teamName ON walk (name, teamName)');
+//        $this->addSql('CREATE INDEX idx_walk_name_teamName ON walk (name, teamName)');
         $this->addSql('ALTER TABLE way_point CHANGE locationName locationName VARCHAR(150) NOT NULL');
         $this->addSql('CREATE INDEX idx_wayPoint_locationName ON way_point (locationName)');
     }
