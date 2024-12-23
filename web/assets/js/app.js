@@ -21,6 +21,7 @@ import VuePageTransition from 'vue-page-transition';
 import Nl2br from 'vue-nl2br';
 import Swapp from './Swapp.vue';
 import VueRouter from 'vue-router';
+import { useAuthStore } from './stores/auth';
 
 library.add(faWalking, faShoePrints, faEye, faMapSigns)
 

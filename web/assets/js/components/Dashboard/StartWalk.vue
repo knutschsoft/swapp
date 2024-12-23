@@ -194,7 +194,8 @@
                     return options;
                 }
                 this.unfinishedWalks.forEach((walk) => {
-                    const text = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - Rundenersteller: ${walk.walkCreator ? this.getUserByUserIri(walk.walkCreator).username : 'nicht gesetzt' } - ${walk.wayPoints.length} Wegpunkt${walk.wayPoints.length !== 1 ? 'e' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
+                    const walkCreator = walk.walkCreator ? this.getUserByUserIri(walk.walkCreator)?.username : 'nicht gesetzt';
+                    const text = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - Rundenersteller: ${walkCreator} - ${walk.wayPoints.length} Wegpunkt${walk.wayPoints.length !== 1 ? 'e' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
                     options.push({ text: text, value: walk });
                 });
 
@@ -222,12 +223,14 @@
             if (this.currentUser.teams.length) {
                 this.unfinishedWalks = (await WalkAPI.findAllUnfinishedWalks(this.currentUser.teams)).data['hydra:member'];
             }
+            const promises = [];
             this.unfinishedWalks.forEach(unfinishedWalk => {
                 if (!unfinishedWalk.walkCreator) {
                     return
                 }
-                this.userStore.fetchByIri(unfinishedWalk.walkCreator);
+                promises.push(this.userStore.fetchByIri(unfinishedWalk.walkCreator));
             })
+            await Promise.all(promises);
             this.isInnerLoading = false;
         },
         methods: {

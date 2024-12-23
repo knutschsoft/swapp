@@ -37,7 +37,7 @@ export default defineConfig({
             devOptions: {
                 type: 'module',
                 navigateFallback: '/',
-                enabled: true
+                enabled: false
             },
             strategies: 'generateSW',
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
