@@ -23,6 +23,24 @@
                     />
                 </vue-page-transition>
             </div>
+            <v-snackbar
+                v-model="alertStore.showAlert"
+                multi-line
+                timeout="10000"
+                outlined
+                variant="outlined"
+                top
+                right
+                :color="alertStore.alert?.type ?? undefined"
+            >
+                <div v-if="alertStore.alert?.title" class="pb-2 text-overline">{{ alertStore.alert?.title }}</div>
+                {{ alertStore.alert?.message }}
+                <template v-slot:actions>
+                    <v-btn variant="text" @click="alertStore.clear()">
+                        <v-icon icon="mdi-close"></v-icon>
+                    </v-btn>
+                </template>
+            </v-snackbar>
         </v-app>
     </FrameError>
 </template>
@@ -30,9 +48,10 @@
 <script>
 import Navigation from './components/Navigation.vue';
 import FrameError from './components/FrameError';
-import ReloadPrompt from "./components/ReloadPrompt.vue";
+import ReloadPrompt from "./components/ReloadPrompt.vue"
 import dayjs from 'dayjs';
 import { useChangelogStore } from './stores/changelog';
+import { useAlertStore } from './stores/alert';
 import { useAuthStore } from './stores/auth';
 import apiClient from './api';
 
@@ -42,6 +61,7 @@ export default {
     props: {},
     data() {
         return {
+            alertStore: useAlertStore(),
             authStore: useAuthStore(),
             changelogStore: useChangelogStore(),
             errorData: '',

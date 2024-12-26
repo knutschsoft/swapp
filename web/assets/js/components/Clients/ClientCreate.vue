@@ -11,6 +11,7 @@
 'use strict';
 
 import ClientForm from './ClientForm.vue';
+import { useAlertStore } from '../../stores/alert';
 import { useClientStore } from '../../stores/client';
 
 export default {
@@ -20,6 +21,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             clientStore: useClientStore(),
         };
     },
@@ -34,24 +36,12 @@ export default {
         async handleSubmit(payload) {
             const client = await this.clientStore.createClient(payload);
             if (client) {
-                const message = `Der Klient "${client.name}" wurde erfolgreich erstellt.`;
-                this.$bvToast.toast(message, {
-                    title: 'Klient erstellt',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.success(`Der Klient "${client.name}" wurde erfolgreich erstellt.`);
                 this.$refs.clientForm.resetForm();
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Klient erstellen fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error(`Klient erstellen fehlgeschlagen`, `Upps! :-(`);
+
+
             }
         },
     },
