@@ -472,11 +472,7 @@ import ColorBadge from '../Tags/ColorBadge.vue';
 import getViolationsFeedback from '../../utils/validation.js';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useTagStore } from '../../stores/tag';
-import { useTeamStore } from '../../stores/team';
-import { useWayPointStore } from '../../stores/way-point';
-import { useWalkStore } from '../../stores/walk';
-import { useAuthStore } from '../../stores/auth';
+import {useAlertStore, useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore} from '../../stores';
 
 export default {
     name: 'WayPointForm',
@@ -502,6 +498,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             authStore: useAuthStore(),
             tagStore: useTagStore(),
             teamStore: useTeamStore(),
@@ -975,24 +972,12 @@ export default {
             });
 
             if (result) {
-                let message = `Der Rundenbeginn wurde erfolgreich von "${ previousFormattedDate }" auf "${ dayjs(this.walk.startTime).format(dateTemplate) }" geändert.`;
-                this.$bvToast.toast(message, {
-                    title: 'Rundenbeginn geändert',
-                    variant: 'success',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.success(
+                    `Der Rundenbeginn wurde erfolgreich von "${ previousFormattedDate }" auf "${ dayjs(this.walk.startTime).format(dateTemplate) }" geändert.`,
+                    'Rundenbeginn geändert'
+                );
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Rundenbeginn ändern fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error('Rundenbeginn ändern fehlgeschlagen', 'Upps! :-(');
             }
         }
     },

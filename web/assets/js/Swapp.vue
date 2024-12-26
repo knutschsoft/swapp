@@ -50,9 +50,7 @@ import Navigation from './components/Navigation.vue';
 import FrameError from './components/FrameError';
 import ReloadPrompt from "./components/ReloadPrompt.vue"
 import dayjs from 'dayjs';
-import { useChangelogStore } from './stores/changelog';
-import { useAlertStore } from './stores/alert';
-import { useAuthStore } from './stores/auth';
+import { useAlertStore, useAuthStore, useChangelogStore } from './stores';
 import apiClient from './api';
 
 export default {
@@ -87,6 +85,7 @@ export default {
         this.changelogStore.updateLastVisitedAt(lastVisitedAtOfUserLogin);
     },
     created() {
+        const that = this;
         apiClient.interceptors.response.use(undefined, (err) => {
             if (this.$route.name === 'Logout') {
                 return Promise.reject(err);
@@ -97,14 +96,7 @@ export default {
             if (err.response && err.response.status && err.response.data) {
                 if (403 === err.response.status && 'Your token is invalid, please login again to get a new one' === err.response.data.message && this.$route.name !== 'Logout'
                     || 401 === err.response.status && 'Expired JWT Token' === err.response.data.message) {
-                    let options = {
-                        title: 'Du wurdest automatisch abgemeldet.',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        appendToast: false,
-                        variant: 'info',
-                    };
-                    this.$bvToast.toast('Dies ist passiert, da deine letzte Anmeldung zu lange her ist. Bitte melde dich erneut an.', options);
+                    that.alertStore.info('Dies ist passiert, da deine letzte Anmeldung zu lange her ist. Bitte melde dich erneut an.', 'Du wurdest automatisch abgemeldet.');
                     this.$router.push({ name: 'Logout' });
                     return;
                 }
@@ -123,6 +115,7 @@ export default {
                 return;
             }
             let message = '';
+            let title = '';
             let isProd = process.env.NODE_ENV === 'production';
             if (isProd) {
                 message = `Das hätte nicht passieren dürfen. Wende dich bitte mit einer Beschreibung zur Reproduktion des Fehlers an info@streetworkapp.de`;
@@ -133,17 +126,8 @@ export default {
                     `;
             }
             if (message !== this.oldToasterValue) {
-                let options = {
-                    title: 'Upps! Es ist ein unerwarteter Fehler aufgetreten!',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: false,
-                    variant: 'danger',
-                };
-                if (isProd) {
-                    options.href = 'mailto:info@streetworkapp.de';
-                }
-                this.$bvToast.toast(message, options);
+                title = 'Upps! Es ist ein unerwarteter Fehler aufgetreten!'
+                this.alertStore.error(message, title);
             }
             this.oldToasterValue = message;
         },

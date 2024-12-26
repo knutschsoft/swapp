@@ -120,9 +120,7 @@
 import ColorBadge from './ColorBadge.vue';
 import { html } from 'color_library';
 import FormError from '../Common/FormError.vue';
-import { useClientStore } from '../../stores/client';
-import { useTagStore } from '../../stores/tag';
-import { useAuthStore } from '../../stores/auth';
+import {useAlertStore, useAuthStore, useClientStore, useTagStore} from '../../stores';
 
 export default {
     name: 'TagCreate',
@@ -132,6 +130,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             authStore: useAuthStore(),
             tagStore: useTagStore(),
             clientStore: useClientStore(),
@@ -244,26 +243,13 @@ export default {
             const tag = await this.tagStore.create(payload);
             if (tag) {
                 this.resetForm();
-                const message = `Der Tag ${tag.name} (${tag.color}) wurde erfolgreich erstellt.`;
-                this.$bvToast.toast(message, {
-                    title: 'Tag erstellt',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                });
-
+                this.alertStore.success(`Der Tag ${tag.name} (${tag.color}) wurde erfolgreich erstellt.`, 'Tag erstellt');
                 this.tagStore.fetchTags();
 
                 this.name = null;
                 this.color = null;
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Tag erstellen fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                });
+                this.alertStore.error('Tag erstellen fehlgeschlagen', 'Upps! :-(');
             }
         },
         resetForm() {

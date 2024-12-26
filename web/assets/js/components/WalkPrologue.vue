@@ -200,10 +200,7 @@
     import ContentCollapse from './ContentCollapse.vue';
     import WalkAPI from '../api/walk.js';
     import dayjs from 'dayjs';
-    import { useTeamStore } from '../stores/team';
-    import { useWalkStore } from '../stores/walk';
-    import { useUserStore } from '../stores/user';
-    import { useAuthStore } from '../stores/auth';
+    import {useAlertStore, useAuthStore, useWalkStore, useUserStore, useTeamStore} from '../stores';
     import WalkTeamMembersField from "./Common/Walk/WalkTeamMembersField.vue";
 
     export default {
@@ -220,6 +217,7 @@
         },
         data: function () {
             return {
+                alertStore: useAlertStore(),
                 authStore: useAuthStore(),
                 teamStore: useTeamStore(),
                 userStore: useUserStore(),
@@ -539,24 +537,10 @@
                 });
 
                 if (walk) {
-                    const message = `Die Runde "${walk.name}" wurde erfolgreich erstellt.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Runde erstellt',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.success(`Die Runde "${walk.name}" wurde erfolgreich erstellt.`, 'Runde erstellt');
                     this.$router.push({ name: 'WalkAddWayPoint', params: { walkId: walk.walkId } });
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Runde erstellen fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.error('Runde erstellen fehlgeschlagen', 'Upps! :-(');
                 }
                 this.isFormLoading = false;
             }

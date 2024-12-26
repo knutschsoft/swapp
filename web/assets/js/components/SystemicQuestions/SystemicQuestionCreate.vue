@@ -11,8 +11,8 @@
 'use strict';
 
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
-import { useAuthStore } from '../../stores/auth';
-import { useSystemicQuestionStore } from '../../stores/systemic-question';
+import {useAlertStore, useAuthStore, useSystemicQuestionStore} from '../../stores';
+
 export default {
     name: 'SystemicQuestionCreate',
     components: {
@@ -20,6 +20,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             authStore: useAuthStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
         };
@@ -39,25 +40,10 @@ export default {
             const systemicQuestion = await this.systemicQuestionStore.create(payload);
             if (systemicQuestion) {
                 this.$refs.systemicQuestionForm.resetForm();
-                const message = `Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich erstellt.`;
-                this.$bvToast.toast(message, {
-                    title: 'Systemische Frage erstellt',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    solid: true,
-                });
-
+                this.alertStore.success(`Die systemische Frage "${systemicQuestion.question}" wurde erfolgreich erstellt.`, 'Systemische Frage erstellt');
                 this.initialQuestion = null;
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Systemische Frage erstellen fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error('Systemische Frage erstellen fehlgeschlagen', 'Upps! :-(');
             }
         },
     },

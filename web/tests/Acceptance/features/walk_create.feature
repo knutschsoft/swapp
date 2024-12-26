@@ -95,8 +95,8 @@ Feature: A user can do a walk
     And I click on element with selector "[data-test='rating'] .vue-rate-it-rating-item:nth-child(4n)"
     And I click on text "Runde abschließen"
 
+    And I wait for 'Die Runde "Mein erster Lauf" wurde erfolgreich erstellt.' to appear
     And I wait for "Runde abschließen" to disappear
-    #    And I wait for 'Runde "Mein erster Lauf" wurde erfolgreich erstellt.' to appear
 
     Then I should be on "/dashboard"
     And I wait for "Mein erster Lauf" to appear

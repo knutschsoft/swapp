@@ -11,7 +11,8 @@
 'use strict';
 
 import WayPointForm from './WayPointForm.vue';
-import { useWayPointStore } from '../../stores/way-point';
+import {useAlertStore, useWayPointStore} from '../../stores';
+
 export default {
     name: 'WayPointCreate',
     components: {
@@ -25,6 +26,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             wayPointStore: useWayPointStore(),
             componentKey: 0,
         };
@@ -48,14 +50,7 @@ export default {
                 if (isWithFinish) {
                     message += ' Die Runde kann jetzt abgeschlossen werden';
                 }
-                this.$bvToast.toast(message, {
-                    title: 'Wegpunkt erstellt',
-                    variant: 'success',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.success(message, 'Wegpunkt erstellt');
                 if (isWithFinish) {
                     this.$router.push({
                         name: 'WalkEpilogue',
@@ -70,14 +65,7 @@ export default {
                     });
                 }
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Wegpunkt erstellen fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error('Wegpunkt erstellen fehlgeschlagen', 'Upps! :-(');
             }
         },
     },

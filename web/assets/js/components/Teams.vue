@@ -26,7 +26,7 @@
     import TeamList from './Teams/TeamList.vue';
     import TeamForm from './Teams/TeamForm.vue';
     import ContentCollapse from './ContentCollapse.vue';
-    import { useTeamStore } from '../stores/team';
+    import { useAlertStore, useTeamStore } from '../stores';
 
     export default {
         name: "Teams",
@@ -37,6 +37,7 @@
         },
         data: () => {
             return {
+                alertStore: useAlertStore(),
                 teamStore: useTeamStore()
             };
         },
@@ -65,23 +66,10 @@
 
                 if (createdTeam) {
                     this.$refs.teamForm.resetForm();
-                    const message = `Das Team ${createdTeam.name} wurde erfolgreich erstellt.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Team erstellt',
-                        toaster: 'b-toaster-top-right',
-                        variant: 'success',
-                        autoHideDelay: 10000,
-                        appendToast: true,
-                    });
+                    this.alertStore.success(`Das Team ${createdTeam.name} wurde erfolgreich erstellt.`);
                     this.$root.$emit('bv::hide::modal', 'edit-modal-team');
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Team erstellen fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                    });
+                    this.alertStore.error(`Team erstellen fehlgeschlagen`, `Upps! :-(`);
                 }
             },
         },

@@ -53,7 +53,7 @@ Feature: An user can delete a walk
 
     When I click on element "button-walk-remove-modal"
     Then I wait for 'Abgeschlossene Streetwork-Runden' to appear
-    Then I wait for 'Gorbitz' to disappear
+    Then I wait for 'Die Runde "Gorbitz" wurde erfolgreich gelöscht.' to appear
 
     And I can not find the following wayPoints in database:
       | locationName |
@@ -78,7 +78,7 @@ Feature: An user can delete a walk
 
     When I click on element "button-walk-remove-modal"
     Then I wait for 'Abgeschlossene Streetwork-Runden' to appear
-    Then I wait for 'Gorbitz' to disappear
+    Then I wait for 'Die Runde "Gorbitz" wurde erfolgreich gelöscht.' to appear
 
     And I can not find the following wayPoints in database:
       | locationName |

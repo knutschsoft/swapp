@@ -93,16 +93,14 @@
 <script>
     "use strict";
     import TeamForm from './TeamForm.vue';
-    import { useClientStore } from '../../stores/client';
-    import { useTeamStore } from '../../stores/team';
-    import { useUserStore } from '../../stores/user';
-    import { useAuthStore } from '../../stores/auth';
+    import { useAlertStore, useAuthStore, useClientStore, useTeamStore, useUserStore } from '../../stores';
 
     export default {
         name: "TeamList",
         components: { TeamForm },
         data: function () {
             return {
+                alertStore: useAlertStore(),
                 authStore: useAuthStore(),
                 clientStore: useClientStore(),
                 teamStore: useTeamStore(),
@@ -361,23 +359,10 @@
                 });
 
                 if (changedTeam) {
-                    const message = `Das Team ${changedTeam.name} wurde erfolgreich geändert.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Team geändert',
-                        toaster: 'b-toaster-top-right',
-                        variant: 'success',
-                        autoHideDelay: 10000,
-                        appendToast: true,
-                    });
+                    this.alertStore.success(`Das Team ${changedTeam.name} wurde erfolgreich geändert.`, 'Team geändert');
                     this.$root.$emit('bv::hide::modal', 'edit-modal-team');
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Team ändern fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                    });
+                    this.alertStore.error('Team ändern fehlgeschlagen', 'Upps! :-(');
                 }
             },
         }

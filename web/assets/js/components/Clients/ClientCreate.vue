@@ -11,8 +11,7 @@
 'use strict';
 
 import ClientForm from './ClientForm.vue';
-import { useAlertStore } from '../../stores/alert';
-import { useClientStore } from '../../stores/client';
+import { useAlertStore, useClientStore } from '../../stores';
 
 export default {
     name: 'ClientCreate',
@@ -40,8 +39,6 @@ export default {
                 this.$refs.clientForm.resetForm();
             } else {
                 this.alertStore.error(`Klient erstellen fehlgeschlagen`, `Upps! :-(`);
-
-
             }
         },
     },

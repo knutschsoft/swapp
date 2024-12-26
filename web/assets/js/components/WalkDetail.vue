@@ -80,12 +80,7 @@
     import WalkForm from './Walk/WalkForm.vue';
     import WalkUnfinishedForm from './Walk/WalkUnfinishedForm.vue';
     import WalkRemoveForm from './Walk/WalkRemoveForm.vue';
-    import { useAuthStore } from '../stores/auth';
-    import { useClientStore } from '../stores/client';
-    import { useUserStore } from '../stores/user';
-    import { useWayPointStore } from '../stores/way-point';
-    import { useWalkStore } from '../stores/walk';
-    import { useTagStore } from "../stores/tag";
+    import {useAlertStore, useAuthStore, useClientStore, useUserStore, useWayPointStore, useWalkStore, useTagStore} from '../stores';
 
     export default {
         name: "WalkDetail",
@@ -105,6 +100,7 @@
         },
         data: function () {
             return {
+                alertStore: useAlertStore(),
                 authStore: useAuthStore(),
                 clientStore: useClientStore(),
                 tagStore: useTagStore(),
@@ -188,26 +184,10 @@
             async handleRemove({walk}) {
                 await this.walkStore.remove({walk: walk['@id']});
                 if (!this.changeError) {
-                    const message = `Die Runde "${walk.name}" wurde erfolgreich gelöscht.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Runde gelöscht',
-                        toaster: 'b-toaster-top-right',
-                        variant: 'success',
-                        autoHideDelay: 10000,
-                        appendToast: true,
-                        solid: true,
-                    });
-
+                    this.alertStore.success(`Die Runde "${walk.name}" wurde erfolgreich gelöscht.`, 'Runde gelöscht');
                     this.$router.push({name: 'Dashboard'});
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Runde löschen fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.success('Runde löschen fehlgeschlagen', 'Upps! :-(');
                 }
             },
             getWayPointByIri(iri) {
@@ -217,48 +197,18 @@
                 payload.walk = this.walk['@id'];
                 const walk = await this.walkStore.change(payload);
                 if (walk) {
-                    const message = `Die Runde "${walk.name}" wurde erfolgreich geändert.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Runde geändert',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'success',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.success(`Die Runde "${walk.name}" wurde erfolgreich geändert.`, 'Runde geändert');
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Runde ändern fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.error('Runde ändern fehlgeschlagen', 'Upps! :-(');
                 }
             },
             async handleWalkUnfinishedSubmit(payload) {
                 payload.walk = this.walk['@id'];
                 const walk = await this.walkStore.changeUnfinished(payload);
                 if (walk) {
-                    const message = `Die Runde "${walk.name}" wurde erfolgreich geändert.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Runde geändert',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'success',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.success(`Die Runde "${walk.name}" wurde erfolgreich geändert.`, 'Runde geändert');
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Runde ändern fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.error('Runde ändern fehlgeschlagen', 'Upps! :-(');
                 }
             },
         },

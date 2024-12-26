@@ -214,9 +214,7 @@
 import UserForm from './UserForm.vue';
 import dayjs from 'dayjs';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
-import { useClientStore } from '../../stores/client';
-import { useUserStore } from '../../stores/user';
-import { useAuthStore } from '../../stores/auth';
+import {useAlertStore, useAuthStore, useClientStore, useUserStore} from '../../stores';
 
 export default {
     name: 'UserList',
@@ -226,6 +224,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             authStore: useAuthStore(),
             clientStore: useClientStore(),
             userStore: useUserStore(),
@@ -412,25 +411,10 @@ export default {
             payload.user = this.editModal.selectedUser['@id'];
             const user = await this.userStore.change(payload);
             if (user) {
-                const message = `Der Benutzer "${user.username}" wurde erfolgreich geändert.`;
-                this.$bvToast.toast(message, {
-                    title: 'Benutzer geändert',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    solid: true,
-                });
-
+                this.alertStore.success(`Der Benutzer "${user.username}" wurde erfolgreich geändert.`, 'Benutzer geändert');
                 this.resetEditModal();
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Benutzer ändern fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error('Benutzer ändern fehlgeschlagen', 'Upps! :-(');
             }
         },
         toggleEnabled: function (user, isEnabled) {

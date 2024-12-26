@@ -460,10 +460,7 @@ import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
 import getViolationsFeedback from '../utils/validation.js';
-import { useClientStore } from '../stores/client';
-import { useTeamStore } from '../stores/team';
-import { useWayPointStore } from '../stores/way-point';
-import { useWalkStore } from '../stores/walk';
+import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkStore} from '../stores';
 
 export default {
     name: 'WalkEpilogue',
@@ -485,6 +482,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             clientStore: useClientStore(),
             teamStore: useTeamStore(),
             walkStore: useWalkStore(),
@@ -856,15 +854,7 @@ export default {
         async handleSubmit() {
             const walk = await this.walkStore.epilogue(this.form);
             if (walk) {
-                const message = `Die Runde "${walk.name}" wurde erfolgreich erstellt.`;
-                this.$bvToast.toast(message, {
-                    title: 'Runde geändert',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'success',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.success(`Die Runde "${walk.name}" wurde erfolgreich erstellt.`, 'Runde erstellt');
                 window.scrollTo({
                     top: 0,
                     left: 0,
@@ -872,14 +862,7 @@ export default {
                 });
                 this.$router.push({ name: 'Dashboard' });
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Runde abschließen fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error('Runde abschließen fehlgeschlagen', 'Upps! :-(');
             }
         },
     },

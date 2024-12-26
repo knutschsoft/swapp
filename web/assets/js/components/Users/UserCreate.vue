@@ -11,8 +11,8 @@
 'use strict';
 
 import UserForm from './UserForm.vue';
-import { useUserStore } from '../../stores/user';
-import { useAuthStore } from '../../stores/auth';
+import {useAlertStore, useAuthStore, useUserStore} from '../../stores';
+
 export default {
     name: 'UserCreate',
     components: {
@@ -20,6 +20,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             authStore: useAuthStore(),
             userStore: useUserStore(),
         };
@@ -39,23 +40,12 @@ export default {
             const user = await this.userStore.create(payload);
             if (user) {
                 this.$refs.userForm.resetForm();
-                const message = `Der Benutzer "${user.username}" wurde erfolgreich erstellt. Er hat eine E-Mail an "${user.email}" mit seinen Kontoinformationen erhalten.`;
-                this.$bvToast.toast(message, {
-                    title: 'Benutzer erstellt',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.success(
+                    `Der Benutzer "${user.username}" wurde erfolgreich erstellt. Er hat eine E-Mail an "${user.email}" mit seinen Kontoinformationen erhalten.`,
+                    'Benutzer erstellt'
+                );
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Benutzer erstellen fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error('Benutzer erstellen fehlgeschlagen', 'Upps! :-(');
             }
         },
     },

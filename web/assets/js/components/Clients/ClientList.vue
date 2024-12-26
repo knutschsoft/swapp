@@ -97,8 +97,7 @@
 'use strict';
 import dayjs from 'dayjs';
 import ClientForm from './ClientForm.vue';
-import { useClientStore } from '../../stores/client';
-import { useUserStore } from '../../stores/user';
+import {useAlertStore, useClientStore, useUserStore} from '../../stores';
 
 export default {
     name: 'ClientList',
@@ -107,6 +106,7 @@ export default {
     },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             clientStore: useClientStore(),
             userStore: useUserStore(),
             fields: [
@@ -199,26 +199,10 @@ async created() {
             payload.client = this.editModalClient.selectedClient['@id'];
             const client = await this.clientStore.changeClient(payload);
             if (client) {
-                const message = `Der Klient "${client.name}" wurde erfolgreich geändert.`;
-                this.$bvToast.toast(message, {
-                    title: 'Klient geändert',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'info',
-                    appendToast: true,
-                    solid: true,
-                });
-
+                this.alertStore.success(`Der Klient "${client.name}" wurde erfolgreich geändert.`, 'Klient geändert');
                 this.resetEditModalClient();
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: 'Klient ändern fehlgeschlagen',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    variant: 'danger',
-                    appendToast: true,
-                    solid: true,
-                });
+                this.alertStore.error('Klient ändern fehlgeschlagen', 'Upps! :-(');
             }
         },
     },

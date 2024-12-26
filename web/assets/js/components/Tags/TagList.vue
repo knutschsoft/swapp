@@ -145,15 +145,14 @@
 import ColorBadge from './ColorBadge.vue';
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import MyInputGroupAppend from '../../components/Common/MyInputGroupAppend.vue';
-import { useClientStore } from '../../stores/client';
-import { useTagStore } from '../../stores/tag';
-import { useAuthStore } from '../../stores/auth';
+import {useAlertStore, useAuthStore, useClientStore, useTagStore} from '../../stores';
 
 export default {
     name: 'TagList',
     components: { ContentLoadingSpinner, ColorBadge, MyInputGroupAppend },
     data: function () {
         return {
+            alertStore: useAlertStore(),
             authStore: useAuthStore(),
             clientStore: useClientStore(),
             tagStore: useTagStore(),
@@ -252,23 +251,9 @@ export default {
                 title = `Tag aktiviert`;
             }
             if (changedTag) {
-                this.$bvToast.toast(message, {
-                    title: title,
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    variant: 'info',
-                    solid: true,
-                });
+                this.alertStore.success(message, title);
             } else {
-                this.$bvToast.toast('Upps! :-(', {
-                    title: `Tag ${ isEnabled ? 'deaktivieren' : 'aktivieren'} fehlgeschlagen`,
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    variant: 'danger',
-                    solid: true,
-                });
+                this.alertStore.error(`Tag ${ isEnabled ? 'deaktivieren' : 'aktivieren'} fehlgeschlagen`, 'Upps! :-(');
             }
         },
     },

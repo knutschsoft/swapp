@@ -154,10 +154,12 @@
 
 <script>
 "use strict";
+import {useAlertStore} from '../../stores';
 
 export default {
     name: "DemoInfo",
     data: () => ({
+        alertStore: useAlertStore(),
         isCopiedAdelheid: false,
         isCopiedBenno: false,
         isCopiedTessa: false,
@@ -195,14 +197,7 @@ export default {
             this.$emit('credentials-select', {username: copyText, password: copyText});
 
             this.$copyText(copyText).then(() => {
-                this.$bvToast.toast(`"${copyText}" ist nun in deiner Zwischenablage sowie in den Anmeldefeldern.`, {
-                    title: 'Zugangsdaten in die Zwischenablage kopiert',
-                    toaster: 'b-toaster-top-right',
-                    autoHideDelay: 10000,
-                    appendToast: true,
-                    variant: 'info',
-                    solid: true,
-                });
+                this.alertStore.info(`"${copyText}" ist nun in deiner Zwischenablage sowie in den Anmeldefeldern.`, 'Zugangsdaten in die Zwischenablage kopiert');
             }, function (e) {
                 console.log(e);
             });

@@ -47,10 +47,7 @@
     import ContentCollapse from './ContentCollapse.vue';
     import WayPointForm from './WayPoint/WayPointForm.vue';
     import WayPointRemoveForm from './WayPoint/WayPointRemoveForm.vue';
-    import { useTagStore } from '../stores/tag';
-    import { useWayPointStore } from '../stores/way-point';
-    import { useWalkStore } from '../stores/walk';
-    import { useAuthStore } from '../stores/auth';
+    import {useAlertStore, useAuthStore, useTagStore, useWalkStore, useWayPointStore} from '../stores';
 
     export default {
         name: "WayPointDetail",
@@ -70,6 +67,7 @@
         },
         data: function () {
             return {
+                alertStore: useAlertStore(),
                 authStore: useAuthStore(),
                 tagStore: useTagStore(),
                 wayPointStore: useWayPointStore(),
@@ -136,50 +134,19 @@
             async handleRemove({wayPoint}) {
                 await this.wayPointStore.remove({wayPoint: wayPoint['@id']});
                 if (!this.changeError) {
-                    const message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich gelöscht.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Wegpunkt gelöscht',
-                        toaster: 'b-toaster-top-right',
-                        variant: 'success',
-                        autoHideDelay: 10000,
-                        appendToast: true,
-                        solid: true,
-                    });
-
+                    this.alertStore.success(`Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich gelöscht.`, 'Wegpunkt gelöscht');
                     this.$router.push({name: 'WalkDetail', params: { walkId: this.walk.walkId }});
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Wegpunkt löschen fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.error('Wegpunkt löschen fehlgeschlagen', 'Upps! :-(');
                 }
             },
             async handleSubmit({form}) {
                 form.wayPoint = this.wayPoint['@id'];
                 const wayPoint = await this.wayPointStore.change(form);
                 if (wayPoint) {
-                    const message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich geändert.`;
-                    this.$bvToast.toast(message, {
-                        title: 'Wegpunkt geändert',
-                        toaster: 'b-toaster-top-right',
-                        variant: 'success',
-                        autoHideDelay: 10000,
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.success(`Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich geändert.`, 'Wegpunkt geändert');
                 } else {
-                    this.$bvToast.toast('Upps! :-(', {
-                        title: 'Wegpunkt ändern fehlgeschlagen',
-                        toaster: 'b-toaster-top-right',
-                        autoHideDelay: 10000,
-                        variant: 'danger',
-                        appendToast: true,
-                        solid: true,
-                    });
+                    this.alertStore.error('Wegpunkt ändern fehlgeschlagen', 'Upps! :-(');
                 }
             },
         },
