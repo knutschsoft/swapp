@@ -1,8 +1,8 @@
 <template>
     <client-form
+        v-if="initialClient"
         submit-button-text="Neuen Klienten erstellen"
-        :initial-client="{}"
-        ref="clientForm"
+        :initial-client="initialClient"
         @submit="handleSubmit"
     />
 </template>
@@ -19,22 +19,23 @@ export default defineComponent({
         ClientForm,
     },
     setup() {
-        const clientForm = ref<InstanceType<typeof ClientForm> | null>(null);
         const alertStore = useAlertStore();
         const clientStore = useClientStore();
+        const initialClient = ref<Client>({});
 
         const handleSubmit = async (payload: ClientCreateRequest) => {
             const client = await clientStore.createClient(payload);
             if (client) {
                 alertStore.success(`Der Klient "${client.name}" wurde erfolgreich erstellt.`);
-                clientForm.value?.resetForm();
+                initialClient.value = {name: 'narf'};
+                initialClient.value.name = null;
             } else {
                 alertStore.error('Klient erstellen fehlgeschlagen', 'Upps! :-(');
             }
         };
 
         return {
-            clientForm,
+            initialClient,
             handleSubmit,
         };
     },

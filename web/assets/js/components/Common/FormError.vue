@@ -22,51 +22,48 @@
     </v-alert>
 </template>
 
-<script>
-'use strict';
+<script lang="ts">
+import { defineComponent, computed } from 'vue';
 
-export default {
+export default defineComponent({
     name: 'FormError',
     props: {
         error: {
+            type: [Object, Boolean] as () => any | boolean,
             required: true,
         },
     },
-    components: {
-    },
-    data: function () {
-        return {
-        };
-    },
-    computed: {
-        hasError() {
-            return !!this.error;
-        },
-        validationErrors() {
-            const errors = {};
-            if (!this.hasError) {
+    setup(props) {
+        const hasError = computed(() => !!props.error);
+
+        const validationErrors = computed(() => {
+            const errors: Record<string, string> = {};
+            if (!hasError.value) {
                 return errors;
             }
-            const error = this.error;
-            if (error && error.data && error.data.violations) {
-                error.data.violations.forEach((violation) => {
-                    const key = violation.propertyPath ? violation.propertyPath : 'global';
+            const error = props.error;
+
+            if (error?.data?.violations) {
+                error.data.violations.forEach((violation: { propertyPath?: string; message: string }) => {
+                    const key = violation.propertyPath || 'global';
                     errors[key] = violation.message;
                 });
                 return errors;
             }
-            if (error && error.data && error.data["hydra:description"]) {
-                errors.global = error.data["hydra:description"];
+
+            if (error?.data?.['hydra:description']) {
+                errors.global = error.data['hydra:description'];
             }
 
             return errors;
-        },
+        });
+
+        return {
+            hasError,
+            validationErrors,
+        };
     },
-    async created() {
-    },
-    methods: {
-    },
-};
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{ itemsPerPage }}
         <v-data-table
             :items-per-page="itemsPerPage"
             :headers="headers"
