@@ -4,20 +4,13 @@ import axios from 'axios';
 import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
 import WalkRating from '../Walk/WalkRating.vue';
-import { getViolationsFeedback } from '../../utils/validation';
+// import { getViolationsFeedback } from '../../utils/validation';
 import { useClientStore } from '../../stores/client';
-
-interface Client {
-    name: string | null;
-    email: string | null;
-    description: string;
-    ratingImageFileData: string | null;
-    ratingImageFileName: string | null;
-}
+import { Client } from '../../model';
 
 const props = defineProps({
     initialClient: {
-        type: Object as () => Partial<Client>,
+        type: Object as Client,
         required: false,
         default: () => ({}),
     },
@@ -44,11 +37,11 @@ const client = ref<Client>({
 const nameState = computed(() => client.value.name?.length >= 3 && client.value.name.length <= 200);
 const emailState = computed(() => client.value.email?.length >= 3 && client.value.email.length <= 100 && EmailValidator.validate(client.value.email || ''));
 const descriptionState = computed(() => client.value.description.length >= 0 && client.value.description.length <= 10000);
-const ratingImageState = computed(() => !!client.value.ratingImageFileData && invalidRatingImageFeedback.value === '');
-const invalidRatingImageFeedback = computed(() => {
-    const error = isInitialForm ? errorCreate.value : errorChange.value;
-    return getViolationsFeedback(['decodedRatingImageData', 'ratingImageFileData', 'ratingImageFileName'], error)
-});
+// const ratingImageState = computed(() => !!client.value.ratingImageFileData && invalidRatingImageFeedback.value === '');
+// const invalidRatingImageFeedback = computed(() => {
+//     const error = isInitialForm ? errorCreate.value : errorChange.value;
+//     return getViolationsFeedback(['decodedRatingImageData', 'ratingImageFileData', 'ratingImageFileName'], error)
+// });
 const isInitialForm = computed<boolean>(() => !props.initialClient.clientId);
 const isLoading = computed(() => props.initialClient['@id'] ? clientStore.isLoadingChange(props.initialClient['@id']) : clientStore.isLoadingCreate);
 const isFormInvalid = computed(() => !nameState.value || !emailState.value || !descriptionState.value || isLoading.value);
@@ -83,11 +76,6 @@ function handleSubmit() {
     emit('submit', client.value);
 }
 
-function resetForm() {
-    form.value?.reset();
-    setInitialValues();
-}
-
 async function updateRatingFile(file: File | null) {
     client.value.ratingImageFileData = file ? await readFile(file) : null;
     client.value.ratingImageFileName = file ? file.name : null;
@@ -104,79 +92,78 @@ function readFile(file: Blob): Promise<string> {
 </script>
 
 <template>
-    <b-form @submit.prevent.stop="handleSubmit" ref="form" class="p-1 p-sm-2 p-lg-3">
-        <b-form-group label="Name" content-cols="12" label-cols="12" content-cols-lg="8" label-cols-lg="2">
-            <b-input
-                v-model="client.name"
-                required
-                minlength="4"
-                maxlength="100"
-                placeholder="Name"
-                :state="nameState"
-                data-test="name"
-            />
-        </b-form-group>
-        <b-form-group label="E-Mail" content-cols="12" label-cols="12" content-cols-lg="8" label-cols-lg="2">
-            <b-input
-                v-model="client.email"
-                required
-                minlength="4"
-                maxlength="100"
-                placeholder="E-Mail"
-                :state="emailState"
-                data-test="email"
-            />
-        </b-form-group>
-        <b-form-group label="Beschreibung" content-cols="12" label-cols="12" content-cols-lg="8" label-cols-lg="2">
-            <b-textarea
-                v-model="client.description"
-                minlength="4"
-                maxlength="10000"
-                placeholder="Beschreibung"
-                :state="descriptionState"
-                data-test="description"
-            />
-        </b-form-group>
-        <b-form-group label="Rating-Bild" :label-for="`input-rating-image-${props.initialClient.clientId}`" :state="ratingImageState" :invalid-feedback="invalidRatingImageFeedback">
-            <b-form-file
-                :id="`input-rating-image-${props.initialClient.clientId}`"
-                v-model="ratingFile"
-                accept="image/*"
-                placeholder="kein Bild gewählt"
-                drop-placeholder="Bild hierhin ziehen."
-                :state="ratingImageState"
-                @input="updateRatingFile"
-            />
-            <div v-if="client.ratingImageFileData" class="mt-3 position-relative" style="max-width: 50px;">
-                <div
-                    class="cursor-pointer position-absolute top-0 start-100 translate-middle"
-                    @click="client.ratingImageFileData = null; client.ratingImageFileName = null;"
-                >
-                    <v-icon>mdi-close-circle-outline</v-icon>
+    <v-form ref="form" @submit.prevent="handleSubmit" class="pa-4">
+        <v-row dense>
+            <v-col cols="12">
+                <v-text-field
+                    v-model="client.name"
+                    label="Name"
+                    required
+                    :rules="[() => !!nameState || 'Der Name muss zwischen 3 and 200 Zeichen enthalten.']"
+                    outlined
+                    dense
+                />
+            </v-col>
+
+            <v-col cols="12">
+                <v-text-field
+                    v-model="client.email"
+                    label="E-Mail"
+                    required
+                    :rules="[() => !!emailState || 'Ungültiges E-Mail-Format.']"
+                    outlined
+                    dense
+                />
+            </v-col>
+
+            <v-col cols="12">
+                <v-textarea
+                    v-model="client.description"
+                    label="Beschreibung"
+                    :rules="[() => !!descriptionState || 'Die Beschreibung muss weniger als 10000 Zeichen enthalten.']"
+                    outlined
+                    dense
+                />
+            </v-col>
+
+            <v-col
+                :cols="client.ratingImageFileData ? 9 : 12"
+            >
+                <v-file-input
+                    v-model="ratingFile"
+                    label="Rating-Bild"
+                    accept="image/*"
+                    placeholder="Kein Bild gewählt"
+                    :disabled="isLoading"
+                    outlined
+                    dense
+                    @change="updateRatingFile"
+                />
+            </v-col>
+            <v-col v-if="client.ratingImageFileData" cols="3">
+                <div class="d-flex align-center mb-4 justify-center">
+                    <v-avatar size="50" :tile="false">
+                        <img :src="client.ratingImageFileData" alt="Rating-Bild" />
+                    </v-avatar>
+                    <v-btn class="align-self-start ml-n4 mt-n4" icon @click="client.ratingImageFileData = null">
+                        <v-icon>mdi-close-circle</v-icon>
+                    </v-btn>
                 </div>
-                <b-img :src="client.ratingImageFileData" alt="Rating-Bild" thumbnail fluid width="50" height="50" />
-            </div>
-            <v-alert color="info" class="mt-2">
-                Vorschau:
-                <div class="bg-white p-2 text-black">
-                    <walk-rating :rating="3" :client="client" />
-                </div>
-            </v-alert>
-        </b-form-group>
-        <b-button
-            type="submit"
-            variant="secondary"
-            :disabled="isFormInvalid"
-            data-test="button-client-submit"
-            block
-            class="col-12"
-            :tabindex="isFormInvalid ? '-1' : ''"
-        >
+            </v-col>
+        </v-row>
+
+        <v-alert type="info" text>
+            Vorschau:
+            <walk-rating :rating="3" :client="client" />
+        </v-alert>
+
+        <v-btn :disabled="isFormInvalid" color="secondary" block type="submit">
             {{ submitButtonText }}
-        </b-button>
+        </v-btn>
+
         <form-error v-if="isInitialForm" :error="errorCreate" />
         <form-error v-else :error="errorChange" />
-    </b-form>
+    </v-form>
 </template>
 
 <style scoped lang="scss">
