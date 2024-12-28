@@ -76,6 +76,11 @@ function handleSubmit() {
     emit('submit', client.value);
 }
 
+function resetForm() {
+    form.value?.reset();
+    setInitialValues();
+}
+
 async function updateRatingFile(file: File | null) {
     client.value.ratingImageFileData = file ? await readFile(file) : null;
     client.value.ratingImageFileName = file ? file.name : null;

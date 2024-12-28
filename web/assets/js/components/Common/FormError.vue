@@ -1,8 +1,10 @@
 <template>
     <v-alert
         v-if="hasError"
-        type="danger"
+        type="error"
         class="mt-3 mb-0"
+        prominent
+        dense
     >
         <ul class="mb-0">
             <li

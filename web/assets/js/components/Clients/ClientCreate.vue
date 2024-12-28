@@ -7,42 +7,38 @@
     />
 </template>
 
-<script>
-'use strict';
-
+<script lang="ts">
+import {defineComponent, ref} from 'vue';
 import ClientForm from './ClientForm.vue';
-import { useAlertStore, useClientStore } from '../../stores';
+import {useAlertStore, useClientStore} from '../../stores';
+import {ClientCreateRequest} from "@/js/model";
 
-export default {
+export default defineComponent({
     name: 'ClientCreate',
     components: {
         ClientForm,
     },
-    data: function () {
+    setup() {
+        const clientForm = ref<InstanceType<typeof ClientForm> | null>(null);
+        const alertStore = useAlertStore();
+        const clientStore = useClientStore();
+
+        const handleSubmit = async (payload: ClientCreateRequest) => {
+            const client = await clientStore.createClient(payload);
+            if (client) {
+                alertStore.success(`Der Klient "${client.name}" wurde erfolgreich erstellt.`);
+                clientForm.value?.resetForm();
+            } else {
+                alertStore.error('Klient erstellen fehlgeschlagen', 'Upps! :-(');
+            }
+        };
+
         return {
-            alertStore: useAlertStore(),
-            clientStore: useClientStore(),
+            clientForm,
+            handleSubmit,
         };
     },
-    computed: {
-        currentUser() {
-            return this.authStore.currentUser;
-        },
-    },
-    async created() {
-    },
-    methods: {
-        async handleSubmit(payload) {
-            const client = await this.clientStore.createClient(payload);
-            if (client) {
-                this.alertStore.success(`Der Klient "${client.name}" wurde erfolgreich erstellt.`);
-                this.$refs.clientForm.resetForm();
-            } else {
-                this.alertStore.error(`Klient erstellen fehlgeschlagen`, `Upps! :-(`);
-            }
-        },
-    },
-};
+});
 </script>
 
 <style scoped lang="scss">
