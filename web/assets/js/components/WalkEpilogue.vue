@@ -459,7 +459,7 @@ import GlobalFormError from './Common/GlobalFormError.vue';
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
-import getViolationsFeedback from '../utils/validation.js';
+import { getViolationsFeedback } from '../utils';
 import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkStore} from '../stores';
 
 export default {

@@ -469,7 +469,7 @@
 'use strict';
 import GlobalFormError from '../Common/GlobalFormError.vue';
 import ColorBadge from '../Tags/ColorBadge.vue';
-import getViolationsFeedback from '../../utils/validation.js';
+import { getViolationsFeedback } from '../../utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore} from '../../stores';

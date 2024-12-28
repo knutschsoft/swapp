@@ -70,7 +70,7 @@
 <script>
 'use strict';
 import GlobalFormError from '../Common/GlobalFormError.vue';
-import getViolationsFeedback from '../../utils/validation.js';
+import { getViolationsFeedback } from '../../utils';
 import { useTagStore } from '../../stores/tag';
 import { useWayPointStore } from '../../stores/way-point';
 import { useTeamStore } from '../../stores/team';

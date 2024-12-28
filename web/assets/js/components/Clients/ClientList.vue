@@ -250,7 +250,6 @@ export default {
             });
             try {
                 const clients = await ClientApi.find(data);
-                console.log(clients)
                 const items = clients.data['hydra:member'];
                 const total = clients.data['hydra:totalItems'];
 
