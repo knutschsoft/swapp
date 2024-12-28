@@ -1,33 +1,35 @@
 <template>
     <div>
-        <div
-            v-if="isLoading"
-            class="d-flex justify-content-center my-3"
+        {{ itemsPerPage }}
+        <v-data-table
+            :items-per-page="itemsPerPage"
+            :headers="headers"
+            :items="serverItems"
+            :items-length="totalItems"
+            :items-per-page-options="itemsPerPageOptions"
+            :items-per-page-text="itemsPerPageText"
+            :loading="isLoading"
+            :search="search"
+            item-value="name"
+            :no-data-text="noItemsText"
+            :loading-text="loadingText"
+            multi-sort
+            hover
+            density="compact"
+            @update:options="loadItems"
+            :options.sync="deprecatedOptions"
+            :no-results-text="noItemsText"
+            :server-items-length="totalItems"
         >
-            <b-spinner
-                v-show="isLoading"
-                style="width: 3rem; height: 3rem;"
-                label="is Loading Spinner"
-            />
-        </div>
-        <b-table
-            v-show="!isLoading && clients.length"
-            :items="clients"
-            :fields="fields"
-            small
-            striped
-            class="mb-0"
-            stacked="md"
-        >
-            <template v-slot:cell(name)="row">
-                {{ row.item.name }}
+            <template v-slot:item.name="{item}">
+                {{ item.name }}
                 <br>
-                <small class="text-muted">{{ row.item.email }}</small>
+                <small class="text-muted">{{ item.email }}</small>
             </template>
-            <template v-slot:cell(users)="row">
+            <template v-slot:item.users="{item}">
                 <div class="d-flex justify-content-between">
                     <ul>
-                        <template v-for="(userIri, i) in row.item.users">
+                        <template v-for="(userIri, i) in item.users">
                             <li v-if="i < 5">
                                 {{ getUserByIri(userIri)?.username }}
                                 <mdicon
@@ -58,153 +60,236 @@
                             </li>
                         </template>
                         <li
-                            v-if="row.item.users.length >= 5"
-                        >{{ row.item.users.length - 5 }} weitere Benutzer</li>
+                            v-if="item.users.length >= 5"
+                        >{{ item.users.length - 5 }} weitere Benutzer
+                        </li>
                     </ul>
                 </div>
             </template>
-            <template v-slot:cell(actions)="row">
-                <div class="d-flex justify-content-around">
-                    <b-button
+            <template v-slot:item.createdAt="{item}">
+                {{ formatDateTime(item.createdAt) }}
+            </template>
+            <template v-slot:item.updatedAt="{item}">
+                {{ formatDateTime(item.updatedAt) }}
+            </template>
+            <template v-slot:item.actions="{item}">
+                <v-row justify="center">
+                    <v-btn
                         size="sm"
-                        @click="editClient(row.item)"
+                        color="secondary"
+                        @click.stop="openClientEditDialog(item)"
                     >
                         Klient bearbeiten
-                        <b-icon-pencil />
-                    </b-button>
-                </div>
+                        <v-icon
+                            small
+                            class="ml-2"
+                        >
+                            mdi-pencil-outline
+                        </v-icon>
+                    </v-btn>
+                </v-row>
             </template>
-        </b-table>
-        <b-modal
-            :id="editModalClient.id"
-            :title="editModalClient.title"
-            size="lg"
-            @hide="resetEditModalClient"
-            title="Klient ändern"
-            hide-footer
+        </v-data-table>
+
+        <v-dialog
+            v-model="dialog"
+            scrollable
+            max-width="800px"
         >
-            <client-form
-                v-if="editModalClient.selectedClient"
-                submit-button-text="Speichern"
-                :initial-client="editModalClient.selectedClient"
-                @submit="handleSubmit"
-            />
-        </b-modal>
+            <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                    Klient ändern
+                </v-card-title>
+                <v-card-text>
+                    <client-form
+                        v-if="editClient"
+                        submit-button-text="Speichern"
+                        :initial-client="editClient"
+                        @submit="handleSubmit"
+                    />
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 'use strict';
+import {ref, computed, onMounted, watch} from 'vue';
 import dayjs from 'dayjs';
 import ClientForm from './ClientForm.vue';
+import { type Client} from '../../model';
 import {useAlertStore, useClientStore, useUserStore} from '../../stores';
+import ClientApi from '../../api/client.js';
+import {
+    formatDateTime,
+    itemsPerPageOptions,
+    itemsPerPageText,
+    loadingText,
+    noItemsText,
+    type SortItem,
+    type TableHeaders
+} from '../../utils'
 
 export default {
     name: 'ClientList',
     components: {
         ClientForm,
     },
-    data: function () {
-        return {
-            alertStore: useAlertStore(),
-            clientStore: useClientStore(),
-            userStore: useUserStore(),
-            fields: [
-                {
-                    key: 'name',
-                    label: 'Name',
-                    sortable: true,
-                    class: 'text-center',
-                },
-                {
-                    key: 'description',
-                    label: 'Beschreibung',
-                    sortable: true,
-                    class: 'text-center',
-                },
-                {
-                    key: 'users',
-                    label: 'Benutzer',
-                    class: 'text-left',
-                },
-                {
-                    key: 'createdAt',
-                    label: 'Erstellt am',
-                    sortable: true,
-                    sortByFormatted: false,
-                    formatter: (value, key, item) => {
-                        return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
-                    },
-                    class: 'text-center',
-                },
-                {
-                    key: 'updatedAt',
-                    label: 'Geändert am',
-                    sortable: true,
-                    sortByFormatted: false,
-                    formatter: (value, key, item) => {
-                        return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
-                    },
-                    class: 'text-center',
-                },
-                { key: 'actions', label: 'Aktionen', class: 'text-center' },
-            ],
-            editModalClient: {
-                id: 'edit-modal-client',
-                title: '',
-                selectedClient: null,
-            },
-        };
-    },
-    computed: {
-        clients() {
-            return this.clientStore.getClients;
-        },
-        isLoading() {
-            return this.clientStore.isLoading
-        },
-        error() {
-            return this.clientStore.getErrors;
-        },
-    },
-async created() {
-    await Promise.all([
-        this.userStore.fetchUsers(),
-        this.clientStore.fetchClients(),
-    ]);
-},
-    mounted() {
-    },
-    methods: {
-        getUserByIri(userIri) {
-            return this.userStore.getUserByIri(userIri);
-        },
-        isUserAdminByIri(userIri) {
-            const user = this.getUserByIri(userIri);
-            if (!user) {
-                return false;
-            }
+    setup() {
+        const alertStore = useAlertStore();
+        const clientStore = useClientStore();
+        const userStore = useUserStore();
 
-            return user.roles.indexOf('ROLE_ADMIN') !== -1;
-        },
-        editClient(client) {
-            this.$root.$emit('bv::show::modal', this.editModalClient.id);
-            this.editModalClient.selectedClient = client;
-        },
-        resetEditModalClient() {
-            this.$root.$emit('bv::hide::modal', this.editModalClient.id);
-            this.editModalClient.selectedClient = '';
-        },
-        async handleSubmit(payload) {
-            payload.client = this.editModalClient.selectedClient['@id'];
-            const client = await this.clientStore.changeClient(payload);
+        const deprecatedOptions = ref({});
+        const totalItems = ref(0);
+        const search = ref('');
+        const dialog = ref<boolean>(false);
+        const itemsPerPage = ref(itemsPerPageOptions[itemsPerPageOptions.length - 1].value);
+        const serverItems = ref([]);
+        const tableOptions = ref<{ sortBy: SortItem[]; page?: number; itemsPerPage?: number }>({
+            sortBy: [],
+        });
+        const headers = ref<TableHeaders>([
+            {
+                value: 'name',
+                text: 'Name',
+                sortable: true,
+                align: 'center',
+            },
+            {
+                value: 'description',
+                text: 'Beschreibung',
+                sortable: true,
+                align: 'center',
+            },
+            {
+                value: 'users',
+                text: 'Benutzer',
+                align: 'start',
+            },
+            {
+                value: 'createdAt',
+                text: 'Erstellt am',
+                sortable: true,
+                sortByFormatted: false,
+                formatter: (value: string) => dayjs(value).format('DD.MM.YYYY HH:mm:ss'),
+                align: 'center',
+            },
+            {
+                value: 'updatedAt',
+                text: 'Geändert am',
+                sortable: true,
+                sortByFormatted: false,
+                align: 'center',
+            },
+            {value: 'actions', text: 'Aktionen', align: 'center', sortable: false},
+        ]);
+
+        const editClient = ref<Client|null>(null);
+
+        const clients = computed(() => clientStore.getClients);
+        const isLoading = computed(() => clientStore.isLoading);
+        const error = computed(() => clientStore.getErrors);
+
+        onMounted(async () => {
+            await Promise.all([
+                userStore.fetchUsers({}),
+                clientStore.fetchClients(),
+            ]);
+        });
+
+        const getUserByIri = (userIri: string) => userStore.getUserByIri(userIri);
+
+        const isUserAdminByIri = (userIri: string) => {
+            const user = getUserByIri(userIri);
+            return user ? user.roles.includes('ROLE_ADMIN') : false;
+        };
+
+        const openClientEditDialog = (client: Client) => {
+            editClient.value = client;
+            dialog.value = true;
+        };
+
+        const resetEditModalClient = () => {
+            editClient.value = null;
+            dialog.value = false;
+        };
+
+        const handleSubmit = async (payload: Client) => {
+            if (!editClient.value) return;
+            payload.client = editClient.value['@id'];
+            const client = await clientStore.changeClient(payload);
             if (client) {
-                this.alertStore.success(`Der Klient "${client.name}" wurde erfolgreich geändert.`, 'Klient geändert');
-                this.resetEditModalClient();
+                alertStore.success(`Der Klient "${client.name}" wurde erfolgreich geändert.`, 'Klient geändert');
+                resetEditModalClient();
             } else {
-                this.alertStore.error('Klient ändern fehlgeschlagen', 'Upps! :-(');
+                alertStore.error('Klient ändern fehlgeschlagen', 'Upps! :-(');
             }
-        },
+        };
+
+        watch(
+            () => deprecatedOptions.value,
+            async () => {
+                await loadItems(deprecatedOptions.value)
+            },
+            {deep: true},
+        );
+
+        const loadItems = async ({ page, itemsPerPage, sortBy }) => {
+            if (-1 === itemsPerPage) {
+                itemsPerPage = 1000;
+            }
+            tableOptions.value = {page, itemsPerPage, sortBy};
+            const data: Record<string, string | number | boolean> = {
+                page,
+                itemsPerPage,
+            };
+            sortBy.forEach((val: SortItem) => {
+                data[`sortBy[${val.key}]`] = val.order;
+            });
+            try {
+                const clients = await ClientApi.find(data);
+                console.log(clients)
+                const items = clients.data['hydra:member'];
+                const total = clients.data['hydra:totalItems'];
+
+                serverItems.value = items;
+                totalItems.value = total ?? 0;
+            } catch (e: unknown) {
+                console.error(e);
+            }
+        };
+
+        // Return the reactive references and methods
+        return {
+            deprecatedOptions,
+            totalItems,
+            search,
+            itemsPerPage,
+            itemsPerPageText,
+            itemsPerPageOptions,
+            noItemsText,
+            loadingText,
+            serverItems,
+            tableOptions,
+            headers,
+            alertStore,
+            clientStore,
+            userStore,
+            openClientEditDialog,
+            clients,
+            isLoading,
+            error,
+            getUserByIri,
+            isUserAdminByIri,
+            editClient,
+            resetEditModalClient,
+            handleSubmit,
+            loadItems,
+            dialog,
+            formatDateTime,
+        };
     },
 };
 </script>

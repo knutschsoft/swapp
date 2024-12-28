@@ -37,8 +37,10 @@
     </v-expansion-panels>
 </template>
 
-<script>
-import { useStorage } from '@vueuse/core';
+<script lang="ts">
+import {computed, onMounted, ref, watch} from 'vue';
+import {useStorage} from '@vueuse/core';
+
 export default {
     name: 'ContentCollapse',
     props: {
@@ -61,48 +63,55 @@ export default {
             default: false,
         },
     },
-    data() {
+    setup(props) {
+        const expansionPanelsModel = ref<number | null>(null);
+        const titleLengthState = ref<string | boolean>(false);
+        const visibleState = ref<boolean>(false);
+        const { title } = props;
+
+        const getCollapseId = computed(() => `collapse-${props.collapseKey}`);
+        const getTitleLengthId = computed(() => `${getCollapseId.value}-title-width-in-px`);
+        const titleWidth = computed(() => (titleLengthState.value ? titleLengthState.value : '100'));
+
+        const storedTitleLength = useStorage(`swapp-store-${getTitleLengthId.value}`, '100');
+        const storedVisibleState = useStorage(`swapp-store-${getCollapseId.value}`, props.isVisibleByDefault);
+
+        onMounted(() => {
+            titleLengthState.value = storedTitleLength.value;
+            visibleState.value = storedVisibleState.value;
+
+            if (visibleState.value) {
+                expansionPanelsModel.value = 0;
+            }
+        });
+
+        watch(
+            () => props.isLoading,
+            (newValue) => {
+                if (!newValue) {
+                    // Update der Titelbreite nach der nächsten DOM-Aktualisierung
+                    nextTick(() => {
+                        const titleWidth = document.querySelector('[data-test="collapse-${props.collapseKey}"]');
+                        titleLengthState.value = titleWidth ? `${titleWidth.getBoundingClientRect().width}` : '100';
+                    });
+                }
+            }
+        );
+
+        watch(
+            () => expansionPanelsModel.value,
+            (newValue) => {
+                storedVisibleState.value = newValue === 0;
+            }
+        );
+
         return {
-            titleLengthState: false,
-            visibleState: false,
-            expansionPanelsModel: null,
+            expansionPanelsModel,
+            getCollapseId,
+            titleWidth,
+            title,
+            isLoading: props.isLoading,
         };
     },
-    computed: {
-        getCollapseId() {
-            return `collapse-${this.collapseKey}`;
-        },
-        getTitleLengthId() {
-            return `${this.getCollapseId}-title-width-in-px`;
-        },
-        isVisible() {
-            return this.visibleState;
-        },
-        titleWidth() {
-            return this.titleLengthState ? this.titleLengthState : '100';
-        },
-    },
-    mounted() {
-        this.titleLengthState = useStorage(`swapp-store-${this.getTitleLengthId}`, '100');
-        this.visibleState = useStorage(`swapp-store-${this.getCollapseId}`, this.isVisibleByDefault);
-
-        if (this.visibleState) {
-            this.expansionPanelsModel = 0;
-        }
-    },
-    watch: {
-        isLoading() {
-            if (!this.isLoading) {
-                this.$nextTick(() => {
-                    this.titleLengthState = `${this.$refs?.title?.getBoundingClientRect()?.width}`;
-                });
-            }
-        },
-        expansionPanelsModel() {
-            const isJustShown = 0 === this.expansionPanelsModel;
-            const state = useStorage(`swapp-store-${this.getCollapseId}`, isJustShown);
-            state.value = isJustShown;
-        }
-    }
 };
 </script>

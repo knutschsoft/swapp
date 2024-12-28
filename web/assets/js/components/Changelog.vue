@@ -1,6 +1,6 @@
 <template>
     <div>
-        <content-collapse
+        <ContentCollapse
             title="Changelog - Was ist neu bei Swapp?"
             collapse-key="changelog-swapp"
             is-visible-by-default
@@ -10,13 +10,11 @@
                     <b-list-group-item
                         class="d-flex justify-content-between align-items-center"
                         variant="dark"
+                        :key="item.header"
                     >
                         <div>
                             <span class="font-weight-bold">{{ item.header }}</span>
-                            <b-badge
-                                v-if="hasItemNewBadge(item.header)"
-                                variant="primary"
-                            >
+                            <b-badge v-if="hasItemNewBadge(item.header)" variant="primary">
                                 Neu
                             </b-badge>
                         </div>
@@ -27,27 +25,23 @@
                             :title="item.avatarTitle ?? ''"
                         />
                     </b-list-group-item>
-                    <b-list-group-item>
+                    <b-list-group-item
+                        :key="`${item.header}2`"
+                    >
                         <ul class="pl-3 mb-0">
-                            <li
-                                v-for="entry in item.entries"
-                            >
+                            <li v-for="(entry,entryKey) in item.entries" :key="`${item.header}-${entryKey}`">
                                 <template v-if="Array.isArray(entry.text)">
-                                    <span
-                                        v-html="entry.text[0]"
-                                    />
+                                    <span v-html="entry.text[0]" />
                                     <ul>
                                         <li
                                             v-for="(textItem, i) in entry.text"
                                             v-if="i !== 0"
+                                            :key="i"
                                             v-html="textItem"
                                         />
                                     </ul>
                                 </template>
-                                <span
-                                    v-else
-                                    v-html="entry.text"
-                                />
+                                <span v-else v-html="entry.text" />
                                 <silent-box
                                     v-if="entry.gallery && entry.gallery.length"
                                     :gallery="entry.gallery"
@@ -58,14 +52,14 @@
                     </b-list-group-item>
                 </template>
             </b-list-group>
-        </content-collapse>
+        </ContentCollapse>
     </div>
 </template>
 
-<script>
-'use strict';
+<script lang="ts">
+import { ref, computed, onMounted } from 'vue';
 import ContentCollapse from './ContentCollapse.vue';
-import dayjs from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 import { useChangelogStore } from '../stores/changelog';
 
 export default {
@@ -73,32 +67,34 @@ export default {
     components: {
         ContentCollapse,
     },
-    data: () => {
+    setup() {
+        const changelogStore = useChangelogStore();
+        const lastVisitedAt = ref<boolean | Dayjs>(false );
+
+        onMounted(() => {
+            lastVisitedAt.value = changelogStore.getLastVisitedAt;
+            changelogStore.updateLastVisitedAt(dayjs());
+        });
+
+        const items = computed(() => changelogStore.getChangelogs);
+
+        const hasItemNewBadge = (header: string): boolean => {
+            const itemTime = dayjs(header.split(' ')[0], ['DD.MM.YYYY', 'YYYY']);
+            if (!lastVisitedAt.value) {
+                return false;
+            }
+            return itemTime.isAfter(lastVisitedAt.value);
+        };
+
         return {
-            changelogStore: useChangelogStore(),
-            lastVisitedAt: false,
+            items,
+            hasItemNewBadge,
         };
     },
-    computed: {
-        items() {
-            return this.changelogStore.getChangelogs;
-        },
-    },
-    created() {
-        this.lastVisitedAt = this.changelogStore.getLastVisitedAt;
-        this.changelogStore.updateLastVisitedAt(dayjs());
-    },
-    methods: {
-        hasItemNewBadge(header) {
-            const itemTime = dayjs(header.split(' ')[0], ["DD.MM.YYYY", "YYYY"]);
-
-            return itemTime.isAfter(this.lastVisitedAt);
-        },
-    }
 };
 </script>
 
-<style>
+<style scoped>
 .silentbox-item img {
     border-radius: 0.5rem;
     margin-right: 0.5rem;

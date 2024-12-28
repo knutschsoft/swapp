@@ -232,19 +232,30 @@ export default {
             return this.clientStore.getErrors.create;
         },
     },
-    async created() {
-        this.client.name = this.initialClient.name;
-        this.client.email = this.initialClient.email;
-        this.client.description = this.initialClient.description || '';
-        if (this.initialClient.ratingImageSrc) {
-            const response = await axios.get(this.initialClient.ratingImageSrc, { responseType: 'blob' });
-            if (response.status) {
-                this.client.ratingImageFileData = await this.readFile(response.data);
-                this.client.ratingImageFileName = this.initialClient.ratingImageName;
-            }
+    mounted() {
+        this.setInitialValues();
+    },
+    watch: {
+        initialClient() {
+            this.setInitialValues();
         }
     },
     methods: {
+        async setInitialValues() {
+            this.client.name = this.initialClient.name;
+            this.client.email = this.initialClient.email;
+            this.client.description = this.initialClient.description || '';
+            if (this.initialClient.ratingImageSrc) {
+                const response = await axios.get(this.initialClient.ratingImageSrc, { responseType: 'blob' });
+                if (response.status) {
+                    this.client.ratingImageFileData = await this.readFile(response.data);
+                    this.client.ratingImageFileName = this.initialClient.ratingImageName;
+                }
+            } else {
+                this.client.ratingImageFileData = null;
+                this.client.ratingImageFileName = null;
+            }
+        },
         async handleSubmit() {
             this.$emit('submit', this.client);
         },

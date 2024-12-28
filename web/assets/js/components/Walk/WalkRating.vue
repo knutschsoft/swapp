@@ -1,48 +1,61 @@
-<script setup>
-'use strict';
+<script lang="ts">
+import { defineComponent, computed, PropType } from 'vue';
 import { ImageRating, StarRating } from 'vue-rate-it';
-import { computed } from 'vue';
+import { type Client } from '../../model';
 
-const props = defineProps({
-    rating: {
-        type: Number,
-        required: true,
+export default defineComponent({
+    name: 'WalkRating',
+    components: {
+        ImageRating,
+        StarRating,
     },
-    client: {
-        type: Object,
-        required: false,
-        default: () => { return {ratingImageSrc: false, ratingImageFileData: false} },
+    props: {
+        rating: {
+            type: Number,
+            required: true,
+        },
+        client: {
+            type: Object as PropType<Client>,
+            required: false,
+        },
+        readOnly: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
+        showRating: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
+        itemSize: {
+            type: Number,
+            required: false,
+            default: 50,
+        },
     },
-    readOnly: {
-        type: Boolean,
-        required: false,
-        default: true,
-    },
-    showRating: {
-        type: Boolean,
-        required: false,
-        default: true,
-    },
-    itemSize: {
-        type: Number,
-        required: false,
-        default: 50,
+    emits: ['select-rating'],
+    setup(props, { emit }) {
+        const imageSrc = computed<string>(() => {
+            if (props.client?.ratingImageFileData) {
+                return props.client.ratingImageFileData;
+            }
+            if (props.client?.ratingImageSrc) {
+                return props.client.ratingImageSrc;
+            }
+            return '';
+        });
+
+        const handleRatingSelected = (rating: number) => {
+            emit('select-rating', rating);
+        };
+
+        return {
+            imageSrc,
+            handleRatingSelected,
+        };
     },
 });
-
-const imageSrc = computed(() => {
-    if (props.client.ratingImageFileData) {
-        return props.client.ratingImageFileData;
-    }
-
-    if (props.client.ratingImageSrc) {
-        return props.client.ratingImageSrc;
-    }
-
-    return false;
-})
-
-const emit = defineEmits(['select-rating']);
 </script>
 
 <template>
@@ -56,7 +69,7 @@ const emit = defineEmits(['select-rating']);
             :item-size="itemSize"
             :show-rating="showRating"
             :data-test="`rating${readOnly ? '-read' : ''}`"
-            @rating-selected="emit('select-rating', $event)"
+            @rating-selected="handleRatingSelected"
         />
         <star-rating
             v-else
@@ -66,7 +79,7 @@ const emit = defineEmits(['select-rating']);
             :item-size="itemSize"
             :show-rating="showRating"
             :data-test="`rating${readOnly ? '-read' : ''}`"
-            @rating-selected="emit('select-rating', $event)"
+            @rating-selected="handleRatingSelected"
         />
     </div>
 </template>

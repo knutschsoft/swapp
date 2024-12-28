@@ -1,0 +1,20 @@
+import type { VDataTable } from 'vuetify/components'
+
+export type TableHeaders = VDataTable['$props']['headers']
+export type SortItem = {
+    key: string
+    order?: boolean | 'asc' | 'desc'
+}
+export type TableItemsPerPageOptions = VDataTable['$props']['itemsPerPageOptions']
+
+export const itemsPerPageOptions: TableItemsPerPageOptions = [
+    { value: 10, title: '10' },
+    { value: 25, title: '25' },
+    { value: 50, title: '50' },
+    { value: 100, title: '100' },
+    { value: 250, title: '250' },
+    { value: -1, title: 'All' }
+]
+export const itemsPerPageText = 'Einträge pro Seite' as const
+export const noItemsText = 'Keine Daten verfügbar' as const
+export const loadingText = 'Daten werden geladen...' as const
