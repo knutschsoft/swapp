@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import {computed, onMounted, ref, watch} from 'vue';
+import {computed, nextTick, onMounted, ref, watch} from 'vue';
 import {useStorage} from '@vueuse/core';
 
 export default {
@@ -67,8 +67,8 @@ export default {
         const expansionPanelsModel = ref<number | null>(null);
         const titleLengthState = ref<string | boolean>(false);
         const visibleState = ref<boolean>(false);
-        const { title } = props;
 
+        const title = computed(() => props.title);
         const getCollapseId = computed(() => `collapse-${props.collapseKey}`);
         const getTitleLengthId = computed(() => `${getCollapseId.value}-title-width-in-px`);
         const titleWidth = computed(() => (titleLengthState.value ? titleLengthState.value : '100'));

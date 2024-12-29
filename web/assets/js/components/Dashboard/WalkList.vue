@@ -429,9 +429,6 @@ export default {
                 return teamName.teamName.toLowerCase().startsWith(filterTeamName);
             }).map((teamName) => teamName.teamName);
         },
-        hasWalks() {
-            return this.walkStore.hasWalks;
-        },
         walks() {
             return this.walkStore.getWalks;
         },
