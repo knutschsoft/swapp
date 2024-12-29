@@ -2523,6 +2523,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/vue2-datepicker@npm:^3":
+  version: 3.3.6
+  resolution: "@types/vue2-datepicker@npm:3.3.6"
+  dependencies:
+    vue: "npm:^2.5.0"
+  checksum: 10c0/46f3e2ca5e4d4d6de049fed05789615b4b365ba61540197260b7555a9c91e744be9ecb3587085fde3f0a4adfc922dc80cdd72351f7cc6e8f28155d492ab69bd1
+  languageName: node
+  linkType: hard
+
 "@types/vue@npm:^2.0.0":
   version: 2.0.0
   resolution: "@types/vue@npm:2.0.0"
@@ -2905,6 +2914,17 @@ __metadata:
   version: 3.5.13
   resolution: "@vue/shared@npm:3.5.13"
   checksum: 10c0/2c940ef907116f1c2583ca1d7733984e5705983ab07054c4e72f1d95eb0f7bdf4d01efbdaee1776c2008f79595963f44e98fced057f5957d86d57b70028f5025
+  languageName: node
+  linkType: hard
+
+"@vuepic/vue-datepicker@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@vuepic/vue-datepicker@npm:10.0.0"
+  dependencies:
+    date-fns: "npm:^4.1.0"
+  peerDependencies:
+    vue: ">=3.2.0"
+  checksum: 10c0/672e38848267b0d22443f2830095d46265709040b113ded7af23f0a7b516f7fca849b66f7e720433a60d01cf100a833289401f0de56322f940ca511024054398
   languageName: node
   linkType: hard
 
@@ -4025,6 +4045,20 @@ __metadata:
   dependencies:
     "@babel/runtime": "npm:^7.21.0"
   checksum: 10c0/e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
+  languageName: node
+  linkType: hard
+
+"date-format-parse@npm:^0.2.7":
+  version: 0.2.7
+  resolution: "date-format-parse@npm:0.2.7"
+  checksum: 10c0/a96f31a1f3aeeb17247d2926ffcbbc94f9558efa0eb833789c970f51c80977723e288495b984c6992afa449947bcd480a27b1e7f1799cd50dca87b7d9380501a
   languageName: node
   linkType: hard
 
@@ -8828,9 +8862,11 @@ __metadata:
     "@types/jquery": "npm:^3"
     "@types/leaflet": "npm:^1.9.12"
     "@types/vue": "npm:^2.0.0"
+    "@types/vue2-datepicker": "npm:^3"
     "@vitejs/plugin-vue": "npm:^5.1.2"
     "@vitejs/plugin-vue2": "npm:^2.3.1"
     "@vue/compiler-sfc": "npm:^3.3.4"
+    "@vuepic/vue-datepicker": "npm:^10.0.0"
     "@vueuse/components": "npm:^10.3.0"
     "@vueuse/core": "npm:^10.4.1"
     autoprefixer: "npm:^9.8.0"
@@ -8877,6 +8913,7 @@ __metadata:
     vue-rate-it: "npm:^2.1.0"
     vue-router: "npm:^3.3.4"
     vue-silentbox: "npm:^2.4.5"
+    vue2-datepicker: "npm:^3.11.1"
     vue2-daterange-picker: "npm:^0.6.7"
     vue2-leaflet: "npm:^2.7.1"
     vuetify: "npm:2.x"
@@ -9757,6 +9794,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue2-datepicker@npm:^3.11.1":
+  version: 3.11.1
+  resolution: "vue2-datepicker@npm:3.11.1"
+  dependencies:
+    date-format-parse: "npm:^0.2.7"
+  peerDependencies:
+    vue: ^2.5.0
+  checksum: 10c0/69844c2725013d30dd6b985832248d38ee3849c008ab3fd393940fe1697bb30a3cd521c7b7c3a011d1bf83500936964335cc4ca094045c606d7f4ad47e08a4be
+  languageName: node
+  linkType: hard
+
 "vue2-daterange-picker@npm:^0.6.7":
   version: 0.6.8
   resolution: "vue2-daterange-picker@npm:0.6.8"
@@ -9795,7 +9843,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^2.6.10, vue@npm:^2.7":
+"vue@npm:^2.5.0, vue@npm:^2.6.10, vue@npm:^2.7":
   version: 2.7.16
   resolution: "vue@npm:2.7.16"
   dependencies:

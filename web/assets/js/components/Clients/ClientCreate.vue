@@ -11,7 +11,7 @@
 import {defineComponent, ref} from 'vue';
 import ClientForm from './ClientForm.vue';
 import {useAlertStore, useClientStore} from '../../stores';
-import {ClientCreateRequest} from "@/js/model";
+import {Client, ClientCreateRequest} from "../../model";
 
 export default defineComponent({
     name: 'ClientCreate',
