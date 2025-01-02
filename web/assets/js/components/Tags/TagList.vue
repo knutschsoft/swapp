@@ -108,25 +108,35 @@
                 >
                     {{ item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
                 </v-btn>
-                <span :id="`questionHeaderId-${item.tagId}`">
-                    <v-icon
-                        class="text-muted"
-                    >
-                        mdi-help-circle-outline
-                    </v-icon>
-                </span>
-                <b-popover
-                    :target="`questionHeaderId-${item.tagId}`"
-                    triggers="hover"
-                    placement="top"
+                <v-menu
+                    top
+                    open-on-hover
+                    :nudge-top="7"
+                    offset-y
                 >
-                    <template #title>Wozu kann ich einen Tag aktivieren?</template>
-                    <ul class="mb-0">
-                        <li>Aktivierte Tags können einem Wegpunkt zugeordnet werden.</li>
-                        <li>Deaktivierte Tags können einem Wegpunkt nicht zugeordnet werden. Sie sind jedoch weiterhin an bereits zugeordneten Wegpunkten vorhanden.</li>
-                        <li>Deaktivierte Tags werden nicht als Filter auf dem Dashboard angezeigt, wenn sie keinem Wegpunkt zugeordnet sind.</li>
-                    </ul>
-                </b-popover>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                            class="text-muted"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            mdi-help-circle-outline
+                        </v-icon>
+                    </template>
+                    <v-card>
+                        <v-card-text class="font-weight-bold">
+                            Wozu kann ich einen Tag aktivieren?
+                        </v-card-text>
+                        <v-divider class="my-0"></v-divider>
+                        <v-card-text>
+                            <ul class="mb-0">
+                                <li>Aktivierte Tags können einem Wegpunkt zugeordnet werden.</li>
+                                <li>Deaktivierte Tags können einem Wegpunkt nicht zugeordnet werden. Sie sind jedoch weiterhin an bereits zugeordneten Wegpunkten vorhanden.</li>
+                                <li>Deaktivierte Tags werden nicht als Filter auf dem Dashboard angezeigt, wenn sie keinem Wegpunkt zugeordnet sind.</li>
+                            </ul>
+                        </v-card-text>
+                    </v-card>
+                </v-menu>
             </template>
         </v-data-table>
     </div>

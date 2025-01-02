@@ -47,7 +47,7 @@
                             Tags
                             <div id="tag-filter-wayPoints">
                                 <mdicon
-                                    name="help-circle-outline"
+                                    name="HelpCircleOutline"
                                     class="text-muted ml-1"
                                     size="22"
                                 />

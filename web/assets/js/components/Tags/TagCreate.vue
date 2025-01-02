@@ -114,7 +114,6 @@ export default {
             name: null,
             color: null,
             client: '',
-            createButtonId: 'tag-create-submit',
         };
     },
     computed: {
@@ -207,8 +206,6 @@ export default {
     methods: {
         async handleSubmit() {
             if (this.isFormInvalid) {
-                this.$root.$emit('bv::show::popover', this.createButtonId)
-                window.setTimeout(() => { this.$root.$emit('bv::hide::popover', this.createButtonId) }, 2000);
                 return false;
             }
             let payload = {
