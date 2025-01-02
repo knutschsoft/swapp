@@ -11,7 +11,7 @@ final class SystemicQuestionCreateRequest
 {
     #[Assert\NotBlank]
     #[Assert\NotNull]
-    #[Assert\Length(['min' => 3, 'max' => 4000, 'normalizer' => 'trim'])]
+    #[Assert\Length(['min' => 5, 'max' => 4000, 'normalizer' => 'trim'])]
     #[Assert\Type(['type' => 'string'])]
     public string $question;
 
