@@ -178,12 +178,11 @@ final class AcceptanceContext extends MinkContext
                 $tries = 10;
                 try {
                     $testElement = $this->getTestElement($selector, $tries);
-
                 } catch (\InvalidArgumentException) {
                     // all fine here
                     return;
                 }
-                Assert::false($testElement->isVisible());;
+                Assert::false($testElement->isVisible());
             }
         );
     }
@@ -283,7 +282,7 @@ final class AcceptanceContext extends MinkContext
         if ($unsupportedMinutes === $minutes) {
             throw new \RuntimeException(\sprintf('Time in seconds should not be %d minutes.', $minutes));
         }
-        $minutes = ($minutes) / 5;
+        $minutes /= 5;
         $locatorHour = \sprintf('[data-type="hour"] [data-index="%s"]', $hours);
         $locatorMinute = \sprintf('[data-type="minute"] [data-index="%s"]', $minutes);
         $this->getTestElement($dataTestSelector)->click();
