@@ -34,7 +34,7 @@ const value = computed({
 
 const selectedWalkCreator = ref<ComponentPublicInstance<HTMLInputElement>[]>();
 
-watch(() => props.walkCreator, (newValue: Props['walkCreator']) => {
+watch(() => props.walkCreator, (newValue: User | undefined) => {
     if (undefined === newValue) {
         return;
     }
@@ -69,79 +69,88 @@ const hasDisabledUser = computed(() => {
 </script>
 
 <template>
-    <b-form-group
-        :label="label"
-        :description="description"
-        v-slot="{ ariaDescribedby }"
-        content-cols="12"
-        label-cols="12"
-        content-cols-lg="10"
-        label-cols-lg="2"
-    >
-        <div
-            class="d-flex flex-wrap"
-            data-test="users"
-        >
-            <template
-                v-for="user in enabledUsers"
+    <v-row class="my-0">
+        <v-col cols="12">
+            <v-card
+                outlined
             >
-                <b-form-checkbox
-                    v-if="user.isEnabled"
-                    :aria-describedby="ariaDescribedby"
-                    name="users"
-                    switch
-                    :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
-                    v-model="value"
-                    :key="user['@id']"
-                    :value="user['@id']"
-                    :data-test="`walkTeamMember-${user.username}`"
-                    class="min-w-[250px]"
-                    ref="selectedWalkCreator"
-                >
-                    {{ user.username }}
-                    <template v-if="walkCreator && walkCreator['@id'] === user['@id']"> (Rundenersteller)</template>
-                </b-form-checkbox>
-            </template>
-            <hr
-                v-if="hasDisabledUser"
-                class="d-block w-100 my-1 mr-2"
-            >
-            <template
-                v-for="user in disabledUsers"
-            >
-                <b-form-checkbox
-                    v-model="value"
-                    :key="user['@id']"
-                    :value="user['@id']"
-                    :aria-describedby="ariaDescribedby"
-                    name="users"
-                    switch
-                    :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
-                    :data-test="`walkTeamMember-${user.username}`"
-                    ref="selectedWalkCreator"
-                    class="min-w-[250px] text-muted"
-                >
-                        <span
-                            class="text-muted d-inline-flex align-items-center"
-                        >
-                            {{ user.username }}
-                            <span>
-                                <template
-                                    v-if="walkCreator && walkCreator['@id'] === user['@id']"
-                                >
-                                    (Rundenersteller)
+                <v-card-subtitle>{{ label }}</v-card-subtitle>
+                <v-card-text class="mb-0 pb-0">
+                    <div class="d-flex flex-wrap" data-test="users">
+                        <template v-for="user in enabledUsers">
+                            <v-switch
+                                v-if="user.isEnabled"
+                                :aria-describedby="description"
+                                name="users"
+                                dense
+                                :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
+                                v-model="value"
+                                :key="user['@id']"
+                                :value="user['@id']"
+                                :data-test="`walkTeamMember-${user.username}`"
+                                class="min-w-[250px]"
+                                ref="selectedWalkCreator"
+                                :label="user.username"
+                            >
+                                <template v-if="walkCreator && walkCreator['@id'] === user['@id']"> (Rundenersteller)</template>
+                            </v-switch>
+                        </template>
+                    </div>
+                </v-card-text>
+                <v-card-text class="py-0">
+                    <v-divider
+                        v-if="hasDisabledUser"
+                        class="d-block w-100 my-1 mr-2"
+                    ></v-divider>
+                </v-card-text>
+                <v-card-text class="py-0">
+                    <div>
+                        <template v-for="user in disabledUsers">
+                            <v-switch
+                                v-model="value"
+                                :key="user['@id']"
+                                :value="user['@id']"
+                                :aria-describedby="description"
+                                name="users"
+                                dense
+                                :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
+                                :data-test="`walkTeamMember-${user.username}`"
+                                class="min-w-[250px] text-disabled"
+                            >
+                                <template v-slot:label>
+                                    <span
+                                        class="text-disabled d-inline-flex align-items-center"
+                                        title="Account ist aktuell nicht aktiviert."
+                                    >
+                                        {{ user.username }}
+                                        <template v-if="walkCreator && walkCreator['@id'] === user['@id']">
+                                            (Rundenersteller)
+                                        </template>
+                                        <v-icon
+                                            v-if="!user.isEnabled"
+                                            small
+                                            class="ml-1"
+                                        >mdi-account-off</v-icon>
+                                    </span>
                                 </template>
-                            </span>
-                            <mdicon
-                                v-if="!user.isEnabled"
-                                name="AccountOff"
-                                class="text-muted d-inline-flex align-items-center"
-                                title="Account ist aktuell nicht aktiviert."
-                                size="16"
-                            />
-                        </span>
-                </b-form-checkbox>
-            </template>
-        </div>
-    </b-form-group>
+                            </v-switch>
+                        </template>
+                    </div>
+                    <p>{{ description }}</p>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
 </template>
+
+<style scoped>
+.blinking {
+    animation: blinking 1.5s ease-in-out;
+}
+
+@keyframes blinking {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+</style>

@@ -5,13 +5,14 @@ Feature: An user can do a walk with preset walkTeamMembers
             | email         |
             | client@gmx.de |
         Given the following users exists:
-            | email        | client        |
-            | karl@gmx.de  | client@gmx.de |
-            | pinky@gmx.de | client@gmx.de |
-            | brain@gmx.de | client@gmx.de |
+            | email           | client        | isEnabled |
+            | karl@gmx.de     | client@gmx.de | 1         |
+            | pinky@gmx.de    | client@gmx.de | 1         |
+            | brain@gmx.de    | client@gmx.de | 1         |
+            | disabled@gmx.de | client@gmx.de | 0         |
         Given the following teams exists:
-            | name     | users                                 | ageRanges          | client        | initialMembersConfig |
-            | Westhang | karl@gmx.de,pinky@gmx.de,brain@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de | mitglieder           |
+            | name     | users                                                 | ageRanges          | client        | initialMembersConfig |
+            | Westhang | karl@gmx.de,pinky@gmx.de,brain@gmx.de,disabled@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de | mitglieder           |
         Given the following systemic questions exists:
             | question | client        |
             | How old? | client@gmx.de |
@@ -39,6 +40,7 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Arschkalt" in "Wetter" field
 
         When I click on test element "walkTeamMember-pinky@gmx.de"
+        When I click on test element "walkTeamMember-disabled@gmx.de"
 
         When I select time "18:50" in time selector "startTimeTime"
 
@@ -87,6 +89,7 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Arschkalt" in "Wetter" field
         Then I wait for test element "walkTeamMember-brain@gmx.de" to be selected
         Then I wait for test element "walkTeamMember-pinky@gmx.de" to be selected
+        Then I wait for test element "walkTeamMember-disabled@gmx.de" to be not selected
         Then I wait for test element "walkTeamMember-karl@gmx.de" to be not selected
 
         When I submit Runde beginnen formular
