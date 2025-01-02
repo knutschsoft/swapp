@@ -86,7 +86,6 @@
 
 <script>
 'use strict';
-import dayjs from 'dayjs';
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
 import { useAlertStore, useAuthStore, useClientStore, useSystemicQuestionStore, useTeamStore } from '../../stores';
 import {
@@ -111,6 +110,7 @@ export default {
             systemicQuestionStore: useSystemicQuestionStore(),
             editSystemicQuestion: {},
             dialog: false,
+            itemsPerPageText,
             itemsPerPageOptions,
             itemsPerPage: -1,
             loadingText,
