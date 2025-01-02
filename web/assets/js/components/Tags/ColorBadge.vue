@@ -1,16 +1,19 @@
 <template>
-    <b-badge
+    <v-chip
         class="font-weight-bold d-flex align-items-center"
         :style="`background-color: ${ color }`"
         pill
-        font-scale="2"
     >
-        <div
-            style="height:inherit; background: inherit; -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; filter: invert(1) grayscale(1) contrast(999);"
+        <span
+            :style="`background-color: ${ color }`"
         >
-            {{ color }}
-        </div>
-    </b-badge>
+            <span
+                style="height:inherit; background: inherit; -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; filter: invert(1) grayscale(1) contrast(999);"
+            >
+                {{ color }}
+            </span>
+        </span>
+    </v-chip>
 </template>
 
 <script>

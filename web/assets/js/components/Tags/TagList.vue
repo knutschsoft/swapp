@@ -135,7 +135,6 @@
 <script>
 'use strict';
 import ColorBadge from './ColorBadge.vue';
-import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import {useAlertStore, useAuthStore, useClientStore, useTagStore} from '../../stores';
 import {
     itemsPerPageOptions,
@@ -146,7 +145,7 @@ import {
 
 export default {
     name: 'TagList',
-    components: { ContentLoadingSpinner, ColorBadge },
+    components: { ColorBadge },
     data: function () {
         return {
             itemsPerPageOptions,
