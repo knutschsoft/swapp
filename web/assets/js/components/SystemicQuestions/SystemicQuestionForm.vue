@@ -124,11 +124,22 @@ export default {
             return this.clientStore.getClients;
         },
     },
-    async created() {
-        this.client = this.initialClient;
-        this.question = this.initialQuestion;
+    async mounted() {
+        await this.setInitialValues();
+    },
+    watch: {
+        initialQuestion: async function () {
+            await this.setInitialValues();
+        },
+        initialClient: async function () {
+            await this.setInitialValues();
+        },
     },
     methods: {
+        async setInitialValues() {
+            this.client = this.initialClient;
+            this.question = this.initialQuestion;
+        },
         async handleSubmit() {
             this.$emit('submit', {
                 client: this.client,

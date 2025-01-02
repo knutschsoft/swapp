@@ -188,7 +188,7 @@ export default {
         const editClient = ref<Client|null>(null);
 
         const clients = computed(() => clientStore.getClients);
-        const isLoading = computed(() => clientStore.isLoading);
+        const isLoading = computed(() => clientStore.isLoadingChange || clientStore.isLoadingCreate);
         const error = computed(() => clientStore.getErrors);
 
         onMounted(async () => {
