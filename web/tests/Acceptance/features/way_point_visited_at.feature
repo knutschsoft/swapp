@@ -54,7 +54,7 @@ Feature: An admin can change visited at of a wayPoint
     Then I wait for 'Die Ankunftszeit muss nach der Rundenstartzeit (' to appear
 
     Then the element "button-way-point-submit" should be enabled
-    When I click on element "visitedAtTime"
+    When I click on test element "visitedAtTime"
     Then I wait for "Schließen" to appear
     When I click on aria label "Verringern"
     Then the element "button-way-point-submit" should be disabled
@@ -62,7 +62,7 @@ Feature: An admin can change visited at of a wayPoint
     When I click on aria label "Erhöhen"
     Then the element "button-way-point-submit" should be enabled
 
-    When I click on element "button-way-point-submit"
+    When I click on test element "button-way-point-submit"
     And I wait for "Wegpunkt geändert" to appear
     And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich geändert.' to appear
     And I can find the following wayPoints in database:

@@ -44,14 +44,14 @@ Feature: An user can request a non existing wayPoint and get redirected
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Elbamare>/detail"
     Then I wait for "Wegpunkt bearbeiten" to appear
     Then I wait for "Wegpunkt löschen und zur Runde zurückkehren" to appear
-    When I click on element "button-way-point-remove"
+    When I click on test element "button-way-point-remove"
     Then I wait for "Bist du dir absolut sicher?" to appear
 
     Then the element "button-way-point-remove-modal" should be disabled
     When I enter "Elbamare" in "wayPointName" field
     Then the element "button-way-point-remove-modal" should be enabled
 
-    When I click on element "button-way-point-remove-modal"
+    When I click on test element "button-way-point-remove-modal"
     Then I wait for 'Wegpunkte der Runde "Gorbitz"' to appear
 
     And I can not find the following wayPoints in database:
@@ -65,14 +65,14 @@ Feature: An user can request a non existing wayPoint and get redirected
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Elbamare>/detail"
     Then I wait for "Wegpunkt bearbeiten" to appear
     Then I wait for "Wegpunkt löschen und zur Runde zurückkehren" to appear
-    When I click on element "button-way-point-remove"
+    When I click on test element "button-way-point-remove"
     Then I wait for "Bist du dir absolut sicher?" to appear
 
     Then the element "button-way-point-remove-modal" should be disabled
     When I enter "Elbamare" in "wayPointName" field
     Then the element "button-way-point-remove-modal" should be enabled
 
-    When I click on element "button-way-point-remove-modal"
+    When I click on test element "button-way-point-remove-modal"
     Then I wait for 'Wegpunkte der Runde "Gorbitz"' to appear
 
     And I can not find the following wayPoints in database:

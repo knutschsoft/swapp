@@ -29,16 +29,16 @@ Feature: An administrator can change startTime of a walk
     When I go to swapp page "/runde/walkId<Klippe>/detail"
     Then I wait for 'Runde "Klippe" ändern' to appear
 
-    When I click on element "startTimeTime"
+    When I click on test element "startTimeTime"
     Then I wait for 'Schließen' to appear
     When I click on aria label "Erhöhen"
 
-    When I click on element "startTimeDate"
+    When I click on test element "startTimeDate"
     Then I wait for 'Mit den Pfeiltasten durch den Kalender navigieren' to appear
     When I click on aria label "Sonntag, 10. Januar 2021"
 
 
-    When I click on element "button-walk-submit"
+    When I click on test element "button-walk-submit"
 
     Then I wait for 'Runde "Klippe" wurde erfolgreich geändert.' to appear
 

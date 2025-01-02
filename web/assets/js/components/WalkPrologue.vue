@@ -65,7 +65,7 @@
                 </v-combobox>
             </v-col>
             <v-col>
-                <v-autocomplete
+                <v-combobox
                     v-model="form.name"
                     :items="walkNameSuggestions"
                     clearable
@@ -76,7 +76,8 @@
                     :loading="isLoading"
                     no-data-text="Achtung - diese Rundenname ist nicht hinterlegt."
                     hide-details
-                ></v-autocomplete>
+                    data-test="Name"
+                ></v-combobox>
             </v-col>
             <v-col>
                 <v-combobox
@@ -88,6 +89,7 @@
                     outlined
                     multiple
                     label="Tageskonzept"
+                    data-test="Tageskonzept"
                     placeholder="Tageskonzept eintragen..."
                     :disabled="isLoading"
                     :loading="isLoading"
@@ -147,6 +149,7 @@
                     v-model="form.weather"
                     :items="weatherOptions"
                     label="Wetter"
+                    data-test="Wetter"
                     outlined
                     :disabled="isLoading"
                 ></v-select>
@@ -157,6 +160,7 @@
                     :disabled="isFormInvalid"
                     block
                     color="secondary"
+                    data-test="btn-Runde beginnen"
                 >
                     Runde beginnen
                 </v-btn>

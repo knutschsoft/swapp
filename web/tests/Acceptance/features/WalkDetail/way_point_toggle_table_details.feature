@@ -35,12 +35,12 @@ Feature: An user can toggle table rows on walk detail to see all
         Then I wait for "Alle Details verbergen" to disappear
         Then I wait for "Drogen" to disappear
         Then I wait for "Gewalt" to disappear
-        Then I click on element "toggle-waypoint-details"
+        Then I click on test element "toggle-waypoint-details"
         Then I wait for "Drogen" to appear
         Then I wait for "Gewalt" to appear
         Then I wait for "Alle Details anzeigen" to disappear
         Then I wait for "Alle Details verbergen" to appear
-        Then I click on element "toggle-waypoint-details"
+        Then I click on test element "toggle-waypoint-details"
         Then I wait for "Alle Details anzeigen" to appear
         Then I wait for "Alle Details verbergen" to disappear
         Then I wait for "Drogen" to disappear

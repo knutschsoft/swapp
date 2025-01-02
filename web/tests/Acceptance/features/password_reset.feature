@@ -59,8 +59,8 @@ Feature: A user can get a new password on his own
     Then I should see "Passwort ändern" appear
     When I fill in "password" with "Dumpfbacke18"
     And I fill in "passwordRepeat" with "Dumpfbacke18"
-    Then I wait for field "btn-change-password" to be not disabled
-    And I click on element "btn-change-password"
+    Then I wait for test element "btn-change-password" to be not disabled
+    And I click on test element "btn-change-password"
     Then I should see "Herzlichen Glückwunsch!" appear
     And I should see "Du hast erfolgreich dein Passwort geändert." appear
     And I should see "Melde dich jetzt an:" disappear

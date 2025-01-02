@@ -35,14 +35,14 @@ Feature: An user can request a non existing wayPoint and get redirected
     And I should be on "/dashboard"
     Then I wait for "Gorbitz" to appear
 
-    When I click on element "button-runde-ansehen-Gorbitz"
+    When I click on test element "button-runde-ansehen-Gorbitz"
     Then I wait for 'Streetwork-Runde: "Gorbitz"' to appear
     Then I wait for 'Wegpunkte der Runde "Gorbitz"' to appear
     Then I wait for "Elbamare" to appear
     Then I wait for "Block17" to appear
     Then I wait for "Wegpunkt ansehen" to appear
 
-    When I click on element "button-wegpunkt-ansehen-Elbamare"
+    When I click on test element "button-wegpunkt-ansehen-Elbamare"
     Then I wait for "Wegpunkt: Elbamare" to appear
     Then I wait for "Runde: Gorbitz" to appear
     Then I wait for "Ort: Elbamare" to appear

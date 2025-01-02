@@ -49,7 +49,7 @@ Feature: A user can do a walk
 
     And I wait for "Neuen Tag erstellen" to appear
     # open
-    And I click on element "header-tag-create"
+    And I click on test element "header-tag-create"
     And I wait for "PowderBlue" to appear
     And I wait for "client@gmx.de" to disappear
 
@@ -72,7 +72,7 @@ Feature: A user can do a walk
 
     And I wait for "Neuen Tag erstellen" to appear
     # open
-    And I click on element "header-tag-create"
+    And I click on test element "header-tag-create"
     And I wait for "PowderBlue" to appear
     And I wait for "client@gmx.de" to appear
     And I wait for "gamer@gmx.de" to appear

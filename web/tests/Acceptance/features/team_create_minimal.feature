@@ -30,7 +30,7 @@ Feature: An admin can create a team
     And I wait for "Westhang" to disappear
 
     # open
-    And I click on element "header-team-create"
+    And I click on test element "header-team-create"
     Then I wait for "Allgemeine Daten des Teams" to appear
 
     When I enter "clientIri<gamer@gmx.de>" in "clients" field
@@ -43,11 +43,11 @@ Feature: An admin can create a team
     When I enter "Superteam" in "name" field
     When I click on text "karl@gmx.de"
     Then the element "button-team-form-create" should be enabled
-    Then I click on element "button-team-form-create"
+    Then I click on test element "button-team-form-create"
 
     And I click on text "Liste der Teams"
     # close create collapse
-    And I click on element "header-team-create"
+    And I click on test element "header-team-create"
     And I wait for "Liste der Teams" to appear
     And I wait for "Team bearbeiten" to appear
     And I can find the following teams in database:
@@ -66,18 +66,18 @@ Feature: An admin can create a team
     And I wait for "Westhang" to disappear
 
     # open
-    And I click on element "header-team-create"
+    And I click on test element "header-team-create"
     Then I wait for "Allgemeine Daten des Teams" to appear
 
     Then the element "button-team-form-create" should be disabled
     When I enter "Superteam" in "name" field
     When I click on text "karl@gmx.de"
     Then the element "button-team-form-create" should be enabled
-    Then I click on element "button-team-form-create"
+    Then I click on test element "button-team-form-create"
 
     And I click on text "Liste der Teams"
     # close create collapse
-    And I click on element "header-team-create"
+    And I click on test element "header-team-create"
     And I wait for "Liste der Teams" to appear
     And I wait for "Team bearbeiten" to appear
     And I can find the following teams in database:

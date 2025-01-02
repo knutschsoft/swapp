@@ -39,7 +39,7 @@ Feature: An administrator can change a finished walk
 
     When I enter "Arschkalt" in "Wetter" field
 
-    When I click on element "button-walk-submit"
+    When I click on test element "button-walk-submit"
 
     Then I wait for 'Runde "Klippe" wurde erfolgreich geändert.' to appear
 

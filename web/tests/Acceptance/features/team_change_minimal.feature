@@ -32,10 +32,10 @@ Feature: An admin can change a team
 
         Then the element "button-team-form-change" should be enabled
         When I enter "Superteam" in "name-change" field
-        When I click on element "change-users-karl@gmx.de"
-        When I click on element "change-users-lonely@gmx.de"
+        When I click on test element "change-users-karl@gmx.de"
+        When I click on test element "change-users-lonely@gmx.de"
         Then the element "button-team-form-change" should be enabled
-        Then I click on element "button-team-form-change"
+        Then I click on test element "button-team-form-change"
         Then I wait for "Das Team Superteam wurde erfolgreich geändert." to appear
 
         And I can find the following teams in database:

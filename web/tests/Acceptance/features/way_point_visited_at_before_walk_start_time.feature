@@ -39,7 +39,7 @@ Feature: An user can change startTime of a wayPoint on form of first wayPoint
     And I wait for 'Hinweis: Die gewählte Ankunftszeit ist 4 Stunden vor dem Rundenstart.' to appear
     And I wait for 'Hier kannst du die Rundenstartzeit auf die aktuell gewählte Ankunftszeit ändern.' to appear
 
-    When I click on element "button-set-walk-start-time"
+    When I click on test element "button-set-walk-start-time"
 
     Then I wait for "Rundenbeginn geändert" to appear
     Then I wait for "Der Rundenbeginn wurde erfolgreich von" to appear

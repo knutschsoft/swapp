@@ -66,6 +66,6 @@ Feature: An user can use way point list
         Then I wait for "Assieck8 " to appear
         And I wait for aria label "Go to page 2" to be active
 
-        When I click on element "reset-way-point-filter"
+        When I click on test element "reset-way-point-filter"
         Then I wait for "Assieck17" to appear
         Then I wait for "Assieck8 " to disappear

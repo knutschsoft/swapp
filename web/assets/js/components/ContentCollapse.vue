@@ -69,6 +69,7 @@ export default {
         const visibleState = ref<boolean>(false);
 
         const title = computed(() => props.title);
+        const isLoading = computed(() => props.isLoading);
         const getCollapseId = computed(() => `collapse-${props.collapseKey}`);
         const getTitleLengthId = computed(() => `${getCollapseId.value}-title-width-in-px`);
         const titleWidth = computed(() => (titleLengthState.value ? titleLengthState.value : '100'));
@@ -110,7 +111,7 @@ export default {
             getCollapseId,
             titleWidth,
             title,
-            isLoading: props.isLoading,
+            isLoading,
         };
     },
 };

@@ -38,9 +38,9 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Freies Streetwork" in "Tageskonzept" field
         When I enter "Arschkalt" in "Wetter" field
 
-        When I click on element "walkTeamMember-pinky@gmx.de"
+        When I click on test element "walkTeamMember-pinky@gmx.de"
 
-        When I click on element "startTimeTime"
+        When I click on test element "startTimeTime"
         Then I wait for 'Schließen' to appear
         When I click on aria label "Verringern"
 
@@ -65,13 +65,13 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Mein erster Lauf" in "Tageskonzept" field
         When I enter "Arschkalt" in "Wetter" field
 
-        When I click on element "startTimeDate"
+        When I click on test element "startTimeDate"
         Then I wait for 'Mit den Pfeiltasten durch den Kalender navigieren' to appear
         When I click on aria label "Nächster Monat"
         When I click on aria label "Nächster Monat"
         When I click on text "26"
 
-        When I click on element "walkTeamMember-karl@gmx.de"
+        When I click on test element "walkTeamMember-karl@gmx.de"
 
         When I click on text "Runde beginnen"
         Then I wait for "Runde beginnen" to disappear
@@ -98,8 +98,8 @@ Feature: An user can do a walk with preset walkTeamMembers
         Then I wait for test element "walkTeamMember-pinky@gmx.de" to be selected
         Then I wait for test element "walkTeamMember-karl@gmx.de" to be not selected
 
-        Then I wait for field 'button-walk-create' to be not disabled
-        When I click on element "button-walk-create"
+        Then I wait for test element 'button-walk-create' to be not disabled
+        When I click on test element "button-walk-create"
         Then I wait for "Runde beginnen" to disappear
         And I wait for "Wegpunkte der Runde" to appear
 

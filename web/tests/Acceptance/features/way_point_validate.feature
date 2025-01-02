@@ -28,7 +28,7 @@ Feature: An user can submit invalid entries in way point and get errors shown
     When I enter "A" in "locationName" field
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for "Wegpunkt ansehen" to disappear
-    And I click on element "button-way-point-submit"
+    And I click on test element "button-way-point-submit"
     And I wait for "Wegpunkt erfolgreich hinzugefügt." to disappear
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
     Then I wait for "Wegpunkt ansehen" to disappear

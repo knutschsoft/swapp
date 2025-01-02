@@ -59,14 +59,14 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
-     * @When  I wait for field :locator to be not disabled
+     * @When  I wait for test element :locator to be not disabled
      *
      * @param string   $locator
      * @param int|null $tries
      *
      * @throws \Throwable
      */
-    public function iWaitForFieldToBeNotDisabled(string $locator, ?int $tries = 25): void
+    public function iWaitForTestElementToBeNotDisabled(string $locator, ?int $tries = 25): void
     {
         $element = $this->getTestElement($locator);
         $this->spin(
@@ -161,15 +161,19 @@ final class AcceptanceContext extends MinkContext
      */
     public function iWaitForTestElementToDisappear(string $selector): void
     {
-        $testElement = false;
-        try {
-            $testElement = $this->getTestElement($selector, 5);
-        } catch (\InvalidArgumentException) {
-            // all fine here
-        }
-        if ($testElement) {
-            Assert::false($testElement->isVisible());
-        }
+        $this->spin(
+            function () use ($selector): void {
+                $tries = 10;
+                try {
+                    $testElement = $this->getTestElement($selector, $tries);
+
+                } catch (\InvalidArgumentException) {
+                    // all fine here
+                    return;
+                }
+                Assert::false($testElement->isVisible());;
+            }
+        );
     }
 
     /**
@@ -203,9 +207,9 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
-     * @When /^I click on element "([^"]*)"$/
+     * @When /^I click on test element "([^"]*)"$/
      */
-    public function iClickOnElement(string $dataTestSelector): void
+    public function iClickOnTestElement(string $dataTestSelector): void
     {
         $this->getTestElement($dataTestSelector)->click();
     }
@@ -388,7 +392,15 @@ final class AcceptanceContext extends MinkContext
             $element->attachFile($path);
             // sleep(5); // maybe needed for big files but chrome is crashing nonetheless
         } else {
+            // workaround for v-combobox with multiple
+            $isPotentialCombobox = !$element->isVisible();
+            if ($isPotentialCombobox) {
+                $element->click();
+            }
             $element->setValue($this->enrichText($value));
+            if ($isPotentialCombobox) {
+                $element->keyPress(WebDriverKeys::ENTER);
+            }
         }
     }
 

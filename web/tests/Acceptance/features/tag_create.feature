@@ -35,18 +35,18 @@ Feature: An user can create a tag
     And I wait for "Drogen" to disappear
 
     # open
-    And I click on element "header-tag-create"
+    And I click on test element "header-tag-create"
     Then I wait for "Name" to appear
 
     Then the element "button-tag-create" should be disabled
     When I enter "Religion" in "name" field
     When I click on text "MediumAquaMarine"
     Then the element "button-tag-create" should be enabled
-    Then I click on element "button-tag-create"
+    Then I click on test element "button-tag-create"
 
     And I click on text "Liste der Tags"
     # close create collapse
-    And I click on element "header-tag-create"
+    And I click on test element "header-tag-create"
     And I wait for "Liste der Tags" to appear
     And I wait for "ID" to appear
     And I wait for "Name" to appear
@@ -67,17 +67,17 @@ Feature: An user can create a tag
     And I wait for "ID" to disappear
 
     # open
-    And I click on element "header-tag-create"
+    And I click on test element "header-tag-create"
 
     Then the element "button-tag-create" should be disabled
     When I enter "Religion" in "name" field
     When I click on text "MediumAquaMarine"
     Then the element "button-tag-create" should be enabled
-    Then I click on element "button-tag-create"
+    Then I click on test element "button-tag-create"
 
     And I click on text "Liste der Tags"
     # close create collapse
-    And I click on element "header-tag-create"
+    And I click on test element "header-tag-create"
     And I wait for "Liste der Tags" to appear
     And I wait for "ID" to appear
     And I wait for "Name" to appear

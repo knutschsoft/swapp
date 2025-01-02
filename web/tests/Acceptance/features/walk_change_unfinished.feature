@@ -38,7 +38,7 @@ Feature: An administrator can change an unfinished walk
     Then I wait for test element "insights" to disappear
     When I enter "Arschkalt" in "Wetter" field
 
-    When I click on element "button-walk-submit"
+    When I click on test element "button-walk-submit"
 
     Then I wait for 'Runde "Klippe" wurde erfolgreich geändert.' to appear
 

@@ -60,7 +60,7 @@ Feature: An administrator can change a walk
     Then I wait for "Klippe1 " to appear
 
 
-    When I click on element "reset-walk-filter"
+    When I click on test element "reset-walk-filter"
     Then I wait for "Klippe6" to appear
     Then I wait for "Klippe1 " to disappear
 

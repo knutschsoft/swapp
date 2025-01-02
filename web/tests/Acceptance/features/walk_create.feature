@@ -58,10 +58,12 @@ Feature: A user can do a walk
     Then I wait for "Ferien" to appear
     Then I wait for "Wetter" to appear
     When I enter "Mein erster Lauf" in "Name" field
+#    When I click on test element "Tageskonzept"
     When I enter "Mein erster Lauf" in "Tageskonzept" field
     When I enter "Arschkalt" in "Wetter" field
-    When I click on text "Runde beginnen"
-    Then I wait for "Runde beginnen" to disappear
+    When I wait for test element "btn-Runde beginnen" to be not disabled
+    When I click on test element "btn-Runde beginnen"
+    Then I wait for test element "btn-Runde beginnen" to disappear
 
 
     Then I wait for "Wegpunkte der Runde" to appear

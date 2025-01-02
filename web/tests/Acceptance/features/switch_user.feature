@@ -20,21 +20,21 @@ Feature: An superadmin can impersonate any user
     Given I am on "/benutzer"
     And I wait for "Nutzer wechseln" to appear
 
-    When I click on element "switch-user-karl@gmx.de"
+    When I click on test element "switch-user-karl@gmx.de"
     And I wait 1 second
     Then I should be on "/dashboard"
 
     And I wait for "Neue Streetwork-Runde" to appear
     And I should see "karl@gmx.de" appear
 
-    When I click on element "nav-user-item"
+    When I click on test element "nav-user-item"
     Then I should see "Nutzerwechsel beenden" appear
 
-    When I click on element "exit-switch-user"
+    When I click on test element "exit-switch-user"
     Then I should see "karl@gmx.de" disappear
     And I should see "superadmin@gmx.de" appear
 
-    When I click on element "nav-user-item"
+    When I click on test element "nav-user-item"
     Then I should see "Nutzerwechsel beenden" disappear
     Then I should see "Nutzerwechsel" appear
 
@@ -47,7 +47,7 @@ Feature: An superadmin can impersonate any user
     Then I wait for "gamer@gmx.de" to appear
     And I wait for "Nutzer wechseln" to appear
 
-    When I click on element "switch-user-admin@gmx.de"
+    When I click on test element "switch-user-admin@gmx.de"
     And I wait 1 second
     Then I should be on "/benutzer"
 
@@ -60,6 +60,6 @@ Feature: An superadmin can impersonate any user
     Given I am authenticated as "admin@gmx.de"
     Given I am on "/dashboard"
 
-    When I click on element "nav-user-item"
+    When I click on test element "nav-user-item"
     Then I should see "Was ist Swapp?" appear
     Then I should see "Nutzerwechsel" disappear

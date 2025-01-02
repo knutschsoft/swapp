@@ -44,14 +44,14 @@ Feature: An user can delete a walk
     And I go to swapp page "/runde/walkId<Gorbitz>/detail"
     Then I wait for 'Streetwork-Runde: "Gorbitz"' to appear
     Then I wait for "runde löschen und zur Runde zurückkehren" to disappear
-    When I click on element "button-walk-remove"
+    When I click on test element "button-walk-remove"
     Then I wait for "Bist du dir absolut sicher?" to appear
 
     Then the element "button-walk-remove-modal" should be disabled
     When I enter "Gorbitz" in "walkName" field
     Then the element "button-walk-remove-modal" should be enabled
 
-    When I click on element "button-walk-remove-modal"
+    When I click on test element "button-walk-remove-modal"
     Then I wait for 'Abgeschlossene Streetwork-Runden' to appear
     Then I wait for 'Die Runde "Gorbitz" wurde erfolgreich gelöscht.' to appear
 
@@ -69,14 +69,14 @@ Feature: An user can delete a walk
     And I go to swapp page "/runde/walkId<Gorbitz>/detail"
     Then I wait for 'Streetwork-Runde: "Gorbitz"' to appear
     Then I wait for "runde löschen und zur Runde zurückkehren" to disappear
-    When I click on element "button-walk-remove"
+    When I click on test element "button-walk-remove"
     Then I wait for "Bist du dir absolut sicher?" to appear
 
     Then the element "button-walk-remove-modal" should be disabled
     When I enter "Gorbitz" in "walkName" field
     Then the element "button-walk-remove-modal" should be enabled
 
-    When I click on element "button-walk-remove-modal"
+    When I click on test element "button-walk-remove-modal"
     Then I wait for 'Abgeschlossene Streetwork-Runden' to appear
     Then I wait for 'Die Runde "Gorbitz" wurde erfolgreich gelöscht.' to appear
 
