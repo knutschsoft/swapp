@@ -3,22 +3,22 @@
         <content-loading-spinner
             :is-loading="isLoading"
         />
-        <b-table
+        <v-data-table
             v-show="!isLoading && systemicQuestions.length"
             :items="systemicQuestions"
-            :fields="fields"
+            :headers="fields"
             small
             striped
             class="mb-0"
             stacked="sm"
         >
-            <template v-slot:cell(isEnabled)="row">
+            <template v-slot:item.isEnabled="{item}">
                 <span
-                    @click="toggleEnabled(row.item['@id'], row.item.isEnabled)"
+                    @click="toggleEnabled(item['@id'], item.isEnabled)"
                     class="cursor-pointer"
                 >
                     <mdicon
-                        v-if="row.item.isEnabled"
+                        v-if="item.isEnabled"
                         name="TagOutline"
                         class="text-success"
                     />
@@ -29,11 +29,11 @@
                     />
                 </span>
             </template>
-            <template v-slot:cell(actions)="row">
+            <template v-slot:item.actions="{item}">
                 <v-btn
                     small
                     color="secondary"
-                    @click="editSystemicQuestion(row.item)"
+                    @click="editSystemicQuestion(item)"
                 >
                     Systemische Frage<br>
                     bearbeiten
@@ -44,7 +44,7 @@
                     </v-icon>
                 </v-btn>
             </template>
-        </b-table>
+        </v-data-table>
 
         <b-modal
             :id="editModalSystemicQuestion.id"
@@ -70,10 +70,7 @@
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import dayjs from 'dayjs';
 import SystemicQuestionForm from './SystemicQuestionForm.vue';
-import { useAuthStore } from '../../stores/auth';
-import { useClientStore } from '../../stores/client';
-import { useSystemicQuestionStore } from '../../stores/systemic-question';
-import { useTeamStore } from '../../stores/team';
+import { useAuthStore, useClientStore, useSystemicQuestionStore, useTeamStore } from '../../stores';
 
 export default {
     name: 'SystemicQuestionList',
@@ -96,47 +93,48 @@ export default {
     },
     computed: {
         fields() {
-            return [
+            let headers = [
                 {
-                    key: 'question',
-                    label: 'Fragestellung',
+                    value: 'question',
+                    text: 'Fragestellung',
                     sortable: true,
                 },
                 {
-                    key: 'isEnabled',
-                    label: 'Ist aktiv?',
+                    value: 'isEnabled',
+                    text: 'Ist aktiv?',
                     sortable: true,
                 },
-                {
-                    key: 'client',
-                    label: 'Klient',
+            ];
+            if (this.isSuperAdmin) {
+                headers.push({
+                    value: 'client',
+                    text: 'Klient',
                     sortable: true,
                     sortByFormatted: true,
-                    class: !this.isSuperAdmin ? 'd-none' : '',
                     formatter: this.clientFormatter,
-                },
-                {
-                    key: 'createdAt',
-                    label: 'Erstellt am',
+                });
+                headers.push({
+                    value: 'createdAt',
+                    text: 'Erstellt am',
                     sortable: true,
                     sortByFormatted: false,
-                    class: !this.isSuperAdmin ? 'd-none' : '',
                     formatter: (value) => {
                         return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
                     },
-                },
-                {
-                    key: 'updatedAt',
-                    label: 'Geändert am',
+                });
+                headers.push({
+                    value: 'updatedAt',
+                    text: 'Geändert am',
                     sortable: true,
                     sortByFormatted: false,
-                    class: !this.isSuperAdmin ? 'd-none' : '',
                     formatter: (value) => {
                         return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
                     },
-                },
-                { key: 'actions', label: 'Aktionen' },
-            ];
+                })
+            }
+            headers.push({ value: 'actions', text: 'Aktionen' });
+
+            return headers;
         },
         systemicQuestions() {
             return this.systemicQuestionStore.systemicQuestions;
