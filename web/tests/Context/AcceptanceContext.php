@@ -5,6 +5,7 @@ namespace App\Tests\Context;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\MinkExtension\Context\MinkContext;
+use Carbon\Carbon;
 use Facebook\WebDriver\WebDriverKeys;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -76,6 +77,17 @@ final class AcceptanceContext extends MinkContext
             $tries
         );
         Assert::false($element->hasAttribute('disabled'));
+    }
+
+    /**
+     * @When I submit Runde beginnen formular
+     */
+    public function iSubmitRundeBeginnenFormular(): void
+    {
+        $dataTestLocator = 'btn-Runde beginnen';
+        $this->iWaitForTestElementToBeNotDisabled($dataTestLocator);
+        $this->iClickOnTestElement($dataTestLocator);
+        $this->iWaitForTestElementToDisappear($dataTestLocator);
     }
 
     /**
@@ -252,6 +264,60 @@ final class AcceptanceContext extends MinkContext
             Assert::false(true, \sprintf('Element with aria label selector "%s" could not be found.', $locator));
         }
         $element->click();
+    }
+
+    /**
+     * @When /^I select time "([^"]*)" in time selector "([^"]*)"$/
+     *
+     * @param string $time             Format is H:mm.
+     * @param string $dataTestSelector
+     *
+     * @throws \Throwable
+     */
+    public function iSelectTimeInTimeSelector(string $time, string $dataTestSelector): void
+    {
+        $explodedTime = \explode(':', $time);
+        $hours = $explodedTime[0];
+        $minutes = (int) $explodedTime[1];
+        $unsupportedMinutes = 55;
+        if ($unsupportedMinutes === $minutes) {
+            throw new \RuntimeException(\sprintf('Time in seconds should not be %d minutes.', $minutes));
+        }
+        $minutes = ($minutes) / 5;
+        $locatorHour = \sprintf('[data-type="hour"] [data-index="%s"]', $hours);
+        $locatorMinute = \sprintf('[data-type="minute"] [data-index="%s"]', $minutes);
+        $this->getTestElement($dataTestSelector)->click();
+        \sleep(1); // needed for issue when list is popping up
+        $this->getNodeElement($locatorHour)->click();
+        $this->getNodeElement($locatorMinute)->click();
+        $this->getNodeElement('body')->click();
+    }
+
+    /**
+     * @When /^I select date "([^"]*)" in date selector "([^"]*)"$/
+     *
+     * @param string $date             Format is d.m.Y
+     * @param string $dataTestSelector
+     *
+     * @throws \Throwable
+     */
+    public function iSelectDateInDateSelector(string $date, string $dataTestSelector): void
+    {
+        $this->getTestElement($dataTestSelector)->click();
+        $date = Carbon::create($date);
+
+        $locatorYearSelect = '.mx-btn-current-year';
+        $this->getNodeElement($locatorYearSelect)->click();
+        $year = $date->format('Y');
+        $locatorYear = \sprintf('[data-year="%s"]', $year);
+        $this->getNodeElement($locatorYear)->click();
+
+        $month = (int) $date->format('m');
+        $locatorMonth = \sprintf('[data-month="%s"]', $month - 1);
+        $this->getNodeElement($locatorMonth)->click();
+
+        $locatorDay = \sprintf('[title="%s"]', $date->format('d.m.Y'));
+        $this->getNodeElement($locatorDay)->click();
     }
 
     /**

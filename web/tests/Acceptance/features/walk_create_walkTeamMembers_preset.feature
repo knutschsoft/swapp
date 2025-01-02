@@ -40,18 +40,14 @@ Feature: An user can do a walk with preset walkTeamMembers
 
         When I click on test element "walkTeamMember-pinky@gmx.de"
 
-        When I click on test element "startTimeTime"
-        Then I wait for 'Schließen' to appear
-        When I click on aria label "Verringern"
+        When I select time "18:50" in time selector "startTimeTime"
 
-        When I click on text "Runde beginnen"
-        Then I wait for "Runde beginnen" to disappear
-        And I wait for "Wegpunkte der Runde" to appear
+        When I submit Runde beginnen formular
 
         Then there are exactly 1 walks in database
         And I can find the following walks in database:
-            | name             | walkTeamMembers          |
-            | Mein erster Lauf | karl@gmx.de,brain@gmx.de |
+            | name             | walkTeamMembers          | startTime |
+            | Mein erster Lauf | karl@gmx.de,brain@gmx.de | 18:50     |
 
         And I go to "/abmeldung"
         Given I am authenticated as "brain@gmx.de"
@@ -65,23 +61,18 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Mein erster Lauf" in "Tageskonzept" field
         When I enter "Arschkalt" in "Wetter" field
 
-        When I click on test element "startTimeDate"
-        Then I wait for 'Mit den Pfeiltasten durch den Kalender navigieren' to appear
-        When I click on aria label "Nächster Monat"
-        When I click on aria label "Nächster Monat"
-        When I click on text "26"
+        When I select date "06.06.2025" in date selector "startTimeDate"
 
         When I click on test element "walkTeamMember-karl@gmx.de"
 
-        When I click on text "Runde beginnen"
-        Then I wait for "Runde beginnen" to disappear
+        When I submit Runde beginnen formular
         And I wait for "Wegpunkte der Runde" to appear
 
         And there are exactly 2 walks in database
 
         And I can find the following walks in database:
-            | name              | walkTeamMembers |
-            | Mein zweiter Lauf | brain@gmx.de    |
+            | name              | walkTeamMembers | startDate        |
+            | Mein zweiter Lauf | brain@gmx.de    | date<06.06.2025> |
 
         And I go to "/abmeldung"
         Given I am authenticated as "pinky@gmx.de"
@@ -98,9 +89,7 @@ Feature: An user can do a walk with preset walkTeamMembers
         Then I wait for test element "walkTeamMember-pinky@gmx.de" to be selected
         Then I wait for test element "walkTeamMember-karl@gmx.de" to be not selected
 
-        Then I wait for test element 'button-walk-create' to be not disabled
-        When I click on test element "button-walk-create"
-        Then I wait for "Runde beginnen" to disappear
+        When I submit Runde beginnen formular
         And I wait for "Wegpunkte der Runde" to appear
 
         Then there are exactly 3 walks in database

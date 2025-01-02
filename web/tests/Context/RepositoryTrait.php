@@ -416,7 +416,7 @@ trait RepositoryTrait
         }
 
         if (\str_starts_with($text, 'date<')) {
-            $dateConfig = \explode(',', (string) $referenceIdentifikator);
+            $dateConfig = \explode(',', $referenceIdentifikator);
             Assert::isArray($dateConfig);
             Assert::countBetween($dateConfig, 1, 2);
             Carbon::setlocale('de');

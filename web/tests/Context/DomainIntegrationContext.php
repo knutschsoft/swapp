@@ -628,6 +628,18 @@ final class DomainIntegrationContext extends RawMinkContext
                     )
                 );
             }
+            if (isset($row['startDate'])) {
+                $expectedStartDate = Carbon::create($this->enrichText($row['startDate']));
+                $startTime = new Carbon($walk->getStartTime());
+                Assert::true(
+                    $startTime->isSameDay($expectedStartDate),
+                    \sprintf(
+                        "Date is not the same. Expected date %s and given date %s.",
+                        $expectedStartDate->format('d.m.Y'),
+                        $startTime->format('d.m.Y')
+                    )
+                );
+            }
             if (isset($row['endTime'])) {
                 $allowedDistanceInSeconds = 90;
                 $expectedEndTime = new Carbon($this->enrichText($row['endTime']));
@@ -642,6 +654,18 @@ final class DomainIntegrationContext extends RawMinkContext
                         $lowerExpectedEndTime->format('H:i:s'),
                         $endTime->format('H:i:s'),
                         $higherExpectedEndTime->format('H:i:s')
+                    )
+                );
+            }
+            if (isset($row['endDate'])) {
+                $expectedEndDate = Carbon::create($this->enrichText($row['endDate']));
+                $endTime = new Carbon($walk->getEndTime());
+                Assert::true(
+                    $endTime->isSameDay($expectedEndDate),
+                    \sprintf(
+                        "Date is not the same. Expected date %s and given date %s.",
+                        $expectedEndDate->format('d.m.Y'),
+                        $endTime->format('d.m.Y')
                     )
                 );
             }

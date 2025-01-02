@@ -61,10 +61,7 @@ Feature: A user can do a walk
 #    When I click on test element "Tageskonzept"
     When I enter "Mein erster Lauf" in "Tageskonzept" field
     When I enter "Arschkalt" in "Wetter" field
-    When I wait for test element "btn-Runde beginnen" to be not disabled
-    When I click on test element "btn-Runde beginnen"
-    Then I wait for test element "btn-Runde beginnen" to disappear
-
+    When I submit Runde beginnen formular
 
     Then I wait for "Wegpunkte der Runde" to appear
     Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
