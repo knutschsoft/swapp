@@ -51,26 +51,30 @@
             item-text="name"
             outlined
         />
-        <div :id="createButtonId">
-            <v-btn
-                type="submit"
-                color="secondary"
-                data-test="button-tag-create"
-                :disabled="isFormInvalid || isLoading"
-                block
-            >
-                Neuen Tag erstellen
-            </v-btn>
-        </div>
-        <b-popover
+        <v-tooltip
             v-if="isFormInvalid"
-            :target="createButtonId"
-            triggers="hover"
-            placement="top"
+            top
         >
-            <template #title>Name und Farbe</template>
-            Bitte erst Name und Farbe wählen bevor ein neuer Tag erstellt werden kann.
-        </b-popover>
+            <template v-slot:activator="{ on, attrs }">
+                <div
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                    <v-btn
+                        type="submit"
+                        color="secondary"
+                        data-test="button-tag-create"
+                        :disabled="isFormInvalid || isLoading"
+                        block
+                    >
+                        Neuen Tag erstellen
+                    </v-btn>
+                </div>
+            </template>
+            <span>
+                Bitte erst Name und Farbe wählen bevor ein neuer Tag erstellt werden kann.
+            </span>
+        </v-tooltip>
         <form-error
             :error="error"
         />
