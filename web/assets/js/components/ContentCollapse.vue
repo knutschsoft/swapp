@@ -12,7 +12,6 @@
             >
                 <v-skeleton-loader
                     v-if="isLoading"
-                    v-bind="attrs"
                     type="text"
                     color="secondary"
                     :width="titleWidth"

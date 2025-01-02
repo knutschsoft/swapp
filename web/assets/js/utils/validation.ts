@@ -75,7 +75,7 @@ function getViolationsFeedback(
 
     if (isResultInverted) {
         for (const [fieldName, errorMessageArray] of Object.entries(validationErrors)) {
-            if (!fields.includes(fieldName) && fieldName !== 'global') {
+            if (!fields.includes(fieldName)) {
                 message += ` ${errorMessageArray!.join(' ')}`;
             }
         }

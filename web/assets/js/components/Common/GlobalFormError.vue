@@ -1,7 +1,7 @@
 <template>
     <v-alert
         v-if="hasError"
-        type="danger"
+        type="error"
         class="mt-2 mb-0"
     >
         <ul
