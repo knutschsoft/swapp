@@ -1,93 +1,66 @@
 <template>
-    <b-form
+    <v-form
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
+        <v-text-field
+            v-model="name"
+            required
+            minlength="3"
+            maxlength="100"
+            placeholder="Name des Tags"
+            :state="nameState"
             label="Name"
+            outlined
+            data-test="name"
+        />
+        Gewählte Tag-Farbe:
+        <color-badge
+            v-if="color"
+            :color="color"
+        />
+        <v-select
+            v-model="color"
+            :items="availableColors"
+            placeholder="Farbe des Tags"
+            data-test="farbe"
+            required
+            outlined
+            item-value="name"
+            item-text="name"
         >
-            <b-input
-                v-model="name"
-                required
-                minlength="3"
-                maxlength="100"
-                placeholder="Name des Tags"
-                :state="nameState"
-                data-test="name"
-            />
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
-        >
-            <template slot="label" slot-scope="{ }">
-                Farbe
-                <color-badge
-                    v-if="color"
-                    :color="color"
-                />
+            <template v-slot:item="{item}">
+                <v-divider class="mb-2"></v-divider>
+                <v-list-item disabled>
+                    <v-list-item-content>
+                            <color-badge
+                                :color="item.name"
+                            />
+                    </v-list-item-content>
+                </v-list-item>
             </template>
-            <b-form-radio-group
-                v-model="color"
-                class="check-boxes d-flex flex-row flex-wrap justify-content-start"
-                buttons
-                placeholder="Farbe des Tags"
-                data-test="farbe"
-                :state="colorState"
-                button-variant="secondary rounded-0 mt-1 mr-1 px-4"
-                required
-            >
-                <b-form-radio
-                    v-for="htmlColor in availableColors"
-                    :key="htmlColor.name"
-                    :value="htmlColor.name"
-                    :style="`background-color: ${ htmlColor.name }`"
-                >
-                    <div
-                        style="height:inherit; background: inherit; -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; filter: invert(1) grayscale(1) contrast(999);"
-                    >
-                        {{ htmlColor.name }}
-                    </div>
-                </b-form-radio>
-            </b-form-radio-group>
-        </b-form-group>
-        <b-form-group
-            v-if="isSuperAdmin"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
-        >
-            <template slot="label" slot-scope="{ }">
-                Klient
-            </template>
-            <b-form-select
-                v-model="client"
-                data-test="client"
-                placeholder="Für welchen Klienten?"
-                :options="availableClients"
-                value-field="@id"
-                text-field="name"
-            />
-        </b-form-group>
+        </v-select>
+        <v-select
+            v-if="!isSuperAdmin"
+            v-model="client"
+            data-test="client"
+            label="Für welchen Klienten?"
+            placeholder="Für welchen Klienten?"
+            :items="availableClients"
+            item-value="@id"
+            item-text="name"
+            outlined
+        />
         <div :id="createButtonId">
-            <b-button
+            <v-btn
                 type="submit"
-                variant="secondary"
+                color="secondary"
                 data-test="button-tag-create"
                 :disabled="isFormInvalid || isLoading"
                 block
-                class="col-12"
-                :tabindex="isFormInvalid ? '-1' : ''"
             >
                 Neuen Tag erstellen
-            </b-button>
+            </v-btn>
         </div>
         <b-popover
             v-if="isFormInvalid"
@@ -112,7 +85,7 @@
                 <li>Deaktivierte Tags werden nicht als Filter auf dem Dashboard angezeigt, wenn sie keinem Wegpunkt zugeordnet sind.</li>
             </ul>
         </v-alert>
-    </b-form>
+    </v-form>
 </template>
 
 <script>
@@ -136,7 +109,7 @@ export default {
             clientStore: useClientStore(),
             name: null,
             color: null,
-            client: null,
+            client: '',
             createButtonId: 'tag-create-submit',
         };
     },
