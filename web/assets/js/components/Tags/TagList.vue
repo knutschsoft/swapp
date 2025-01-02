@@ -1,65 +1,52 @@
 <template>
     <div>
-        <b-row
+        <v-row
             v-if="!isLoading"
             class="p-2 mb-0 mt-0"
         >
-            <b-col
+            <v-col
                 v-if="isSuperAdmin"
-                xs="12"
+                cols="12"
                 sm="6"
             >
-                <b-input-group size="sm" class="mb-2">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            title="Nur bestimmten Klient anzeigen."
-                            :class="filter.client !== null ? 'font-weight-bold' : ''"
-                        >
-                            Klient?
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-select
-                        v-model="filter.client"
-                        data-test="client"
-                        placeholder="Für welchen Klienten?"
-                        :options="availableClients"
-                        value-field="@id"
-                        text-field="name"
-                    >
-                        <template #first>
-                            <b-form-select-option :value="null">Alle Klienten</b-form-select-option>
-                        </template>
-                    </b-form-select>
-                    <my-input-group-append
-                        @click="filter.client = null"
-                        :is-active="filter.client !== null"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                xs="12"
+                <v-select
+                    v-model="filter.client"
+                    :items="availableClients"
+                    item-value="@id"
+                    item-text="name"
+                    label="Für welchen Klienten?"
+                    dense
+                    clearable
+                    outlined
+                    :success="filter.client !== null"
+                    class="flex-grow-1"
+                    hint="Nur bestimmten Klient anzeigen."
+                    :persistent-hint="filter.client !== null"
+                    persistent-placeholder
+                >
+                </v-select>
+            </v-col>
+            <v-col
                 :sm="isSuperAdmin ? 6 : 12"
             >
-                <b-input-group size="sm" class="">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            title="Nur aktivierte Accounts?"
-                            :class="filter.isEnabled !== true ? 'font-weight-bold' : ''"
-                        >
-                            Nur aktivierte?
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-select
-                        v-model="filter.isEnabled"
-                        :options="isEnabledOptions"
-                    />
-                    <my-input-group-append
-                        @click="filter.isEnabled = true"
-                        :is-active="filter.isEnabled !== true"
-                    />
-                </b-input-group>
-            </b-col>
-        </b-row>
+                <v-select
+                    v-model="filter.isEnabled"
+                    :items="isEnabledOptions"
+                    item-value="value"
+                    item-text="text"
+                    label="Nur aktivierte?"
+                    dense
+                    :clearable="filter.isEnabled"
+                    outlined
+                    :success="filter.isEnabled === true || filter.isEnabled === false"
+                    class="flex-grow-1"
+                    hint="Nur aktivierte Accounts?"
+                    :persistent-hint="filter.isEnabled === true || filter.isEnabled === false"
+                    persistent-placeholder
+                >
+                </v-select>
+            </v-col>
+        </v-row>
         <v-data-table
             :items="tags"
             :is-loading="isLoading"
@@ -149,7 +136,6 @@
 'use strict';
 import ColorBadge from './ColorBadge.vue';
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
-import MyInputGroupAppend from '../../components/Common/MyInputGroupAppend.vue';
 import {useAlertStore, useAuthStore, useClientStore, useTagStore} from '../../stores';
 import {
     itemsPerPageOptions,
@@ -160,7 +146,7 @@ import {
 
 export default {
     name: 'TagList',
-    components: { ContentLoadingSpinner, ColorBadge, MyInputGroupAppend },
+    components: { ContentLoadingSpinner, ColorBadge },
     data: function () {
         return {
             itemsPerPageOptions,
