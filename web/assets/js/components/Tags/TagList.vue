@@ -1,8 +1,5 @@
 <template>
     <div>
-        <content-loading-spinner
-            :is-loading="isLoading"
-        />
         <b-row
             v-if="!isLoading"
             class="p-2 mb-0 mt-0"
@@ -63,19 +60,24 @@
                 </b-input-group>
             </b-col>
         </b-row>
-        <b-table
-            v-show="!isLoading && tags.length"
+        <v-data-table
             :items="tags"
-            :fields="fields"
-            sort-by="name"
+            :is-loading="isLoading"
+            :headers="fields"
             small
             striped
             class="mb-0"
-            stacked="sm"
+            multi-sort
+            dense
+            :items-per-page="itemsPerPage"
+            :items-per-page-options="itemsPerPageOptions"
+            :items-per-page-text="itemsPerPageText"
+            :no-data-text="noItemsText"
+            :loading-text="loadingText"
         >
-            <template v-slot:cell(isEnabled)="row">
+            <template v-slot:item.isEnabled="{item}">
                 <v-progress-circular
-                    v-if="isLoadingToggleTagState(row.item['@id'])"
+                    v-if="isLoadingToggleTagState(item['@id'])"
                     indeterminate
                     :size="20"
                     :width="2"
@@ -83,12 +85,12 @@
                 ></v-progress-circular>
                 <div
                     v-else
-                    @click="toggleEnabled(row.item, row.item.isEnabled)"
-                    :title="`Tag ${ row.item.isEnabled ? 'de' : '' }aktivieren`"
+                    @click="toggleEnabled(item, item.isEnabled)"
+                    :title="`Tag ${ item.isEnabled ? 'de' : '' }aktivieren`"
                     class="cursor-pointer"
                 >
                     <v-icon
-                        v-if="row.item.isEnabled"
+                        v-if="item.isEnabled"
                         color="success"
                     >
                         mdi-check
@@ -102,21 +104,24 @@
                     </v-icon>
                 </div>
             </template>
-            <template v-slot:cell(color)="data">
+            <template v-slot:item.color="{item}">
                 <color-badge
-                    :color="data.item.color"
+                    :color="item.color"
                 />
             </template>
+            <template v-slot:item.client="{item}">
+                {{ clientFormatter(item.client) }}
+            </template>
 
-            <template v-slot:cell(actions)="row">
+            <template v-slot:item.actions="{item}">
                 <v-btn
                     small
                     color="secondary"
-                    @click="toggleEnabled(row.item, row.item.isEnabled)"
+                    @click="toggleEnabled(item, item.isEnabled)"
                 >
-                    {{ row.item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
+                    {{ item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
                 </v-btn>
-                <span :id="`questionHeaderId-${row.item.tagId}`">
+                <span :id="`questionHeaderId-${item.tagId}`">
                     <v-icon
                         class="text-muted"
                     >
@@ -124,7 +129,7 @@
                     </v-icon>
                 </span>
                 <b-popover
-                    :target="`questionHeaderId-${row.item.tagId}`"
+                    :target="`questionHeaderId-${item.tagId}`"
                     triggers="hover"
                     placement="top"
                 >
@@ -136,7 +141,7 @@
                     </ul>
                 </b-popover>
             </template>
-        </b-table>
+        </v-data-table>
     </div>
 </template>
 
@@ -146,12 +151,23 @@ import ColorBadge from './ColorBadge.vue';
 import ContentLoadingSpinner from '../ContentLoadingSpinner.vue';
 import MyInputGroupAppend from '../../components/Common/MyInputGroupAppend.vue';
 import {useAlertStore, useAuthStore, useClientStore, useTagStore} from '../../stores';
+import {
+    itemsPerPageOptions,
+    itemsPerPageText,
+    loadingText,
+    noItemsText,
+} from '../../utils'
 
 export default {
     name: 'TagList',
     components: { ContentLoadingSpinner, ColorBadge, MyInputGroupAppend },
     data: function () {
         return {
+            itemsPerPageOptions,
+            itemsPerPageText,
+            noItemsText,
+            loadingText,
+            itemsPerPage: -1,
             alertStore: useAlertStore(),
             authStore: useAuthStore(),
             clientStore: useClientStore(),
@@ -169,32 +185,31 @@ export default {
     },
     computed: {
         fields() {
-            return [
+            let headers = [
                 {
-                    key: 'name',
+                    value: 'name',
                     sortable: true,
                 },
                 {
-                    key: 'color',
-                    label: 'Farbe',
+                    value: 'color',
+                    text: 'Farbe',
                     sortable: true,
                 },
                 {
-                    key: 'isEnabled',
-                    label: 'Tag aktiviert?',
+                    value: 'isEnabled',
+                    text: 'Tag aktiviert?',
                     sortable: true,
-                    class: 'text-center',
-                },
-                {
-                    key: 'client',
-                    label: 'Klient',
-                    sortable: true,
-                    sortByFormatted: true,
-                    class: !this.isSuperAdmin ? 'd-none' : '',
-                    formatter: this.clientFormatter,
-                },
-                { key: 'actions', label: 'Aktionen' },
+                }
             ];
+            if (this.isSuperAdmin) {
+                headers.push({
+                    value: 'client',
+                    text: 'Klient',
+                    sortable: false,
+                });
+            }
+            headers.push({ value: 'actions', text: 'Aktionen' });
+            return headers;
         },
         availableClients() {
             return this.clientStore.getClients;
