@@ -1,61 +1,51 @@
 <template>
-    <b-form
+    <v-form
         @submit.prevent.stop="handleSubmit"
         ref="form"
         class="p-1 p-sm-2 p-lg-3"
     >
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
+        <v-textarea
+            v-model="question"
+            required
+            outlined
+            minlength="5"
             label="Fragestellung"
-        >
-            <b-textarea
-                v-model="question"
-                required
-                minlength="3"
-                maxlength="4000"
-                placeholder="Fragestellung"
-                :state="questionState"
-                data-test="question"
-            />
-        </b-form-group>
-        <b-form-group
+            maxlength="4000"
+            placeholder="Fragestellung"
+            :state="questionState"
+            data-test="question"
+        />
+        <template
             v-if="isSuperAdmin"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
         >
-            <template slot="label" slot-scope="{ }">
-                Klient
-            </template>
-            <b-form-select
+            <v-select
                 v-model="client"
                 data-test="client"
                 placeholder="Für welchen Klienten?"
-                :options="availableClients"
-                value-field="@id"
-                text-field="name"
+                label="Klient"
+                required
+                outlined
+                dense
+                :items="availableClients"
+                item-value="@id"
+                item-text="name"
             />
-        </b-form-group>
-        <b-button
+        </template>
+        <v-btn
             type="submit"
-            variant="secondary"
+            color="secondary"
             :disabled="isFormInvalid"
             data-test="button-systemic-question-submit"
             block
-            class="col-12"
-            :tabindex="isFormInvalid ? '-1' : ''"
+            small
         >
             {{ submitButtonText }}
-        </b-button>
+        </v-btn>
         <form-error
             :error="error"
         />
         <systemic-question-hint />
-    </b-form>
+    </v-form>
 </template>
 
 <script>
@@ -63,9 +53,7 @@
 
 import FormError from '../Common/FormError.vue';
 import SystemicQuestionHint from './SystemicQuestionHint.vue';
-import { useAuthStore } from '../../stores/auth';
-import { useClientStore } from '../../stores/client';
-import { useSystemicQuestionStore } from '../../stores/systemic-question';
+import { useAuthStore, useClientStore, useSystemicQuestionStore } from '../../stores';
 
 export default {
     name: 'SystemicQuestionForm',
@@ -103,7 +91,7 @@ export default {
                 return;
             }
 
-            return this.question.length >= 3 && this.question.length <=4000;
+            return this.question.length >= 5 && this.question.length <=4000;
         },
         isLoading() {
             return this.systemicQuestionStore.isLoading;

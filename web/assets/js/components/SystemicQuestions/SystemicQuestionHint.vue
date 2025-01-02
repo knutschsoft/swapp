@@ -39,7 +39,7 @@
 <script>
 'use strict';
 
-import { useTeamStore } from '../../stores/team';
+import { useTeamStore } from '../../stores';
 
 export default {
     name: 'SystemicQuestionHint',
