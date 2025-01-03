@@ -26,7 +26,7 @@
             <v-snackbar
                 v-model="alertStore.showAlert"
                 multi-line
-                timeout="10000"
+                timeout="6000"
                 outlined
                 variant="outlined"
                 top
