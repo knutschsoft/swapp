@@ -64,7 +64,7 @@
                 <v-btn
                     small
                     color="secondary"
-                    @click="openEditModal(item)"
+                    @click="openTeamEditDialog(item)"
                 >
                     Team bearbeiten
                     <v-icon
@@ -77,19 +77,25 @@
             </template>
         </v-data-table>
 
-        <b-modal
-            id="edit-modal-team"
-            :title="`Team &quot;${editTeam ? editTeam.name : ''}&quot; bearbeiten`"
-            size="xxl"
-            hide-footer
+        <v-dialog
+            v-model="dialog"
+            scrollable
+            max-width="800px"
         >
-            <team-form
-                refs="teamForm"
-                :initial-team="editTeam"
-                @submit="handleSubmit"
-                button-label="Team speichern"
-            />
-        </b-modal>
+            <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                    Team {{ editTeam ? editTeam.name : '' }} bearbeiten
+                </v-card-title>
+                <v-card-text>
+                    <team-form
+                        v-if="editTeam"
+                        :initial-team="editTeam"
+                        @submit="handleSubmit"
+                        button-label="Team speichern"
+                    />
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -115,6 +121,7 @@ export default {
             teamStore: useTeamStore(),
             userStore: useUserStore(),
             editTeam: null,
+            dialog: false,
             itemsPerPageOptions,
             itemsPerPageText,
             noItemsText: 'Noch keine Teams erstellt. Bitte erstelle zuerst ein Team.',
@@ -310,9 +317,9 @@ export default {
 
             return ageRanges;
         },
-        openEditModal: function (team) {
+        openTeamEditDialog: function (team) {
             this.editTeam = team;
-            this.$root.$emit('bv::show::modal', 'edit-modal-team');
+            this.dialog = true;
         },
         async handleSubmit(team) {
             const changedTeam = await this.teamStore.change({
@@ -336,7 +343,7 @@ export default {
 
             if (changedTeam) {
                 this.alertStore.success(`Das Team ${changedTeam.name} wurde erfolgreich geändert.`, 'Team geändert');
-                this.$root.$emit('bv::hide::modal', 'edit-modal-team');
+                this.dialog = false;
             } else {
                 this.alertStore.error('Team ändern fehlgeschlagen', 'Upps! :-(');
             }
