@@ -10,9 +10,9 @@ export interface Props {
     value: string[],
     walkCreator?: User,
     users: User[],
-    label?: String,
-    description?: String,
-    isLoading?: Boolean
+    label?: string,
+    description?: string,
+    isLoading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,25 +35,25 @@ const value = computed({
 const selectedWalkCreator = ref<ComponentPublicInstance<HTMLInputElement>[]>();
 
 watch(() => props.walkCreator, (newValue: User | undefined) => {
-    if (undefined === newValue) {
-        return;
-    }
-    if (!selectedWalkCreator.value) {
-        return;
-    }
-    selectedWalkCreator.value.some((walkCreatorElement) => {
-        if (walkCreatorElement.value !== newValue['@id']) {
-            return false;
-        }
-
-        const classList = walkCreatorElement.$el.classList;
-        classList.add('blinking');
-        window.setTimeout(() => {
-            classList.remove('blinking');
-        }, 1500);
-
-        return true;
-    });
+    // if (undefined === newValue) {
+    //     return;
+    // }
+    // if (!selectedWalkCreator.value) {
+    //     return;
+    // }
+    // selectedWalkCreator.value.some((walkCreatorElement) => {
+    //     if (walkCreatorElement.value !== newValue['@id']) {
+    //         return false;
+    //     }
+    //
+    //     const classList = walkCreatorElement.$el.classList;
+    //     classList.add('blinking');
+    //     window.setTimeout(() => {
+    //         classList.remove('blinking');
+    //     }, 1500);
+    //
+    //     return true;
+    // });
 });
 
 const enabledUsers = computed(() => {
@@ -74,7 +74,7 @@ const hasDisabledUser = computed(() => {
             <v-card
                 outlined
             >
-                <v-card-subtitle>{{ label }}</v-card-subtitle>
+                <v-card-subtitle class="font-weight-bold">{{ label }}</v-card-subtitle>
                 <v-card-text class="mb-0 pb-0">
                     <div class="d-flex flex-wrap" data-test="users">
                         <template v-for="user in enabledUsers">
@@ -136,7 +136,7 @@ const hasDisabledUser = computed(() => {
                             </v-switch>
                         </template>
                     </div>
-                    <p>{{ description }}</p>
+                    <p v-if="description">{{ description }}</p>
                 </v-card-text>
             </v-card>
         </v-col>

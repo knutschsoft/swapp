@@ -5,11 +5,11 @@ Feature: An user can do a walk with preset walkTeamMembers
             | email         |
             | client@gmx.de |
         Given the following users exists:
-            | email           | client        | isEnabled |
-            | karl@gmx.de     | client@gmx.de | 1         |
-            | pinky@gmx.de    | client@gmx.de | 1         |
-            | brain@gmx.de    | client@gmx.de | 1         |
-            | disabled@gmx.de | client@gmx.de | 0         |
+            | email           | client        | isEnabled | roles      |
+            | karl@gmx.de     | client@gmx.de | 1         |            |
+            | pinky@gmx.de    | client@gmx.de | 1         |            |
+            | brain@gmx.de    | client@gmx.de | 1         | ROLE_ADMIN |
+            | disabled@gmx.de | client@gmx.de | 0         |            |
         Given the following teams exists:
             | name     | users                                                 | ageRanges          | client        | initialMembersConfig |
             | Westhang | karl@gmx.de,pinky@gmx.de,brain@gmx.de,disabled@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de | mitglieder           |

@@ -1,515 +1,559 @@
 <template>
-    <b-form
+    <v-form
         @submit.prevent.stop="handleSubmit"
-        ref="form"
         class="p-1 p-sm-2 p-lg-3"
     >
-        <b-card
-            bg-variant="light"
-            header="Allgemeine Daten des Teams"
-            class="mb-4"
-        >
-
-            <b-row>
-                <b-col sm="12">
-                    <b-form-group
-                        v-if="isSuperAdmin"
-                        label="Klient"
-                    >
-                        <b-form-select
+        <v-card class="mb-4">
+            <v-card-title class="grey lighten-2 mb-5">Allgemeine Daten des Teams</v-card-title>
+            <v-card-text>
+                <v-row>
+                    <v-col cols="12">
+                        <v-select
+                            v-if="!isSuperAdmin"
                             v-model="team.client"
+                            outlined
+                            dense
+                            label="Klient"
                             data-test="clients"
-                            value-field="@id"
-                            text-field="name"
+                            item-value="@id"
+                            item-text="name"
                             @change="team.users = []"
-                            :options="availableClients"
+                            :items="availableClients"
                             :disabled="isDisabled"
                         />
-                    </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                    <b-form-group
-                        label="Name"
-                        v-slot="{ ariaDescribedby }"
-                        :state="nameState"
-                        content-cols="12"
-                    >
-                        <b-input
+                    </v-col>
+                    <v-col sm="6">
+                        <v-text-field
                             v-model="team.name"
-                            :aria-describedby="ariaDescribedby"
+                            label="Name"
+                            outlined
+                            dense
                             :disabled="isDisabled"
                             :state="nameState"
                             :data-test="`${ initialTeam ? 'name-change' : 'name'}`"
                             trim
                         />
-                    </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                    <b-form-checkbox-group
-                        v-model="team.users"
-                        label="Mitglieder"
-                        v-slot="{ ariaDescribedby }"
-                        content-cols="12"
-                    >
-                            <div
-                                class="d-flex flex-wrap"
-                                data-test="users"
-                            >
-                                <template
-                                    v-for="user in users"
-                                >
-                                    <b-form-checkbox
-                                        v-if="user.isEnabled"
-                                        :key="user['@id']"
-                                        :value="user['@id']"
-                                        :aria-describedby="ariaDescribedby"
-                                        name="users"
-                                        switch
-                                        :data-test="`${ initialTeam ? 'change-users-' + user.username : 'create-users-' + user.username }`"
-                                        :disabled="isDisabled"
-                                        class="d-flex align-items-center flex-users mr-4"
-                                    >
-                                        {{ user.username }}
-                                    </b-form-checkbox>
-                                </template>
-                                <hr
-                                    v-if="hasDisabledUser"
-                                    class="d-block w-100 my-1 mr-2"
-                                >
-                                <template
-                                    v-for="user in users"
-                                >
-                                    <b-form-checkbox
-                                        v-if="!user.isEnabled"
-                                        :key="user['@id']"
-                                        :value="user['@id']"
-                                        :aria-describedby="ariaDescribedby"
-                                        name="users"
-                                        switch
-                                        :disabled="isDisabled"
-                                        class="d-flex align-items-center flex-users text-muted mr-4"
-                                    >
-                                        {{ user.username }}
-                                        <mdicon
-                                            name="AccountOff"
-                                            class="text-muted"
-                                            title="Account ist aktuell nicht aktiviert."
-                                            size="16"
-                                        />
-                                    </b-form-checkbox>
-                                </template>
-                            </div>
+                    </v-col>
+                    <v-col sm="6">
+                        <walk-team-members-field
+                            v-model="team.users"
+                            :users="users"
+                            :label="`Mitglieder`"
+                            description=""
+                        />
                         <v-alert
-                            v-model="users.length === 0"
+                            v-if="!users.length"
+                            type="info"
                             class="mb-0"
                         >
                             Dieser Klient hat noch keine Benutzer.
                         </v-alert>
-                    </b-form-checkbox-group>
-                </b-col>
-            </b-row>
-        </b-card>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
 
-        <b-card
-            bg-variant="light"
-            header="Einstellungen für die Dokumentation einer Runde"
-            class="mb-4"
-        >
-            <v-radio-group
-                v-model="team.initialMembersConfig"
-            >
-                <template v-slot:label>
-                    <div class="font-weight-bold secondary--text"><strong>Welche Mitglieder sollen beim Rundenstart vorausgewählt sein?</strong></div>
-                </template>
-                <v-radio
-                    label="nur der aktuelle Rundenersteller"
-                    value="rundenersteller"
-                    class="secondary--text"
-                />
-                <v-radio
-                    label="die Mitglieder, welche bei der letzten Runde dabei waren"
-                    value="mitglieder"
-                />
-            </v-radio-group>
-            <b-form-group
-                label="Autocomplete-Vorschläge für den Namen einer Runde"
-                description="Eine Freitexteingabe ist zusätzlich möglich."
-                v-slot="{ ariaDescribedby }"
-            >
-                <b-row
-                    v-for="(walkName, i) in team.walkNames"
-                    :key="i"
-                >
-                    <b-col cols="8" class="mb-1">
-                        <b-input
-                            v-model="team.walkNames[i]"
-                            :aria-describedby="ariaDescribedby"
-                            :disabled="isDisabled"
-                            type="text"
-                            :state="team.walkNames[i] === '' ? null : (team.walkNames[i].length > 1 && team.walkNames[i].length <= 300)"
-                            trim
-                            required
-                            autocomplete="off"
-                            placeholder="neuer Rundenname..."
-                        />
-                    </b-col>
-                    <b-col cols="3" class="mb-1">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="removeWalkName(i)"
-                        >
-                            <mdicon
-                                name="DeleteCircleOutline"
-                            />
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col cols="12">
-                        <div
-                            class="cursor-pointer mt-1 mb-2"
-                            @click="addWalkName()"
-                        >
-                            <mdicon
-                                name="PlusCircleOutline"
-                            />
-                            neuen Autocomplete-Vorschlag hinzufügen
-                        </div>
-                    </b-col>
-                </b-row>
-            </b-form-group>
-            <b-form-group
-                label="Autocomplete-Vorschläge für das Tageskonzept einer Runde"
-                description="Eine Mehrfachauswahl sowie Freitexteingabe ist möglich."
-                v-slot="{ ariaDescribedby }"
-            >
-                <b-row
-                    v-for="(conceptOfDaySuggestion, i) in team.conceptOfDaySuggestions"
-                    :key="i"
-                >
-                    <b-col cols="8" class="mb-1">
-                        <b-input
-                            v-model="team.conceptOfDaySuggestions[i]"
-                            :aria-describedby="ariaDescribedby"
-                            :disabled="isDisabled"
-                            type="text"
-                            :state="team.conceptOfDaySuggestions[i] === '' ? null : (team.conceptOfDaySuggestions[i].length > 1 && team.conceptOfDaySuggestions[i].length <= 300)"
-                            trim
-                            required
-                            autocomplete="off"
-                            placeholder="neues Tageskonzept..."
-                        />
-                    </b-col>
-                    <b-col cols="3" class="mb-1">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="removeConceptOfDaySuggestion(i)"
-                        >
-                            <mdicon
-                                name="DeleteCircleOutline"
-                            />
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col cols="12">
-                        <div
-                            class="cursor-pointer mt-1 mb-2"
-                            @click="addConceptOfDaySuggestion()"
-                        >
-                            <mdicon
-                                name="PlusCircleOutline"
-                            />
-                            neuen Autocomplete-Vorschlag hinzufügen
-                        </div>
-                    </b-col>
-                </b-row>
-            </b-form-group>
-            <b-form-group
-                label="Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?"
-                class="mb-0 pt-1"
-            >
-                <b-row>
-                    <b-col
-                        lg="6"
-                    >
-                        <b-card
-                            bg-variant="light"
-                            no-body
-                        >
-                            <b-card-header>
-                                <b-form-checkbox
-                                    v-model="team.isWithGuests"
-                                    :disabled="isDisabled"
-                                    switch
+        <v-card class="mb-4">
+            <v-card-title class="grey lighten-2">Einstellungen für die Dokumentation einer Runde</v-card-title>
+            <v-card-text class="grey lighten-3 pt-5">
+                <v-row>
+                    <v-col cols="12" md="3" lg="2">
+                        <v-card outlined class="mb-2">
+                            <v-card-subtitle class="font-weight-bold">Welche Mitglieder sollen beim Rundenstart vorausgewählt sein?</v-card-subtitle>
+                            <v-card-text>
+                                <v-radio-group
+                                    v-model="team.initialMembersConfig"
+                                    hide-details
                                 >
-                                    Weitere Teilnehmende
-                                </b-form-checkbox>
-                            </b-card-header>
-                            <b-card-body
-                                v-if="team.isWithGuests"
-                                @keyup.alt.a="addGuestName"
-                                tabindex="0"
-                            >
-                                <b-form-group
-                                    label="Autocomplete-Vorschläge für die weitere Teilnehmende"
-                                    v-slot="{ ariaDescribedby }"
-                                    description="Zusätzlich zu den Autocomplete-Vorschlägen ist es auch möglich bei der Rundenerstellung eigene weitere Teilnehmende einzugeben."
-                                    class="mb-0"
-                                >
-                                    <b-row
-                                        v-for="(guestName, i) in team.guestNames"
+                                    <v-radio
+                                        label="nur der aktuelle Rundenersteller"
+                                        value="rundenersteller"
+                                        class="secondary--text"
+                                    />
+                                    <v-radio
+                                        label="die Mitglieder, welche bei der letzten Runde dabei waren"
+                                        value="mitglieder"
+                                    />
+                                </v-radio-group>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="4" lg="5">
+                        <v-card outlined class="mb-2">
+                            <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für das Tageskonzept einer Runde</v-card-subtitle>
+                            <v-card-text>
+                                <v-list dense>
+                                    <v-list-item
+                                        v-for="(conceptOfDaySuggestion, i) in team.conceptOfDaySuggestions"
                                         :key="i"
+                                        dense
                                     >
-                                        <b-col cols="10" class="mb-1">
-                                            <b-input
-                                                v-model="team.guestNames[i]"
-                                                :aria-describedby="ariaDescribedby"
+                                        <v-list-item-content>
+                                            <v-text-field
+                                                v-model="team.conceptOfDaySuggestions[i]"
                                                 :disabled="isDisabled"
                                                 type="text"
-                                                :state="team.guestNames[i] === '' ? null : (team.guestNames[i].length > 1 && team.guestNames[i].length <= 300)"
+                                                :state="team.conceptOfDaySuggestions[i] === '' ? null : (team.conceptOfDaySuggestions[i].length > 1 && team.conceptOfDaySuggestions[i].length <= 300)"
                                                 trim
-                                                ref="guestNameInputs"
                                                 required
+                                                dense
+                                                clearable
+                                                hide-details
+                                                outlined
                                                 autocomplete="off"
-                                                placeholder="Vorname, Nachname, Pseudonym"
+                                                placeholder="neues Tageskonzept..."
                                             />
-                                        </b-col>
-                                        <b-col cols="2" class="mb-1">
-                                            <div
-                                                class="cursor-pointer mt-1"
-                                                @click="removeGuestName(i)"
+                                        </v-list-item-content>
+                                        <v-list-item-action>
+                                            <v-btn
+                                                icon
+                                                @click="removeConceptOfDaySuggestion(i)"
                                             >
-                                                <mdicon
-                                                    name="DeleteCircleOutline"
+                                                <v-icon
+                                                    v-text="`mdi-trash-can`"
                                                 />
-                                            </div>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col cols="12">
+                                            </v-btn>
+                                        </v-list-item-action>
+                                    </v-list-item>
+                                    <v-list-item dense>
+                                        <v-list-item-content>
                                             <div
                                                 class="cursor-pointer mt-1 mb-2"
-                                                @click="addGuestName()"
+                                                @click="addConceptOfDaySuggestion()"
                                             >
                                                 <mdicon
                                                     name="PlusCircleOutline"
                                                 />
-                                                neuen Autocomplete-Vorschl<u>a</u>g hinzufügen
+                                                neuen Autocomplete-Vorschlag hinzufügen
                                             </div>
-                                        </b-col>
-                                    </b-row>
-                                </b-form-group>
-                            </b-card-body>
-                        </b-card>
-                    </b-col>
-                    <b-col
-                        lg="6"
-                    >
-                        <b-card
-                            bg-variant="light"
-                            no-body
-                        >
-                            <b-card-header>
-                                <b-form-checkbox
-                                    v-model="team.isWithSystemicQuestion"
-                                    :disabled="isDisabled"
-                                    switch
-                                >
-                                    Systemische Frage und Antwort darauf
-                                </b-form-checkbox>
-                            </b-card-header>
-                            <b-card-body
-                                v-if="team.isWithSystemicQuestion"
-                                tabindex="0"
-                                class="p-0"
-                            >
-                                <v-alert
-                                    class="w-100 text-muted mb-0"
-                                >
-                                    <b>Hinweis:</b>
-                                    <ul class="mb-0">
-                                        <li>
-                                            Beim Abschluss einer Runde gibt es ein Reflexionsprotokoll mit einer systemischen Reflexionsfrage, welche u.a. einen
-                                            "psychohygienischen" Beitrag zum Abschluss der Streetwork leistet.
-                                        </li>
-                                        <li>
-                                            Dazu wird bei Abschluss einer Runde zufällig eine dieser Fragen gestellt, welche beantwortet werden muss.
-                                        </li>
-                                        <li>
-                                            Diese Fragen können im Navigations-Tab "Systemische Fragen" übergreifend für alle Teams definiert werden.
-                                        </li>
-                                    </ul>
-                                </v-alert>
-                            </b-card-body>
-                        </b-card>
-                    </b-col>
-                </b-row>
-            </b-form-group>
-        </b-card>
-
-        <b-card
-            bg-variant="light"
-            header="Einstellungen für die Dokumentation eines Wegpunktes"
-            class="mb-4"
-        >
-            <b-form-group
-                label="Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?"
-                class="mb-0 pt-1"
-            >
-                <b-row>
-                    <b-col
-                        md="6"
-                        lg="4"
-                        class="mb-2"
-                    >
-                        <b-card
-                            bg-variant="light"
-                            no-body
-                        >
-                            <b-card-header>
-                                <b-form-checkbox
-                                    v-model="team.isWithContactsCount"
-                                    :disabled="isDisabled"
-                                    switch
-                                >
-                                    Anzahl direkter Kontakte
-                                </b-form-checkbox>
-                                <b-form-text>
-                                    Eine Person gilt als direkter Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
-                                </b-form-text>
-                            </b-card-header>
-                        </b-card>
-                    </b-col>
-                    <b-col
-                        md="6"
-                        lg="4"
-                        class="mb-2"
-                    >
-                        <b-card
-                            bg-variant="light"
-                            no-body
-                        >
-                            <b-card-header>
-                                <b-form-checkbox
-                                    v-model="team.isWithPeopleCount"
-                                    :disabled="isPeopleCountDisabled"
-                                    switch
-                                >
-                                    Anzahl Personen vor Ort
-                                </b-form-checkbox>
-                                <b-form-checkbox
-                                    v-model="team.isWithAgeRanges"
-                                    :disabled="isDisabled"
-                                    switch
-                                >
-                                    Altersgruppen
-                                </b-form-checkbox>
-                                <b-form-text>
-                                    Wenn Altersgruppen gewählt sind, wird die Anzahl der Personen daraus automatisch ermittelt.
-                                </b-form-text>
-                            </b-card-header>
-                            <b-card-body
-                                v-if="team.isWithAgeRanges"
-                            >
-                                <b-form-group
-                                    label="Altersgruppen definieren"
-                                    v-slot="{ ariaDescribedby }"
-                                    class="mb-0"
-                                >
-                                    <b-row
-                                        v-for="(ageRange, i) in team.ageRanges"
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                    <v-subheader>Beim Erstellen der Runde ist eine Mehrfachauswahl sowie Freitexteingabe möglich.</v-subheader>
+                                </v-list>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="5" lg="5">
+                        <v-card outlined class="mb-2">
+                            <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für den Namen einer Runde</v-card-subtitle>
+                            <v-card-text>
+                                <v-list dense>
+                                    <v-list-item
+                                        v-for="(walkName, i) in team.walkNames"
                                         :key="i"
+                                        dense
                                     >
-                                        <b-col cols="12">
-                                            {{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre
-                                        </b-col>
-                                        <b-col cols="4" class="mb-2">
-                                            <b-input
-                                                v-model="team.ageRanges[i].rangeStart"
-                                                :aria-describedby="ariaDescribedby"
-                                                :disabled="isDisabled"
-                                                type="number"
-                                                min="0"
-                                                max="120"
-                                                trim
-                                                number
-                                                step="1"
-                                                required
-                                                placeholder="von"
-                                            />
-                                        </b-col>
-                                        <b-col cols="4" class="mb-2">
-                                            <b-input
-                                                v-model="team.ageRanges[i].rangeEnd"
-                                                :aria-describedby="ariaDescribedby"
-                                                :disabled="isDisabled"
-                                                type="number"
-                                                min="0"
-                                                max="120"
-                                                trim
-                                                number
-                                                step="1"
-                                                required
-                                                placeholder="bis"
-                                            />
-                                        </b-col>
-                                        <b-col cols="3">
-                                            <div
-                                                class="cursor-pointer mt-2"
-                                                @click="removeAgeRange(i)"
-                                            >
-                                                <mdicon
-                                                    name="DeleteCircleOutline"
+                                        <v-list-item-content>
+
+                                            <v-list-item-title>
+                                                <v-text-field
+                                                    v-model="team.walkNames[i]"
+                                                    :disabled="isDisabled"
+                                                    type="text"
+                                                    :state="team.walkNames[i] === '' ? null : (team.walkNames[i].length > 1 && team.walkNames[i].length <= 300)"
+                                                    trim
+                                                    dense
+                                                    outlined
+                                                    required
+                                                    hide-details
+                                                    clearable
+                                                    autocomplete="off"
+                                                    placeholder="neuer Rundenname..."
                                                 />
-                                            </div>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col cols="12">
+                                            </v-list-item-title>
+                                        </v-list-item-content>
+                                        <v-list-item-action>
+                                            <v-btn
+                                                icon
+                                                @click="removeWalkName(i)"
+                                            >
+                                                <v-icon
+                                                    v-text="`mdi-trash-can`"
+                                                />
+                                            </v-btn>
+                                        </v-list-item-action>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-list-item-content>
                                             <div
-                                                class="cursor-pointer mt-1"
-                                                @click="addAgeRange()"
+                                                class="cursor-pointer mt-1 mb-2"
+                                                @click="addWalkName()"
                                             >
                                                 <mdicon
                                                     name="PlusCircleOutline"
                                                 />
-                                                neue Altersgruppe hinzufügen
+                                                neuen Autocomplete-Vorschlag hinzufügen
                                             </div>
-                                        </b-col>
-                                    </b-row>
-                                </b-form-group>
-                            </b-card-body>
-                        </b-card>
-                    </b-col>
-                    <b-col
-                        md="6"
-                        lg="4"
-                        class="mb-2"
-                    >
-                        <b-card
-                            bg-variant="light"
-                            no-body
-                        >
-                            <b-card-header>
-                                <b-form-checkbox
-                                    v-model="team.isWithUserGroups"
-                                    :disabled="isDisabled"
-                                    switch
-                                >
-                                    Personenanzahl von Nutzergruppen
-                                </b-form-checkbox>
-                            </b-card-header>
-                            <b-card-body
-                                v-if="team.isWithUserGroups"
-                                header="Nutzergruppen definieren"
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                    <v-subheader>Beim Erstellen der Runde ist eine Freitexteingabe zusätzlich möglich.</v-subheader>
+                                </v-list>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-card outlined class="mb-2">
+                            <v-card-subtitle class="font-weight-bold  grey lighten-5">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-subtitle>
+                            <v-card-text class=" grey lighten-5">
+                                <v-row>
+                                    <v-col lg="6">
+                                        <v-card outlined class="mb-2">
+                                            <v-card-text>
+                                                <v-switch
+                                                    v-model="team.isWithGuests"
+                                                    :disabled="isDisabled"
+                                                    label="Weitere Teilnehmende"
+                                                    dense
+                                                />
+                                                <div
+                                                    v-if="team.isWithGuests"
+                                                    @keyup.alt.a="addGuestName"
+                                                >
+                                                    <v-card-subtitle class="font-weight-bold pb-1">Autocomplete-Vorschläge für weitere Teilnehmende</v-card-subtitle>
+                                                    <v-divider class="mt-0 mb-0"></v-divider>
+                                                    <v-list dense>
+                                                        <v-list-item
+                                                            v-for="(guestName, i) in team.guestNames"
+                                                            :key="i"
+                                                        >
+                                                            <v-list-item-content>
+                                                                <v-text-field
+                                                                    v-model="team.guestNames[i]"
+                                                                    :disabled="isDisabled"
+                                                                    type="text"
+                                                                    :state="team.guestNames[i] === '' ? null : (team.guestNames[i].length > 1 && team.guestNames[i].length <= 300)"
+                                                                    trim
+                                                                    ref="guestNameInputs"
+                                                                    required
+                                                                    dense
+                                                                    clearable
+                                                                    hide-details
+                                                                    outlined
+                                                                    autocomplete="off"
+                                                                    placeholder="Vorname, Nachname, Pseudonym"
+                                                                />
+                                                            </v-list-item-content>
+                                                            <v-list-item-action>
+                                                                <v-btn
+                                                                    icon
+                                                                    @click="removeGuestName(i)"
+                                                                >
+                                                                    <v-icon
+                                                                        v-text="`mdi-trash-can`"
+                                                                    />
+                                                                </v-btn>
+                                                            </v-list-item-action>
+                                                        </v-list-item>
+                                                        <v-list-item>
+                                                            <v-list-item-content>
+                                                                <div
+                                                                    class="cursor-pointer mt-1 mb-2"
+                                                                    @click="addGuestName()"
+                                                                >
+                                                                    <mdicon
+                                                                        name="PlusCircleOutline"
+                                                                    />
+                                                                    neuen Autocomplete-Vorschl<u>a</u>g hinzufügen
+                                                                </div>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                        <v-list-item>
+                                                            <v-subheader>Beim Erstellen der Runde ist es zusätzlich zu den Autocomplete-Vorschlägen möglich eigene weitere
+                                                                Teilnehmende einzugeben.
+                                                            </v-subheader>
+                                                        </v-list-item>
+                                                    </v-list>
+                                                </div>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
+                                    <v-col md="6">
+                                        <v-card outlined>
+                                            <v-card-text>
+                                                <v-switch
+                                                    v-model="team.isWithSystemicQuestion"
+                                                    :disabled="isDisabled"
+                                                    label="Systemische Frage und Antwort darauf"
+                                                    dense
+                                                />
+                                                <v-alert
+                                                    v-if="team.isWithSystemicQuestion"
+                                                    class="text-muted mb-0"
+                                                    text
+                                                >
+                                                    <b>Hinweis:</b>
+                                                    <ul class="mb-0">
+                                                        <li>
+                                                            Beim Abschluss einer Runde gibt es ein Reflexionsprotokoll mit einer systemischen Reflexionsfrage, welche u.a. einen
+                                                            psychohygienischen Beitrag zum Abschluss der Streetwork leistet.
+                                                        </li>
+                                                        <li>
+                                                            Dazu wird bei Abschluss einer Runde zufällig eine dieser Fragen gestellt, welche beantwortet werden muss.
+                                                        </li>
+                                                        <li>
+                                                            Diese Fragen können im Navigations-Tab "Systemische Fragen" übergreifend für alle Teams definiert werden.
+                                                        </li>
+                                                    </ul>
+                                                </v-alert>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
+        <v-card class="mb-4">
+            <v-card-title class="grey lighten-2">Einstellungen für die Dokumentation eines Wegpunktes</v-card-title>
+            <v-card-text class="grey lighten-4 pt-2">
+                <v-card outlined class="mb-2">
+                    <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für den Ort eines Wegpunktes</v-card-subtitle>
+                    <v-card-text>
+                        <v-list dense>
+                            <v-list-item
+                                v-for="(locationName, i) in team.locationNames"
+                                :key="i"
+                                dense
                             >
-                                <b-form-group
-                                    label="Nutzergruppen definieren"
-                                    class="mb-0"
+                                <v-list-item-content>
+                                    <v-text-field
+                                        v-model="team.locationNames[i]"
+                                        :disabled="isDisabled"
+                                        type="text"
+                                        :state="team.locationNames[i] === '' ? null : (team.locationNames[i].length > 1 && team.locationNames[i].length <= 300)"
+                                        trim
+                                        required
+                                        clearable
+                                        hide-details
+                                        outlined
+                                        dense
+                                        autocomplete="off"
+                                        placeholder="neuer Ort..."
+                                    />
+                                </v-list-item-content>
+                                <v-list-item-action>
+                                    <v-btn
+                                        icon
+                                        @click="removeLocationName(i)"
+                                    >
+                                        <v-icon
+                                            v-text="`mdi-trash-can`"
+                                        />
+                                    </v-btn>
+                                </v-list-item-action>
+                            </v-list-item>
+                            <v-list-item>
+                                <div
+                                    class="cursor-pointer mt-1"
+                                    @click="addLocationName()"
                                 >
-                                    <template #description>
-                                        <b-form-text>
+                                    <mdicon
+                                        name="PlusCircleOutline"
+                                    />
+                                    neuen Autocomplete-Vorschlag hinzufügen
+                                </div>
+                            </v-list-item>
+                        </v-list>
+                    </v-card-text>
+                </v-card>
+                <v-card outlined>
+                    <v-card-subtitle class="font-weight-bold grey lighten-5">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-subtitle>
+                    <v-card-text class="grey lighten-5">
+                        <v-row>
+                            <v-col cols="12" md="6" lg="2">
+                                <v-card outlined class="mb-2">
+                                    <v-card-text>
+                                        <v-switch
+                                            v-model="team.isWithContactsCount"
+                                            :disabled="isDisabled"
+                                            label="Anzahl direkter Kontakte"
+                                            dense
+                                        />
+                                        <div class="text-muted">
+                                            Eine Person gilt als direkter Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
+                                        </div>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="12" md="6" lg="5">
+                                <v-card outlined class="mb-2">
+                                    <v-card-text>
+                                        <v-switch
+                                            v-model="team.isWithPeopleCount"
+                                            :disabled="isPeopleCountDisabled"
+                                            label="Anzahl Personen vor Ort"
+                                        />
+                                        <v-switch
+                                            v-model="team.isWithAgeRanges"
+                                            :disabled="isDisabled"
+                                            label="Altersgruppen"
+                                        />
+                                        <v-card-subtitle v-if="team.isWithAgeRanges" class="font-weight-bold mb-0 pb-1">Altersgruppen definieren</v-card-subtitle>
+                                        <v-divider v-if="team.isWithAgeRanges" class="mt-0 mb-0"></v-divider>
+                                        <v-list
+                                            v-if="team.isWithAgeRanges"
+                                            dense
+                                        >
+                                            <v-list-item
+                                                v-for="(ageRange, i) in team.ageRanges"
+                                                :key="i"
+                                            >
+                                                <v-list-item-content>
+                                                    <v-list-item-title>{{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre</v-list-item-title>
+                                                    <v-row no-gutters>
+                                                        <v-col cols="6">
+                                                            <v-text-field
+                                                                v-model="team.ageRanges[i].rangeStart"
+                                                                :disabled="isDisabled"
+                                                                type="number"
+                                                                min="0"
+                                                                max="120"
+                                                                trim
+                                                                number
+                                                                dense
+                                                                outlined
+                                                                hide-details
+                                                                step="1"
+                                                                required
+                                                                placeholder="von"
+                                                            />
+                                                        </v-col>
+                                                        <v-col cols="6">
+                                                            <v-text-field
+                                                                v-model="team.ageRanges[i].rangeEnd"
+                                                                :disabled="isDisabled"
+                                                                type="number"
+                                                                min="0"
+                                                                max="120"
+                                                                trim
+                                                                number
+                                                                dense
+                                                                outlined
+                                                                hide-details
+                                                                step="1"
+                                                                required
+                                                                placeholder="bis"
+                                                            />
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-list-item-content>
+                                                <v-list-item-action>
+                                                    <v-btn
+                                                        icon
+                                                        @click="removeAgeRange(i)"
+                                                    >
+                                                        <v-icon
+                                                            v-text="`mdi-trash-can`"
+                                                        />
+                                                    </v-btn>
+                                                </v-list-item-action>
+                                            </v-list-item>
+
+                                            <v-list-item>
+                                                <v-list-item-content>
+                                                    <div
+                                                        class="cursor-pointer mt-1 mb-2"
+                                                        @click="addAgeRange()"
+                                                    >
+                                                        <mdicon
+                                                            name="PlusCircleOutline"
+                                                        />
+                                                        neue Altersgruppe hinzufügen
+                                                    </div>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-list>
+                                        <div class="text-muted">
+                                            Wenn Altersgruppen gewählt sind, wird die Anzahl der Personen daraus automatisch ermittelt.
+                                        </div>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="12" md="6" lg="5">
+                                <v-card outlined class="mb-2">
+                                    <v-card-text>
+                                        <v-switch
+                                            v-model="team.isWithUserGroups"
+                                            :disabled="isDisabled"
+                                            label="Personenanzahl von Nutzergruppen"
+                                            dense
+                                        />
+                                        <v-card-subtitle v-if="team.isWithUserGroups" class="font-weight-bold pb-1">Nutzergruppen definieren</v-card-subtitle>
+                                        <v-divider v-if="team.isWithUserGroups" class="mt-0 mb-0"></v-divider>
+                                        <v-list v-if="team.isWithUserGroups">
+                                            <v-list-item
+                                                v-for="(userGroupName, i) in team.userGroupNames"
+                                                dense
+                                                :key="i"
+                                            >
+                                                <v-list-item-content>
+                                                    <v-text-field
+                                                        v-model="team.userGroupNames[i].name"
+                                                        :disabled="isDisabled"
+                                                        type="text"
+                                                        :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
+                                                        trim
+                                                        required
+                                                        outlined
+                                                        dense
+                                                        clearable
+                                                        hide-details
+                                                        autocomplete="off"
+                                                        placeholder="Name der Nutzergruppe eingeben..."
+                                                    />
+                                                </v-list-item-content>
+                                                <v-list-item-action>
+                                                    <v-col>
+                                                        <v-btn
+                                                            icon
+                                                            @click="removeUserGroupName(i)"
+                                                        >
+                                                            <v-icon
+                                                                v-text="`mdi-trash-can`"
+                                                            />
+                                                        </v-btn>
+                                                        <v-btn
+                                                            v-if="i !== 0"
+                                                            icon
+                                                            @click="moveUserGroupUp(i)"
+                                                        >
+                                                            <v-icon
+                                                                v-text="`mdi-arrow-up-drop-circle-outline`"
+                                                            />
+                                                        </v-btn>
+                                                        <v-btn
+                                                            v-if="i !== (team.userGroupNames.length - 1)"
+                                                            icon
+                                                            @click="moveUserGroupDown(i)"
+                                                        >
+                                                            <v-icon
+                                                                v-text="`mdi-arrow-down-drop-circle-outline`"
+                                                            />
+                                                        </v-btn>
+                                                    </v-col>
+                                                </v-list-item-action>
+                                            </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-content>
+                                                    <div
+                                                        class="cursor-pointer mt-1 mb-2"
+                                                        @click="addUserGroupName()"
+                                                    >
+                                                        <mdicon
+                                                            name="PlusCircleOutline"
+                                                        />
+                                                        neuen Autocomplete-Vorschlag hinzufügen
+                                                    </div>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-list>
+                                        <v-alert
+                                            v-if="team.isWithUserGroups"
+                                            class="text-muted mb-0"
+                                            text
+                                        >
                                             Beispiele für Nutzergruppen sind:
                                             <ul class="mb-0">
                                                 <li>Aktuell Nutzende</li>
@@ -528,132 +572,18 @@
                                                 <li>Kondome</li>
                                             </ul>
                                             Hinweis: Die Werte werden beim Runden-CSV-Export zusammenaddiert.
-                                        </b-form-text>
-                                    </template>
-                                    <template
-                                        #default
-                                        v-slot="ariaDescribedby"
-                                    >
-                                        <b-row
-                                            v-for="(userGroupName, i) in team.userGroupNames"
-                                            :key="i"
-                                        >
-                                            <b-col cols="8" class="mb-1">
-                                                <b-input
-                                                    v-model="team.userGroupNames[i].name"
-                                                    :disabled="isDisabled"
-                                                    type="text"
-                                                    :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
-                                                    trim
-                                                    required
-                                                    autocomplete="off"
-                                                    placeholder="Name der Nutzergruppe eingeben..."
-                                                />
-                                            </b-col>
-                                            <b-col cols="4" class="mb-1">
-                                                <div class="mt-1">
-                                                    <span
-                                                        class="cursor-pointer"
-                                                        @click="removeUserGroupName(i)"
-                                                    >
-                                                        <mdicon
-                                                            name="DeleteCircleOutline"
-                                                        />
-                                                    </span>
-                                                    <span
-                                                        v-if="i !== 0"
-                                                        class="cursor-pointer mt-1"
-                                                        @click="moveUserGroupUp(i)"
-                                                    >
-                                                        <mdicon
-                                                            name="ArrowUpDropCircleOutline"
-                                                        />
-                                                    </span>
-                                                    <span
-                                                        v-if="i !== (team.userGroupNames.length - 1)"
-                                                        class="cursor-pointer mt-1"
-                                                        @click="moveUserGroupDown(i)"
-                                                    >
-                                                        <mdicon
-                                                            name="ArrowDownDropCircleOutline"
-                                                        />
-                                                    </span>
-                                                </div>
-                                            </b-col>
-                                        </b-row>
-                                        <b-row class="mb-2">
-                                            <b-col cols="12">
-                                                <div
-                                                    class="cursor-pointer mt-1"
-                                                    @click="addUserGroupName()"
-                                                >
-                                                    <mdicon
-                                                        name="PlusCircleOutline"
-                                                    />
-                                                    neue Nutzergruppe hinzufügen
-                                                </div>
-                                            </b-col>
-                                        </b-row>
-                                    </template>
-                                </b-form-group>
-                            </b-card-body>
-                        </b-card>
-                    </b-col>
-                </b-row>
-            </b-form-group>
-
-            <b-form-group
-                label="Autocomplete-Vorschläge für den Ort eines Wegpunktes"
-                v-slot="{ ariaDescribedby }"
-                class="mb-1 mt-2"
-            >
-                <b-row
-                    v-for="(locationName, i) in team.locationNames"
-                    :key="i"
-                >
-                    <b-col cols="8" class="mb-1">
-                        <b-input
-                            v-model="team.locationNames[i]"
-                            :aria-describedby="ariaDescribedby"
-                            :disabled="isDisabled"
-                            type="text"
-                            :state="team.locationNames[i] === '' ? null : (team.locationNames[i].length > 1 && team.locationNames[i].length <= 300)"
-                            trim
-                            required
-                            autocomplete="off"
-                            placeholder="neuer Ort..."
-                        />
-                    </b-col>
-                    <b-col cols="3" class="mb-1">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="removeLocationName(i)"
-                        >
-                            <mdicon
-                                name="DeleteCircleOutline"
-                            />
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col cols="12">
-                        <div
-                            class="cursor-pointer mt-1"
-                            @click="addLocationName()"
-                        >
-                            <mdicon
-                                name="PlusCircleOutline"
-                            />
-                            neuen Autocomplete-Vorschlag hinzufügen
-                        </div>
-                    </b-col>
-                </b-row>
-            </b-form-group>
-        </b-card>
-        <b-button
+                                        </v-alert>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-card-text>
+        </v-card>
+        <v-btn
             type="submit"
             variant="secondary"
-            color="secondary"
             class="btn btn-secondary"
             :data-test="`${ initialTeam ? 'button-team-form-change' : 'button-team-form-create'}`"
             block
@@ -661,20 +591,21 @@
             :tabindex="isFormInvalid ? '-1' : ''"
         >
             {{ buttonLabel }}
-        </b-button>
+        </v-btn>
         <form-error
             :error="error"
         />
-    </b-form>
+    </v-form>
 </template>
 
 <script>
 'use strict'
 import FormError from '../Common/FormError.vue'
-import { useClientStore } from '../../stores/client';
-import { useTeamStore } from '../../stores/team';
-import { useUserStore } from '../../stores/user';
-import { useAuthStore } from '../../stores/auth';
+import {useClientStore} from '../../stores/client';
+import {useTeamStore} from '../../stores/team';
+import {useUserStore} from '../../stores/user';
+import {useAuthStore} from '../../stores/auth';
+import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
 
 export default {
     name: 'TeamForm',
@@ -690,6 +621,7 @@ export default {
         },
     },
     components: {
+        WalkTeamMembersField,
         FormError,
     },
     data: function () {
@@ -723,52 +655,52 @@ export default {
         }
     },
     computed: {
-        users () {
+        users() {
             return this.userStore.getUsers.slice(0).filter(user => {
                 return user.client === this.team.client
             }).sort((a, b) => {
                 return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1
             })
         },
-        hasDisabledUser () {
+        hasDisabledUser() {
             return this.users.some(user => !user.isEnabled);
         },
-        isPeopleCountDisabled () {
+        isPeopleCountDisabled() {
             return this.team.isWithAgeRanges || this.isDisabled;
         },
-        isDisabled () {
+        isDisabled() {
             return this.teamStore.isLoadingCreate || this.teamStore.isLoadingChange(this.team['@id']);
         },
-        nameState () {
+        nameState() {
             if (null === this.team.name || '' === this.team.name) {
                 return
             }
 
             return this.team.name.length >= 3 && this.team.name.length <= 100
         },
-        isLoading () {
+        isLoading() {
             return this.teamStore.isLoading
         },
-        currentUser () {
+        currentUser() {
             return this.authStore.currentUser
         },
-        isSuperAdmin () {
+        isSuperAdmin() {
             return this.authStore.isSuperAdmin
         },
-        isFormInvalid () {
+        isFormInvalid() {
             return !(this.nameState && this.team.client && !this.isLoading)
         },
-        error () {
+        error() {
             return this.teamStore.getErrors.change;
         },
-        availableClients () {
+        availableClients() {
             return this.clientStore.getClients;
         },
     },
-    created () {
-        if (this.initialTeam) {
-            this.team = JSON.parse(JSON.stringify(this.initialTeam));
-        }
+    created() {
+        this.setInitialValues();
+        console.log(this.initialTeam);
+        console.log(this.team)
         this.team.client = this.team.client || this.currentUser.client;
         this.userStore.fetchUsers();
     },
@@ -780,52 +712,52 @@ export default {
         },
     },
     methods: {
-        async handleSubmit () {
+        async handleSubmit() {
             if (this.isFormInvalid) {
                 return false
             }
             this.$emit('submit', this.team)
         },
-        removeAgeRange (index) {
+        removeAgeRange(index) {
             this.team.ageRanges.splice(index, 1)
         },
-        addAgeRange () {
-            this.team.ageRanges = [...this.team.ageRanges, { rangeStart: '', rangeEnd: '' }]
+        addAgeRange() {
+            this.team.ageRanges = [...this.team.ageRanges, {rangeStart: '', rangeEnd: ''}]
         },
-        removeLocationName (index) {
+        removeLocationName(index) {
             this.$delete(this.team.locationNames, index)
         },
-        addLocationName () {
+        addLocationName() {
             this.team.locationNames = [...this.team.locationNames, '']
         },
-        removeWalkName (index) {
+        removeWalkName(index) {
             this.$delete(this.team.walkNames, index)
         },
-        addWalkName () {
+        addWalkName() {
             this.team.walkNames = [...this.team.walkNames, '']
         },
-        removeConceptOfDaySuggestion (index) {
+        removeConceptOfDaySuggestion(index) {
             this.$delete(this.team.conceptOfDaySuggestions, index)
         },
-        addConceptOfDaySuggestion () {
+        addConceptOfDaySuggestion() {
             this.team.conceptOfDaySuggestions = [...this.team.conceptOfDaySuggestions, '']
         },
-        removeGuestName (index) {
+        removeGuestName(index) {
             this.$delete(this.team.guestNames, index)
         },
-        addGuestName () {
+        addGuestName() {
             this.team.guestNames = [...this.team.guestNames, ''];
             this.$nextTick(() => {
                 this.$refs.guestNameInputs[this.$refs.guestNameInputs.length - 1].focus();
             });
         },
-        removeUserGroupName (index) {
+        removeUserGroupName(index) {
             this.$delete(this.team.userGroupNames, index)
         },
-        addUserGroupName () {
-            this.team.userGroupNames = [...this.team.userGroupNames, { name: '' }]
+        addUserGroupName() {
+            this.team.userGroupNames = [...this.team.userGroupNames, {name: ''}]
         },
-        moveUserGroupUp (index) {
+        moveUserGroupUp(index) {
             const tempUserGroupName = this.team.userGroupNames[index]
             let newUserGroups = []
             this.$delete(this.team.userGroupNames, index)
@@ -837,7 +769,7 @@ export default {
             })
             this.team.userGroupNames = newUserGroups
         },
-        moveUserGroupDown (index) {
+        moveUserGroupDown(index) {
             const tempUserGroupName = this.team.userGroupNames[index]
             let newUserGroups = []
             this.$delete(this.team.userGroupNames, index)
@@ -849,8 +781,7 @@ export default {
             })
             this.team.userGroupNames = newUserGroups
         },
-        resetForm() {
-            this.$refs.form.reset();
+        setInitialValues() {
             if (this.initialTeam) {
                 this.team = JSON.parse(JSON.stringify(this.initialTeam));
             } else {
@@ -871,6 +802,10 @@ export default {
                 this.team.userGroupNames = [];
             }
             this.team.client = this.team.client || this.currentUser.client;
+        },
+        resetForm() {
+            this.$refs.form.reset();
+            this.setInitialValues();
         },
     },
 }

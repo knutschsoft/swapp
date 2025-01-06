@@ -18,6 +18,7 @@
                     item-text="username"
                     label="Rundenersteller"
                     required
+                    dense
                     outlined
                     hide-details
                     @change="handleWalkCreatorChange"
@@ -42,6 +43,8 @@
                     clearable
                     multiple
                     outlined
+                    dense
+                    small-chips
                     label="Weitere Teilnehmende"
                     placeholder="Namen eintragen..."
                     :hide-no-data="!guestNameSearch"
@@ -51,7 +54,7 @@
                     hide-details
                 >
                     <template v-slot:no-data>
-                        <v-list-item>
+                        <v-list-item dense>
                             <v-list-item-content>
                                 <v-list-item-title v-if="!guestNameSearch">
                                     Füge "<strong>{{ guestNameSearch }}</strong>" hinzu.
@@ -74,8 +77,10 @@
                     placeholder="Wie ist der Name der Runde?"
                     :disabled="isLoading"
                     :loading="isLoading"
-                    no-data-text="Achtung - diese Rundenname ist nicht hinterlegt."
+                    no-data-text="Achtung - dieser Rundenname ist nicht hinterlegt."
                     hide-details
+                    dense
+                    small-chips
                     data-test="Name"
                 ></v-combobox>
             </v-col>
@@ -88,6 +93,8 @@
                     clearable
                     outlined
                     multiple
+                    dense
+                    small-chips
                     label="Tageskonzept"
                     data-test="Tageskonzept"
                     placeholder="Tageskonzept eintragen..."
@@ -98,7 +105,7 @@
                     hide-details
                 >
                     <template v-slot:no-data>
-                        <v-list-item>
+                        <v-list-item dense>
                             <v-list-item-content>
                                 <v-list-item-title>
                                     Füge "<strong>{{ conceptOfDaySearch }}</strong>" hinzu.
@@ -151,6 +158,7 @@
                     label="Wetter"
                     data-test="Wetter"
                     outlined
+                    dense
                     :disabled="isLoading"
                 ></v-select>
             </v-col>
