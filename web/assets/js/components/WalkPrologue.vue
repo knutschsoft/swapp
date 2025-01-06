@@ -65,21 +65,12 @@
                 </v-combobox>
             </v-col>
             <v-col>
-                <v-combobox
+                <walk-name-field
                     v-model="form.name"
-                    :items="walkNameSuggestions"
-                    clearable
-                    outlined
-                    label="Name"
-                    placeholder="Wie ist der Name der Runde?"
-                    :disabled="isLoading"
-                    :loading="isLoading"
-                    no-data-text="Achtung - dieser Rundenname ist nicht hinterlegt."
-                    hide-details
-                    dense
-                    small-chips
-                    data-test="Name"
-                ></v-combobox>
+                    :team="team"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
             </v-col>
             <v-col>
                 <v-combobox
@@ -177,7 +168,7 @@ import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTeamStore, useUserStore, useWalkStore} from '../stores';
-import { WalkTeamMembersField, WalkWeatherField } from "./Common/Walk";
+import { WalkNameField, WalkTeamMembersField, WalkWeatherField } from "./Common/Walk";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/de';
@@ -185,6 +176,7 @@ import 'vue2-datepicker/locale/de';
 export default {
     name: "WalkPrologue",
     components: {
+        WalkNameField,
         WalkWeatherField,
         DatePicker,
         WalkTeamMembersField,
@@ -230,12 +222,6 @@ export default {
         }
     },
     computed: {
-        walkNameSuggestions() {
-            if (!this.team) {
-                return [];
-            }
-            return this.team.walkNames.map((walkName) => walkName);
-        },
         usersOfTeam() {
             if (!this.team) {
                 return [];
@@ -253,20 +239,13 @@ export default {
             return users;
         },
         isFormInvalid() {
-            return (!this.nameState && undefined === this.validationErrors.name)
+            return !this.form.name
                 || (!this.conceptOfDayState && undefined === this.validationErrors.conceptOfDay)
                 || (!this.startTimeState && undefined === this.validationErrors.startTime)
                 || !this.walkTeamMembersState
                 || !this.walkCreatorState
                 || !this.form.weather
                 || this.isLoading;
-        },
-        nameState() {
-            if (!this.form.name) {
-                return null;
-            }
-
-            return this.form.name.length >= 1 && undefined === this.validationErrors.name;
         },
         guestNames() {
             if (!this.team || !this.team.isWithGuests) {
@@ -285,16 +264,6 @@ export default {
             return this.team.conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
                 return !this.form.conceptOfDay.includes(conceptOfDaySuggestion);
             });
-        },
-        invalidNameFeedback() {
-            let message = '';
-            ['name'].forEach(key => {
-                if (this.validationErrors[key]) {
-                    message += ` ${this.validationErrors[key]}`;
-                }
-            });
-
-            return message;
         },
         walkTeamMembersState() {
             if (!this.form.walkTeamMembers || !this.form.walkTeamMembers.length) {

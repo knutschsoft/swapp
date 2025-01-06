@@ -91,6 +91,7 @@ function getViolationsFeedback(
 }
 
 export {
+    type ErrorData,
     getViolationErrorsObject,
     getViolationsFeedback
 };

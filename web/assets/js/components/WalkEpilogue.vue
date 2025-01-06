@@ -17,43 +17,14 @@
                 @submit.prevent.stop="handleSubmit"
                 class="p-1 p-sm-2 p-lg-3"
             >
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Name"
+                <walk-name-field
+                    v-model="form.name"
+                    :team="team"
+                    :walk="walk"
+                    :is-loading="isLoading"
+                    :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
-                    :invalid-feedback="invalidNameFeedback"
-                    :state="nameState"
-                >
-                    <b-input-group>
-                        <b-input
-                            v-model="form.name"
-                            required
-                            minlength="2"
-                            maxlength="300"
-                            placeholder="Name"
-                            description="Der Wert vom Rundenbeginn ist vorausgewählt."
-                            :state="nameState"
-                            :disabled="isLoading"
-                            data-test="name"
-                            autocomplete="off"
-                            list="walk-name-list"
-                        />
-                        <datalist id="walk-name-list">
-                            <option v-for="walkName in walkNames">{{ walkName }}</option>
-                        </datalist>
-                        <b-input-group-append>
-                            <b-button
-                                @click="form.name = ''"
-                                :disabled="form.name === ''"
-                            >
-                                <mdicon name="CloseCircleOutline" size="20"/>
-                            </b-button>
-                        </b-input-group-append>
-                    </b-input-group>
-                </b-form-group>
+                />
                 <b-form-group
                     content-cols="12"
                     label-cols="12"
@@ -446,7 +417,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import { WalkWeatherField } from "./Common/Walk";
+import {WalkNameField, WalkWeatherField} from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
@@ -456,6 +427,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkNameField,
         WalkWeatherField,
         ContentCollapse,
         GlobalFormError,
@@ -609,16 +581,6 @@ export default {
                 'endTimeAfterWayPointsVisitedAt',
             ], this.error, true);
         },
-        nameState() {
-            if (!this.form.name && !this.invalidNameFeedback) {
-                return;
-            }
-
-            return !this.invalidNameFeedback;
-        },
-        invalidNameFeedback() {
-            return getViolationsFeedback(['name'], this.error);
-        },
         conceptOfDayState() {
             if (!this.form.conceptOfDay && !this.invalidConceptOfDayFeedback) {
                 return;
@@ -662,17 +624,6 @@ export default {
             return conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
                 return !this.form.conceptOfDay.includes(conceptOfDaySuggestion);
             });
-        },
-        walkNames() {
-            let walkNames = [];
-            if (!this.team) {
-                return walkNames;
-            }
-            walkNames = [this.initialWalkName, ...new Set(this.team.walkNames)];
-
-            return walkNames.filter((walkName) => {
-                return walkName.toLowerCase().startsWith(this.form.name.toLowerCase()) && walkName !== this.form.name;
-            }).map((walkName) => walkName);
         },
         systemicAnswerState() {
             if (this.isWithoutSystemicAnswer) {

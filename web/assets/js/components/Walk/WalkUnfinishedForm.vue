@@ -50,33 +50,12 @@
                 autocomplete="off"
             />
         </form-group>
-        <form-group label="Name">
-            <b-input-group>
-                <b-input
-                    v-model="walk.name"
-                    required
-                    minlength="2"
-                    maxlength="300"
-                    placeholder="Name"
-                    :state="nameState"
-                    :disabled="isLoading"
-                    data-test="name"
-                    autocomplete="off"
-                    list="walk-name-list"
-                />
-                <datalist id="walk-name-list">
-                    <option v-for="walkName in walkNames">{{ walkName }}</option>
-                </datalist>
-                <b-input-group-append>
-                    <b-button
-                        @click="walk.name = ''"
-                        :disabled="walk.name === ''"
-                    >
-                        <mdicon name="CloseCircleOutline" size="20"/>
-                    </b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </form-group>
+        <walk-name-field
+            v-model="walk.name"
+            :team="team"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <form-group label="Tageskonzept">
             <b-input-group>
                 <b-form-tags
@@ -142,7 +121,7 @@
         <walk-weather-field
             v-model="walk.weather"
             :is-loading="isLoading"
-            :validation-errors="validationErrors"
+            :error="error"
         />
         <v-btn
             color="secondary"
@@ -169,7 +148,7 @@ import {useTeamStore} from '../../stores/team';
 import {useWayPointStore} from '../../stores/way-point';
 import {useWalkStore} from '../../stores/walk';
 import {useUserStore} from '../../stores/user';
-import {WalkTeamMembersField, WalkWeatherField} from "../Common/Walk";
+import {WalkNameField, WalkTeamMembersField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -184,6 +163,7 @@ export default {
         },
     },
     components: {
+        WalkNameField,
         WalkWeatherField,
         WalkTeamMembersField,
         FormGroup,
@@ -244,7 +224,7 @@ export default {
     computed: {
         isSubmitDisabled() {
             return !this.walk
-                || (!this.nameState && undefined === this.validationErrors.name)
+                || !this.walk.weather
                 || (!this.conceptOfDayState && undefined === this.validationErrors.conceptOfDay)
                 || (!this.startTimeState && undefined === this.validationErrors.startTime)
                 || !this.walkTeamMembersState
@@ -254,17 +234,6 @@ export default {
         },
         team() {
             return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
-        },
-        walkNames() {
-            let walkNames = [];
-            if (!this.team) {
-                return walkNames;
-            }
-            walkNames = [this.initialWalkName, ...new Set(this.team.walkNames)];
-
-            return walkNames.filter((walkName) => {
-                return walkName.toLowerCase().startsWith(this.walk.name.toLowerCase()) && walkName !== this.walk.name;
-            }).map((walkName) => walkName);
         },
         conceptOfDaySuggestions() {
             let conceptOfDaySuggestions = [];
@@ -320,13 +289,6 @@ export default {
 
             return undefined === this.validationErrors.walkTeamMembers;
         },
-        nameState() {
-            if (null === this.walk.name || '' === this.walk.name || undefined === this.walk.name) {
-                return;
-            }
-
-            return this.walk.name.length >= 2 && this.walk.name.length <= 300;
-        },
         conceptOfDayState() {
             if (null === this.walk.conceptOfDay || undefined === this.walk.conceptOfDay) {
                 return;
@@ -370,7 +332,7 @@ export default {
             return this.userStore.getUsers;
         },
         isFormInvalid() {
-            return !this.nameState
+            return !this.walk.name
                 || !this.conceptOfDayState
                 || !this.startTimeState
                 || !this.walkCreatorState

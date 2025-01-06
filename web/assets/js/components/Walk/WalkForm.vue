@@ -50,33 +50,13 @@
                 autocomplete="off"
             />
         </form-group>
-        <form-group label="Name">
-            <b-input-group>
-                <b-input
-                    v-model="walk.name"
-                    required
-                    minlength="2"
-                    maxlength="300"
-                    placeholder="Name"
-                    :state="nameState"
-                    :disabled="isLoading"
-                    data-test="name"
-                    autocomplete="off"
-                    list="walk-name-list"
-                />
-                <datalist id="walk-name-list">
-                    <option v-for="walkName in walkNames">{{ walkName }}</option>
-                </datalist>
-                <b-input-group-append>
-                    <b-button
-                        @click="walk.name = ''"
-                        :disabled="walk.name === ''"
-                    >
-                        <mdicon name="CloseCircleOutline" size="20"/>
-                    </b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </form-group>
+        <walk-name-field
+            v-model="walk.name"
+            :team="team"
+            :walk="initialWalk"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <form-group label="Tageskonzept">
             <b-input-group>
                 <b-form-tags
@@ -410,7 +390,7 @@ import { useWalkStore } from '../../stores/walk';
 import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
 import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
-import { WalkWeatherField } from "../Common/Walk";
+import {WalkNameField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkForm',
@@ -426,6 +406,7 @@ export default {
         },
     },
     components: {
+        WalkNameField,
         WalkWeatherField,
         WalkTeamMembersField,
         WalkRating,
@@ -570,17 +551,6 @@ export default {
         team() {
             return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
         },
-        walkNames() {
-            let walkNames = [];
-            if (!this.team) {
-                return walkNames;
-            }
-            walkNames = [this.initialWalkName, ...new Set(this.team.walkNames)];
-
-            return walkNames.filter((walkName) => {
-                return walkName.toLowerCase().startsWith(this.walk.name.toLowerCase()) && walkName !== this.walk.name;
-            }).map((walkName) => walkName);
-        },
         conceptOfDaySuggestions() {
             let conceptOfDaySuggestions = [];
             if (!this.team) {
@@ -627,13 +597,6 @@ export default {
             }
 
             return !this.walkCreatorOptions.some(user => this.walk.walkCreator === user['id']);
-        },
-        nameState() {
-            if (null === this.walk.name || '' === this.walk.name || undefined === this.walk.name) {
-                return;
-            }
-
-            return this.walk.name.length >= 2 && this.walk.name.length <= 300;
         },
         commitmentsState() {
             if (this.isWithoutCommitments) {
@@ -732,7 +695,7 @@ export default {
             return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
-            return !this.nameState
+            return !this.walk.name
                 || !this.commitmentsState
                 || !this.conceptOfDayState
                 || !this.insightsState

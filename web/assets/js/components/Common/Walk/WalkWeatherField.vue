@@ -10,13 +10,14 @@ export interface Props {
     value: string,
     label?: string,
     description?: string,
-    validationErrors?: Object | undefined,
+    error?: Object | boolean,
     isLoading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
     label: 'Wetter',
     description: '',
+    error: false,
     isLoading: false,
 });
 
