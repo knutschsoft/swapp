@@ -139,14 +139,11 @@
                 ja, es sind Ferien
             </b-form-checkbox>
         </form-group>
-        <form-group label="Wetter">
-            <b-form-select
-                v-model="walk.weather"
-                :disabled="isLoading"
-                :options="weatherOptions"
-                data-test="Wetter"
-            />
-        </form-group>
+        <walk-weather-field
+            v-model="walk.weather"
+            :is-loading="isLoading"
+            :validation-errors="validationErrors"
+        />
         <v-btn
             color="secondary"
             type="submit"
@@ -168,11 +165,11 @@
 import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
-import { useTeamStore } from '../../stores/team';
-import { useWayPointStore } from '../../stores/way-point';
-import { useWalkStore } from '../../stores/walk';
-import { useUserStore } from '../../stores/user';
-import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
+import {useTeamStore} from '../../stores/team';
+import {useWayPointStore} from '../../stores/way-point';
+import {useWalkStore} from '../../stores/walk';
+import {useUserStore} from '../../stores/user';
+import {WalkTeamMembersField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -187,6 +184,7 @@ export default {
         },
     },
     components: {
+        WalkWeatherField,
         WalkTeamMembersField,
         FormGroup,
         FormError,
@@ -207,12 +205,11 @@ export default {
                 conceptOfDay: [],
                 startTime: null,
                 holidays: null,
-                weather: null,
+                weather: '',
                 walkTeamMembers: [],
                 walkCreator: '',
                 guestNames: [],
             },
-            weatherOptions: ['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'],
             dateLabels: {
                 de: {
                     labelPrevDecade: 'Vorheriges Jahrzehnt',
@@ -252,7 +249,7 @@ export default {
                 || (!this.startTimeState && undefined === this.validationErrors.startTime)
                 || !this.walkTeamMembersState
                 || !this.walkCreatorState
-                || !this.weatherState
+                || !this.walk.weather
                 || this.isLoading;
         },
         team() {
@@ -329,13 +326,6 @@ export default {
             }
 
             return this.walk.name.length >= 2 && this.walk.name.length <= 300;
-        },
-        weatherState() {
-            if (this.walk.weather === '') {
-                return null;
-            }
-
-            return this.weatherOptions.indexOf(this.walk.weather) !== -1;
         },
         conceptOfDayState() {
             if (null === this.walk.conceptOfDay || undefined === this.walk.conceptOfDay) {

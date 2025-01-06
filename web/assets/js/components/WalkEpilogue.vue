@@ -215,27 +215,17 @@
                     <b-form-checkbox
                         v-model="form.holidays"
                         :disabled="isLoading"
-                        data-test="weather"
+                        data-test="holidays"
                     >
                         Sind gerade Ferien?
                     </b-form-checkbox>
                 </b-form-group>
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Wetter"
+                <walk-weather-field
+                    v-model="form.weather"
+                    :is-loading="isLoading"
+                    :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
-                >
-                    <b-form-select
-                        v-model="form.weather"
-                        :disabled="isLoading"
-                        :state="weatherState"
-                        :options="weatherOptions"
-                        data-test="Wetter"
-                    />
-                </b-form-group>
+                />
                 <b-form-group
                     v-if="walk.isWithSystemicQuestion"
                     content-cols="12"
@@ -456,6 +446,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
+import { WalkWeatherField } from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
@@ -465,6 +456,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkWeatherField,
         ContentCollapse,
         GlobalFormError,
         WayPointList,
@@ -507,12 +499,11 @@ export default {
                 walkReflection: '',
                 rating: 1,
                 holidays: false,
-                weather: null,
+                weather: '',
                 insights: '',
                 commitments: '',
                 isResubmission: false,
             },
-            weatherOptions: ['', 'Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'],
             dateLabels: {
                 de: {
                     labelPrevDecade: 'Vorheriges Jahrzehnt',
@@ -682,16 +673,6 @@ export default {
             return walkNames.filter((walkName) => {
                 return walkName.toLowerCase().startsWith(this.form.name.toLowerCase()) && walkName !== this.form.name;
             }).map((walkName) => walkName);
-        },
-        weatherState() {
-            if ('' === this.form.weather) {
-                return null;
-            }
-
-            return '' === this.invalidWeatherFeedback || this.weatherOptions.indexOf(this.form.weather) !== -1;
-        },
-        invalidWeatherFeedback() {
-            return getViolationsFeedback(['weather'], this.error);
         },
         systemicAnswerState() {
             if (this.isWithoutSystemicAnswer) {

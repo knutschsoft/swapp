@@ -35,25 +35,25 @@ const value = computed({
 const selectedWalkCreator = ref<ComponentPublicInstance<HTMLInputElement>[]>();
 
 watch(() => props.walkCreator, (newValue: User | undefined) => {
-    // if (undefined === newValue) {
-    //     return;
-    // }
-    // if (!selectedWalkCreator.value) {
-    //     return;
-    // }
-    // selectedWalkCreator.value.some((walkCreatorElement) => {
-    //     if (walkCreatorElement.value !== newValue['@id']) {
-    //         return false;
-    //     }
-    //
-    //     const classList = walkCreatorElement.$el.classList;
-    //     classList.add('blinking');
-    //     window.setTimeout(() => {
-    //         classList.remove('blinking');
-    //     }, 1500);
-    //
-    //     return true;
-    // });
+    if (undefined === newValue) {
+        return;
+    }
+    if (!selectedWalkCreator.value) {
+        return;
+    }
+    selectedWalkCreator.value.some((walkCreatorElement) => {
+        if (walkCreatorElement.value !== newValue['@id']) {
+            return false;
+        }
+
+        const classList = walkCreatorElement.$el.classList;
+        classList.add('blinking');
+        window.setTimeout(() => {
+            classList.remove('blinking');
+        }, 1500);
+
+        return true;
+    });
 });
 
 const enabledUsers = computed(() => {

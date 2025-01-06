@@ -56,11 +56,8 @@
                     <template v-slot:no-data>
                         <v-list-item dense>
                             <v-list-item-content>
-                                <v-list-item-title v-if="!guestNameSearch">
+                                <v-list-item-title>
                                     Füge "<strong>{{ guestNameSearch }}</strong>" hinzu.
-                                </v-list-item-title>
-                                <v-list-item-title v-else>
-                                    Tippe um zu suchen.
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
@@ -152,15 +149,11 @@
                 ></v-switch>
             </v-col>
             <v-col>
-                <v-select
+                <walk-weather-field
                     v-model="form.weather"
-                    :items="weatherOptions"
-                    label="Wetter"
-                    data-test="Wetter"
-                    outlined
-                    dense
-                    :disabled="isLoading"
-                ></v-select>
+                    :is-loading="isLoading"
+                    :error="error"
+                />
             </v-col>
             <v-col class="mb-2">
                 <v-btn
@@ -184,7 +177,7 @@ import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTeamStore, useUserStore, useWalkStore} from '../stores';
-import WalkTeamMembersField from "./Common/Walk/WalkTeamMembersField.vue";
+import { WalkTeamMembersField, WalkWeatherField } from "./Common/Walk";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/de';
@@ -192,6 +185,7 @@ import 'vue2-datepicker/locale/de';
 export default {
     name: "WalkPrologue",
     components: {
+        WalkWeatherField,
         DatePicker,
         WalkTeamMembersField,
         FormGroup,
@@ -233,7 +227,6 @@ export default {
             },
             walkId: false,
             isFormLoading: false,
-            weatherOptions: ['', 'Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt'],
         }
     },
     computed: {
@@ -265,7 +258,7 @@ export default {
                 || (!this.startTimeState && undefined === this.validationErrors.startTime)
                 || !this.walkTeamMembersState
                 || !this.walkCreatorState
-                || !this.weatherState
+                || !this.form.weather
                 || this.isLoading;
         },
         nameState() {
@@ -333,23 +326,6 @@ export default {
             });
 
             return message;
-        },
-        weatherFeedback() {
-            let message = '';
-            ['weather'].forEach(key => {
-                if (this.validationErrors[key]) {
-                    message += ` ${this.validationErrors[key]}`;
-                }
-            });
-
-            return message;
-        },
-        weatherState() {
-            if (this.form.weather === '') {
-                return null;
-            }
-
-            return this.weatherOptions.indexOf(this.form.weather) !== -1;
         },
         walkCreatorOptions() {
             if (!this.team) {

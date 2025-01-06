@@ -204,14 +204,11 @@
                 ja, es sind Ferien
             </b-form-checkbox>
         </form-group>
-        <form-group label="Wetter">
-            <b-form-select
-                v-model="walk.weather"
-                :disabled="isLoading"
-                data-test="Wetter"
-                :options="['Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt']"
-            />
-        </form-group>
+        <walk-weather-field
+            v-model="walk.weather"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <form-group
             v-if="walk.isWithSystemicQuestion"
             label="Systemische Frage"
@@ -413,6 +410,7 @@ import { useWalkStore } from '../../stores/walk';
 import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
 import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
+import { WalkWeatherField } from "../Common/Walk";
 
 export default {
     name: 'WalkForm',
@@ -428,6 +426,7 @@ export default {
         },
     },
     components: {
+        WalkWeatherField,
         WalkTeamMembersField,
         WalkRating,
         FormGroup,
@@ -466,7 +465,7 @@ export default {
                 systemicAnswer: null,
                 systemicQuestion: null,
                 walkReflection: null,
-                weather: null,
+                weather: '',
                 walkTeamMembers: [],
                 walkCreator: null,
                 guestNames: [],
@@ -503,6 +502,9 @@ export default {
         };
     },
     computed: {
+        hasError() {
+            return !!this.error;
+        },
         walkClient() {
             return this.clientStore.getClientByIri(this.initialWalk.client || this.currentUser.client);
         },
