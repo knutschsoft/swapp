@@ -1,3 +1,4 @@
+export {default as WalkCommitmentsField} from './WalkCommitmentsField.vue';
 export {default as WalkConceptOfDayField} from './WalkConceptOfDayField.vue';
 export {default as WalkEndTimeField} from './WalkEndTimeField.vue';
 export {default as WalkGuestNamesField} from './WalkGuestNamesField.vue';

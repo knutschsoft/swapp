@@ -194,42 +194,18 @@
                 @select-rating="walk.rating = $event"
             />
         </form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            description=""
-            :disabled="isLoading"
-            :state="commitmentsState"
-        >
-            <template v-slot:label>
-                <div class="d-flex justify-content-between flex-wrap">
-                    <div :class="isWithoutCommitments ? `text-muted ` : ``">
-                        Termine, Besorgungen, Verabredungen
-                    </div>
-                    <b-form-checkbox
-                        v-model="isWithoutCommitments"
-                        :disabled="isLoading"
-                        class="font-weight-normal"
-                    >
-                        nicht benötigt
-                    </b-form-checkbox>
-                </div>
-            </template>
-            <b-textarea
-                v-model="walk.commitments"
-                :disabled="isLoading || isWithoutCommitments"
-                minlength="1"
-                maxlength="2500"
-                placeholder="Termine, Besorgungen, Verabredungen"
-                :state="commitmentsState"
-                data-test="commitments"
-                rows="3"
-                trim
-                max-rows="15"
-            />
-        </b-form-group>
+        <walk-commitments-field
+            v-model="walk.commitments"
+            :is-loading="isLoading"
+            :disabled="isLoading || isWithoutCommitments"
+            :error="error"
+        />
+        <v-switch
+            v-model="isWithoutCommitments"
+            label="nicht benötigt"
+            class="mt-0 ml-auto"
+            dense
+        />
         <b-form-group
             content-cols="12"
             label-cols="12"
@@ -296,6 +272,7 @@ import {StarRating} from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
 import {useAuthStore, useClientStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
 import {
+    WalkCommitmentsField,
     WalkConceptOfDayField,
     WalkEndTimeField,
     WalkGuestNamesField,
@@ -322,6 +299,7 @@ export default {
         },
     },
     components: {
+        WalkCommitmentsField,
         WalkWalkReflectionField,
         WalkEndTimeField,
         WalkStartTimeField,
@@ -439,16 +417,6 @@ export default {
         team() {
             return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
         },
-        commitmentsState() {
-            if (this.isWithoutCommitments) {
-                return true;
-            }
-            if (null === this.walk.commitments || undefined === this.walk.commitments) {
-                return;
-            }
-
-            return this.walk.commitments.length >= 1 && this.walk.commitments.length <= 2500;
-        },
         insightsState() {
             if (this.isWithoutInsights) {
                 return true;
@@ -516,7 +484,7 @@ export default {
         },
         isFormInvalid() {
             return !this.walk.name
-                || !this.commitmentsState
+                || !this.walk.commitments && !this.isWithoutCommitments
                 || !this.walk.conceptOfDay
                 || !this.insightsState
                 || !this.walk.startTime

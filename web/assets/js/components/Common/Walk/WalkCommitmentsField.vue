@@ -16,7 +16,7 @@ export interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    label: 'Reflexion',
+    label: 'Termine, Besorgungen, Verabredungen',
     description: '',
     error: false,
     isLoading: false,
@@ -40,7 +40,7 @@ const errorMessages = computed(() => {
         return ''
     }
 
-    return getViolationsFeedback(['walkReflection'], props.error);
+    return getViolationsFeedback(['commitments'], props.error);
 })
 
 </script>
@@ -53,8 +53,8 @@ const errorMessages = computed(() => {
             minlength="1"
             maxlength="2500"
             :label="label"
-            placeholder="Reflexion"
-            data-test="walkReflection"
+            placeholder="Termine, Besorgungen, Verabredungen"
+            data-test="commitments"
             rows="3"
             trim
             max-rows="15"

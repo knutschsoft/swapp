@@ -188,43 +188,18 @@
                         @select-rating="form.rating = $event"
                     />
                 </b-form-group>
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    description=""
-                    :disabled="isLoading"
-                    :invalid-feedback="invalidCommitmentsFeedback"
-                    :state="commitmentsState"
-                >
-                    <template v-slot:label>
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div :class="isWithoutCommitments ? `text-muted` : ``">
-                                Termine, Besorgungen, Verabredungen
-                            </div>
-                            <b-form-checkbox
-                                v-model="isWithoutCommitments"
-                                :disabled="isLoading"
-                                class="font-weight-normal"
-                            >
-                                nicht benötigt
-                            </b-form-checkbox>
-                        </div>
-                    </template>
-                    <b-textarea
-                        v-model="form.commitments"
-                        minlength="1"
-                        maxlength="2500"
-                        placeholder="Termine, Besorgungen, Verabredungen"
-                        :disabled="isLoading || isWithoutCommitments"
-                        :state="commitmentsState"
-                        data-test="commitments"
-                        rows="3"
-                        trim
-                        max-rows="15"
-                    />
-                </b-form-group>
+                <walk-commitments-field
+                    v-model="form.commitments"
+                    :is-loading="isLoading"
+                    :disabled="isLoading || isWithoutCommitments"
+                    :error="error"
+                />
+                <v-switch
+                    v-model="isWithoutCommitments"
+                    label="nicht benötigt"
+                    class="mt-0 ml-auto"
+                    dense
+                />
                 <b-form-group
                     content-cols="12"
                     label-cols="12"
@@ -315,7 +290,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import {WalkConceptOfDayField, WalkEndTimeField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkWalkReflectionField, WalkWeatherField} from "./Common/Walk";
+import {WalkCommitmentsField, WalkConceptOfDayField, WalkEndTimeField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkWalkReflectionField, WalkWeatherField} from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
@@ -325,6 +300,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkCommitmentsField,
         WalkWalkReflectionField,
         WalkEndTimeField,
         WalkStartTimeField,
@@ -477,19 +453,6 @@ export default {
         },
         invalidInsightsFeedback() {
             return getViolationsFeedback(['insights'], this.error);
-        },
-        commitmentsState() {
-            if (this.isWithoutCommitments) {
-                return true;
-            }
-            if (!this.form.commitments && !this.invalidCommitmentsFeedback) {
-                return;
-            }
-
-            return !this.invalidCommitmentsFeedback;
-        },
-        invalidCommitmentsFeedback() {
-            return getViolationsFeedback(['commitments'], this.error);
         },
         isLoading() {
             return this.walkStore.isLoading;
