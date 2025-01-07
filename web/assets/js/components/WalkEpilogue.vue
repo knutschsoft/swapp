@@ -147,22 +147,12 @@
                         </v-alert>
                     </template>
                 </b-form-group>
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Ferien"
+                <walk-holidays-field
+                    v-model="form.holidays"
+                    :is-loading="isLoading"
+                    :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
-                >
-                    <b-form-checkbox
-                        v-model="form.holidays"
-                        :disabled="isLoading"
-                        data-test="holidays"
-                    >
-                        Sind gerade Ferien?
-                    </b-form-checkbox>
-                </b-form-group>
+                />
                 <walk-weather-field
                     v-model="form.weather"
                     :is-loading="isLoading"
@@ -389,7 +379,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import {WalkConceptOfDayField, WalkNameField, WalkWeatherField} from "./Common/Walk";
+import {WalkConceptOfDayField, WalkHolidaysField, WalkNameField, WalkWeatherField} from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
@@ -399,6 +389,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkHolidaysField,
         WalkConceptOfDayField,
         WalkNameField,
         WalkWeatherField,

@@ -1,5 +1,6 @@
 export {default as WalkConceptOfDayField} from './WalkConceptOfDayField.vue';
 export {default as WalkGuestNamesField} from './WalkGuestNamesField.vue';
+export {default as WalkHolidaysField} from './WalkHolidaysField.vue';
 export {default as WalkNameField} from './WalkNameField.vue';
 export {default as WalkTeamMembersField} from './WalkTeamMembersField.vue';
 export {default as WalkWalkCreatorField} from './WalkWalkCreatorField.vue';

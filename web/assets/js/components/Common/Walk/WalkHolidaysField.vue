@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
+import {Team, Walk} from "../../../model";
 import {getViolationsFeedback} from "../../../utils";
 
 // const props = defineProps(['modelValue', 'value']); // vue3
@@ -7,21 +8,22 @@ import {getViolationsFeedback} from "../../../utils";
 const emit = defineEmits(['input']);
 
 export interface Props {
-    value: string,
+    value: string[],
+    team: Team,
+    initialWalk?: Walk | null,
     label?: string,
     description?: string,
-    error?: Object | boolean,
+    error?: any,
     isLoading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    label: 'Wetter',
+    label: 'ja, es sind Ferien',
     description: '',
+    initialWalk: null,
     error: false,
     isLoading: false,
 });
-
-const weatherOptions = ref<string[]>(['', 'Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt']);
 
 const value = computed({
     get() {
@@ -35,25 +37,32 @@ const value = computed({
 });
 
 const errorMessages = computed(() => {
-    return getViolationsFeedback(['weather'], props.error);
-})
+    if (!props.error) {
+        return ''
+    }
 
+    return getViolationsFeedback(['holidays'], props.error);
+})
 </script>
 
 <template>
-    <v-select
-        v-model="value"
-        :items="weatherOptions"
-        :label="label"
-        data-test="Wetter"
-        outlined
-        :hint="description"
-        :persistent-hint="!!description"
-        dense
-        :disabled="isLoading"
-        :error-messages="errorMessages"
-        :error="!!errorMessages?.length"
-    />
+    <div>
+        Ferien<br>
+        <v-switch
+            v-model="value"
+            :disabled="isLoading"
+            :label="label"
+            dense
+            class="mt-0"
+            :error-messages="errorMessages"
+            :error="!!errorMessages?.length"
+            :hint="description"
+            :persistent-hint="!!description"
+            :hide-details="!description"
+            data-test="holidays"
+            :loading="isLoading"
+        ></v-switch>
+    </div>
 </template>
 
 <style scoped>

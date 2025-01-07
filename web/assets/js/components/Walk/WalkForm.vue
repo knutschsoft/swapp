@@ -133,15 +133,11 @@
                 </v-alert>
             </template>
         </form-group>
-        <form-group label="Ferien">
-            <b-form-checkbox
-                v-model="walk.holidays"
-                :disabled="isLoading"
-                class="mt-lg-1 pt-lg-1"
-            >
-                ja, es sind Ferien
-            </b-form-checkbox>
-        </form-group>
+        <walk-holidays-field
+            v-model="walk.holidays"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <walk-weather-field
             v-model="walk.weather"
             :is-loading="isLoading"
@@ -342,7 +338,7 @@ import FormGroup from '../Common/FormGroup.vue';
 import {StarRating} from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
 import {useAuthStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
-import {WalkConceptOfDayField, WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
+import {WalkConceptOfDayField, WalkGuestNamesField, WalkHolidaysField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkForm',
@@ -358,6 +354,7 @@ export default {
         },
     },
     components: {
+        WalkHolidaysField,
         WalkConceptOfDayField,
         WalkGuestNamesField,
         WalkWalkCreatorField,

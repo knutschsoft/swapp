@@ -82,12 +82,11 @@
                 </date-picker>
             </v-col>
             <v-col>
-                Ferien<br>
-                <v-switch
+                <walk-holidays-field
                     v-model="form.holidays"
-                    :disabled="isLoading"
-                    label="ja, es sind Ferien"
-                ></v-switch>
+                    :is-loading="isLoading"
+                    :error="error"
+                />
             </v-col>
             <v-col>
                 <walk-weather-field
@@ -118,7 +117,7 @@ import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTeamStore, useUserStore, useWalkStore} from '../stores';
-import {WalkConceptOfDayField, WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "./Common/Walk";
+import {WalkConceptOfDayField, WalkGuestNamesField, WalkHolidaysField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "./Common/Walk";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/de';
@@ -126,6 +125,7 @@ import 'vue2-datepicker/locale/de';
 export default {
     name: "WalkPrologue",
     components: {
+        WalkHolidaysField,
         WalkConceptOfDayField,
         WalkGuestNamesField,
         WalkWalkCreatorField,
