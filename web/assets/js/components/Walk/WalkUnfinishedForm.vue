@@ -121,35 +121,6 @@ export default {
                 walkCreator: '',
                 guestNames: [],
             },
-            dateLabels: {
-                de: {
-                    labelPrevDecade: 'Vorheriges Jahrzehnt',
-                    labelPrevYear: 'Vorheriges Jahr',
-                    labelPrevMonth: 'Vorheriger Monat',
-                    labelCurrentMonth: 'Aktueller Monat',
-                    labelNextMonth: 'Nächster Monat',
-                    labelNextYear: 'Nächstes Jahr',
-                    labelNextDecade: 'Nächstes Jahrzehnt',
-                    labelToday: 'Heute',
-                    labelSelected: 'Ausgewähltes Datum',
-                    labelNoDateSelected: 'Kein Datum gewählt',
-                    labelCalendar: 'Kalender',
-                    labelNav: 'Kalendernavigation',
-                    labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren'
-                },
-            },
-            timeLabels: {
-                de: {
-                    labelHours: 'Stunden',
-                    labelMinutes: 'Minuten',
-                    labelSeconds: 'Sekunden',
-                    labelIncrement: 'Erhöhen',
-                    labelDecrement: 'Verringern',
-                    labelSelected: 'Ausgewählte Zeit',
-                    labelNoTimeSelected: 'Keine Zeit ausgewählt',
-                    labelCloseButton: 'Schließen'
-                },
-            },
         };
     },
     computed: {

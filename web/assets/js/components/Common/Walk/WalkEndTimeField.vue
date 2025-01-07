@@ -26,8 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
     isLoading: false,
 });
 
-const startTimeTime = ref(props.initialWalk ? dayjs(props.initialWalk.startTime).toDate() : dayjs().toDate());
-const startTimeDate = ref(props.initialWalk ? dayjs(props.initialWalk.startTime).toDate() : dayjs().toDate());
+const endTimeTime = ref(props.value ? dayjs(props.value).toDate() : dayjs().toDate());
+const endTimeDate = ref(props.value ? dayjs(props.value).toDate() : dayjs().toDate());
 const datePickerLang = ref({
     formatLocale: {
         firstDayOfWeek: 1,
@@ -47,59 +47,59 @@ const value = computed({
 });
 
 watch(() => props.value, () => {
-    if (dayjs(startTimeTime.value) !== dayjs(props.value)) {
-        startTimeTime.value = dayjs(props.value).toDate();
+    if (dayjs(endTimeTime.value) !== dayjs(props.value)) {
+        endTimeTime.value = dayjs(props.value).toDate();
     }
-    if (dayjs(startTimeDate.value) !== dayjs(props.value)) {
-        startTimeDate.value = dayjs(props.value).toDate();
+    if (dayjs(endTimeDate.value) !== dayjs(props.value)) {
+        endTimeDate.value = dayjs(props.value).toDate();
     }
 })
-watch(() => startTimeTime.value, () => {
-    let startTimeDate = dayjs(props.value);
-    let startTime = dayjs(startTimeTime.value);
-    startTimeDate = startTimeDate.hour(startTime.hour());
-    startTimeDate = startTimeDate.minute(startTime.minute());
-    startTimeDate = startTimeDate.startOf('minute');
-    value.value = startTimeDate.format();
+watch(() => endTimeTime.value, () => {
+    let endTimeDate = dayjs(props.value);
+    let endTime = dayjs(endTimeTime.value);
+    endTimeDate = endTimeDate.hour(endTime.hour());
+    endTimeDate = endTimeDate.minute(endTime.minute());
+    endTimeDate = endTimeDate.endOf('minute');
+    value.value = endTimeDate.format();
 });
-watch(() => startTimeDate.value, () => {
-    const startTimeDateValue = dayjs(startTimeDate.value);
-    let startTime = dayjs(props.value);
-    startTime = startTime.year(startTimeDateValue.year());
-    startTime = startTime.month(startTimeDateValue.month());
-    startTime = startTime.date(startTimeDateValue.date());
-    startTime = startTime.startOf('minute');
-    value.value = startTime.format();
+watch(() => endTimeDate.value, () => {
+    const endTimeDateValue = dayjs(endTimeDate.value);
+    let endTime = dayjs(props.value);
+    endTime = endTime.year(endTimeDateValue.year());
+    endTime = endTime.month(endTimeDateValue.month());
+    endTime = endTime.date(endTimeDateValue.date());
+    endTime = endTime.endOf('minute');
+    value.value = endTime.format();
 });
 
 const errorMessages = computed(() => {
     if (!props.error) {
         return ''
     }
-    return getViolationsFeedback(['startTime', 'startTimeBeforeEndTime', 'startTimeBeforeAllWayPoints'], props.error);
+    return getViolationsFeedback(['endTime', 'endTimeBeforeEndTime', 'endTimeBeforeAllWayPoints'], props.error);
 })
 
 </script>
 
 <template>
     <div>
-        Rundenstartzeit<br>
+        Rundenendzeit<br>
         <date-picker
-            v-model="startTimeDate"
-            label="Rundenstartzeit"
+            v-model="endTimeDate"
+            label="Rundenendzeit"
             :disabled="isLoading"
             format="DD.MM.YYYY"
             title-format="DD.MM.YYYY"
             show-week-number
-            data-test="startTimeDate"
+            data-test="endTimeDate"
             :lang="datePickerLang"
             :clearable="false"
         />
         <date-picker
-            v-model="startTimeTime"
+            v-model="endTimeTime"
             type="time"
             :disabled="isLoading"
-            data-test="startTimeTime"
+            data-test="endTimeTime"
             :minute-step="5"
             format="HH:mm"
             title-format="HH:mm"

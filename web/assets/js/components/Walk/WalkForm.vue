@@ -1,5 +1,5 @@
 <template>
-    <b-form
+    <v-form
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
@@ -47,71 +47,75 @@
             :is-loading="isLoading"
             :error="error"
         />
-        <form-group label="Rundenendzeit">
-            <b-row class="mb-1 mt-0">
-                <b-col>
-                    <b-datepicker
-                        v-model="endTimeDate"
-                        v-bind="dateLabels['de']"
-                        :disabled="isLoading"
-                        data-test="endTimeDate"
-                        locale="de"
-                    />
-                </b-col>
-                <b-col>
-                    <b-timepicker
-                        v-model="endTimeTime"
-                        v-bind="timeLabels['de']"
-                        :disabled="isLoading"
-                        :state="endTimeState"
-                        data-test="endTimeTime"
-                        minutes-step="5"
-                        locale="de"
-                        right
-                    />
-                </b-col>
-            </b-row>
-            <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top"/>
-            <b-row class="mb-1 mt-0">
-                <b-col
-                    class="mt-2"
+        <v-row class="mb-1 mt-0">
+            <v-col
+                cols="12"
+                sm="12"
+                md="6"
+                class="mt-2"
+            >
+                <walk-end-time-field
+                    v-model="walk.endTime"
+                    :initial-walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col
+                cols="12"
+                class="d-md-none"
+            >
+                <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top"/>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="3"
+                class="mt-2"
+            >
+                <div class="d-none d-md-block">
+                    &nbsp;
+                </div>
+                <v-btn
+                    color="secondary"
+                    outlined
+                    small
+                    block
+                    min-height="40px"
+                    @click="selectCurrentTime"
                 >
-
-                    <v-btn
-                        color="secondary"
-                        outlined
-                        block
-                        small
-                        @click="selectCurrentTime"
-                    >
-                        Schnellauswahl: aktueller Zeitpunkt
-                    </v-btn>
-                </b-col>
-                <b-col
-                    class="mt-2"
+                    Schnellauswahl:<br>aktueller Zeitpunkt
+                </v-btn>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="3"
+                class="mt-2"
+            >
+                <div class="d-none d-md-block">
+                    &nbsp;
+                </div>
+                <v-btn
+                    color="secondary"
+                    outlined
+                    small
+                    block
+                    min-height="40px"
+                    @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
                 >
-                    <v-btn
-                        color="secondary"
-                        outlined
-                        block
-                        small
-                        @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
-                    >
-                        Schnellauswahl: {{ initialWalk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
-                    </v-btn>
-                </b-col>
-            </b-row>
-            <template v-slot:valid-feedback>
-                <v-alert
-                    v-if="!!diffLastWayPointOrRound"
-                    class="mb-0 mt-2"
-                    color="warning"
-                >
-                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom
-                    {{ lastWayPointOrRoundTimeAsCalendar }}.
-                </v-alert>
-            </template>
-        </form-group>
+                    Schnellauswahl:<br>{{ initialWalk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-alert
+            v-if="!!diffLastWayPointOrRound"
+            class="mb-0 mt-2"
+            color="warning"
+        >
+            Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom
+            {{ lastWayPointOrRoundTimeAsCalendar }}.
+        </v-alert>
         <walk-holidays-field
             v-model="walk.holidays"
             :is-loading="isLoading"
@@ -299,14 +303,13 @@
             :disabled="isFormInvalid || isSubmitDisabled"
             data-test="button-walk-submit"
             block
-            :tabindex="isFormInvalid ? '-1' : ''"
         >
             {{ submitButtonText }}
         </v-btn>
         <form-error
             :error="error"
         />
-    </b-form>
+    </v-form>
 </template>
 
 <script>
@@ -316,9 +319,10 @@ import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
 import {StarRating} from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
-import {useAuthStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
+import {useAuthStore, useClientStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
 import {
     WalkConceptOfDayField,
+    WalkEndTimeField,
     WalkGuestNamesField,
     WalkHolidaysField,
     WalkNameField,
@@ -342,6 +346,7 @@ export default {
         },
     },
     components: {
+        WalkEndTimeField,
         WalkStartTimeField,
         WalkHolidaysField,
         WalkConceptOfDayField,
@@ -368,8 +373,6 @@ export default {
             isWithoutWalkReflection: false,
             isWithoutCommitments: false,
             isWithoutInsights: false,
-            endTimeDate: null,
-            endTimeTime: null,
             walk: {
                 name: null,
                 commitments: null,
@@ -388,35 +391,6 @@ export default {
                 walkCreator: null,
                 guestNames: [],
             },
-            dateLabels: {
-                de: {
-                    labelPrevDecade: 'Vorheriges Jahrzehnt',
-                    labelPrevYear: 'Vorheriges Jahr',
-                    labelPrevMonth: 'Vorheriger Monat',
-                    labelCurrentMonth: 'Aktueller Monat',
-                    labelNextMonth: 'Nächster Monat',
-                    labelNextYear: 'Nächstes Jahr',
-                    labelNextDecade: 'Nächstes Jahrzehnt',
-                    labelToday: 'Heute',
-                    labelSelected: 'Ausgewähltes Datum',
-                    labelNoDateSelected: 'Kein Datum gewählt',
-                    labelCalendar: 'Kalender',
-                    labelNav: 'Kalendernavigation',
-                    labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren'
-                },
-            },
-            timeLabels: {
-                de: {
-                    labelHours: 'Stunden',
-                    labelMinutes: 'Minuten',
-                    labelSeconds: 'Sekunden',
-                    labelIncrement: 'Erhöhen',
-                    labelDecrement: 'Verringern',
-                    labelSelected: 'Ausgewählte Zeit',
-                    labelNoTimeSelected: 'Keine Zeit ausgewählt',
-                    labelCloseButton: 'Schließen'
-                },
-            },
         };
     },
     computed: {
@@ -432,7 +406,7 @@ export default {
         wayPointsOfInitialWalk() {
             let wayPoints = [];
             this.initialWalk.wayPoints.forEach(wayPointIri => {
-                const wayPoint = this.wayPointStore.getWayPointByIri(wayPointIri);
+                const wayPoint = this.getWayPointByIri(wayPointIri);
                 if (wayPoint) {
                     wayPoints.push(wayPoint);
                 }
@@ -572,31 +546,11 @@ export default {
                 || !this.walk.endTime
                 || !this.systemicAnswerState
                 || !this.walkReflectionState
-                || this.walk.walkCreator
+                || !this.walk.walkCreator
                 || this.isLoading;
         },
         error() {
             return this.walkStore.getErrors.change;
-        },
-    },
-    watch: {
-        endTimeTime(endTimeTime) {
-            const values = endTimeTime.split(':');
-            if (values.length < 2) {
-                return;
-            }
-            let endTime = dayjs(this.walk.endTime);
-            endTime = endTime.hour(Number(values[0]));
-            endTime = endTime.minute(Number(values[1]));
-            this.walk.endTime = endTime.format();
-        },
-        endTimeDate(endTimeDate) {
-            const endTimeDateValue = dayjs(endTimeDate);
-            let endTime = dayjs(this.walk.endTime);
-            endTime = endTime.year(endTimeDateValue.year());
-            endTime = endTime.month(endTimeDateValue.month());
-            endTime = endTime.date(endTimeDateValue.date());
-            this.walk.endTime = endTime.format();
         },
     },
     async created() {
@@ -630,9 +584,6 @@ export default {
         if (!this.team) {
             await this.teamStore.fetchTeams();
         }
-
-        this.endTimeTime = dayjs(this.walk.endTime).format('HH:mm');
-        this.endTimeDate = dayjs(this.walk.endTime).format('YYYY-MM-DD');
     },
     methods: {
         handleWalkCreatorChange(newWalkCreator) {
@@ -647,16 +598,14 @@ export default {
             return this.wayPointStore.getWayPointByIri(iri);
         },
         selectCurrentTime() {
-            this.endTimeTime = dayjs().format('HH:mm');
-            this.endTimeDate = dayjs().format('YYYY-MM-DD');
+            this.walk.endTime = dayjs().format();
         },
         selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
             let time = this.lastWayPointOrRoundTime;
             if (this.hasLastWayPoint) {
                 time = time.add(5, 'minute');
             }
-            this.endTimeTime = time.format('HH:mm');
-            this.endTimeDate = time.format('YYYY-MM-DD');
+            this.walk.endTime = time.format();
         },
         async handleSubmit() {
             this.$emit('submit', this.walk);
