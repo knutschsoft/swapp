@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {Team, Walk} from "../../../model";
+import {computed} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 
 // const props = defineProps(['modelValue', 'value']); // vue3
@@ -9,8 +8,6 @@ const emit = defineEmits(['input']);
 
 export interface Props {
     value: string[],
-    team: Team,
-    initialWalk?: Walk | null,
     label?: string,
     description?: string,
     error?: any,
@@ -20,7 +17,6 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
     label: 'ja, es sind Ferien',
     description: '',
-    initialWalk: null,
     error: false,
     isLoading: false,
 });
