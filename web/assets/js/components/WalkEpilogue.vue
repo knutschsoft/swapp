@@ -33,44 +33,13 @@
                     :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
                 />
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Rundenstartzeit"
+                <walk-start-time-field
+                    v-model="form.startTime"
+                    :initial-walk="walk"
+                    :is-loading="isLoading"
+                    :error="error"
                     description="Die Zeit vom Rundenbeginn ist vorausgewählt."
-                    :invalid-feedback="invalidStartTimeFeedback"
-                    :state="startTimeState"
-                >
-                    <b-row class="mb-1 mt-0">
-                        <b-col>
-                            <b-timepicker
-                                v-model="startTimeTime"
-                                v-bind="timeLabels['de']"
-                                :disabled="isLoading"
-                                hide-header
-                                :state="startTimeState"
-                                data-test="startTimeTime"
-                                minutes-step="5"
-                                locale="de"
-                                size="sm"
-                            />
-                        </b-col>
-                        <b-col>
-                            <b-form-datepicker
-                                v-model="startTimeDate"
-                                v-bind="dateLabels['de']"
-                                :disabled="isLoading"
-                                :state="startTimeState"
-                                data-test="startTimeDate"
-                                locale="de"
-                                size="sm"
-                                right
-                            />
-                        </b-col>
-                    </b-row>
-                </b-form-group>
+                />
                 <b-form-group
                     content-cols="12"
                     label-cols="12"
@@ -379,7 +348,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import {WalkConceptOfDayField, WalkHolidaysField, WalkNameField, WalkWeatherField} from "./Common/Walk";
+import {WalkConceptOfDayField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkWeatherField} from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
@@ -389,6 +358,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkStartTimeField,
         WalkHolidaysField,
         WalkConceptOfDayField,
         WalkNameField,
@@ -420,8 +390,6 @@ export default {
             isWithoutWalkReflection: false,
             isWithoutCommitments: false,
             isWithoutInsights: false,
-            startTimeTime: null,
-            startTimeDate: null,
             endTimeTime: null,
             endTimeDate: null,
             form: {
@@ -535,7 +503,6 @@ export default {
                 'conceptOfDay',
                 'startTime',
                 'endTime',
-                'startTimeBeforeEndTime',
                 'weather',
                 'systemicAnswer',
                 'walkReflection',
@@ -543,16 +510,6 @@ export default {
                 'commitments',
                 'endTimeAfterWayPointsVisitedAt',
             ], this.error, true);
-        },
-        startTimeState() {
-            if (null === this.form.startTime || undefined === this.form.startTime) {
-                return;
-            }
-
-            return !!this.form.startTime && '' === this.invalidStartTimeFeedback;
-        },
-        invalidStartTimeFeedback() {
-            return getViolationsFeedback(['startTime', 'startTimeBeforeEndTime'], this.error);
         },
         endTimeState() {
             if (null === this.form.endTime || undefined === this.form.endTime) {
@@ -562,7 +519,7 @@ export default {
             return !!this.form.endTime && '' === this.invalidEndTimeFeedback;
         },
         invalidEndTimeFeedback() {
-            return getViolationsFeedback(['endTime', 'startTimeBeforeEndTime', 'endTimeAfterWayPointsVisitedAt'], this.error);
+            return getViolationsFeedback(['endTime', 'endTimeAfterWayPointsVisitedAt'], this.error);
         },
         team() {
             return this.teamStore.getTeamByTeamName(this.walk.teamName);
@@ -636,26 +593,6 @@ export default {
         },
     },
     watch: {
-        startTimeTime(startTimeTime) {
-            const values = startTimeTime.split(':');
-            if (values.length < 2) {
-                return;
-            }
-            let startTime = dayjs(this.form.startTime);
-            startTime = startTime.hour(Number(values[0]));
-            startTime = startTime.minute(Number(values[1]));
-            startTime = startTime.startOf('minute');
-            this.form.startTime = startTime.format();
-        },
-        startTimeDate(startTimeDate) {
-            const startTimeDateValue = dayjs(startTimeDate);
-            let startTime = dayjs(this.form.startTime);
-            startTime = startTime.year(startTimeDateValue.year());
-            startTime = startTime.month(startTimeDateValue.month());
-            startTime = startTime.date(startTimeDateValue.date());
-            startTime = startTime.startOf('minute');
-            this.form.startTime = startTime.format();
-        },
         endTimeTime(endTimeTime) {
             const values = endTimeTime.split(':');
             if (values.length < 2) {
@@ -695,8 +632,6 @@ export default {
         this.initialWalkName = this.walk.name;
         this.form.name = this.walk.name;
         this.form.conceptOfDay = this.walk.conceptOfDay;
-        this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');
-        this.startTimeDate = dayjs(this.walk.startTime).format('YYYY-MM-DD');
         this.endTimeTime = dayjs().format('HH:mm');
         this.endTimeDate = dayjs().format('YYYY-MM-DD');
 

@@ -7,7 +7,7 @@ import {getViolationsFeedback} from "../../../utils";
 const emit = defineEmits(['input']);
 
 export interface Props {
-    value: string[],
+    value: boolean,
     label?: string,
     description?: string,
     error?: any,

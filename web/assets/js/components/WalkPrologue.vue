@@ -25,6 +25,7 @@
                     :users="usersOfTeam"
                     :walk-creator="form.walkCreator"
                     :is-loading="isLoading"
+                    :error="error"
                     :label="`Teilnehmende des Teams &quot;${team?.name}&quot;`"
                     description="Wer ist heute mit dabei?"
                 />
@@ -54,32 +55,11 @@
                 />
             </v-col>
             <v-col>
-                Rundenstartzeit<br>
-                <date-picker
-                    v-model="startTimeDate"
-                    label="Rundenstartzeit"
-                    :disabled="isLoading"
-                    format="DD.MM.YYYY"
-                    title-format="DD.MM.YYYY"
-                    show-week-number
-                    data-test="startTimeDate"
-                    :lang="datePickerLang"
-                >
-
-                </date-picker>
-                <date-picker
-                    v-model="startTimeTime"
-                    type="time"
-                    :disabled="isLoading"
-                    data-test="startTimeTime"
-                    :minute-step="5"
-                    format="HH:mm"
-                    title-format="HH:mm"
-                    :show-second="false"
-                    :lang="datePickerLang"
-                >
-
-                </date-picker>
+                <walk-start-time-field
+                    v-model="form.startTime"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
             </v-col>
             <v-col>
                 <walk-holidays-field
@@ -117,21 +97,27 @@ import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTeamStore, useUserStore, useWalkStore} from '../stores';
-import {WalkConceptOfDayField, WalkGuestNamesField, WalkHolidaysField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "./Common/Walk";
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/de';
+import {
+    WalkConceptOfDayField,
+    WalkGuestNamesField,
+    WalkHolidaysField,
+    WalkNameField,
+    WalkStartTimeField,
+    WalkTeamMembersField,
+    WalkWalkCreatorField,
+    WalkWeatherField
+} from "./Common/Walk";
 
 export default {
     name: "WalkPrologue",
     components: {
+        WalkStartTimeField,
         WalkHolidaysField,
         WalkConceptOfDayField,
         WalkGuestNamesField,
         WalkWalkCreatorField,
         WalkNameField,
         WalkWeatherField,
-        DatePicker,
         WalkTeamMembersField,
         FormGroup,
         ContentCollapse,
@@ -143,20 +129,12 @@ export default {
     },
     data: function () {
         return {
-            datePickerLang: {
-                formatLocale: {
-                    firstDayOfWeek: 1,
-                },
-                monthBeforeYear: true,
-            },
             alertStore: useAlertStore(),
             authStore: useAuthStore(),
             teamStore: useTeamStore(),
             userStore: useUserStore(),
             walkStore: useWalkStore(),
             walkNameSearch: '',
-            startTimeTime: null,
-            startTimeDate: null,
             form: {
                 name: '',
                 team: null,
@@ -192,25 +170,11 @@ export default {
         isFormInvalid() {
             return !this.form.name
                 || !this.form.conceptOfDay
-                || (!this.startTimeState && undefined === this.validationErrors.startTime)
-                || !this.walkTeamMembersState
-                || !this.walk.walkCreator
+                || !this.form.startTime
+                || !this.form.walkTeamMembers.length
+                || !this.form.walkCreator
                 || !this.form.weather
                 || this.isLoading;
-        },
-        walkTeamMembersState() {
-            if (!this.form.walkTeamMembers || !this.form.walkTeamMembers.length) {
-                return null;
-            }
-
-            return undefined === this.validationErrors.walkTeamMembers;
-        },
-        startTimeState() {
-            if (null === this.form.startTime || undefined === this.form.startTime) {
-                return;
-            }
-
-            return !!this.form.startTime && undefined === this.validationErrors.startTime;
         },
         currentUser() {
             return this.authStore.currentUser;
@@ -247,29 +211,6 @@ export default {
             return errors;
         },
     },
-    watch: {
-        startTimeTime(startTimeTime) {
-            // const values = startTimeTime.split(':');
-            // if (values.length !== 3) {
-            //     return;
-            // }
-            // let startTime = dayjs(this.form.startTime);
-            // startTime = startTime.hour(Number(values[0]));
-            // startTime = startTime.minute(Number(values[1]));
-            // startTime = startTime.startOf('minute');
-            let startTime = dayjs(startTimeTime);
-            this.form.startTime = startTime.format();
-        },
-        startTimeDate(startTimeDate) {
-            const startTimeDateValue = dayjs(startTimeDate);
-            let startTime = dayjs(this.form.startTime);
-            startTime = startTime.year(startTimeDateValue.year());
-            startTime = startTime.month(startTimeDateValue.month());
-            startTime = startTime.date(startTimeDateValue.date());
-            startTime = startTime.startOf('minute');
-            this.form.startTime = startTime.format();
-        },
-    },
     async mounted() {
         if (!this.team) {
             await this.teamStore.fetchTeams();
@@ -297,8 +238,6 @@ export default {
         }
         this.form.team = this.team['@id'];
         this.form.walkCreator = this.currentUser['@id'];
-        this.startTimeTime = dayjs().toDate();
-        this.startTimeDate = dayjs().toDate();
     },
     methods: {
         handleWalkCreatorChange(newWalkCreator) {

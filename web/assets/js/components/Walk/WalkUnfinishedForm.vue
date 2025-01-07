@@ -41,32 +41,12 @@
             :is-loading="isLoading"
             :error="error"
         />
-        <form-group label="Rundenstartzeit">
-            <b-row>
-                <b-col>
-                    <b-datepicker
-                        v-model="startTimeDate"
-                        v-bind="dateLabels['de']"
-                        :disabled="isLoading"
-                        :state="startTimeState"
-                        data-test="startTimeDate"
-                        locale="de"
-                    />
-                </b-col>
-                <b-col>
-                    <b-timepicker
-                        v-model="startTimeTime"
-                        v-bind="timeLabels['de']"
-                        :disabled="isLoading"
-                        :state="startTimeState"
-                        data-test="startTimeTime"
-                        minutes-step="5"
-                        locale="de"
-                        right
-                    />
-                </b-col>
-            </b-row>
-        </form-group>
+        <walk-start-time-field
+            v-model="walk.startTime"
+            :initial-walk="initialWalk"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <walk-holidays-field
             v-model="walk.holidays"
             :is-loading="isLoading"
@@ -99,7 +79,7 @@ import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
 import {useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
-import {WalkConceptOfDayField, WalkGuestNamesField, WalkHolidaysField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
+import {WalkConceptOfDayField, WalkGuestNamesField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -114,6 +94,7 @@ export default {
         },
     },
     components: {
+        WalkStartTimeField,
         WalkHolidaysField,
         WalkConceptOfDayField,
         WalkGuestNamesField,
@@ -130,9 +111,6 @@ export default {
             userStore: useUserStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
-            initialWalkName: '',
-            startTimeDate: null,
-            startTimeTime: null,
             walk: {
                 name: null,
                 conceptOfDay: [],
@@ -179,28 +157,14 @@ export default {
             return !this.walk
                 || !this.walk.weather
                 || !this.walk.conceptOfDay
-                || (!this.startTimeState && undefined === this.validationErrors.startTime)
-                || !this.walkTeamMembersState
+                || !this.walk.startTime
+                || !this.walk.walkTeamMembers.length
                 || !this.walk.walkCreator
                 || !this.walk.weather
                 || this.isLoading;
         },
         team() {
             return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
-        },
-        walkTeamMembersState() {
-            if (!this.walk.walkTeamMembers || !this.walk.walkTeamMembers.length) {
-                return null;
-            }
-
-            return undefined === this.validationErrors.walkTeamMembers;
-        },
-        startTimeState() {
-            if (null === this.walk.startTime || undefined === this.walk.startTime) {
-                return;
-            }
-
-            return !!this.walk.startTime;
         },
         validationErrors() {
             const errors = {};
@@ -233,7 +197,7 @@ export default {
         isFormInvalid() {
             return !this.walk.name
                 || !this.walk.conceptOfDay
-                || !this.startTimeState
+                || !this.walk.startTime
                 || !this.walk.walkCreator
                 || this.isLoading;
         },
@@ -241,31 +205,8 @@ export default {
             return this.walkStore.getErrors.change;
         },
     },
-    watch: {
-        startTimeTime(startTimeTime) {
-            const values = startTimeTime.split(':');
-            if (values.length < 2) {
-                return;
-            }
-            let startTime = dayjs(this.walk.startTime);
-            startTime = startTime.hour(Number(values[0]));
-            startTime = startTime.minute(Number(values[1]));
-            startTime = startTime.startOf('minute');
-            this.walk.startTime = startTime.format();
-        },
-        startTimeDate(startTimeDate) {
-            const startTimeDateValue = dayjs(startTimeDate);
-            let startTime = dayjs(this.walk.startTime);
-            startTime = startTime.year(startTimeDateValue.year());
-            startTime = startTime.month(startTimeDateValue.month());
-            startTime = startTime.date(startTimeDateValue.date());
-            startTime = startTime.startOf('minute');
-            this.walk.startTime = startTime.format();
-        },
-    },
     async created() {
         this.walk.name = this.initialWalk.name;
-        this.initialWalkName = this.initialWalk.name;
         this.walk.conceptOfDay = this.initialWalk.conceptOfDay;
         this.walk.startTime = this.initialWalk.startTime;
         this.walk.holidays = this.initialWalk.holidays;
@@ -280,9 +221,6 @@ export default {
         if (!this.team) {
             await this.teamStore.fetchTeams();
         }
-
-        this.startTimeTime = dayjs(this.walk.startTime).format('HH:mm');
-        this.startTimeDate = dayjs(this.walk.startTime).format('YYYY-MM-DD');
     },
     methods: {
         handleWalkCreatorChange(newWalkCreator) {
