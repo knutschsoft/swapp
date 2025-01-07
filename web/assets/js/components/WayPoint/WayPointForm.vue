@@ -12,76 +12,59 @@
             :is-loading="isLoading"
             :error="error"
         />
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Ankunft"
-            :description="visitedAtDescription"
-            :invalid-feedback="invalidVisitedAtState"
-            :state="visitedAtState"
+        <v-row class="my-4">
+            <v-col cols="12" md="6">
+                <way-point-visited-at-field
+                    v-model="wayPoint.visitedAt"
+                    :initial-way-point="initialWayPoint"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col
+                class="d-none d-md-block border-top-0 border-bottom-0 border-right-0 border-secondary border-dashed border-left"
+            >
+            </v-col>
+            <v-col>
+                <div class="d-none d-md-block">&nbsp;</div>
+                <v-btn
+                    block
+                    color="secondary"
+                    outlined
+                    small
+                    @click="selectCurrentTime"
+                    class="mb-3"
+                >
+                    Schnellauswahl: aktueller Zeitpunkt
+                </v-btn>
+                <v-btn
+                    color="secondary"
+                    block
+                    outlined
+                    small
+                    @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
+                    class="mt-2"
+                >
+                    Schnellauswahl: {{ walk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-alert
+            v-if="!!diffLastWayPointOrRound"
+            class="mb-0"
+            text
+            color="warning"
         >
-            <b-row class="mt-0 mb-0">
-                <b-col>
-                    <b-timepicker
-                        v-model="visitedAtTime"
-                        v-bind="timeLabels['de']"
-                        :disabled="isLoading"
-                        :state="visitedAtState"
-                        data-test="visitedAtTime"
-                        minutes-step="5"
-                        locale="de"
-                        size="sm"
-                    />
-                    <b-datepicker
-                        v-model="visitedAtDate"
-                        v-bind="dateLabels['de']"
-                        :disabled="isLoading"
-                        :state="visitedAtState"
-                        data-test="visitedAtDate"
-                        locale="de"
-                        size="sm"
-                        class="mt-2"
-                        right
-                    />
-                </b-col>
-                <b-col
-                    class="border-top-0 border-bottom-0 border-right-0 border-secondary border-dashed border-left"
-                >
-                    <v-btn
-                        block
-                        color="secondary"
-                        outlined
-                        small
-                        @click="selectCurrentTime"
-                        class="mb-3"
-                    >
-                        Schnellauswahl: aktueller Zeitpunkt
-                    </v-btn>
-                    <v-btn
-                        color="secondary"
-                        block
-                        outlined
-                        small
-                        @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
-                        class="mt-2"
-                    >
-                        Schnellauswahl: {{ walk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
-                    </v-btn>
-                </b-col>
-            </b-row>
-            <template v-slot:valid-feedback>
-                <v-alert
-                    v-if="!!diffLastWayPointOrRound"
-                    class="mb-0"
-                    text
-                    color="warning"
-                >
-                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
-                </v-alert>
-            </template>
-        </b-form-group>
+            Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
+        </v-alert>
+        <v-alert
+            v-if="visitedAtState === false"
+            class="mb-0"
+            text
+            color="warning"
+        >
+            {{ visitedAtDescription }}
+        </v-alert>
         <b-form-group
             v-if="isShowWalkStartTimeButton"
             content-cols="12"
@@ -449,7 +432,7 @@ import { getViolationsFeedback } from '../../utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore} from '../../stores';
-import { WayPointLocationNameField } from "../Common/WayPoint";
+import { WayPointLocationNameField, WayPointVisitedAtField } from "../Common/WayPoint";
 
 export default {
     name: 'WayPointForm',
@@ -470,6 +453,7 @@ export default {
         },
     },
     components: {
+        WayPointVisitedAtField,
         WayPointLocationNameField,
         ColorBadge,
         GlobalFormError,
@@ -484,7 +468,7 @@ export default {
             wayPointStore: useWayPointStore(),
             wayPoint: {
                 locationName: '',
-                visitedAt: dayjs(),
+                visitedAt: dayjs().format(),
                 ageGroups: [],
                 peopleCount: 0,
                 userGroups: [],
@@ -497,8 +481,6 @@ export default {
                 imageFileName: null,
                 contactsCount: 0,
             },
-            visitedAtTime: null,
-            visitedAtDate: null,
             file: null,
             ageRangeOptions: Array.from(Array(51), (x, i) => {
                 let start = 30;
@@ -575,9 +557,6 @@ export default {
         },
         visitedAtState() {
             if (null === this.wayPoint.visitedAt || undefined === this.wayPoint.visitedAt) {
-                return;
-            }
-            if (!this.visitedAtTime || !this.visitedAtDate) {
                 return;
             }
             if (!this.walk) {
@@ -672,9 +651,6 @@ export default {
             }
 
             return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) und vor der Rundenendzeit (${dayjs(this.walk.endTime).format('HH:mm')} Uhr am ${dayjs(this.walk.endTime).format('DD.MM.YYYY')}) liegen.`;
-        },
-        invalidVisitedAtState() {
-            return getViolationsFeedback(['visitedAt'], this.error);
         },
         contactsCountState() {
             if ('' === this.invalidContactsCountState && null === this.wayPoint.contactsCount) {
@@ -817,26 +793,6 @@ export default {
             return userGroups;
         },
     },
-    watch: {
-        visitedAtTime(visitedAtTime) {
-            const values = visitedAtTime.split(':');
-            if (values.length < 2) {
-                return;
-            }
-            let visitedAt = dayjs(this.wayPoint.visitedAt);
-            visitedAt = visitedAt.hour(Number(values[0]));
-            visitedAt = visitedAt.minute(Number(values[1]));
-            this.wayPoint.visitedAt = visitedAt.format();
-        },
-        visitedAtDate(visitedAtDate) {
-            const visitedAtDateValue = dayjs(visitedAtDate);
-            let visitedAt = dayjs(this.wayPoint.visitedAt);
-            visitedAt = visitedAt.year(visitedAtDateValue.year());
-            visitedAt = visitedAt.month(visitedAtDateValue.month());
-            visitedAt = visitedAt.date(visitedAtDateValue.date());
-            this.wayPoint.visitedAt = visitedAt.format();
-        },
-    },
     async created() {
         this.wayPointStore.resetChangeError();
         this.wayPointStore.resetCreateError();
@@ -870,14 +826,10 @@ export default {
             this.wayPoint.peopleCount = this.initialWayPoint.peopleCount;
             this.wayPoint.oneOnOneInterview = this.initialWayPoint.oneOnOneInterview;
             this.wayPoint.wayPointTags = JSON.parse(JSON.stringify(this.initialWayPoint.wayPointTags)) || [];
-            this.visitedAtDate = dayjs(this.initialWayPoint.visitedAt).format('YYYY-MM-DD');
-            this.visitedAtTime = dayjs(this.initialWayPoint.visitedAt).format('HH:mm');
         } else {
             this.wayPoint.ageGroups = this.ageGroups;
             this.wayPoint.userGroups = this.userGroups;
             this.wayPoint.walk = this.walk['@id'];
-            this.visitedAtTime = dayjs().format('HH:mm');
-            this.visitedAtDate = dayjs().format('YYYY-MM-DD');
         }
 
         this.wayPoint.contactsCount = this.walk.isWithContactsCount ? 0 : null;
@@ -890,16 +842,14 @@ export default {
             return this.wayPointStore.getWayPointByIri(iri);
         },
         selectCurrentTime() {
-            this.visitedAtTime = dayjs().format('HH:mm');
-            this.visitedAtDate = dayjs().format('YYYY-MM-DD');
+            this.wayPoint.visitedAt = dayjs().format();
         },
         selectFiveMinutesAfterLastWayPointOrStartOfWalkTime() {
             let time = this.lastWayPointOrRoundTime;
             if (this.hasLastWayPoint) {
                 time = time.add(5, 'minute');
             }
-            this.visitedAtTime = time.format('HH:mm');
-            this.visitedAtDate = time.format('YYYY-MM-DD');
+            this.wayPoint.visitedAt = time.format();
         },
         updateFile: async function (file) {
             this.wayPoint.imageFileData = file ? await this.readFile(file) : null;
