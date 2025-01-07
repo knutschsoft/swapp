@@ -218,14 +218,12 @@
             class="mt-0 ml-auto"
             dense
         />
-        <form-group label="">
-            <b-form-checkbox
-                v-model="walk.isResubmission"
-                :disabled="isLoading"
-            >
-                Wiedervorlage Dienstberatung
-            </b-form-checkbox>
-        </form-group>
+        <walk-is-resubmission-field
+            v-model="walk.isResubmission"
+            :is-loading="isLoading"
+            :error="error"
+            label="Soll die Runde in der Dienstberatung wieder vorgelegt werden?"
+        />
         <v-btn
             type="submit"
             color="secondary"
@@ -255,7 +253,7 @@ import {
     WalkEndTimeField,
     WalkGuestNamesField,
     WalkHolidaysField,
-    WalkInsightsField,
+    WalkInsightsField, WalkIsResubmissionField,
     WalkNameField,
     WalkStartTimeField,
     WalkTeamMembersField,
@@ -278,6 +276,7 @@ export default {
         },
     },
     components: {
+        WalkIsResubmissionField,
         WalkInsightsField,
         WalkCommitmentsField,
         WalkWalkReflectionField,

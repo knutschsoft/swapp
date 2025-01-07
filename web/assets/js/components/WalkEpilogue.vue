@@ -213,21 +213,12 @@
                     class="mt-0 ml-auto"
                     dense
                 />
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Wiedervorlage Dienstberatung"
-                    description=""
-                >
-                    <b-form-checkbox
-                        v-model="form.isResubmission"
-                        :disabled="isLoading"
-                    >
-                        Soll die Runde in der Dienstberatung wieder vorgelegt werden?
-                    </b-form-checkbox>
-                </b-form-group>
+                <walk-is-resubmission-field
+                    v-model="form.isResubmission"
+                    :is-loading="isLoading"
+                    :error="error"
+                    label="Soll die Runde in der Dienstberatung wieder vorgelegt werden?"
+                />
                 <v-btn
                     type="submit"
                     color="secondary"
@@ -273,6 +264,7 @@ import {
     WalkEndTimeField,
     WalkHolidaysField,
     WalkInsightsField,
+    WalkIsResubmissionField,
     WalkNameField,
     WalkStartTimeField,
     WalkWalkReflectionField,
@@ -287,6 +279,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkIsResubmissionField,
         WalkInsightsField,
         WalkCommitmentsField,
         WalkWalkReflectionField,
