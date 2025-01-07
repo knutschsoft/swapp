@@ -7,6 +7,7 @@ export {default as WalkInsightsField} from './WalkInsightsField.vue';
 export {default as WalkIsResubmissionField} from './WalkIsResubmissionField.vue';
 export {default as WalkNameField} from './WalkNameField.vue';
 export {default as WalkStartTimeField} from './WalkStartTimeField.vue';
+export {default as WalkSystemicAnswerField} from './WalkSystemicAnswerField.vue';
 export {default as WalkTeamMembersField} from './WalkTeamMembersField.vue';
 export {default as WalkWalkCreatorField} from './WalkWalkCreatorField.vue';
 export {default as WalkWalkReflectionField} from './WalkWalkReflectionField.vue';

@@ -122,44 +122,22 @@
                     :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
                 />
-                <b-form-group
-                    v-if="walk.isWithSystemicQuestion"
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    :description="walk.systemicQuestion"
-                    :disabled="isLoading"
-                    :invalid-feedback="invalidSystemicAnswerFeedback"
-                    :state="systemicAnswerState"
-                >
-                    <template v-slot:label>
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div :class="isWithoutSystemicAnswer ? `text-muted` : ``">
-                                Systemische Antwort
-                            </div>
-                            <b-form-checkbox
-                                v-model="isWithoutSystemicAnswer"
-                                :disabled="isLoading"
-                                class="font-weight-normal"
-                            >
-                                nicht benötigt
-                            </b-form-checkbox>
-                        </div>
-                    </template>
-                    <b-textarea
+                <template v-if="walk.isWithSystemicQuestion">
+                    <walk-systemic-answer-field
                         v-model="form.systemicAnswer"
-                        minlength="1"
-                        maxlength="2500"
-                        :placeholder="walk.systemicQuestion"
+                        label="Systemische Antwort"
+                        :description="walk.systemicQuestion"
+                        :is-loading="isLoading"
                         :disabled="isLoading || isWithoutSystemicAnswer"
-                        :state="systemicAnswerState"
-                        data-test="systemicAnswer"
-                        rows="3"
-                        trim
-                        max-rows="15"
+                        :error="error"
                     />
-                </b-form-group>
+                    <v-switch
+                        v-model="isWithoutSystemicAnswer"
+                        label="nicht benötigt"
+                        class="mt-0 ml-auto"
+                        dense
+                    />
+                </template>
                 <walk-walk-reflection-field
                     v-model="form.walkReflection"
                     :is-loading="isLoading"
@@ -172,23 +150,14 @@
                     class="mt-0 ml-auto"
                     dense
                 />
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Rundenbewertung"
-                    description=""
-                    :disabled="isLoading"
-                >
-                    <walk-rating
-                        v-if="walkClient && form.rating"
-                        :rating="form.rating"
-                        :client="walkClient"
-                        :read-only="isLoading"
-                        @select-rating="form.rating = $event"
-                    />
-                </b-form-group>
+                Rundenbewertung
+                <walk-rating
+                    v-if="walkClient && form.rating"
+                    :rating="form.rating"
+                    :client="walkClient"
+                    :read-only="isLoading"
+                    @select-rating="form.rating = $event"
+                />
                 <walk-commitments-field
                     v-model="form.commitments"
                     :is-loading="isLoading"
@@ -267,6 +236,7 @@ import {
     WalkIsResubmissionField,
     WalkNameField,
     WalkStartTimeField,
+    WalkSystemicAnswerField,
     WalkWalkReflectionField,
     WalkWeatherField
 } from "./Common/Walk";
@@ -279,6 +249,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkSystemicAnswerField,
         WalkIsResubmissionField,
         WalkInsightsField,
         WalkCommitmentsField,
@@ -408,19 +379,6 @@ export default {
         },
         team() {
             return this.teamStore.getTeamByTeamName(this.walk.teamName);
-        },
-        systemicAnswerState() {
-            if (this.isWithoutSystemicAnswer) {
-                return true;
-            }
-            if (!this.form.systemicAnswer && !this.invalidSystemicAnswerFeedback) {
-                return;
-            }
-
-            return !this.invalidSystemicAnswerFeedback;
-        },
-        invalidSystemicAnswerFeedback() {
-            return getViolationsFeedback(['systemicAnswer'], this.error);
         },
         isLoading() {
             return this.walkStore.isLoading;

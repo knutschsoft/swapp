@@ -126,53 +126,22 @@
             :is-loading="isLoading"
             :error="error"
         />
-        <form-group
-            v-if="walk.isWithSystemicQuestion"
-            label="Systemische Frage"
-        >
-            <b-form-input
-                v-model="walk.systemicQuestion"
-                disabled
-                readonly
-            />
-        </form-group>
-        <b-form-group
-            v-if="walk.isWithSystemicQuestion"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            :description="walk.systemicQuestion"
-            :disabled="isLoading"
-            :state="systemicAnswerState"
-        >
-            <template v-slot:label>
-                <div class="d-flex justify-content-between flex-wrap">
-                    <div :class="isWithoutSystemicAnswer ? `text-muted` : ``">
-                        Systemische Antwort
-                    </div>
-                    <b-form-checkbox
-                        v-model="isWithoutSystemicAnswer"
-                        :disabled="isLoading"
-                        class="font-weight-normal"
-                    >
-                        nicht benötigt
-                    </b-form-checkbox>
-                </div>
-            </template>
-            <b-textarea
+        <template v-if="walk.isWithSystemicQuestion">
+            <walk-systemic-answer-field
                 v-model="walk.systemicAnswer"
+                :label="walk.systemicQuestion"
+                :description="walk.systemicQuestion"
+                :is-loading="isLoading"
                 :disabled="isLoading || isWithoutSystemicAnswer"
-                minlength="1"
-                maxlength="2500"
-                placeholder="Systemische Antwort"
-                :state="systemicAnswerState"
-                data-test="systemicAnswer"
-                rows="3"
-                trim
-                max-rows="15"
+                :error="error"
             />
-        </b-form-group>
+            <v-switch
+                v-model="isWithoutSystemicAnswer"
+                label="nicht benötigt"
+                class="mt-0 ml-auto"
+                dense
+            />
+        </template>
         <walk-walk-reflection-field
             v-model="walk.walkReflection"
             :is-loading="isLoading"
@@ -185,15 +154,14 @@
             class="mt-0 ml-auto"
             dense
         />
-        <form-group label="Rundenbewertung">
-            <walk-rating
-                v-if="walk.rating && walkClient"
-                :rating="walk.rating"
-                :client="walkClient"
-                :read-only="isLoading"
-                @select-rating="walk.rating = $event"
-            />
-        </form-group>
+        Rundenbewertung
+        <walk-rating
+            v-if="walk.rating && walkClient"
+            :rating="walk.rating"
+            :client="walkClient"
+            :read-only="isLoading"
+            @select-rating="walk.rating = $event"
+        />
         <walk-commitments-field
             v-model="walk.commitments"
             :is-loading="isLoading"
@@ -256,6 +224,7 @@ import {
     WalkInsightsField, WalkIsResubmissionField,
     WalkNameField,
     WalkStartTimeField,
+    WalkSystemicAnswerField,
     WalkTeamMembersField,
     WalkWalkCreatorField,
     WalkWalkReflectionField,
@@ -276,6 +245,7 @@ export default {
         },
     },
     components: {
+        WalkSystemicAnswerField,
         WalkIsResubmissionField,
         WalkInsightsField,
         WalkCommitmentsField,
@@ -396,16 +366,6 @@ export default {
         team() {
             return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
         },
-        systemicAnswerState() {
-            if (this.isWithoutSystemicAnswer) {
-                return true;
-            }
-            if (null === this.walk.systemicAnswer || undefined === this.walk.systemicAnswer) {
-                return;
-            }
-
-            return this.walk.systemicAnswer.length >= 1 && this.walk.systemicAnswer.length <= 2500;
-        },
         walkReflectionState() {
             if (this.isWithoutWalkReflection) {
                 return true;
@@ -458,7 +418,7 @@ export default {
                 || !this.walk.insights && !this.isWithoutInsights
                 || !this.walk.startTime
                 || !this.walk.endTime
-                || !this.systemicAnswerState
+                || !this.walk.systemicAnswer && !this.isWithoutSystemicAnswer
                 || !this.walkReflectionState
                 || !this.walk.walkCreator
                 || this.isLoading;
