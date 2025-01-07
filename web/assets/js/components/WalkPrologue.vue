@@ -10,25 +10,19 @@
             @submit.prevent="onSubmit"
         >
             <v-col class="my-2">
-                <v-select
+                <walk-walk-creator-field
                     v-model="form.walkCreator"
-                    :items="walkCreatorOptions"
-                    :disabled="isLoading"
-                    item-value="@id"
-                    item-text="username"
-                    label="Rundenersteller"
-                    required
-                    dense
-                    outlined
-                    hide-details
+                    :team="team"
+                    :is-loading="isLoading"
+                    :error="error"
                     @change="handleWalkCreatorChange"
-                ></v-select>
+                />
             </v-col>
             <v-col>
                 <walk-team-members-field
                     v-model="form.walkTeamMembers"
                     :users="usersOfTeam"
-                    :walk-creator="getUserByIri(form.walkCreator)"
+                    :walk-creator="form.walkCreator"
                     :is-loading="isLoading"
                     :label="`Teilnehmende des Teams &quot;${team?.name}&quot;`"
                     description="Wer ist heute mit dabei?"
@@ -67,8 +61,8 @@
             <v-col>
                 <walk-name-field
                     v-model="form.name"
-                    :team="team"
                     :is-loading="isLoading"
+                    :team="team"
                     :error="error"
                 />
             </v-col>
@@ -168,7 +162,7 @@ import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTeamStore, useUserStore, useWalkStore} from '../stores';
-import { WalkNameField, WalkTeamMembersField, WalkWeatherField } from "./Common/Walk";
+import { WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField } from "./Common/Walk";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/de';
@@ -176,6 +170,7 @@ import 'vue2-datepicker/locale/de';
 export default {
     name: "WalkPrologue",
     components: {
+        WalkWalkCreatorField,
         WalkNameField,
         WalkWeatherField,
         DatePicker,
@@ -243,7 +238,7 @@ export default {
                 || (!this.conceptOfDayState && undefined === this.validationErrors.conceptOfDay)
                 || (!this.startTimeState && undefined === this.validationErrors.startTime)
                 || !this.walkTeamMembersState
-                || !this.walkCreatorState
+                || !this.walk.walkCreator
                 || !this.form.weather
                 || this.isLoading;
         },
@@ -295,33 +290,6 @@ export default {
             });
 
             return message;
-        },
-        walkCreatorOptions() {
-            if (!this.team) {
-                return [];
-            }
-
-            return this.team.users
-                .map(userIri => this.getUserByIri(userIri))
-                .filter(user => undefined !== user)
-                ;
-        },
-        walkCreatorFeedback() {
-            let message = '';
-            ['walkCreator'].forEach(key => {
-                if (this.validationErrors[key]) {
-                    message += ` ${this.validationErrors[key]}`;
-                }
-            });
-
-            return message;
-        },
-        walkCreatorState() {
-            if (this.form.walkCreator === '') {
-                return null;
-            }
-
-            return !this.walkCreatorOptions.some(user => this.form.walkCreator === user['id']);
         },
         currentUser() {
             return this.authStore.currentUser;

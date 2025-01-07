@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ComponentPublicInstance, computed, ref, watch} from "vue";
+import {ComponentPublicInstance, computed, nextTick, ref, watch} from "vue";
 import {User} from "../../../model";
 
 // const props = defineProps(['modelValue', 'value']); // vue3
@@ -8,7 +8,7 @@ const emit = defineEmits(['input']);
 
 export interface Props {
     value: string[],
-    walkCreator?: User,
+    walkCreator?: string,
     users: User[],
     label?: string,
     description?: string,
@@ -34,7 +34,7 @@ const value = computed({
 
 const selectedWalkCreator = ref<ComponentPublicInstance<HTMLInputElement>[]>();
 
-watch(() => props.walkCreator, (newValue: User | undefined) => {
+watch(() => props.walkCreator, (newValue: string | undefined) => {
     if (undefined === newValue) {
         return;
     }
@@ -42,16 +42,16 @@ watch(() => props.walkCreator, (newValue: User | undefined) => {
         return;
     }
     selectedWalkCreator.value.some((walkCreatorElement) => {
-        if (walkCreatorElement.value !== newValue['@id']) {
+        if (walkCreatorElement.value !== newValue) {
             return false;
         }
-
-        const classList = walkCreatorElement.$el.classList;
-        classList.add('blinking');
-        window.setTimeout(() => {
-            classList.remove('blinking');
-        }, 1500);
-
+        nextTick(() => {
+            const classList = walkCreatorElement.$el.classList;
+            classList.add('blinking');
+            window.setTimeout(() => {
+                classList.remove('blinking');
+            }, 1500);
+        });
         return true;
     });
 });
@@ -83,7 +83,7 @@ const hasDisabledUser = computed(() => {
                                 :aria-describedby="description"
                                 name="users"
                                 dense
-                                :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
+                                :disabled="isLoading || (walkCreator === user['@id'])"
                                 v-model="value"
                                 :key="user['@id']"
                                 :value="user['@id']"
@@ -92,7 +92,7 @@ const hasDisabledUser = computed(() => {
                                 ref="selectedWalkCreator"
                                 :label="user.username"
                             >
-                                <template v-if="walkCreator && walkCreator['@id'] === user['@id']"> (Rundenersteller)</template>
+                                <template v-if="walkCreator === user['@id']"> (Rundenersteller)</template>
                             </v-switch>
                         </template>
                     </div>
@@ -113,7 +113,7 @@ const hasDisabledUser = computed(() => {
                                 :aria-describedby="description"
                                 name="users"
                                 dense
-                                :disabled="isLoading || (walkCreator && walkCreator['@id'] === user['@id'])"
+                                :disabled="isLoading || (walkCreator === user['@id'])"
                                 :data-test="`walkTeamMember-${user.username}`"
                                 class="min-w-[250px] text-disabled"
                             >
@@ -123,7 +123,7 @@ const hasDisabledUser = computed(() => {
                                         title="Account ist aktuell nicht aktiviert."
                                     >
                                         {{ user.username }}
-                                        <template v-if="walkCreator && walkCreator['@id'] === user['@id']">
+                                        <template v-if="walkCreator === user['@id']">
                                             (Rundenersteller)
                                         </template>
                                         <v-icon

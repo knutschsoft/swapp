@@ -3,28 +3,18 @@
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
-        <form-group
-            :label="`Rundenersteller`"
-            :description="``"
-            :state="walkCreatorState"
-            :invalid-feedback="walkCreatorFeedback"
-            col-md="6"
-        >
-            <b-form-select
-                v-model="walk.walkCreator"
-                :disabled="isLoading"
-                :state="walkCreatorState"
-                :options="walkCreatorOptions"
-                data-test="Rundenersteller"
-                value-field="@id"
-                text-field="username"
-                @change="handleWalkCreatorChange"
-            />
-        </form-group>
+        <walk-walk-creator-field
+            v-model="walk.walkCreator"
+            :team="team"
+            :walk="initialWalk"
+            :is-loading="isLoading"
+            :error="error"
+            @change="handleWalkCreatorChange"
+        />
         <walk-team-members-field
             v-model="walk.walkTeamMembers"
             :users="users"
-            :walk-creator="getUserByIri(walk.walkCreator)"
+            :walk-creator="walk.walkCreator"
             :is-loading="isLoading"
             label="Teilnehmende der Runde"
             description="Wer war mit dabei?"
@@ -390,7 +380,7 @@ import { useWalkStore } from '../../stores/walk';
 import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
 import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
-import {WalkNameField, WalkWeatherField} from "../Common/Walk";
+import {WalkNameField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkForm',
@@ -406,6 +396,7 @@ export default {
         },
     },
     components: {
+        WalkWalkCreatorField,
         WalkNameField,
         WalkWeatherField,
         WalkTeamMembersField,
@@ -432,7 +423,6 @@ export default {
             startTimeTime: null,
             endTimeDate: null,
             endTimeTime: null,
-            isInitiallyWithoutWalkCreator: false,
             walk: {
                 name: null,
                 commitments: null,
@@ -573,31 +563,6 @@ export default {
                 return !this.walk.guestNames.includes(guestName);
             });
         },
-        walkCreatorOptions() {
-            const users = this.users.slice();
-            if (this.isInitiallyWithoutWalkCreator) {
-                users.unshift({'@id': null, 'username': '-- Rundenersteller ist unbekannt --'})
-            }
-
-            return users;
-        },
-        walkCreatorFeedback() {
-            let message = '';
-            ['walkCreator'].forEach(key => {
-                if (this.validationErrors[key]) {
-                    message += ` ${this.validationErrors[key]}`;
-                }
-            });
-
-            return message;
-        },
-        walkCreatorState() {
-            if (this.walk.walkCreator === '') {
-                return null;
-            }
-
-            return !this.walkCreatorOptions.some(user => this.walk.walkCreator === user['id']);
-        },
         commitmentsState() {
             if (this.isWithoutCommitments) {
                 return true;
@@ -703,7 +668,7 @@ export default {
                 || !this.endTimeState
                 || !this.systemicAnswerState
                 || !this.walkReflectionState
-                || !this.walkCreatorState
+                || this.walk.walkCreator
                 || this.isLoading;
         },
         error() {
@@ -769,7 +734,6 @@ export default {
         this.walk.weather = this.initialWalk.weather;
         this.walk.walkTeamMembers = this.initialWalk.walkTeamMembers.slice();
         this.walk.walkCreator = this.initialWalk.walkCreator;
-        this.isInitiallyWithoutWalkCreator = !Boolean(this.initialWalk.walkCreator);
         this.walk.guestNames = this.initialWalk.guestNames.slice();
 
         this.isWithoutSystemicAnswer = !this.walk.systemicAnswer.length;
@@ -797,9 +761,6 @@ export default {
             if (!this.walk.walkTeamMembers.includes(newWalkCreator)) {
                 this.walk.walkTeamMembers.push(newWalkCreator)
             }
-        },
-        getUserByIri(userIri) {
-            return this.userStore.getUserByIri(userIri);
         },
         getWayPointByIri(iri) {
             return this.wayPointStore.getWayPointByIri(iri);

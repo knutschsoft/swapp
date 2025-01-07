@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {getViolationsFeedback, type ErrorData } from "../../../utils";
-import {Team, Walk} from "@/js/model";
+import {computed} from "vue";
+import {getViolationsFeedback} from "../../../utils";
+import {Team, Walk} from "../../../model";
 
 // const props = defineProps(['modelValue', 'value']); // vue3
 // const emit = defineEmits(['update:modelValue']); // vue3
@@ -13,7 +13,7 @@ export interface Props {
     team?: Team | null,
     walk?: Walk | null,
     description?: string,
-    error?: ErrorData | boolean,
+    error?: any,
     isLoading?: boolean
 }
 
@@ -25,8 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
     error: false,
     isLoading: false,
 });
-
-const weatherOptions = ref<string[]>(['', 'Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt']);
 
 const value = computed({
     get() {
@@ -48,15 +46,14 @@ const walkNameSuggestions = computed(() => {
         walkNames = [props.walk.name, ...new Set(props.team.walkNames)];
     }
 
-    return walkNames.filter((walkName: string) => {
-        return walkName.toLowerCase().startsWith(props.walk?.name.toLowerCase()) && walkName !== props.walk?.name;
-    }).map((walkName: string) => walkName);
+    return walkNames;
 })
 
 const errorMessages = computed(() => {
     if (!props.error) {
         return ''
     }
+
     return getViolationsFeedback(['name'], props.error);
 })
 
@@ -77,6 +74,8 @@ const errorMessages = computed(() => {
         :hide-details="!description"
         dense
         small-chips
+        :error-messages="errorMessages"
+        :error="!!errorMessages?.length"
         data-test="Name"
     />
 </template>

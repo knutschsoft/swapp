@@ -699,8 +699,6 @@ export default {
     },
     created() {
         this.setInitialValues();
-        console.log(this.initialTeam);
-        console.log(this.team)
         this.team.client = this.team.client || this.currentUser.client;
         this.userStore.fetchUsers();
     },

@@ -80,7 +80,6 @@
         <v-dialog
             v-model="dialog"
             scrollable
-            max-width="800px"
         >
             <v-card>
                 <v-card-title class="text-h5 grey lighten-2">

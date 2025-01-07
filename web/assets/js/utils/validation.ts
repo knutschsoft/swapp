@@ -25,7 +25,7 @@ function getViolationErrorsObject(errorData?: ErrorData): ValidationErrors {
         global: [],
     };
 
-    let localErrorData: ErrorData | undefined = errorData;
+    let localErrorData: ErrorData | boolean | undefined = errorData;
 
     if (!errorData) {
         return errors;
