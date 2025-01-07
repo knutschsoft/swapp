@@ -5,6 +5,7 @@
         is-visible-by-default
     >
         <v-form
+            v-if="team"
             ref="form"
             lazy-validation
             @submit.prevent="onSubmit"
@@ -45,35 +46,12 @@
                 />
             </v-col>
             <v-col>
-                <v-combobox
+                <walk-concept-of-day-field
                     v-model="form.conceptOfDay"
-                    :items="conceptOfDaySuggestions"
-                    chips
-                    deletable-chips
-                    clearable
-                    outlined
-                    multiple
-                    dense
-                    small-chips
-                    label="Tageskonzept"
-                    data-test="Tageskonzept"
-                    placeholder="Tageskonzept eintragen..."
-                    :disabled="isLoading"
-                    :loading="isLoading"
-                    :hide-no-data="!conceptOfDaySearch"
-                    :search-input.sync="conceptOfDaySearch"
-                    hide-details
-                >
-                    <template v-slot:no-data>
-                        <v-list-item dense>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Füge "<strong>{{ conceptOfDaySearch }}</strong>" hinzu.
-                                </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </template>
-                </v-combobox>
+                    :team="team"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
             </v-col>
             <v-col>
                 Rundenstartzeit<br>
@@ -140,7 +118,7 @@ import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTeamStore, useUserStore, useWalkStore} from '../stores';
-import { WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField } from "./Common/Walk";
+import {WalkConceptOfDayField, WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "./Common/Walk";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/de';
@@ -148,6 +126,7 @@ import 'vue2-datepicker/locale/de';
 export default {
     name: "WalkPrologue",
     components: {
+        WalkConceptOfDayField,
         WalkGuestNamesField,
         WalkWalkCreatorField,
         WalkNameField,
@@ -176,7 +155,6 @@ export default {
             userStore: useUserStore(),
             walkStore: useWalkStore(),
             walkNameSearch: '',
-            conceptOfDaySearch: '',
             startTimeTime: null,
             startTimeDate: null,
             form: {
@@ -213,21 +191,12 @@ export default {
         },
         isFormInvalid() {
             return !this.form.name
-                || (!this.conceptOfDayState && undefined === this.validationErrors.conceptOfDay)
+                || !this.form.conceptOfDay
                 || (!this.startTimeState && undefined === this.validationErrors.startTime)
                 || !this.walkTeamMembersState
                 || !this.walk.walkCreator
                 || !this.form.weather
                 || this.isLoading;
-        },
-        conceptOfDaySuggestions() {
-            if (!this.team) {
-                return [];
-            }
-
-            return this.team.conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
-                return !this.form.conceptOfDay.includes(conceptOfDaySuggestion);
-            });
         },
         walkTeamMembersState() {
             if (!this.form.walkTeamMembers || !this.form.walkTeamMembers.length) {
@@ -236,29 +205,12 @@ export default {
 
             return undefined === this.validationErrors.walkTeamMembers;
         },
-        conceptOfDayState() {
-            if (!this.form.conceptOfDay) {
-                return null;
-            }
-
-            return this.form.conceptOfDay.length > 0 && undefined === this.validationErrors.conceptOfDay;
-        },
         startTimeState() {
             if (null === this.form.startTime || undefined === this.form.startTime) {
                 return;
             }
 
             return !!this.form.startTime && undefined === this.validationErrors.startTime;
-        },
-        invalidConceptOfDayFeedback() {
-            let message = '';
-            ['conceptOfDay'].forEach(key => {
-                if (this.validationErrors[key]) {
-                    message += ` ${this.validationErrors[key]}`;
-                }
-            });
-
-            return message;
         },
         currentUser() {
             return this.authStore.currentUser;

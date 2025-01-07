@@ -18,13 +18,13 @@ export interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    label: 'Weitere Teilnehmende',
+    label: 'Tageskonzept',
     description: '',
     initialWalk: null,
     error: false,
     isLoading: false,
 });
-const guestNameSearch = ref<string>('');
+const conceptOfDaySearch = ref<string>('');
 const value = computed({
     get() {
         // return props.modelValue // vue3
@@ -36,14 +36,13 @@ const value = computed({
     }
 });
 
-const guestNames = computed(() => {
-    if (!props.team || !props.initialWalk || !props.initialWalk.isWithGuests) {
-        return [];
-    }
+const conceptOfDaySuggestions = computed(() => {
+    if (!props.team) return [];
 
-    return [
-        ...new Set(props.initialWalk.guestNames.concat(props.team.guestNames))
-    ];
+    const initialConcepts = props.initialWalk?.conceptOfDay ?? [];
+    const teamConcepts = props.team.conceptOfDaySuggestions;
+
+    return [...new Set([...initialConcepts, ...teamConcepts])];
 });
 
 const errorMessages = computed(() => {
@@ -51,30 +50,32 @@ const errorMessages = computed(() => {
         return ''
     }
 
-    return getViolationsFeedback(['guestNames'], props.error);
+    return getViolationsFeedback(['conceptOfDay'], props.error);
 })
 </script>
 
 <template>
+
     <v-combobox
         v-model="value"
-        :items="guestNames"
+        :items="conceptOfDaySuggestions"
         chips
         deletable-chips
         clearable
-        multiple
         outlined
+        multiple
         dense
         small-chips
         :label="label"
         :hint="description"
         :persistent-hint="!!description"
         :hide-details="!description"
-        placeholder="Namen eintragen..."
-        :hide-no-data="!guestNameSearch"
-        :search-input.sync="guestNameSearch"
+        data-test="Tageskonzept"
+        placeholder="Tageskonzept eintragen..."
         :disabled="isLoading"
         :loading="isLoading"
+        :hide-no-data="!conceptOfDaySearch"
+        :search-input.sync="conceptOfDaySearch"
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"
     >
@@ -82,7 +83,7 @@ const errorMessages = computed(() => {
             <v-list-item dense>
                 <v-list-item-content>
                     <v-list-item-title>
-                        Füge "<strong>{{ guestNameSearch }}</strong>" hinzu.
+                        Füge "<strong>{{ conceptOfDaySearch }}</strong>" hinzu.
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>

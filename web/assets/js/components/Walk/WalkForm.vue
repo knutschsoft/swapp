@@ -34,33 +34,13 @@
             :is-loading="isLoading"
             :error="error"
         />
-        <form-group label="Tageskonzept">
-            <b-input-group>
-                <b-form-tags
-                    v-model="walk.conceptOfDay"
-                    :disabled="isLoading"
-                    tag-pills
-                    placeholder="Tageskonzept eintragen..."
-                    add-button-text="Hinzufügen"
-                    duplicate-tag-text="Tageskonzept ist schon dabei"
-                    remove-on-delete
-                    :input-attrs="{ list: 'concept-of-day-list', 'data-test': 'Tageskonzept' }"
-                    add-on-change
-                    :state="conceptOfDayState"
-                />
-                <datalist id="concept-of-day-list">
-                    <option v-for="conceptOfDaySuggestion in conceptOfDaySuggestions">{{ conceptOfDaySuggestion }}</option>
-                </datalist>
-                <b-input-group-append>
-                    <b-button
-                        @click="walk.conceptOfDay = []"
-                        :disabled="!walk.conceptOfDay.length"
-                    >
-                        <mdicon name="CloseCircleOutline" size="20"/>
-                    </b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </form-group>
+        <walk-concept-of-day-field
+            v-model="walk.conceptOfDay"
+            :team="team"
+            :initial-walk="initialWalk"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <form-group label="Rundenstartzeit">
             <b-row class="mb-1 mt-0">
                 <b-col>
@@ -362,7 +342,7 @@ import FormGroup from '../Common/FormGroup.vue';
 import {StarRating} from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
 import {useAuthStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
-import {WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
+import {WalkConceptOfDayField, WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkForm',
@@ -378,6 +358,7 @@ export default {
         },
     },
     components: {
+        WalkConceptOfDayField,
         WalkGuestNamesField,
         WalkWalkCreatorField,
         WalkNameField,
@@ -396,7 +377,6 @@ export default {
             userStore: useUserStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
-            initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
             isWithoutWalkReflection: false,
@@ -524,17 +504,6 @@ export default {
         team() {
             return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
         },
-        conceptOfDaySuggestions() {
-            let conceptOfDaySuggestions = [];
-            if (!this.team) {
-                return conceptOfDaySuggestions;
-            }
-            conceptOfDaySuggestions = [...new Set(this.initialConceptOfDay), ...new Set(this.team.conceptOfDaySuggestions)];
-
-            return conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
-                return !this.walk.conceptOfDay.includes(conceptOfDaySuggestion);
-            });
-        },
         commitmentsState() {
             if (this.isWithoutCommitments) {
                 return true;
@@ -544,13 +513,6 @@ export default {
             }
 
             return this.walk.commitments.length >= 1 && this.walk.commitments.length <= 2500;
-        },
-        conceptOfDayState() {
-            if (null === this.walk.conceptOfDay || undefined === this.walk.conceptOfDay) {
-                return;
-            }
-
-            return this.walk.conceptOfDay.length >= 1 && this.walk.conceptOfDay.length <= 2500;
         },
         insightsState() {
             if (this.isWithoutInsights) {
@@ -634,7 +596,7 @@ export default {
         isFormInvalid() {
             return !this.walk.name
                 || !this.commitmentsState
-                || !this.conceptOfDayState
+                || !this.walk.conceptOfDay
                 || !this.insightsState
                 || !this.startTimeState
                 || !this.endTimeState
@@ -689,7 +651,6 @@ export default {
     },
     async created() {
         this.walk.name = this.initialWalk.name;
-        this.initialConceptOfDay = this.initialWalk.conceptOfDay;
         this.initialWalkName = this.initialWalk.name;
         this.walk.commitments = this.initialWalk.commitments;
         this.walk.conceptOfDay = this.initialWalk.conceptOfDay;

@@ -25,42 +25,14 @@
                     :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
                 />
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Tageskonzept"
+                <walk-concept-of-day-field
+                    v-model="form.conceptOfDay"
+                    :team="team"
+                    :initial-walk="walk"
+                    :is-loading="isLoading"
+                    :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
-                    :invalid-feedback="invalidConceptOfDayFeedback"
-                    :state="conceptOfDayState"
-                >
-                    <b-input-group>
-                        <b-form-tags
-                            v-model="form.conceptOfDay"
-                            :disabled="isLoading"
-                            tag-pills
-                            placeholder="Tageskonzept eintragen..."
-                            add-button-text="Hinzufügen"
-                            duplicate-tag-text="Tageskonzept ist schon dabei"
-                            remove-on-delete
-                            :input-attrs="{ list: 'concept-of-day-list', 'data-test': 'Tageskonzept' }"
-                            add-on-change
-                            :state="conceptOfDayState"
-                        />
-                        <datalist id="concept-of-day-list">
-                            <option v-for="conceptOfDaySuggestion in conceptOfDaySuggestions">{{ conceptOfDaySuggestion }}</option>
-                        </datalist>
-                        <b-input-group-append>
-                            <b-button
-                                @click="form.conceptOfDay = []"
-                                :disabled="!form.conceptOfDay.length"
-                            >
-                                <mdicon name="CloseCircleOutline" size="20"/>
-                            </b-button>
-                        </b-input-group-append>
-                    </b-input-group>
-                </b-form-group>
+                />
                 <b-form-group
                     content-cols="12"
                     label-cols="12"
@@ -417,7 +389,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import {WalkNameField, WalkWeatherField} from "./Common/Walk";
+import {WalkConceptOfDayField, WalkNameField, WalkWeatherField} from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
@@ -427,6 +399,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkConceptOfDayField,
         WalkNameField,
         WalkWeatherField,
         ContentCollapse,
@@ -451,7 +424,6 @@ export default {
             teamStore: useTeamStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
-            initialConceptOfDay: [],
             initialWalkName: '',
             isWithoutSystemicAnswer: false,
             isWithoutWalkReflection: false,
@@ -581,16 +553,6 @@ export default {
                 'endTimeAfterWayPointsVisitedAt',
             ], this.error, true);
         },
-        conceptOfDayState() {
-            if (!this.form.conceptOfDay && !this.invalidConceptOfDayFeedback) {
-                return;
-            }
-
-            return !this.invalidConceptOfDayFeedback;
-        },
-        invalidConceptOfDayFeedback() {
-            return getViolationsFeedback(['conceptOfDay'], this.error);
-        },
         startTimeState() {
             if (null === this.form.startTime || undefined === this.form.startTime) {
                 return;
@@ -613,17 +575,6 @@ export default {
         },
         team() {
             return this.teamStore.getTeamByTeamName(this.walk.teamName);
-        },
-        conceptOfDaySuggestions() {
-            let conceptOfDaySuggestions = [];
-            if (!this.team) {
-                return conceptOfDaySuggestions;
-            }
-            conceptOfDaySuggestions = [...new Set(this.initialConceptOfDay), ...new Set(this.team.conceptOfDaySuggestions)];
-
-            return conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
-                return !this.form.conceptOfDay.includes(conceptOfDaySuggestion);
-            });
         },
         systemicAnswerState() {
             if (this.isWithoutSystemicAnswer) {
@@ -750,7 +701,6 @@ export default {
         }
         this.isWithoutSystemicAnswer = !this.walk.isWithSystemicQuestion;
         this.form.walk = this.walk['@id'];
-        this.initialConceptOfDay = this.walk.conceptOfDay;
         this.initialWalkName = this.walk.name;
         this.form.name = this.walk.name;
         this.form.conceptOfDay = this.walk.conceptOfDay;
