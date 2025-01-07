@@ -36,6 +36,7 @@ declare module 'vue' {
     VExpansionPanels: typeof import('vuetify/lib')['VExpansionPanels']
     VFileInput: typeof import('vuetify/lib')['VFileInput']
     VForm: typeof import('vuetify/lib')['VForm']
+    VFormGroup: typeof import('vuetify/lib')['VFormGroup']
     VFormSelect: typeof import('vuetify/lib')['VFormSelect']
     VIcon: typeof import('vuetify/lib')['VIcon']
     VInputGroup: typeof import('vuetify/lib')['VInputGroup']

@@ -1,41 +1,17 @@
 <template>
-    <b-form
+    <v-form
         v-if="walk"
         @submit.prevent.stop="handleSubmit"
         class="p-1 p-sm-2 p-lg-3"
     >
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Ort"
-            :state="locationNameState"
-            :invalid-feedback="invalidLocationNameState"
-        >
-            <b-input-group>
-                <b-input
-                    v-model="wayPoint.locationName"
-                    required
-                    maxlength="300"
-                    :placeholder="walk ? 'Wo seid ihr gerade?' : 'Ort'"
-                    :state="locationNameState"
-                    data-test="locationName"
-                    list="location-name-list"
-                />
-                <datalist id="location-name-list">
-                    <option v-for="locationName in locationNames">{{ locationName }}</option>
-                </datalist>
-                <b-input-group-append>
-                    <b-button
-                        @click="wayPoint.locationName = ''"
-                        :disabled="wayPoint.locationName === ''"
-                    >
-                        <mdicon name="CloseCircleOutline" size="20"/>
-                    </b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </b-form-group>
+        <way-point-location-name-field
+            v-model="wayPoint.locationName"
+            :walk="walk"
+            :initial-way-point="initialWayPoint"
+            :team="team"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <b-form-group
             content-cols="12"
             label-cols="12"
@@ -462,7 +438,7 @@
         <global-form-error
             :error="globalErrors"
         />
-    </b-form>
+    </v-form>
 </template>
 
 <script>
@@ -473,6 +449,7 @@ import { getViolationsFeedback } from '../../utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore} from '../../stores';
+import { WayPointLocationNameField } from "../Common/WayPoint";
 
 export default {
     name: 'WayPointForm',
@@ -493,6 +470,7 @@ export default {
         },
     },
     components: {
+        WayPointLocationNameField,
         ColorBadge,
         GlobalFormError,
     },
@@ -583,14 +561,6 @@ export default {
         error() {
             return this.wayPointStore.getErrors.change || this.wayPointStore.getErrors.create;
         },
-        locationNames() {
-            if (!this.team) {
-                return [];
-            }
-            return this.team.locationNames.filter((locationName) => {
-                return locationName.toLowerCase().startsWith(this.wayPoint.locationName.toLowerCase());
-            }).map((locationName) => locationName);
-        },
         sumPeopleCount() {
             let sumPeopleCount = 0;
             this.wayPoint.ageGroups.forEach(ageGroup => sumPeopleCount += ageGroup.peopleCount.count);
@@ -602,16 +572,6 @@ export default {
         },
         walk() {
             return this.initialWalk ? this.initialWalk : this.walkStore.getWalkByIri(this.initialWayPoint.walk);
-        },
-        locationNameState() {
-            if ((null === this.wayPoint.locationName || '' === this.wayPoint.locationName || undefined === this.wayPoint.locationName) && '' === this.invalidLocationNameState) {
-                return;
-            }
-
-            return '' === this.invalidLocationNameState;
-        },
-        invalidLocationNameState() {
-            return getViolationsFeedback(['locationName'], this.error);
         },
         visitedAtState() {
             if (null === this.wayPoint.visitedAt || undefined === this.wayPoint.visitedAt) {

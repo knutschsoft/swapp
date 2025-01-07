@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed} from "vue";
 import {getViolationsFeedback} from "../../../utils";
-import {Team, Walk} from "../../../model";
+import {Team, Walk, WayPoint} from "../../../model";
 
 // const props = defineProps(['modelValue', 'value']); // vue3
 // const emit = defineEmits(['update:modelValue']); // vue3
@@ -9,9 +9,10 @@ const emit = defineEmits(['input']);
 
 export interface Props {
     value: string,
+    walk: Walk,
+    initialWayPoint?: WayPoint | null,
     label?: string,
     team?: Team | null,
-    walk?: Walk | null,
     description?: string,
     error?: any,
     isLoading?: boolean
@@ -21,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
     label: 'Name',
     description: '',
     team: null,
-    walk: null,
+    initialWayPoint: null,
     error: false,
     isLoading: false,
 });
@@ -37,16 +38,11 @@ const value = computed({
     }
 });
 
-const walkNameSuggestions = computed(() => {
-    let walkNames = <string[]>[];
-    if (!props.team) {
-        return walkNames;
-    }
-    if (props.walk?.name) {
-        walkNames = [props.walk.name, ...new Set(props.team.walkNames)];
-    }
+const locationNameSuggestions = computed(() => {
+    const initialLocation = props.initialWayPoint?.locationName ? [props.initialWayPoint.locationName] : [];
+    const teamLocations = props.team?.locationNames ?? [];
 
-    return walkNames;
+    return [...new Set([...initialLocation, ...teamLocations])];
 })
 
 const errorMessages = computed(() => {
@@ -54,7 +50,7 @@ const errorMessages = computed(() => {
         return ''
     }
 
-    return getViolationsFeedback(['name'], props.error);
+    return getViolationsFeedback(['locationName'], props.error);
 })
 
 </script>
@@ -62,11 +58,11 @@ const errorMessages = computed(() => {
 <template>
     <v-combobox
         v-model="value"
-        :items="walkNameSuggestions"
+        :items="locationNameSuggestions"
         clearable
         outlined
-        :label="label"
-        placeholder="Wie ist der Name der Runde?"
+        :label="'Ort'"
+        :placeholder="walk ? 'Wo seid ihr gerade?' : 'Ort eingeben...'"
         :disabled="isLoading"
         :loading="isLoading"
         :hint="description"
@@ -76,7 +72,7 @@ const errorMessages = computed(() => {
         small-chips
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"
-        data-test="Name"
+        data-test="locationName"
     />
 </template>
 
