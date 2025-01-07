@@ -1,3 +1,4 @@
+export {default as WalkGuestNamesField} from './WalkGuestNamesField.vue';
 export {default as WalkNameField} from './WalkNameField.vue';
 export {default as WalkTeamMembersField} from './WalkTeamMembersField.vue';
 export {default as WalkWalkCreatorField} from './WalkWalkCreatorField.vue';

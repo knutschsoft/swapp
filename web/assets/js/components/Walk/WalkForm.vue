@@ -19,27 +19,14 @@
             label="Teilnehmende der Runde"
             description="Wer war mit dabei?"
         />
-        <form-group
+        <walk-guest-names-field
             v-if="walk.isWithGuests"
-            :label="`Weitere Teilnehmende`"
-        >
-            <b-form-tags
-                v-model="walk.guestNames"
-                :disabled="isLoading"
-                tag-pills
-                placeholder="Namen eintragen..."
-                add-button-text="Hinzufügen"
-                duplicate-tag-text="Weiterer Teilnehmender ist schon dabei"
-                remove-on-delete
-                :input-attrs="{ list: 'guest-name-list' }"
-                add-on-change
-            />
-            <b-form-datalist
-                id="guest-name-list"
-                :options="guestNames"
-                autocomplete="off"
-            />
-        </form-group>
+            v-model="walk.guestNames"
+            :team="team"
+            :initial-walk="initialWalk"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <walk-name-field
             v-model="walk.name"
             :team="team"
@@ -125,7 +112,7 @@
                     />
                 </b-col>
             </b-row>
-            <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top" />
+            <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top"/>
             <b-row class="mb-1 mt-0">
                 <b-col
                     class="mt-2"
@@ -161,7 +148,8 @@
                     class="mb-0 mt-2"
                     color="warning"
                 >
-                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
+                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom
+                    {{ lastWayPointOrRoundTimeAsCalendar }}.
                 </v-alert>
             </template>
         </form-group>
@@ -371,16 +359,10 @@
 import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
-import { StarRating } from 'vue-rate-it';
+import {StarRating} from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
-import { useClientStore } from '../../stores/client';
-import { useTeamStore } from '../../stores/team';
-import { useWayPointStore } from '../../stores/way-point';
-import { useWalkStore } from '../../stores/walk';
-import { useUserStore } from '../../stores/user';
-import { useAuthStore } from '../../stores/auth';
-import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
-import {WalkNameField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
+import {useAuthStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
+import {WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkForm',
@@ -396,6 +378,7 @@ export default {
         },
     },
     components: {
+        WalkGuestNamesField,
         WalkWalkCreatorField,
         WalkNameField,
         WalkWeatherField,
@@ -484,7 +467,7 @@ export default {
         },
         wayPointsOfInitialWalk() {
             let wayPoints = [];
-            this.initialWalk.wayPoints.forEach(wayPointIri =>{
+            this.initialWalk.wayPoints.forEach(wayPointIri => {
                 const wayPoint = this.wayPointStore.getWayPointByIri(wayPointIri);
                 if (wayPoint) {
                     wayPoints.push(wayPoint);
@@ -505,14 +488,14 @@ export default {
                     },
                 )
                 .every(wayPoint => {
-                    if (false === wayPoint) {
-                        return true;
-                    }
-                    time = dayjs(wayPoint.visitedAt);
+                        if (false === wayPoint) {
+                            return true;
+                        }
+                        time = dayjs(wayPoint.visitedAt);
 
-                    return false;
-                }
-            );
+                        return false;
+                    }
+                );
 
             if (time) {
                 return time;
@@ -550,17 +533,6 @@ export default {
 
             return conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
                 return !this.walk.conceptOfDay.includes(conceptOfDaySuggestion);
-            });
-        },
-        guestNames() {
-            let guestNames = [];
-            if (!this.team || !this.initialWalk.isWithGuests) {
-                return guestNames;
-            }
-            guestNames = [...new Set(this.initialWalk.guestNames.concat(this.team.guestNames))];
-
-            return guestNames.filter((guestName) => {
-                return !this.walk.guestNames.includes(guestName);
             });
         },
         commitmentsState() {

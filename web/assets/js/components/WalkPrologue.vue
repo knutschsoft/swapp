@@ -28,35 +28,13 @@
                     description="Wer ist heute mit dabei?"
                 />
             </v-col>
-            <v-col>
-                <v-combobox
+            <v-col v-if="team.isWithGuests">
+                <walk-guest-names-field
                     v-model="form.guestNames"
-                    :items="guestNames"
-                    chips
-                    deletable-chips
-                    clearable
-                    multiple
-                    outlined
-                    dense
-                    small-chips
-                    label="Weitere Teilnehmende"
-                    placeholder="Namen eintragen..."
-                    :hide-no-data="!guestNameSearch"
-                    :search-input.sync="guestNameSearch"
-                    :disabled="isLoading"
-                    :loading="isLoading"
-                    hide-details
-                >
-                    <template v-slot:no-data>
-                        <v-list-item dense>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Füge "<strong>{{ guestNameSearch }}</strong>" hinzu.
-                                </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </template>
-                </v-combobox>
+                    :team="team"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
             </v-col>
             <v-col>
                 <walk-name-field
@@ -162,7 +140,7 @@ import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTeamStore, useUserStore, useWalkStore} from '../stores';
-import { WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField } from "./Common/Walk";
+import { WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField } from "./Common/Walk";
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/de';
@@ -170,6 +148,7 @@ import 'vue2-datepicker/locale/de';
 export default {
     name: "WalkPrologue",
     components: {
+        WalkGuestNamesField,
         WalkWalkCreatorField,
         WalkNameField,
         WalkWeatherField,
@@ -197,7 +176,6 @@ export default {
             userStore: useUserStore(),
             walkStore: useWalkStore(),
             walkNameSearch: '',
-            guestNameSearch: '',
             conceptOfDaySearch: '',
             startTimeTime: null,
             startTimeDate: null,
@@ -241,15 +219,6 @@ export default {
                 || !this.walk.walkCreator
                 || !this.form.weather
                 || this.isLoading;
-        },
-        guestNames() {
-            if (!this.team || !this.team.isWithGuests) {
-                return [];
-            }
-
-            return this.team.guestNames.filter((guestName) => {
-                return !this.form.guestNames.includes(guestName);
-            });
         },
         conceptOfDaySuggestions() {
             if (!this.team) {

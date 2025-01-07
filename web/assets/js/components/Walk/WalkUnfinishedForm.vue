@@ -19,6 +19,14 @@
             label="Teilnehmende der Runde"
             description="Wer war mit dabei?"
         />
+        <walk-guest-names-field
+            v-if="walk.isWithGuests"
+            v-model="walk.guestNames"
+            :team="team"
+            :initial-walk="initialWalk"
+            :is-loading="isLoading"
+            :error="error"
+        />
         <form-group
             v-if="walk.isWithGuests"
             :label="`Weitere Teilnehmende`"
@@ -139,7 +147,7 @@ import {useTeamStore} from '../../stores/team';
 import {useWayPointStore} from '../../stores/way-point';
 import {useWalkStore} from '../../stores/walk';
 import {useUserStore} from '../../stores/user';
-import {WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
+import {WalkGuestNamesField, WalkNameField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -154,6 +162,7 @@ export default {
         },
     },
     components: {
+        WalkGuestNamesField,
         WalkWalkCreatorField,
         WalkNameField,
         WalkWeatherField,
@@ -235,17 +244,6 @@ export default {
 
             return conceptOfDaySuggestions.filter((conceptOfDaySuggestion) => {
                 return !this.walk.conceptOfDay.includes(conceptOfDaySuggestion);
-            });
-        },
-        guestNames() {
-            let guestNames = [];
-            if (!this.team || !this.initialWalk.isWithGuests) {
-                return guestNames;
-            }
-            guestNames = [...new Set(this.initialWalk.guestNames.concat(this.team.guestNames))];
-
-            return guestNames.filter((guestName) => {
-                return !this.walk.guestNames.includes(guestName);
             });
         },
         walkTeamMembersState() {
