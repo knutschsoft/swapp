@@ -59,7 +59,7 @@
                         cols="12"
                         class="d-md-none"
                     >
-                        <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top" />
+                        <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top"/>
                     </v-col>
                     <v-col
                         cols="12"
@@ -107,7 +107,8 @@
                     class="mb-0"
                     color="warning"
                 >
-                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
+                    Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom
+                    {{ lastWayPointOrRoundTimeAsCalendar }}.
                 </v-alert>
                 <walk-holidays-field
                     v-model="form.holidays"
@@ -200,42 +201,18 @@
                     class="mt-0 ml-auto"
                     dense
                 />
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    :invalid-feedback="invalidInsightsFeedback"
-                    :state="insightsState"
-                >
-                    <template v-slot:label>
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div :class="isWithoutInsights ? `text-muted` : ``">
-                                Erkenntnisse, Überlegungen, Zielsetzungen
-                            </div>
-                            <b-form-checkbox
-                                v-model="isWithoutInsights"
-                                :disabled="isLoading"
-                                class="font-weight-normal"
-                            >
-                                nicht benötigt
-                            </b-form-checkbox>
-                        </div>
-                    </template>
-                    <b-textarea
-                        v-model="form.insights"
-                        minlength="1"
-                        maxlength="2500"
-                        placeholder="Erkenntnisse, Überlegungen, Zielsetzungen"
-                        :disabled="isLoading || isWithoutInsights"
-                        description=""
-                        :state="insightsState"
-                        data-test="insights"
-                        rows="3"
-                        trim
-                        max-rows="15"
-                    />
-                </b-form-group>
+                <walk-insights-field
+                    v-model="form.insights"
+                    :is-loading="isLoading"
+                    :disabled="isLoading || isWithoutInsights"
+                    :error="error"
+                />
+                <v-switch
+                    v-model="isWithoutInsights"
+                    label="nicht benötigt"
+                    class="mt-0 ml-auto"
+                    dense
+                />
                 <b-form-group
                     content-cols="12"
                     label-cols="12"
@@ -290,16 +267,27 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import {WalkCommitmentsField, WalkConceptOfDayField, WalkEndTimeField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkWalkReflectionField, WalkWeatherField} from "./Common/Walk";
+import {
+    WalkCommitmentsField,
+    WalkConceptOfDayField,
+    WalkEndTimeField,
+    WalkHolidaysField,
+    WalkInsightsField,
+    WalkNameField,
+    WalkStartTimeField,
+    WalkWalkReflectionField,
+    WalkWeatherField
+} from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
-import { getViolationsFeedback } from '../utils';
+import {getViolationsFeedback} from '../utils';
 import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkStore} from '../stores';
 
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkInsightsField,
         WalkCommitmentsField,
         WalkWalkReflectionField,
         WalkEndTimeField,
@@ -361,7 +349,7 @@ export default {
         },
         wayPointsOfWalk() {
             let wayPoints = [];
-            this.walk.wayPoints.forEach(wayPointIri =>{
+            this.walk.wayPoints.forEach(wayPointIri => {
                 const wayPoint = this.getWayPointByIri(wayPointIri);
                 if (wayPoint) {
                     wayPoints.push(wayPoint);
@@ -382,11 +370,11 @@ export default {
                     },
                 )
                 .every(wayPoint => {
-                    time = dayjs(wayPoint.visitedAt);
+                        time = dayjs(wayPoint.visitedAt);
 
-                    return false;
-                }
-            );
+                        return false;
+                    }
+                );
 
             if (time) {
                 return time;
@@ -441,19 +429,6 @@ export default {
         invalidSystemicAnswerFeedback() {
             return getViolationsFeedback(['systemicAnswer'], this.error);
         },
-        insightsState() {
-            if (this.isWithoutInsights) {
-                return true;
-            }
-            if (!this.form.insights && !this.invalidInsightsFeedback) {
-                return;
-            }
-
-            return !this.invalidInsightsFeedback;
-        },
-        invalidInsightsFeedback() {
-            return getViolationsFeedback(['insights'], this.error);
-        },
         isLoading() {
             return this.walkStore.isLoading;
         },
@@ -476,7 +451,7 @@ export default {
             await this.refreshWalk();
         }
         if (!this.walk) {
-            this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+            this.$router.push({name: 'Dashboard', params: {redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.'}});
             return;
         }
         if (!this.team) {
@@ -511,7 +486,7 @@ export default {
             }
             this.form.endTime = time.format();
         },
-        refreshWalk: async function() {
+        refreshWalk: async function () {
             await this.walkStore.fetchById(this.walkId);
         },
         async handleSubmit() {
@@ -523,7 +498,7 @@ export default {
                     left: 0,
                     behavior: 'smooth'
                 });
-                this.$router.push({ name: 'Dashboard' });
+                this.$router.push({name: 'Dashboard'});
             } else {
                 this.alertStore.error('Runde abschließen fehlgeschlagen', 'Upps! :-(');
             }
@@ -533,11 +508,4 @@ export default {
 </script>
 
 <style lang="scss">
-.b-form-datepicker.form-control.is-valid, .b-form-timepicker.form-control {
-    padding-right: 0 !important;
-
-    label.form-control.is-valid {
-        padding-right: 0.25rem !important;
-    }
-}
 </style>

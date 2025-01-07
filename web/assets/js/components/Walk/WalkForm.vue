@@ -206,40 +206,18 @@
             class="mt-0 ml-auto"
             dense
         />
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            :state="insightsState"
-        >
-            <template v-slot:label>
-                <div class="d-flex justify-content-between flex-wrap">
-                    <div :class="isWithoutInsights ? `text-muted` : ``">
-                        Erkenntnisse, Überlegungen, Zielsetzungen
-                    </div>
-                    <b-form-checkbox
-                        v-model="isWithoutInsights"
-                        :disabled="isLoading"
-                        class="font-weight-normal"
-                    >
-                        nicht benötigt
-                    </b-form-checkbox>
-                </div>
-            </template>
-            <b-textarea
-                v-model="walk.insights"
-                :disabled="isLoading || isWithoutInsights"
-                minlength="1"
-                maxlength="2500"
-                placeholder="Erkenntnisse, Überlegungen, Zielsetzungen"
-                :state="insightsState"
-                data-test="insights"
-                rows="3"
-                trim
-                max-rows="15"
-            />
-        </b-form-group>
+        <walk-insights-field
+            v-model="walk.insights"
+            :is-loading="isLoading"
+            :disabled="isLoading || isWithoutInsights"
+            :error="error"
+        />
+        <v-switch
+            v-model="isWithoutInsights"
+            label="nicht benötigt"
+            class="mt-0 ml-auto"
+            dense
+        />
         <form-group label="">
             <b-form-checkbox
                 v-model="walk.isResubmission"
@@ -277,6 +255,7 @@ import {
     WalkEndTimeField,
     WalkGuestNamesField,
     WalkHolidaysField,
+    WalkInsightsField,
     WalkNameField,
     WalkStartTimeField,
     WalkTeamMembersField,
@@ -299,6 +278,7 @@ export default {
         },
     },
     components: {
+        WalkInsightsField,
         WalkCommitmentsField,
         WalkWalkReflectionField,
         WalkEndTimeField,
@@ -417,16 +397,6 @@ export default {
         team() {
             return this.teamStore.getTeamByTeamName(this.initialWalk.teamName);
         },
-        insightsState() {
-            if (this.isWithoutInsights) {
-                return true;
-            }
-            if (null === this.walk.insights || undefined === this.walk.insights) {
-                return;
-            }
-
-            return this.walk.insights.length >= 1 && this.walk.insights.length <= 2500;
-        },
         systemicAnswerState() {
             if (this.isWithoutSystemicAnswer) {
                 return true;
@@ -486,7 +456,7 @@ export default {
             return !this.walk.name
                 || !this.walk.commitments && !this.isWithoutCommitments
                 || !this.walk.conceptOfDay
-                || !this.insightsState
+                || !this.walk.insights && !this.isWithoutInsights
                 || !this.walk.startTime
                 || !this.walk.endTime
                 || !this.systemicAnswerState

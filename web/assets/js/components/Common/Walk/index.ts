@@ -3,6 +3,7 @@ export {default as WalkConceptOfDayField} from './WalkConceptOfDayField.vue';
 export {default as WalkEndTimeField} from './WalkEndTimeField.vue';
 export {default as WalkGuestNamesField} from './WalkGuestNamesField.vue';
 export {default as WalkHolidaysField} from './WalkHolidaysField.vue';
+export {default as WalkInsightsField} from './WalkInsightsField.vue';
 export {default as WalkNameField} from './WalkNameField.vue';
 export {default as WalkStartTimeField} from './WalkStartTimeField.vue';
 export {default as WalkTeamMembersField} from './WalkTeamMembersField.vue';
