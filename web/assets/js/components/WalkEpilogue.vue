@@ -159,44 +159,18 @@
                         max-rows="15"
                     />
                 </b-form-group>
-                <b-form-group
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
-                    label="Reflexion"
-                    description=""
-                    :disabled="isLoading"
-                    :invalid-feedback="invalidWalkReflectionFeedback"
-                    :state="walkReflectionState"
-                >
-                    <template v-slot:label>
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <div :class="isWithoutWalkReflection ? `text-muted` : ``">
-                                Reflexion
-                            </div>
-                            <b-form-checkbox
-                                v-model="isWithoutWalkReflection"
-                                :disabled="isLoading"
-                                class="font-weight-normal"
-                            >
-                                nicht benötigt
-                            </b-form-checkbox>
-                        </div>
-                    </template>
-                    <b-textarea
-                        v-model="form.walkReflection"
-                        minlength="1"
-                        maxlength="2500"
-                        placeholder="Reflexion"
-                        :disabled="isLoading || isWithoutWalkReflection"
-                        :state="walkReflectionState"
-                        data-test="walkReflection"
-                        rows="3"
-                        trim
-                        max-rows="15"
-                    />
-                </b-form-group>
+                <walk-walk-reflection-field
+                    v-model="form.walkReflection"
+                    :is-loading="isLoading"
+                    :disabled="isLoading || isWithoutWalkReflection"
+                    :error="error"
+                />
+                <v-switch
+                    v-model="isWithoutWalkReflection"
+                    label="nicht benötigt"
+                    class="mt-0 ml-auto"
+                    dense
+                />
                 <b-form-group
                     content-cols="12"
                     label-cols="12"
@@ -341,7 +315,7 @@
 'use strict';
 import ContentCollapse from './ContentCollapse.vue';
 import GlobalFormError from './Common/GlobalFormError.vue';
-import {WalkConceptOfDayField, WalkEndTimeField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkWeatherField} from "./Common/Walk";
+import {WalkConceptOfDayField, WalkEndTimeField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkWalkReflectionField, WalkWeatherField} from "./Common/Walk";
 import WayPointList from './Walk/WayPointList.vue';
 import WalkRating from './Walk/WalkRating.vue';
 import dayjs from 'dayjs';
@@ -351,6 +325,7 @@ import {useAlertStore, useClientStore, useTeamStore, useWayPointStore, useWalkSt
 export default {
     name: 'WalkEpilogue',
     components: {
+        WalkWalkReflectionField,
         WalkEndTimeField,
         WalkStartTimeField,
         WalkHolidaysField,
@@ -489,19 +464,6 @@ export default {
         },
         invalidSystemicAnswerFeedback() {
             return getViolationsFeedback(['systemicAnswer'], this.error);
-        },
-        walkReflectionState() {
-            if (this.isWithoutWalkReflection) {
-                return true;
-            }
-            if (!this.form.walkReflection && !this.invalidWalkReflectionFeedback) {
-                return;
-            }
-
-            return !this.invalidWalkReflectionFeedback;
-        },
-        invalidWalkReflectionFeedback() {
-            return getViolationsFeedback(['walkReflection'], this.error);
         },
         insightsState() {
             if (this.isWithoutInsights) {

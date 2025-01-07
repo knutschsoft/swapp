@@ -173,43 +173,18 @@
                 max-rows="15"
             />
         </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Reflexion"
-            description=""
-            :disabled="isLoading"
-            :state="walkReflectionState"
-        >
-            <template v-slot:label>
-                <div class="d-flex justify-content-between flex-wrap">
-                    <div :class="isWithoutWalkReflection ? `text-muted` : ``">
-                        Reflexion
-                    </div>
-                    <b-form-checkbox
-                        v-model="isWithoutWalkReflection"
-                        :disabled="isLoading"
-                        class="font-weight-normal"
-                    >
-                        nicht benötigt
-                    </b-form-checkbox>
-                </div>
-            </template>
-            <b-textarea
-                v-model="walk.walkReflection"
-                :disabled="isLoading || isWithoutWalkReflection"
-                minlength="1"
-                maxlength="2500"
-                placeholder="Reflexion"
-                :state="walkReflectionState"
-                data-test="walkReflection"
-                rows="3"
-                trim
-                max-rows="15"
-            />
-        </b-form-group>
+        <walk-walk-reflection-field
+            v-model="walk.walkReflection"
+            :is-loading="isLoading"
+            :disabled="isLoading || isWithoutWalkReflection"
+            :error="error"
+        />
+        <v-switch
+            v-model="isWithoutWalkReflection"
+            label="nicht benötigt"
+            class="mt-0 ml-auto"
+            dense
+        />
         <form-group label="Rundenbewertung">
             <walk-rating
                 v-if="walk.rating && walkClient"
@@ -329,6 +304,7 @@ import {
     WalkStartTimeField,
     WalkTeamMembersField,
     WalkWalkCreatorField,
+    WalkWalkReflectionField,
     WalkWeatherField
 } from "../Common/Walk";
 
@@ -346,6 +322,7 @@ export default {
         },
     },
     components: {
+        WalkWalkReflectionField,
         WalkEndTimeField,
         WalkStartTimeField,
         WalkHolidaysField,
