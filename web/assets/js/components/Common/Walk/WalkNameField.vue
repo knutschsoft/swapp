@@ -71,7 +71,7 @@ const errorMessages = computed(() => {
         :loading="isLoading"
         :hint="description"
         :persistent-hint="!!description"
-        :hide-details="!description"
+        :hide-details="!description && !errorMessages?.length"
         dense
         small-chips
         :error-messages="errorMessages"

@@ -97,7 +97,7 @@ const handleWalkCreatorChange = (newWalkCreator: string) => {
         :loading="isLoading"
         :hint="description"
         :persistent-hint="!!description"
-        :hide-details="!description"
+        :hide-details="!description && !errorMessages?.length"
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"
         @change="handleWalkCreatorChange"

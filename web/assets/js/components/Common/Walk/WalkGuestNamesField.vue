@@ -69,7 +69,7 @@ const errorMessages = computed(() => {
         :label="label"
         :hint="description"
         :persistent-hint="!!description"
-        :hide-details="!description"
+        :hide-details="!description && !errorMessages?.length"
         placeholder="Namen eintragen..."
         :hide-no-data="!guestNameSearch"
         :search-input.sync="guestNameSearch"

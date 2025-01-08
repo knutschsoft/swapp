@@ -62,7 +62,7 @@ const errorMessages = computed(() => {
             dense
             :hint="description"
             :persistent-hint="!!description"
-            :hide-details="!description"
+            :hide-details="!description && !errorMessages?.length"
             :error-messages="errorMessages"
             :error="!!errorMessages?.length"
         />

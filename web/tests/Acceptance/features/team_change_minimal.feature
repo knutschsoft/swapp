@@ -19,7 +19,7 @@ Feature: An admin can change a team
             | How old? | client@gmx.de |
 
     @javascript
-    @teamChange @suw
+    @teamChange
     Scenario: I can change an existing team as an admin user
         Given I am authenticated as "admin@gmx.de"
         When I am on "/teams"

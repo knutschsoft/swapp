@@ -65,47 +65,29 @@
         >
             {{ visitedAtDescription }}
         </v-alert>
-        <b-form-group
+        <v-alert
             v-if="isShowWalkStartTimeButton"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            class="mt-n2"
+            class="mt-2"
+            text
+            color="warning"
         >
-            <b-row>
-                <b-col>
-                    <v-alert
-                        class="mb-0"
-                        text
-                        color="warning"
-                    >
-                        Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffWalkStartTime }}</b> vor dem Rundenstart. Hier kannst du die Rundenstartzeit auf die aktuell gewählte Ankunftszeit ändern.
-                        <div class="bg-white">
-                            <v-btn
-                                colot="secondary"
-                                outlined
-                                block
-                                small
-                                class="mt-2"
-                                data-test="button-set-walk-start-time"
-                                @click="handleSetWalkStartTime"
-                            >
-                                {{ setWalkStartTimeButtonLabel }}
-                            </v-btn>
-                        </div>
-                    </v-alert>
-                </b-col>
-            </b-row>
-        </b-form-group>
-        <b-form-group
-                    v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
-                    content-cols="12"
-                    label-cols="12"
-                    content-cols-lg="10"
-                    label-cols-lg="2"
+            Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffWalkStartTime }}</b> vor dem Rundenstart. Hier kannst du die Rundenstartzeit auf die aktuell gewählte Ankunftszeit ändern.
+            <div class="bg-white">
+                <v-btn
+                    color="secondary"
+                    outlined
+                    block
+                    small
+                    class="mt-2"
+                    data-test="button-set-walk-start-time"
+                    @click="handleSetWalkStartTime"
                 >
-            <template v-slot:label>
+                    {{ setWalkStartTimeButtonLabel }}
+                </v-btn>
+            </div>
+        </v-alert>
+        <template v-if="walk.isWithAgeRanges || walk.isWithPeopleCount">
+            <div class="mb-4">
                 <b v-text="walk.isWithAgeRanges ? `Altersgruppen` : `Anzahl der Personen vor Ort`" />
                 <br v-if="walk.isWithAgeRanges">
                 <small
@@ -114,13 +96,13 @@
                 >
                     Anzahl der Personen vor Ort
                 </small>
-            </template>
-            <b-row
+            </div>
+            <v-row
                 v-if="walk.isWithAgeRanges"
                 v-for="(ageGroup, index) in wayPoint.ageGroups"
                 :key="ageGroup.frontendLabel"
             >
-                <b-col
+                <v-col
                     v-if="index % 3 === 0"
                     v-for="colIndex in 3"
                     :key="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
@@ -129,111 +111,85 @@
                     md="4"
                     class="mb-1"
                 >
-                    <b-form-group
+                    <v-select
+                        v-model="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count"
                         :label="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                        label-cols-sm="auto"
-                        label-cols="12"
-                    >
-                        <b-form-select
-                            v-model="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count"
-                            :options="ageRangeOptions"
-                            :disabled="isLoading"
-                            :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                            :data-test="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                            size="sm"
-                            class=""
-                        ></b-form-select>
-                    </b-form-group>
-                </b-col>
-            </b-row>
-
-            <b-form-group
-                v-if="walk.isWithAgeRanges"
-                content-cols="12"
-                label-cols="12"
-                content-cols-lg="10"
-                label-cols-lg="2"
-                label="Anzahl Personen vor Ort"
-                description="Ergibt sich automatisch aus der Summe der Altersgruppen."
-            >
-                <b-input-group>
-                    <b-input
-                        v-model="sumPeopleCount"
-                        type="text"
-                        data-test="sumPeopleCount"
-                        disabled
-                        readonly
+                        :items="ageRangeOptions"
+                        :disabled="isLoading"
+                        :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                        :data-test="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                        dense
+                        outlined
+                        class=""
                     />
-                </b-input-group>
-            </b-form-group>
-            <b-input-group
-                v-else
-                content-cols="12"
-                label-cols="12"
-                content-cols-lg="10"
-                label-cols-lg="2"
+                </v-col>
+            </v-row>
+            <v-text-field
+                v-if="walk.isWithAgeRanges"
+                v-model="sumPeopleCount"
+                type="text"
+                data-test="sumPeopleCount"
+                disabled
+                readonly
+                dense
+                persistent-hint
+                outlined
+                background-color="grey lighten-5"
                 label="Anzahl Personen vor Ort"
-            >
-                <b-form-select
-                    v-model="wayPoint.peopleCount"
-                    :options="ageRangeOptions"
-                    :disabled="isLoading"
-                    data-test="peopleCount"
-                    class=""
-                ></b-form-select>
-            </b-input-group>
-        </b-form-group>
-        <b-form-group
+                hint="Ergibt sich automatisch aus der Summe der Altersgruppen."
+            />
+            <v-select
+                v-else
+                v-model="wayPoint.peopleCount"
+                :items="ageRangeOptions"
+                :disabled="isLoading"
+                data-test="peopleCount"
+                class=""
+                outlined
+                dense
+                label="Anzahl Personen vor Ort"
+            />
+        </template>
+        <div
             v-if="walk.isWithUserGroups"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Personenanzahl von Nutzergruppen"
+            class="mb-4"
         >
-            <b-row
-                class="d-flex align-items-end"
+            <b>Personenanzahl von Nutzergruppen</b>
+        </div>
+        <v-row
+            v-if="walk.isWithUserGroups"
+            class="d-flex align-items-end"
+        >
+            <v-col
+                v-for="(userGroup, index) in wayPoint.userGroups"
+                :key="userGroup.userGroupName.name"
             >
-                <b-col
-                    v-for="(userGroup, index) in wayPoint.userGroups"
-                    :key="userGroup.userGroupName.name"
-                >
-                    <b-form-group
-                        :label="userGroup.userGroupName.name"
-                    >
-                        <b-form-select
-                            v-model="userGroup.peopleCount.count"
-                            :options="ageRangeOptions"
-                            :disabled="isLoading"
-                            :help="userGroup.userGroupName.name"
-                            size="sm"
-                        ></b-form-select>
-                    </b-form-group>
-                </b-col>
-            </b-row>
-        </b-form-group>
-        <b-form-group
+                <v-select
+                    v-model="userGroup.peopleCount.count"
+                    :items="ageRangeOptions"
+                    :disabled="isLoading"
+                    :help="userGroup.userGroupName.name"
+                    dense
+                    outlined
+                    :label="userGroup.userGroupName.name"
+                />
+            </v-col>
+        </v-row>
+<!--            :state="contactsCountState"-->
+<!--            :invalid-feedback="invalidContactsCountState"-->
+        <v-select
             v-if="walk.isWithContactsCount"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Anzahl direkter Kontakte"
+            v-model="wayPoint.contactsCount"
+            required
             :state="contactsCountState"
-            description="Mit wie viel Personen wurde gesprochen?"
-            :invalid-feedback="invalidContactsCountState"
-        >
-            <b-input-group>
-                <b-form-select
-                    v-model="wayPoint.contactsCount"
-                    required
-                    :state="contactsCountState"
-                    :options="contactsCountOptions"
-                    size="sm"
-                    data-test="contactsCount"
-                ></b-form-select>
-            </b-input-group>
-        </b-form-group>
+            :items="contactsCountOptions"
+            dense
+            persistent-hint
+            outlined
+            label="Anzahl direkter Kontakte"
+            hint="Mit wie viel Personen wurde gesprochen?"
+            data-test="contactsCount"
+        />
         <b-form-group
             id="input-group-image"
             label="Bildupload"

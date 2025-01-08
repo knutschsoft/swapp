@@ -55,7 +55,6 @@ const errorMessages = computed(() => {
 </script>
 
 <template>
-
     <v-combobox
         v-model="value"
         :items="conceptOfDaySuggestions"
@@ -69,7 +68,7 @@ const errorMessages = computed(() => {
         :label="label"
         :hint="description"
         :persistent-hint="!!description"
-        :hide-details="!description"
+        :hide-details="!description && !errorMessages?.length"
         data-test="Tageskonzept"
         placeholder="Tageskonzept eintragen..."
         :disabled="isLoading"

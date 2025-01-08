@@ -81,8 +81,11 @@ function getViolationsFeedback(
         }
     } else {
         fields.forEach(fieldName => {
-            if (validationErrors[fieldName]) {
-                message += ` ${validationErrors[fieldName]!.join(' ')}`;
+            const fieldNameArray = fieldName + '['; // e.g. conceptOfDay[0]
+            for (let key in validationErrors) {
+                if (key.startsWith(fieldName) || key.startsWith(fieldNameArray)) {
+                    message += ` ${validationErrors[key]!.join(' ')}`;
+                }
             }
         });
     }

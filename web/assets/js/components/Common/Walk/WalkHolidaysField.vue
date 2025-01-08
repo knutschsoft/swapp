@@ -54,7 +54,7 @@ const errorMessages = computed(() => {
             :error="!!errorMessages?.length"
             :hint="description"
             :persistent-hint="!!description"
-            :hide-details="!description"
+            :hide-details="!description && !errorMessages?.length"
             data-test="holidays"
             :loading="isLoading"
         ></v-switch>
