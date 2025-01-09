@@ -22,87 +22,66 @@
                 </li>
             </ul>
             <div>
-                <b-form
+                <v-form
                     novalidate
                     @submit.stop.prevent
                 >
-                    <b-input-group
-                        class="form-group input-group"
-                    >
-                        <template v-slot:prepend>
-                            <b-input-group-text>
-                                <b-icon
-                                    icon="envelope-fill"
-                                    class="dark"
-                                />
-                            </b-input-group-text>
-                        </template>
-                        <b-input
-                            id="username"
-                            v-model="username"
-                            :state="validation"
-                            :disabled="isPasswordRequested"
-                            autofocus
-                            type="text"
-                            class="form-control"
-                            placeholder="vorname.nachname@domain.de"
-                            name="username"
-                            aria-label="Nutzername"
-                            aria-describedby="username-help-block"
-                        />
-                        <b-form-text
-                            v-if="usernameHelp"
-                            id="username-help-block"
-                            v-text="usernameHelp"
-                        />
-                        <b-form-invalid-feedback
-                            :state="validation"
-                            v-text="usernameInvalidText"
-                        />
-                        <b-form-valid-feedback
-                            :state="validation"
-                        >
-                            Schaut gut aus.
-                        </b-form-valid-feedback>
-                    </b-input-group>
-                    <b-input
+                    <v-text-field
+                        v-model="username"
+                        :state="validation"
+                        :disabled="isPasswordRequested"
+                        prepend-inner-icon="mdi-email"
+                        autofocus
+                        type="text"
+                        autocomplete="email"
+                        placeholder="vorname.nachname@domain.de"
+                        name="username"
+                        label="E-Mail-Adresse"
+                        dense
+                        outlined
+                    />
+                    <v-alert
+                        v-if="usernameInvalidText && hasError"
+                        type="error"
+                        class="-2"
+                    >{{usernameInvalidText}}</v-alert>
+                    <v-text-field
                         id="email"
                         v-model="honeypotEmail"
                         type="text"
-                        class="form-control"
                         style="position: absolute; left: -10000px; top: -10000px;"
                         placeholder="vorname.nachname@streetworkapp.de"
                         name="email"
                         aria-label="Email"
                         aria-describedby="email-help-block"
                     />
-                    <b-input-group
-                        class="form-group input-group mb-0"
+                    <v-btn
+                        :disabled="username.length < 10 || isLoading || isPasswordRequested"
+                        block
+                        color="secondary"
+                        type="submit"
+                        @click="requestPasswordReset()"
                     >
-                        <v-btn
-                            :disabled="username.length < 10 || isLoading || isPasswordRequested"
-                            block
-                            color="secondary"
-                            type="submit"
-                            @click="requestPasswordReset()"
-                        >
-                            <v-progress-circular
-                                v-if="isLoading"
-                                indeterminate
-                            ></v-progress-circular>
-                            Passwortänderung beantragen
-                        </v-btn>
-                    </b-input-group>
+                        <v-progress-circular
+                            v-if="isLoading"
+                            indeterminate
+                        ></v-progress-circular>
+                        Passwortänderung beantragen
+                    </v-btn>
                     <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
-                    <b-input-group class="form-group input-group mb-0 mt-3">
+                    <v-btn
+                        text
+                        plain
+                        block
+                        class="my-3"
+                    >
                         <router-link
-                            class="btn btn-block btn-link"
                             :to="{ name: 'Login' }"
                         >
                             Zurück zur Anmeldung
                         </router-link>
-                    </b-input-group>
-                </b-form>
+                    </v-btn>
+                </v-form>
                 <v-alert
                     v-if="isPasswordRequested && !hasError"
                     prominent
@@ -137,7 +116,6 @@
             userStore: useUserStore(),
             username: '',
             honeypotEmail: '',
-            usernameHelp: '',
             usernameInvalidText: '',
             isPasswordRequested: false,
         }),
