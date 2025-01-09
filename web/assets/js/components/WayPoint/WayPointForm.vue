@@ -558,7 +558,7 @@ export default {
             return this.authStore.isSuperAdmin;
         },
         isSubmitDisabled() {
-            return this.isLoading || !this.visitedAtState;
+            return this.isLoading || !this.visitedAtState || !this.wayPoint.locationName;
         },
         globalErrors() {
             let keys = ['oneOnOneInterview', 'note', 'locationName', 'decodedImageData', 'imageFileData', 'imageFileName'];

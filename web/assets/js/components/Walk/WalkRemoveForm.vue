@@ -28,7 +28,7 @@
             <v-alert
                 type="warning"
             >
-                Unerwarte Dinge können passieren, wenn du dies nicht liest.
+                Unerwartete Dinge können passieren, wenn du dies nicht liest.
             </v-alert>
             <p>
                 Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.

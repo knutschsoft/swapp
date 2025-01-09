@@ -66,8 +66,7 @@
     "use strict";
 
     import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
-    import { useUserStore } from '../stores/user';
-    import { useAuthStore } from '../stores/auth';
+    import { useAuthStore, useUserStore } from '../stores';
     export default {
         name: "PasswordChangeRequest",
         components: { GeneralErrorAlert },
