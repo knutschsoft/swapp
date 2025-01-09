@@ -35,6 +35,7 @@
                         prepend-inner-icon="mdi-account-circle-outline"
                         autofocus
                         type="text"
+                        :disabled="isLoading"
                         label="Benutzername oder E-Mail"
                         placeholder="vorname.nachname@domain.de"
                         name="username"
@@ -49,6 +50,7 @@
                         :append-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                         autofocus
                         :type="passwordFieldType"
+                        :disabled="isLoading"
                         label="Passwort"
                         placeholder="Passwort"
                         name="password"
