@@ -2,6 +2,7 @@
     <v-chip
         class="font-weight-bold d-flex align-items-center"
         :style="`background-color: ${ color }`"
+        small
         pill
     >
         <span

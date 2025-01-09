@@ -12,6 +12,7 @@
             :state="nameState"
             label="Name"
             outlined
+            dense
             data-test="name"
         />
         Gewählte Tag-Farbe:
@@ -26,6 +27,7 @@
             data-test="farbe"
             required
             outlined
+            dense
             item-value="name"
             item-text="name"
         >
@@ -47,6 +49,7 @@
             label="Für welchen Klienten?"
             placeholder="Für welchen Klienten?"
             :items="availableClients"
+            dense
             item-value="@id"
             item-text="name"
             outlined
@@ -75,6 +78,16 @@
                 Bitte erst Name und Farbe wählen bevor ein neuer Tag erstellt werden kann.
             </span>
         </v-tooltip>
+        <v-btn
+            v-else
+            type="submit"
+            color="secondary"
+            data-test="button-tag-create"
+            :disabled="isFormInvalid || isLoading"
+            block
+        >
+            Neuen Tag erstellen
+        </v-btn>
         <form-error
             :error="error"
         />

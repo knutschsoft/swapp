@@ -175,182 +175,142 @@
                 />
             </v-col>
         </v-row>
-<!--            :state="contactsCountState"-->
-<!--            :invalid-feedback="invalidContactsCountState"-->
-        <v-select
+        <way-point-contacts-count-field
             v-if="walk.isWithContactsCount"
             v-model="wayPoint.contactsCount"
-            required
-            :state="contactsCountState"
-            :items="contactsCountOptions"
-            dense
-            persistent-hint
-            outlined
             label="Anzahl direkter Kontakte"
             hint="Mit wie viel Personen wurde gesprochen?"
-            data-test="contactsCount"
         />
-        <b-form-group
-            id="input-group-image"
-            label="Bildupload"
-            label-for="input-image"
-            :state="imageState"
-            :invalid-feedback="invalidImageFeedback"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-        >
-            <b-form-file
-                id="input-image"
-                v-model="file"
-                accept="image/*"
-                aria-label="Bildupload"
-                data-test="Bildupload"
-                browse-text="Bild wählen"
-                placeholder="kein Bild gewählt"
-                drop-placeholder="Bild hierhin ziehen."
-                :disabled="isLoading"
-                :state="imageState"
-                @input="updateFile"
-            />
-            <div
-                v-if="wayPoint.imageFileData"
-                class="mt-3 position-relative"
-                style="max-width: 50px;"
+        <v-row class="my-2">
+            <v-col cols="12" sm="6">
+                <v-file-input
+                    v-model="file"
+                    accept="image/*"
+                    data-test="Bildupload"
+                    placeholder="kein Bild gewählt"
+                    label="Bildupload"
+                    dense
+                    hide-details
+                    outlined
+                    :disabled="isLoading"
+                    @change="updateFile"
+                />
+                <v-alert
+                    v-if="invalidImageFeedback"
+                    type="error"
+                    class="mt-2"
+                >{{invalidImageFeedback}}</v-alert>
+            </v-col>
+            <v-col v-if="wayPoint.imageFileData" cols="12" sm="6">
+                <div
+                    class="position-relative"
+                    style="max-width: 50px;"
+                >
+                    <v-img
+                        :src="wayPoint.imageFileData"
+                        alt="Bildupload"
+                        clearable
+                        width="50"
+                        height="50"
+                        class=""
+                    />
+                    <div
+                        class="cursor-pointer position-absolute top-0 start-100 translate-middle z-9999"
+                        @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null"
+                    >
+                        <v-icon>
+                            mdi-close-circle-outline
+                        </v-icon>
+                    </div>
+                </div>
+            </v-col>
+        </v-row>
+        <textarea-field
+            v-model="wayPoint.note"
+            label="Beobachtung"
+            data-test="note"
+            :violation-fields="['note']"
+            :error="error"
+            :isLoading="isLoading"
+        />
+        <textarea-field
+            v-model="wayPoint.oneOnOneInterview"
+            label="Einzelgespräch"
+            data-test="oneOnOneInterview"
+            :violation-fields="['oneOnOneInterview']"
+            :error="error"
+            :isLoading="isLoading"
+        />
+        <v-row class="my-2">
+            <v-col cols="12" class="font-weight-bold pb-0 mb-0 mt-2">Tags</v-col>
+            <v-col
+                v-for="tag in tags"
+                cols="12"
+                sm="6"
+                md="6"
+                lg="4"
+                xl="3"
             >
                 <div
-                    class="cursor-pointer position-absolute top-0 start-100 translate-middle"
-                    @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null"
+                    :key="tag['@id']"
+                    :class="{'d-none': !tag.isEnabled}"
                 >
-                    <v-icon>
-                        mdi-close-circle-outline
-                    </v-icon>
+                    <v-checkbox
+                        v-model="wayPoint.wayPointTags"
+                        :value="tag['@id']"
+                        :disabled="isLoading"
+                        dense
+                        hide-details
+                    >
+                        <template v-slot:label>
+                            {{ tag.name }}
+                            <color-badge
+                                :color="tag.color"
+                                class="ml-2"
+                            />
+                        </template>
+                    </v-checkbox>
                 </div>
-                <b-img
-                    :src="wayPoint.imageFileData"
-                    alt="Bildupload"
-                    thumbnail
-                    fluid
-                    width="50"
-                    height="50"
-                    class=""
-                />
-            </div>
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Beobachtung"
-            :invalid-feedback="invalidNoteFeedback"
-            :state="noteState"
-        >
-            <b-textarea
-                v-model="wayPoint.note"
-                minlength="0"
-                maxlength="2500"
-                placeholder="Beobachtung"
-                :state="noteState"
-                data-test="note"
-                rows="3"
-                max-rows="15"
-            />
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Einzelgespräch"
-            :invalid-feedback="invalidOneOnOneInterviewFeedback"
-            :state="oneOnOneInterviewState"
-        >
-            <b-textarea
-                v-model="wayPoint.oneOnOneInterview"
-                minlength="0"
-                maxlength="2500"
-                placeholder="Einzelgespräch"
-                :state="oneOnOneInterviewState"
-                data-test="oneOnOneInterview"
-                rows="3"
-                max-rows="15"
-            />
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Tags"
-        >
-            <b-form-checkbox-group
-                id="input-Tag"
-                v-model="wayPoint.wayPointTags"
-                :disabled="isLoading"
-                class="row"
+            </v-col>
+            <v-col v-if="hasDisabledTag" cols="12" tag="hr"></v-col>
+            <v-col
+                v-for="tag in disabledTags"
+                :key="tag['@id']"
+                cols="12"
+                sm="6"
+                md="6"
+                lg="4"
+                xl="3"
+                :class="!(initialWayPoint && initialWayPoint.wayPointTags.includes(tag['@id'])) ? 'd-none' : ''"
+                class="my-0"
             >
-                <template
-                    v-for="tag in tags"
+                <v-checkbox
+                    v-model="wayPoint.wayPointTags"
+                    :value="tag['@id']"
+                    :disabled="isLoading"
+                    persistent-hint
+                    hint="(deaktivierter Tag)"
+                    dense
                 >
-                    <div
-                        :key="tag['@id']"
-                        :class="{'d-none': !tag.isEnabled}"
-                        class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
-                    >
-                        <b-form-checkbox
-                            :value="tag['@id']"
-                        >
-                            {{ tag.name }}
-                            <color-badge
-                                :color="tag.color"
-                            />
-                        </b-form-checkbox>
-                    </div>
-                </template>
-                <hr
-                    v-if="hasDisabledTag"
-                    class="col-12"
-                >
-                <template
-                    v-for="tag in disabledTags"
-                >
-                    <div
-                        :key="`disabledTags-${tag['@id']}`"
-                        :class="tag.isEnabled || (initialWayPoint && initialWayPoint.wayPointTags.includes(tag['@id'])) ? 'col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3' : 'd-none'"
-                    >
-                        <b-form-checkbox
-                            :value="tag['@id']"
-                        >
-                            {{ tag.name }}
-                            <color-badge
-                                :color="tag.color"
-                            />
-                            <span
-                                class="text-muted"
-                            >
-                                (deaktivierter Tag)
-                            </span>
-                        </b-form-checkbox>
-                    </div>
-                </template>
-            </b-form-checkbox-group>
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="10"
-            label-cols-lg="2"
-            label="Mobiler Treff?"
-        >
-            <b-form-checkbox
-                v-model="wayPoint.isMeeting"
-                :disabled="isLoading"
-            >
-                mobiler Treff
-            </b-form-checkbox>
-        </b-form-group>
+                    <template v-slot:label>
+                        {{ tag.name }}
+                        <color-badge
+                            :color="tag.color"
+                            class="ml-2 mr-2"
+                        />
+                    </template>
+                </v-checkbox>
+            </v-col>
+        </v-row>
+        <switch-field
+            v-model="wayPoint.isMeeting"
+            caption="Mobiler Treff?"
+            label="mobiler Treff"
+            data-test="isMeeting"
+            :violation-fields="['isMeeting']"
+            :error="error"
+            :isLoading="isLoading"
+        />
         <v-btn
             color="secondary"
             type="submit"
@@ -388,7 +348,8 @@ import { getViolationsFeedback } from '../../utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import {useAlertStore, useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore} from '../../stores';
-import { WayPointLocationNameField, WayPointVisitedAtField } from "../Common/WayPoint";
+import {WayPointContactsCountField, WayPointLocationNameField, WayPointVisitedAtField} from "../Common/WayPoint";
+import {SwitchField, TextareaField} from "../Common";
 
 export default {
     name: 'WayPointForm',
@@ -409,6 +370,9 @@ export default {
         },
     },
     components: {
+        WayPointContactsCountField,
+        SwitchField,
+        TextareaField,
         WayPointVisitedAtField,
         WayPointLocationNameField,
         ColorBadge,
@@ -462,37 +426,7 @@ export default {
                 }
                 return value;
             }),
-            contactsCountOptions: Array.from(Array(41), (x, i) => i),
             userGroupOptions: Array.from(Array(21), (x, i) => i),
-            dateLabels: {
-                de: {
-                    labelPrevDecade: 'Vorheriges Jahrzehnt',
-                    labelPrevYear: 'Vorheriges Jahr',
-                    labelPrevMonth: 'Vorheriger Monat',
-                    labelCurrentMonth: 'Aktueller Monat',
-                    labelNextMonth: 'Nächster Monat',
-                    labelNextYear: 'Nächstes Jahr',
-                    labelNextDecade: 'Nächstes Jahrzehnt',
-                    labelToday: 'Heute',
-                    labelSelected: 'Ausgewähltes Datum',
-                    labelNoDateSelected: 'Kein Datum gewählt',
-                    labelCalendar: 'Kalender',
-                    labelNav: 'Kalendernavigation',
-                    labelHelp: 'Mit den Pfeiltasten durch den Kalender navigieren',
-                },
-            },
-            timeLabels: {
-                de: {
-                    labelHours: 'Stunden',
-                    labelMinutes: 'Minuten',
-                    labelSeconds: 'Sekunden',
-                    labelIncrement: 'Erhöhen',
-                    labelDecrement: 'Verringern',
-                    labelSelected: 'Ausgewählte Zeit',
-                    labelNoTimeSelected: 'Keine Zeit ausgewählt',
-                    labelCloseButton: 'Schließen',
-                },
-            },
         };
     },
     computed: {
@@ -607,43 +541,6 @@ export default {
             }
 
             return `Die Ankunftszeit muss nach der Rundenstartzeit (${dayjs(this.walk.startTime).format('HH:mm')} Uhr am ${dayjs(this.walk.startTime).format('DD.MM.YYYY')}) und vor der Rundenendzeit (${dayjs(this.walk.endTime).format('HH:mm')} Uhr am ${dayjs(this.walk.endTime).format('DD.MM.YYYY')}) liegen.`;
-        },
-        contactsCountState() {
-            if ('' === this.invalidContactsCountState && null === this.wayPoint.contactsCount) {
-                return null;
-            }
-
-            return '' === this.invalidContactsCountState;
-        },
-        invalidContactsCountState() {
-            return getViolationsFeedback(['contactsCount'], this.error);
-        },
-        noteState() {
-            if (null === this.wayPoint.note || undefined === this.wayPoint.note) {
-                return;
-            }
-
-            return '' === this.invalidNoteFeedback;
-        },
-        invalidNoteFeedback() {
-            return getViolationsFeedback(['note'], this.error);
-        },
-        oneOnOneInterviewState() {
-            if (null === this.wayPoint.oneOnOneInterview || undefined === this.wayPoint.oneOnOneInterview) {
-                return;
-            }
-
-            return '' === this.invalidOneOnOneInterviewFeedback;
-        },
-        invalidOneOnOneInterviewFeedback() {
-            return getViolationsFeedback(['oneOnOneInterview'], this.error);
-        },
-        imageState() {
-            if (!this.wayPoint.imageFileData) {
-                return null;
-            }
-
-            return '' === this.invalidImageFeedback;
         },
         invalidImageFeedback() {
             return getViolationsFeedback(['decodedImageData', 'imageFileData', 'imageFileName'], this.error);
@@ -793,9 +690,6 @@ export default {
     methods: {
         getTagByIri(iri) {
             return this.tagStore.getTagByIri(iri);
-        },
-        getWayPointByIri(iri) {
-            return this.wayPointStore.getWayPointByIri(iri);
         },
         selectCurrentTime() {
             this.wayPoint.visitedAt = dayjs().format();
