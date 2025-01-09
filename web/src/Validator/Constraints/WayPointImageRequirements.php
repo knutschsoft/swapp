@@ -16,7 +16,7 @@ class WayPointImageRequirements extends Compound
     protected function getConstraints(array $options): array
     {
         return [
-            new Assert\Image(maxSize: "1M", maxSizeMessage: 'way_point.file.max-size'),
+            new Assert\Image(maxSize: "10M", maxSizeMessage: 'way_point.file.max-size'),
         ];
     }
 }
