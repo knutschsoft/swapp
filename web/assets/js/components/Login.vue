@@ -25,134 +25,75 @@
                 </template>
             </p>
             <div>
-                <b-form
+                <v-form
                     novalidate
                     @submit.stop.prevent
                 >
-                    <b-input-group
-                        class="form-group input-group"
+                    <v-text-field
+                        v-model="username"
+                        id="username"
+                        prepend-inner-icon="mdi-account-circle-outline"
+                        autofocus
+                        type="text"
+                        label="Benutzername oder E-Mail"
+                        placeholder="vorname.nachname@domain.de"
+                        name="username"
+                        data-test="username"
+                        autocomplete="username email"
+                        dense
+                        outlined
+                    />
+                    <v-text-field
+                        v-model="password"
+                        prepend-inner-icon="mdi-lock-outline"
+                        :append-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                        autofocus
+                        :type="passwordFieldType"
+                        label="Passwort"
+                        placeholder="Passwort"
+                        name="password"
+                        data-test="username"
+                        autocomplete="username email"
+                        dense
+                        outlined
+                        @click:append="switchPasswordVisibility"
+                    />
+                    <v-btn
+                        :disabled="username.length < 3 || password.length < -1 || isLoading"
+                        block
+                        color="secondary"
+                        type="submit"
+                        @click="performLogin()"
                     >
-                        <template v-slot:prepend>
-                            <b-input-group-text>
-                                <mdicon
-                                    name="AccountCircleOutline"
-                                    size="22"
-                                    title="Benutzername oder E-Mail"
-                                />
-                            </b-input-group-text>
-                        </template>
-                        <b-input
-                            id="username"
-                            v-model="username"
-                            :state="validation"
-                            autofocus
-                            type="text"
-                            class="form-control"
-                            placeholder="vorname.nachname@domain.de"
-                            name="username"
-                            data-test="username"
-                            autocomplete="username email"
-                            aria-label="Nutzername"
-                            aria-describedby="username-help-block"
-                        />
-                        <b-form-text
-                            v-if="usernameHelp"
-                            id="username-help-block"
-                            v-text="usernameHelp"
-                        />
-                        <b-form-valid-feedback
-                            :state="validation"
-                        >
-                            Schaut gut aus.
-                        </b-form-valid-feedback>
-                    </b-input-group>
-                    <b-input-group
-                        class="form-group input-group"
-                    >
-                        <template v-slot:prepend>
-                            <b-input-group-text>
-                                <mdicon
-                                    name="LockOutline"
-                                    size="22"
-                                    tit !le="Passwort"
-                                />
-                            </b-input-group-text>
-                        </template>
-                        <b-input
-                            v-model="password"
-                            placeholder="Passwort"
-                            name="password"
-                            data-test="password"
-                            :type="passwordFieldType"
-                            class="form-control"
-                            aria-label="Passwort"
-                            autocomplete="password"
-                            aria-describedby="password-help-block"
-                        />
-                        <template v-slot:append>
-                            <b-input-group-text
-                                @click="switchPasswordVisibility"
-                            >
-                                <mdicon
-                                    v-if="isPasswordVisible"
-                                    name="EyeOffOutline"
-                                    size="22"
-                                    title="Passwort verstecken"
-                                />
-                                <mdicon
-                                    v-else
-                                    name="EyeOutline"
-                                    size="22"
-                                    title="Passwort anzeigen"
-                                />
-                            </b-input-group-text>
-                        </template>
-                        <b-form-text
-                            v-if="passwordHelp"
-                            id="password-help-block"
-                            v-text="passwordHelp"
-                        />
-                    </b-input-group>
-                    <b-input-group
-                        class="form-group input-group"
-                    >
-                        <v-btn
-                            :disabled="username.length < 3 || password.length < -1 || isLoading"
-                            block
-                            color="secondary"
-                            type="submit"
-                            @click="performLogin()"
-                        >
-                            <v-progress-circular
-                                v-if="isLoading"
-                                :width="2"
-                                :size="20"
-                                indeterminate
-                                class="mr-2 position-relative"
-                            ></v-progress-circular>
-                            Anmelden
-                        </v-btn>
-                    </b-input-group>
-                    <b-input-group
+                        <v-progress-circular
+                            v-if="isLoading"
+                            :width="2"
+                            :size="20"
+                            indeterminate
+                            class="mr-2 position-relative"
+                        ></v-progress-circular>
+                        Anmelden
+                    </v-btn>
+                    <v-alert
                         v-if="hasError"
-                        class="form-group input-group"
+                        type="error"
+                        class="mt-2"
                     >
-                        <b-form-text
-                            class="alert alert-danger w-100 mb-0"
-                            role="alert"
-                        >
-                            {{ 'Die Kombination aus E-Mail-Adresse und Passwort ist ungültig.' }}
-                        </b-form-text>
-                    </b-input-group>
-                    <b-input-group class="form-group input-group mb-0">
+                        {{ 'Die Kombination aus E-Mail-Adresse und Passwort ist ungültig.' }}
+                    </v-alert>
+                    <v-btn
+                        text
+                        plain
+                        block
+                        class="my-3"
+                    >
                         <router-link
-                            class="btn btn-block btn-link"
                             :to="{ name: 'PasswordReset' }"
                         >
                             Passwort vergessen oder noch kein Passwort?
                         </router-link>
-                    </b-input-group>
-                </b-form>
+                    </v-btn>
+                </v-form>
             </div>
             <DemoInfo
                 @credentials-select="handleCredentialsSelect($event)"
@@ -173,8 +114,6 @@
             authStore: useAuthStore(),
             username: '',
             password: '',
-            usernameHelp: '',
-            passwordHelp: '',
             state: null,
             passwordFieldType: 'password',
             isPasswordVisible: false,
@@ -192,13 +131,6 @@
             error() {
                 return this.authStore.getErrors.login;
             },
-            validation() {
-                if (this.username.trim().length <= 2) {
-                    return null;
-                }
-
-                return true;
-            }
         },
         created() {
             let redirect = this.$route.query.redirect;
