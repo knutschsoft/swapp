@@ -5,12 +5,11 @@
             collapse-key="about-swapp"
             is-visible-by-default
         >
-            <b-img
+            <v-img
                 :src="infoImageSrc"
                 alt="Was ist Swapp, die Streetworkapp?"
                 title="Was ist Swapp, die Streetworkapp?"
                 center
-                fluid
             />
         </content-collapse>
     </div>
