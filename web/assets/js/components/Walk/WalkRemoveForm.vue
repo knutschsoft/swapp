@@ -1,79 +1,78 @@
 <template>
-    <b-form
+    <v-form
         @submit.prevent.stop="handleRemove"
         class="p-1 p-sm-2 p-lg-3"
     >
         Wenn die Runde gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
-        <b-form-group>
-            <v-btn
-                color="error"
-                v-b-modal.modal-remove
-                data-test="button-walk-remove"
-                :disabled="isLoading"
-                block
-            >
-                Runde löschen und zum Dashboard zurückkehren
-            </v-btn>
-        </b-form-group>
+        <v-btn
+            color="error"
+            v-b-modal.modal-remove
+            data-test="button-walk-remove"
+            :disabled="isLoading"
+            block
+            @click="dialog = true"
+        >
+            Runde löschen und zum Dashboard zurückkehren
+        </v-btn>
         <global-form-error
             :error="globalErrors"
         />
-        <b-modal
-            id="modal-remove"
-            title="Bist du dir absolut sicher?"
-            hide-footer
-            centered
-            size="lg"
+        <v-dialog
+            v-model="dialog"
         >
-            <v-alert
-                type="warning"
-            >
-                Unerwartete Dinge können passieren, wenn du dies nicht liest.
-            </v-alert>
-            <p>
-                Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.
-                Dies wird permanent die Runde <b>{{ initialWalk.name }}</b> und der ihr zugeordneten Wegpunkte (inklusive deren Bilder und Tags) löschen.
-            </p>
-            <p>
-                Bitte gib <b>{{ initialWalk.name }}</b> ein um das Löschen zu bestätigen.
-            </p>
-            <b-form-group
-                label=""
-                :state="walkNameState"
-                :invalid-feedback="invalidWalkNameFeedback"
-            >
-                <b-input-group>
-                    <b-input
+            <v-card>
+                <v-card-title>
+                    Bist du dir absolut sicher?
+                </v-card-title>
+                <v-card-text>
+                    <v-alert
+                        type="warning"
+                    >
+                        Unerwartete Dinge können passieren, wenn du dies nicht liest.
+                    </v-alert>
+                    <p>
+                        Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.
+                        Dies wird permanent die Runde <b>{{ initialWalk.name }}</b> und der ihr zugeordneten Wegpunkte (inklusive deren Bilder und Tags) löschen.
+                    </p>
+                    <p>
+                        Bitte gib <b>{{ initialWalk.name }}</b> ein um das Löschen zu bestätigen.
+                    </p>
+                    <v-text-field
                         v-model="walkName"
                         type="text"
+                        dense
+                        outlined
+                        label="Name der Runde"
                         data-test="walkName"
                         autocomplete="off"
                         :disabled="isLoading"
                     />
-                </b-input-group>
-            </b-form-group>
-            <b-button
-                type="submit"
-                variant="danger"
-                :disabled="isSubmitDisabled"
-                data-test="button-walk-remove-modal"
-                @click="handleRemove"
-                block
-                class="col-12"
-            >
-                Ich verstehe die Auswirkungen; Runde löschen und zum Dashboard zurückkehren
-            </b-button>
-        </b-modal>
-    </b-form>
+                    <v-alert
+                        v-if="false === walkNameState"
+                        type="error"
+                    >
+                        {{ invalidWalkNameFeedback }}
+                    </v-alert>
+                    <v-btn
+                        type="submit"
+                        color="error"
+                        :disabled="isSubmitDisabled"
+                        data-test="button-walk-remove-modal"
+                        @click="handleRemove"
+                        block
+                    >
+                        Ich verstehe die Auswirkungen; Runde löschen und zum Dashboard zurückkehren
+                    </v-btn>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+    </v-form>
 </template>
 
 <script>
 'use strict';
 import GlobalFormError from '../Common/GlobalFormError.vue';
 import { getViolationsFeedback } from '../../utils';
-import { useTagStore } from '../../stores/tag';
-import { useWayPointStore } from '../../stores/way-point';
-import { useTeamStore } from '../../stores/team';
 import { useWalkStore } from '../../stores/walk';
 
 export default {
@@ -93,11 +92,9 @@ export default {
     },
     data: function () {
         return {
-            tagStore: useTagStore(),
-            teamStore: useTeamStore(),
             walkStore: useWalkStore(),
-            wayPointStore: useWayPointStore(),
             walkName: '',
+            dialog: false,
         };
     },
     computed: {
@@ -115,10 +112,7 @@ export default {
             return getViolationsFeedback(['walk'], this.error);
         },
         isLoading() {
-            return this.walkStore.isLoading
-                || this.wayPointStore.isLoading
-                || this.tagStore.isLoading
-                || this.teamStore.isLoading;
+            return this.walkStore.isLoading;
         },
         isSubmitDisabled() {
             return this.isLoading || !this.walkNameState;

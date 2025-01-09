@@ -71,7 +71,7 @@
 'use strict';
 import GlobalFormError from '../Common/GlobalFormError.vue';
 import { getViolationsFeedback } from '../../utils';
-import { useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore } from '../../stores';
+import { useAuthStore, useWalkStore, useWayPointStore } from '../../stores';
 
 export default {
     name: 'WayPointRemoveForm',
@@ -95,8 +95,6 @@ export default {
     data: function () {
         return {
             authStore: useAuthStore(),
-            tagStore: useTagStore(),
-            teamStore: useTeamStore(),
             wayPointStore: useWayPointStore(),
             walkStore: useWalkStore(),
             wayPointName: '',
@@ -121,16 +119,7 @@ export default {
             return getViolationsFeedback(['wayPoint'], this.error);
         },
         isLoading() {
-            return this.wayPointStore.isLoading
-                || this.walkStore.isLoading
-                || this.tagStore.isLoading
-                || this.teamStore.isLoading;
-        },
-        currentUser() {
-            return this.authStore.currentUser;
-        },
-        isSuperAdmin() {
-            return this.authStore.isSuperAdmin;
+            return this.wayPointStore.isLoading;
         },
         isSubmitDisabled() {
             return this.isLoading || !this.wayPointNameState;
