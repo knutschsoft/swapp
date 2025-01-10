@@ -33,15 +33,15 @@ Feature: An admin can create a team
     And I click on test element "header-team-create"
     Then I wait for "Allgemeine Daten des Teams" to appear
 
-    When I enter "clientIri<gamer@gmx.de>" in "clients" field
+    When I enter "gamer@gmx.de" in "clients" field
     Then I wait for "Dieser Klient hat noch keine Benutzer." to appear
 
-    When I enter "clientIri<client@gmx.de>" in "clients" field
+    When I enter "client@gmx.de" in "clients" field
     Then I wait for "Dieser Klient hat noch keine Benutzer." to disappear
 
     Then the element "button-team-form-create" should be disabled
     When I enter "Superteam" in "name" field
-    When I click on text "karl@gmx.de"
+    When I click on test element "walkTeamMember-karl@gmx.de"
     Then the element "button-team-form-create" should be enabled
     Then I click on test element "button-team-form-create"
 
@@ -71,7 +71,7 @@ Feature: An admin can create a team
 
     Then the element "button-team-form-create" should be disabled
     When I enter "Superteam" in "name" field
-    When I click on text "karl@gmx.de"
+    When I click on test element "walkTeamMember-karl@gmx.de"
     Then the element "button-team-form-create" should be enabled
     Then I click on test element "button-team-form-create"
 

@@ -7,9 +7,11 @@
             <v-card-title class="grey lighten-2 mb-5">Allgemeine Daten des Teams</v-card-title>
             <v-card-text>
                 <v-row>
-                    <v-col cols="12">
+                    <v-col
+                        v-if="isSuperAdmin"
+                        cols="12"
+                    >
                         <v-select
-                            v-if="!isSuperAdmin"
                             v-model="team.client"
                             outlined
                             dense
@@ -601,11 +603,8 @@
 <script>
 'use strict'
 import FormError from '../Common/FormError.vue'
-import {useClientStore} from '../../stores/client';
-import {useTeamStore} from '../../stores/team';
-import {useUserStore} from '../../stores/user';
-import {useAuthStore} from '../../stores/auth';
-import WalkTeamMembersField from "../Common/Walk/WalkTeamMembersField.vue";
+import {useAuthStore, useClientStore, useTeamStore, useUserStore} from '../../stores';
+import {WalkTeamMembersField} from "../Common/Walk";
 
 export default {
     name: 'TeamForm',
