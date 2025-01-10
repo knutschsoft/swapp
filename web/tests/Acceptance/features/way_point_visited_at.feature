@@ -32,9 +32,6 @@ Feature: An admin can change visited at of a wayPoint
     When I enter "Assieck" in "locationName" field
     When I enter "Straßenbahnen sind blockiert" in "note" field
     When I enter "Jugo geht ab" in "oneOnOneInterview" field
-    Then I wait for 'date<now,d.m.Y>' to appear
-    Then I wait for 'date<now,H:i>' to appear
-    Then I wait for 'date<now,N>' to appear
 
     And I click on text "Wegpunkt speichern und Runde abschließen"
     And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
@@ -51,20 +48,19 @@ Feature: An admin can change visited at of a wayPoint
     And I wait for 'Anmeldung' to appear
     Given I am authenticated as "admin@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Assieck>/detail"
-    Then I wait for 'Die Ankunftszeit muss nach der Rundenstartzeit (' to appear
 
-    Then the element "button-way-point-submit" should be enabled
-    When I click on test element "visitedAtTime"
-    Then I wait for "Schließen" to appear
-    When I click on aria label "Verringern"
-    Then the element "button-way-point-submit" should be disabled
-    When I click on aria label "Erhöhen"
-    When I click on aria label "Erhöhen"
+    When I select date "11.01.2021" in date selector "visitedAtDate"
+    Then I wait for 'Die Ankunftszeit muss nach der Rundenstartzeit (' to appear
+      Then the element "button-way-point-submit" should be disabled
+
+    When I select time "18:50" in time selector "visitedAtTime"
+    When I select date "22.12.2028" in date selector "visitedAtDate"
+
     Then the element "button-way-point-submit" should be enabled
 
     When I click on test element "button-way-point-submit"
     And I wait for "Wegpunkt geändert" to appear
     And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich geändert.' to appear
     And I can find the following wayPoints in database:
-      | locationName | visitedAt                 |
-      | Assieck      | date<+1 hour,d.m.Y H:i:s> |
+      | locationName | visitedAt                     |
+      | Assieck      | date<22.12.2028 18:50,d.m.Y H:i:s> |

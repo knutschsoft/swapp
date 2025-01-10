@@ -420,7 +420,7 @@ export default {
                 || !this.walk.endTime
                 || !this.walk.systemicAnswer && !this.isWithoutSystemicAnswer
                 || !this.walkReflectionState
-                || !this.walk.walkCreator
+                || !this.walk.walkCreator && this.initialWalk.walkCreator
                 || this.isLoading;
         },
         error() {

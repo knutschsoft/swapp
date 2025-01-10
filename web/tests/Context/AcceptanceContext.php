@@ -466,6 +466,8 @@ final class AcceptanceContext extends MinkContext
             if ($isPotentialCombobox) {
                 $element->keyPress(WebDriverKeys::ENTER);
             }
+            // workaround for vue-select fields:
+            $this->getNodeElement('body')->click();
         }
     }
 
@@ -479,7 +481,7 @@ final class AcceptanceContext extends MinkContext
 
 //        $locator = '.menuable__content__active .v-select-list div.v-list-item__title:contains("'.$arg1.'")';
 //        $this->getNodeElement($locator, 50)->click();
-        $this->getNodeElement("[data-title='$arg1']")->click();
+        $this->getNodeElement(\sprintf("[data-title='%s']", $arg1))->click();
 
         // unfocus and close vuetify dropdown
         $this->getSession()->getPage()->find('css', 'body')->click();
