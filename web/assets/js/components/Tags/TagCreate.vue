@@ -43,7 +43,7 @@
             </template>
         </v-select>
         <v-select
-            v-if="!isSuperAdmin"
+            v-if="isSuperAdmin"
             v-model="client"
             data-test="client"
             label="Für welchen Klienten?"

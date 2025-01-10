@@ -54,7 +54,7 @@
                     :type="passwordFieldType"
                     label="Passwort wiederholen"
                     placeholder="Passwort"
-                    ame="passwordRepeat"
+                    name="passwordRepeat"
                     data-test="passwordRepeat"
                     autocomplete="off"
                     hide
