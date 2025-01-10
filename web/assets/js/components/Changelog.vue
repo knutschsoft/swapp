@@ -5,28 +5,34 @@
             collapse-key="changelog-swapp"
             is-visible-by-default
         >
-            <b-list-group>
+            <v-list class="p-0">
                 <template v-for="item in items">
-                    <b-list-group-item
-                        class="d-flex justify-content-between align-items-center"
-                        variant="dark"
+                    <v-list-item
+                        dense
+                        class="grey lighten-2 p-2 mt-0"
                         :key="item.header"
                     >
-                        <div>
-                            <span class="font-weight-bold">{{ item.header }}</span>
-                            <b-badge v-if="hasItemNewBadge(item.header)" variant="primary">
-                                Neu
-                            </b-badge>
-                        </div>
-                        <b-avatar
+                        <v-list-item-avatar
                             v-if="item.avatarText"
-                            variant="light"
+                            color="white"
                             v-html="item.avatarText"
                             :title="item.avatarTitle ?? ''"
                         />
-                    </b-list-group-item>
-                    <b-list-group-item
+                        <v-list-item-content>
+                            <v-badge
+                                v-if="hasItemNewBadge(item.header)"
+                                content="Neu"
+                                inline
+                                right
+                            >
+                                <div class="mr-auto font-weight-bold">{{ item.header }}</div>
+                            </v-badge>
+                            <div v-else class="font-weight-bold">{{ item.header }}</div>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item
                         :key="`${item.header}2`"
+                        class="py-3"
                     >
                         <ul class="pl-3 mb-0">
                             <li v-for="(entry,entryKey) in item.entries" :key="`${item.header}-${entryKey}`">
@@ -49,9 +55,9 @@
                                 />
                             </li>
                         </ul>
-                    </b-list-group-item>
+                    </v-list-item>
                 </template>
-            </b-list-group>
+            </v-list>
         </ContentCollapse>
     </div>
 </template>
