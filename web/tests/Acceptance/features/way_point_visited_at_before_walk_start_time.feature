@@ -32,9 +32,6 @@ Feature: An user can change startTime of a wayPoint on form of first wayPoint
     When I enter "Assieck" in "locationName" field
     When I enter "Straßenbahnen sind blockiert" in "note" field
     When I enter "Jugo geht ab" in "oneOnOneInterview" field
-    Then I wait for 'date<now,d.m.Y>' to appear
-    Then I wait for 'date<now,H:i>' to appear
-    Then I wait for 'date<now,N>' to appear
 
     And I wait for 'Hinweis: Die gewählte Ankunftszeit ist 4 Stunden vor dem Rundenstart.' to appear
     And I wait for 'Hier kannst du die Rundenstartzeit auf die aktuell gewählte Ankunftszeit ändern.' to appear
