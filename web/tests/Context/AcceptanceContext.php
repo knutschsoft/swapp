@@ -469,6 +469,22 @@ final class AcceptanceContext extends MinkContext
         }
     }
 
+    /**
+     * @When /^I select "([^"]*)" from vue select "([^"]*)"$/
+     */
+    public function iSelectFromVueSelect(string $arg1, string $dataTestLocator): void
+    {
+        $select = $this->getTestElement($dataTestLocator);
+        $select->click();
+
+//        $locator = '.menuable__content__active .v-select-list div.v-list-item__title:contains("'.$arg1.'")';
+//        $this->getNodeElement($locator, 50)->click();
+        $this->getNodeElement("[data-title='$arg1']")->click();
+
+        // unfocus and close vuetify dropdown
+        $this->getSession()->getPage()->find('css', 'body')->click();
+    }
+
     private function getNodeElement(string $locator, ?int $tries = 25): NodeElement
     {
         return $this->spin(

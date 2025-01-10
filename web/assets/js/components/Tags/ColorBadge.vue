@@ -9,6 +9,7 @@
             :style="`background-color: ${ color }`"
         >
             <span
+                :data-title="color"
                 style="height:inherit; background: inherit; -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; filter: invert(1) grayscale(1) contrast(999);"
             >
                 {{ color }}

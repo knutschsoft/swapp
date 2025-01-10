@@ -181,8 +181,19 @@ export default {
     computed: {
         fields() {
             let headers = [
+            ];
+
+            if (this.isSuperAdmin) {
+                headers.push({
+                    value: 'id',
+                    text: 'ID',
+                    sortable: true,
+                });
+            }
+            headers.push(...[
                 {
                     value: 'name',
+                    text: 'Name',
                     sortable: true,
                 },
                 {
@@ -195,7 +206,7 @@ export default {
                     text: 'Tag aktiviert?',
                     sortable: true,
                 }
-            ];
+            ]);
             if (this.isSuperAdmin) {
                 headers.push({
                     value: 'client',
