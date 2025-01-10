@@ -36,6 +36,7 @@ Feature: An admin can create a team
     When I enter "gamer@gmx.de" in "clients" field
     Then I wait for "Dieser Klient hat noch keine Benutzer." to appear
 
+    When I enter "" in "name" field
     When I enter "client@gmx.de" in "clients" field
     Then I wait for "Dieser Klient hat noch keine Benutzer." to disappear
 
