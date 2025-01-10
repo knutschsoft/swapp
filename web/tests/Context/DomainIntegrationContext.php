@@ -704,6 +704,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['walkReflection'])) {
                 Assert::same($walk->getWalkReflection(), $this->enrichText($row['walkReflection']));
             }
+            if (isset($row['weather'])) {
+                Assert::same($walk->getWeather(), $this->enrichText($row['weather']));
+            }
             if (isset($row['rating']) && '' !== $row['rating']) {
                 Assert::same(
                     $walk->getRating(),

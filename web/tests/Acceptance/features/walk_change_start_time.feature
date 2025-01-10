@@ -19,7 +19,7 @@ Feature: An administrator can change startTime of a walk
       | Drogen | Blue      | client@gmx.de |
     Given the following walks exists:
       | name   | team     | startTime       | endTime          | reflection | systemicAnswer | commitments | insights |
-      | Klippe | Westhang | 02.01.2021 7:20 | 10.01.2021 09:00 | zorp       | zorp           | zorp        | zorp     |
+      | Klippe | Westhang | 02.01.2021 7:20 | 10.01.2021 19:00 | zorp       | zorp           | zorp        | zorp     |
 
   @javascript
   @walkChange @startTime
@@ -29,23 +29,16 @@ Feature: An administrator can change startTime of a walk
     When I go to swapp page "/runde/walkId<Klippe>/detail"
     Then I wait for 'Runde "Klippe" ändern' to appear
 
-    When I click on test element "startTimeTime"
-    Then I wait for 'Schließen' to appear
-    When I click on aria label "Erhöhen"
-
-    When I click on test element "startTimeDate"
-    Then I wait for 'Mit den Pfeiltasten durch den Kalender navigieren' to appear
-    When I click on aria label "Sonntag, 10. Januar 2021"
-
+    When I select date "10.01.2021" in date selector "startTimeDate"
+    When I select time "18:20" in time selector "startTimeTime"
+    When I enter "Sonne" in "Wetter" field
 
     When I click on test element "button-walk-submit"
 
     Then I wait for 'Runde "Klippe" wurde erfolgreich geändert.' to appear
 
-
     Then I can find the following walks in database:
-      | name   | startTime                         | endTime                           |
-      | Klippe | date<10.01.2021 8:20,d.m.Y H:i:s> | date<10.01.2021 9:00,d.m.Y H:i:s> |
-
+      | name   | startTime                          | endTime                            | weather |
+      | Klippe | date<10.01.2021 18:20,d.m.Y H:i:s> | date<10.01.2021 19:00,d.m.Y H:i:s> | Sonne   |
 
     And there are exactly 1 walks in database

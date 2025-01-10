@@ -75,11 +75,19 @@
 
 <script>
 'use strict';
-import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
 import FormGroup from '../Common/FormGroup.vue';
 import {useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
-import {WalkConceptOfDayField, WalkGuestNamesField, WalkHolidaysField, WalkNameField, WalkStartTimeField, WalkTeamMembersField, WalkWalkCreatorField, WalkWeatherField} from "../Common/Walk";
+import {
+    WalkConceptOfDayField,
+    WalkGuestNamesField,
+    WalkHolidaysField,
+    WalkNameField,
+    WalkStartTimeField,
+    WalkTeamMembersField,
+    WalkWalkCreatorField,
+    WalkWeatherField
+} from "../Common/Walk";
 
 export default {
     name: 'WalkUnfinishedForm',
@@ -130,7 +138,7 @@ export default {
                 || !this.walk.conceptOfDay
                 || !this.walk.startTime
                 || !this.walk.walkTeamMembers.length
-                || !this.walk.walkCreator
+                || !this.walk.walkCreator && this.initialWalk.walkCreator
                 || !this.walk.weather
                 || this.isLoading;
         },
@@ -169,7 +177,7 @@ export default {
             return !this.walk.name
                 || !this.walk.conceptOfDay
                 || !this.walk.startTime
-                || !this.walk.walkCreator
+                || !this.walk.walkCreator && this.initialWalk.walkCreator
                 || this.isLoading;
         },
         error() {
