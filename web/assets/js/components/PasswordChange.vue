@@ -39,8 +39,8 @@
                     label="Passwort"
                     placeholder="Passwort"
                     name="password"
-                    data-test="username"
-                    autocomplete="username email"
+                    data-test="password"
+                    autocomplete="off"
                     :disabled="isPasswordChanged || isLoading"
                     dense
                     outlined
@@ -54,9 +54,9 @@
                     :type="passwordFieldType"
                     label="Passwort wiederholen"
                     placeholder="Passwort"
-                    name="password"
-                    data-test="username"
-                    autocomplete="username email"
+                    ame="passwordRepeat"
+                    data-test="passwordRepeat"
+                    autocomplete="off"
                     hide
                     :disabled="isPasswordChanged || isLoading"
                     dense

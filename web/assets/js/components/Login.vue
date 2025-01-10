@@ -54,8 +54,8 @@
                         label="Passwort"
                         placeholder="Passwort"
                         name="password"
-                        data-test="username"
-                        autocomplete="username email"
+                        data-test="password"
+                        autocomplete="password"
                         dense
                         outlined
                         @click:append="switchPasswordVisibility"
