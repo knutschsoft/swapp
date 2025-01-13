@@ -49,9 +49,10 @@ Feature: An admin can change visited at of a wayPoint
     Given I am authenticated as "admin@gmx.de"
     And I go to swapp page "/runde/walkId<Gorbitz>/wegpunkt/wayPointId<Assieck>/detail"
 
+    Then the element "visitedAtDate" should be enabled
     When I select date "11.01.2021" in date selector "visitedAtDate"
     Then I wait for 'Die Ankunftszeit muss nach der Rundenstartzeit (' to appear
-      Then the element "button-way-point-submit" should be disabled
+    Then the element "button-way-point-submit" should be disabled
 
     When I select time "18:50" in time selector "visitedAtTime"
     When I select date "22.12.2028" in date selector "visitedAtDate"
