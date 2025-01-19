@@ -155,7 +155,6 @@ export default {
             this.walk.wayPoints.forEach(iri => {
                 let wayPoint = this.getWayPointByIri(iri);
                 if (wayPoint) {
-                    this.$set(wayPoint, '_showDetails', this.isDetailsShowing);
                     wayPoints.push(wayPoint);
                 }
             });
