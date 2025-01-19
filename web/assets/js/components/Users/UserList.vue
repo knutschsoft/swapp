@@ -1,39 +1,18 @@
 <template>
     <div>
-        <b-row class="p-2 mt-0 mb-1">
-            <b-col
+        <v-row class="p-2 mt-0 mb-1">
+            <v-col
                 v-if="isSuperAdmin"
                 xs="12"
                 sm="6"
             >
-                <b-input-group size="sm" class="mb-2">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            title="Nur bestimmten Klient anzeigen."
-                            :class="filter.client !== null ? 'font-weight-bold' : ''"
-                        >
-                            Klient?
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-select
-                        v-model="filter.client"
-                        data-test="client"
-                        placeholder="Für welchen Klienten?"
-                        :options="availableClients"
-                        value-field="@id"
-                        text-field="name"
-                    >
-                        <template #first>
-                            <b-form-select-option :value="null">Alle Klienten</b-form-select-option>
-                        </template>
-                    </b-form-select>
-                    <my-input-group-append
-                        @click="filter.client = null"
-                        :is-active="filter.client !== null"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
+                <client-select
+                    v-model="filter.client"
+                    :is-loading="isLoading"
+                    :disabled="isLoading"
+                />
+            </v-col>
+            <v-col
                 xs="12"
                 :sm="isSuperAdmin ? 6 : 12"
             >
@@ -55,8 +34,8 @@
                         :is-active="filter.isEnabled !== true"
                     />
                 </b-input-group>
-            </b-col>
-        </b-row>
+            </v-col>
+        </v-row>
         <div
             v-if="isLoading"
             class="d-flex justify-content-center my-3"
@@ -215,10 +194,12 @@ import UserForm from './UserForm.vue';
 import dayjs from 'dayjs';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
 import {useAlertStore, useAuthStore, useClientStore, useUserStore} from '../../stores';
+import {ClientSelect} from "@/js/components/Common";
 
 export default {
     name: 'UserList',
     components: {
+        ClientSelect,
         UserForm,
         MyInputGroupAppend,
     },
@@ -245,9 +226,6 @@ export default {
         };
     },
     computed: {
-        availableClients() {
-            return this.clientStore.getClients;
-        },
         fields() {
             return [
                 {
@@ -385,7 +363,7 @@ export default {
                 ;
         },
         isLoading() {
-            return this.userStore.isLoading;
+            return this.userStore.isLoading || this.clientStore.isLoadingFetch;
         },
     },
     created() {

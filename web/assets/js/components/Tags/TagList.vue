@@ -9,22 +9,11 @@
                 cols="12"
                 sm="6"
             >
-                <v-select
+                <client-select
                     v-model="filter.client"
-                    :items="availableClients"
-                    item-value="@id"
-                    item-text="name"
-                    label="Für welchen Klienten?"
-                    dense
-                    clearable
-                    outlined
-                    :success="filter.client !== null"
-                    class="flex-grow-1"
-                    hint="Nur bestimmten Klient anzeigen."
-                    :persistent-hint="filter.client !== null"
-                    persistent-placeholder
-                >
-                </v-select>
+                    :is-loading="isLoading"
+                    :disabled="isLoading"
+                />
             </v-col>
             <v-col
                 :sm="isSuperAdmin ? 6 : 12"
@@ -152,10 +141,11 @@ import {
     loadingText,
     noItemsText,
 } from '../../utils'
+import {ClientSelect} from "@/js/components/Common";
 
 export default {
     name: 'TagList',
-    components: { ColorBadge },
+    components: {ClientSelect, ColorBadge },
     data: function () {
         return {
             itemsPerPageOptions,
@@ -216,9 +206,6 @@ export default {
             }
             headers.push({ value: 'actions', text: 'Aktionen' });
             return headers;
-        },
-        availableClients() {
-            return this.clientStore.getClients;
         },
         tags() {
             return this.tagStore.getTags

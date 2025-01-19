@@ -92,7 +92,6 @@
 
 <script>
 "use strict";
-import FormGroup from './Common/FormGroup.vue';
 import ContentCollapse from './ContentCollapse.vue';
 import WalkAPI from '../api/walk.js';
 import dayjs from 'dayjs';
@@ -119,7 +118,6 @@ export default {
         WalkNameField,
         WalkWeatherField,
         WalkTeamMembersField,
-        FormGroup,
         ContentCollapse,
     },
     props: {

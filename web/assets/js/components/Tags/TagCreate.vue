@@ -42,17 +42,11 @@
                 </v-list-item>
             </template>
         </v-select>
-        <v-select
+        <client-select
             v-if="isSuperAdmin"
             v-model="client"
-            data-test="client"
-            label="Für welchen Klienten?"
-            placeholder="Für welchen Klienten?"
-            :items="availableClients"
-            dense
-            item-value="@id"
-            item-text="name"
-            outlined
+            :is-loading="isLoading"
+            :disabled="isLoading"
         />
         <v-tooltip
             v-if="isFormInvalid"
@@ -111,10 +105,12 @@ import ColorBadge from './ColorBadge.vue';
 import { html } from 'color_library';
 import FormError from '../Common/FormError.vue';
 import {useAlertStore, useAuthStore, useClientStore, useTagStore} from '../../stores';
+import {ClientSelect} from "@/js/components/Common";
 
 export default {
     name: 'TagCreate',
     components: {
+        ClientSelect,
         FormError,
         ColorBadge,
     },
@@ -164,9 +160,6 @@ export default {
         },
         error() {
             return this.tagStore.getErrors.create;
-        },
-        availableClients() {
-          return this.clientStore.getClients;
         },
         availableColors() {
             return html.filter(htmlColor => (-1 === this.colors.indexOf(htmlColor.name)

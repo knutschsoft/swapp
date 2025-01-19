@@ -211,7 +211,6 @@
 'use strict';
 import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
-import FormGroup from '../Common/FormGroup.vue';
 import {StarRating} from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
 import {useAuthStore, useClientStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
@@ -260,7 +259,6 @@ export default {
         WalkWeatherField,
         WalkTeamMembersField,
         WalkRating,
-        FormGroup,
         FormError,
         StarRating,
     },

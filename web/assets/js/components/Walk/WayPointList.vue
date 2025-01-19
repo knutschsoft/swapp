@@ -4,8 +4,8 @@
             v-if="hasWayPoints"
             class="p-2"
         >
-            <b-row class="mt-0 mb-0">
-                <b-col
+            <v-row class="mt-0 mb-0">
+                <v-col
                     class="my-1"
                     xs="12"
                     sm="12"
@@ -23,39 +23,44 @@
                             :name="isDetailsShowing ? 'EyeOffOutline' : 'EyeOutline'"
                         />
                     </v-btn>
-                </b-col>
-            </b-row>
+                </v-col>
+            </v-row>
         </div>
-        <b-table
+        <v-data-table
             v-if="!isLoading && walk"
-            ref="waypointsTable"
-            show-empty
-            emptyText="Für diese Runde gibt es keine Wegpunkte."
-            small
-            stacked="md"
+            no-results-text="Für diese Runde gibt es keine Wegpunkte."
+            dense
             :items="wayPoints"
-            :fields="fields"
+            :headers="headers"
+            :expanded.sync="expanded"
             sort-by="visitedAt"
-            class="mb-0"
+            hide-default-footer
         >
-            <template #cell(locationName)="data">
+            <template #expanded-item="{headers, item}">
+                <td :colspan="headers.length">
+                    <WayPointDetailData
+                        :walk-id="walk.walkId"
+                        :way-point-id="item.wayPointId"
+                        :excluded-attributes="['walk', 'locationName', 'visitedAt', 'isMeeting']"
+                        :hide-empty-age-groups="true"
+                    />
+                </td>
+            </template>
+            <template #item.locationName="{item}">
                 <location-link
-                    :value="data.value"
+                    :value="item.locationName"
                 />
             </template>
-            <template #row-details="row">
-                <WayPointDetailData
-                    :walk-id="walk.walkId"
-                    :way-point-id="row.item.wayPointId"
-                    :excluded-attributes="['walk', 'locationName', 'visitedAt', 'isMeeting']"
-                    :hide-empty-age-groups="true"
-                />
+            <template #item.isMeeting="{item}">
+                {{ item.isMeeting ? 'Ja' : 'Nein' }}
             </template>
-
-            <template v-slot:cell(actions)="row">
+            <template #item.visitedAt="{item}">
+                {{ formatDateTimeNoSeconds(item.visitedAt) }}
+            </template>
+            <template #item.actions="{item}">
                 <router-link
-                    :to="{name: 'WayPointDetail', params: { walkId: walk.walkId, wayPointId: row.item.wayPointId}}"
-                    :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
+                    :to="{name: 'WayPointDetail', params: { walkId: walk.walkId, wayPointId: item.wayPointId}}"
+                    :data-test="`button-wegpunkt-ansehen-${ item.locationName }`"
                 >
                     <v-btn
                         small
@@ -67,7 +72,7 @@
                     </v-btn>
                 </router-link>
             </template>
-        </b-table>
+        </v-data-table>
     </div>
 </template>
 
@@ -75,10 +80,9 @@
 'use strict';
 
 import LocationLink from '../LocationLink.vue';
-import dayjs from 'dayjs';
-import { useWayPointStore } from '../../stores/way-point';
-import { useWalkStore } from '../../stores/walk';
+import { useWalkStore, useWayPointStore } from '../../stores/way-point';
 import WayPointDetailData from "../WayPoint/WayPointDetailData.vue";
+import {formatDateTimeNoSeconds} from "@/js/utils";
 
 export default {
     name: 'WayPointList',
@@ -99,38 +103,33 @@ export default {
         };
     },
     computed: {
-        fields () {
-            return [
-                { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
+        headers () {
+            const headers = [
+                { value: 'locationName', text: 'Ort', sortDirection: 'desc' },
                 {
-                    key: 'visitedAt',
-                    label: 'Ankunft',
-                    sortable: true,
-                    sortByFormatted: true,
-                    filterByFormatted: true,
-                    formatter: (value) => {
-                        return dayjs(value).format('DD.MM.YYYY HH:mm');
-                    },
+                    value: 'visitedAt',
+                    text: 'Ankunft',
                     sortDirection: 'desc',
-                    class: 'text-center align-middle',
                 },
                 {
-                    key: 'isMeeting',
-                    label: 'Meeting',
-                    formatter: (value, key, item) => {
-                        return value ? 'Ja' : 'Nein';
-                    },
+                    value: 'isMeeting',
+                    text: 'Meeting',
                     sortable: true,
-                    sortByFormatted: true,
-                    filterByFormatted: true,
-                    class: 'text-center align-middle',
                 },
-                { key: 'malesCount', label: 'Männer', sortable: true, sortDirection: 'desc', class: !this.walk.isWithAgeRanges ? 'd-none' : 'text-center align-middle' },
-                { key: 'femalesCount', label: 'Frauen', sortable: true, sortDirection: 'desc', class: !this.walk.isWithAgeRanges ? 'd-none' : 'text-center align-middle' },
-                { key: 'queerCount', label: 'Andere', sortable: true, sortDirection: 'desc', class: !this.walk.isWithAgeRanges ? 'd-none' : 'text-center align-middle' },
-                { key: 'peopleCount', label: 'Anzahl Personen', sortable: true, sortDirection: 'desc', class: (this.walk.isWithAgeRanges || !this.walk.isWithPeopleCount) ? 'd-none' : 'text-center align-middle' },
-                { key: 'actions', label: 'Aktionen', class: 'text-center align-middle' },
             ];
+            if (this.walk.isWithAgeRanges) {
+                headers.push(...[
+                    { value: 'malesCount', text: 'Männer', sortDirection: 'desc' },
+                    { value: 'femalesCount', text: 'Frauen', sortDirection: 'desc' },
+                    { value: 'queerCount', text: 'Andere', sortDirection: 'desc' },
+                ]);
+            }
+            if (!(this.walk.isWithAgeRanges || !this.walk.isWithPeopleCount)) {
+                headers.push({ value: 'peopleCount', text: 'Anzahl Personen', sortDirection: 'desc'})
+            }
+            headers.push({ value: 'actions', text: 'Aktionen' })
+
+            return headers;
         },
         isLoading () {
             return this.walkStore.isLoading || this.wayPointStore.isLoading;
@@ -140,6 +139,13 @@ export default {
         },
         hasWayPoints() {
             return this.wayPointStore.hasWayPoints;
+        },
+        expanded() {
+            if (this.isDetailsShowing) {
+                return this.wayPoints;
+            }
+
+            return [];
         },
         wayPoints() {
             const wayPoints = [];
@@ -177,6 +183,7 @@ export default {
         }
     },
     methods: {
+        formatDateTimeNoSeconds,
         getWayPointByIri(iri) {
             return this.wayPointStore.getWayPointByIri(iri);
         },

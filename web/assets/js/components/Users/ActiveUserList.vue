@@ -1,24 +1,22 @@
 <template>
     <div class="p-2">
-        <b-row class="px-1 py-2">
-            <b-col
-                class="mb-1"
+        <v-row class="my-2">
+            <v-col
                 xs="12"
                 :sm="isSuperAdmin ? 8 : 12"
                 :md="isSuperAdmin ? 6 : 12"
             >
-                <b-input-group
-                    size="sm"
+                <v-input
+                    @click:append="resetDefaultDateRange"
+                    @click:prepend="togglePicker"
                 >
-                    <b-input-group-prepend
-                        @click.stop="togglePicker"
-                    >
-                        <b-input-group-text
+                    <template v-slot:prepend>
+                        <div
                             :class="(dateRange.startDate.getTime() !== defaultDateRange.startDate.getTime() || dateRange.endDate.getTime() !== defaultDateRange.endDate.getTime()) ? 'font-weight-bold' : ''"
                         >
                             Zeitraum
-                        </b-input-group-text>
-                    </b-input-group-prepend>
+                        </div>
+                    </template>
                     <date-range-picker
                         ref="picker"
                         class="form-control"
@@ -30,69 +28,49 @@
                         opens="right"
                         :readonly="isLoadingEntries.length > 0"
                         :disabled="isLoadingEntries.length > 0"
-                    >
-                    </date-range-picker>
-                    <b-input-group-append
-                        @click.stop="togglePicker"
-                    >
-                        <b-input-group-text>
-                            <v-progress-circular
-                                v-if="isLoading || isLoadingEntries.length > 0"
-                                size="18"
-                                indeterminate
-                                color="secondary"
-                            />
-                            <v-icon
-                                v-else
-                                size="18"
-                            >
-                                mdi-calendar
-                            </v-icon>
-                        </b-input-group-text>
-                    </b-input-group-append>
-                    <my-input-group-append
-                        @click="resetDefaultDateRange"
-                        :is-active="!((dateRange.startDate.getTime() === defaultDateRange.startDate.getTime() && dateRange.endDate.getTime() === defaultDateRange.endDate.getTime()) || isLoading || isLoadingEntries.length > 0)"
                     />
-                </b-input-group>
-            </b-col>
-            <b-col
+                    <template v-slot:append>
+                        <v-progress-circular
+                            v-if="isLoading || isLoadingEntries.length > 0"
+                            size="18"
+                            indeterminate
+                            color="secondary"
+                        />
+                        <v-icon
+                            v-else
+                        >
+                            mdi-calendar
+                        </v-icon>
+
+                        <v-btn
+                            :color="!((dateRange.startDate.getTime() === defaultDateRange.startDate.getTime() && dateRange.endDate.getTime() === defaultDateRange.endDate.getTime()) || isLoading || isLoadingEntries.length > 0) ? 'blue darken-2' : 'secondary lighten-4'"
+                            x-small
+                            fab
+                        >
+                            <v-icon
+                                color="white"
+                                @click="resetDefaultDateRange"
+                            >
+                                mdi-filter-remove-outline
+                            </v-icon>
+                        </v-btn>
+                    </template>
+                </v-input>
+            </v-col>
+            <v-col
                 v-if="isSuperAdmin"
                 xs="12"
                 sm="4"
                 md="6"
                 class="mb-1"
             >
-                <b-input-group
-                    size="sm"
-                >
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            title="Nur bestimmten Klient anzeigen."
-                            :class="client !== null ? 'font-weight-bold' : ''"
-                        >
-                            Klient
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-select
-                        v-model="client"
-                        data-test="client"
-                        placeholder="Für welchen Klienten?"
-                        :options="availableClients"
-                        value-field="@id"
-                        text-field="name"
-                    >
-                        <template #first>
-                            <b-form-select-option :value="null">Alle Klienten</b-form-select-option>
-                        </template>
-                    </b-form-select>
-                    <my-input-group-append
-                        @click="client = null"
-                        :is-active="client !== null"
-                    />
-                </b-input-group>
-            </b-col>
-        </b-row>
+                <client-select
+                    v-model="client"
+                    :is-loading="isLoading"
+                    :disabled="isLoading"
+                />
+            </v-col>
+        </v-row>
         <b-table
             v-show="!isLoading"
             :items="tableData"
@@ -179,10 +157,14 @@ import { useClientStore } from '../../stores/client';
 import { useUserStore } from '../../stores/user';
 import { useAuthStore } from '../../stores/auth';
 import { useGeneralStore } from '../../stores/general';
+import { ClientSelect } from "@/js/components/Common";
+import {WalkSystemicAnswerField} from "@/js/components/Common/Walk";
 
 export default {
     name: 'ActiveUserList',
     components: {
+        WalkSystemicAnswerField,
+        ClientSelect,
         DateRangePicker,
         MyInputGroupAppend,
     },
@@ -221,9 +203,6 @@ export default {
         },
         isSuperAdmin() {
             return this.authStore.isSuperAdmin;
-        },
-        availableClients() {
-            return this.clientStore.getClients;
         },
         currentUser() {
             return this.authStore.currentUser;

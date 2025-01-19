@@ -76,7 +76,6 @@
 <script>
 'use strict';
 import FormError from '../Common/FormError.vue';
-import FormGroup from '../Common/FormGroup.vue';
 import {useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
 import {
     WalkConceptOfDayField,
@@ -110,7 +109,6 @@ export default {
         WalkNameField,
         WalkWeatherField,
         WalkTeamMembersField,
-        FormGroup,
         FormError,
     },
     data: function () {

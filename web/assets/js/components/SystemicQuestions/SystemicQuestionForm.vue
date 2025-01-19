@@ -18,17 +18,10 @@
         <template
             v-if="isSuperAdmin"
         >
-            <v-select
+            <client-select
                 v-model="client"
-                data-test="client"
-                placeholder="Für welchen Klienten?"
-                label="Klient"
-                required
-                outlined
-                dense
-                :items="availableClients"
-                item-value="@id"
-                item-text="name"
+                :is-loading="isLoading"
+                :disabled="isLoading"
             />
         </template>
         <v-btn
@@ -53,7 +46,8 @@
 
 import FormError from '../Common/FormError.vue';
 import SystemicQuestionHint from './SystemicQuestionHint.vue';
-import { useAuthStore, useClientStore, useSystemicQuestionStore } from '../../stores';
+import { useAuthStore, useSystemicQuestionStore } from '../../stores';
+import {ClientSelect} from "@/js/components/Common";
 
 export default {
     name: 'SystemicQuestionForm',
@@ -73,13 +67,13 @@ export default {
         },
     },
     components: {
+        ClientSelect,
         FormError,
         SystemicQuestionHint,
     },
     data: function () {
         return {
             authStore: useAuthStore(),
-            clientStore: useClientStore(),
             systemicQuestionStore: useSystemicQuestionStore(),
             question: null,
             client: null,
@@ -107,9 +101,6 @@ export default {
         },
         error() {
             return this.systemicQuestionStore.getErrors.create;
-        },
-        availableClients() {
-            return this.clientStore.getClients;
         },
     },
     async mounted() {

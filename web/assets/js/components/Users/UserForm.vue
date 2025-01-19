@@ -54,25 +54,12 @@
                 :aria-describedby="ariaDescribedby"
             />
         </b-form-group>
-        <b-form-group
+        <client-select
             v-if="isSuperAdmin"
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
-        >
-            <template v-slot:label>
-                Klient
-            </template>
-            <b-form-select
-                v-model="user.client"
-                data-test="client"
-                placeholder="Für welchen Klienten?"
-                :options="availableClients"
-                value-field="@id"
-                text-field="name"
-            />
-        </b-form-group>
+            v-model="user.client"
+            :is-loading="isLoading"
+            :disabled="isLoading"
+        />
         <b-button
             type="submit"
             variant="secondary"
@@ -94,9 +81,8 @@
 'use strict';
 import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
-import { useClientStore } from '../../stores/client';
-import { useUserStore } from '../../stores/user';
-import { useAuthStore } from '../../stores/auth';
+import { useClientStore, useAuthStore, useUserStore } from '../../stores/client';
+import {ClientSelect} from "@/js/components/Common";
 
 export default {
     name: 'UserForm',
@@ -112,6 +98,7 @@ export default {
         },
     },
     components: {
+        ClientSelect,
         FormError,
     },
     data: function () {
@@ -147,7 +134,7 @@ export default {
                 return this.userStore.isLoadingChange(this.initialUser['@id'])
             }
 
-            return this.userStore.isLoadingCreate;
+            return this.userStore.isLoadingCreate || this.clientStore.isLoadingFetch;
         },
         currentUser() {
             return this.authStore.currentUser;
@@ -164,9 +151,6 @@ export default {
             }
 
             return this.userStore.getErrors.create;
-        },
-        availableClients() {
-            return this.clientStore.getClients;
         },
         availableRoles() {
             const roles = [{ text: 'Administrator', value: 'ROLE_ADMIN' }];
