@@ -107,7 +107,7 @@
 <script>
     "use strict";
     import DemoInfo from './Demo/DemoInfo.vue';
-    import { useAuthStore } from '../stores/auth';
+    import { useAuthStore } from '../stores';
 
     export default {
         name: "Login",

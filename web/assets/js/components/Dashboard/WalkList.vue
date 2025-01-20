@@ -331,9 +331,7 @@ import WalkAPI from '../../api/walk.js';
 import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import WalkRating from '../Walk/WalkRating.vue';
-import { useClientStore } from '../../stores/client';
-import { useGeneralStore } from '../../stores/general';
-import { useWalkStore } from '../../stores/walk';
+import { useClientStore, useGeneralStore, useWalkStore } from '../../stores';
 
 export default {
     name: 'WalkList',

@@ -1,290 +1,268 @@
 <template>
     <div>
-        <b-navbar
-            toggleable="lg"
-            type="dark"
-            variant="dark"
-            class="py-lg-0 pl-lg-0"
+        <v-app-bar
+            app
+            dark
+            class="grey darken-4"
+            fixed
+            dense
         >
-            <b-navbar-toggle target="nav-collapse" />
-
-            <b-navbar-brand
-                :to="{ name: 'Dashboard' }"
-                class="py-0 d-flex mr-0"
-            >
-                <img
-                    :src="swappLogo"
-                    class="navbar-logo rounded-sm"
-                    alt="swapp-logo"
-                >
-            </b-navbar-brand>
-            <div class="text-center d-none d-lg-flex justify-content-between mx-2">
-                <b-spinner
-                    v-if="isLoading"
-                    variant="light"
-                    type="grow"
+            <v-toolbar dense flat>
+                <v-app-bar-nav-icon
+                    v-if="isAuthenticated"
+                    @click="drawer = !drawer" class="d-xl-none"
                 />
-                <div
-                    v-else
-                    style="width: 32px;"
-                />
-            </div>
-            <b-button
-                variant="link"
-                class="text-right d-lg-none d-block"
-                :to="{ name:'Changelog' }"
-                :title="`Es gibt ${ hasNewChangelogItems ? '' : 'keine ' }Neuigkeiten für dich!`"
-            >
-                <mdicon
-                    v-if="hasNewChangelogItems"
-                    name="BellBadgeOutline"
-                    size="26"
-                    class="text-primary"
-                />
-                <mdicon
-                    v-else
-                    name="BellOutline"
-                    size="26"
-                    class="text-muted"
-                />
-            </b-button>
-            <b-collapse
-                id="nav-collapse"
-                is-nav
-            >
-                <b-navbar-nav
-                    fill
-                    class="w-100"
-                >
-                    <b-nav-item
+                <v-spacer class="d-xl-none" />
+                <router-link :to="{ name: 'Dashboard' }" style="max-width: 200px;">
+                    <v-img
+                        :src="swappLogo"
+                        alt="swapp-logo"
+                        class="rounded"
+                        max-height="46"
+                        contain
+                    />
+                </router-link>
+                <div class="d-none d-lg-block mx-3" style="width: 34px;">
+                    <v-progress-circular
+                        v-if="isLoading"
+                        indeterminate
+                        color="white"
+                        size="24"
+                    />
+                </div>
+                <v-spacer />
+                <v-tabs centered center-active class="d-none d-lg-block">
+                    <v-tab
                         v-if="isAuthenticated"
                         :to="{ name: 'Dashboard' }"
-                        :link-classes="linkClasses"
                         exact
-                        exact-active-class="active"
+                        link
                     >
                         Dashboard
-                    </b-nav-item>
-                    <b-nav-item
+                    </v-tab>
+                    <v-tab
                         v-if="isAdmin"
                         :to="{ name: 'Users' }"
-                        :link-classes="linkClasses"
                         exact
-                        exact-active-class="active"
+                        link
                     >
                         Benutzer
-                    </b-nav-item>
-                    <b-nav-item
+                    </v-tab>
+                    <v-tab
                         v-if="isSuperAdmin"
                         :to="{ name: 'Clients' }"
-                        :link-classes="linkClasses"
                         exact
-                        exact-active-class="active"
+                        link
                     >
                         Klienten
-                    </b-nav-item>
-                    <b-nav-item
+                    </v-tab>
+                    <v-tab
                         v-if="isAdmin"
                         :to="{ name: 'Teams' }"
-                        :link-classes="linkClasses"
                         exact
-                        exact-active-class="active"
+                        link
                     >
                         Teams
-                    </b-nav-item>
-                    <b-nav-item
+                    </v-tab>
+                    <v-tab
                         v-if="isAdmin"
                         :to="{ name: 'SystemicQuestions' }"
-                        :link-classes="linkClasses"
                         exact
-                        exact-active-class="active"
+                        link
                     >
                         Systemische Fragen
-                    </b-nav-item>
-                    <b-nav-item
+                    </v-tab>
+                    <v-tab
                         v-if="isAdmin"
                         :to="{ name: 'Tags' }"
-                        :link-classes="linkClasses"
                         exact
-                        exact-active-class="active"
+                        link
                     >
                         Tags
-                    </b-nav-item>
-                </b-navbar-nav>
-
-                <!-- Right aligned nav items -->
-                <b-navbar-nav class="ml-auto pl-2 pl-lg-0">
-                    <b-button
-                        variant="link"
-                        class="text-right d-none d-lg-block"
-                        :to="{ name: 'Changelog' }"
-                        :title="`Es gibt ${ hasNewChangelogItems ? '' : 'keine ' }Neuigkeiten für dich!`"
-                    >
-                        <v-icon
-                            v-if="hasNewChangelogItems"
-                            color="primary"
-                        >
-                            mdi-bell-badge-outline
-                        </v-icon>
-                        <v-icon
-                            v-else
-                            color="secondary lighten-2"
-                        >
-                            mdi-bell-outline
-                        </v-icon>
-                    </b-button>
-                    <b-nav-item-dropdown
-                        ref="userMenu"
-                        right
-                        lazy
-                        :toggle-class="isUserMenuActive ? 'active router-link-active' : ''"
-                        data-test="nav-user-item"
-                        @show="showUserMenu"
-                    >
-                        <!-- Using 'button-content' slot -->
-                        <template v-slot:button-content >
-                            <b-icon-person-fill />
-                            <span
-                                v-if="isAuthenticated"
-                            >
-                                {{ currentUser?.username }}
-                            </span>
-                        </template>
-                        <b-dropdown-item
+                    </v-tab>
+                </v-tabs>
+                <v-btn
+                    icon
+                    :to="{ name: 'Changelog' }"
+                    :title="`Es gibt ${hasNewChangelogItems ? '' : 'keine '}Neuigkeiten für dich!`"
+                >
+                    <v-icon color="primary" v-if="hasNewChangelogItems">mdi-bell-badge-outline</v-icon>
+                    <v-icon color="grey lighten-1" v-else>mdi-bell-outline</v-icon>
+                </v-btn>
+                <v-menu
+                    bottom
+                    right
+                    offset-y
+                    :close-on-content-click="false"
+                    @input="showUserMenu"
+                    allow-overflow
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn text v-bind="attrs" v-on="on">
+                            <v-icon>mdi-account</v-icon>
+                            <span v-if="isAuthenticated">{{ currentUser?.username }}</span>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
                             v-if="!isAuthenticated"
-                            :to="{ name: 'Login'}"
-                            router-tag="button"
-                            :active="$route.name === 'Login'"
+                            :to="{ name: 'Login' }"
+                            exact
+                            link
                         >
-                            Login
-                        </b-dropdown-item>
-                        <b-dropdown-item
+                            <v-list-item-title>Login</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
                             v-if="!isAuthenticated"
-                            :to="{ name: 'PasswordReset'}"
-                            :active="$route.name === 'PasswordReset'"
+                            :to="{ name: 'PasswordReset' }"
+                            exact
+                            link
                         >
-                            Passwort vergessen?
-                        </b-dropdown-item>
-                        <b-dropdown-item
+                            <v-list-item-title>Passwort vergessen?</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
                             v-if="isAuthenticated"
-                            :to="{ name: 'PasswordChangeRequest'}"
-                            :active="$route.name === 'PasswordChangeRequest'"
+                            :to="{ name: 'PasswordChangeRequest' }"
+                            exact
+                            link
                         >
-                            Passwort ändern
-                        </b-dropdown-item>
-                        <b-dropdown-item
+                            <v-list-item-title>Passwort ändern</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
                             v-if="isUserSwitched"
-                            router-tag="button"
-                            :title="`Nutzerwechsel beenden`"
-                            data-test="exit-switch-user"
-                            @click="exitSwitchUser()"
+                            @click="exitSwitchUser"
                         >
-                            Nutzerwechsel beenden
-                        </b-dropdown-item>
-                        <b-dropdown-item
+                            <v-list-item-title>Nutzerwechsel beenden</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
                             v-if="isAuthenticated"
-                            :to="{ name: 'Logout'}"
+                            :to="{ name: 'Logout' }"
+                            exact
+                            link
                         >
-                            Abmelden
-                        </b-dropdown-item>
-                        <b-dropdown-divider />
-                        <b-dropdown-item
-                            :to="{ name: 'About'}"
-                            :active="$route.name === 'About'"
+                            <v-list-item-title>Abmelden</v-list-item-title>
+                        </v-list-item>
+                        <v-divider />
+                        <v-list-item
+                            :to="{ name: 'About' }"
+                            exact
+                            link
                         >
-                            Was ist Swapp?
-                        </b-dropdown-item>
-                        <b-dropdown-item
-                            :to="{ name: 'Changelog'}"
-                            :active="$route.name === 'Changelog'"
+                            <v-list-item-title>Was ist Swapp?</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
+                            :to="{ name: 'Changelog' }"
+                            exact
+                            link
                         >
-                            Changelog
-                            <b-badge
-                                v-if="hasNewChangelogItems"
-                                variant="primary"
-                            >
-                                Neue Einträge vorhanden!
-                            </b-badge>
-                        </b-dropdown-item>
-                        <b-dropdown-item
-                            :to="{ name: 'Faq'}"
-                            :active="$route.name === 'Faq'"
+                            <v-list-item-title>
+                                Changelog
+                                <v-badge v-if="hasNewChangelogItems" color="primary" content="Neu" />
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
+                            :to="{ name: 'Faq' }"
+                            exact
+                            link
                         >
-                            FAQ - Häufig gestellte Fragen
-                        </b-dropdown-item>
-                        <b-dropdown-divider />
-                        <b-dropdown-item
+                            <v-list-item-title>FAQ</v-list-item-title>
+                        </v-list-item>
+                        <v-divider />
+                        <v-list-item
                             href="https://streetworkapp.de"
                             target="_blank"
                         >
-                            Swapp-Homepage
-                            <v-icon
-                                small
+                            <v-list-item-title>Swapp-Homepage</v-list-item-title>
+                            <v-icon small>mdi-open-in-new</v-icon>
+                        </v-list-item>
+                        <v-divider />
+                        <v-list-item v-if="!isUserSwitched && isSuperAdmin">
+                            <v-list-item-title>Nutzerwechsel</v-list-item-title>
+                            <v-text-field
+                                v-model="generalStore.navUserFilter"
+                                label="Benutzername"
+                                type="search"
+                                clearable
+                                outlined
+                                dense
+                                placeholder="Benutzername eingeben"
+                            />
+                        </v-list-item>
+                        <v-divider />
+                        <v-list dense nav  color="white" class="white">
+                            <v-list-item
+                                v-for="(user, key) in displayedUserList"
+                                :key="key"
+                                dense
+                                @click="switchUser(user)"
+                                :disabled="!user.isEnabled"
                             >
-                                mdi-open-in-new
-                            </v-icon>
-                            <span class="text-muted">https://streetworkapp.de</span>
-                        </b-dropdown-item>
-                        <b-dropdown-divider v-if="!isUserSwitched && isSuperAdmin" />
-                        <b-dropdown-form
-                            v-if="!isUserSwitched && isSuperAdmin"
-                        >
-                            <b-form-group
-                                label="Nutzerwechsel"
-                                label-for="nutzerwechsel-form-email"
-                                @submit.stop.prevent
-                            >
-                                <b-form-input
-                                    id="nutzerwechsel-form-email"
-                                    v-model="generalStore.navUserFilter"
-                                    type="search"
-                                    trim
-                                    autocomplete="off"
-                                    size="sm"
-                                    placeholder="Benutzername"
-                                />
-                            </b-form-group>
-                            <b-dropdown-group
-                                v-if="!isUserSwitched && isSuperAdmin"
-                            >
-                                <b-dropdown-item-button
-                                    v-for="(user, key) in displayedUserList"
-                                    :key="key"
-                                    button-class="text-truncate"
-                                    style="font-size: 14px;"
-                                    :disabled="!user.isEnabled"
-                                    @click="switchUser(user)"
-                                >
-                                    {{ user.username }}
-                                    <span class="text-muted">{{ getAdditionalUserInfo(user) }}</span>
-                                </b-dropdown-item-button>
-                            </b-dropdown-group>
-                        </b-dropdown-form>
-                    </b-nav-item-dropdown>
-                </b-navbar-nav>
-            </b-collapse>
-        </b-navbar>
-        <b-progress
-            class="d-lg-none w-100"
-            height="3px"
-            :variant="isLoading ? 'secondary' : 'dark'"
-            :value="100"
-            :animated="isLoading"
-        />
-        <div
-            v-if="isOnDemoPage || isOnStagePage"
-            class="px-2 py-0 small text-center bg-info w-full text-white"
-            v-text="`Du befindest dich auf der ${isOnDemoPage ? 'Demo' : 'Stage'}-Version von Swapp.`"
-        />
-        <UseNetwork v-slot="{ isOnline }">
-            <div
-                v-if="!isOnline"
-                class="px-2 py-0 small text-center bg-danger w-full text-white font-weight-bold"
-            >
-                <mdicon name="WifiOff" size="18"/>
-                Keine Internetverbindung
-            </div>
-        </UseNetwork>
+                                <v-list-item-content>
+                                    <v-list-item-title>{{ user.username }}</v-list-item-title>
+                                    <v-list-item-subtitle>{{ getAdditionalUserInfo(user) }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-list>
+                </v-menu>
+            </v-toolbar>
+        </v-app-bar>
+        <v-navigation-drawer
+            v-model="drawer"
+            app
+            stateless
+        >
+            <v-list dense>
+                <v-list-item
+                    v-if="isAuthenticated"
+                    :to="{ name: 'Dashboard' }"
+                    exact
+                    link
+                >
+                    <v-list-item-title>Dashboard</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    v-if="isAdmin"
+                    :to="{ name: 'Users' }"
+                    exact
+                    link
+                >
+                    <v-list-item-title>Benutzer</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    v-if="isSuperAdmin"
+                    :to="{ name: 'Clients' }"
+                    exact
+                    link
+                >
+                    <v-list-item-title>Klienten</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    v-if="isAdmin"
+                    :to="{ name: 'Teams' }"
+                    exact
+                    link
+                >
+                    <v-list-item-title>Teams</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    v-if="isAdmin"
+                    :to="{ name: 'SystemicQuestions' }"
+                    exact
+                    link
+                >
+                    <v-list-item-title>Systemische Fragen</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    v-if="isAdmin"
+                    :to="{ name: 'Tags' }"
+                    exact
+                    link
+                >
+                    <v-list-item-title>Tags</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
     </div>
 </template>
 
@@ -292,22 +270,23 @@
     "use strict";
     // import logo from '../../images/Logo_white_bg.png';
     import logo from '../../images/Swapp_hp_logo.jpg';
-    import { UseNetwork } from '@vueuse/components';
-    import { useAuthStore } from '../stores/auth';
-    import { useClientStore } from '../stores/client';
-    import { useSystemicQuestionStore } from '../stores/systemic-question';
-    import { useTagStore } from '../stores/tag';
-    import { useTeamStore } from '../stores/team';
-    import { useChangelogStore } from '../stores/changelog';
-    import { useWayPointStore } from '../stores/way-point';
-    import { useWalkStore } from '../stores/walk';
-    import { useUserStore } from '../stores/user';
-    import { useGeneralStore } from '../stores/general';
+    import {
+        useAuthStore,
+        useChangelogStore,
+        useClientStore,
+        useGeneralStore,
+        useSystemicQuestionStore,
+        useTagStore,
+        useTeamStore,
+        useUserStore,
+        useWalkStore,
+        useWayPointStore,
+    } from '../stores';
+
 
     export default {
         name: "Navigation",
         components: {
-            UseNetwork,
         },
         data: () => ({
             authStore: useAuthStore(),
@@ -320,19 +299,14 @@
             userStore: useUserStore(),
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
+            drawer: false,
             users: [],
             swappLogo: logo,
             linkClasses: 'text-left text-lg-center pl-2 pl-lg-0',
         }),
         computed: {
-            isOnDemoPage() {
-                return window.location.host.includes('swapp.demo') || this.$route.query.demo;
-            },
-            isOnStagePage() {
-                return window.location.host.includes('swapp.stage') || this.$route.query.stage;
-            },
             isLoading() {
-                return this.clientStore.isLoading
+                return this.clientStore.isLoadingFetch
                     || this.authStore.isLoading
                     || this.systemicQuestionStore.isLoading
                     || this.tagStore.isLoading
@@ -355,11 +329,14 @@
                 return this.authStore.isUserSwitched;
             },
             displayedUserList() {
+                console.log(this.users)
+                console.log(this.users.length)
                 if (!this.users || !this.users.length) {
                     return [];
                 }
 
                 const searchString = this.generalStore.navUserFilter.toLowerCase();
+                console.log(searchString)
                 return this.users.slice(0).filter((user) => {
                     if (-1 !== user.username.toLowerCase().indexOf(searchString)) {
                         return true;
@@ -374,18 +351,9 @@
             currentUser() {
                 return this.authStore.currentUser;
             },
-            isUserMenuActive() {
-                return -1 !== ['PasswordChangeRequest', 'Login', 'PasswordReset'].indexOf(this.$route.name);
-            },
             hasNewChangelogItems() {
                 return this.changelogStore.hasNewChangelogItems;
             },
-        },
-        watch: {
-        },
-        created() {
-        },
-        mounted: async function () {
         },
         methods: {
             switchUser(user) {
@@ -397,17 +365,15 @@
             getClientByIri(clientIri) {
                 return this.clientStore.getClientByIri(clientIri);
             },
-            async showUserMenu(bvEvent) {
+            async showUserMenu() {
                 if (this.isSuperAdmin && this.users.length <= 1) {
-                    bvEvent.preventDefault();
                     this.users = (await this.userStore.fetchUsers()).slice(0).filter(user => user.isEnabled);
                     await this.clientStore.fetchClients();
-                    this.$refs.userMenu.show();
                 }
             },
             getAdditionalUserInfo(user) {
-                let trimLength = 7;
-                let usernameLength = 11;
+                let trimLength = 22;
+                let usernameLength = 200;
                 let doShorten = false;
                 if (user.username.length > usernameLength) {
                     doShorten = true;
@@ -451,16 +417,4 @@
 </script>
 
 <style scoped>
-    .navbar-logo {
-        max-height: 37px !important;
-        flex: 1 1 auto;
-    }
-    @media screen and (min-width: 992px) {
-        .navbar-logo {
-            border-radius: 0 !important;
-        }
-    }
-    .progress {
-        border-radius: 0;
-    }
 </style>

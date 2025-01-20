@@ -42,7 +42,7 @@
     import WayPointList from './Walk/WayPointList.vue';
     import ContentCollapse from './ContentCollapse.vue';
     import WayPointCreate from './WayPoint/WayPointCreate.vue';
-    import { useWalkStore } from '../stores/walk';
+    import { useWalkStore } from '../stores';
 
     export default {
         name: "WalkAddWayPoint",

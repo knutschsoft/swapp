@@ -415,10 +415,7 @@ import dateRangePicker from '../../utils/date-range-picker'
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
 import TagAPI from '../../api/tag.js';
-import { useTagStore } from '../../stores/tag';
-import { useWayPointStore } from '../../stores/way-point';
-import { useWalkStore } from '../../stores/walk';
-import { useGeneralStore } from '../../stores/general';
+import { useGeneralStore, useTagStore, useWalkStore, useWayPointStore } from '../../stores';
 
 export default {
     name: 'WayPointList',

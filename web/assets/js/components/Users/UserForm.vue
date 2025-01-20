@@ -81,7 +81,7 @@
 'use strict';
 import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
-import { useClientStore, useAuthStore, useUserStore } from '../../stores/client';
+import { useClientStore, useAuthStore, useUserStore } from '../../stores';
 import {ClientSelect} from "@/js/components/Common";
 
 export default {

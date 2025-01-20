@@ -176,9 +176,7 @@
     import LocationLink from '../LocationLink.vue';
     import ColorBadge from '../Tags/ColorBadge.vue';
     import dayjs from 'dayjs';
-    import { useTagStore } from '../../stores/tag';
-    import { useWayPointStore } from '../../stores/way-point';
-    import { useWalkStore } from '../../stores/walk';
+    import { useTagStore, useWalkStore, useWayPointStore } from '../../stores';
 
     export default {
         name: "WayPointDetailData",

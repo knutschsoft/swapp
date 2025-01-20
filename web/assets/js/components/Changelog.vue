@@ -66,7 +66,7 @@
 import { ref, computed, onMounted } from 'vue';
 import ContentCollapse from './ContentCollapse.vue';
 import dayjs, {Dayjs} from 'dayjs';
-import { useChangelogStore } from '../stores/changelog';
+import { useChangelogStore } from '../stores';
 
 export default {
     name: 'Changelog',

@@ -105,8 +105,7 @@
 <script>
     "use strict";
     import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
-    import { useAuthStore } from '../stores/auth';
-    import { useUserStore } from '../stores/user';
+    import { useAuthStore, useUserStore } from '../stores';
 
     export default {
         name: "PasswordReset",

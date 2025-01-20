@@ -22,7 +22,7 @@
     import SystemicQuestionList from './SystemicQuestions/SystemicQuestionList.vue';
     import SystemicQuestionCreate from './SystemicQuestions/SystemicQuestionCreate.vue';
     import ContentCollapse from './ContentCollapse.vue';
-    import { useClientStore } from '../stores/client';
+    import { useClientStore } from '../stores';
 
     export default {
         name: "Teams",

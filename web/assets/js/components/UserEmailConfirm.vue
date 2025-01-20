@@ -37,7 +37,7 @@
 <script>
 'use strict';
 import SecurityAPI from '../api/security';
-import { useAuthStore } from '../stores/auth';
+import { useAuthStore } from '../stores';
 
 export default {
     name: 'UserEmailConfirm',

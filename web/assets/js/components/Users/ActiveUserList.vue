@@ -153,10 +153,7 @@ import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
 import UserAPI from '../../api/user';
 import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
-import { useClientStore } from '../../stores/client';
-import { useUserStore } from '../../stores/user';
-import { useAuthStore } from '../../stores/auth';
-import { useGeneralStore } from '../../stores/general';
+import { useAuthStore, useClientStore, useGeneralStore, useUserStore } from '../../stores';
 import { ClientSelect } from "@/js/components/Common";
 import {WalkSystemicAnswerField} from "@/js/components/Common/Walk";
 
@@ -188,7 +185,7 @@ export default {
             },
             ranges: dateRangePicker.ranges,
             entries: [],
-            client: null,
+            client: '',
         };
     },
     computed: {
@@ -271,7 +268,7 @@ export default {
             this.entries.push(item);
         });
 
-        this.client = this.isSuperAdmin ? null : this.currentUser.client;
+        this.client = this.isSuperAdmin ? '' : this.currentUser.client;
         await this.updateEntries();
     },
     methods: {

@@ -73,7 +73,7 @@
 'use strict';
 import GlobalFormError from '../Common/GlobalFormError.vue';
 import { getViolationsFeedback } from '../../utils';
-import { useWalkStore } from '../../stores/walk';
+import { useWalkStore } from '../../stores';
 
 export default {
     name: 'WalkRemoveForm',

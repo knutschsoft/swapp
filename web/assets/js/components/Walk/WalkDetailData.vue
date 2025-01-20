@@ -60,10 +60,7 @@
 <script>
     "use strict";
     import WalkRating from './WalkRating.vue';
-    import { useClientStore } from '../../stores/client';
-    import { useWayPointStore } from '../../stores/way-point';
-    import { useWalkStore } from '../../stores/walk';
-    import { useUserStore } from '../../stores/user';
+    import { useClientStore, useUserStore, useWalkStore, useWayPointStore } from '../../stores';
 
     export default {
         name: "WalkDetailData",

@@ -39,7 +39,7 @@ const value = computed({
     },
     set(value) {
         // emit('update:modelValue', value); // vue3
-        emit('input', value)
+        emit('input', value === null ? '' : value)
     }
 });
 

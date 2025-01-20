@@ -45,9 +45,7 @@
     import WalkList from './Dashboard/WalkList.vue';
     import WayPointList from './Dashboard/WayPointList.vue';
     import ContentCollapse from './ContentCollapse.vue';
-    import { useClientStore } from '../stores/client';
-    import { useTeamStore } from '../stores/team';
-    import { useWalkStore } from '../stores/walk';
+    import { useClientStore, useTeamStore, useWalkStore } from '../stores';
 
     export default {
         name: "Dashboard",

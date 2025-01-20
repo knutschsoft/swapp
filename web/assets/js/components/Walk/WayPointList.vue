@@ -80,7 +80,7 @@
 'use strict';
 
 import LocationLink from '../LocationLink.vue';
-import { useWalkStore, useWayPointStore } from '../../stores/way-point';
+import { useWalkStore, useWayPointStore } from '../../stores';
 import WayPointDetailData from "../WayPoint/WayPointDetailData.vue";
 import {formatDateTimeNoSeconds} from "@/js/utils";
 

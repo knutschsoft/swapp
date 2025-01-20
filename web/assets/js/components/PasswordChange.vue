@@ -134,8 +134,7 @@
     "use strict";
     import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
     import SecurityAPI from '../api/security';
-    import { useAuthStore } from '../stores/auth';
-    import { useUserStore } from '../stores/user';
+    import { useAuthStore, useUserStore } from '../stores';
 
     export default {
         name: "RequestPasswordChange",

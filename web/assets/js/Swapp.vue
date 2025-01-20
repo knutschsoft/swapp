@@ -12,17 +12,65 @@
             >
                 {{ errorData }}
             </v-alert>
-            <navigation />
+            <UseNetwork v-slot="{ isOnline }">
+                <v-system-bar
+                    v-if="!isOnline && isOnDemoOrStagePage"
+                    app
+                    fixed
+                    class="m-0 p-0"
+                    height="36"
+                >
+                    <v-row>
+                        <v-col
+                            v-if="!isOnline"
+                            cols="12"
+                            class="px-2 py-0 small text-center bg-danger w-full text-white font-weight-bold"
+                        >
+                            <mdicon name="WifiOff" size="18"/>
+                            Keine Internetverbindung
+                        </v-col>
+                        <v-col
+                            v-if="isOnDemoOrStagePage"
+                            cols="12"
+                            class="px-2 py-0 small text-center bg-info w-full text-white"
+                            v-text="`Du befindest dich auf der ${isOnDemoPage ? 'Demo' : 'Stage'}-Version von Swapp.`"
+                        >
+                        </v-col>
+                    </v-row>
+                </v-system-bar>
+                <v-system-bar
+                    v-else-if="!isOnline || isOnDemoOrStagePage"
+                    app
+                    fixed
+                    class="m-0 p-0"
+                    height="18"
+                >
+                    <v-row>
+                        <v-col
+                            v-if="!isOnline"
+                            cols="12"
+                            class="px-2 py-0 small text-center bg-danger w-full text-white font-weight-bold"
+                        >
+                            <mdicon name="WifiOff" size="18"/>
+                            Keine Internetverbindung
+                        </v-col>
+                        <v-col
+                            v-if="isOnDemoOrStagePage"
+                            cols="12"
+                            class="px-2 py-0 small text-center bg-info w-full text-white"
+                            v-text="`Du befindest dich auf der ${isOnDemoPage ? 'Demo' : 'Stage'}-Version von Swapp.`"
+                        >
+                        </v-col>
+                    </v-row>
+                </v-system-bar>
+            </UseNetwork>
 
-            <div
-                class="pb-5"
-            >
-                <vue-page-transition name="fade">
-                    <router-view
-                        class="pb-3 absolute w-100 col-12 col-xxl-10 offset-xxl-1 px-1 px-sm-2"
-                    />
-                </vue-page-transition>
-            </div>
+            <navigation />
+            <v-main>
+                <v-container fluid>
+                    <router-view />
+                </v-container>
+            </v-main>
             <v-snackbar
                 v-model="alertStore.showAlert"
                 multi-line
@@ -50,12 +98,13 @@ import Navigation from './components/Navigation.vue';
 import FrameError from './components/FrameError';
 import ReloadPrompt from "./components/ReloadPrompt.vue"
 import dayjs from 'dayjs';
+import { UseNetwork } from '@vueuse/components';
 import { useAlertStore, useAuthStore, useChangelogStore } from './stores';
 import apiClient from './api';
 
 export default {
     name: 'Swapp',
-    components: {ReloadPrompt, FrameError, Navigation},
+    components: {ReloadPrompt, FrameError, Navigation, UseNetwork},
     props: {},
     data() {
         return {
@@ -73,6 +122,15 @@ export default {
         currentUser() {
             return this.authStore.user;
         },
+        isOnDemoPage() {
+            return window.location.host.includes('swapp.demo') || this.$route.query.demo;
+        },
+        isOnStagePage() {
+            return window.location.host.includes('swapp.stage') || this.$route.query.stage;
+        },
+        isOnDemoOrStagePage() {
+            return this.isOnDemoPage || this.isOnStagePage;
+        }
     },
     mounted() {
         if (!this.currentUser) {

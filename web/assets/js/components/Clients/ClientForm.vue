@@ -5,7 +5,7 @@ import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
 import WalkRating from '../Walk/WalkRating.vue';
 // import { getViolationsFeedback } from '../../utils/validation';
-import { useClientStore } from '../../stores/client';
+import { useClientStore } from '../../stores';
 import { Client } from '../../model';
 
 const props = defineProps({

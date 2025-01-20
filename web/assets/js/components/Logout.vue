@@ -3,14 +3,7 @@
 </template>
 
 <script>
-    import { useAuthStore } from '../stores/auth';
-    import { useClientStore } from '../stores/client';
-    import { useTeamStore } from '../stores/team';
-    import { useSystemicQuestionStore } from '../stores/systemic-question';
-    import { useTagStore } from '../stores/tag';
-    import { useUserStore } from '../stores/user';
-    import { useWalkStore } from '../stores/walk';
-    import { useWayPointStore } from '../stores/way-point';
+import {useAuthStore, useClientStore, useSystemicQuestionStore, useTagStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../stores';
     export default {
         name: "Logout",
         data() {

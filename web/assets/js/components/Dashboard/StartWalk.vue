@@ -127,10 +127,7 @@
 
 <script>
     "use strict";
-    import { useSystemicQuestionStore } from '../../stores/systemic-question';
-    import { useTeamStore } from '../../stores/team';
-    import { useAuthStore } from '../../stores/auth';
-    import { useUserStore } from '../../stores/user';
+    import { useAuthStore, useSystemicQuestionStore, useTeamStore, useUserStore } from '../../stores';
     import WalkAPI from '../../api/walk.js';
     import dayjs from "dayjs";
 
