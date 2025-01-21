@@ -61,6 +61,7 @@ declare module 'vue' {
     VSwitch: typeof import('vuetify/lib')['VSwitch']
     VSystemBar: typeof import('vuetify/lib')['VSystemBar']
     VTab: typeof import('vuetify/lib')['VTab']
+    VTable: typeof import('vuetify/lib')['VTable']
     VTabp: typeof import('vuetify/lib')['VTabp']
     VTabpTitle: typeof import('vuetify/lib')['VTabpTitle']
     VTabs: typeof import('vuetify/lib')['VTabs']

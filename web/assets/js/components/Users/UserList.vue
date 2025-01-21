@@ -16,74 +16,68 @@
                 xs="12"
                 :sm="isSuperAdmin ? 6 : 12"
             >
-                <b-input-group size="sm" class="">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            title="Nur aktivierte Accounts?"
-                            :class="filter.isEnabled !== true ? 'font-weight-bold' : ''"
-                        >
-                            Nur aktivierte?
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-select
-                        v-model="filter.isEnabled"
-                        :options="isEnabledOptions"
-                    />
-                    <my-input-group-append
-                        @click="filter.isEnabled = true"
-                        :is-active="filter.isEnabled !== true"
-                    />
-                </b-input-group>
+                <v-select
+                    v-model="filter.isEnabled"
+                    :items="isEnabledOptions"
+                    :clearable="filter.isEnabled !== true"
+                    outlined
+                    :success="filter.isEnabled !== true"
+                    @click:clear="filter.isEnabled = true"
+                    label="Nur aktivierte?"
+                    dense
+                />
             </v-col>
         </v-row>
-        <div
-            v-if="isLoading"
-            class="d-flex justify-content-center my-3"
-        >
-            <b-spinner
-                v-show="isLoading"
-                style="width: 3rem; height: 3rem;"
-                label="is Loading Spinner"
-            />
-        </div>
-        <b-table
-            v-show="!isLoading && users.length"
+        <v-data-table
             :items="users"
-            :fields="fields"
+            :headers="headers"
+            class="mb-0"
+            :loading="isLoading"
+            loading-text="Lade Daten..."
+            :items-per-page="itemsPerPage"
+            :items-per-page-options="itemsPerPageOptions"
+            :items-per-page-text="itemsPerPageText"
+            :no-data-text="noItemsText"
+            :no-results-text="noItemsText"
             small
             striped
-            class="mb-0"
-            :stacked="this.isSuperAdmin ? 'xl' : 'lg'"
         >
-            <template v-slot:cell(username)="row">
+            <template v-slot:item.username="{item}">
                 <span
-                    :class="{ 'text-muted': !row.item.isEnabled }"
-                    :title="!row.item.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
+                    :class="{ 'text-muted': !item.isEnabled }"
+                    :title="!item.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
                 >
-                    {{ row.item.username }}
+                    {{ item.username }}
                     <v-icon
-                        v-if="!row.item.isEnabled"
+                        v-if="!item.isEnabled"
                         class="text-muted"
                         size="16"
                     >
-                        MdiAccountOff
+                        mdi-account-off
                     </v-icon>
                 </span>
             </template>
-            <template v-slot:cell(isEnabled)="row">
+            <template v-slot:item.teams="{item}">
+                <template v-if="item.teams.length === 0">-</template>
+                {{ item.teams.map(team => team.name).join(', ') }}
+            </template>
+            <template v-slot:item.roles="{item}">
+                {{ rolesFormatter(item.roles)}}
+            </template>
+            <template v-slot:item.isEnabled="{item}">
                 <v-progress-circular
-                    v-if="isLoadingToggleUserState(row.item['@id'])"
+                    v-if="isLoadingToggleUserState(item['@id'])"
                     indeterminate
                     color="secondary"
                 />
                 <div
                     v-else
-                    @click="toggleEnabled(row.item, row.item.isEnabled)"
-                    :title="`Account ${ row.item.isEnabled ? 'de' : '' }aktivieren`"
+                    @click="toggleEnabled(item, item.isEnabled)"
+                    :title="`Account ${ item.isEnabled ? 'de' : '' }aktivieren`"
                     class="cursor-pointer"
                 >
                     <v-icon
-                        v-if="row.item.isEnabled"
+                        v-if="item.isEnabled"
                         color="success"
                     >
                         mdi-account-check-outline
@@ -96,53 +90,67 @@
                     </v-icon>
                 </div>
             </template>
-            <template v-slot:cell(actions)="row">
+            <template v-slot:item.client="{item}">
+                {{ clientFormatter(item.client) }}
+            </template>
+            <template v-slot:item.createdAt="{item}">
+                {{ formatDateTime(item.createdAt) }}
+            </template>
+            <template v-slot:item.updatedAt="{item}">
+                {{ formatDateTime(item.updatedAt) }}
+            </template>
+            <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-content-around">
-                    <b-dropdown
-                        text="Aktionen"
-                        size="sm"
+                    <v-menu
+                        dense
+                        offset-y
                     >
-                        <b-dropdown-item-button
-                            size="sm"
-                            @click="editUser(row.item)"
-                            :disabled="isLoadingToggleUserState(row.item['@id'])"
-                        >
-                            Account bearbeiten
-                        </b-dropdown-item-button>
-                        <b-dropdown-item-button
-                            v-if="isAdmin"
-                            size="sm"
-                            class="mr-2"
-                            @click="toggleEnabled(row.item, row.item.isEnabled)"
-                            :disabled="isLoadingToggleUserState(row.item['@id'])"
-                        >
-                            Account {{ row.item.isEnabled ? 'de' : '' }}aktivieren
-                        </b-dropdown-item-button>
-                        <b-dropdown-divider
-                            v-if="isSuperAdmin && false"
-                        />
-                        <b-dropdown-item-button
-                            v-if="isSuperAdmin && false"
-                            @click="editUser(row.item)"
-                            size="sm"
-                            variant="danger"
-                            :disabled="isLoadingToggleUserState(row.item['@id'])"
-                        >
-                            <mdicon
-                                name="AlertDecagramOutline"
-                            />
-                            Löschen
-                        </b-dropdown-item-button>
-                    </b-dropdown>
+                        <template v-slot:activator="{ attrs, on }">
+                            <v-btn
+                                color="secondary"
+                                small
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                Aktionen
+                                <v-icon
+                                    color="grey lighten-2"
+                                    small
+                                    class="ml-1"
+                                >
+                                    mdi-triangle-small-down
+                                </v-icon>
+                            </v-btn>
+                        </template>
+                        <v-list dense>
+                            <v-list-item link>
+                                <v-list-item-title
+                                    @click="editUser(item)"
+                                    :disabled="isLoadingToggleUserState(item['@id'])"
+                                >
+                                        Account bearbeiten
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item v-if="isAdmin" link>
+                                <v-list-item-title
+                                    @click="toggleEnabled(item, item.isEnabled)"
+                                    :disabled="isLoadingToggleUserState(item['@id'])"
+                                >
+                                    Account {{ item.isEnabled ? 'de' : '' }}aktivieren
+                                </v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
                     <v-btn
                         v-if="isSuperAdmin && !isUserSwitched"
                         small
+                        color="secondary"
                         class="flex-item d-flex align-items-center ml-2"
-                        :data-test="`switch-user-${row.item.username}`"
-                        @click="switchUser(row.item)"
+                        :data-test="`switch-user-${item.username}`"
+                        @click="switchUser(item)"
                     >
                         <v-icon
-                            color="secondary"
+                            color="grey lighten-2"
                             small
                             class="p-1 mr-1 cursor-pointer flex-item"
                         >
@@ -168,7 +176,7 @@
                     </v-btn>
                 </div>
             </template>
-        </b-table>
+        </v-data-table>
 
         <b-modal
             :id="editModal.id"
@@ -191,10 +199,16 @@
 <script>
 'use strict';
 import UserForm from './UserForm.vue';
-import dayjs from 'dayjs';
 import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
 import {useAlertStore, useAuthStore, useClientStore, useUserStore} from '../../stores';
 import {ClientSelect} from "@/js/components/Common";
+import {
+    formatDateTime,
+    itemsPerPageOptions,
+    itemsPerPageText,
+    loadingText,
+    noItemsText,
+} from '../../utils'
 
 export default {
     name: 'UserList',
@@ -209,6 +223,11 @@ export default {
             authStore: useAuthStore(),
             clientStore: useClientStore(),
             userStore: useUserStore(),
+            itemsPerPageText,
+            itemsPerPageOptions,
+            itemsPerPage: -1,
+            loadingText,
+            noItemsText,
             editModal: {
                 selectedUser: {},
                 id: 'edit-modal-user',
@@ -226,114 +245,72 @@ export default {
         };
     },
     computed: {
-        fields() {
-            return [
+        headers() {
+            const headers = [
                 {
-                    key: 'username',
-                    label: 'Benutzername',
+                    value: 'username',
+                    text: 'Benutzername',
                     sortable: true,
                     class: 'text-center',
                 },
                 {
-                    key: 'teams',
-                    sortable: true,
-                    formatter: (value, key, item) => {
-                        let teamNames = [];
-                        value.forEach(team => {
-                            teamNames.push(team.name);
-                        });
-
-                        if (teamNames.length) {
-                            return teamNames.join(', ');
-                        }
-
-                        return '-';
-                    },
-                    sortByFormatted: true,
-                    class: 'text-center',
+                    value: 'teams',
+                    text: 'Teams',
+                    sortable: false,
                 },
                 {
-                    key: 'email',
-                    label: 'E-Mail',
-                    sortable: true,
-                    class: 'text-center',
+                    value: 'email',
+                    text: 'E-Mail',
                 },
                 {
-                    key: 'roles',
-                    label: 'Rollen',
-                    formatter: (value, key, item) => {
-                        return value
-                            .map(value => {
-                                switch (value) {
-                                    case 'ROLE_USER':
-                                        return 'Benutzer';
-                                    case 'ROLE_ADMIN':
-                                        return 'Administrator';
-                                    case 'ROLE_SUPER_ADMIN':
-                                        return 'Super-Administrator';
-                                    case 'ROLE_ALLOWED_TO_SWITCH':
-                                        return 'Impersonator';
-                                }
-
-                                return value;
-                            })
-                            .sort((a, b) => a > b ? 1 : -1)
-                            .join(', ');
-                    },
-                    sortable: true,
-                    sortByFormatted: true,
-                    class: 'text-center',
+                    value: 'roles',
+                    text: 'Rollen',
+                    sortable: false,
                 },
                 {
-                    key: 'isEnabled',
-                    label: 'Account aktiviert?',
+                    value: 'isEnabled',
+                    text: 'Account aktiviert?',
                     sortable: true,
                     class: 'text-center',
-                },
-                {
-                    key: 'client',
-                    label: 'Klient',
+                }
+            ];
+            if (this.isSuperAdmin) {
+                headers.push({
+                    value: 'client',
+                    text: 'Klient',
                     sortable: true,
                     sortByFormatted: true,
                     class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
                     formatter: this.clientFormatter,
+                })
+            }
+            headers.push(...[
+                {
+                    value: 'createdAt',
+                    text: 'Erstellt am',
                 },
                 {
-                    key: 'createdAt',
-                    label: 'Erstellt am',
-                    sortable: true,
-                    sortByFormatted: false,
-                    formatter: (value, key, item) => {
-                        return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
+                    value: 'updatedAt',
+                    text: 'Geändert am',
+                }
+            ]);
+            if (this.isSuperAdmin) {
+                headers.push(...[
+                    {
+                        value: 'createdBy',
+                        text: 'Erstellt von:',
+                        sortable: false,
                     },
-                    class: 'text-center',
-                },
-                {
-                    key: 'updatedAt',
-                    label: 'Geändert am',
-                    sortable: true,
-                    sortByFormatted: false,
-                    formatter: (value, key, item) => {
-                        return dayjs(value).format('DD.MM.YYYY HH:mm:ss');
+                    {
+                        value: 'updatedBy',
+                        text: 'Geändert von:',
+                        sortable: false,
                     },
-                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
-                },
-                {
-                    key: 'createdBy',
-                    label: 'Erstellt von:',
-                    sortable: true,
-                    sortByFormatted: true,
-                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
-                },
-                {
-                    key: 'updatedBy',
-                    label: 'Geändert von:',
-                    sortable: true,
-                    sortByFormatted: true,
-                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
-                },
-                { key: 'actions', label: 'Aktionen', class: 'text-center' },
-            ];
+                ]);
+            }
+            headers.push({ value: 'actions', text: 'Aktionen' })
+
+            return headers;
         },
         isUserSwitched() {
             return this.authStore.isUserSwitched;
@@ -372,6 +349,28 @@ export default {
     methods: {
         isLoadingToggleUserState(userUri) {
             return this.userStore.isLoadingChange(userUri);
+        },
+        rolesFormatter(roles) {
+            return roles
+                .map(value => {
+                    switch (value) {
+                        case 'ROLE_USER':
+                            return 'Benutzer';
+                        case 'ROLE_ADMIN':
+                            return 'Administrator';
+                        case 'ROLE_SUPER_ADMIN':
+                            return 'Super-Administrator';
+                        case 'ROLE_ALLOWED_TO_SWITCH':
+                            return 'Impersonator';
+                    }
+
+                    return value;
+                })
+                .sort((a, b) => a > b ? 1 : -1)
+                .join(', ');
+        },
+        formatDateTime(dateTime) {
+            return formatDateTime(dateTime);
         },
         clientFormatter(clientIri) {
             return this.clientStore.getClientByIri(clientIri)?.name;

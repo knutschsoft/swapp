@@ -115,7 +115,6 @@
 <script lang="ts">
 'use strict';
 import {ref, computed, onMounted, watch} from 'vue';
-import dayjs from 'dayjs';
 import ClientForm from './ClientForm.vue';
 import { type Client} from '../../model';
 import {useAlertStore, useClientStore, useUserStore} from '../../stores';
@@ -171,15 +170,12 @@ export default {
                 value: 'createdAt',
                 text: 'Erstellt am',
                 sortable: true,
-                sortByFormatted: false,
-                formatter: (value: string) => dayjs(value).format('DD.MM.YYYY HH:mm:ss'),
                 align: 'center',
             },
             {
                 value: 'updatedAt',
                 text: 'Geändert am',
                 sortable: true,
-                sortByFormatted: false,
                 align: 'center',
             },
             {value: 'actions', text: 'Aktionen', align: 'center', sortable: false},

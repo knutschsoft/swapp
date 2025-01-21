@@ -1,80 +1,70 @@
 <template>
-    <b-form
+    <v-form
         @submit.prevent.stop="handleSubmit"
         ref="form"
         class="p-1 p-sm-2 p-lg-3"
     >
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
+        <v-text-field
+            v-model="user.username"
+            required
+            minlength="4"
+            maxlength="100"
             label="Benutzername"
-        >
-            <b-input
-                v-model="user.username"
-                required
-                minlength="4"
-                maxlength="100"
-                placeholder="vorname.nachname"
-                :state="usernameState"
-                data-test="username"
-            />
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
+            placeholder="vorname.nachname"
+            :state="usernameState"
+            data-test="username"
+            outlined
+        />
+        <v-text-field
+            v-model="user.email"
+            required
+            minlength="4"
+            maxlength="100"
             label="E-Mail"
-        >
-            <b-input
-                v-model="user.email"
-                required
-                minlength="4"
-                maxlength="100"
-                placeholder="vorname.nachname@domain.de"
-                :state="emailState"
-                data-test="email"
-            />
-        </b-form-group>
-        <b-form-group
-            content-cols="12"
-            label-cols="12"
-            content-cols-lg="8"
-            label-cols-lg="2"
-            label="Rollen"
-            v-slot="{ ariaDescribedby }"
-        >
-            <b-form-checkbox-group
-                v-model="user.roles"
-                data-test="roles"
-                :options="availableRoles"
-                switches
-                :aria-describedby="ariaDescribedby"
-            />
-        </b-form-group>
+            placeholder="vorname.nachname@domain.de"
+            :state="emailState"
+            data-test="email"
+            outlined
+        />
+        <v-row dense class="mt-0 mb-5">
+            <v-col cols="12" dense class="mb-0">Rollen</v-col>
+            <v-col
+                v-for="role in availableRoles"
+                class="mt-0"
+                cols="4"
+            >
+                <v-switch
+                    v-model="user.roles"
+                    :value="role.value"
+                    :key="role.value"
+                    :disabled="isLoading"
+                    class="mt-0"
+                    dense
+                    hide-details
+                    :label="role.text"
+                />
+            </v-col>
+        </v-row>
         <client-select
             v-if="isSuperAdmin"
             v-model="user.client"
             :is-loading="isLoading"
             :disabled="isLoading"
         />
-        <b-button
+        <v-btn
             type="submit"
-            variant="secondary"
+            color="secondary"
             :disabled="isFormInvalid"
+            :loading="isLoading"
             data-test="button-user-submit"
             block
-            class="col-12"
-            :tabindex="isFormInvalid ? '-1' : ''"
         >
             {{ submitButtonText }}
-        </b-button>
+        </v-btn>
         <form-error
             :error="error"
         />
-    </b-form>
+    </v-form>
 </template>
 
 <script>
@@ -118,6 +108,9 @@ export default {
         usernameState() {
             if (null === this.user.username || '' === this.user.username || undefined === this.user.username) {
                 return;
+            }
+            if (this.user.username.includes(" ")) {
+                return false;
             }
 
             return this.user.username.length >= 3 && this.user.username.length <= 100;
