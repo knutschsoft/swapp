@@ -125,7 +125,7 @@
                         <v-list dense>
                             <v-list-item link>
                                 <v-list-item-title
-                                    @click="editUser(item)"
+                                    @click="openUserEditDialog(item)"
                                     :disabled="isLoadingToggleUserState(item['@id'])"
                                 >
                                         Account bearbeiten
@@ -178,21 +178,27 @@
             </template>
         </v-data-table>
 
-        <b-modal
-            :id="editModal.id"
-            :title="editModal.title"
-            size="lg"
-            @hide="resetEditModal"
-            title="Benutzer ändern"
-            hide-footer
+        <v-dialog
+            v-model="dialog"
+            scrollable
         >
-            <user-form
-                v-if="editModal.selectedUser"
-                submit-button-text="Speichern"
-                :initial-user="editModal.selectedUser"
-                @submit="handleSubmit"
-            />
-        </b-modal>
+            <v-card>
+                <v-card-title
+                    v-if="editUser"
+                    class="text-h5 grey lighten-2"
+                >
+                    Benutzer "{{ editUser.username }}" bearbeiten
+                </v-card-title>
+                <v-card-text>
+                    <user-form
+                        v-if="editUser"
+                        submit-button-text="Speichern"
+                        :initial-user="editUser"
+                        @submit="handleSubmit"
+                    />
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -228,11 +234,8 @@ export default {
             itemsPerPage: -1,
             loadingText,
             noItemsText,
-            editModal: {
-                selectedUser: {},
-                id: 'edit-modal-user',
-                title: '',
-            },
+            editUser: null,
+            dialog: false,
             isEnabledOptions: [
                 { value: null, text: 'egal' },
                 { value: true, text: 'ja' },
@@ -350,6 +353,10 @@ export default {
         isLoadingToggleUserState(userUri) {
             return this.userStore.isLoadingChange(userUri);
         },
+        openUserEditDialog(user) {
+            this.editUser = user;
+            this.dialog = true;
+        },
         rolesFormatter(roles) {
             return roles
                 .map(value => {
@@ -375,21 +382,12 @@ export default {
         clientFormatter(clientIri) {
             return this.clientStore.getClientByIri(clientIri)?.name;
         },
-        editUser(user) {
-            this.editModal.title = `Benutzer "${user.username}" bearbeiten`;
-            this.$root.$emit('bv::show::modal', this.editModal.id);
-            this.editModal.selectedUser = user;
-        },
-        resetEditModal() {
-            this.editModal.user = {};
-            this.$root.$emit('bv::hide::modal', this.editModal.id);
-        },
         async handleSubmit(payload) {
-            payload.user = this.editModal.selectedUser['@id'];
+            payload.user = this.editUser['@id'];
             const user = await this.userStore.change(payload);
             if (user) {
                 this.alertStore.success(`Der Benutzer "${user.username}" wurde erfolgreich geändert.`, 'Benutzer geändert');
-                this.resetEditModal();
+                this.dialog = false;
             } else {
                 this.alertStore.error('Benutzer ändern fehlgeschlagen', 'Upps! :-(');
             }
