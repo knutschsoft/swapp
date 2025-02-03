@@ -400,7 +400,7 @@ export default {
                 teamName: this.filter.teamName,
                 name: this.filter.name,
                 isResubmission: this.filter.isResubmission,
-                isUnfinished: this.filter.isUnfinished,
+                isUnfinished: !this.filter.isUnfinished,
             }
             sortBy.forEach((val) => {
                 data[`sortBy[${val.key}]`] = val.order;
