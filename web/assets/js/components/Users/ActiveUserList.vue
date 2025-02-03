@@ -109,7 +109,7 @@
                 </span>
                 <small
                     v-if="isSuperAdmin && !client"
-                    class="text-muted or-text-step"
+                    class="text-muted"
                 >
                     {{ clientFormatter(item.user.client) }}
                 </small>

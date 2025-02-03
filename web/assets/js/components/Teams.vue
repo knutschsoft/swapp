@@ -67,7 +67,6 @@
                 if (createdTeam) {
                     this.$refs.teamForm.resetForm();
                     this.alertStore.success(`Das Team ${createdTeam.name} wurde erfolgreich erstellt.`);
-                    this.$root.$emit('bv::hide::modal', 'edit-modal-team');
                 } else {
                     this.alertStore.error(`Team erstellen fehlgeschlagen`, `Upps! :-(`);
                 }

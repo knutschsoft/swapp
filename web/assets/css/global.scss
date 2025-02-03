@@ -1,198 +1,72 @@
-
-$modal-sm: 520px !default;
-$modal-md: 700px !default;
-$modal-lg: 940px !default;
-$modal-xl: 1150px !default;
-$modal-xxl: 1550px !default;
-
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
-$grid-breakpoints: (
-        xxs: 0,
-        xs: 375px,
-        sm: 480px,
-        md: 768px,
-        lg: 1024px,
-        xl: 1200px,
-        xxl: 1600px
-);
-
-$container-max-widths: (
-        xxs: 320px,
-        xs: 375px,
-        sm: 544px,
-        md: 728px,
-        lg: 960px,
-        xl: 1200px,
-        xxl: 1600px
-);
-@import 'bootstrap';
-@import 'bootstrap-vue';
-@import 'font-awesome-animation/dist/font-awesome-animation.css';
-@import 'bootstrap-pre-migrate';
 @import './fixes/prevent-ios-input-zoom.scss';
 
 html {
-  font-size: 16px;
+    font-size: 16px;
 }
 body {
-  font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .border-dotted{
-  border-style: dotted !important;
+    border-style: dotted !important;
 }
 
 .border-dashed{
-  border-style: dashed !important;
+    border-style: dashed !important;
+}
+
+.text-disabled {
+    color: rgba(0,0,0,.38) !important;
+}
+.force-white {
+    color: white !important;
 }
 
 .vue-daterange-picker {
-  .form-control {
-    padding: 0 !important;
-    border: 0 !important;
-    height: auto !important;
-    width: 100% !important;
-  }
+    .form-control {
+        padding: 0 !important;
+        border: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+    }
 }
 
-.card-columns {
-  @include media-breakpoint-only(sm) {
-    column-count: 1;
-  }
-  @include media-breakpoint-only(md) {
-    column-count: 1;
-  }
-  @include media-breakpoint-only(lg) {
-    column-count: 2;
-  }
-  @include media-breakpoint-only(xl) {
-    column-count: 2;
-  }
-  @include media-breakpoint-only(xxl) {
-    column-count: 2;
-  }
-}
-
-.col-form-label {
-  font-weight: bold;
-}
-
-.flex-tags {
-  flex: 1 1 160px !important;
-}
 
 .min-w-\[250px\] {
     min-width: 250px;
 }
 
-.box-datetime {
-  select {
-    padding-right: 0;
-    width: 19% !important;
-
-    &:nth-child(0n + 5) {
-      width: calc(24% - 5px) !important;
-    }
-  }
-}
-
-.nav-link.active.router-link-active {
-  background-color: lighten($secondary, 20);
-}
-
 .cursor-pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .no-select {
-  user-select: none;
+    user-select: none;
 }
 
-
 @-webkit-keyframes blink {
-  50% {
-    opacity: 0.0;
-  }
+    50% {
+        opacity: 0.0;
+    }
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0.0;
-  }
-}
-
-.faa-blink.animated,
-.faa-blink.animated-hover:hover,
-.faa-blink.animated-hover:hover > .faa-blink {
-  -webkit-animation: blink 2s step-start 0s infinite;
-  animation: blink 2s step-start 0s infinite;
-}
-
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .75s ease;
-}
-.fade-enter, .fade-leave-active {
-  opacity: 0;
-}
-
-
-.bounce-enter-active {
-  animation: bounce-in .5s;
-}
-.bounce-leave-active {
-  animation: bounce-in .5s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(1);
-  }
+    50% {
+        opacity: 0.0;
+    }
 }
 
 @keyframes blinking {
-  0% {
-    background-color: white;
-  }
-  50% {
-    background-color: lighten($success, 40);
-  }
-  100% {
-    background-color: white;
-  }
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: greenyellow;
+    }
+    100% {
+        background-color: white;
+    }
 }
 .blinking {
-  animation: blinking 1.5s ease-in-out;
-}
-
-@media (min-width: 576px) {
-  .modal-xxl { max-width: $modal-sm; }
-}
-
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
-  .modal-xxl { max-width: $modal-md; }
-}
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
-  .modal-xxl { max-width: $modal-lg; }
-}
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
-  .modal-xxl { max-width: $modal-xl; }
-}
-
-@include media-breakpoint-up(xxl) {
-  .modal-xxl {
-    max-width: $modal-xxl;
-  }
+    animation: blinking 1.5s ease-in-out;
 }
