@@ -289,16 +289,6 @@ export default {
             ranges: dateRangePicker.ranges,
             isResubmission: null,
             isUnfinished: null,
-            isResubmissionOptions: [
-                { value: null, text: 'egal' },
-                { value: 1, text: 'ja' },
-                { value: 0, text: 'nein' },
-            ],
-            isUnfinishedOptions: [
-                { value: null, text: 'egal' },
-                { value: 0, text: 'ja' },
-                { value: 1, text: 'nein' },
-            ],
             headers: [
                 { value: 'name', text: 'Name', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
                 { value: 'rating', text: 'Bewertung', sortable: true, class: 'text-center align-middle' },

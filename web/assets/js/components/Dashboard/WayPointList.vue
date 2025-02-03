@@ -236,10 +236,10 @@
                     color="secondary"
                     size="sm"
                     block
-                    :disabled="isLoading || isExportLoading || this.totalRows === 0"
+                    :disabled="isLoading || isExportLoading || this.totalItems === 0"
                     @click="exportWayPoints"
                 >
-                    {{ this.totalRows > 5000 ? 5000 : this.totalRows }} Wegpunkt{{ this.totalRows !== 1 ? 'e' : '' }} als .csv-Datei exportieren
+                    {{ this.totalItems > 5000 ? 5000 : this.totalItems }} Wegpunkt{{ this.totalItems !== 1 ? 'e' : '' }} als .csv-Datei exportieren
                     <mdicon
                         :name="isExportLoading ? 'Loading' : 'Download'"
                         :spin="isExportLoading"
@@ -247,61 +247,105 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <b-table
-            small
+        <v-data-table
             striped
+            dense
             class="mb-0"
-            stacked="xl"
-            :items="itemProvider"
-            :fields="fields"
-            :current-page="currentPage"
-            :per-page="perPage"
-            :filter="filter"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :sort-direction="sortDirection"
+            :items-per-page="itemsPerPage"
+            :headers="headers"
+            :items="serverItems"
+            :items-length="totalItems"
+            :items-per-page-options="itemsPerPageOptions"
+            :items-per-page-text="itemsPerPageText"
+            :loading="isLoading"
+            :search="search"
+            item-value="name"
+            :no-data-text="noItemsText"
+            :loading-text="loadingText"
+            multi-sort
+            hover
+            density="compact"
+            @update:options="loadItems"
+            :options.sync="deprecatedOptions"
+            :no-results-text="noItemsText"
+            :server-items-length="totalItems"
         >
-            <template v-slot:cell(note)="row">
-                <div
-                    :id="`tooltip-target-note-${ row.item.wayPointId }`"
-                    class="mw-25"
-                >
-                    <nl2br
-                        tag="div"
-                        :text="row.item.note ? row.item.note.trim() : ''"
-                        class-name="text-truncate"
-                    />
-                </div>
-                <b-tooltip :target="`tooltip-target-note-${ row.item.wayPointId }`" triggers="hover click">
-                    <nl2br
-                        tag="div"
-                        :text="row.item.note ? row.item.note.trim() : ''"
-                    />
-                </b-tooltip>
+            <template v-slot:item.malesCount="{item}">
+                {{ getWalkByIri(item.walk)?.isWithAgeRanges ? item.malesCount : '-' }}
             </template>
-            <template v-slot:cell(oneOnOneInterview)="row">
-                <div
-                    :id="`tooltip-target-oneOnOneInterview-${ row.item.wayPointId }`"
-                    class="mw-25"
-                >
-                    <nl2br
-                        tag="div"
-                        :text="row.item.oneOnOneInterview.trim()"
-                        class-name="text-truncate"
-                    />
-                </div>
-                <b-tooltip :target="`tooltip-target-oneOnOneInterview-${ row.item.wayPointId }`" triggers="hover click">
-                    <nl2br
-                        tag="div"
-                        :text="row.item.oneOnOneInterview.trim()"
-                    />
-                </b-tooltip>
+            <template v-slot:item.femalesCount="{item}">
+                {{ getWalkByIri(item.walk)?.isWithAgeRanges ? item.femalesCount : '-' }}
             </template>
-            <template v-slot:cell(actions)="row">
+            <template v-slot:item.queerCount="{item}">
+                {{ getWalkByIri(item.walk)?.isWithAgeRanges ? item.queerCount : '-' }}
+            </template>
+            <template v-slot:item.peopleCount="{item}">
+                {{ getWalkByIri(item.walk)?.isWithPeopleCount ? item.peopleCount : '-' }}
+            </template>
+            <template v-slot:item.note="{item}">
+                <v-tooltip
+                    bottom
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <div
+                            class="mw-25"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <nl2br
+                                tag="div"
+                                :text="item.note?.trim()"
+                                class-name="text-truncate"
+                            />
+                        </div>
+                    </template>
+                    <nl2br
+                        tag="div"
+                        :text="item.note?.trim()"
+                    />
+                </v-tooltip>
+            </template>
+            <template v-slot:item.oneOnOneInterview="{item}">
+                <v-tooltip
+                    bottom
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <div
+                            class="mw-25"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <nl2br
+                                tag="div"
+                                :text="item.oneOnOneInterview.trim()"
+                                class-name="text-truncate"
+                            />
+                        </div>
+
+                    </template>
+                    <nl2br
+                        tag="div"
+                        :text="item.oneOnOneInterview.trim()"
+                    />
+                </v-tooltip>
+            </template>
+            <template v-slot:item.wayPointTags="{item}">
+                {{ formatTags(item.wayPointTags) }}
+            </template>
+            <template v-slot:item.walk.teamName="{item}">
+                {{ getWalkByIri(item.walk)?.teamName }}
+            </template>
+            <template v-slot:item.walk.name="{item}">
+                {{ getWalkByIri(item.walk)?.name }}
+            </template>
+            <template v-slot:item.visitedAt="{item}">
+                {{ formatDateTimeNoSecondsWithDayOfWeek(item.visitedAt) }}
+            </template>
+            <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-content-around">
                     <router-link
-                        :to="{name: 'WayPointDetail', params: { wayPointId: row.item.wayPointId, walkId: getWalkByIri(row.item.walk)?.walkId }}"
-                        :data-test="`button-wegpunkt-ansehen-${ row.item.locationName }`"
+                        :to="{name: 'WayPointDetail', params: { wayPointId: item.wayPointId, walkId: getWalkByIri(item.walk)?.walkId }}"
+                        :data-test="`button-wegpunkt-ansehen-${ item.locationName }`"
                     >
                         <v-btn
                             small
@@ -317,7 +361,7 @@
                     </router-link>
                 </div>
             </template>
-        </b-table>
+        </v-data-table>
     </div>
 </template>
 
@@ -334,6 +378,7 @@ import TagAPI from '../../api/tag.js';
 import { useGeneralStore, useTagStore, useWalkStore, useWayPointStore } from '../../stores';
 import {FilterComboboxField, FilterTextField} from "@/js/components/Common";
 import ColorBadge from "@/js/components/Tags/ColorBadge.vue";
+import {formatDateTimeNoSecondsWithDayOfWeek, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText} from "@/js/utils";
 
 export default {
     name: 'WayPointList',
@@ -358,59 +403,57 @@ export default {
             exportCtx: null,
             locale: dateRangePicker.locale,
             ranges: dateRangePicker.ranges,
-            fields: [
-                { key: 'locationName', label: 'Ort', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'malesCount', label: 'Männer', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk)?.isWithAgeRanges ? value : '-'} },
-                { key: 'femalesCount', label: 'Frauen', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk)?.isWithAgeRanges ? value : '-'}  },
-                { key: 'queerCount', label: 'Andere', sortable: false, sortDirection: 'desc', class: 'text-center align-middle', formatter: (value, key, item) => {return this.getWalkByIri(item.walk)?.isWithAgeRanges ? value : '-'}  },
-                { key: 'peopleCount', label: 'Anzahl Personen', sortable: false, class: 'text-center align-middle',
-                    formatter: (value, key, item) => {
-                        return this.getWalkByIri(item.walk)?.isWithPeopleCount ? value : '-';
-                    }
-                },
-                { key: 'note', label: 'Beobachtung', sortable: true, class: 'text-left align-middle' },
-                { key: 'oneOnOneInterview', label: 'Einzelgespräch', sortable: true, class: 'text-left align-middle' },
-                { key: 'wayPointTags', label: 'Tags', sortable: false, class: 'text-center align-middle', formatter: (value) => {return this.formatTags(value);} },
-                {
-                    key: 'walk.teamName', label: 'Team', sortable: true, class: 'text-center align-middle',
-                    formatter: (value, key, item) => {
-                        return this.getWalkByIri(item.walk)?.teamName;
-                    },
-                },
-                {
-                    key: 'visitedAt',
-                    label: 'Ankunft',
-                    sortable: true,
-                    class: 'text-center align-middle',
-                    formatter: (value) => this.formatStartDate(value),
-                },
-                {
-                    key: 'walk.name',
-                    label: 'Runde',
-                    sortable: true,
-                    class: 'text-center align-middle',
-                    formatter: (value, key, item) => {
-                        return this.getWalkByIri(item.walk)?.name;
-                    },
-                },
-                { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
-            ],
             allTeamNames: [],
-            totalRows: 10000,
             tags: [],
-            currentPage: 1,
-            perPage: 5,
-            pageOptions: [5, 10, 25, 50, 100],
             sortBy: 'walk.startTime',
             sortDesc: true,
             sortDirection: 'desc',
-            storagePerPageId: 'alle-wegpunkte-per-page',
-            storageCurrentPageId: 'alle-wegpunkte-current-page',
-            storageFilterId: 'alle-wegpunkte-filter',
-            storageWayPointsId: 'alle-wegpunkte-wayPoints',
+            itemsPerPageText,
+            itemsPerPageOptions,
+            loadingText,
+            noItemsText,
+            deprecatedOptions: {},
+            totalItems: 0,
+            search: '',
+            currentPage: 1,
+            itemsPerPage: itemsPerPageOptions[0].value,
+            serverItems: [],
+            tableOptions: [],
         };
     },
     computed: {
+        headers() {
+            const headers = [
+                { value: 'locationName', text: 'Ort' }
+            ]
+
+            headers.push(...[
+                { value: 'malesCount', text: 'Männer' },
+                { value: 'femalesCount', text: 'Frauen' },
+                { value: 'queerCount', text: 'Andere' },
+            ])
+
+            headers.push({ value: 'peopleCount', text: 'Anzahl Personen' })
+            headers.push(...[
+                { value: 'note', text: 'Beobachtung' },
+                { value: 'oneOnOneInterview', text: 'Einzelgespräch' },
+                { value: 'wayPointTags', text: 'Tags', sortable: false },
+                {
+                    value: 'walk.teamName', text: 'Team',
+                },
+                {
+                    value: 'visitedAt',
+                    text: 'Ankunft',
+                },
+                {
+                    value: 'walk.name',
+                    text: 'Runde',
+                },
+                { value: 'actions', text: 'Aktionen' },
+            ])
+
+            return headers
+        },
         filter() {
             return this.generalStore.getWayPointFilter;
         },
@@ -442,7 +485,25 @@ export default {
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
+    watch: {
+        filter: {
+            handler: async function () {
+                this.search = String(Date.now());
+                await this.loadItems({ ...this.tableOptions });
+                // search.value = String(Date.now())
+                // settings.betriebsbeauftragterFilter.store(betriebsbeauftragterFilter.value)
+            },
+            deep: true,
+        },
+        deprecatedOptions: {
+            handler: async function () {
+                await this.loadItems(this.deprecatedOptions);
+            },
+            deep: true,
+        },
+    },
     methods: {
+        formatDateTimeNoSecondsWithDayOfWeek,
         getTagByIri(iri) {
             return this.tagStore.getTagByIri(iri);
         },
@@ -469,55 +530,60 @@ export default {
 
             return formattedTags;
         },
-        formatStartDate: function (dateString) {
-            return dayjs(dateString).format('dd, DD.MM.YYYY HH:mm:ss');
-        },
-        async itemProvider(ctx) {
-            this.exportCtx = ctx;
-            this.isLoading = true;
-            const result = await WayPointAPI.find(ctx);
-            this.isLoading = false;
-            const wayPoints = result.data['hydra:member'];
+        async loadItems({ page, itemsPerPage, sortBy }) {
+            this.tableOptions = {page, itemsPerPage, sortBy};
+            this.currentPage = page
+            const data = {
+                page,
+                itemsPerPage,
+                wayPointTags: this.filter.wayPointTags,
+                note: this.filter.note,
+                oneOnOneInterview: this.filter.oneOnOneInterview,
+                locationName: this.filter.locationName,
+                teamName: !this.filter.teamName,
+            }
+            sortBy.forEach((val) => {
+                data[`sortBy[${val.key}]`] = val.order;
+            })
+            if (this.filter.visitedAt?.startDate && this.filter.visitedAt?.endDate) {
+                data['visitedAt[after]'] = dayjs(this.filter.visitedAt.startDate).startOf('day').toISOString()
+                data['visitedAt[before]'] = dayjs(this.filter.visitedAt.endDate).endOf('day').toISOString()
+            }
 
-            let walkPromises = [];
-            let walkPromiseIds = [];
-            wayPoints.forEach(wayPoint => {
-                if (!this.getWalkByIri(wayPoint.walk)) {
-                    const id = wayPoint.walk.replace('/api/walks/', '');
-                    if (!walkPromiseIds.includes(id)) {
-                        walkPromises.push(this.walkStore.fetchById(id));
-                        walkPromiseIds.push(id);
+            // this.exportCtx = ctx;
+
+            try {
+                this.isLoading = true;
+                const result = await WayPointAPI.find(data);
+                this.isLoading = false;
+                const items = result.data['hydra:member'];
+                const total = result.data['hydra:totalItems'] ?? 0;
+
+                let walkPromises = [];
+                let walkPromiseIds = [];
+                items.forEach(wayPoint => {
+                    if (!this.getWalkByIri(wayPoint.walk)) {
+                        const id = wayPoint.walk.replace('/api/walks/', '');
+                        if (!walkPromiseIds.includes(id)) {
+                            walkPromises.push(this.walkStore.fetchById(id));
+                            walkPromiseIds.push(id);
+                        }
                     }
-                }
-            });
-            await Promise.all(walkPromises);
-
-            this.totalRows = result.data['hydra:totalItems'];
-            this.generalStore.updateWayPointFilterResult(wayPoints);
-            await this.$emit('refresh-total-way-points', this.totalRows);
-
-            return wayPoints;
+                });
+                await Promise.all(walkPromises);
+                this.generalStore.updateWayPointFilterResult(items);
+                this.serverItems = items;
+                this.totalItems = total;
+                await this.$emit('refresh-total-way-points', this.totalItems);
+            } catch (e) {
+                console.error(e);
+            }
         },
         handleCurrentPageChange(value) {
             this.generalStore.updateWayPointCurrentPage(Number(value));
         },
-        handlePerPageChange(value) {
-            this.generalStore.updateWayPointPerPage(Number(value));
-        },
         unsetFilterWayPointTags() {
             this.filter.wayPointTags = [];
-        },
-        unsetFilterLocationName() {
-            this.filter.locationName = '';
-        },
-        unsetFilterNote() {
-            this.filter.note = '';
-        },
-        unsetFilterOneOnOneInterview() {
-            this.filter.oneOnOneInterview = '';
-        },
-        unsetFilterTeamName() {
-            this.filter.teamName = '';
         },
         unsetFilterVisitedAt() {
             this.filter.visitedAt = this.defaultDateRange;

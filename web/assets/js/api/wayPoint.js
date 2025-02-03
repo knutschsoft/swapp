@@ -1,6 +1,7 @@
 'use strict';
 import apiClient from '../api';
 import dayjs from 'dayjs';
+import {useParamTransformer} from "../utils";
 
 const updateFilterParams = function (params) {
     let sort = '';
@@ -29,9 +30,9 @@ const updateFilterParams = function (params) {
 
 export default {
     find(params) {
-        let sort = updateFilterParams(params);
+        let transformedParams = useParamTransformer(params);
 
-        return apiClient.get(`/api/way_points?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
+        return apiClient.get(`/api/way_points?${transformedParams}`);
     },
     export(params) {
         const sort = updateFilterParams(params);
