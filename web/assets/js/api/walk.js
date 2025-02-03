@@ -1,6 +1,7 @@
 'use strict';
 import apiClient from '../api';
 import dayjs from 'dayjs';
+import {useParamTransformer} from "@/js/utils";
 
 const updateFilterParams = function (params) {
     let sort = '';
@@ -30,12 +31,17 @@ const updateFilterParams = function (params) {
 
 export default {
     find(params) {
+        let transformedParams = useParamTransformer(params);
+
+        return apiClient.get(`/api/walks?${transformedParams}`);
+    },
+    findOld(params) {
         let sort = updateFilterParams(params);
 
         return apiClient.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
     },
     findLastWalkByTeam(team) {
-        return this.find({
+        return this.findOld({
             sortBy: 'startTime',
             sortDesc: true,
             filter: {
@@ -60,7 +66,7 @@ export default {
         return apiClient.get("/api/walks/team_names");
     },
     findAllUnfinishedWalks(teams) {
-        return this.find({
+        return this.findOld({
             sortBy: 'startTime',
             sortDesc: true,
             filter: {

@@ -12,10 +12,10 @@ type DateRange = {
 }
 
 type WalkFilter = {
-    isResubmission: Boolean | null,
-    isUnfinished: Boolean | null,
+    isResubmission: '' | null,
+    isUnfinished: '' | null,
     name: String,
-    teamName: String,
+    teamName: String[],
     startTime: DateRange,
 }
 
@@ -56,10 +56,10 @@ const defaultActiveUsersDateRange: DateRange = {
 };
 
 const defaultWalkFilter: WalkFilter = {
-    isResubmission: null,
-    isUnfinished: null,
+    isResubmission: '',
+    isUnfinished: '',
     name: '',
-    teamName: '',
+    teamName: [],
     startTime: startTime,
 };
 const defaultWayPointFilter: WayPointFilter = {

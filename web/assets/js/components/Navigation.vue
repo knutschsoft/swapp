@@ -329,8 +329,6 @@
                 return this.authStore.isUserSwitched;
             },
             displayedUserList() {
-                console.log(this.users)
-                console.log(this.users.length)
                 if (!this.users || !this.users.length) {
                     return [];
                 }

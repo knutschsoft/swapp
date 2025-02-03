@@ -4,7 +4,7 @@
             :items="systemicQuestions"
             :headers="fields"
             :loading="isLoading"
-            loading-text="Lade Daten..."
+            :loading-text="loadingText"
             :items-per-page="itemsPerPage"
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"

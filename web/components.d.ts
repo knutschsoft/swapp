@@ -40,7 +40,6 @@ declare module 'vue' {
     VList: typeof import('vuetify/lib')['VList']
     VListItem: typeof import('vuetify/lib')['VListItem']
     VListItemAction: typeof import('vuetify/lib')['VListItemAction']
-    VListItemActionText: typeof import('vuetify/lib')['VListItemActionText']
     VListItemAvatar: typeof import('vuetify/lib')['VListItemAvatar']
     VListItemContent: typeof import('vuetify/lib')['VListItemContent']
     VListItemSubtitle: typeof import('vuetify/lib')['VListItemSubtitle']
@@ -61,14 +60,10 @@ declare module 'vue' {
     VSwitch: typeof import('vuetify/lib')['VSwitch']
     VSystemBar: typeof import('vuetify/lib')['VSystemBar']
     VTab: typeof import('vuetify/lib')['VTab']
-    VTable: typeof import('vuetify/lib')['VTable']
-    VTabp: typeof import('vuetify/lib')['VTabp']
-    VTabpTitle: typeof import('vuetify/lib')['VTabpTitle']
     VTabs: typeof import('vuetify/lib')['VTabs']
     VTextarea: typeof import('vuetify/lib')['VTextarea']
     VTextField: typeof import('vuetify/lib')['VTextField']
     VToolbar: typeof import('vuetify/lib')['VToolbar']
-    VToolbarTitle: typeof import('vuetify/lib')['VToolbarTitle']
     VTooltip: typeof import('vuetify/lib')['VTooltip']
   }
 }

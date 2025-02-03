@@ -1,166 +1,70 @@
 <template>
     <div class="p-2">
-        <b-row class="mt-0 mb-0">
-            <b-col
-                class="my-1"
-                xs="5"
-                sm="4"
+        <v-row class="mt-0 mb-0">
+            <v-col
+                sm="6"
                 md="3"
             >
-                <b-input-group prepend="pro Seite" size="sm" class="">
-                    <b-form-select
-                        v-model="perPage"
-                        id="perPageSelect"
-                        size="sm"
-                        :options="pageOptions"
-                        @change="handlePerPageChange"
-                    ></b-form-select>
-                </b-input-group>
-            </b-col>
-            <b-col
-                sm="8"
-                md="9"
-                class="my-1"
+                <filter-boolean-field
+                    v-model="filter.isResubmission"
+                    label="Wiedervorlage zur Dienstberatung?"
+                    :is-loading="isLoading"
+                />
+            </v-col>
+            <v-col
+                sm="6"
+                md="3"
             >
-                <b-pagination
-                    v-model="currentPage"
-                    :total-rows="totalRows"
-                    :per-page="perPage"
-                    :disabled="isLoading"
-                    @change="handleCurrentPageChange"
-                    align="fill"
-                    size="sm"
-                    class="my-0"
-                ></b-pagination>
-            </b-col>
-            <b-col cols="12">
-                <hr class="my-1" />
-            </b-col>
-            <b-col
+                <filter-boolean-field
+                    v-model="filter.isUnfinished"
+                    label="Beendet?"
+                    :is-loading="isLoading"
+                />
+            </v-col>
+            <v-col
                 class="my-1"
                 sm="6"
                 md="3"
             >
-                <b-input-group
-                    size="sm"
-                >
-                    <b-input-group-prepend
-                    >
-                        <b-input-group-text
-                            title="Wiedervorlage zur Dienstberatung?"
-                            :class="filter.isResubmission !== null ? 'font-weight-bold' : ''"
-                        >
-                            WV DB?
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-select
-                        v-model="filter.isResubmission"
-                        :options="isResubmissionOptions"
-                    />
-                    <my-input-group-append
-                        @click="unsetFilterIsResubmission"
-                        :is-active="filter.isResubmission !== defaultFilter.isResubmission"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
+                <filter-text-field
+                    v-model="filter.name"
+                    label="Name"
+                    data-test="filter-name-walk"
+                    :isLoading="isLoading"
+                />
+            </v-col>
+            <v-col
                 class="my-1"
                 sm="6"
                 md="3"
             >
-                <b-input-group size="sm" class="">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            title="Wurde die Runde schon beendet?"
-                            :class="filter.isUnfinished !== null ? 'font-weight-bold' : ''"
-                        >
-                            Beendet?
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-select
-                        v-model="filter.isUnfinished"
-                        :options="isUnfinishedOptions"
-                    />
-                    <my-input-group-append
-                        @click="unsetFilterIsUnfinished"
-                        :is-active="filter.isUnfinished !== defaultFilter.isUnfinished"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
-                sm="6"
-                md="3"
-            >
-                <b-input-group size="sm">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            :class="filter.name ? 'font-weight-bold' : ''"
-                        >
-                            Name
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-input
-                        v-model="filter.name"
-                        placeholder="Name"
-                        debounce="500"
-                        size="sm"
-                    />
-                    <my-input-group-append
-                        @click="unsetFilterName"
-                        :is-active="filter.name !== defaultFilter.name"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
-                sm="6"
-                md="3"
-            >
-                <b-input-group size="sm">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            :class="filter.teamName ? 'font-weight-bold' : ''"
-                        >
-                            Team
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-input
-                        v-model="filter.teamName"
-                        type="text"
-                        list="team-name-for-walk-list"
-                        placeholder="Teamname"
-                        data-test="filter-team-walk"
-                        autocomplete="off"
-                        debounce="500"
-                        size="sm"
-                    ></b-form-input>
-                    <datalist id="team-name-for-walk-list">
-                        <option v-for="teamName in teamNames">{{ teamName }}</option>
-                    </datalist>
-                    <my-input-group-append
-                        @click="unsetFilterTeamName"
-                        :is-active="filter.teamName !== defaultFilter.teamName"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
+                <filter-combobox-field
+                    v-model="filter.teamName"
+                    label="Team"
+                    data-test="filter-team-walk"
+                    :is-loading="isLoading"
+                    :suggestions="teamNames"
+                />
+            </v-col>
+            <v-col
                 xs="12"
                 sm="12"
                 md="12"
                 xl="12"
             >
-                <b-input-group size="sm">
-                    <b-input-group-prepend
-                        @click.stop="togglePicker"
-                    >
-                        <b-input-group-text
-                            :class="(filter?.startTime?.startDate !== defaultDateRange.startDate || filter?.startTime?.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
+                <v-input
+                    @click:append="unsetFilterStartTime"
+                    @click:prepend="togglePicker"
+                    hide-details
+                >
+                    <template v-slot:prepend>
+                        <div
+                            :class="!((filter?.startTime?.startDate === defaultDateRange.startDate && filter?.startTime?.endDate === defaultDateRange.endDate) || isLoading) ? 'font-weight-bold' : ''"
+                            class="mt-2"
                         >
-                            Beginn
-                        </b-input-group-text>
-                    </b-input-group-prepend>
+                            Zeitraum
+                        </div>
+                    </template>
                     <date-range-picker
                         ref="picker"
                         class="form-control"
@@ -175,32 +79,36 @@
                         :disabled="isLoading"
                     >
                     </date-range-picker>
-                    <b-input-group-append
-                        @click.stop="togglePicker"
-                    >
-                        <b-input-group-text>
-                            <v-progress-circular
-                                v-if="isLoading"
-                                :width="2"
-                                :size="20"
-                                indeterminate
-                                class="mr-2"
-                            />
+
+                    <template v-slot:append>
+                        <v-progress-circular
+                            v-if="isLoading"
+                            size="18"
+                            indeterminate
+                            color="secondary"
+                        />
+                        <v-icon
+                            v-else
+                        >
+                            mdi-calendar
+                        </v-icon>
+
+                        <v-btn
+                            :color="!((filter?.startTime?.startDate === defaultDateRange.startDate && filter?.startTime?.endDate === defaultDateRange.endDate) || isLoading) ? 'blue darken-2' : 'secondary lighten-4'"
+                            x-small
+                            fab
+                        >
                             <v-icon
-                                v-else
-                                size="18"
+                                color="white"
+                                @click="unsetFilterStartTime"
                             >
-                                mdi-calendar
+                                mdi-filter-remove-outline
                             </v-icon>
-                        </b-input-group-text>
-                    </b-input-group-append>
-                    <my-input-group-append
-                        @click="unsetFilterStartTime"
-                        :is-active="!((filter?.startTime?.startDate === defaultDateRange.startDate && filter?.startTime?.endDate === defaultDateRange.endDate) || isLoading)"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
+                        </v-btn>
+                    </template>
+                </v-input>
+            </v-col>
+            <v-col
                 class="my-1"
                 xs="12"
                 sm="12"
@@ -220,12 +128,11 @@
                         :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
                     />
                 </v-btn>
-            </b-col>
-            <b-col cols="12">
-                <hr class="my-1" />
-            </b-col>
-            <b-col
-                class="my-1"
+            </v-col>
+            <v-col cols="12">
+                <hr class="my-1 mb-2" />
+            </v-col>
+            <v-col
                 xs="12"
                 sm="12"
                 md="12"
@@ -235,36 +142,48 @@
                     small
                     color="secondary"
                     block
-                    :disabled="isLoading || isExportLoading || this.totalRows === 0"
+                    :disabled="isLoading || isExportLoading || this.totalItems === 0"
                     @click="exportWalks"
                 >
-                    {{ this.totalRows > 5000 ? 5000 : this.totalRows }} Rund{{ this.totalRows === 1 ? 'e' : 'en' }} als .csv-Datei exportieren
+                    {{ this.totalItems > 5000 ? 5000 : this.totalItems }} Rund{{ this.totalItems === 1 ? 'e' : 'en' }} als .csv-Datei exportieren
                     <mdicon
                         :name="isExportLoading ? 'Loading' : 'Download'"
                         :spin="isExportLoading"
                     />
                 </v-btn>
-            </b-col>
-        </b-row>
-        <b-table
-            small
+            </v-col>
+        </v-row>
+        <v-data-table
             striped
+            dense
             class="mb-0"
-            stacked="md"
-            :items="itemProvider"
-            :fields="fields"
-            :current-page="currentPage"
-            :per-page="perPage"
-            :filter="filter"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :sort-direction="sortDirection"
+            :items-per-page="itemsPerPage"
+            :headers="headers"
+            :items="serverItems"
+            :items-length="totalItems"
+            :items-per-page-options="itemsPerPageOptions"
+            :items-per-page-text="itemsPerPageText"
+            :loading="isLoading"
+            :search="search"
+            item-value="name"
+            :no-data-text="noItemsText"
+            :loading-text="loadingText"
+            multi-sort
+            hover
+            density="compact"
+            @update:options="loadItems"
+            :options.sync="deprecatedOptions"
+            :no-results-text="noItemsText"
+            :server-items-length="totalItems"
         >
-            <template v-slot:cell(rating)="row">
+            <template v-slot:item.startTime="{item}">
+                {{ formatDateTimeNoSecondsWithDayOfWeek(item.startTime) }}
+            </template>
+            <template v-slot:item.rating="{item}">
                 <walk-rating
-                    v-if="!row.item.isUnfinished && getClientByIri(row.item.client)"
-                    :rating="row.item.rating"
-                    :client="getClientByIri(row.item.client)"
+                    v-if="!item.isUnfinished && getClientByIri(item.client)"
+                    :rating="item.rating"
+                    :client="getClientByIri(item.client)"
                     :item-size="30"
                     :show-rating="false"
                     read-only
@@ -273,11 +192,18 @@
                     v-else
                 >-</template>
             </template>
-            <template v-slot:cell(actions)="row">
+            <template v-slot:item.endTime="{item}">
+                <template v-if="item.isUnfinished">-</template>
+                <template v-else> {{ formatEndDate(item.endTime, item.startTime) }}</template>
+            </template>
+            <template v-slot:item.isResubmission="{item}">
+                {{ item.isResubmission ? 'ja' : 'nein' }}
+            </template>
+            <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-content-around">
                     <router-link
-                        :to="{name: 'WalkDetail', params: { walkId: row.item.walkId}}"
-                        :data-test="`button-runde-ansehen-${ row.item.name }`"
+                        :to="{name: 'WalkDetail', params: { walkId: item.walkId}}"
+                        :data-test="`button-runde-ansehen-${ item.name }`"
                     >
                         <v-btn
                             small
@@ -292,9 +218,9 @@
                         </v-btn>
                     </router-link>
                     <router-link
-                        v-if="row.item.isUnfinished"
-                        :to="{name: 'WalkAddWayPoint', params: { walkId: row.item.walkId}}"
-                        :data-test="`button-runde-fortsetzen-${ row.item.name }`"
+                        v-if="item.isUnfinished"
+                        :to="{name: 'WalkAddWayPoint', params: { walkId: item.walkId}}"
+                        :data-test="`button-runde-fortsetzen-${ item.name }`"
                         class="mt-ml-0 ml-1"
                     >
                         <v-btn
@@ -318,7 +244,7 @@
                     </router-link>
                 </div>
             </template>
-        </b-table>
+        </v-data-table>
     </div>
 </template>
 
@@ -332,10 +258,18 @@ import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import WalkRating from '../Walk/WalkRating.vue';
 import { useClientStore, useGeneralStore, useWalkStore } from '../../stores';
+import {formatDateTimeNoSecondsWithDayOfWeek, formatTime, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText} from "@/js/utils";
+import {FilterBooleanField, FilterComboboxField, FilterTextField, TextareaField} from "@/js/components/Common";
+import {WalkConceptOfDayField} from "@/js/components/Common/Walk";
 
 export default {
     name: 'WalkList',
     components: {
+        FilterBooleanField,
+        WalkConceptOfDayField,
+        FilterComboboxField,
+        FilterTextField,
+        TextareaField,
         WalkRating,
         DateRangePicker,
         MyInputGroupAppend,
@@ -365,50 +299,38 @@ export default {
                 { value: 0, text: 'ja' },
                 { value: 1, text: 'nein' },
             ],
-            fields: [
-                { key: 'name', label: 'Name', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                { key: 'rating', label: 'Bewertung', sortable: true, class: 'text-center align-middle' },
-                { key: 'startTime', label: 'Beginn', sortable: true, class: 'text-center align-middle', formatter: (value) => {return this.formatStartDate(value);} },
-                { key: 'endTime', label: 'Ende', sortable: false, class: 'text-center align-middle',
-                    formatter: (value, key, item) => {
-                        return item.isUnfinished ? '-' : this.formatEndDate(value, item.startTime);
-
-                    }
-                },
-                { key: 'peopleCount', label: 'Anzahl Personen', sortable: false, class: 'text-center align-middle',
+            headers: [
+                { value: 'name', text: 'Name', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
+                { value: 'rating', text: 'Bewertung', sortable: true, class: 'text-center align-middle' },
+                { value: 'startTime', text: 'Rundenbeginn' },
+                { value: 'endTime', text: 'Ende', sortable: false },
+                { value: 'peopleCount', text: 'Anzahl Personen', sortable: false, class: 'text-center align-middle',
                     formatter: (value, key, item) => {
                         return item.isWithPeopleCount ? value : '-';
                     }
                 },
-                { key: 'teamName', label: 'Team', sortable: true, class: 'text-center align-middle' },
+                { value: 'teamName', text: 'Team', sortable: true, class: 'text-center align-middle' },
                 {
-                    key: 'isResubmission',
-                    label: 'WV DB?',
-                    formatter: (value, key, item) => {
-                        return value ? 'Ja' : 'Nein';
-                    },
-                    sortable: true,
-                    sortByFormatted: true,
-                    filterByFormatted: true,
-                    class: 'text-center align-middle',
+                    value: 'isResubmission',
+                    text: 'WV DB?',
                 },
-                {
-                    key: 'startTime',
-                    label: 'Rundenbeginn',
-                    sortable: true,
-                    class: 'text-center align-middle',
-                    formatter: (value) => this.formatStartDate(value),
-                },
-                { key: 'actions', label: 'Aktionen', class: 'text-center p-y-0' },
+                { value: 'actions', text: 'Aktionen', class: 'text-center p-y-0' },
             ],
             allTeamNames: [],
-            totalRows: 10000,
-            currentPage: 1,
-            perPage: 5,
-            pageOptions: [5, 10, 25, 50, 100],
             sortBy: 'startTime',
             sortDesc: true,
             sortDirection: 'desc',
+            itemsPerPageText,
+            itemsPerPageOptions,
+            loadingText,
+            noItemsText,
+            deprecatedOptions: {},
+            totalItems: 0,
+            search: '',
+            currentPage: 1,
+            itemsPerPage: itemsPerPageOptions[0].value,
+            serverItems: [],
+            tableOptions: [],
         };
     },
     computed: {
@@ -422,10 +344,7 @@ export default {
             return this.generalStore.defaultWalkFilter.startTime;
         },
         teamNames() {
-            const filterTeamName = this.filter.teamName ? this.filter.teamName.toLowerCase() : '';
-            return this.allTeamNames.filter((teamName) => {
-                return teamName.teamName.toLowerCase().startsWith(filterTeamName);
-            }).map((teamName) => teamName.teamName);
+            return this.allTeamNames.map((teamName) => teamName.teamName);
         },
         walks() {
             return this.walkStore.getWalks;
@@ -438,56 +357,75 @@ export default {
         },
     },
     async mounted() {
-        this.perPage = this.generalStore.walkPerPage;
+        this.itemsPerPage = this.generalStore.walkPerPage;
         this.currentPage = this.generalStore.walkCurrentPage;
         const allTeamNames = await WalkAPI.findAllTeamNames();
-        this.currentPage = this.generalStore.walkCurrentPage;
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
+    watch: {
+        filter: {
+            handler: async function () {
+                this.search = String(Date.now());
+                await this.loadItems({ ...this.tableOptions });
+                // search.value = String(Date.now())
+                // settings.betriebsbeauftragterFilter.store(betriebsbeauftragterFilter.value)
+            },
+            deep: true,
+        },
+        deprecatedOptions: {
+            handler: async function () {
+                await this.loadItems(this.deprecatedOptions);
+            },
+            deep: true,
+        },
+    },
     methods: {
+        formatDateTimeNoSecondsWithDayOfWeek,
         getClientByIri(clientIri) {
             return this.clientStore.getClientByIri(clientIri);
-        },
-        formatStartDate: function (dateString) {
-            let date = new Date(dateString);
-            return date.toLocaleDateString('de-DE', { weekday: 'short', hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit' });
         },
         formatEndDate: function (dateString, startDateString) {
             let date = new Date(dateString);
             if (dayjs(dateString).isSame(dayjs(startDateString), 'day')) {
-                return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+                return formatTime(date);
             }
-            return this.formatStartDate(dateString);
+            return this.formatDateTimeNoSecondsWithDayOfWeek(dateString);
         },
-        async itemProvider(ctx) {
-            this.exportCtx = ctx;
-            this.isLoading = true;
-            const result = await WalkAPI.find(ctx);
-            this.isLoading = false;
-            const walks = result.data['hydra:member']
-            this.totalRows = result.data['hydra:totalItems'];
-            this.generalStore.updateWalkFilterResult(walks);
-            await this.$emit('refresh-total-walks', this.totalRows);
+        async loadItems({ page, itemsPerPage, sortBy }) {
+            this.tableOptions = {page, itemsPerPage, sortBy};
+            this.currentPage = page
+            const data = {
+                page,
+                itemsPerPage,
+                teamName: this.filter.teamName,
+                name: this.filter.name,
+                isResubmission: this.filter.isResubmission,
+                isUnfinished: this.filter.isUnfinished,
+            }
+            sortBy.forEach((val) => {
+                data[`sortBy[${val.key}]`] = val.order;
+            })
+            if (this.filter.startTime?.startDate && this.filter.startTime?.endDate) {
+                data['startTime[after]'] = dayjs(this.filter.startTime.startDate).startOf('day').toISOString()
+                data['startTime[before]'] = dayjs(this.filter.startTime.endDate).endOf('day').toISOString()
+            }
 
-            return walks;
+            try {
+                this.isLoading = true;
+                const result = await WalkAPI.find(data);
+                this.isLoading = false;
+                const items = result.data['hydra:member'];
+                const total = result.data['hydra:totalItems'] ?? 0;
+                this.generalStore.updateWalkFilterResult(items);
+                this.serverItems = items;
+                this.totalItems = total;
+                await this.$emit('refresh-total-walks', this.totalItems);
+            } catch (e) {
+                console.error(e);
+            }
         },
         handleCurrentPageChange(value) {
             this.generalStore.updateWalkCurrentPage(Number(value));
-        },
-        handlePerPageChange(value) {
-            this.generalStore.updateWalkPerPage(Number(value));
-        },
-        unsetFilterIsResubmission() {
-            this.filter.isResubmission = null;
-        },
-        unsetFilterIsUnfinished() {
-            this.filter.isUnfinished = null;
-        },
-        unsetFilterName() {
-            this.filter.name = '';
-        },
-        unsetFilterTeamName() {
-            this.filter.teamName = '';
         },
         unsetFilterStartTime() {
             this.filter.startTime = this.defaultDateRange;
