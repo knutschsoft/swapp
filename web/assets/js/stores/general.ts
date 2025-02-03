@@ -23,7 +23,7 @@ type WayPointFilter = {
     wayPointTags: String[],
     locationName: '',
     note: '',
-    teamName: String,
+    teamName: String[],
     oneOnOneInterview: String,
     visitedAt: DateRange,
 }
@@ -66,7 +66,7 @@ const defaultWayPointFilter: WayPointFilter = {
     wayPointTags: [],
     locationName: '',
     note: '',
-    teamName: '',
+    teamName: [],
     oneOnOneInterview: '',
     visitedAt: startTime,
 };

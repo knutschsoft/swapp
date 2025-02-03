@@ -53,7 +53,6 @@ const errorMessages = computed(() => {
 <template>
     <v-text-field
         v-model="value"
-        :readonly="isLoading || disabled"
         :label="label"
         :placeholder="placeholder"
         :data-test="dataTest"

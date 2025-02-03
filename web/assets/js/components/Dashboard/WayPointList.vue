@@ -1,257 +1,169 @@
 <template>
     <div class="p-2">
-        <b-row class="mt-0 mb-0">
-            <b-col
-                class="my-1"
-                xs="5"
-                sm="4"
-                md="3"
-            >
-                <b-input-group prepend="pro Seite" size="sm" class="">
-                    <b-form-select
-                        v-model="perPage"
-                        id="perPageSelect"
-                        size="sm"
-                        :options="pageOptions"
-                        @change="handlePerPageChange"
-                    ></b-form-select>
-                </b-input-group>
-            </b-col>
-            <b-col
-                sm="8"
-                md="9"
-                class="my-1"
-            >
-                <b-pagination
-                    v-model="currentPage"
-                    :total-rows="totalRows"
-                    :per-page="perPage"
-                    @change="handleCurrentPageChange"
-                    align="fill"
-                    size="sm"
-                    class="my-0"
-                ></b-pagination>
-            </b-col>
-            <b-col cols="12">
-                <hr class="my-1" />
-            </b-col>
-            <b-col
-                class="my-1"
+        <v-row class="mt-0 mb-0">
+            <v-col
                 sm="12"
             >
-                <b-input-group size="sm" class="" style="flex-wrap: inherit;">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            :class="filter.wayPointTags.length ? 'font-weight-bold' : ''"
-                        >
-                            Tags
-                            <div id="tag-filter-wayPoints">
-                                <mdicon
-                                    name="HelpCircleOutline"
-                                    class="text-muted ml-1"
-                                    size="22"
-                                />
-                            </div>
-                            <b-popover
-                                target="tag-filter-wayPoints"
-                                triggers="hover"
-                                placement="top"
-                            >
-                                <template #title>Welche Tags werden angezeigt?</template>
-                                <ul class="mb-0">
-                                    <li>Alle aktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
-                                    <li>Alle deaktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
-                                </ul>
-                            </b-popover>
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-group
-                        v-slot="{ ariaDescribedby }"
-                        class="pl-2 border-top border-bottom mb-0"
+                <div class="d-flex flex-row align-items-center">
+                    <div>Tags</div>
+                    <v-tooltip
+                        bottom
+                        color="info"
                     >
-                        <div class="d-flex flex-wrap">
-                            <template
-                                v-for="tag in tags"
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                                class="text-muted ml-2"
+                                v-bind="attrs"
+                                v-on="on"
                             >
-                                <b-form-checkbox
-                                    v-if="tag.isEnabled"
-                                    v-model="filter.wayPointTags"
-                                    :key="tag['@id']"
-                                    :value="tag['@id']"
-                                    :aria-describedby="ariaDescribedby"
-                                    name="tags"
-                                    class="d-flex align-items-center flex-tags"
-                                >
-                                    {{ tag.name }}
-                                </b-form-checkbox>
-                            </template>
-                            <hr
-                                v-if="hasDisabledTag"
-                                class="d-block w-100 my-1 mr-2"
-                            >
-                            <template
-                                v-for="tag in tags"
-                            >
-                                <b-form-checkbox
-                                    v-if="!tag.isEnabled"
-                                    v-model="filter.wayPointTags"
-                                    :key="tag['@id']"
-                                    :value="tag['@id']"
-                                    :aria-describedby="ariaDescribedby"
-                                    name="tags"
-                                    class="d-flex align-items-center flex-tags"
-                                >
-                                    {{ tag.name }}
-                                    <mdicon
-                                        name="TagOff"
-                                        class="text-muted"
-                                        title="deaktivierter Tag"
-                                        size="16"
-                                    />
-                                </b-form-checkbox>
-                            </template>
-                        </div>
-                    </b-form-group>
-                    <my-input-group-append
+                                mdi-help-circle-outline
+                            </v-icon>
+                        </template>
+                        <v-alert
+                            prominent
+                            type="info"
+                            dense
+                            class="mb-0 m-0"
+                        >
+                            <span>Welche Tags werden angezeigt?</span>
+                            <ul class="mb-0">
+                                <li>Alle aktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
+                                <li>Alle deaktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
+                            </ul>
+                        </v-alert>
+                    </v-tooltip>
+                    <v-btn
+                        title="Filterung nach Tags entfernen"
+                        class="ml-auto"
+                        :color="filter.wayPointTags.length ? 'blue darken-2' : 'secondary lighten-4'"
+                        x-small
                         @click="unsetFilterWayPointTags"
-                        :is-active="filter.wayPointTags.length > 0"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
+                        fab
+                    >
+                        <v-icon
+                            color="white"
+                        >
+                            mdi-filter-remove-outline
+                        </v-icon>
+                    </v-btn>
+                </div>
+                <v-chip-group
+                    v-model="filter.wayPointTags"
+                    multiple
+                    column
+                >
+                    <v-chip
+                        v-for="tag in tags"
+                        :key="tag['id']"
+                        v-if="tag.isEnabled"
+                        active-class="primary--text"
+                        class="mr-1 mb-1"
+                        small
+                        filter
+                        outlined
+                    >
+                        {{ tag.name }}
+                    </v-chip>
+                    <hr
+                        v-if="hasDisabledTag"
+                        class="d-block w-100 my-1 mr-2"
+                    >
+                    <v-chip
+                        v-for="tag in tags"
+                        :key="tag['id']"
+                        v-if="!tag.isEnabled"
+                        active-class="primary--text"
+                        class="mr-1 mb-1"
+                        small
+                        filter
+                        outlined
+                    >
+                        {{ tag.name }}
+                        <mdicon
+                            name="TagOff"
+                            class="text-muted ml-1"
+                            title="deaktivierter Tag"
+                            size="16"
+                        />
+                    </v-chip>
+                </v-chip-group>
+            </v-col>
+            <v-col
                 sm="6"
                 md="6"
                 xl="4"
             >
-                <b-input-group size="sm">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            :class="filter.note ? 'font-weight-bold' : ''"
-                        >
-                            Beobachtung
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-input
-                        v-model="filter.note"
-                        placeholder="Beobachtung"
-                        debounce="500"
-                        size="sm"
-                    />
-                    <my-input-group-append
-                        @click="unsetFilterNote"
-                        :is-active="filter.note !== defaultFilter.note"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
+                <filter-text-field
+                    v-model="filter.note"
+                    label="Beobachtung"
+                    data-test="filter-note-way-point"
+                    :isLoading="isLoading"
+                />
+            </v-col>
+            <v-col
                 sm="6"
                 md="6"
                 xl="4"
             >
-                <b-input-group size="sm">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            :class="filter.oneOnOneInterview ? 'font-weight-bold' : ''"
-                        >
-                            Einzelgespräch
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-input
-                        v-model="filter.oneOnOneInterview"
-                        placeholder="Einzelgespräch"
-                        debounce="500"
-                        size="sm"
-                    />
-                    <my-input-group-append
-                        @click="unsetFilterOneOnOneInterview"
-                        :is-active="filter.oneOnOneInterview !== defaultFilter.oneOnOneInterview"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
+                <filter-text-field
+                    v-model="filter.oneOnOneInterview"
+                    label="Einzelgespräch"
+                    data-test="filter-oneOnOneInterview-way-point"
+                    :isLoading="isLoading"
+                />
+            </v-col>
+            <v-col
                 sm="6"
                 md="6"
                 xl="2"
             >
-                <b-input-group size="sm">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            :class="filter.locationName ? 'font-weight-bold' : ''"
-                        >
-                            Ort
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-input
-                        v-model="filter.locationName"
-                        placeholder="Ort"
-                        debounce="500"
-                        size="sm"
-                    />
-                    <my-input-group-append
-                        @click="unsetFilterLocationName"
-                        :is-active="filter.locationName !== defaultFilter.locationName"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
+                <filter-text-field
+                    v-model="filter.locationName"
+                    label="Ort"
+                    data-test="filter-locationName-way-point"
+                    :isLoading="isLoading"
+                />
+            </v-col>
+            <v-col
                 sm="6"
                 md="6"
                 xl="2"
             >
-                <b-input-group size="sm">
-                    <b-input-group-prepend>
-                        <b-input-group-text
-                            :class="filter.teamName ? 'font-weight-bold' : ''"
-                        >
-                            Team
-                        </b-input-group-text>
-                    </b-input-group-prepend>
-                    <b-form-input
-                        v-model="filter.teamName"
-                        type="text"
-                        list="team-name-for-wayPoint-list"
-                        placeholder="Teamname"
-                        data-test="filter-team-wayPoint"
-                        autocomplete="off"
-                        debounce="500"
-                        size="sm"
-                    ></b-form-input>
-                    <datalist id="team-name-for-wayPoint-list">
-                        <option v-for="teamName in teamNames">{{ teamName }}</option>
-                    </datalist>
-                    <my-input-group-append
-                        @click="unsetFilterTeamName"
-                        :is-active="filter.teamName !== defaultFilter.teamName"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
-                class="my-1"
+                <filter-combobox-field
+                    v-model="filter.teamName"
+                    label="Teamname"
+                    data-test="filter-team-walk"
+                    :is-loading="isLoading"
+                    :suggestions="teamNames"
+                />
+            </v-col>
+            <v-col
                 xs="12"
                 sm="12"
                 md="12"
                 xl="12"
             >
-                <b-input-group size="sm">
-                    <b-input-group-prepend
-                        @click.stop="togglePicker"
-                    >
-                        <b-input-group-text
+
+                <v-input
+                    @click:append="unsetFilterVisitedAt"
+                    @click:prepend="togglePicker"
+                    hide-details
+                >
+                    <template v-slot:prepend>
+                        <div
                             :class="(filter?.visitedAt?.startDate !== defaultDateRange.startDate || filter?.visitedAt?.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
+                            class="mt-2"
                         >
                             Ankunft
-                        </b-input-group-text>
-                    </b-input-group-prepend>
+                        </div>
+                    </template>
                     <date-range-picker
                         ref="picker"
                         class="form-control"
                         v-model="filter.visitedAt"
                         :ranges="ranges"
                         :locale-data="locale"
+                        showWeekNumbers
                         auto-apply
                         show-dropdowns
                         opens="right"
@@ -259,32 +171,36 @@
                         :disabled="isLoading"
                     >
                     </date-range-picker>
-                    <b-input-group-append
-                        @click.stop="togglePicker"
-                    >
-                        <b-input-group-text>
-                            <v-progress-circular
-                                v-if="isLoading"
-                                :width="2"
-                                :size="20"
-                                indeterminate
-                                class="mr-2"
-                            />
+
+                    <template v-slot:append>
+                        <v-progress-circular
+                            v-if="isLoading"
+                            size="18"
+                            indeterminate
+                            color="secondary"
+                        />
+                        <v-icon
+                            v-else
+                        >
+                            mdi-calendar
+                        </v-icon>
+
+                        <v-btn
+                            :color="(filter?.visitedAt?.startDate !== defaultDateRange.startDate || filter?.visitedAt?.endDate !== defaultDateRange.endDate) ? 'blue darken-2' : 'secondary lighten-4'"
+                            x-small
+                            fab
+                        >
                             <v-icon
-                                v-else
-                                size="18"
+                                color="white"
+                                @click="unsetFilterVisitedAt"
                             >
-                                mdi-calendar
+                                mdi-filter-remove-outline
                             </v-icon>
-                        </b-input-group-text>
-                    </b-input-group-append>
-                    <my-input-group-append
-                        @click="unsetFilterVisitedAt"
-                        :is-active="!((filter?.visitedAt?.startDate === defaultDateRange.startDate && filter?.visitedAt?.endDate === defaultDateRange.endDate) || isLoading)"
-                    />
-                </b-input-group>
-            </b-col>
-            <b-col
+                        </v-btn>
+                    </template>
+                </v-input>
+            </v-col>
+            <v-col
                 class="my-1"
                 xs="12"
                 sm="12"
@@ -304,11 +220,11 @@
                         :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
                     />
                 </v-btn>
-            </b-col>
-            <b-col cols="12">
+            </v-col>
+            <v-col cols="12">
                 <hr class="my-1" />
-            </b-col>
-            <b-col
+            </v-col>
+            <v-col
                 class="my-1"
                 xs="12"
                 sm="12"
@@ -329,8 +245,8 @@
                         :spin="isExportLoading"
                     />
                 </v-btn>
-            </b-col>
-        </b-row>
+            </v-col>
+        </v-row>
         <b-table
             small
             striped
@@ -416,10 +332,15 @@ import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
 import TagAPI from '../../api/tag.js';
 import { useGeneralStore, useTagStore, useWalkStore, useWayPointStore } from '../../stores';
+import {FilterComboboxField, FilterTextField} from "@/js/components/Common";
+import ColorBadge from "@/js/components/Tags/ColorBadge.vue";
 
 export default {
     name: 'WayPointList',
     components: {
+        ColorBadge,
+        FilterComboboxField,
+        FilterTextField,
         DateRangePicker,
         MyInputGroupAppend,
     },
@@ -500,10 +421,7 @@ export default {
             return this.generalStore.defaultWayPointFilter.visitedAt;
         },
         teamNames() {
-            const filterTeamName = this.filter.teamName ? this.filter.teamName.toLowerCase() : '';
-            return this.allTeamNames.filter((teamName) => {
-                return teamName.teamName.toLowerCase().startsWith(filterTeamName);
-            }).map((teamName) => teamName.teamName);
+            return this.allTeamNames.map((teamName) => teamName.teamName);
         },
         hasDisabledTag() {
             return !!this.tags.find(tag => !tag.isEnabled);
