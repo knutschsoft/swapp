@@ -5,17 +5,16 @@
             collapse-key="faq-swapp"
             is-visible-by-default
         >
-            <b-list-group>
+            <v-list class="pt-0">
                 <template v-for="item in items">
-                    <b-list-group-item
-                        class="d-flex justify-content-between align-items-center"
-                        variant="dark"
+                    <v-list-item
+                        class="d-flex justify-content-between align-items-center bg-grey grey lighten-2"
                     >
                         <div>
                             <span class="font-weight-bold">{{ item.header }}</span>
                         </div>
-                    </b-list-group-item>
-                    <b-list-group-item>
+                    </v-list-item>
+                    <v-list-item>
                         <ul class="pl-3 mb-0">
                             <li
                                 v-for="entry in item.entries"
@@ -38,9 +37,9 @@
                                 />
                             </li>
                         </ul>
-                    </b-list-group-item>
+                    </v-list-item>
                 </template>
-            </b-list-group>
+            </v-list>
         </content-collapse>
     </div>
 </template>

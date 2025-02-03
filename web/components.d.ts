@@ -41,6 +41,7 @@ declare module 'vue' {
     VItem: typeof import('vuetify/lib')['VItem']
     VItemGroup: typeof import('vuetify/lib')['VItemGroup']
     VList: typeof import('vuetify/lib')['VList']
+    VListGroup: typeof import('vuetify/lib')['VListGroup']
     VListItem: typeof import('vuetify/lib')['VListItem']
     VListItemAction: typeof import('vuetify/lib')['VListItemAction']
     VListItemAvatar: typeof import('vuetify/lib')['VListItemAvatar']
