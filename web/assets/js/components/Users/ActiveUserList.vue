@@ -13,6 +13,7 @@
                     <template v-slot:prepend>
                         <div
                             :class="(dateRange.startDate.getTime() !== defaultDateRange.startDate.getTime() || dateRange.endDate.getTime() !== defaultDateRange.endDate.getTime()) ? 'font-weight-bold' : ''"
+                            class="mt-2"
                         >
                             Zeitraum
                         </div>
@@ -71,49 +72,59 @@
                 />
             </v-col>
         </v-row>
-        <b-table
-            v-show="!isLoading"
-            :items="tableData"
-            :fields="fields"
-            small
+        <v-data-table
             striped
-            hover
-            outlined
-            foot-clone
+            dense
             class="mb-0"
-            :stacked="isTableStacked"
+            :headers="headers"
+            :items="serverItems"
+            :loading="isLoading"
+            :search="search"
+            item-value="name"
+            fixed-header
+            hide-default-footer
+            disable-pagination
+            :no-data-text="noItemsText"
+            :loading-text="loadingText"
+            multi-sort
+            hover
+            density="compact"
+            @update:options="loadItems"
+            :options.sync="deprecatedOptions"
+            :no-results-text="noItemsText"
         >
-            <template v-slot:cell()="row">
-                <template v-if="row.field.key === 'user'">
-                    <span
-                        :class="{ 'text-muted': !row.value.isEnabled }"
-                        :title="!row.value.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
+            <template v-slot:item.user="{item}">
+                <span
+                    :class="{ 'text-muted': !item.user.isEnabled }"
+                    :title="!item.user.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
+                >
+                    {{ item.user.username }}
+                    <v-icon
+                        v-if="!item.user.isEnabled"
+                        class="text-muted"
+                        size="16"
                     >
-                        {{ row.value.username }}
-                        <v-icon
-                            v-if="!row.value.isEnabled"
-                            class="text-muted"
-                            size="16"
-                        >
-                            mdi-account-off
-                        </v-icon>
-                    </span>
-                    <small
-                        v-if="isSuperAdmin && !client"
-                        class="text-muted or-text-step"
-                    >
-                        {{ clientFormatter(row.value.client) }}
-                    </small>
-                </template>
-                <mdicon
-                    v-else-if="isLoadingEntries.includes(row.field.key)"
-                    name="loading"
+                        mdi-account-off
+                    </v-icon>
+                </span>
+                <small
+                    v-if="isSuperAdmin && !client"
+                    class="text-muted or-text-step"
+                >
+                    {{ clientFormatter(item.user.client) }}
+                </small>
+            </template>
+            <template v-for="slot in valueSlots" v-slot:[`item.${slot.value}`]="{item}">
+                <v-icon
+                    v-if="isLoadingEntries.includes(slot.value)"
                     class="text-muted"
                     spin
                     size="18"
-                />
+                >
+                    mdi-loading
+                </v-icon>
                 <v-icon
-                    v-else-if="row.value"
+                    v-else-if="item[slot.value]"
                     title="Benutzer hat in diesem Monat an mindestens einer Runde teilgenommen."
                     color="info"
                     size="18"
@@ -122,14 +133,19 @@
                 </v-icon>
             </template>
 
-            <template #foot(user)="data">
-                Summe
+            <template #body.append="{headers}">
+                <tr>
+                    <td v-for="header in headers" :key="header.value" class="text-center">
+                        <strong v-if="header.value === 'user'">Summe</strong>
+                        <span v-else>{{ getSumOfColumn(header.value) }}</span>
+                    </td>
+                </tr>
             </template>
 
-            <template #foot()="data">
-                {{ getSumOfColumn(data.column)}}
-            </template>
-        </b-table>
+<!--            <template #foot()="data">-->
+<!--                {{ getSumOfColumn(data.column)}}-->
+<!--            </template>-->
+        </v-data-table>
         <v-alert
             class="w-100 text-muted mt-2 mb-0"
         >
@@ -155,6 +171,7 @@ import dateRangePicker from '../../utils/date-range-picker'
 import { useAuthStore, useClientStore, useGeneralStore, useUserStore } from '../../stores';
 import { ClientSelect } from "@/js/components/Common";
 import {WalkSystemicAnswerField} from "@/js/components/Common/Walk";
+import { loadingText, noItemsText} from "@/js/utils";
 
 export default {
     name: 'ActiveUserList',
@@ -183,52 +200,57 @@ export default {
             },
             ranges: dateRangePicker.ranges,
             entries: [],
-            client: '',
+            client: generalStore.clientFilter,
+            loadingText,
+            noItemsText,
+            deprecatedOptions: {},
+            search: '',
+            tableOptions: [],
         };
     },
     computed: {
-        isTableStacked() {
-            if (this.fields.length > 11) {
-                return 'lg';
-            } else if (this.fields.length < 4) {
-                return 'xs';
-            }
-
-            return 'sm';
-        },
         isSuperAdmin() {
             return this.authStore.isSuperAdmin;
         },
         currentUser() {
             return this.authStore.currentUser;
         },
-        tableData() {
-            return this.entries.filter(entry =>  !this.client || this.client === entry.user.client);
+        serverItems() {
+            return this.entries
+                .filter(entry =>  !this.client || this.client === entry.user.client)
         },
-        fields() {
-            let fields = [];
+        headers() {
+            let headers = [];
+
+            headers.push(
+                {
+                    value: 'user',
+                    text: 'Benutzername',
+                    sortable: true,
+                    align: 'center',
+                },
+            );
+
+            headers.push(...this.valueSlots)
+
+            return headers;
+        },
+        valueSlots() {
+            let headers = [];
             let start = dayjs(this.dateRange.startDate);
             let dateTo = dayjs(this.dateRange.endDate);
 
-            fields.push(
-                {
-                    key: 'user',
-                    label: 'Benutzername',
-                    sortable: true,
-                    class: 'text-center',
-                },
-            );
             while (start.isBefore(dateTo)) {
-                fields.push({
-                    key: this.getKeyOfDayjs(start),
-                    label: `${start.month() + 1}/${start.year()}`,
+                headers.push({
+                    value: this.getKeyOfDayjs(start),
+                    text: `${start.month() + 1}/${start.year()}`,
+                    align: 'center',
                     sortable: true,
-                    class: 'text-center',
                 });
                 start = start.startOf('month').add(1, 'month');
             }
 
-            return fields;
+            return headers;
         },
         users() {
             return this.userStore.getUsers.slice().sort((userA, userB) => {
@@ -250,10 +272,11 @@ export default {
     watch: {
         dateRange: async function (dateRange) {
             this.generalStore.updateActiveUsersDateRange(dateRange);
-            await this.updateEntries();
+            await this.loadItems();
         },
-        client: async function () {
-            await this.updateEntries();
+        client: async function (client) {
+            this.generalStore.updateClientFilter(client);
+            await this.loadItems();
         },
     },
     async created() {
@@ -266,8 +289,8 @@ export default {
             this.entries.push(item);
         });
 
-        this.client = this.isSuperAdmin ? '' : this.currentUser.client;
-        await this.updateEntries();
+        this.client = !this.isSuperAdmin ? '' : this.client;
+        await this.loadItems();
     },
     methods: {
         clientFormatter(clientIri) {
@@ -278,8 +301,8 @@ export default {
         },
         getSumOfColumn(columnKey) {
             let sum = 0;
-            this.tableData.forEach((tableDataValue) => {
-                if (tableDataValue[columnKey] === true) {
+            this.serverItems.forEach((serverItemsValue) => {
+                if (serverItemsValue[columnKey] === true) {
                     sum++;
                 }
             });
@@ -292,9 +315,9 @@ export default {
         togglePicker() {
             this.$refs.picker.togglePicker(!this.$refs.picker.open);
         },
-        async updateEntries() {
+        async loadItems() {
             let start = dayjs(this.dateRange.startDate);
-            const end = dayjs(this.dateRange.endDate);
+            let end = dayjs(this.dateRange.endDate);
             while (start.isBefore(end)) {
                 let key = this.getKeyOfDayjs(start);
                 this.isLoadingEntries.push(key);

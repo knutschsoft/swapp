@@ -33,6 +33,8 @@ type State = {
     navUserFilter: RemovableRef<string>,
     defaultActiveUsersDateRange: DateRange,
     activeUsersDateRange: RemovableRef<DateRange>,
+    defaultClientFilter: string|null,
+    clientFilter: RemovableRef<string|null>,
     defaultWalkFilter: WalkFilter,
     walkFilter: RemovableRef<WalkFilter>,
     walkPerPage: RemovableRef<Number>,
@@ -50,6 +52,7 @@ const startTime: DateRange = {
     endDate: null,
 };
 let now = dayjs();
+const defaultClientFilter = null
 const defaultActiveUsersDateRange: DateRange = {
     startDate: now.subtract(5, 'month').startOf('month'),
     endDate: now.endOf('month'),
@@ -75,6 +78,8 @@ export const useGeneralStore = defineStore("general", {
     state: (): State => ({
         apiUrl: '',
         navUserFilter: useLocalStorage('nav-user-filter', ''),
+        defaultClientFilter: defaultClientFilter,
+        clientFilter: useLocalStorage('swapp-store-client-filter', defaultClientFilter),
         defaultWalkFilter: defaultWalkFilter,
         defaultActiveUsersDateRange: defaultActiveUsersDateRange,
         activeUsersDateRange: useLocalStorage('aktive-benutzer-date-range', defaultActiveUsersDateRange),
@@ -136,8 +141,11 @@ export const useGeneralStore = defineStore("general", {
             this.wayPointFilterResult = wayPoints;
         },
         updateActiveUsersDateRange(dateRange: any): void {
-            this.activeUsersDateRange.startDate = dayjs(dateRange.endDate)
+            this.activeUsersDateRange.startDate = dayjs(dateRange.startDate)
             this.activeUsersDateRange.endDate = dayjs(dateRange.endDate)
+        },
+        updateClientFilter(clientUri: string): void {
+            this.clientFilter = clientUri
         },
     },
 })
