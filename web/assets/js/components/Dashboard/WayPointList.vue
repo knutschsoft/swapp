@@ -369,7 +369,6 @@
 'use strict';
 import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
-import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
 import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
 import WayPointAPI from '../../api/wayPoint';
@@ -387,7 +386,6 @@ export default {
         FilterComboboxField,
         FilterTextField,
         DateRangePicker,
-        MyInputGroupAppend,
     },
     props: {},
     data: function () {

@@ -149,7 +149,6 @@
 'use strict';
 import DateRangePicker from 'vue2-daterange-picker';
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
-import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
 import UserAPI from '../../api/user';
 import dayjs from 'dayjs';
 import dateRangePicker from '../../utils/date-range-picker'
@@ -163,7 +162,6 @@ export default {
         WalkSystemicAnswerField,
         ClientSelect,
         DateRangePicker,
-        MyInputGroupAppend,
     },
     data: function () {
         const generalStore = useGeneralStore();

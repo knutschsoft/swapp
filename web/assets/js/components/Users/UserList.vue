@@ -205,7 +205,6 @@
 <script>
 'use strict';
 import UserForm from './UserForm.vue';
-import MyInputGroupAppend from '../Common/MyInputGroupAppend.vue';
 import {useAlertStore, useAuthStore, useClientStore, useUserStore} from '../../stores';
 import {ClientSelect} from "@/js/components/Common";
 import {
@@ -221,7 +220,6 @@ export default {
     components: {
         ClientSelect,
         UserForm,
-        MyInputGroupAppend,
     },
     data: function () {
         return {
