@@ -1,43 +1,31 @@
 <template>
-    <div>
-        <div
-            v-if="hasWayPoints"
-            class="p-2"
+    <div class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7">
+        <v-btn
+            v-if="wayPoints.length > 0"
+            color="secondary"
+            block
+            @click="isDetailsShowing = !isDetailsShowing"
+            data-test="toggle-waypoint-details"
         >
-            <v-row class="mt-0 mb-0">
-                <v-col
-                    class="my-1"
-                    xs="12"
-                    sm="12"
-                    md="12"
-                    xl="12"
-                >
-                    <v-btn
-                        color="secondary"
-                        block
-                        @click="isDetailsShowing = !isDetailsShowing"
-                        data-test="toggle-waypoint-details"
-                    >
-                        Alle Details {{ isDetailsShowing ? 'verbergen' : 'anzeigen' }}
-                        <mdicon
-                            :name="isDetailsShowing ? 'EyeOffOutline' : 'EyeOutline'"
-                        />
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </div>
-        <v-data-table
-            v-if="!isLoading && walk"
+            Alle Details {{ isDetailsShowing ? 'verbergen' : 'anzeigen' }}
+            <mdicon
+                :name="isDetailsShowing ? 'EyeOffOutline' : 'EyeOutline'"
+            />
+        </v-btn>
+        <v-data-table-server
+            v-if="walk"
             no-results-text="Für diese Runde gibt es keine Wegpunkte."
-            dense
+            density="compact"
+            itemsLength=""
             :items="wayPoints"
             :headers="headers"
-            :expanded.sync="expanded"
-            sort-by="visitedAt"
+            v-model:expanded="expanded"
             hide-default-footer
+            :loading="isLoading"
+            item-value="@id"
         >
-            <template #expanded-item="{headers, item}">
-                <td :colspan="headers.length">
+            <template #expanded-row="{item}">
+                <td :colspan="headers.length" class="bg-grey-lighten-5 border-b-">
                     <WayPointDetailData
                         :walk-id="walk.walkId"
                         :way-point-id="item.wayPointId"
@@ -58,21 +46,18 @@
                 {{ formatDateTimeNoSeconds(item.visitedAt) }}
             </template>
             <template #item.actions="{item}">
-                <router-link
+                <v-btn
                     :to="{name: 'WayPointDetail', params: { walkId: walk.walkId, wayPointId: item.wayPointId}}"
                     :data-test="`button-wegpunkt-ansehen-${ item.locationName }`"
+                    size="small"
+                    color="secondary"
                 >
-                    <v-btn
-                        small
-                        color="secondary"
-                    >
-                        Wegpunkt ansehen
-                        <font-awesome-icon icon="map-signs" class="ml-2" />
-                        <font-awesome-icon icon="eye" class="ml-2" />
-                    </v-btn>
-                </router-link>
+                    Wegpunkt ansehen
+                    <v-icon icon="mdi-marker-path" class="ml-1"></v-icon>
+                    <v-icon icon="mdi-eye" class="ml-1"></v-icon>
+                </v-btn>
             </template>
-        </v-data-table>
+        </v-data-table-server>
     </div>
 </template>
 
@@ -80,7 +65,7 @@
 'use strict';
 
 import LocationLink from '../LocationLink.vue';
-import { useWalkStore, useWayPointStore } from '../../stores';
+import { useWalkStore, useWayPointStore } from '@/js/stores';
 import WayPointDetailData from "../WayPoint/WayPointDetailData.vue";
 import {formatDateTimeNoSeconds} from "@/js/utils";
 
@@ -97,6 +82,7 @@ export default {
     },
     data: function () {
         return {
+            expandeds: [],
             isDetailsShowing: false,
             walkStore: useWalkStore(),
             wayPointStore: useWayPointStore(),
@@ -105,29 +91,29 @@ export default {
     computed: {
         headers () {
             const headers = [
-                { value: 'locationName', text: 'Ort', sortDirection: 'desc' },
+                { key: 'locationName', title: 'Ort' },
                 {
-                    value: 'visitedAt',
-                    text: 'Ankunft',
+                    key: 'visitedAt',
+                    title: 'Ankunft',
                     sortDirection: 'desc',
                 },
                 {
-                    value: 'isMeeting',
-                    text: 'Meeting',
+                    key: 'isMeeting',
+                    title: 'Meeting',
                     sortable: true,
                 },
             ];
             if (this.walk.isWithAgeRanges) {
                 headers.push(...[
-                    { value: 'malesCount', text: 'Männer', sortDirection: 'desc' },
-                    { value: 'femalesCount', text: 'Frauen', sortDirection: 'desc' },
-                    { value: 'queerCount', text: 'Andere', sortDirection: 'desc' },
+                    { key: 'malesCount', title: 'Männer' },
+                    { key: 'femalesCount', title: 'Frauen' },
+                    { key: 'queerCount', title: 'Andere' },
                 ]);
             }
             if (!(this.walk.isWithAgeRanges || !this.walk.isWithPeopleCount)) {
-                headers.push({ value: 'peopleCount', text: 'Anzahl Personen', sortDirection: 'desc'})
+                headers.push({ key: 'peopleCount', title: 'Anzahl Personen'})
             }
-            headers.push({ value: 'actions', text: 'Aktionen' })
+            headers.push({ key: 'actions', title: 'Aktionen', sortable: false })
 
             return headers;
         },
@@ -137,12 +123,9 @@ export default {
         walk() {
             return this.walkStore.getWalkById(this.walkId);
         },
-        hasWayPoints() {
-            return this.wayPointStore.hasWayPoints;
-        },
         expanded() {
             if (this.isDetailsShowing) {
-                return this.wayPoints;
+                return this.wayPoints.map(wayPoint => wayPoint['@id']);
             }
 
             return [];

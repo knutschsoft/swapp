@@ -2,12 +2,10 @@
 import {computed} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     label?: string,
     description?: string,
     error?: any,
@@ -24,14 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
 });
 
 
@@ -46,27 +38,26 @@ const errorMessages = computed(() => {
 </script>
 
 <template>
-    <div>
-        <v-textarea
-            v-model="value"
-            :disabled="isLoading || disabled"
-            minlength="1"
-            maxlength="2500"
-            :label="label"
-            placeholder="Reflexion"
-            data-test="walkReflection"
-            rows="3"
-            trim
-            max-rows="15"
-            outlined
-            dense
-            :hint="description"
-            :persistent-hint="!!description"
-            :hide-details="!description && !errorMessages?.length"
-            :error-messages="errorMessages"
-            :error="!!errorMessages?.length"
-        />
-    </div>
+    <v-textarea
+        v-model="value"
+        :disabled="isLoading || disabled"
+        minlength="1"
+        maxlength="2500"
+        :label="label"
+        placeholder="Reflexion"
+        data-test="walkReflection"
+        rows="3"
+        trim
+        max-rows="15"
+        auto-grow
+        variant="outlined"
+        density="compact"
+        :hint="description"
+        :persistent-hint="!!description"
+        :hide-details="!description && !errorMessages?.length"
+        :error-messages="errorMessages"
+        :error="!!errorMessages?.length"
+    />
 </template>
 
 <style scoped>

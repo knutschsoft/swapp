@@ -48,7 +48,7 @@
         "nelmio/cors-bundle": "~2.1",
         "nelmio/js-logger-bundle": "~1.6",
         "nesbot/carbon": "^2.57",
-        "pentatrion/vite-bundle": "^6.5",
+        "pentatrion/vite-bundle": "^v7.1.0",
         "phpdocumentor/reflection-docblock": "^5.3",
         "scienta/doctrine-json-functions": "^5.2",
         "stof/doctrine-extensions-bundle": "~1.3",

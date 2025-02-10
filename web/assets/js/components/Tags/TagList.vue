@@ -2,7 +2,7 @@
     <div>
         <v-row
             v-if="!isLoading"
-            class="p-2 mb-0 mt-0"
+            class="px-3 pt-3"
         >
             <v-col
                 v-if="isSuperAdmin"
@@ -22,11 +22,11 @@
                     v-model="filter.isEnabled"
                     :items="isEnabledOptions"
                     item-value="value"
-                    item-text="text"
+                    item-title="text"
                     label="Nur aktivierte?"
-                    dense
+                    density="compact"
                     :clearable="filter.isEnabled"
-                    outlined
+                    variant="outlined"
                     :success="filter.isEnabled === true || filter.isEnabled === false"
                     class="flex-grow-1"
                     hint="Nur aktivierte Accounts?"
@@ -36,20 +36,21 @@
                 </v-select>
             </v-col>
         </v-row>
-        <v-data-table
+        <v-data-table-server
             :items="tags"
             :is-loading="isLoading"
-            :headers="fields"
-            small
-            striped
+            :headers="headers"
             class="mb-0"
             multi-sort
-            dense
+            density="compact"
+            hide-default-footer
+            items-length=""
             :items-per-page="itemsPerPage"
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
             :no-data-text="noItemsText"
             :loading-text="loadingText"
+            mobile-breakpoint="md"
         >
             <template v-slot:item.isEnabled="{item}">
                 <v-progress-circular
@@ -82,6 +83,7 @@
             </template>
             <template v-slot:item.color="{item}">
                 <color-badge
+                    v-if="item.color"
                     :color="item.color"
                 />
             </template>
@@ -98,16 +100,14 @@
                     {{ item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
                 </v-btn>
                 <v-menu
-                    top
+                    location="bottom"
                     open-on-hover
-                    :nudge-top="7"
-                    offset-y
+                    open-on-click
                 >
-                    <template v-slot:activator="{ on, attrs }">
+                    <template v-slot:activator="{ props }">
                         <v-icon
-                            class="text-muted"
-                            v-bind="attrs"
-                            v-on="on"
+                            class="text-muted ml-2"
+                            v-bind="props"
                         >
                             mdi-help-circle-outline
                         </v-icon>
@@ -118,7 +118,7 @@
                         </v-card-text>
                         <v-divider class="my-0"></v-divider>
                         <v-card-text>
-                            <ul class="mb-0">
+                            <ul class="mb-0 pl-5">
                                 <li>Aktivierte Tags können einem Wegpunkt zugeordnet werden.</li>
                                 <li>Deaktivierte Tags können einem Wegpunkt nicht zugeordnet werden. Sie sind jedoch weiterhin an bereits zugeordneten Wegpunkten vorhanden.</li>
                                 <li>Deaktivierte Tags werden nicht als Filter auf dem Dashboard angezeigt, wenn sie keinem Wegpunkt zugeordnet sind.</li>
@@ -127,7 +127,7 @@
                     </v-card>
                 </v-menu>
             </template>
-        </v-data-table>
+        </v-data-table-server>
     </div>
 </template>
 
@@ -169,42 +169,42 @@ export default {
         };
     },
     computed: {
-        fields() {
+        headers() {
             let headers = [
             ];
 
             if (this.isSuperAdmin) {
                 headers.push({
-                    value: 'id',
-                    text: 'ID',
-                    sortable: true,
+                    key: 'tagId',
+                    title: 'ID',
                 });
             }
             headers.push(...[
                 {
-                    value: 'name',
-                    text: 'Name',
-                    sortable: true,
+                    key: 'name',
+                    title: 'Name',
                 },
                 {
-                    value: 'color',
-                    text: 'Farbe',
-                    sortable: true,
+                    key: 'color',
+                    title: 'Farbe',
+                    align: 'center',
                 },
                 {
-                    value: 'isEnabled',
-                    text: 'Tag aktiviert?',
-                    sortable: true,
+                    key: 'isEnabled',
+                    title: 'Tag aktiviert?',
+                    align: 'center',
                 }
             ]);
             if (this.isSuperAdmin) {
                 headers.push({
-                    value: 'client',
-                    text: 'Klient',
+                    key: 'client',
+                    title: 'Klient',
                     sortable: false,
+                    align: 'center',
                 });
             }
-            headers.push({ value: 'actions', text: 'Aktionen' });
+            headers.push({ key: 'actions', title: 'Aktionen', sortable: false, align: 'center' });
+
             return headers;
         },
         tags() {

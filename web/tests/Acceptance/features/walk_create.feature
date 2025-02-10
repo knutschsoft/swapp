@@ -64,7 +64,7 @@ Feature: A user can do a walk
     When I submit Runde beginnen formular
 
     Then I wait for "Wegpunkte der Runde" to appear
-    Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
+    Then I wait for "Keine Daten vorhanden" to appear
     Then I wait for 'Wegpunkt zur Runde "Mein erster Lauf" hinzufügen' to appear
     Then I wait for "Ort" to appear
     Then I wait for "Anzahl Personen vor Ort" to appear

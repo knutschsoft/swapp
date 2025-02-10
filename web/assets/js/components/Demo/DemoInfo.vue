@@ -154,11 +154,13 @@
 
 <script>
 "use strict";
-import {useAlertStore} from '../../stores';
+import {useAlertStore} from '@/js/stores';
+import {useRoute} from "vue-router";
 
 export default {
     name: "DemoInfo",
     data: () => ({
+        route: useRoute(),
         alertStore: useAlertStore(),
         isCopiedAdelheid: false,
         isCopiedBenno: false,
@@ -166,7 +168,7 @@ export default {
     }),
     computed: {
         isOnDemoPage() {
-            return window.location.host.includes('swapp.demo') || this.$route.query.demo;
+            return window.location.host.includes('swapp.demo') || this.route.query.demo;
         },
     },
     created() {

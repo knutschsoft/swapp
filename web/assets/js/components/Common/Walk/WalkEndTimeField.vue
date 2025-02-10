@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import {computed, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 import {Walk} from "../../../model";
-import DatePicker from "vue2-datepicker";
-import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/de';
 import dayjs from "dayjs";
+import {DatePicker, TimePicker} from "@/js/components/Common";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     initialWalk?: Walk | null,
     description?: string,
     error?: any,
@@ -26,45 +22,66 @@ const props = withDefaults(defineProps<Props>(), {
     isLoading: false,
 });
 
-const endTimeTime = ref(props.value ? dayjs(props.value).toDate() : dayjs().toDate());
-const endTimeDate = ref(props.value ? dayjs(props.value).toDate() : dayjs().toDate());
-const datePickerLang = ref({
-    formatLocale: {
-        firstDayOfWeek: 1,
-    },
-    monthBeforeYear: true,
-});
+const endTimeTime = ref<{
+    hours: number;
+    minutes: number;
+    seconds: number;
+}>(props.modelValue ? {
+        hours: dayjs(props.modelValue).hour(),
+        minutes: dayjs(props.modelValue).minute(),
+        seconds: 0,
+    }
+    : {
+        hours: dayjs().hour(),
+        minutes: dayjs().minute(),
+        seconds: 0,
+    });
+const endTimeDate = ref(props.modelValue ? dayjs(props.modelValue).toDate() : dayjs().toDate());
+
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
 });
 
-watch(() => props.value, () => {
-    if (dayjs(endTimeTime.value) !== dayjs(props.value)) {
-        endTimeTime.value = dayjs(props.value).toDate();
+const endTimeTimeAsDayJs = computed(() => {
+    return dayjs().hour(endTimeTime.value.hours).minute(endTimeTime.value.minutes).second(endTimeTime.value.seconds);
+});
+
+onMounted(() => {
+    endTimeTime.value = props.modelValue ? {
+            hours: dayjs(props.modelValue).hour(),
+            minutes: dayjs(props.modelValue).minute(),
+            seconds: 0,
+        }
+        : {
+            hours: dayjs().hour(),
+            minutes: dayjs().minute(),
+            seconds: 0,
+        }
+    endTimeDate.value = props.modelValue ? dayjs(props.modelValue).toDate() : dayjs().toDate()
+})
+
+watch(() => props.modelValue, () => {
+    if (endTimeTimeAsDayJs.value.hour() !== dayjs(props.modelValue).hour() && endTimeTimeAsDayJs.value.minute() !== dayjs(props.modelValue).minute()) {
+        endTimeTime.value.hours = dayjs(props.modelValue).hour();
+        endTimeTime.value.minutes = dayjs(props.modelValue).minute();
+        endTimeTime.value.seconds = 0;
     }
-    if (dayjs(endTimeDate.value) !== dayjs(props.value)) {
-        endTimeDate.value = dayjs(props.value).toDate();
+    if (dayjs(endTimeDate.value) !== dayjs(props.modelValue)) {
+        endTimeDate.value = dayjs(props.modelValue).toDate();
     }
 })
 watch(() => endTimeTime.value, () => {
-    let endTimeDate = dayjs(props.value);
-    let endTime = dayjs(endTimeTime.value);
-    endTimeDate = endTimeDate.hour(endTime.hour());
-    endTimeDate = endTimeDate.minute(endTime.minute());
-    endTimeDate = endTimeDate.endOf('minute');
+    let endTimeDate = dayjs(props.modelValue);
+    endTimeDate = endTimeDate.hour(endTimeTimeAsDayJs.value.hour());
+    endTimeDate = endTimeDate.minute(endTimeTimeAsDayJs.value.minute());
+    endTimeDate = endTimeDate.startOf('minute');
     value.value = endTimeDate.format();
 });
 watch(() => endTimeDate.value, () => {
     const endTimeDateValue = dayjs(endTimeDate.value);
-    let endTime = dayjs(props.value);
+    let endTime = dayjs(props.modelValue);
     endTime = endTime.year(endTimeDateValue.year());
     endTime = endTime.month(endTimeDateValue.month());
     endTime = endTime.date(endTimeDateValue.date());
@@ -84,30 +101,24 @@ const errorMessages = computed(() => {
 <template>
     <div>
         Rundenendzeit<br>
-        <date-picker
-            v-model="endTimeDate"
-            label="Rundenendzeit"
-            :disabled="isLoading"
-            format="DD.MM.YYYY"
-            title-format="DD.MM.YYYY"
-            show-week-number
-            data-test="endTimeDate"
-            :lang="datePickerLang"
-            :clearable="false"
-        />
-        <date-picker
-            v-model="endTimeTime"
-            type="time"
-            :disabled="isLoading"
-            data-test="endTimeTime"
-            :minute-step="5"
-            format="HH:mm"
-            title-format="HH:mm"
-            :show-second="false"
-            :lang="datePickerLang"
-            :clearable="false"
-        />
-        <div class="text-disabeld text-caption">{{ description }}</div>
+        <div class="">
+            <time-picker
+                v-model="endTimeTime"
+                :is-loading="isLoading"
+                data-test="endTimeTime"
+                placeholder="Rundenendzeit"
+                :clearable="false"
+                class="mb-2"
+            />
+            <date-picker
+                v-model="endTimeDate"
+                :is-loading="isLoading"
+                data-test="endTimeDate"
+                placeholder="Rundenendzeit"
+                :clearable="false"
+            />
+        </div>
+        <div class="text-disabled text-caption">{{ description }}</div>
         <v-alert
             v-if="!!errorMessages?.length"
             type="error"

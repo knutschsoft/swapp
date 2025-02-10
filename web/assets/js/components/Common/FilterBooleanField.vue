@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
-import {ErrorData, getViolationsFeedback} from "../../utils";
+import {ErrorData, getViolationsFeedback} from "@/js/utils";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue', 'cleared']);
 
 export interface Props {
-    value: string,
+    modelValue: boolean | string,
+    defaultValue?: boolean | string,
     label?: string,
     hint?: string,
     placeholder?: string,
@@ -19,6 +18,8 @@ export interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    modelValue: 'null',
+    defaultValue: 'null',
     label: '',
     hint: '',
     placeholder: '',
@@ -30,27 +31,18 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value === null ? '' : value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val ?? ""),
 });
 
-const items = ref<{ title: string; value: string }[]>([
-    {title: 'ja', value: '1'},
-    {title: 'nein', value: '0'}
+const items = ref<{ title: string; value: boolean|string }[]>([
+    {title: 'egal', value: 'null'},
+    {title: 'ja', value: true},
+    {title: 'nein', value: false}
 ]);
 
 const errorMessages = computed(() => {
-    if (!props.error) {
-        return ''
-    }
-
-    return getViolationsFeedback(props.violationFields, props.error);
+      return props.error ? getViolationsFeedback(props.violationFields, props.error) : "";
 })
 
 </script>
@@ -60,21 +52,23 @@ const errorMessages = computed(() => {
         v-model="value"
         :items="items"
         :label="label"
-        clearable
+        :clearable="value !== defaultValue"
         :data-test="dataTest"
-        outlined
+        variant="outlined"
+        :persistent-clear="value !== defaultValue"
         persistent-placeholder
         placeholder="egal"
-        :success="value !== ''"
+        :class="value !== defaultValue ? 'text-primary' : ''"
         :hint="hint"
         :persistent-hint="!!hint"
         :hide-details="!hint"
-        dense
+        density="compact"
         :disabled="isLoading"
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"
         item-value="value"
-        item-text="title"
+        item-title="title"
+        @click:clear="emit('cleared')"
     />
 </template>
 

@@ -1,12 +1,13 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleRemove"
-        class="p-1 p-sm-2 p-lg-3"
+        @submit.prevent="handleRemove"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
-        Wenn die Runde gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
+        <p class="mb-2">
+            Wenn die Runde gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
+        </p>
         <v-btn
             color="error"
-            v-b-modal.modal-remove
             data-test="button-walk-remove"
             :disabled="isLoading"
             block
@@ -24,35 +25,33 @@
                 <v-card-title>
                     Bist du dir absolut sicher?
                 </v-card-title>
+                <v-divider />
                 <v-card-text>
                     <v-alert
                         type="warning"
+                        prominent
                     >
                         Unerwartete Dinge können passieren, wenn du dies nicht liest.
+                        <ul class="pl-5 mt-2">
+                            <li>Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.</li>
+                            <li>Dies wird permanent die Runde <b>{{ initialWalk.name }}</b> und der ihr zugeordneten Wegpunkte (inklusive deren Bilder und Tags) löschen.</li>
+                        </ul>
                     </v-alert>
-                    <p>
-                        Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.
-                        Dies wird permanent die Runde <b>{{ initialWalk.name }}</b> und der ihr zugeordneten Wegpunkte (inklusive deren Bilder und Tags) löschen.
-                    </p>
-                    <p>
+                    <p class="my-2">
                         Bitte gib <b>{{ initialWalk.name }}</b> ein um das Löschen zu bestätigen.
                     </p>
                     <v-text-field
                         v-model="walkName"
                         type="text"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         label="Name der Runde"
                         data-test="walkName"
                         autocomplete="off"
                         :disabled="isLoading"
+                        :error="false === walkNameState"
+                        :error-messages="false === walkNameState ? invalidWalkNameFeedback : null"
                     />
-                    <v-alert
-                        v-if="false === walkNameState"
-                        type="error"
-                    >
-                        {{ invalidWalkNameFeedback }}
-                    </v-alert>
                     <v-btn
                         type="submit"
                         color="error"
@@ -109,7 +108,7 @@ export default {
             return this.walkName === this.initialWalk.name;
         },
         invalidWalkNameFeedback() {
-            return getViolationsFeedback(['walk'], this.error);
+            return getViolationsFeedback(['walk'], this.error) || 'Der eingegebene Name stimmt nicht mit dem Namen der Runde überein';
         },
         isLoading() {
             return this.walkStore.isLoading;

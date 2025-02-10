@@ -1,13 +1,13 @@
 <template>
     <div>
-        <v-data-table
+        <v-data-table-server
             :items-per-page="itemsPerPage"
             :headers="headers"
             :items="serverItems"
             :items-length="totalItems"
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
-            :loading="isLoading"
+            :loading="isLoading()"
             :search="search"
             item-value="name"
             :no-data-text="noItemsText"
@@ -15,10 +15,11 @@
             multi-sort
             hover
             density="compact"
+            items-length=""
+            hide-default-footer
             @update:options="loadItems"
             :options.sync="deprecatedOptions"
             :no-results-text="noItemsText"
-            :server-items-length="totalItems"
         >
             <template v-slot:item.name="{item}">
                 {{ item.name }}
@@ -74,7 +75,6 @@
             <template v-slot:item.actions="{item}">
                 <v-row justify="center">
                     <v-btn
-                        size="sm"
                         color="secondary"
                         @click.stop="openClientEditDialog(item)"
                     >
@@ -88,7 +88,7 @@
                     </v-btn>
                 </v-row>
             </template>
-        </v-data-table>
+        </v-data-table-server>
 
         <v-dialog
             v-model="dialog"
@@ -104,7 +104,7 @@
                         v-if="editClient"
                         submit-button-text="Speichern"
                         :initial-client="editClient"
-                        @submit="handleSubmit"
+                        @submitted="handleSubmit"
                     />
                 </v-card-text>
             </v-card>
@@ -150,35 +150,35 @@ export default {
         });
         const headers = ref<TableHeaders>([
             {
-                value: 'name',
-                text: 'Name',
+                key: 'name',
+                title: 'Name',
                 sortable: true,
                 align: 'center',
             },
             {
-                value: 'description',
-                text: 'Beschreibung',
+                key: 'description',
+                title: 'Beschreibung',
                 sortable: true,
                 align: 'center',
             },
             {
-                value: 'users',
-                text: 'Benutzer',
+                key: 'users',
+                title: 'Benutzer',
                 align: 'start',
             },
             {
-                value: 'createdAt',
-                text: 'Erstellt am',
+                key: 'createdAt',
+                title: 'Erstellt am',
                 sortable: true,
                 align: 'center',
             },
             {
-                value: 'updatedAt',
-                text: 'Geändert am',
+                key: 'updatedAt',
+                title: 'Geändert am',
                 sortable: true,
                 align: 'center',
             },
-            {value: 'actions', text: 'Aktionen', align: 'center', sortable: false},
+            {key: 'actions', title: 'Aktionen', align: 'center', sortable: false},
         ]);
 
         const editClient = ref<Client|null>(null);
@@ -261,7 +261,7 @@ export default {
             totalItems,
             search,
             itemsPerPage,
-            itemsPerPageText,
+                itemsPerPageText,
             itemsPerPageOptions,
             noItemsText,
             loadingText,

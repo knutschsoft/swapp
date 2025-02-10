@@ -1,5 +1,5 @@
 <template>
-    <div class="row m-auto pt-4 mt-4">
+    <div class="">
         <div
             class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 offset-lg-3 col-lg-6 border border-dark p-4 mt-4"
         >
@@ -37,13 +37,13 @@
                         placeholder="vorname.nachname@domain.de"
                         name="username"
                         label="E-Mail-Adresse"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                     />
                     <v-alert
                         v-if="usernameInvalidText && hasError"
                         type="error"
-                        class="-2"
+                        class=""
                     >{{usernameInvalidText}}</v-alert>
                     <v-text-field
                         id="email"
@@ -70,8 +70,7 @@
                     </v-btn>
                     <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
                     <v-btn
-                        text
-                        plain
+                        variant="text"
                         block
                         class="my-3"
                     >
@@ -106,11 +105,13 @@
     "use strict";
     import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
     import { useAuthStore, useUserStore } from '../stores';
+    import {useRoute} from "vue-router";
 
     export default {
         name: "PasswordReset",
         components: { GeneralErrorAlert },
         data: () => ({
+            route: useRoute(),
             authStore: useAuthStore(),
             userStore: useUserStore(),
             username: '',
@@ -159,7 +160,7 @@
             },
         },
         created() {
-            let redirect = this.$route.query.redirect;
+            let redirect = this.route.query.redirect;
 
             if (this.authStore.isAuthenticated) {
                 if (typeof redirect !== "undefined") {

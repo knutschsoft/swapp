@@ -71,17 +71,17 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20240601_Rundendetailseite_Wegpunktetabelle_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der aufgeklappten Wegpunkte-Tabelle auf der Runden-Detailseite (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20240601_Rundendetailseite_Wegpunktetabelle.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der aufgeklappten Wegpunkte-Tabelle auf der Runden-Detailseite',
                             },
                             {
                                 src: '../changelog/20240601_Rundendetailseite_Wegpunktetabelle_groß.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der aufgeklappten Wegpunkte-Tabelle auf der Runden-Detailseite (breiter Bildschirm)',
                             },
                         ],
@@ -151,22 +151,22 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230920_Rundenersteller_Runde_beginnen_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Rundenerstellers auf dem "Runde beginnen"-Formular (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20230920_Rundenersteller_Runde_bearbeiten_Formular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Rundenerstellers auf dem "Runde bearbeiten"-Formular',
                             },
                             {
                                 src: '../changelog/20230920_Rundenersteller_Rundendetailseite_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Rundenerstellers auf der Rundendetailseite (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20230920_Rundenersteller_Runde_bearbeiten-Formular.png',
-                                thumbnailHeight: '80px',
+                                thumbnailHeight: 80,
                                 description: 'Darstellung des Rundenerstellers auf der Rundendetailseite (links: vorher - rechts: neu)',
                             },
                         ],
@@ -178,7 +178,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230920_Keine_Internetverbindung_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung von "Keine Internetverbindung" auf der Anmeldungs-Seite (links: vorher - rechts: neu)',
                             },
                         ],
@@ -223,22 +223,22 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230712_Systemische_Frage_Teamformular_deaktiviert.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung von deaktivierten Systemischen Fragen auf dem "Team"-Formular (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20230712_Systemische_Frage_Teamformular_aktiviert.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung von aktivierten Systemischen Fragen auf dem "Team"-Formular (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20230712_Systemische_Frage_Runde_beenden_Formular.png',
-                                thumbnailHeight: '95px',
+                                thumbnailHeight: 95,
                                 description: 'Darstellung im "Runde beenden"-Formular (links: vorher - rechts: neu mit deaktiverter Erfassung der systemischen Frage)',
                             },
                             {
                                 src: '../changelog/20230712_Systemische_Frage_Systemische_Fragen_Formular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Neuer Hinweistext im "Systemische Fragen"-Formular (links: vorher - rechts: neu)',
                             },
                         ],
@@ -253,12 +253,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230712_Dashboard_Rundenbewertung_mit_eigenem_Bild_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des eigenen Bewertungsbildes auf dem Dashboard',
                             },
                             {
                                 src: '../changelog/20230712_Dashboard_Rundenbewertung_mit_eigenem_Bild_vorher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Bisherige Darstellung ohne eigenes Bewertungsbild auf dem Dashboard',
                             },
                         ],
@@ -271,12 +271,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230712_Dashboard_Datumsauswahl_Beginn_mobil_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Datumsauswahl für den Beginn einer Runde mit neuen Schnellauswahlfeldern (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20230712_Dashboard_Datumsauswahl_Ankunft_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Datumsauswahl für die Ankunft eines Wegpunktes mit neuen Schnellauswahlfeldern (links: vorher - rechts: neu)',
                             },
                         ],
@@ -303,17 +303,17 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230501_Namen_einer_Runde_Runde_beginnen-Formular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf dem "Runde erstellen"-Formular',
                             },
                             {
                                 src: '../changelog/20230501_Namen_einer_Runde_Teamformular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf dem Teamformular',
                             },
                             {
                                 src: '../changelog/20230501_Namen_einer_Runde_Teamliste.png',
-                                thumbnailHeight: '75px',
+                                thumbnailHeight: 75,
                                 description: 'Darstellung in der Teamliste',
                             },
                         ],
@@ -327,17 +327,17 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230501_Tageskonzept_einer_Runde_Runde_beginnen-Formular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf dem "Runde erstellen"-Formular',
                             },
                             {
                                 src: '../changelog/20230501_Tageskonzept_einer_Runde_Teamformular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf dem Teamformular',
                             },
                             {
                                 src: '../changelog/20230501_Tageskonzept_einer_Runde_Teamliste.png',
-                                thumbnailHeight: '80px',
+                                thumbnailHeight: 80,
                                 description: 'Darstellung in der Teamliste',
                             },
                         ],
@@ -351,7 +351,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230501_Rundenbewertung_als_Stern_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf der Rundenbewertung (links: vorher - rechts: neu)',
                             },
                         ],
@@ -364,7 +364,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230501_FAQ_Einführung.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der FAQ mit den ersten Fragen und Antworten',
                             },
                         ],
@@ -395,12 +395,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230409_Wegpunkte_Rundenstartzeit_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf dem Wegpunkt hinzufügen-Formular',
                             },
                             {
                                 src: '../changelog/20230409_Wegpunkte_Rundenstartzeit_nach_klick.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Nach Klick auf Rundenbeginn auf "Dienstag 28.03.2023 um 08:22" setzen',
                             },
                         ],
@@ -434,12 +434,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230325_Streetworkrunden_Export_vorher_small.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf dem Dashboard vor der Umstellung',
                             },
                             {
                                 src: '../changelog/20230325_Streetworkrunden_Export_nachher_small.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'zusammengefasste Darstellung auf dem Dashboard nach der Umstellung',
                             },
                         ],
@@ -471,12 +471,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230325_Streetworkrunden_Filter_vorher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der gesetzten Filterung der Wegpunktetabelle vor der Umstellung',
                             },
                             {
                                 src: '../changelog/20230325_Streetworkrunden_Filter_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der gesetzten Filterung der Wegpunktetabelle nach der Umstellung',
                             },
                         ],
@@ -496,17 +496,17 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230201_Wegpunkt_loeschen_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf der Wegpunkt-Detailseite (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20230201_Wegpunkt_loeschen_Overlay.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der Sicherheitsabfrage',
                             },
                             {
                                 src: '../changelog/20230201_Wegpunkt_loeschen_Overlay_ausgefuellt.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der ausgefüllten Sicherheitsabfrage',
                             },
                         ],
@@ -520,17 +520,17 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230201_Runde_loeschen_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf der Runden-Detailseite (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20230201_Runde_loeschen_Overlay.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der Sicherheitsabfrage',
                             },
                             {
                                 src: '../changelog/20230201_Runde_loeschen_Overlay_ausgefuellt.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der ausgefüllten Sicherheitsabfrage',
                             },
                         ],
@@ -545,12 +545,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230201_Wegpunkte_Formular_Hinweis_Ankunftszeit.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Hinweises im Wegpunkte-Formular',
                             },
                             {
                                 src: '../changelog/20230201_Wegpunkte_Hinzufuegen_Formular_Hinweis_Ankunftszeit.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Hinweises im Wegpunkt hinzufügen-Formular in Stunden bezogen auf die Rundenstartzeit',
                             },
                         ],
@@ -563,12 +563,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230201_Runden_Formular_Hinweis_Rundenendzeit.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Hinweises im Runden-Formular in Tagen',
                             },
                             {
                                 src: '../changelog/20230201_Runden_Formular_Hinweis_Rundenendzeit_Stunden.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Hinweises im Runden-Formular in Stunden',
                             },
                         ],
@@ -585,7 +585,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230201_Schnellauswahlbuttons_Wegpunkte_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der Schnellauswahlbuttons im Wegpunkte-Formular (links: vorher - rechts: neu)',
                             },
                         ],
@@ -598,7 +598,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20230201_Runden_Formular_Einzeilig.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der Zeitauswahl im Runden-Formular (links: vorher - rechts: neu)',
                             },
                         ],
@@ -639,27 +639,27 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220927_Team_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Team-Formular (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20220927_Wegpunkte_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu ohne Altersgruppen)',
                             },
                             {
                                 src: '../changelog/20220927_Wegpunkte_Formular_vorher_nachher_nur_mit_personenzahl.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu nur mit Anzahl der Personen)',
                             },
                             {
                                 src: '../changelog/20220927_Altersgruppen_Wegpunkttabelle_Dashboard_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung in der Wegpunkttabelle auf dem Dashboard (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20220927_Altersgruppen_Wegpunkttabelle_Rundendetailseite_vorher_nachher.png',
-                                thumbnailHeight: '75px',
+                                thumbnailHeight: 75,
                                 description: 'Darstellung in der Wegpunkttabelle auf der Runden-Detailseite (links: vorher - rechts: neu)',
                             },
                         ],
@@ -675,17 +675,17 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20221026_Team_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Team-Formular (neu: Einstellungen für die Dokumentation einer Runde)',
                             },
                             {
                                 src: '../changelog/20221026_Runden_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Runden-Formular (links: vorher - rechts: neu mit weiteren Teilnehmenden und Autocomplete)',
                             },
                             {
                                 src: '../changelog/20221026_Runden_Formular_eigener_Eintrag.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Runden-Formular: eigene Einträge sind auch während der Rundenerstellung möglich',
                             },
                         ],
@@ -699,7 +699,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220927_Werte_Altersgruppen_Wegpunkte_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu)',
                             },
                         ],
@@ -714,7 +714,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20221026_optionale_Felder_Wegpunkt_abschliessen_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung bei Runde abschließen und bei Runde ändern (links: vorher - rechts: neu)',
                             },
                         ],
@@ -726,7 +726,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220927_Filter_Rundenende_Dashboard_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung der Filterung auf dem Dashboard (links: vorher - rechts: neu)',
                             },
                         ],
@@ -739,7 +739,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20221026_Deprecated_Browser_hint.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung des Hinweises auf jeder Seite',
                             },
                         ],
@@ -760,7 +760,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220624_Ankunft_Wegpunkt_Filterung_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Der neue Filter nach Ankunft auf dem Dashboard (links: vorher - rechts: neu)',
                             },
                         ],
@@ -774,7 +774,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220624_Wegpunkte-csv-Export_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Der Button zum Export von Wegpunkten auf dem Dashboard (links: vorher - rechts: neu)',
                             },
                         ],
@@ -784,7 +784,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220624_Nutzergruppen_Teamformular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Team-Formular (links: vorher - rechts: neu). Der Admin kann die Namen der Nutzergruppen frei bestimmen.',
                             },
                         ],
@@ -797,12 +797,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220624_Nutzergruppen_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Wegpunkte-Formular (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20220624_Nutzergruppen_Detailseite_vorher_nachher.png',
-                                thumbnailHeight: '50px',
+                                thumbnailHeight: 50,
                                 description: 'Darstellung auf der Wegpunkte-Detailseite (links: vorher - rechts: neu)',
                             },
                         ],
@@ -816,22 +816,22 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220624_Ankunft_Formular_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Formular (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20220624_Ankunft_Detailseite_vorher_nachher.png',
-                                thumbnailHeight: '75px',
+                                thumbnailHeight: 75,
                                 description: 'Darstellung auf der Detailseite (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20220624_Ankunft_Wegpunkttabelle_Rundendetailseite_vorher_nachher.png',
-                                thumbnailHeight: '75px',
+                                thumbnailHeight: 75,
                                 description: 'Darstellung in der Wegpunkttabelle auf der Runden-Detailseite (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20220624_Ankunft_Wegpunkttabelle_Dashboard_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung in der Wegpunkttabelle auf dem Dashboard (links: vorher - rechts: neu)',
                             },
                         ],
@@ -853,12 +853,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220601_iPad_Splitscreen_PWA.jpeg',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Swapp im Splitscreen auf einem iPad (links: im Browser - rechts: als PWA)',
                             },
                             {
                                 src: '../changelog/20220601_Swapp-Installation-iPhoneSE.mp4',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Installation von Swapp als PWA unter iOS.',
                                 autoplay: false,
                                 thumbnail: '../changelog/pexels-torsten-dettlaff-347734.jpg',
@@ -870,12 +870,12 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220601_angetroffene_Personenzahl_Formular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Formular (links: Nachher - rechts: Vorher)',
                             },
                             {
                                 src: '../changelog/20220601_angetroffene_Personenzahl_Detailseite.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf der Detailseite (links: Nachher - rechts: Vorher)',
                             },
                         ],
@@ -885,22 +885,22 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Teamseite.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Teamliste mit neuer Spalte "zusätzliche Wegpunkt-Felder" sowie überarbeitetes "Neues Team erstellen"-Formular',
                             },
                             {
                                 src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Team-Formular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Überarbeitetes "Team bearbeiten"-Formular mit neuem Switch für "optionale Felder"',
                             },
                             {
                                 src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Formular.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung im Formular',
                             },
                             {
                                 src: '../changelog/20220601_Anzahl_direkter_Kontakte_eines_Wegpunktes_Detailseite.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung auf der Detailseite',
                             },
                         ],
@@ -910,17 +910,17 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_vorher_nachher.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung in der Mobilansicht (links: vorher - rechts: neu)',
                             },
                             {
                                 src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_Mobilansicht.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung in der Mobilansicht mit aufgeklapptem Datumsfilter',
                             },
                             {
                                 src: '../changelog/20220601_Datumsfilter_Runden-CSV-Export_Tabletansicht.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Darstellung in der Tabletansicht mit aufgeklapptem Datumsfilter',
                             },
                         ],
@@ -946,22 +946,22 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20220222_changelog_aktiviert_icon.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'dezenter Hinweis mit blauer Alarmglocke',
                             },
                             {
                                 src: '../changelog/20220222_changelog_aktiviert_menu.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'ein weiterer Hinweis findet sich auch im Menü wieder',
                             },
                             {
                                 src: '../changelog/20220222_changelog_deaktiviert_icon.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Noch nicht gesehene Änderungen an Swapp sind mit "Neu" markiert.',
                             },
                             {
                                 src: '../changelog/20220222_changelog_alt.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Alt: So sah es vorher aus.',
                             },
                         ],
@@ -1002,7 +1002,7 @@ export const useChangelogStore = defineStore("changelog", {
                         gallery: [
                             {
                                 src: '../changelog/20211030_abmeldung.png',
-                                thumbnailHeight: '100px',
+                                thumbnailHeight: 100,
                                 description: 'Benachrichtigung bei automatischer Abmeldung',
                                 alt: 'Benachrichtigung bei automatischer Abmeldung auf Swapp der Streetworkapp.',
                             },

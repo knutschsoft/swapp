@@ -1,0 +1,83 @@
+<script setup lang="ts">
+import {defineProps, computed, ref} from "vue";
+import { de } from 'date-fns/locale'
+
+interface Props {
+    modelValue: any;
+    placeholder: string;
+    dataTest?: string;
+    enableTimePicker?: boolean;
+    isLoading?: boolean;
+}
+type CustomClass = string | string[];
+
+interface UIOptions {
+    navBtnNext: CustomClass;
+    navBtnPrev: CustomClass;
+    calendar: CustomClass;
+    calendarCell: CustomClass;
+    menu: CustomClass;
+    input: CustomClass;
+}
+
+const activeUi = ref<UIOptions>({
+    navBtnNext: '',
+    navBtnPrev: '',
+    calendar: '',
+    calendarCell: '',
+    menu: '',
+    input: 'active-bg text-primary',
+});
+
+const props = withDefaults(defineProps<Props>(), {
+    placeholder: 'Zeitraum wählen...'
+});
+const emit = defineEmits(["update:modelValue", "cleared"]);
+
+const dateRange = computed({
+    get: () => props.modelValue,
+    set: (value) => emit("update:modelValue", value),
+});
+</script>
+
+<template>
+    <VueDatePicker
+        v-model="dateRange"
+        :week-numbers="{ type: 'iso' }"
+        :placeholder="placeholder"
+        :multi-calendars="{ solo: false, static: true, count: 2 }"
+        clearable
+        range
+        :ui="dateRange ? activeUi : {}"
+        :data-test="dataTest"
+        text-input
+        auto-apply
+        locale="de"
+        :format-locale="de"
+        :enable-time-picker="enableTimePicker"
+        format="dd.LL.y"
+        cancel-text="abbrechen"
+        select-text="auswählen"
+        :teleport="true"
+        six-weeks="center"
+        :action-row="{ showPreview: true }"
+        :loading="isLoading"
+        @cleared="$emit('cleared')"
+        autocomplete="off"
+    >
+        <template #clear-icon="{ clear }">
+            <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />
+        </template>
+    </VueDatePicker>
+</template>
+
+<style>
+.active-bg {
+    background-color: rgba(24, 103, 192, 0.04);
+    /*
+    background-color: #1867C0;
+    opacity: 0.04;
+    transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    */
+}
+</style>

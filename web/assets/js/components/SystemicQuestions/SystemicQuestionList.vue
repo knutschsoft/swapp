@@ -1,8 +1,8 @@
 <template>
     <div>
-        <v-data-table
+        <v-data-table-server
             :items="systemicQuestions"
-            :headers="fields"
+            :headers="headers"
             :loading="isLoading"
             :loading-text="loadingText"
             :items-per-page="itemsPerPage"
@@ -10,9 +10,10 @@
             :items-per-page-text="itemsPerPageText"
             :no-data-text="noItemsText"
             :no-results-text="noItemsText"
-            small
-            striped
+            hide-default-footer
+            items-length=""
             class="mb-0"
+            multi-sort
             stacked="sm"
         >
             <template v-slot:item.isEnabled="{item}">
@@ -20,14 +21,14 @@
                     @click="toggleEnabled(item['@id'], item.isEnabled)"
                     class="cursor-pointer"
                 >
-                    <mdicon
+                    <v-icon
                         v-if="item.isEnabled"
-                        name="TagOutline"
+                        icon="mdi-tag-outline"
                         class="text-success"
                     />
-                    <mdicon
+                    <v-icon
                         v-else
-                        name="TagOffOutline"
+                        icon="mdi-tag-off-outline"
                         class="text-warning"
                     />
                 </span>
@@ -59,7 +60,7 @@
                     </v-btn>
                 </v-row>
             </template>
-        </v-data-table>
+        </v-data-table-server>
 
         <v-dialog
             v-model="dialog"
@@ -76,7 +77,7 @@
                         submit-button-text="Speichern"
                         :initial-client="editSystemicQuestion.client"
                         :initial-question="editSystemicQuestion.question"
-                        @submit="handleSubmit"
+                        @submitted="handleSubmit"
                     />
                 </v-card-text>
             </v-card>
@@ -118,37 +119,37 @@ export default {
         };
     },
     computed: {
-        fields() {
+        headers() {
             let headers = [
                 {
-                    value: 'question',
-                    text: 'Fragestellung',
-                    sortable: true,
+                    key: 'question',
+                    title: 'Fragestellung',
                 },
                 {
-                    value: 'isEnabled',
-                    text: 'Ist aktiv?',
-                    sortable: true,
+                    key: 'isEnabled',
+                    title: 'Ist aktiv?',
+                    align: 'center',
                 },
             ];
             if (!this.isSuperAdmin) {
                 headers.push({
-                    value: 'client',
-                    text: 'Klient',
+                    key: 'client',
+                    title: 'Klient',
+                    align: 'center',
                     sortable: false,
                 });
                 headers.push({
-                    value: 'createdAt',
-                    text: 'Erstellt am',
-                    sortable: true,
+                    key: 'createdAt',
+                    title: 'Erstellt am',
+                    align: 'center',
                 });
                 headers.push({
-                    value: 'updatedAt',
-                    text: 'Geändert am',
-                    sortable: true,
+                    key: 'updatedAt',
+                    title: 'Geändert am',
+                    align: 'center',
                 })
             }
-            headers.push({ value: 'actions', text: 'Aktionen' });
+            headers.push({ value: 'actions', title: 'Aktionen', align: 'center' });
 
             return headers;
         },

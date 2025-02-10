@@ -1,7 +1,7 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleSubmit"
-        class="p-1 p-sm-2 p-lg-3"
+        @submit.prevent="handleSubmit"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
         <v-card class="mb-4">
             <v-card-title class="grey lighten-2 mb-5">Allgemeine Daten des Teams</v-card-title>
@@ -13,12 +13,12 @@
                     >
                         <v-select
                             v-model="team.client"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             label="Klient"
                             data-test="clients"
                             item-value="@id"
-                            item-text="name"
+                            item-title="name"
                             @change="team.users = []"
                             :items="availableClients"
                             :disabled="isDisabled"
@@ -28,8 +28,8 @@
                         <v-text-field
                             v-model="team.name"
                             label="Name"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             :disabled="isDisabled"
                             :state="nameState"
                             :data-test="`${ initialTeam ? 'name-change' : 'name'}`"
@@ -81,131 +81,125 @@
                         </v-card>
                     </v-col>
                     <v-col cols="12" md="4" lg="5">
-                        <v-card outlined class="mb-2">
+                        <v-card outlined class="mb-0 pt-3">
                             <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für das Tageskonzept einer Runde</v-card-subtitle>
                             <v-card-text>
-                                <v-list dense>
+                                <v-list density="compact">
                                     <v-list-item
                                         v-for="(conceptOfDaySuggestion, i) in team.conceptOfDaySuggestions"
                                         :key="i"
-                                        dense
+                                        density="compact"
                                     >
-                                        <v-list-item-content>
-                                            <v-text-field
-                                                v-model="team.conceptOfDaySuggestions[i]"
-                                                :disabled="isDisabled"
-                                                type="text"
-                                                :state="team.conceptOfDaySuggestions[i] === '' ? null : (team.conceptOfDaySuggestions[i].length > 1 && team.conceptOfDaySuggestions[i].length <= 300)"
-                                                trim
-                                                required
-                                                dense
-                                                clearable
-                                                hide-details
-                                                outlined
-                                                autocomplete="off"
-                                                placeholder="neues Tageskonzept..."
-                                            />
-                                        </v-list-item-content>
-                                        <v-list-item-action>
+                                        <v-text-field
+                                            v-model="team.conceptOfDaySuggestions[i]"
+                                            :disabled="isDisabled"
+                                            type="text"
+                                            :state="team.conceptOfDaySuggestions[i] === '' ? null : (team.conceptOfDaySuggestions[i].length > 1 && team.conceptOfDaySuggestions[i].length <= 300)"
+                                            trim
+                                            required
+                                            density="compact"
+                                            clearable
+                                            hide-details
+                                            variant="outlined"
+                                            autocomplete="off"
+                                            placeholder="neues Tageskonzept..."
+                                        />
+                                        <template v-slot:append>
                                             <v-btn
+                                                class="ml-2"
                                                 icon
                                                 @click="removeConceptOfDaySuggestion(i)"
                                             >
                                                 <v-icon
-                                                    v-text="`mdi-trash-can`"
+                                                    icon="mdi-trash-can"
                                                 />
                                             </v-btn>
-                                        </v-list-item-action>
+                                        </template>
                                     </v-list-item>
-                                    <v-list-item dense>
-                                        <v-list-item-content>
-                                            <div
-                                                class="cursor-pointer mt-1 mb-2"
-                                                @click="addConceptOfDaySuggestion()"
-                                            >
-                                                <mdicon
-                                                    name="PlusCircleOutline"
-                                                />
-                                                neuen Autocomplete-Vorschlag hinzufügen
-                                            </div>
-                                        </v-list-item-content>
+                                    <v-list-item density="compact">
+                                        <div
+                                            class="cursor-pointer mt-1 mb-2"
+                                            @click="addConceptOfDaySuggestion()"
+                                        >
+                                            <mdicon
+                                                name="PlusCircleOutline"
+                                            />
+                                            neuen Autocomplete-Vorschlag hinzufügen
+                                        </div>
                                     </v-list-item>
-                                    <v-subheader>Beim Erstellen der Runde ist eine Mehrfachauswahl sowie Freitexteingabe möglich.</v-subheader>
+                                    <v-list-subheader>Beim Erstellen der Runde ist eine Mehrfachauswahl sowie Freitexteingabe möglich.</v-list-subheader>
                                 </v-list>
                             </v-card-text>
                         </v-card>
                     </v-col>
                     <v-col cols="12" md="5" lg="5">
-                        <v-card outlined class="mb-2">
+                        <v-card outlined class="mb-0 pt-3">
                             <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für den Namen einer Runde</v-card-subtitle>
                             <v-card-text>
-                                <v-list dense>
+                                <v-list density="compact">
                                     <v-list-item
                                         v-for="(walkName, i) in team.walkNames"
                                         :key="i"
-                                        dense
+                                        density="compact"
                                     >
-                                        <v-list-item-content>
-
-                                            <v-list-item-title>
-                                                <v-text-field
-                                                    v-model="team.walkNames[i]"
-                                                    :disabled="isDisabled"
-                                                    type="text"
-                                                    :state="team.walkNames[i] === '' ? null : (team.walkNames[i].length > 1 && team.walkNames[i].length <= 300)"
-                                                    trim
-                                                    dense
-                                                    outlined
-                                                    required
-                                                    hide-details
-                                                    clearable
-                                                    autocomplete="off"
-                                                    placeholder="neuer Rundenname..."
-                                                />
-                                            </v-list-item-title>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
+                                        <v-list-item-title>
+                                            <v-text-field
+                                                v-model="team.walkNames[i]"
+                                                :disabled="isDisabled"
+                                                type="text"
+                                                :state="team.walkNames[i] === '' ? null : (team.walkNames[i].length > 1 && team.walkNames[i].length <= 300)"
+                                                trim
+                                                density="compact"
+                                                variant="outlined"
+                                                required
+                                                hide-details
+                                                clearable
+                                                autocomplete="off"
+                                                placeholder="neuer Rundenname..."
+                                            />
+                                        </v-list-item-title>
+                                        <template v-slot:append>
                                             <v-btn
                                                 icon
+                                                class="ml-2"
                                                 @click="removeWalkName(i)"
                                             >
                                                 <v-icon
-                                                    v-text="`mdi-trash-can`"
+                                                    icon="mdi-trash-can"
                                                 />
                                             </v-btn>
-                                        </v-list-item-action>
+                                        </template>
                                     </v-list-item>
                                     <v-list-item>
-                                        <v-list-item-content>
-                                            <div
-                                                class="cursor-pointer mt-1 mb-2"
-                                                @click="addWalkName()"
-                                            >
-                                                <mdicon
-                                                    name="PlusCircleOutline"
-                                                />
-                                                neuen Autocomplete-Vorschlag hinzufügen
-                                            </div>
-                                        </v-list-item-content>
+                                        <div
+                                            class="cursor-pointer mt-1 mb-2"
+                                            @click="addWalkName()"
+                                        >
+                                            <mdicon
+                                                name="PlusCircleOutline"
+                                            />
+                                            neuen Autocomplete-Vorschlag hinzufügen
+                                        </div>
                                     </v-list-item>
-                                    <v-subheader>Beim Erstellen der Runde ist eine Freitexteingabe zusätzlich möglich.</v-subheader>
+                                    <v-list-subheader>Beim Erstellen der Runde ist eine Freitexteingabe zusätzlich möglich.</v-list-subheader>
                                 </v-list>
                             </v-card-text>
                         </v-card>
                     </v-col>
                     <v-col cols="12">
-                        <v-card outlined class="mb-2">
+                        <v-card outlined class="mb-0 pt-3">
                             <v-card-subtitle class="font-weight-bold  grey lighten-5">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-subtitle>
                             <v-card-text class=" grey lighten-5">
                                 <v-row>
                                     <v-col lg="6">
-                                        <v-card outlined class="mb-2">
+                                        <v-card outlined class="mb-0 pt-3">
                                             <v-card-text>
                                                 <v-switch
                                                     v-model="team.isWithGuests"
                                                     :disabled="isDisabled"
                                                     label="Weitere Teilnehmende"
-                                                    dense
+                                                    color="primary"
+                                                    density="compact"
                                                 />
                                                 <div
                                                     v-if="team.isWithGuests"
@@ -213,56 +207,53 @@
                                                 >
                                                     <v-card-subtitle class="font-weight-bold pb-1">Autocomplete-Vorschläge für weitere Teilnehmende</v-card-subtitle>
                                                     <v-divider class="mt-0 mb-0"></v-divider>
-                                                    <v-list dense>
+                                                    <v-list density="compact">
                                                         <v-list-item
                                                             v-for="(guestName, i) in team.guestNames"
                                                             :key="i"
                                                         >
-                                                            <v-list-item-content>
-                                                                <v-text-field
-                                                                    v-model="team.guestNames[i]"
-                                                                    :disabled="isDisabled"
-                                                                    type="text"
-                                                                    :state="team.guestNames[i] === '' ? null : (team.guestNames[i].length > 1 && team.guestNames[i].length <= 300)"
-                                                                    trim
-                                                                    ref="guestNameInputs"
-                                                                    required
-                                                                    dense
-                                                                    clearable
-                                                                    hide-details
-                                                                    outlined
-                                                                    autocomplete="off"
-                                                                    placeholder="Vorname, Nachname, Pseudonym"
-                                                                />
-                                                            </v-list-item-content>
-                                                            <v-list-item-action>
+                                                            <v-text-field
+                                                                v-model="team.guestNames[i]"
+                                                                :disabled="isDisabled"
+                                                                type="text"
+                                                                :state="team.guestNames[i] === '' ? null : (team.guestNames[i].length > 1 && team.guestNames[i].length <= 300)"
+                                                                trim
+                                                                ref="guestNameInputs"
+                                                                required
+                                                                density="compact"
+                                                                clearable
+                                                                hide-details
+                                                                variant="outlined"
+                                                                autocomplete="off"
+                                                                placeholder="Vorname, Nachname, Pseudonym"
+                                                            />
+                                                            <template v-slot:append>
                                                                 <v-btn
                                                                     icon
+                                                                    class="ml-2"
                                                                     @click="removeGuestName(i)"
                                                                 >
                                                                     <v-icon
-                                                                        v-text="`mdi-trash-can`"
+                                                                        icon="mdi-trash-can"
                                                                     />
                                                                 </v-btn>
-                                                            </v-list-item-action>
+                                                            </template>
                                                         </v-list-item>
                                                         <v-list-item>
-                                                            <v-list-item-content>
-                                                                <div
-                                                                    class="cursor-pointer mt-1 mb-2"
-                                                                    @click="addGuestName()"
-                                                                >
-                                                                    <mdicon
-                                                                        name="PlusCircleOutline"
-                                                                    />
-                                                                    neuen Autocomplete-Vorschl<u>a</u>g hinzufügen
-                                                                </div>
-                                                            </v-list-item-content>
+                                                            <div
+                                                                class="cursor-pointer mt-1 mb-2"
+                                                                @click="addGuestName()"
+                                                            >
+                                                                <mdicon
+                                                                    name="PlusCircleOutline"
+                                                                />
+                                                                neuen Autocomplete-Vorschl<u>a</u>g hinzufügen
+                                                            </div>
                                                         </v-list-item>
                                                         <v-list-item>
-                                                            <v-subheader>Beim Erstellen der Runde ist es zusätzlich zu den Autocomplete-Vorschlägen möglich eigene weitere
+                                                            <v-list-subheader>Beim Erstellen der Runde ist es zusätzlich zu den Autocomplete-Vorschlägen möglich eigene weitere
                                                                 Teilnehmende einzugeben.
-                                                            </v-subheader>
+                                                            </v-list-subheader>
                                                         </v-list-item>
                                                     </v-list>
                                                 </div>
@@ -275,13 +266,14 @@
                                                 <v-switch
                                                     v-model="team.isWithSystemicQuestion"
                                                     :disabled="isDisabled"
+                                                    color="primary"
                                                     label="Systemische Frage und Antwort darauf"
-                                                    dense
+                                                    density="compact"
                                                 />
                                                 <v-alert
                                                     v-if="team.isWithSystemicQuestion"
                                                     class="text-muted mb-0"
-                                                    text
+                                                    variant="text"
                                                 >
                                                     <b>Hinweis:</b>
                                                     <ul class="mb-0">
@@ -310,41 +302,40 @@
         <v-card class="mb-4">
             <v-card-title class="grey lighten-2">Einstellungen für die Dokumentation eines Wegpunktes</v-card-title>
             <v-card-text class="grey lighten-4 pt-2">
-                <v-card outlined class="mb-2">
+                <v-card outlined class="mb-0 pt-3">
                     <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für den Ort eines Wegpunktes</v-card-subtitle>
                     <v-card-text>
-                        <v-list dense>
+                        <v-list density="compact">
                             <v-list-item
                                 v-for="(locationName, i) in team.locationNames"
                                 :key="i"
-                                dense
+                                density="compact"
                             >
-                                <v-list-item-content>
-                                    <v-text-field
-                                        v-model="team.locationNames[i]"
-                                        :disabled="isDisabled"
-                                        type="text"
-                                        :state="team.locationNames[i] === '' ? null : (team.locationNames[i].length > 1 && team.locationNames[i].length <= 300)"
-                                        trim
-                                        required
-                                        clearable
-                                        hide-details
-                                        outlined
-                                        dense
-                                        autocomplete="off"
-                                        placeholder="neuer Ort..."
-                                    />
-                                </v-list-item-content>
-                                <v-list-item-action>
+                                <v-text-field
+                                    v-model="team.locationNames[i]"
+                                    :disabled="isDisabled"
+                                    type="text"
+                                    :state="team.locationNames[i] === '' ? null : (team.locationNames[i].length > 1 && team.locationNames[i].length <= 300)"
+                                    trim
+                                    required
+                                    clearable
+                                    hide-details
+                                    variant="outlined"
+                                    density="compact"
+                                    autocomplete="off"
+                                    placeholder="neuer Ort..."
+                                />
+                                <template v-slot:append>
                                     <v-btn
                                         icon
+                                        class="ml-2"
                                         @click="removeLocationName(i)"
                                     >
                                         <v-icon
-                                            v-text="`mdi-trash-can`"
+                                            icon="mdi-trash-can"
                                         />
                                     </v-btn>
-                                </v-list-item-action>
+                                </template>
                             </v-list-item>
                             <v-list-item>
                                 <div
@@ -360,18 +351,19 @@
                         </v-list>
                     </v-card-text>
                 </v-card>
-                <v-card outlined>
+                <v-card class="mt-3 mb-0 pt-3">
                     <v-card-subtitle class="font-weight-bold grey lighten-5">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-subtitle>
                     <v-card-text class="grey lighten-5">
                         <v-row>
                             <v-col cols="12" md="6" lg="2">
-                                <v-card outlined class="mb-2">
+                                <v-card outlined class="mb-0 pt-3">
                                     <v-card-text>
                                         <v-switch
                                             v-model="team.isWithContactsCount"
                                             :disabled="isDisabled"
+                                            color="primary"
                                             label="Anzahl direkter Kontakte"
-                                            dense
+                                            density="compact"
                                         />
                                         <div class="text-muted">
                                             Eine Person gilt als direkter Kontakt, wenn mit ihr an diesem Wegpunkt gesprochen wurde.
@@ -380,91 +372,92 @@
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="6" lg="5">
-                                <v-card outlined class="mb-2">
+                                <v-card outlined class="mb-0 pt-3">
                                     <v-card-text>
                                         <v-switch
                                             v-model="team.isWithPeopleCount"
                                             :disabled="isPeopleCountDisabled"
+                                            color="primary"
                                             label="Anzahl Personen vor Ort"
                                         />
                                         <v-switch
                                             v-model="team.isWithAgeRanges"
                                             :disabled="isDisabled"
+                                            color="primary"
                                             label="Altersgruppen"
                                         />
                                         <v-card-subtitle v-if="team.isWithAgeRanges" class="font-weight-bold mb-0 pb-1">Altersgruppen definieren</v-card-subtitle>
                                         <v-divider v-if="team.isWithAgeRanges" class="mt-0 mb-0"></v-divider>
                                         <v-list
                                             v-if="team.isWithAgeRanges"
-                                            dense
+                                            density="compact"
                                         >
                                             <v-list-item
                                                 v-for="(ageRange, i) in team.ageRanges"
                                                 :key="i"
                                             >
-                                                <v-list-item-content>
-                                                    <v-list-item-title>{{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre</v-list-item-title>
-                                                    <v-row no-gutters>
-                                                        <v-col cols="6">
-                                                            <v-text-field
-                                                                v-model="team.ageRanges[i].rangeStart"
-                                                                :disabled="isDisabled"
-                                                                type="number"
-                                                                min="0"
-                                                                max="120"
-                                                                trim
-                                                                number
-                                                                dense
-                                                                outlined
-                                                                hide-details
-                                                                step="1"
-                                                                required
-                                                                placeholder="von"
-                                                            />
-                                                        </v-col>
-                                                        <v-col cols="6">
-                                                            <v-text-field
-                                                                v-model="team.ageRanges[i].rangeEnd"
-                                                                :disabled="isDisabled"
-                                                                type="number"
-                                                                min="0"
-                                                                max="120"
-                                                                trim
-                                                                number
-                                                                dense
-                                                                outlined
-                                                                hide-details
-                                                                step="1"
-                                                                required
-                                                                placeholder="bis"
-                                                            />
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-list-item-content>
-                                                <v-list-item-action>
+                                                <v-list-item-title>{{ ageRange.rangeStart }} - {{ ageRange.rangeEnd }} Jahre</v-list-item-title>
+                                                <v-row no-gutters>
+                                                    <v-col cols="6">
+                                                        <v-text-field
+                                                            v-model="team.ageRanges[i].rangeStart"
+                                                            :disabled="isDisabled"
+                                                            type="number"
+                                                            min="0"
+                                                            max="120"
+                                                            trim
+                                                            number
+                                                            density="compact"
+                                                            variant="outlined"
+                                                            hide-details
+                                                            step="1"
+                                                            required
+                                                            placeholder="von"
+                                                            label="von"
+                                                            class="mr-2"
+                                                        />
+                                                    </v-col>
+                                                    <v-col cols="6">
+                                                        <v-text-field
+                                                            v-model="team.ageRanges[i].rangeEnd"
+                                                            :disabled="isDisabled"
+                                                            type="number"
+                                                            min="0"
+                                                            max="120"
+                                                            trim
+                                                            number
+                                                            variant="outlined"
+                                                            hide-details
+                                                            step="1"
+                                                            required
+                                                            placeholder="bis"
+                                                            label="bis"
+                                                        />
+                                                    </v-col>
+                                                </v-row>
+                                                <template v-slot:append>
                                                     <v-btn
                                                         icon
+                                                        class="ml-2 mt-4"
                                                         @click="removeAgeRange(i)"
                                                     >
                                                         <v-icon
-                                                            v-text="`mdi-trash-can`"
+                                                            icon="mdi-trash-can"
                                                         />
                                                     </v-btn>
-                                                </v-list-item-action>
+                                                </template>
                                             </v-list-item>
 
                                             <v-list-item>
-                                                <v-list-item-content>
-                                                    <div
-                                                        class="cursor-pointer mt-1 mb-2"
-                                                        @click="addAgeRange()"
-                                                    >
-                                                        <mdicon
-                                                            name="PlusCircleOutline"
-                                                        />
-                                                        neue Altersgruppe hinzufügen
-                                                    </div>
-                                                </v-list-item-content>
+                                                <div
+                                                    class="cursor-pointer mt-1 mb-2"
+                                                    @click="addAgeRange()"
+                                                >
+                                                    <mdicon
+                                                        name="PlusCircleOutline"
+                                                    />
+                                                    neue Altersgruppe hinzufügen
+                                                </div>
                                             </v-list-item>
                                         </v-list>
                                         <div class="text-muted">
@@ -474,90 +467,89 @@
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="6" lg="5">
-                                <v-card outlined class="mb-2">
+                                <v-card outlined class="mb-0 pt-3">
                                     <v-card-text>
                                         <v-switch
                                             v-model="team.isWithUserGroups"
                                             :disabled="isDisabled"
+                                            color="primary"
                                             label="Personenanzahl von Nutzergruppen"
-                                            dense
+                                            density="compact"
                                         />
                                         <v-card-subtitle v-if="team.isWithUserGroups" class="font-weight-bold pb-1">Nutzergruppen definieren</v-card-subtitle>
                                         <v-divider v-if="team.isWithUserGroups" class="mt-0 mb-0"></v-divider>
                                         <v-list v-if="team.isWithUserGroups">
                                             <v-list-item
                                                 v-for="(userGroupName, i) in team.userGroupNames"
-                                                dense
+                                                density="compact"
                                                 :key="i"
                                             >
-                                                <v-list-item-content>
-                                                    <v-text-field
-                                                        v-model="team.userGroupNames[i].name"
-                                                        :disabled="isDisabled"
-                                                        type="text"
-                                                        :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
-                                                        trim
-                                                        required
-                                                        outlined
-                                                        dense
-                                                        clearable
-                                                        hide-details
-                                                        autocomplete="off"
-                                                        placeholder="Name der Nutzergruppe eingeben..."
-                                                    />
-                                                </v-list-item-content>
-                                                <v-list-item-action>
+                                                <v-text-field
+                                                    v-model="team.userGroupNames[i].name"
+                                                    :disabled="isDisabled"
+                                                    type="text"
+                                                    :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
+                                                    trim
+                                                    required
+                                                    variant="outlined"
+                                                    density="compact"
+                                                    clearable
+                                                    hide-details
+                                                    autocomplete="off"
+                                                    placeholder="Name der Nutzergruppe eingeben..."
+                                                />
+                                                <template v-slot:append>
                                                     <v-col>
                                                         <v-btn
                                                             icon
                                                             @click="removeUserGroupName(i)"
                                                         >
                                                             <v-icon
-                                                                v-text="`mdi-trash-can`"
+                                                                icon="mdi-trash-can"
                                                             />
                                                         </v-btn>
                                                         <v-btn
                                                             v-if="i !== 0"
                                                             icon
+                                                            class="ml-2"
                                                             @click="moveUserGroupUp(i)"
                                                         >
                                                             <v-icon
-                                                                v-text="`mdi-arrow-up-drop-circle-outline`"
+                                                                icon="mdi-arrow-up-drop-circle-outline"
                                                             />
                                                         </v-btn>
                                                         <v-btn
                                                             v-if="i !== (team.userGroupNames.length - 1)"
                                                             icon
+                                                            class="ml-2"
                                                             @click="moveUserGroupDown(i)"
                                                         >
                                                             <v-icon
-                                                                v-text="`mdi-arrow-down-drop-circle-outline`"
+                                                                icon="mdi-arrow-down-drop-circle-outline"
                                                             />
                                                         </v-btn>
                                                     </v-col>
-                                                </v-list-item-action>
+                                                </template>
                                             </v-list-item>
                                             <v-list-item>
-                                                <v-list-item-content>
-                                                    <div
-                                                        class="cursor-pointer mt-1 mb-2"
-                                                        @click="addUserGroupName()"
-                                                    >
-                                                        <mdicon
-                                                            name="PlusCircleOutline"
-                                                        />
-                                                        neuen Autocomplete-Vorschlag hinzufügen
-                                                    </div>
-                                                </v-list-item-content>
+                                                <div
+                                                    class="cursor-pointer mt-1 mb-2"
+                                                    @click="addUserGroupName()"
+                                                >
+                                                    <mdicon
+                                                        name="PlusCircleOutline"
+                                                    />
+                                                    neuen Autocomplete-Vorschlag hinzufügen
+                                                </div>
                                             </v-list-item>
                                         </v-list>
                                         <v-alert
                                             v-if="team.isWithUserGroups"
                                             class="text-muted mb-0"
-                                            text
+                                            variant="text"
                                         >
                                             Beispiele für Nutzergruppen sind:
-                                            <ul class="mb-0">
+                                            <ul class="pl-5 mb-0">
                                                 <li>Aktuell Nutzende</li>
                                                 <li>jemals genutzt - nutzungsberechtigt</li>
                                                 <li>jemals genutzt - nicht nutzungsberechtigt</li>
@@ -565,7 +557,7 @@
                                                 <li>nie genutzt - nicht nutzungsberechtigt</li>
                                             </ul>
                                             Alternativ können auch herausgegegebene Utensilien erfasst werden:
-                                            <ul class="mb-0">
+                                            <ul class="pl-5 mb-0">
                                                 <li>Spritzenvergabe</li>
                                                 <li>Alkoholtupfer</li>
                                                 <li>Filteraufsätze</li>
@@ -585,7 +577,7 @@
         </v-card>
         <v-btn
             type="submit"
-            variant="secondary"
+            color="secondary"
             class="btn btn-secondary"
             :data-test="`${ initialTeam ? 'button-team-form-change' : 'button-team-form-create'}`"
             block
@@ -713,7 +705,7 @@ export default {
             if (this.isFormInvalid) {
                 return false
             }
-            this.$emit('submit', this.team)
+            this.$emit('submitted', this.team)
         },
         removeAgeRange(index) {
             this.team.ageRanges.splice(index, 1)
@@ -722,25 +714,25 @@ export default {
             this.team.ageRanges = [...this.team.ageRanges, {rangeStart: '', rangeEnd: ''}]
         },
         removeLocationName(index) {
-            this.$delete(this.team.locationNames, index)
+            this.team.locationNames.splice(index, 1)
         },
         addLocationName() {
             this.team.locationNames = [...this.team.locationNames, '']
         },
         removeWalkName(index) {
-            this.$delete(this.team.walkNames, index)
+            this.team.walkNames.splice(index, 1)
         },
         addWalkName() {
             this.team.walkNames = [...this.team.walkNames, '']
         },
         removeConceptOfDaySuggestion(index) {
-            this.$delete(this.team.conceptOfDaySuggestions, index)
+            this.team.conceptOfDaySuggestions.splice(index, 1)
         },
         addConceptOfDaySuggestion() {
             this.team.conceptOfDaySuggestions = [...this.team.conceptOfDaySuggestions, '']
         },
         removeGuestName(index) {
-            this.$delete(this.team.guestNames, index)
+            this.team.guestNames.splice(index, 1)
         },
         addGuestName() {
             this.team.guestNames = [...this.team.guestNames, ''];
@@ -749,7 +741,7 @@ export default {
             });
         },
         removeUserGroupName(index) {
-            this.$delete(this.team.userGroupNames, index)
+            this.team.userGroupNames.splice(index, 1)
         },
         addUserGroupName() {
             this.team.userGroupNames = [...this.team.userGroupNames, {name: ''}]
@@ -757,7 +749,7 @@ export default {
         moveUserGroupUp(index) {
             const tempUserGroupName = this.team.userGroupNames[index]
             let newUserGroups = []
-            this.$delete(this.team.userGroupNames, index)
+            this.team.userGroupNames.splice(index, 1)
             this.team.userGroupNames.forEach((userGroupName, key) => {
                 if (key === index - 1) {
                     newUserGroups.push(tempUserGroupName)
@@ -769,7 +761,7 @@ export default {
         moveUserGroupDown(index) {
             const tempUserGroupName = this.team.userGroupNames[index]
             let newUserGroups = []
-            this.$delete(this.team.userGroupNames, index)
+            this.team.userGroupNames.splice(index, 1)
             this.team.userGroupNames.forEach((userGroupName, key) => {
                 newUserGroups.push(userGroupName)
                 if (key === index) {

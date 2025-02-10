@@ -1,62 +1,80 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleSubmit"
-        class="p-1 p-sm-2 p-lg-3"
+        @submit.prevent="handleSubmit"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
-        <walk-walk-creator-field
-            v-model="walk.walkCreator"
-            :team="team"
-            :walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-            @change="handleWalkCreatorChange"
-        />
-        <walk-team-members-field
-            v-model="walk.walkTeamMembers"
-            :users="users"
-            :walk-creator="walk.walkCreator"
-            :is-loading="isLoading"
-            label="Teilnehmende der Runde"
-            description="Wer war mit dabei?"
-        />
-        <walk-guest-names-field
-            v-if="walk.isWithGuests"
-            v-model="walk.guestNames"
-            :team="team"
-            :initial-walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-name-field
-            v-model="walk.name"
-            :team="team"
-            :walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-concept-of-day-field
-            v-model="walk.conceptOfDay"
-            :team="team"
-            :initial-walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-start-time-field
-            v-model="walk.startTime"
-            :initial-walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-holidays-field
-            v-model="walk.holidays"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-weather-field
-            v-model="walk.weather"
-            :is-loading="isLoading"
-            :error="error"
-        />
+        <v-row dense>
+            <v-col cols="12">
+                <walk-walk-creator-field
+                    v-model="walk.walkCreator"
+                    :team="team"
+                    :walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                    @change="handleWalkCreatorChange"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-team-members-field
+                    v-model="walk.walkTeamMembers"
+                    :users="users"
+                    :walk-creator="walk.walkCreator"
+                    :is-loading="isLoading"
+                    label="Teilnehmende der Runde"
+                    description="Wer war mit dabei?"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-guest-names-field
+                    v-if="walk.isWithGuests"
+                    v-model="walk.guestNames"
+                    :team="team"
+                    :initial-walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-name-field
+                    v-model="walk.name"
+                    :team="team"
+                    :walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-concept-of-day-field
+                    v-model="walk.conceptOfDay"
+                    :team="team"
+                    :initial-walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-start-time-field
+                    v-model="walk.startTime"
+                    :initial-walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-holidays-field
+                    v-model="walk.holidays"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-weather-field
+                    v-model="walk.weather"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+        </v-row>
         <v-btn
             color="secondary"
             type="submit"
@@ -212,7 +230,7 @@ export default {
             return this.userStore.getUserByIri(userIri);
         },
         async handleSubmit() {
-            this.$emit('submit', this.walk);
+            this.$emit('submitted', this.walk);
         },
     },
 };

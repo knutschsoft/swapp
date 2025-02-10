@@ -1,0 +1,139 @@
+<script setup lang="ts">
+import { defineProps, computed, ref } from "vue";
+import dayjs from 'dayjs';
+import { de } from 'date-fns/locale'
+
+interface Props {
+    modelValue: any;
+    dataTest?: string;
+    isLoading?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    dataTest: '',
+    isLoading: false,
+});
+
+type CustomClass = string | string[];
+
+interface UIOptions {
+    navBtnNext: CustomClass;
+    navBtnPrev: CustomClass;
+    calendar: CustomClass;
+    calendarCell: CustomClass;
+    menu: CustomClass;
+    input: CustomClass;
+}
+
+const activeUi = ref<UIOptions>({
+    navBtnNext: '',
+    navBtnPrev: '',
+    calendar: '',
+    calendarCell: '',
+    menu: '',
+    input: 'active-bg text-primary',
+});
+
+const emit = defineEmits(["update:modelValue", "cleared"]);
+
+const dateRange = computed({
+    get: () => props.modelValue,
+    set: (value) => emit("update:modelValue", value),
+});
+
+const now = dayjs()
+let presetDatesValue =[
+    { label: 'Dieser Monat', value: [now.startOf('month').toDate(), now.endOf('month').toDate()] },
+    { label: 'Letzter Monat', value: [now.subtract(1, 'month').startOf('month').toDate(), now.subtract(1, 'month').endOf('month').toDate()] },
+    { label: 'Letzte 6 Monate', value: [now.subtract(5, 'month').startOf('month').toDate(), now.endOf('month').toDate()] },
+    { label: 'Dieses Jahr', value: [now.startOf('year').toDate(), now.endOf('year').toDate()] },
+    { label: 'Letztes Jahr', value: [now.subtract(1, 'year').startOf('year').toDate(), now.subtract(1, 'year').endOf('year').toDate()] },
+    { label: 'Vorletztes Jahr', value: [now.subtract(2, 'year').startOf('year').toDate(), now.subtract(2, 'year').endOf('year').toDate()] },
+]
+
+for (let i = -1; i <= 10; i++) {
+    if (i % 2 === 0) {
+        continue;
+    }
+    const quarter = now.subtract(i, 'quarter').quarter();
+    let halfOfYear;
+    switch (quarter) {
+        case 1:
+            halfOfYear = 1;
+            break;
+        case 2:
+            halfOfYear = 1;
+            break;
+        case 3:
+            halfOfYear = 2;
+            break;
+        case 4:
+            halfOfYear = 2;
+            break;
+        default:
+            halfOfYear = 1;
+    }
+
+    presetDatesValue.push({
+        label: `${now.subtract(i, 'quarter').year()} ${halfOfYear}. Halbjahr`,
+        value: [
+            now.subtract(i + 1, 'quarter').startOf('quarter').toDate(),
+            now.subtract(i, 'quarter').endOf('quarter').toDate()
+        ]
+    });
+}
+for (let i = 1; i <= 4; i++) {
+    presetDatesValue.push({
+        label: `${now.subtract(i, 'quarter').year()} ${now.subtract(i, 'quarter').quarter()}. Quartal`,
+        value: [
+            now.subtract(i, 'quarter').startOf('quarter').toDate(),
+            now.subtract(i, 'quarter').endOf('quarter').toDate()
+        ]
+    });
+}
+const presetDates = ref(presetDatesValue);
+</script>
+
+<template>
+    <VueDatePicker
+        v-model="dateRange"
+        :week-numbers="{ type: 'iso' }"
+        placeholder="Zeitraum wählen..."
+        :multi-calendars="{ solo: false, static: true, count: 2 }"
+        clearable
+        month-picker
+        range
+        :ui="dateRange ? activeUi : {}"
+        :data-test="dataTest"
+        text-input
+        auto-apply
+        :state="true"
+        locale="de"
+        :format-locale="de"
+        format="LL/yy"
+        cancel-text="abbrechen"
+        select-text="auswählen"
+        :teleport="true"
+        :action-row="{ showPreview: true }"
+        :loading="isLoading"
+        @cleared="$emit('cleared')"
+        autocomplete="off"
+        :preset-dates="presetDates"
+    >
+        <template #clear-icon="{ clear }">
+            <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />
+        </template>
+    </VueDatePicker>
+</template>
+
+<style>
+
+.active-bg {
+    background-color: rgba(24, 103, 192, 0.04);
+    /*
+    background-color: #1867C0;
+    opacity: 0.04;
+    transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    */
+}
+</style>

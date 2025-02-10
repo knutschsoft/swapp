@@ -1,7 +1,7 @@
 <template>
     <systemic-question-form
         submit-button-text="Neue systemische Frage erstellen"
-        @submit="handleSubmit"
+        @submitted="handleSubmit"
         :initial-client="initialClient"
         ref="systemicQuestionForm"
     />

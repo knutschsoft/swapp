@@ -1,4 +1,8 @@
 export {default as ClientSelect} from './ClientSelect.vue';
+export {default as DatePicker} from './DatePicker.vue';
+export {default as TimePicker} from './TimePicker.vue';
+export {default as DateRangePicker} from './DateRangePicker.vue';
+export {default as MonthRangePicker} from './MonthRangePicker.vue';
 export {default as SwitchField} from './SwitchField.vue';
 export {default as FilterBooleanField} from './FilterBooleanField.vue';
 export {default as FilterComboboxField} from './FilterComboboxField.vue';

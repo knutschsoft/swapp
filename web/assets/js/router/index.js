@@ -1,6 +1,6 @@
 "use strict";
 
-import VueRouter from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
 
 import Clients from '../components/Clients.vue';
 import Users from '../components/Users.vue';
@@ -45,11 +45,11 @@ let routes = [
     {id: 20, path: "/systemische-fragen", component: SystemicQuestions, name: "SystemicQuestions", meta: {requiresAdmin: true}},
     {id: 20, path: "/teams", component: Teams, name: "Teams", meta: {requiresAdmin: true}},
     {id: 21, path: "/tags", component: Tags, name: "Tags", meta: {requiresAdmin: true}},
-    {id: 0, path: "*", redirect: { name: "Dashboard" }, name: "default", meta: {requiresAuth: true}}
+    {id: 0, path: "/:pathMatch(.*)*", redirect: { name: "Dashboard" }, name: "default", meta: {requiresAuth: true}}
 ];
 
-let router = new VueRouter({
-    mode: "history",
+let router = createRouter({
+    history: createWebHistory(),
     routes: routes
 });
 

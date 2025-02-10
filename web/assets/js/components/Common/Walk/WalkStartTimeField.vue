@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import {computed, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 import {Walk} from "../../../model";
-import DatePicker from "vue2-datepicker";
-import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/de';
 import dayjs from "dayjs";
+import {DatePicker, TimePicker} from "@/js/components/Common";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     initialWalk?: Walk | null,
     description?: string,
     error?: any,
@@ -25,46 +21,62 @@ const props = withDefaults(defineProps<Props>(), {
     error: false,
     isLoading: false,
 });
-
-const startTimeTime = ref(props.initialWalk ? dayjs(props.initialWalk.startTime).toDate() : dayjs().toDate());
+const startTimeTime = ref<{
+    hours: number;
+    minutes: number;
+    seconds: number;
+}>(props.initialWalk ? {
+        hours: dayjs(props.initialWalk.startTime).hour(),
+        minutes: dayjs(props.initialWalk.startTime).minute(),
+        seconds: 0,
+    }
+    : {
+        hours: dayjs().hour(),
+        minutes: dayjs().minute(),
+        seconds: 0,
+    });
 const startTimeDate = ref(props.initialWalk ? dayjs(props.initialWalk.startTime).toDate() : dayjs().toDate());
-const datePickerLang = ref({
-    formatLocale: {
-        firstDayOfWeek: 1,
-    },
-    monthBeforeYear: true,
-});
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+    get: () => props.modelValue,
+    set: (val) => emit("update:modelValue", val),
 });
 
-watch(() => props.value, () => {
-    if (dayjs(startTimeTime.value) !== dayjs(props.value)) {
-        startTimeTime.value = dayjs(props.value).toDate();
+const startTimeTimeAsDayJs = computed(() => {
+    return dayjs().hour(startTimeTime.value.hours).minute(startTimeTime.value.minutes).second(startTimeTime.value.seconds);
+});
+onMounted(() => {
+    startTimeTime.value = props.initialWalk ? {
+        hours: dayjs(props.initialWalk.startTime).hour(),
+        minutes: dayjs(props.initialWalk.startTime).minute(),
+        seconds: 0,
+    } : {
+        hours: dayjs().hour(),
+        minutes: dayjs().minute(),
+        seconds: 0,
     }
-    if (dayjs(startTimeDate.value) !== dayjs(props.value)) {
-        startTimeDate.value = dayjs(props.value).toDate();
+    startTimeDate.value = props.initialWalk ? dayjs(props.initialWalk.startTime).toDate() : dayjs().toDate()
+})
+watch(() => props.modelValue, () => {
+    if (startTimeTimeAsDayJs.value.hour() !== dayjs(props.modelValue).hour() && startTimeTimeAsDayJs.value.minute() !== dayjs(props.modelValue).minute()) {
+        startTimeTime.value.hours = dayjs(props.modelValue).hour();
+        startTimeTime.value.minutes = dayjs(props.modelValue).minute();
+        startTimeTime.value.seconds = 0;
+    }
+    if (dayjs(startTimeDate.value) !== dayjs(props.modelValue)) {
+        startTimeDate.value = dayjs(props.modelValue).toDate();
     }
 })
 watch(() => startTimeTime.value, () => {
-    let startTimeDate = dayjs(props.value);
-    let startTime = dayjs(startTimeTime.value);
-    startTimeDate = startTimeDate.hour(startTime.hour());
-    startTimeDate = startTimeDate.minute(startTime.minute());
+    let startTimeDate = dayjs(props.modelValue);
+    startTimeDate = startTimeDate.hour(startTimeTimeAsDayJs.value.hour());
+    startTimeDate = startTimeDate.minute(startTimeTimeAsDayJs.value.minute());
     startTimeDate = startTimeDate.startOf('minute');
     value.value = startTimeDate.format();
 });
 watch(() => startTimeDate.value, () => {
     const startTimeDateValue = dayjs(startTimeDate.value);
-    let startTime = dayjs(props.value);
+    let startTime = dayjs(props.modelValue);
     startTime = startTime.year(startTimeDateValue.year());
     startTime = startTime.month(startTimeDateValue.month());
     startTime = startTime.date(startTimeDateValue.date());
@@ -84,30 +96,23 @@ const errorMessages = computed(() => {
 <template>
     <div>
         Rundenstartzeit<br>
-        <date-picker
-            v-model="startTimeDate"
-            label="Rundenstartzeit"
-            :disabled="isLoading"
-            format="DD.MM.YYYY"
-            title-format="DD.MM.YYYY"
-            show-week-number
-            data-test="startTimeDate"
-            :lang="datePickerLang"
-            :clearable="false"
-        />
-        <date-picker
-            v-model="startTimeTime"
-            type="time"
-            :disabled="isLoading"
-            data-test="startTimeTime"
-            :minute-step="5"
-            format="HH:mm"
-            title-format="HH:mm"
-            :show-second="false"
-            :lang="datePickerLang"
-            :clearable="false"
-        />
-        <div class="text-disabeld text-caption">{{ description }}</div>
+        <div class="d-flex">
+            <time-picker
+                v-model="startTimeTime"
+                :is-loading="isLoading"
+                data-test="startTimeTime"
+                placeholder="Rundenstartzeit"
+                :clearable="false"
+            />
+            <date-picker
+                v-model="startTimeDate"
+                :is-loading="isLoading"
+                data-test="startTimeDate"
+                placeholder="Rundenstartzeit"
+                :clearable="false"
+            />
+        </div>
+        <div class="text-disabled text-caption">{{ description }}</div>
         <v-alert
             v-if="!!errorMessages?.length"
             type="error"

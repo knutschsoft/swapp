@@ -42,8 +42,8 @@
                     data-test="password"
                     autocomplete="off"
                     :disabled="isPasswordChanged || isLoading"
-                    dense
-                    outlined
+                    density="compact"
+                    variant="outlined"
                     @click:append="switchPasswordVisibility"
                 />
                 <v-text-field
@@ -59,8 +59,8 @@
                     autocomplete="off"
                     hide
                     :disabled="isPasswordChanged || isLoading"
-                    dense
-                    outlined
+                    density="compact"
+                    variant="outlined"
                     @input="passwordValidation"
                     @click:append="switchPasswordVisibility"
                 />

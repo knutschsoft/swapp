@@ -1,7 +1,7 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleSubmit"
-        class="p-1 p-sm-2 p-lg-3"
+        @submit.prevent="handleSubmit"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
         <v-text-field
             v-model="name"
@@ -11,34 +11,34 @@
             placeholder="Name des Tags"
             :state="nameState"
             label="Name"
-            outlined
-            dense
+            variant="outlined"
+            density="compact"
             data-test="name"
         />
         Gewählte Tag-Farbe:
-        <color-badge
-            v-if="color"
-            :color="color"
-        />
         <v-select
             v-model="color"
             :items="availableColors"
             placeholder="Farbe des Tags"
             data-test="farbe"
             required
-            outlined
-            dense
+            variant="outlined"
+            density="compact"
             item-value="name"
-            item-text="name"
+            item-title="name"
+            label="Farbe"
         >
-            <template v-slot:item="{item}">
-                <v-divider class="mb-2"></v-divider>
-                <v-list-item disabled>
-                    <v-list-item-content>
-                            <color-badge
-                                :color="item.name"
-                            />
-                    </v-list-item-content>
+            <template v-slot:selection="{ item, index }">
+                <color-badge
+                    :color="item.title"
+                />
+            </template>
+            <template v-slot:item="{props, item}">
+                <v-divider></v-divider>
+                <v-list-item v-bind="props">
+                    <color-badge
+                        :color="item.title"
+                    />
                 </v-list-item>
             </template>
         </v-select>
@@ -52,10 +52,9 @@
             v-if="isFormInvalid"
             top
         >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ props }">
                 <div
-                    v-bind="attrs"
-                    v-on="on"
+                    v-bind="props"
                 >
                     <v-btn
                         type="submit"

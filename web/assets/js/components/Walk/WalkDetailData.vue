@@ -1,59 +1,61 @@
 <template>
-    <div v-if="!isLoading && walk">
-        <div
-            v-if="!field.isHidden"
+    <div v-if="!isLoading && walk" class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7">
+        <template
             v-for="(field, index2) in fields"
             :key="index2"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
-                {{ field.name }}:
-            </div>
             <div
-                class="d-inline-flex p-2 bd-highlight"
+                v-if="!field.isHidden"
             >
-                <nl2br
-                    v-if="field.nl2br"
-                    :text="field.value"
-                    tag="div"
-                    class-name="text-left"
-                />
-                <walk-rating
-                    v-else-if="'Bewertung' === field.name && walkClient"
-                    :rating="field.value"
-                    :client="walkClient"
-                    :read-only="true"
-                />
-                <template
-                    v-else-if="'Teilnehmende' === field.name"
+                <div class="d-inline-flex pa-2 font-weight-bold">
+                    {{ field.name }}:
+                </div>
+                <div
+                    class="d-inline-flex pa-2"
                 >
-                    <span v-for="(user, key) in field.value">
-                                   <span
-                                       :class="{'text-muted': !user.isEnabled}"
-                                       class="d-inline-flex align-items-center"
-                                   >
-                          <span>
-                            {{ user.username }}
-                              <template v-if="walk.walkCreator === user['@id']">(Rundenersteller)</template>
-                          </span>
-                          <mdicon
-                              v-if="!user.isEnabled"
-                              name="AccountOff"
-                              class="text-muted d-inline-flex align-items-center"
-                              title="Account ist aktuell nicht aktiviert."
-                              size="16"
-                          /><span class="d-inline-block mr-1">
-                            {{ key < field.value.length - 1 ? ', ' : '' }}
-                          </span>
+                    <div
+                        v-if="field.nl2br"
+                        v-html="nl2br(field.value)"
+                        class="text-left"
+                    />
+                    <walk-rating
+                        v-else-if="'Bewertung' === field.name && walkClient"
+                        :rating="field.value"
+                        :client="walkClient"
+                        :read-only="true"
+                    />
+                    <template
+                        v-else-if="'Teilnehmende' === field.name"
+                    >
+                        <span v-for="(user, key) in field.value">
+                                       <span
+                                           :class="{'text-muted': !user.isEnabled}"
+                                           class="d-inline-flex align-items-center"
+                                       >
+                              <span>
+                                {{ user.username }}
+                                  <template v-if="walk.walkCreator === user['@id']">(Rundenersteller)</template>
+                              </span>
+                              <mdicon
+                                  v-if="!user.isEnabled"
+                                  name="AccountOff"
+                                  class="text-muted d-inline-flex align-items-center mt-1"
+                                  title="Account ist aktuell nicht aktiviert."
+                                  size="16"
+                              /><span class="d-inline-block mr-1">
+                                {{ key < field.value.length - 1 ? ', ' : '' }}
+                              </span>
+                            </span>
                         </span>
-                    </span>
-                </template>
-                <template
-                    v-else
-                >
-                    {{ field.value }}
-                </template>
+                    </template>
+                    <template
+                        v-else
+                    >
+                        {{ field.value }}
+                    </template>
+                </div>
             </div>
-        </div>
+        </template>
     </div>
 </template>
 
@@ -61,6 +63,7 @@
     "use strict";
     import WalkRating from './WalkRating.vue';
     import { useClientStore, useUserStore, useWalkStore, useWayPointStore } from '../../stores';
+    import {nl2br} from "@/js/utils";
 
     export default {
         name: "WalkDetailData",
@@ -141,6 +144,7 @@
         mounted() {
         },
         methods: {
+            nl2br,
             getUserByIri(userIri) {
                 return this.userStore.getUserByIri(userIri);
             },

@@ -8,7 +8,7 @@
                 prominent
                 class="position-fixed fixed-top m-0 rounded-0"
                 style="z-index: 2000;"
-                dismissible
+                closable
             >
                 {{ errorData }}
             </v-alert>
@@ -66,19 +66,24 @@
             </UseNetwork>
 
             <navigation />
-            <v-main>
-                <v-container fluid>
-                    <router-view />
+            <v-main class="d-flex">
+                <v-container fluid class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7">
+<!--                    <RouterView />-->
+                    <router-view v-slot="{ Component }">
+                        <transition name="fade" mode="out-in">
+                            <component :is="Component"/>
+                        </transition>
+                    </router-view>
                 </v-container>
             </v-main>
             <v-snackbar
                 v-model="alertStore.showAlert"
                 multi-line
                 timeout="6000"
-                outlined
-                variant="outlined"
                 top
                 right
+                elevation="24"
+                rounded
                 :color="alertStore.alert?.type ?? undefined"
             >
                 <div v-if="alertStore.alert?.title" class="pb-2 text-overline">{{ alertStore.alert?.title }}</div>
@@ -95,19 +100,20 @@
 
 <script>
 import Navigation from './components/Navigation.vue';
-import FrameError from './components/FrameError';
 import ReloadPrompt from "./components/ReloadPrompt.vue"
 import dayjs from 'dayjs';
 import { UseNetwork } from '@vueuse/components';
 import { useAlertStore, useAuthStore, useChangelogStore } from './stores';
 import apiClient from './api';
+import {useRoute} from "vue-router";
 
 export default {
     name: 'Swapp',
-    components: {ReloadPrompt, FrameError, Navigation, UseNetwork},
+    components: {ReloadPrompt, Navigation, UseNetwork},
     props: {},
     data() {
         return {
+            route: useRoute(),
             alertStore: useAlertStore(),
             authStore: useAuthStore(),
             changelogStore: useChangelogStore(),
@@ -123,10 +129,10 @@ export default {
             return this.authStore.user;
         },
         isOnDemoPage() {
-            return window.location.host.includes('swapp.demo') || this.$route.query.demo;
+            return window?.location?.host?.includes('swapp.demo') || this.route.query.demo;
         },
         isOnStagePage() {
-            return window.location.host.includes('swapp.stage') || this.$route.query.stage;
+            return window?.location?.host?.includes('swapp.stage') || this.route.query.stage;
         },
         isOnDemoOrStagePage() {
             return this.isOnDemoPage || this.isOnStagePage;
@@ -145,14 +151,14 @@ export default {
     created() {
         const that = this;
         apiClient.interceptors.response.use(undefined, (err) => {
-            if (this.$route.name === 'Logout') {
+            if (this.route.name === 'Logout') {
                 return Promise.reject(err);
             }
-            if (this.$route.name === 'Login') {
+            if (this.route.name === 'Login') {
                 return Promise.reject(err);
             }
             if (err.response && err.response.status && err.response.data) {
-                if (403 === err.response.status && 'Your token is invalid, please login again to get a new one' === err.response.data.message && this.$route.name !== 'Logout'
+                if (403 === err.response.status && 'Your token is invalid, please login again to get a new one' === err.response.data.message && this.route.name !== 'Logout'
                     || 401 === err.response.status && 'Expired JWT Token' === err.response.data.message) {
                     that.alertStore.info('Dies ist passiert, da deine letzte Anmeldung zu lange her ist. Bitte melde dich erneut an.', 'Du wurdest automatisch abgemeldet.');
                     this.$router.push({ name: 'Logout' });
@@ -169,7 +175,7 @@ export default {
     },
     methods: {
         showSnackbar(error) {
-            if (this.$route.name === 'Logout') {
+            if (this.route.name === 'Logout') {
                 return;
             }
             let message = '';

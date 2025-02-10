@@ -1,9 +1,11 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleRemove"
-        class="p-1 p-sm-2 p-lg-3"
+        @submit.prevent="handleRemove"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
-        Wenn der Wegpunkt gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
+        <p class="mb-2">
+            Wenn der Wegpunkt gelöscht wurde, kann dies nicht wieder rückgängig gemacht werden. Bitte sei dir sicher.
+        </p>
         <v-btn
             color="error"
             data-test="button-way-point-remove"
@@ -21,36 +23,35 @@
         >
             <v-card>
                 <v-card-title>Bist du dir absolut sicher?</v-card-title>
+                <v-divider />
                 <v-card-text>
                     <v-alert
                         type="warning"
+                        prominent
                     >
                         Unerwartete Dinge können passieren, wenn du dies nicht liest.
+                        <ul class="pl-5 mt-2">
+                            <li>Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.</li>
+                            <li>Dies wird permanent den Wegpunkt <b>{{ initialWayPoint.locationName }}</b> und der an ihm gespeicherten Tags löschen.</li>
+                            <li> Die Runde {{ initialWalk.name }} bleibt erhalten.</li>
+                        </ul>
                     </v-alert>
-                    <p>
-                        Diese Aktion kann <b>nicht</b> rückgängig gemacht werden.
-                        Dies wird permanent den Wegpunkt <b>{{ initialWayPoint.locationName }}</b> und der an ihm gespeicherten Tags löschen. Die Runde {{ initialWalk.name }} bleibt erhalten.
-                    </p>
-                    <p>
+                    <p class="my-2">
                         Bitte gib <b>{{ initialWayPoint.locationName }}</b> ein um das Löschen zu bestätigen.
                     </p>
                     <v-text-field
                         v-model="wayPointName"
                         type="text"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         label="Name des Wegpunktes"
                         clearable
                         data-test="wayPointName"
                         autocomplete="off"
                         :disabled="isLoading"
+                        :error="false === wayPointNameState"
+                        :error-messages="false === wayPointNameState ? invalidWayPointNameFeedback : null"
                     />
-                    <v-alert
-                        v-if="false === wayPointNameState"
-                        type="error"
-                    >
-                        {{ invalidWayPointNameFeedback }}
-                    </v-alert>
                     <v-btn
                         type="submit"
                         color="error"
@@ -116,7 +117,7 @@ export default {
             return this.wayPointName === this.initialWayPoint.locationName;
         },
         invalidWayPointNameFeedback() {
-            return getViolationsFeedback(['wayPoint'], this.error);
+            return getViolationsFeedback(['wayPoint'], this.error) || 'Der eingegebene Name stimmt nicht mit dem Namen des Wegpunktes überein';
         },
         isLoading() {
             return this.wayPointStore.isLoading;

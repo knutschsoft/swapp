@@ -3,7 +3,7 @@
         <v-btn
             v-if="walk && walk.wayPoints.length"
             :to="{name: 'WalkEpilogue', params: { walkId: walk.walkId } }"
-            class="mt-1 mt-sm-2 mt-lg-3"
+            class="mb-1 mb-sm-2 mb-lg-3"
             color="secondary"
             :disabled="isLoading"
             block
@@ -83,7 +83,7 @@
                 await this.walkStore.fetchById(this.walkId);
             }
             if (!this.walk) {
-                this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+                this.$router.push({ name: 'Dashboard', query: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
             }
         },
         methods: {

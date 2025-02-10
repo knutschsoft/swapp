@@ -1,8 +1,8 @@
 <template>
     <div>
-        <v-data-table
+        <v-data-table-server
             :items="teams"
-            :headers="fields"
+            :headers="headers"
             :items-per-page="itemsPerPage"
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
@@ -11,13 +11,16 @@
             :loading-text="loadingText"
             :no-results-text="noItemsText"
             multi-sort
+            mobile-breakpoint="md"
             density="compact"
+            items-length=""
+            hide-default-footer
             class="mb-0"
         >
             <template v-slot:item.users="{item}">
                 <v-progress-circular
                     v-if="isUserLoading"
-                    rotate
+                    spin
                     indeterminate
                 />
                 <div
@@ -37,32 +40,32 @@
                 </div>
             </template>
             <template v-slot:item.walkNames="{item}">
-                {{item.walkNames.join(', ') || '-'}}
+                <tooltip :text="item.walkNames.join(', ') || '-'" />
             </template>
             <template v-slot:item.conceptOfDaySuggestions="{item}">
-                {{item.conceptOfDaySuggestions.join(', ') || '-'}}
+                <tooltip :text="item.conceptOfDaySuggestions.join(', ') || '-'" />
             </template>
             <template v-slot:item.locationNames="{item}">
-                {{item.locationNames.join(', ') || '-'}}
+                <tooltip :text="item.locationNames.join(', ') || '-'" />
             </template>
             <template v-slot:item.additionalWayPointFields="{item}">
-                {{ getAdditionalWayPointFieldsByTeam(item).join(', ') || '-' }}
+                <tooltip :text="getAdditionalWayPointFieldsByTeam(item).join(', ') || '-'" />
             </template>
             <template v-slot:item.ageRanges="{item}">
-                {{ getFormattedAgeRangesByTeam(item).join(', ') || '-' }}
+                <tooltip :text="getFormattedAgeRangesByTeam(item).join(', ') || '-'" />
             </template>
             <template v-slot:item.additionalWalkFields="{item}">
-                {{ getAdditionalWalkFieldsByTeam(item) || '-' }}
+                <tooltip :text="getAdditionalWalkFieldsByTeam(item).join(', ') || '-'" />
             </template>
             <template v-slot:item.guestNames="{item}">
-                {{ item.guestNames.join(', ') || '-' }}
+                <tooltip :text="item.guestNames.join(', ') || '-'" />
             </template>
             <template v-slot:item.client="{item}">
                 {{ clientFormatter(item.client) }}
             </template>
             <template v-slot:item.actions="{item}">
                 <v-btn
-                    small
+                    size="small"
                     color="secondary"
                     @click="openTeamEditDialog(item)"
                 >
@@ -75,7 +78,7 @@
                     </v-icon>
                 </v-btn>
             </template>
-        </v-data-table>
+        </v-data-table-server>
 
         <v-dialog
             v-model="dialog"
@@ -89,7 +92,7 @@
                     <team-form
                         v-if="editTeam"
                         :initial-team="editTeam"
-                        @submit="handleSubmit"
+                        @submitted="handleSubmit"
                         button-label="Team speichern"
                     />
                 </v-card-text>
@@ -108,10 +111,11 @@ import {
     itemsPerPageText,
     loadingText,
 } from '../../utils'
+import Tooltip from "@/js/components/Common/Tooltip.vue";
 
 export default {
     name: "TeamList",
-    components: {TeamForm, UserItem},
+    components: {Tooltip, TeamForm, UserItem},
     data: function () {
         return {
             alertStore: useAlertStore(),
@@ -129,82 +133,93 @@ export default {
         };
     },
     computed: {
-        fields() {
+        headers() {
             let headers = [
                 {
-                    value: 'name',
+                    key: 'name',
+                    title: 'Name',
                     sortable: true,
+                    align: 'center',
                 },
                 {
-                    value: 'users',
-                    text: 'Benutzer',
+                    key: 'users',
+                    title: 'Benutzer',
                     sortable: false,
+                    align: 'center',
                 }
             ];
 
             if (this.hasAtLeastOneTeamWithWalkNameSuggestions) {
                 headers.push({
-                    value: 'walkNames',
-                    text: 'Namen für Runden',
+                    key: 'walkNames',
+                    title: 'Namen für Runden',
                     sortable: false,
+                    align: 'center',
                 });
             }
             if (this.hasAtLeastOneTeamWithConceptOfDaySuggestions) {
                 headers.push({
-                    value: 'conceptOfDaySuggestions',
-                    text: 'Tageskonzept für Runden',
+                    key: 'conceptOfDaySuggestions',
+                    title: 'Tageskonzept für Runden',
                     sortable: false,
+                    align: 'center',
                 });
             }
             headers.push({
-                value: 'locationNames',
-                text: 'Orte für Wegpunkte',
+                key: 'locationNames',
+                title: 'Orte für Wegpunkte',
                 sortable: false,
+                align: 'center',
             });
             if (this.hasAtLeastOneAdditionalWayPointField) {
                 headers.push({
-                    value: 'additionalWayPointFields',
-                    text: 'zusätzliche Wegpunkt-Felder',
+                    key: 'additionalWayPointFields',
+                    title: 'zusätzliche Wegpunkt-Felder',
                     sortable: false,
+                    align: 'center',
                 });
             }
             if (this.hasAtLeastOneTeamAgeRanges) {
                 headers.push({
-                    value: 'ageRanges',
-                    text: 'Altersgruppen',
+                    key: 'ageRanges',
+                    title: 'Altersgruppen',
                     sortable: false,
+                    align: 'center',
                 });
             }
             if (this.hasAtLeastOneAdditionalWalkField) {
                 headers.push({
-                    value: 'additionalWalkFields',
-                    text: 'zusätzliche Runden-Felder',
-                    sortable: false
+                    key: 'additionalWalkFields',
+                    title: 'zusätzliche Runden-Felder',
+                    sortable: false,
+                    align: 'center',
                 });
             }
             if (this.hasAtLeastOneTeamGuestNames) {
                 headers.push({
-                    value: 'guestNames',
-                    text: 'mögliche weitere Teilnehmende',
+                    key: 'guestNames',
+                    title: 'mögliche weitere Teilnehmende',
                     sortable: false,
+                    align: 'center',
                 });
             }
             if (this.isSuperAdmin) {
                 headers.push({
-                    value: 'client',
-                    text: 'Klient',
+                    key: 'client',
+                    title: 'Klient',
                     sortable: false,
+                    align: 'center',
                 });
                 // headers.push({
-                //     value: 'createdAt',
-                //     text: 'Erstellt am',
+                //     key: 'createdAt',
+                //     title: 'Erstellt am',
                 // });
                 // headers.push({
-                //     value: 'updatedAt',
-                //     text: 'Geändert am',
+                //     key: 'updatedAt',
+                //     title: 'Geändert am',
                 // });
             }
-            headers.push({value: 'actions', text: 'Aktionen'});
+            headers.push({key: 'actions', title: 'Aktionen', align: 'center'});
             return headers;
         },
         teams() {

@@ -10,10 +10,11 @@ type DateRange = {
     startDate: Dayjs | null,
     endDate: Dayjs | null,
 }
+type MonthRange = { month: number; year: number }[] | null
 
 type WalkFilter = {
-    isResubmission: '' | null,
-    isUnfinished: '' | null,
+    isResubmission: String | boolean,
+    isUnfinished: String | boolean,
     name: String,
     teamName: String[],
     startTime: DateRange,
@@ -31,8 +32,8 @@ type WayPointFilter = {
 type State = {
     apiUrl: string,
     navUserFilter: RemovableRef<string>,
-    defaultActiveUsersDateRange: DateRange,
-    activeUsersDateRange: RemovableRef<DateRange>,
+    defaultActiveUsersDateRange: MonthRange,
+    activeUsersDateRange: RemovableRef<MonthRange>,
     defaultClientFilter: string|null,
     clientFilter: RemovableRef<string|null>,
     defaultWalkFilter: WalkFilter,
@@ -53,14 +54,14 @@ const startTime: DateRange = {
 };
 let now = dayjs();
 const defaultClientFilter = null
-const defaultActiveUsersDateRange: DateRange = {
-    startDate: now.subtract(5, 'month').startOf('month'),
-    endDate: now.endOf('month'),
-};
+const defaultActiveUsersDateRange: MonthRange = [
+    { month: now.startOf('year').month(), year: now.year() },
+    { month: now.endOf('year').month(), year: now.year() }
+]
 
 const defaultWalkFilter: WalkFilter = {
-    isResubmission: '',
-    isUnfinished: '',
+    isResubmission: 'null',
+    isUnfinished: 'null',
     name: '',
     teamName: [],
     startTime: startTime,
@@ -141,8 +142,7 @@ export const useGeneralStore = defineStore("general", {
             this.wayPointFilterResult = wayPoints;
         },
         updateActiveUsersDateRange(dateRange: any): void {
-            this.activeUsersDateRange.startDate = dayjs(dateRange.startDate)
-            this.activeUsersDateRange.endDate = dayjs(dateRange.endDate)
+            this.activeUsersDateRange = dateRange
         },
         updateClientFilter(clientUri: string): void {
             this.clientFilter = clientUri

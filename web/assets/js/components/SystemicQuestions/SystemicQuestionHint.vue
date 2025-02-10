@@ -3,7 +3,7 @@
         class="w-100 text-muted mt-2 mb-0"
     >
         <b>Hinweis:</b>
-        <ul class="mb-0">
+        <ul class="mb-0 pl-5">
             <li>
                 Beim Abschluss jeder Runde gibt es ein Reflexionsprotokoll mit
                 systemischen Reflexionsfragen, welche u.a. einen

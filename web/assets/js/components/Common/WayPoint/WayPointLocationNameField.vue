@@ -3,12 +3,10 @@ import {computed} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 import {Team, Walk, WayPoint} from "../../../model";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     walk: Walk,
     initialWayPoint?: WayPoint | null,
     label?: string,
@@ -28,14 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value === null ? '' : value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val ?? ""),
 });
 
 const locationNameSuggestions = computed(() => {
@@ -60,7 +52,7 @@ const errorMessages = computed(() => {
         v-model="value"
         :items="locationNameSuggestions"
         clearable
-        outlined
+        variant="outlined"
         :label="'Ort'"
         :placeholder="walk ? 'Wo seid ihr gerade?' : 'Ort eingeben...'"
         :disabled="isLoading"
@@ -68,7 +60,7 @@ const errorMessages = computed(() => {
         :hint="description"
         :persistent-hint="!!description"
         :hide-details="!description && !errorMessages?.length"
-        dense
+        density="compact"
         small-chips
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"

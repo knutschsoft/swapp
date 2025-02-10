@@ -1,8 +1,8 @@
 <template>
     <v-form
-        v-if="walk"
-        @submit.prevent.stop="handleSubmit"
-        class="p-1 p-sm-2 p-lg-3"
+        v-if="walk && !isLoading"
+        @submit.prevent="handleSubmit"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
         <way-point-location-name-field
             v-model="wayPoint.locationName"
@@ -12,7 +12,7 @@
             :is-loading="isLoading"
             :error="error"
         />
-        <v-row class="my-4">
+        <v-row class="my-1" dense>
             <v-col cols="12" md="6">
                 <way-point-visited-at-field
                     v-model="wayPoint.visitedAt"
@@ -21,29 +21,24 @@
                     :error="error"
                 />
             </v-col>
-            <v-col
-                class="d-none d-md-block border-top-0 border-bottom-0 border-right-0 border-secondary border-dashed border-left"
-            >
-            </v-col>
+            <v-divider vertical />
             <v-col>
                 <div class="d-none d-md-block">&nbsp;</div>
                 <v-btn
                     block
                     color="secondary"
-                    outlined
-                    small
+                    variant="outlined"
                     @click="selectCurrentTime"
-                    class="mb-3"
+                    class="mb-2"
                 >
                     Schnellauswahl: aktueller Zeitpunkt
                 </v-btn>
                 <v-btn
                     color="secondary"
                     block
-                    outlined
-                    small
+                    variant="outlined"
                     @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
-                    class="mt-2"
+                    class="m-2"
                 >
                     Schnellauswahl: {{ walk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
                 </v-btn>
@@ -51,33 +46,33 @@
         </v-row>
         <v-alert
             v-if="!!diffLastWayPointOrRound"
-            class="mb-0"
-            text
+            class="mb-1"
             color="warning"
+            variant="tonal"
         >
             Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffLastWayPointOrRound }}</b> nach dem {{ hasLastWayPoint ? 'letzten Wegpunkt' : 'Rundenstart' }} vom {{ lastWayPointOrRoundTimeAsCalendar }}.
         </v-alert>
         <v-alert
             v-if="visitedAtState === false"
             class="mb-0"
-            text
+            variant="tonal"
             color="warning"
         >
             {{ visitedAtDescription }}
         </v-alert>
         <v-alert
             v-if="isShowWalkStartTimeButton"
-            class="mt-2"
-            text
+            class="mt-1"
+            variant="tonal"
             color="warning"
         >
             Hinweis: Die gewählte Ankunftszeit ist <b>{{ diffWalkStartTime }}</b> vor dem Rundenstart. Hier kannst du die Rundenstartzeit auf die aktuell gewählte Ankunftszeit ändern.
             <div class="bg-white">
                 <v-btn
                     color="secondary"
-                    outlined
+                    variant="outlined"
                     block
-                    small
+                    size="small"
                     class="mt-2"
                     data-test="button-set-walk-start-time"
                     @click="handleSetWalkStartTime"
@@ -87,7 +82,7 @@
             </div>
         </v-alert>
         <template v-if="walk.isWithAgeRanges || walk.isWithPeopleCount">
-            <div class="mb-4">
+            <div class="mb-2">
                 <b v-text="walk.isWithAgeRanges ? `Altersgruppen` : `Anzahl der Personen vor Ort`" />
                 <br v-if="walk.isWithAgeRanges">
                 <small
@@ -98,31 +93,39 @@
                 </small>
             </div>
             <v-row
-                v-if="walk.isWithAgeRanges"
+                v-if="walk.isWithAgeRanges && wayPoint"
                 v-for="(ageGroup, index) in wayPoint.ageGroups"
                 :key="ageGroup.frontendLabel"
+                dense
             >
-                <v-col
-                    v-if="index % 3 === 0"
+                <template
                     v-for="colIndex in 3"
-                    :key="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                    cols="4"
-                    sm="4"
-                    md="4"
-                    class="mb-1"
+                    :key="wayPoint.ageGroups[index].frontendLabel + colIndex"
                 >
-                    <v-select
-                        v-model="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count"
-                        :label="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                        :items="ageRangeOptions"
-                        :disabled="isLoading"
-                        :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                        :data-test="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                        dense
-                        outlined
-                        class=""
-                    />
-                </v-col>
+                    <v-col
+                        v-if="index % 3 === 0"
+                        cols="4"
+                        sm="4"
+                        md="4"
+                        class="mb-1"
+                    >
+                        <v-select
+                            v-model="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count"
+                            :label="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                            :items="ageRangeOptions"
+                            :disabled="isLoading"
+                            :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                            :data-test="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                            density="compact"
+                            variant="outlined"
+                            hide-details
+                            :clearable="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count !== 0"
+                            persistent-clear
+                            class=""
+                            @click:clear="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count = 0"
+                        />
+                    </v-col>
+                </template>
             </v-row>
             <v-text-field
                 v-if="walk.isWithAgeRanges"
@@ -131,12 +134,13 @@
                 data-test="sumPeopleCount"
                 disabled
                 readonly
-                dense
+                density="compact"
                 persistent-hint
-                outlined
+                variant="outlined"
                 background-color="grey lighten-5"
                 label="Anzahl Personen vor Ort"
                 hint="Ergibt sich automatisch aus der Summe der Altersgruppen."
+                class="mt-2"
             />
             <v-select
                 v-else
@@ -145,8 +149,8 @@
                 :disabled="isLoading"
                 data-test="peopleCount"
                 class=""
-                outlined
-                dense
+                variant="outlined"
+                density="compact"
                 label="Anzahl Personen vor Ort"
             />
         </template>
@@ -159,6 +163,7 @@
         <v-row
             v-if="walk.isWithUserGroups"
             class="d-flex align-items-end"
+            dense
         >
             <v-col
                 v-for="(userGroup, index) in wayPoint.userGroups"
@@ -169,9 +174,10 @@
                     :items="ageRangeOptions"
                     :disabled="isLoading"
                     :help="userGroup.userGroupName.name"
-                    dense
-                    outlined
+                    density="compact"
+                    variant="outlined"
                     :label="userGroup.userGroupName.name"
+                    @click:clear="userGroup.peopleCount.count = 0"
                 />
             </v-col>
         </v-row>
@@ -189,11 +195,10 @@
                     data-test="Bildupload"
                     placeholder="kein Bild gewählt"
                     label="Bildupload"
-                    dense
+                    density="compact"
                     hide-details
-                    outlined
+                    variant="outlined"
                     :disabled="isLoading"
-                    @change="updateFile"
                 />
                 <v-alert
                     v-if="invalidImageFeedback"
@@ -206,21 +211,11 @@
                     class="position-relative"
                     style="max-width: 50px;"
                 >
-                    <v-img
-                        :src="wayPoint.imageFileData"
-                        alt="Bildupload"
-                        clearable
-                        width="50"
-                        height="50"
-                        class=""
-                    />
-                    <div
-                        class="cursor-pointer position-absolute top-0 start-100 translate-middle z-9999"
-                        @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null"
-                    >
-                        <v-icon>
-                            mdi-close-circle-outline
-                        </v-icon>
+                    <div class="d-flex align-center mb-4 justify-center">
+                        <v-img :src="wayPoint.imageFileData" alt="Rating-Bild" width="50" height="50" />
+                        <v-btn class="align-self-start ml-n4 mt-n4" size="35" icon @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null">
+                            <v-icon>mdi-close-circle</v-icon>
+                        </v-btn>
                     </div>
                 </div>
             </v-col>
@@ -241,7 +236,7 @@
             :error="error"
             :isLoading="isLoading"
         />
-        <v-row class="my-2">
+        <v-row class="my-2" dense>
             <v-col cols="12" class="font-weight-bold pb-0 mb-0 mt-2">Tags</v-col>
             <v-col
                 v-for="tag in tags"
@@ -259,7 +254,7 @@
                         v-model="wayPoint.wayPointTags"
                         :value="tag['@id']"
                         :disabled="isLoading"
-                        dense
+                        density="compact"
                         hide-details
                     >
                         <template v-slot:label>
@@ -290,7 +285,7 @@
                     :disabled="isLoading"
                     persistent-hint
                     hint="(deaktivierter Tag)"
-                    dense
+                    density="compact"
                 >
                     <template v-slot:label>
                         {{ tag.name }}
@@ -317,13 +312,14 @@
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit"
             block
-            class="mb-2"
+            class="mb-2 text-transform-none"
             :tabindex="isSubmitDisabled ? '-1' : ''"
         >
             {{ submitButtonText }}
         </v-btn>
         <v-btn
             v-if="initialWalk"
+            class="text-transform-none"
             color="secondary"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit-and-finish"
@@ -347,7 +343,7 @@ import ColorBadge from '../Tags/ColorBadge.vue';
 import { getViolationsFeedback } from '../../utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import {useAlertStore, useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore} from '../../stores';
+import {useAlertStore, useAuthStore, useTagStore, useTeamStore, useWalkStore, useWayPointStore} from '@/js/stores';
 import {WayPointContactsCountField, WayPointLocationNameField, WayPointVisitedAtField} from "../Common/WayPoint";
 import {SwitchField, TextareaField} from "../Common";
 
@@ -431,7 +427,7 @@ export default {
     },
     computed: {
         error() {
-            return this.wayPointStore.getErrors.change || this.wayPointStore.getErrors.create;
+            return this.wayPointStore.getErrors.change || this.wayPointStore.getErrors.create || {};
         },
         sumPeopleCount() {
             let sumPeopleCount = 0;
@@ -687,6 +683,13 @@ export default {
 
         this.wayPoint.contactsCount = this.walk.isWithContactsCount ? 0 : null;
     },
+    watch: {
+        file: {
+            handler: async function () {
+                this.updateFile(this.file)
+            }
+        },
+    },
     methods: {
         getTagByIri(iri) {
             return this.tagStore.getTagByIri(iri);
@@ -718,10 +721,10 @@ export default {
             });
         },
         async handleSubmitWithFinish() {
-            this.$emit('submit', { form: this.wayPoint, isWithFinish: true });
+            this.$emit('submitted', { form: this.wayPoint, isWithFinish: true });
         },
         async handleSubmit() {
-            this.$emit('submit', { form: this.wayPoint, isWithFinish: false });
+            this.$emit('submitted', { form: this.wayPoint, isWithFinish: false });
         },
         async handleSetWalkStartTime() {
             const dateTemplate = 'dddd DD.MM.YYYY [um] HH:mm';

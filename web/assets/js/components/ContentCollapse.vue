@@ -1,19 +1,18 @@
 <template>
     <v-expansion-panels
         v-model="expansionPanelsModel"
-        flat
-        class="mt-1 mt-sm-2 mt-lg-3"
+        elevation="1"
+        class="mb-1 mb-sm-2 mb-md-4 mb-lg-5 mb-xl-6 mb-xxl-7"
     >
         <v-expansion-panel>
-            <v-expansion-panel-header
+            <v-expansion-panel-title
                 color="secondary"
-                class="force-white"
+                class="elevation-1"
                 :data-test="getCollapseId"
             >
                 <v-skeleton-loader
                     v-if="isLoading"
                     type="text"
-                    color="secondary"
                     :width="titleWidth"
                     :max-width="titleWidth"
                 ></v-skeleton-loader>
@@ -22,16 +21,16 @@
                     v-html="title"
                 />
                 <template v-slot:actions>
-                    <v-icon color="white">
+                    <v-icon>
                         $expand
                     </v-icon>
                 </template>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content
-                class="border border-secondary"
+            </v-expansion-panel-title>
+            <v-expansion-panel-text
+                class="p-0"
             >
                 <slot />
-            </v-expansion-panel-content>
+            </v-expansion-panel-text>
         </v-expansion-panel>
     </v-expansion-panels>
 </template>
@@ -64,7 +63,7 @@ export default {
     },
     setup(props) {
         const expansionPanelsModel = ref<number | null>(null);
-        const titleLengthState = ref<string | boolean>(false);
+        const titleLengthState = ref<string>('');
         const visibleState = ref<boolean>(false);
 
         const title = computed(() => props.title);

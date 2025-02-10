@@ -4,7 +4,7 @@
         type="error"
         class="mt-3 mb-0"
         prominent
-        dense
+        density="compact"
     >
         <ul class="mb-0">
             <li

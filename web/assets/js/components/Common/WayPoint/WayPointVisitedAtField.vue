@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import {computed, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 import {WayPoint} from "../../../model";
-import DatePicker from "vue2-datepicker";
-import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/de';
 import dayjs from "dayjs";
+import {DatePicker, TimePicker} from "@/js/components/Common";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     initialWayPoint?: WayPoint | null,
     description?: string,
     error?: any,
@@ -26,45 +22,55 @@ const props = withDefaults(defineProps<Props>(), {
     isLoading: false,
 });
 
-const visitedAtTime = ref(props.initialWayPoint ? dayjs(props.initialWayPoint.visitedAt).toDate() : dayjs().toDate());
+const visitedAtTime = ref<{
+    hours: number;
+    minutes: number;
+    seconds: number;
+}>({hours: 0, minutes: 0, seconds: 0});
 const visitedAtDate = ref(props.initialWayPoint ? dayjs(props.initialWayPoint.visitedAt).toDate() : dayjs().toDate());
-const datePickerLang = ref({
-    formatLocale: {
-        firstDayOfWeek: 1,
-    },
-    monthBeforeYear: true,
-});
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+    get: () => props.modelValue,
+    set: (val) => emit("update:modelValue", val),
 });
 
-watch(() => props.value, () => {
-    if (dayjs(visitedAtTime.value) !== dayjs(props.value)) {
-        visitedAtTime.value = dayjs(props.value).toDate();
+const visitedAtTimeAsDayJs = computed(() => {
+    return dayjs().hour(visitedAtTime.value.hours).minute(visitedAtTime.value.minutes).second(visitedAtTime.value.seconds);
+});
+
+onMounted(() => {
+    visitedAtTime.value = props.initialWayPoint ? {
+        hours: dayjs(props.initialWayPoint.visitedAt).hour(),
+        minutes: dayjs(props.initialWayPoint.visitedAt).minute(),
+        seconds: 0,
+    } : {
+        hours: dayjs().hour(),
+        minutes: dayjs().minute(),
+        seconds: 0,
     }
-    if (dayjs(visitedAtDate.value) !== dayjs(props.value)) {
-        visitedAtDate.value = dayjs(props.value).toDate();
+    visitedAtDate.value = props.initialWayPoint ? dayjs(props.initialWayPoint.visitedAt).toDate() : dayjs().toDate()
+})
+
+watch(() => props.modelValue, () => {
+    if (visitedAtTimeAsDayJs.value.hour() !== dayjs(props.modelValue).hour() && visitedAtTimeAsDayJs.value.minute() !== dayjs(props.modelValue).minute()) {
+        visitedAtTime.value.hours = dayjs(props.modelValue).hour();
+        visitedAtTime.value.minutes = dayjs(props.modelValue).minute();
+        visitedAtTime.value.seconds = 0;
+    }
+    if (dayjs(visitedAtDate.value) !== dayjs(props.modelValue)) {
+        visitedAtDate.value = dayjs(props.modelValue).toDate();
     }
 })
 watch(() => visitedAtTime.value, () => {
-    let visitedAtDate = dayjs(props.value);
-    let visitedAt = dayjs(visitedAtTime.value);
-    visitedAtDate = visitedAtDate.hour(visitedAt.hour());
-    visitedAtDate = visitedAtDate.minute(visitedAt.minute());
+    let visitedAtDate = dayjs(props.modelValue);
+    visitedAtDate = visitedAtDate.hour(visitedAtTimeAsDayJs.value.hour());
+    visitedAtDate = visitedAtDate.minute(visitedAtTimeAsDayJs.value.minute());
     visitedAtDate = visitedAtDate.startOf('minute');
     value.value = visitedAtDate.format();
 });
 watch(() => visitedAtDate.value, () => {
     const visitedAtDateValue = dayjs(visitedAtDate.value);
-    let visitedAt = dayjs(props.value);
+    let visitedAt = dayjs(props.modelValue);
     visitedAt = visitedAt.year(visitedAtDateValue.year());
     visitedAt = visitedAt.month(visitedAtDateValue.month());
     visitedAt = visitedAt.date(visitedAtDateValue.date());
@@ -84,30 +90,24 @@ const errorMessages = computed(() => {
 <template>
     <div>
         Ankunft<br>
-        <date-picker
-            v-model="visitedAtDate"
-            :disabled="isLoading"
-            format="DD.MM.YYYY"
-            title-format="DD.MM.YYYY"
-            show-week-number
-            data-test="visitedAtDate"
-            :lang="datePickerLang"
-            :clearable="false"
-        />
-        <div class="d-none d-md-block mb-2"></div>
-        <date-picker
-            v-model="visitedAtTime"
-            type="time"
-            :disabled="isLoading"
-            data-test="visitedAtTime"
-            :minute-step="5"
-            format="HH:mm"
-            title-format="HH:mm"
-            :show-second="false"
-            :lang="datePickerLang"
-            :clearable="false"
-        />
-        <div class="text-disabeld text-caption">{{ description }}</div>
+        <div class="d-flex flex-md-column">
+            <time-picker
+                v-model="visitedAtTime"
+                :is-loading="isLoading"
+                data-test="visitedAtTime"
+                placeholder="Rundenstartzeit"
+                :clearable="false"
+                class="mb-2"
+            />
+            <date-picker
+                v-model="visitedAtDate"
+                :is-loading="isLoading"
+                data-test="visitedAtDate"
+                placeholder="Rundenstartzeit"
+                :clearable="false"
+            />
+        </div>
+        <div class="text-disabled text-caption">{{ description }}</div>
         <v-alert
             v-if="!!errorMessages?.length"
             type="error"

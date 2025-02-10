@@ -1,112 +1,102 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleSubmit"
-        class="p-1 p-sm-2 p-lg-3"
+        @submit.prevent="handleSubmit"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
-        <walk-walk-creator-field
-            v-model="walk.walkCreator"
-            :team="team"
-            :walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-            @change="handleWalkCreatorChange"
-        />
-        <walk-team-members-field
-            v-model="walk.walkTeamMembers"
-            :users="users"
-            :walk-creator="walk.walkCreator"
-            :is-loading="isLoading"
-            label="Teilnehmende der Runde"
-            description="Wer war mit dabei?"
-        />
-        <walk-guest-names-field
-            v-if="walk.isWithGuests"
-            v-model="walk.guestNames"
-            :team="team"
-            :initial-walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-name-field
-            v-model="walk.name"
-            :team="team"
-            :walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-concept-of-day-field
-            v-model="walk.conceptOfDay"
-            :team="team"
-            :initial-walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <walk-start-time-field
-            v-model="walk.startTime"
-            :initial-walk="initialWalk"
-            :is-loading="isLoading"
-            :error="error"
-        />
-        <v-row class="mb-1 mt-0">
-            <v-col
-                cols="12"
-                sm="12"
-                md="6"
-                class="mt-2"
-            >
-                <walk-end-time-field
-                    v-model="walk.endTime"
+        <v-row dense>
+            <v-col cols="12">
+                <walk-walk-creator-field
+                    v-model="walk.walkCreator"
+                    :team="team"
+                    :walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                    @change="handleWalkCreatorChange"
+                />
+            </v-col>
+            <v-col cols="12">
+                <walk-team-members-field
+                    v-model="walk.walkTeamMembers"
+                    :users="users"
+                    :walk-creator="walk.walkCreator"
+                    :is-loading="isLoading"
+                    label="Teilnehmende der Runde"
+                    description="Wer war mit dabei?"
+                />
+            </v-col>
+            <v-col v-if="walk.isWithGuests" cols="12">
+                <walk-guest-names-field
+                    v-model="walk.guestNames"
+                    :team="team"
                     :initial-walk="initialWalk"
                     :is-loading="isLoading"
                     :error="error"
                 />
             </v-col>
-            <v-col
-                cols="12"
-                class="d-md-none"
-            >
-                <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top"/>
+            <v-col cols="12">
+                <walk-name-field
+                    v-model="walk.name"
+                    :team="team"
+                    :walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
             </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="3"
-                class="mt-2"
-            >
-                <div class="d-none d-md-block">
-                    &nbsp;
-                </div>
-                <v-btn
-                    color="secondary"
-                    outlined
-                    small
-                    block
-                    min-height="40px"
-                    @click="selectCurrentTime"
+            <v-col cols="12">
+                <walk-concept-of-day-field
+                    v-model="walk.conceptOfDay"
+                    :team="team"
+                    :initial-walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-col cols="12" md="6">
+                <walk-start-time-field
+                    v-model="walk.startTime"
+                    :initial-walk="initialWalk"
+                    :is-loading="isLoading"
+                    :error="error"
+                />
+            </v-col>
+            <v-row class="my-1" dense>
+                <v-col>
+                    <walk-end-time-field
+                        v-model="walk.endTime"
+                        :initial-walk="initialWalk"
+                        :is-loading="isLoading"
+                        :error="error"
+                    />
+                </v-col>
+                <v-col
+                    cols="12"
+                    class="d-md-none"
                 >
-                    Schnellauswahl:<br>aktueller Zeitpunkt
-                </v-btn>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="3"
-                class="mt-2"
-            >
-                <div class="d-none d-md-block">
-                    &nbsp;
-                </div>
-                <v-btn
-                    color="secondary"
-                    outlined
-                    small
-                    block
-                    min-height="40px"
-                    @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
-                >
-                    Schnellauswahl:<br>{{ initialWalk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
-                </v-btn>
-            </v-col>
+                    <v-divider vertical />
+                </v-col>
+                <v-col cols="12" sm="7">
+                    <v-btn
+                        color="secondary"
+                        variant="outlined"
+                        block
+                        min-height="38px"
+                        @click="selectCurrentTime"
+                        class="mt-sm-6"
+                    >
+                        Schnellauswahl:<br>aktueller Zeitpunkt
+                    </v-btn>
+                    <v-btn
+                        color="secondary"
+                        variant="outlined"
+                        block
+                        min-height="38px"
+                        @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
+                        class="mt-2"
+                    >
+                        Schnellauswahl:<br>{{ initialWalk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
+                    </v-btn>
+                </v-col>
+            </v-row>
         </v-row>
         <v-alert
             v-if="!!diffLastWayPointOrRound"
@@ -138,8 +128,9 @@
             <v-switch
                 v-model="isWithoutSystemicAnswer"
                 label="nicht benötigt"
+                color="primary"
                 class="mt-0 ml-auto"
-                dense
+                density="compact"
             />
         </template>
         <walk-walk-reflection-field
@@ -151,10 +142,11 @@
         <v-switch
             v-model="isWithoutWalkReflection"
             label="nicht benötigt"
+            color="primary"
             class="mt-0 ml-auto"
-            dense
+            density="compact"
         />
-        Rundenbewertung
+        Rundenbewertung<br>
         <walk-rating
             v-if="walk.rating && walkClient"
             :rating="walk.rating"
@@ -171,8 +163,9 @@
         <v-switch
             v-model="isWithoutCommitments"
             label="nicht benötigt"
+            color="primary"
             class="mt-0 ml-auto"
-            dense
+            density="compact"
         />
         <walk-insights-field
             v-model="walk.insights"
@@ -184,7 +177,8 @@
             v-model="isWithoutInsights"
             label="nicht benötigt"
             class="mt-0 ml-auto"
-            dense
+            color="primary"
+            density="compact"
         />
         <walk-is-resubmission-field
             v-model="walk.isResubmission"
@@ -211,7 +205,7 @@
 'use strict';
 import dayjs from 'dayjs';
 import FormError from '../Common/FormError.vue';
-import {StarRating} from 'vue-rate-it';
+// import {StarRating} from 'vue-rate-it';
 import WalkRating from './WalkRating.vue';
 import {useAuthStore, useClientStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../../stores';
 import {
@@ -260,7 +254,6 @@ export default {
         WalkTeamMembersField,
         WalkRating,
         FormError,
-        StarRating,
     },
     data: function () {
         return {
@@ -480,7 +473,7 @@ export default {
             this.walk.endTime = time.format();
         },
         async handleSubmit() {
-            this.$emit('submit', this.walk);
+            this.$emit('submitted', this.walk);
         },
     },
 };

@@ -2,12 +2,12 @@
     <div>
         <v-alert
             v-if="!!redirect"
-            class="position-fixed fixed-top m-0 rounded-0"
-            style="z-index: 2000;"
             type="warning"
             transition="fade-transition"
-            dismissible
+            closable
+            prominent
             data-test="redirect-alert"
+            class="mb-4"
         >
             {{ redirect }}
         </v-alert>
@@ -45,6 +45,7 @@
     import WalkList from './Dashboard/WalkList.vue';
     import WayPointList from './Dashboard/WayPointList.vue';
     import ContentCollapse from './ContentCollapse.vue';
+    import { useRoute } from 'vue-router';
     import { useClientStore, useTeamStore, useWalkStore } from '../stores';
 
     export default {
@@ -56,10 +57,6 @@
             WayPointList,
         },
         props: {
-            redirect: {
-                type: String,
-                required: false,
-            },
         },
         data: function () {
             return {
@@ -68,9 +65,13 @@
                 walkStore: useWalkStore(),
                 totalWayPoints: null,
                 totalWalks: null,
+                route: useRoute(),
             }
         },
         computed: {
+            redirect() {
+                return this.route.query.redirect;
+            },
             hasWalks() {
                 return this.walkStore.hasWalks;
             },

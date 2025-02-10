@@ -1,62 +1,17 @@
 <template>
-    <div class="p-2">
+    <div class="pa-2">
         <v-row class="my-2">
             <v-col
                 xs="12"
                 :sm="isSuperAdmin ? 8 : 12"
                 :md="isSuperAdmin ? 6 : 12"
             >
-                <v-input
-                    @click:append="resetDefaultDateRange"
-                    @click:prepend="togglePicker"
-                >
-                    <template v-slot:prepend>
-                        <div
-                            :class="(dateRange.startDate.getTime() !== defaultDateRange.startDate.getTime() || dateRange.endDate.getTime() !== defaultDateRange.endDate.getTime()) ? 'font-weight-bold' : ''"
-                            class="mt-2"
-                        >
-                            Zeitraum
-                        </div>
-                    </template>
-                    <date-range-picker
-                        ref="picker"
-                        class="form-control"
-                        v-model="dateRange"
-                        :ranges="ranges"
-                        :locale-data="locale"
-                        auto-apply
-                        show-dropdowns
-                        opens="right"
-                        :readonly="isLoadingEntries.length > 0"
-                        :disabled="isLoadingEntries.length > 0"
-                    />
-                    <template v-slot:append>
-                        <v-progress-circular
-                            v-if="isLoading || isLoadingEntries.length > 0"
-                            size="18"
-                            indeterminate
-                            color="secondary"
-                        />
-                        <v-icon
-                            v-else
-                        >
-                            mdi-calendar
-                        </v-icon>
-
-                        <v-btn
-                            :color="!((dateRange.startDate.getTime() === defaultDateRange.startDate.getTime() && dateRange.endDate.getTime() === defaultDateRange.endDate.getTime()) || isLoading || isLoadingEntries.length > 0) ? 'blue darken-2' : 'secondary lighten-4'"
-                            x-small
-                            fab
-                        >
-                            <v-icon
-                                color="white"
-                                @click="resetDefaultDateRange"
-                            >
-                                mdi-filter-remove-outline
-                            </v-icon>
-                        </v-btn>
-                    </template>
-                </v-input>
+                <MonthRangePicker
+                    v-model="dateRange"
+                    data-test="termin-am-filter"
+                    :is-loading="isLoadingEntries.length > 0"
+                    @cleared="resetDefaultDateRange"
+                />
             </v-col>
             <v-col
                 v-if="isSuperAdmin"
@@ -72,9 +27,8 @@
                 />
             </v-col>
         </v-row>
-        <v-data-table
+        <v-data-table-server
             striped
-            dense
             class="mb-0"
             :headers="headers"
             :items="serverItems"
@@ -86,6 +40,7 @@
             disable-pagination
             :no-data-text="noItemsText"
             :loading-text="loadingText"
+            items-length=""
             multi-sort
             hover
             density="compact"
@@ -114,9 +69,9 @@
                     {{ clientFormatter(item.user.client) }}
                 </small>
             </template>
-            <template v-for="slot in valueSlots" v-slot:[`item.${slot.value}`]="{item}">
+            <template v-for="slot in valueSlots" v-slot:[`item.${slot.key}`]="{item}">
                 <v-icon
-                    v-if="isLoadingEntries.includes(slot.value)"
+                    v-if="isLoadingEntries.includes(slot.key)"
                     class="text-muted"
                     spin
                     size="18"
@@ -124,7 +79,7 @@
                     mdi-loading
                 </v-icon>
                 <v-icon
-                    v-else-if="item[slot.value]"
+                    v-else-if="item[slot.key]"
                     title="Benutzer hat in diesem Monat an mindestens einer Runde teilgenommen."
                     color="info"
                     size="18"
@@ -135,17 +90,13 @@
 
             <template #body.append="{headers}">
                 <tr>
-                    <td v-for="header in headers" :key="header.value" class="text-center">
-                        <strong v-if="header.value === 'user'">Summe</strong>
-                        <span v-else>{{ getSumOfColumn(header.value) }}</span>
+                    <td v-for="header in headers[0]" :key="header.key" class="text-center">
+                        <strong v-if="header.title === 'user'">Summe</strong>
+                        <span v-else>{{ getSumOfColumn(header.key) }}</span>
                     </td>
                 </tr>
             </template>
-
-<!--            <template #foot()="data">-->
-<!--                {{ getSumOfColumn(data.column)}}-->
-<!--            </template>-->
-        </v-data-table>
+        </v-data-table-server>
         <v-alert
             class="w-100 text-muted mt-2 mb-0"
         >
@@ -163,22 +114,19 @@
 
 <script>
 'use strict';
-import DateRangePicker from 'vue2-daterange-picker';
-import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import UserAPI from '../../api/user';
 import dayjs from 'dayjs';
-import dateRangePicker from '../../utils/date-range-picker'
 import { useAuthStore, useClientStore, useGeneralStore, useUserStore } from '../../stores';
-import { ClientSelect } from "@/js/components/Common";
+import { ClientSelect, MonthRangePicker } from "@/js/components/Common";
 import {WalkSystemicAnswerField} from "@/js/components/Common/Walk";
 import { loadingText, noItemsText} from "@/js/utils";
 
 export default {
     name: 'ActiveUserList',
     components: {
+        MonthRangePicker,
         WalkSystemicAnswerField,
         ClientSelect,
-        DateRangePicker,
     },
     data: function () {
         const generalStore = useGeneralStore();
@@ -189,16 +137,8 @@ export default {
             generalStore: generalStore,
             userStore: useUserStore(),
             isLoadingEntries: [],
-            locale: dateRangePicker.locale,
-            defaultDateRange: {
-                startDate: generalStore.defaultActiveUsersDateRange.startDate.toDate(),
-                endDate: generalStore.defaultActiveUsersDateRange.endDate.toDate(),
-            },
-            dateRange: {
-                startDate: new Date(generalStore.activeUsersDateRange.startDate),
-                endDate: new Date(generalStore.activeUsersDateRange.endDate),
-            },
-            ranges: dateRangePicker.ranges,
+            defaultDateRange: generalStore.defaultActiveUsersDateRange,
+            dateRange: generalStore.activeUsersDateRange,
             entries: [],
             client: generalStore.clientFilter,
             loadingText,
@@ -224,8 +164,8 @@ export default {
 
             headers.push(
                 {
-                    value: 'user',
-                    text: 'Benutzername',
+                    key: 'user',
+                    title: 'Benutzername',
                     sortable: true,
                     align: 'center',
                 },
@@ -237,13 +177,17 @@ export default {
         },
         valueSlots() {
             let headers = [];
-            let start = dayjs(this.dateRange.startDate);
-            let dateTo = dayjs(this.dateRange.endDate);
+
+            if (!this.dateRange?.length) {
+                return headers
+            }
+            let start = dayjs().month(this.dateRange[0].month).year(this.dateRange[0].year).startOf('month');
+            let dateTo = dayjs().month(this.dateRange[1].month).year(this.dateRange[1].year).endOf('month');
 
             while (start.isBefore(dateTo)) {
                 headers.push({
-                    value: this.getKeyOfDayjs(start),
-                    text: `${start.month() + 1}/${start.year()}`,
+                    key: this.getKeyOfDayjs(start),
+                    title: `${start.month() + 1}/${start.year()}`,
                     align: 'center',
                     sortable: true,
                 });
@@ -312,12 +256,13 @@ export default {
         resetDefaultDateRange() {
             this.dateRange = this.defaultDateRange;
         },
-        togglePicker() {
-            this.$refs.picker.togglePicker(!this.$refs.picker.open);
-        },
         async loadItems() {
-            let start = dayjs(this.dateRange.startDate);
-            let end = dayjs(this.dateRange.endDate);
+            if (!this.dateRange?.length) {
+                return
+            }
+            let start = dayjs().month(this.dateRange[0].month).year(this.dateRange[0].year).startOf('month');
+            let end = dayjs().month(this.dateRange[1].month).year(this.dateRange[1].year).endOf('month');
+
             while (start.isBefore(end)) {
                 let key = this.getKeyOfDayjs(start);
                 this.isLoadingEntries.push(key);

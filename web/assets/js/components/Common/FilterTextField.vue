@@ -2,12 +2,10 @@
 import {computed} from "vue";
 import {ErrorData, getViolationsFeedback} from "../../utils";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     label?: string,
     hint?: string,
     placeholder?: string,
@@ -30,22 +28,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value === null ? '' : value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val ?? ""),
 });
 
 const errorMessages = computed(() => {
-    if (!props.error) {
-        return ''
-    }
-
-    return getViolationsFeedback(props.violationFields, props.error);
+      return props.error ? getViolationsFeedback(props.violationFields, props.error) : "";
 })
 
 </script>
@@ -57,13 +45,12 @@ const errorMessages = computed(() => {
         :placeholder="placeholder"
         :data-test="dataTest"
         trim
-        outlined
-        dense
+        variant="outlined"
         clearable
         :persistent-clear="!!value"
         class=""
         autocomplete="off"
-        :success="!!value"
+        :class="!!value ? 'text-primary' : ''"
         list="team-name-for-walk-list"
         density="compact"
         :hint="hint"

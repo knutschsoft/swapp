@@ -3,7 +3,7 @@
         v-if="initialClient"
         submit-button-text="Neuen Klienten erstellen"
         :initial-client="initialClient"
-        @submit="handleSubmit"
+        @submitted="handleSubmit"
     />
 </template>
 

@@ -52,10 +52,12 @@ export default {
         });
     },
     export(params) {
-        const sort = updateFilterParams(params);
+        params.page = 1;
+        params.itemsPerPage = 5000;
+        let transformedParams = useParamTransformer(params);
 
         return apiClient.get(
-            '/api/walks/export?page=1&itemsPerPage=5000' + sort,
+            '/api/walks/export?' + transformedParams,
             {
                 headers: { accept: 'text/csv' },
                 responseType: 'arraybuffer',

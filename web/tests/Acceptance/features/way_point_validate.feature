@@ -26,10 +26,10 @@ Feature: An user can submit invalid entries in way point and get errors shown
     Then I wait for 'Wegpunkt zur Runde "Gorbitz" hinzufügen' to appear
     And the element "locationName" should be enabled
     When I enter "A" in "locationName" field
-    Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
+    Then I wait for "Keine Daten vorhanden" to appear
     Then I wait for "Wegpunkt ansehen" to disappear
     And I click on test element "button-way-point-submit"
     And I wait for "Wegpunkt erfolgreich hinzugefügt." to disappear
-    Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
+    Then I wait for "Keine Daten vorhanden" to appear
     Then I wait for "Wegpunkt ansehen" to disappear
     Then I wait for "Diese Zeichenkette ist zu kurz. Sie sollte mindestens 2 Zeichen haben." to appear

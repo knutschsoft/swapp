@@ -21,7 +21,7 @@
                 submit-button-text="Wegpunkt speichern"
                 :initial-way-point="wayPoint"
                 :error="changeError"
-                @submit="handleSubmit"
+                @submitted="handleSubmit"
             />
         </content-collapse>
         <content-collapse
@@ -127,7 +127,7 @@
             }
             await Promise.all(promises);
             if (!this.walk || !this.wayPoint) {
-                this.$router.push({ name: 'Dashboard', params: { redirect: 'Dieser Wegpunkt oder diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+                this.$router.push({ name: 'Dashboard', query: { redirect: 'Dieser Wegpunkt oder diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
             }
         },
         methods: {

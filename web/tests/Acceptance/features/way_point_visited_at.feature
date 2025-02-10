@@ -34,7 +34,7 @@ Feature: An admin can change visited at of a wayPoint
     When I enter "Jugo geht ab" in "oneOnOneInterview" field
 
     And I click on text "Wegpunkt speichern und Runde abschließen"
-    And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
+      And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich zur Runde hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
     And there are exactly 1 wayPoints in database
     And I can find the following wayPoints in database:
       | locationName | visitedAt             |
@@ -63,5 +63,5 @@ Feature: An admin can change visited at of a wayPoint
     And I wait for "Wegpunkt geändert" to appear
     And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich geändert.' to appear
     And I can find the following wayPoints in database:
-      | locationName | visitedAt                     |
+      | locationName | visitedAt                          |
       | Assieck      | date<22.12.2028 18:50,d.m.Y H:i:s> |

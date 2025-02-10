@@ -59,6 +59,7 @@
                     v-model="form.startTime"
                     :is-loading="isLoading"
                     :error="error"
+                    description="Die aktuelle Zeit ist vorausgewählt."
                 />
             </v-col>
             <v-col>
@@ -214,13 +215,13 @@ export default {
             await this.teamStore.fetchTeams();
         }
         if (!this.team) {
-            this.$router.push({name: 'Dashboard', params: {redirect: 'Dieses Team existiert nicht. Du wurdest auf das Dashboard weitergeleitet.'}});
+            this.$router.push({name: 'Dashboard', query: {redirect: 'Dieses Team existiert nicht. Du wurdest auf das Dashboard weitergeleitet.'}});
             return;
         }
         if (!this.team.users.includes(this.currentUser['@id'])) {
             this.$router.push({
                 name: 'Dashboard',
-                params: {redirect: 'Du kannst für dieses Team keine Runde erstellen, da du kein Mitglied des Teams bist. Du wurdest auf das Dashboard weitergeleitet.'}
+                query: {redirect: 'Du kannst für dieses Team keine Runde erstellen, da du kein Mitglied des Teams bist. Du wurdest auf das Dashboard weitergeleitet.'}
             });
             return;
         }
@@ -288,6 +289,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

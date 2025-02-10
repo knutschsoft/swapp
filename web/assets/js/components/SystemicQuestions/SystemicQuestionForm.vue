@@ -1,16 +1,17 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleSubmit"
+        @submit.prevent="handleSubmit"
         ref="form"
-        class="p-1 p-sm-2 p-lg-3"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
         <v-textarea
             v-model="question"
             required
-            outlined
+            variant="outlined"
             minlength="5"
             label="Fragestellung"
             maxlength="4000"
+            auto-grow
             placeholder="Fragestellung"
             :state="questionState"
             data-test="question"
@@ -120,7 +121,7 @@ export default {
             this.question = this.initialQuestion;
         },
         async handleSubmit() {
-            this.$emit('submit', {
+            this.$emit('submitted', {
                 client: this.client,
                 question: this.question,
             });

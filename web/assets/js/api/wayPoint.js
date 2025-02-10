@@ -35,10 +35,12 @@ export default {
         return apiClient.get(`/api/way_points?${transformedParams}`);
     },
     export(params) {
-        const sort = updateFilterParams(params);
+        params.page = 1
+        params.itemsPerPage = 5000
+        const transformedParams = useParamTransformer(params);
 
         return apiClient.get(
-            '/api/way_points/export?page=1&itemsPerPage=5000' + sort,
+            '/api/way_points/export?' + transformedParams,
             {
                 headers: { accept: 'text/csv' },
                 responseType: 'arraybuffer',

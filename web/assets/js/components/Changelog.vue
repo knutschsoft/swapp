@@ -5,46 +5,47 @@
             collapse-key="changelog-swapp"
             is-visible-by-default
         >
-            <v-list class="p-0">
-                <template v-for="item in items">
+            <v-list class="pt-0">
+                <template v-for="item in items" :key="item.header">
                     <v-list-item
-                        dense
-                        class="grey lighten-2 p-2 mt-0"
-                        :key="item.header"
+                        class="bg-grey-lighten-2"
                     >
-                        <v-list-item-avatar
-                            v-if="item.avatarText"
-                            color="white"
-                            v-html="item.avatarText"
-                            :title="item.avatarTitle ?? ''"
+                        <template v-slot:prepend>
+                            <div class="font-weight-bold">{{ item.header }}</div>
+                        </template>
+                        <v-badge
+                            v-if="hasItemNewBadge(item.header)"
+                            content="Neu"
+                            class="mr-2"
+                            color="primary"
+                            inline
+                            left
+                            floating
                         />
-                        <v-list-item-content>
-                            <v-badge
-                                v-if="hasItemNewBadge(item.header)"
-                                content="Neu"
-                                inline
-                                right
-                            >
-                                <div class="mr-auto font-weight-bold">{{ item.header }}</div>
-                            </v-badge>
-                            <div v-else class="font-weight-bold">{{ item.header }}</div>
-                        </v-list-item-content>
+                        <template v-slot:append>
+                            <v-avatar
+                                v-if="item.avatarText"
+                                color="white"
+                                class=""
+                                v-html="item.avatarText"
+                                :title="item.avatarTitle ?? ''"
+                            />
+                        </template>
                     </v-list-item>
                     <v-list-item
-                        :key="`${item.header}2`"
                         class="py-3"
                     >
-                        <ul class="pl-3 mb-0">
+                        <ul class="pl-5 mb-0">
                             <li v-for="(entry,entryKey) in item.entries" :key="`${item.header}-${entryKey}`">
                                 <template v-if="Array.isArray(entry.text)">
                                     <span v-html="entry.text[0]" />
-                                    <ul>
-                                        <li
-                                            v-for="(textItem, i) in entry.text"
-                                            v-if="i !== 0"
-                                            :key="i"
-                                            v-html="textItem"
-                                        />
+                                    <ul class="pl-5">
+                                        <template v-for="(textItem, key) in entry.text" :key="key">
+                                            <li
+                                                v-if="key !== 0"
+                                                v-html="textItem"
+                                            />
+                                        </template>
                                     </ul>
                                 </template>
                                 <span v-else v-html="entry.text" />

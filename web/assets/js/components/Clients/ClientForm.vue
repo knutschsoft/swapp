@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-import { ref, computed, watch, defineProps, defineEmits, onMounted } from 'vue';
+import { ref, computed, watch, defineEmits, onMounted } from 'vue';
 import axios from 'axios';
 import * as EmailValidator from 'email-validator';
 import FormError from '../Common/FormError.vue';
 import WalkRating from '../Walk/WalkRating.vue';
-// import { getViolationsFeedback } from '../../utils/validation';
 import { useClientStore } from '../../stores';
 import { Client } from '../../model';
 
@@ -55,6 +54,10 @@ onMounted(() => {
 watch(() => props.initialClient, () => {
     setInitialValues();
 });
+watch(() => ratingFile.value, async () => {
+    client.value.ratingImageFileData = ratingFile.value ? await readFile(ratingFile.value) : null;
+    client.value.ratingImageFileName = ratingFile.value ? ratingFile.value.name : null;
+});
 
 async function setInitialValues() {
     client.value.name = props.initialClient.name || null;
@@ -73,20 +76,15 @@ async function setInitialValues() {
 }
 
 function handleSubmit() {
-    emit('submit', client.value);
-}
-
-async function updateRatingFile(file: File | null) {
-    client.value.ratingImageFileData = file ? await readFile(file) : null;
-    client.value.ratingImageFileName = file ? file.name : null;
+    emit('submitted', client.value);
 }
 
 function readFile(file: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = (res) => resolve(res?.target?.result as string);
-        reader.onerror = reject;
         reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
     });
 }
 </script>
@@ -100,8 +98,8 @@ function readFile(file: Blob): Promise<string> {
                     label="Name"
                     required
                     :rules="[() => !!nameState || 'Der Name muss zwischen 3 and 200 Zeichen enthalten.']"
-                    outlined
-                    dense
+                    variant="outlined"
+                    density="compact"
                 />
             </v-col>
 
@@ -111,8 +109,8 @@ function readFile(file: Blob): Promise<string> {
                     label="E-Mail"
                     required
                     :rules="[() => !!emailState || 'Ungültiges E-Mail-Format.']"
-                    outlined
-                    dense
+                    variant="outlined"
+                    density="compact"
                 />
             </v-col>
 
@@ -121,8 +119,9 @@ function readFile(file: Blob): Promise<string> {
                     v-model="client.description"
                     label="Beschreibung"
                     :rules="[() => !!descriptionState || 'Die Beschreibung muss weniger als 10000 Zeichen enthalten.']"
-                    outlined
-                    dense
+                    variant="outlined"
+                    auto-grow
+                    density="compact"
                 />
             </v-col>
 
@@ -135,25 +134,26 @@ function readFile(file: Blob): Promise<string> {
                     accept="image/*"
                     placeholder="Kein Bild gewählt"
                     :disabled="isLoading"
-                    outlined
-                    dense
-                    @change="updateRatingFile"
+                    variant="outlined"
+                    density="compact"
                 />
             </v-col>
             <v-col v-if="client.ratingImageFileData" cols="3">
                 <div class="d-flex align-center mb-4 justify-center">
-                    <v-avatar size="50" :tile="false">
-                        <img :src="client.ratingImageFileData" alt="Rating-Bild" />
+                    <v-avatar size="50">
+                        <v-img :src="client.ratingImageFileData" alt="Rating-Bild" />
                     </v-avatar>
-                    <v-btn class="align-self-start ml-n4 mt-n4" icon @click="client.ratingImageFileData = null">
+                    <v-btn class="align-self-start ml-n4 mt-n4" size="35" icon @click="ratingFile = null">
                         <v-icon>mdi-close-circle</v-icon>
                     </v-btn>
                 </div>
             </v-col>
         </v-row>
 
-        <v-alert type="info" text>
-            Vorschau:
+        <v-alert color="grey-darken-3" prominent variant="outlined" class="mb-2">
+            <div>
+                Vorschau:
+            </div>
             <walk-rating :rating="3" :client="client" />
         </v-alert>
 

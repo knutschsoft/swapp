@@ -1,4 +1,4 @@
-@import './fixes/prevent-ios-input-zoom.scss';
+@use './fixes/prevent-ios-input-zoom.css';
 
 html {
     font-size: 16px;
@@ -30,10 +30,48 @@ body {
         width: 100% !important;
     }
 }
+.fade-enter-active, .fade-leave-active {
+    transition: all .2s ease;
+}
+.fade-enter-from, .fade-leave-active {
+    opacity: 0;
+}
 
+.v-table__wrapper tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, .05);
+}
 
 .min-w-\[250px\] {
     min-width: 250px;
+}
+
+.mw-25 {
+    min-width: 100px;
+    max-width: 250px;
+}
+.mh-25 {
+    max-height: 100px;
+}
+.text-transform-none {
+    text-transform: none !important;
+}
+.text-clampa-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.text-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.text-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .cursor-pointer {
@@ -70,3 +108,8 @@ body {
 .blinking {
     animation: blinking 1.5s ease-in-out;
 }
+
+.v-expansion-panel-text__wrapper {
+    padding: 0 !important;
+}
+

@@ -1,20 +1,17 @@
 <template>
-    <div class="p-2">
-        <v-row class="mt-0 mb-0">
-            <v-col
-                sm="12"
-            >
+    <div class="px-2 pt-2">
+        <v-row density="compact">
+            <v-col v-if="tags.length" cols="12">
                 <div class="d-flex flex-row align-items-center">
                     <div>Tags</div>
                     <v-tooltip
                         bottom
-                        color="info"
+                        content-class="bg-info"
                     >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template v-slot:activator="{ props}">
                             <v-icon
                                 class="text-muted ml-2"
-                                v-bind="attrs"
-                                v-on="on"
+                                v-bind="props"
                             >
                                 mdi-help-circle-outline
                             </v-icon>
@@ -22,11 +19,11 @@
                         <v-alert
                             prominent
                             type="info"
-                            dense
+                            density="compact"
                             class="mb-0 m-0"
                         >
                             <span>Welche Tags werden angezeigt?</span>
-                            <ul class="mb-0">
+                            <ul class="mb-0 pl-5">
                                 <li>Alle aktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
                                 <li>Alle deaktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
                             </ul>
@@ -35,16 +32,15 @@
                     <v-btn
                         title="Filterung nach Tags entfernen"
                         class="ml-auto"
-                        :color="filter.wayPointTags.length ? 'blue darken-2' : 'secondary lighten-4'"
-                        x-small
+                        :color="filter.wayPointTags.length ? 'primary-lighten-2' : 'secondary-lighten-4'"
+                        size="x-small"
                         @click="unsetFilterWayPointTags"
-                        fab
+                        icon
                     >
                         <v-icon
                             color="white"
-                        >
-                            mdi-filter-remove-outline
-                        </v-icon>
+                            icon="mdi-filter-remove-outline"
+                        />
                     </v-btn>
                 </div>
                 <v-chip-group
@@ -52,40 +48,46 @@
                     multiple
                     column
                 >
-                    <v-chip
+                    <template
                         v-for="tag in tags"
                         :key="tag['id']"
-                        v-if="tag.isEnabled"
-                        active-class="primary--text"
-                        class="mr-1 mb-1"
-                        small
-                        filter
-                        outlined
                     >
-                        {{ tag.name }}
-                    </v-chip>
+                        <v-chip
+                            v-if="tag.isEnabled"
+                            class="mr-1 mb-1"
+                            density="compact"
+                            filter
+                            color="primary"
+                            variant="outlined"
+                        >
+                            {{ tag.name }}
+                        </v-chip>
+                    </template>
                     <hr
                         v-if="hasDisabledTag"
                         class="d-block w-100 my-1 mr-2"
                     >
-                    <v-chip
+                    <template
                         v-for="tag in tags"
                         :key="tag['id']"
-                        v-if="!tag.isEnabled"
-                        active-class="primary--text"
-                        class="mr-1 mb-1"
-                        small
-                        filter
-                        outlined
                     >
-                        {{ tag.name }}
-                        <mdicon
-                            name="TagOff"
-                            class="text-muted ml-1"
-                            title="deaktivierter Tag"
-                            size="16"
-                        />
-                    </v-chip>
+                        <v-chip
+                            v-if="!tag.isEnabled"
+                            class="mr-1 mb-1"
+                            density="compact"
+                            filter
+                            color="primary"
+                            variant="outlined"
+                        >
+                            {{ tag.name }}
+                            <mdicon
+                                name="TagOff"
+                                class="text-muted ml-1"
+                                title="deaktivierter Tag"
+                                size="16"
+                            />
+                        </v-chip>
+                    </template>
                 </v-chip-group>
             </v-col>
             <v-col
@@ -143,62 +145,13 @@
                 md="12"
                 xl="12"
             >
-
-                <v-input
-                    @click:append="unsetFilterVisitedAt"
-                    @click:prepend="togglePicker"
-                    hide-details
-                >
-                    <template v-slot:prepend>
-                        <div
-                            :class="(filter?.visitedAt?.startDate !== defaultDateRange.startDate || filter?.visitedAt?.endDate !== defaultDateRange.endDate) ? 'font-weight-bold' : ''"
-                            class="mt-2"
-                        >
-                            Ankunft
-                        </div>
-                    </template>
-                    <date-range-picker
-                        ref="picker"
-                        class="form-control"
-                        v-model="filter.visitedAt"
-                        :ranges="ranges"
-                        :locale-data="locale"
-                        showWeekNumbers
-                        auto-apply
-                        show-dropdowns
-                        opens="right"
-                        :readonly="isLoading"
-                        :disabled="isLoading"
-                    >
-                    </date-range-picker>
-
-                    <template v-slot:append>
-                        <v-progress-circular
-                            v-if="isLoading"
-                            size="18"
-                            indeterminate
-                            color="secondary"
-                        />
-                        <v-icon
-                            v-else
-                        >
-                            mdi-calendar
-                        </v-icon>
-
-                        <v-btn
-                            :color="(filter?.visitedAt?.startDate !== defaultDateRange.startDate || filter?.visitedAt?.endDate !== defaultDateRange.endDate) ? 'blue darken-2' : 'secondary lighten-4'"
-                            x-small
-                            fab
-                        >
-                            <v-icon
-                                color="white"
-                                @click="unsetFilterVisitedAt"
-                            >
-                                mdi-filter-remove-outline
-                            </v-icon>
-                        </v-btn>
-                    </template>
-                </v-input>
+                <date-range-picker
+                    v-model="filter.startTime"
+                    :is-loading="isLoading"
+                    data-test="visited-at-filter"
+                    placeholder="Ankunft"
+                    @cleared="unsetFilterVisitedAt"
+                />
             </v-col>
             <v-col
                 class="my-1"
@@ -208,7 +161,7 @@
                 xl="12"
             >
                 <v-btn
-                    small
+                    site="small"
                     color="secondary"
                     block
                     :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
@@ -221,18 +174,14 @@
                     />
                 </v-btn>
             </v-col>
-            <v-col cols="12">
-                <hr class="my-1" />
-            </v-col>
             <v-col
-                class="my-1"
                 xs="12"
                 sm="12"
                 md="12"
                 xl="12"
             >
                 <v-btn
-                    small
+                    site="small"
                     color="secondary"
                     size="sm"
                     block
@@ -247,11 +196,10 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <v-data-table
-            striped
-            dense
+        <v-data-table-server
             class="mb-0"
             :items-per-page="itemsPerPage"
+            :page="currentPage"
             :headers="headers"
             :items="serverItems"
             :items-length="totalItems"
@@ -263,12 +211,13 @@
             :no-data-text="noItemsText"
             :loading-text="loadingText"
             multi-sort
-            hover
+            mobile-breakpoint="lg"
             density="compact"
+            show-current-page
             @update:options="loadItems"
-            :options.sync="deprecatedOptions"
             :no-results-text="noItemsText"
-            :server-items-length="totalItems"
+            @update:items-per-page="handlePerPageChange"
+            @update:page="handleCurrentPageChange"
         >
             <template v-slot:item.malesCount="{item}">
                 {{ getWalkByIri(item.walk)?.isWithAgeRanges ? item.malesCount : '-' }}
@@ -283,51 +232,10 @@
                 {{ getWalkByIri(item.walk)?.isWithPeopleCount ? item.peopleCount : '-' }}
             </template>
             <template v-slot:item.note="{item}">
-                <v-tooltip
-                    bottom
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <div
-                            class="mw-25"
-                            v-bind="attrs"
-                            v-on="on"
-                        >
-                            <nl2br
-                                tag="div"
-                                :text="item.note?.trim()"
-                                class-name="text-truncate"
-                            />
-                        </div>
-                    </template>
-                    <nl2br
-                        tag="div"
-                        :text="item.note?.trim()"
-                    />
-                </v-tooltip>
+                <tooltip :text="item.note?.trim()" :nl2br="true" />
             </template>
             <template v-slot:item.oneOnOneInterview="{item}">
-                <v-tooltip
-                    bottom
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <div
-                            class="mw-25"
-                            v-bind="attrs"
-                            v-on="on"
-                        >
-                            <nl2br
-                                tag="div"
-                                :text="item.oneOnOneInterview.trim()"
-                                class-name="text-truncate"
-                            />
-                        </div>
-
-                    </template>
-                    <nl2br
-                        tag="div"
-                        :text="item.oneOnOneInterview.trim()"
-                    />
-                </v-tooltip>
+                <tooltip :text="item.oneOnOneInterview?.trim()" :nl2br="true" />
             </template>
             <template v-slot:item.wayPointTags="{item}">
                 {{ formatTags(item.wayPointTags) }}
@@ -343,49 +251,43 @@
             </template>
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-content-around">
-                    <router-link
+                    <v-btn
+                        density="compact"
+                        :disabled="isLoading"
+                        color="secondary"
                         :to="{name: 'WayPointDetail', params: { wayPointId: item.wayPointId, walkId: getWalkByIri(item.walk)?.walkId }}"
                         :data-test="`button-wegpunkt-ansehen-${ item.locationName }`"
                     >
-                        <v-btn
-                            small
-                            :disabled="isLoading"
-                            color="secondary"
-                        >
-                            Wegpunkt ansehen
-                            <span class="text-nowrap">
-                                <font-awesome-icon icon="map-signs" class="ml-2" />
-                                <font-awesome-icon icon="eye" class="ml-2" />
-                            </span>
-                        </v-btn>
-                    </router-link>
+                        Wegpunkt ansehen
+                        <v-icon icon="mdi-marker-path" class="ml-1"></v-icon>
+                        <v-icon icon="mdi-eye" class="ml-1"></v-icon>
+                    </v-btn>
                 </div>
             </template>
-        </v-data-table>
+        </v-data-table-server>
     </div>
 </template>
 
 <script>
 'use strict';
-import DateRangePicker from 'vue2-daterange-picker';
-import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 import dayjs from 'dayjs';
-import dateRangePicker from '../../utils/date-range-picker'
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
 import TagAPI from '../../api/tag.js';
-import { useGeneralStore, useTagStore, useWalkStore, useWayPointStore } from '../../stores';
-import {FilterComboboxField, FilterTextField} from "@/js/components/Common";
+import { useGeneralStore, useTagStore, useWalkStore, useWayPointStore } from '@/js/stores';
+import {DateRangePicker, FilterComboboxField, FilterTextField} from "@/js/components/Common";
 import ColorBadge from "@/js/components/Tags/ColorBadge.vue";
 import {formatDateTimeNoSecondsWithDayOfWeek, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText} from "@/js/utils";
+import Tooltip from "@/js/components/Common/Tooltip.vue";
 
 export default {
     name: 'WayPointList',
     components: {
+        Tooltip,
+        DateRangePicker,
         ColorBadge,
         FilterComboboxField,
         FilterTextField,
-        DateRangePicker,
     },
     props: {},
     data: function () {
@@ -399,13 +301,8 @@ export default {
             isLoading: false,
             isExportLoading: false,
             exportCtx: null,
-            locale: dateRangePicker.locale,
-            ranges: dateRangePicker.ranges,
             allTeamNames: [],
             tags: [],
-            sortBy: 'walk.startTime',
-            sortDesc: true,
-            sortDirection: 'desc',
             itemsPerPageText,
             itemsPerPageOptions,
             loadingText,
@@ -422,32 +319,24 @@ export default {
     computed: {
         headers() {
             const headers = [
-                { value: 'locationName', text: 'Ort' }
+                { value: 'locationName', title: 'Ort', sortable: true  }
             ]
 
             headers.push(...[
-                { value: 'malesCount', text: 'Männer' },
-                { value: 'femalesCount', text: 'Frauen' },
-                { value: 'queerCount', text: 'Andere' },
+                { value: 'malesCount', title: 'Männer', sortable: true  },
+                { value: 'femalesCount', title: 'Frauen', sortable: true  },
+                { value: 'queerCount', title: 'Andere', sortable: true  },
             ])
 
-            headers.push({ value: 'peopleCount', text: 'Anzahl Personen' })
+            headers.push({ value: 'peopleCount', title: 'Anzahl Personen', sortable: true, align: 'center'  })
             headers.push(...[
-                { value: 'note', text: 'Beobachtung' },
-                { value: 'oneOnOneInterview', text: 'Einzelgespräch' },
-                { value: 'wayPointTags', text: 'Tags', sortable: false },
-                {
-                    value: 'walk.teamName', text: 'Team',
-                },
-                {
-                    value: 'visitedAt',
-                    text: 'Ankunft',
-                },
-                {
-                    value: 'walk.name',
-                    text: 'Runde',
-                },
-                { value: 'actions', text: 'Aktionen' },
+                { value: 'note', title: 'Beobachtung', sortable: true  },
+                { value: 'oneOnOneInterview', title: 'Einzelgespräch', sortable: true },
+                { value: 'wayPointTags', title: 'Tags', sortable: false },
+                { value: 'walk.teamName', title: 'Team', sortable: true },
+                { value: 'visitedAt', title: 'Ankunft', sortable: true },
+                { value: 'walk.name', title: 'Runde', sortable: true },
+                { value: 'actions', title: 'Aktionen', sortable: false },
             ])
 
             return headers
@@ -475,7 +364,7 @@ export default {
         },
     },
     async mounted() {
-        this.perPage = this.generalStore.wayPointPerPage;
+        this.itemsPerPage = this.generalStore.wayPointPerPage;
         this.currentPage = this.generalStore.wayPointCurrentPage;
         const tagResult = await TagAPI.findAllWithWayPoints();
         this.tags = tagResult.data['hydra:member'];
@@ -490,12 +379,6 @@ export default {
                 await this.loadItems({ ...this.tableOptions });
                 // search.value = String(Date.now())
                 // settings.betriebsbeauftragterFilter.store(betriebsbeauftragterFilter.value)
-            },
-            deep: true,
-        },
-        deprecatedOptions: {
-            handler: async function () {
-                await this.loadItems(this.deprecatedOptions);
             },
             deep: true,
         },
@@ -541,14 +424,14 @@ export default {
                 teamName: !this.filter.teamName,
             }
             sortBy.forEach((val) => {
-                data[`sortBy[${val.key}]`] = val.order;
+                data[`order[${val.key}]`] = val.order;
             })
             if (this.filter.visitedAt?.startDate && this.filter.visitedAt?.endDate) {
                 data['visitedAt[after]'] = dayjs(this.filter.visitedAt.startDate).startOf('day').toISOString()
                 data['visitedAt[before]'] = dayjs(this.filter.visitedAt.endDate).endOf('day').toISOString()
             }
 
-            // this.exportCtx = ctx;
+            this.exportCtx = data;
 
             try {
                 this.isLoading = true;
@@ -578,7 +461,12 @@ export default {
             }
         },
         handleCurrentPageChange(value) {
+            this.currentPage = Number(value);
             this.generalStore.updateWayPointCurrentPage(Number(value));
+        },
+        handlePerPageChange(value) {
+            this.itemsPerPage = Number(value);
+            this.generalStore.updateWayPointPerPage(Number(value));
         },
         unsetFilterWayPointTags() {
             this.filter.wayPointTags = [];
@@ -589,10 +477,6 @@ export default {
         unsetAllFilter() {
             this.generalStore.updateWayPointFilter(this.defaultFilter);
             this.currentPage = 1;
-            this.handleCurrentPageChange(1);
-        },
-        togglePicker() {
-            this.$refs.picker.togglePicker(!this.$refs.picker.open);
         },
         forceFileDownload(response, title) {
             const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -624,8 +508,8 @@ export default {
             if (this.filter.note) {
                 title = `BEOBACHTUNG_${this.filter.note}_${title}`;
             }
-            if (this.filter.teamName) {
-                title = `TEAM_${this.filter.teamName}_${title}`;
+            if (this.filter.teamName.length) {
+                title = `TEAM_${this.filter.teamName.join('_')}_${title}`;
             }
             if (this.filter.locationName) {
                 title = `ORT_${this.filter.locationName}_${title}`;
@@ -648,7 +532,4 @@ export default {
 </script>
 
 <style>
-.mw-25 {
-    max-width: 250px;
-}
 </style>

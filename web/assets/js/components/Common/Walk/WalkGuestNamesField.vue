@@ -3,12 +3,10 @@ import {computed, ref} from "vue";
 import {Team, Walk} from "../../../model";
 import {getViolationsFeedback} from "../../../utils";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string[],
+    modelValue: string[],
     team: Team,
     initialWalk?: Walk | null,
     label?: string,
@@ -26,14 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const guestNameSearch = ref<string>('');
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
 });
 
 const guestNames = computed(() => {
@@ -63,8 +55,8 @@ const errorMessages = computed(() => {
         deletable-chips
         clearable
         multiple
-        outlined
-        dense
+        variant="outlined"
+        density="compact"
         small-chips
         :label="label"
         :hint="description"
@@ -79,12 +71,10 @@ const errorMessages = computed(() => {
         :error="!!errorMessages?.length"
     >
         <template v-slot:no-data>
-            <v-list-item dense>
-                <v-list-item-content>
-                    <v-list-item-title>
-                        Füge "<strong>{{ guestNameSearch }}</strong>" hinzu.
-                    </v-list-item-title>
-                </v-list-item-content>
+            <v-list-item density="compact">
+                <v-list-item-title>
+                    Füge "<strong>{{ guestNameSearch }}</strong>" hinzu.
+                </v-list-item-title>
             </v-list-item>
         </template>
     </v-combobox>

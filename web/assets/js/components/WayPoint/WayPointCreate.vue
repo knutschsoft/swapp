@@ -3,7 +3,7 @@
         submit-button-text="Wegpunkt speichern und weiteren Wegpunkt hinzufügen"
         :initial-walk="walk"
         :key="componentKey"
-        @submit="handleSubmit"
+        @submitted="handleSubmit"
     />
 </template>
 
@@ -11,7 +11,7 @@
 'use strict';
 
 import WayPointForm from './WayPointForm.vue';
-import {useAlertStore, useWayPointStore} from '../../stores';
+import {useAlertStore, useWayPointStore} from '@/js/stores';
 
 export default {
     name: 'WayPointCreate',
@@ -48,13 +48,14 @@ export default {
             if (wayPoint) {
                 let message = `Der Wegpunkt "${wayPoint.locationName}" wurde erfolgreich zur Runde hinzugefügt.`;
                 if (isWithFinish) {
-                    message += ' Die Runde kann jetzt abgeschlossen werden';
+                    message += ' Die Runde kann jetzt abgeschlossen werden.';
                 }
                 this.alertStore.success(message, 'Wegpunkt erstellt');
                 if (isWithFinish) {
                     this.$router.push({
                         name: 'WalkEpilogue',
-                        params: { walkId: this.walk.walkId, successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
+                        params: { walkId: this.walk.walkId },
+                        query: { successMessage: 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' },
                     });
                 } else {
                     this.forceRerender();

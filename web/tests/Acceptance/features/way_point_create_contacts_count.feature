@@ -36,7 +36,7 @@ Feature: An user can create a wayPoint with and without contactsCount
     Then I wait for 'Anzahl direkter Kontakte' to disappear
     And I wait for test element "button-way-point-submit-and-finish" to be not disabled
     And I click on text "Wegpunkt speichern und Runde abschließen"
-    And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
+    And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich zur Runde hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
     And there are exactly 1 wayPoints in database
     And I can find the following wayPoints in database:
       | locationName | contactsCount |
@@ -50,7 +50,7 @@ Feature: An user can create a wayPoint with and without contactsCount
     Then I wait for 'Anzahl direkter Kontakte' to appear
     When I enter "20" in "contactsCount" field
     And I click on text "Wegpunkt speichern und Runde abschließen"
-    And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
+    And I wait for 'Der Wegpunkt "Ackis" wurde erfolgreich zur Runde hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
     And there are exactly 2 wayPoints in database
     And I can find the following wayPoints in database:
       | locationName | contactsCount |

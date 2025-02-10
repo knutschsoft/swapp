@@ -2,12 +2,10 @@
 import {computed} from "vue";
 import {ErrorData, getViolationsFeedback} from "../../utils";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     label?: string,
     hint?: string,
     placeholder?: string,
@@ -30,22 +28,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
 });
 
 const errorMessages = computed(() => {
-    if (!props.error) {
-        return ''
-    }
-
-    return getViolationsFeedback(props.violationFields, props.error);
+      return props.error ? getViolationsFeedback(props.violationFields, props.error) : "";
 })
 
 </script>
@@ -62,8 +50,9 @@ const errorMessages = computed(() => {
         rows="3"
         trim
         max-rows="15"
-        outlined
-        dense
+        auto-grow
+        variant="outlined"
+        density="compact"
         class="mb-2"
         :hint="hint"
         :persistent-hint="!!hint"

@@ -14,8 +14,8 @@
             is-visible-by-default
         >
             <v-form
-                @submit.prevent.stop="handleSubmit"
-                class="p-1 p-sm-2 p-lg-3"
+                @submit.prevent="handleSubmit"
+                class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
             >
                 <walk-name-field
                     v-model="form.name"
@@ -40,13 +40,8 @@
                     :error="error"
                     description="Die Zeit vom Rundenbeginn ist vorausgewählt."
                 />
-                <v-row class="mb-1 mt-0">
-                    <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        class="mt-2"
-                    >
+                <v-row class="my-1" dense>
+                    <v-col>
                         <walk-end-time-field
                             v-model="form.endTime"
                             :initial-walk="walk"
@@ -55,48 +50,27 @@
                             description="Die aktuelle Zeit ist vorausgewählt."
                         />
                     </v-col>
-                    <v-col
-                        cols="12"
-                        class="d-md-none"
-                    >
-                        <div class="mt-2 border-left-0 border-bottom-0 border-right-0 border-secondary border-dashed border-top"/>
+                    <v-col cols="1" class="d-none d-md-block">
+                        <v-divider vertical class="h-100 ml-4" />
                     </v-col>
-                    <v-col
-                        cols="12"
-                        sm="6"
-                        md="3"
-                        class="mt-2"
-                    >
-                        <div class="d-none d-md-block">
-                            &nbsp;
-                        </div>
+                    <v-col cols="12" sm="7">
                         <v-btn
                             color="secondary"
-                            outlined
-                            small
+                            variant="outlined"
                             block
-                            min-height="40px"
+                            min-height="38px"
                             @click="selectCurrentTime"
+                            class="mt-sm-6"
                         >
                             Schnellauswahl:<br>aktueller Zeitpunkt
                         </v-btn>
-                    </v-col>
-                    <v-col
-                        cols="12"
-                        sm="6"
-                        md="3"
-                        class="mt-2"
-                    >
-                        <div class="d-none d-md-block">
-                            &nbsp;
-                        </div>
                         <v-btn
                             color="secondary"
-                            outlined
-                            small
+                            variant="outlined"
                             block
-                            min-height="40px"
+                            min-height="38px"
                             @click="selectFiveMinutesAfterLastWayPointOrStartOfWalkTime"
+                            class="mt-2"
                         >
                             Schnellauswahl:<br>{{ walk.wayPoints.length ? '5 Minuten nach dem letzten Wegpunkt' : 'Rundenbeginn' }}
                         </v-btn>
@@ -135,7 +109,8 @@
                         v-model="isWithoutSystemicAnswer"
                         label="nicht benötigt"
                         class="mt-0 ml-auto"
-                        dense
+                        color="primary"
+                        density="compact"
                     />
                 </template>
                 <walk-walk-reflection-field
@@ -148,14 +123,16 @@
                     v-model="isWithoutWalkReflection"
                     label="nicht benötigt"
                     class="mt-0 ml-auto"
-                    dense
+                    color="primary"
+                    density="compact"
                 />
-                Rundenbewertung
+                Rundenbewertung<br>
                 <walk-rating
                     v-if="walkClient && form.rating"
                     :rating="form.rating"
                     :client="walkClient"
                     :read-only="isLoading"
+                    show-rating
                     @select-rating="form.rating = $event"
                 />
                 <walk-commitments-field
@@ -168,7 +145,8 @@
                     v-model="isWithoutCommitments"
                     label="nicht benötigt"
                     class="mt-0 ml-auto"
-                    dense
+                    color="primary"
+                    density="compact"
                 />
                 <walk-insights-field
                     v-model="form.insights"
@@ -180,7 +158,8 @@
                     v-model="isWithoutInsights"
                     label="nicht benötigt"
                     class="mt-0 ml-auto"
-                    dense
+                    color="primary"
+                    density="compact"
                 />
                 <walk-is-resubmission-field
                     v-model="form.isResubmission"
@@ -206,7 +185,7 @@
                 id="form-holder"
                 ref="forms"
                 v-on:submit.prevent="onSubmit"
-                class="p-2"
+                class="pa-2"
             />
         </content-collapse>
 
@@ -402,7 +381,7 @@ export default {
             await this.refreshWalk();
         }
         if (!this.walk) {
-            this.$router.push({name: 'Dashboard', params: {redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.'}});
+            this.$router.push({name: 'Dashboard', query: {redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.'}});
             return;
         }
         if (!this.team) {

@@ -1,13 +1,10 @@
 <script lang="ts">
-import { defineComponent, computed, PropType } from 'vue';
-import { ImageRating, StarRating } from 'vue-rate-it';
+import {defineComponent, computed, PropType, ref} from 'vue';
 import { type Client } from '../../model';
 
 export default defineComponent({
     name: 'WalkRating',
     components: {
-        ImageRating,
-        StarRating,
     },
     props: {
         rating: {
@@ -46,11 +43,16 @@ export default defineComponent({
             return '';
         });
 
+        const ratingForChange = ref<number>(props.rating);
+
         const handleRatingSelected = (rating: number) => {
-            emit('select-rating', rating);
+            console.log('handleRrating');
+            console.log(ratingForChange);
+            emit('select-rating', ratingForChange);
         };
 
         return {
+            ratingForChange,
             imageSrc,
             handleRatingSelected,
         };
@@ -59,29 +61,32 @@ export default defineComponent({
 </script>
 
 <template>
-    <div>
-        <image-rating
-            v-if="imageSrc"
-            :rating="rating"
-            :src="imageSrc"
-            :max-rating="5"
-            :read-only="readOnly"
-            :item-size="itemSize"
-            :show-rating="showRating"
-            :data-test="`rating${readOnly ? '-read' : ''}`"
-            @rating-selected="handleRatingSelected"
-        />
-        <star-rating
-            v-else
-            :rating="rating"
-            :max-rating="5"
-            :read-only="readOnly"
-            :item-size="itemSize"
-            :show-rating="showRating"
-            :data-test="`rating${readOnly ? '-read' : ''}`"
-            @rating-selected="handleRatingSelected"
-        />
-    </div>
+    <v-rating
+        v-model="ratingForChange"
+        :length="5"
+        hover
+        :readonly="readOnly"
+        :item-size="itemSize"
+        :show-rating="showRating"
+        :data-test="`rating${readOnly ? '-read' : ''}`"
+        @rating-selected="handleRatingSelected"
+    >
+        <template v-slot:item="props">
+            <v-avatar v-if="imageSrc">
+                <v-img
+                    :src="imageSrc"
+                    :class="!props.isFilled ? 'opacity-20' : ''"
+                ></v-img>
+            </v-avatar>
+            <v-icon
+                v-else
+                color="primary"
+                size="large"
+            >
+                {{ props.isFilled ? 'mdi-star' : 'mdi-star-outline' }}
+            </v-icon>
+        </template>
+    </v-rating>
 </template>
 
 <style scoped lang="scss">

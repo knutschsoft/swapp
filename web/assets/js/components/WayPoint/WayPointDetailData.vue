@@ -1,13 +1,13 @@
 <template>
-    <div v-if="walk">
+    <div v-if="walk" class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7">
         <div
             v-if="!excludedAttributes.includes('walk')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Runde:
             </div>
             <div
-                class="d-inline-flex p-2 bd-highlight"
+                class="d-inline-flex pa-2"
             >
                 <router-link
                     :to="{name: 'WalkDetail', params: { walkId: walk.walkId}}"
@@ -19,11 +19,11 @@
         <div
             v-if="!excludedAttributes.includes('locationName')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Ort:
             </div>
             <div
-                class="d-inline-flex p-2 bd-highlight"
+                class="d-inline-flex pa-2"
             >
                 <location-link
                     :value="wayPoint.locationName"
@@ -33,11 +33,11 @@
         <div
             v-if="!excludedAttributes.includes('visitedAt')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Ankunft:
             </div>
             <div
-                class="d-inline-flex p-2 bd-highlight"
+                class="d-inline-flex pa-2"
             >
                 {{ visitedAt }}
             </div>
@@ -45,31 +45,29 @@
         <div
             v-if="!excludedAttributes.includes('note')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Beobachtung:
             </div>
-            <nl2br
-                tag="div"
-                :text="wayPoint.note.trim()"
-                class-name="d-inline-flex p-2 bd-highlight"
+            <div
+                v-html="nl2br(wayPoint.note)"
+                class="d-inline-flex pa-2"
             />
         </div>
         <div
             v-if="!excludedAttributes.includes('oneOnOneInterview')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Einzelgespräch:
             </div>
-            <nl2br
-                tag="div"
-                :text="wayPoint.oneOnOneInterview.trim()"
-                class-name="d-inline-flex p-2 bd-highlight"
+            <div
+                v-html="nl2br(wayPoint.oneOnOneInterview)"
+                class="d-inline-flex pa-2"
             />
         </div>
         <div
             v-if="!excludedAttributes.includes('imageName')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Bild:
             </div>
             <silent-box
@@ -84,7 +82,7 @@
         <div
             v-if="!excludedAttributes.includes('isMeeting')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Meeting:
             </div>
             {{ wayPoint.isMeeting ? 'ja' : 'nein' }}
@@ -92,11 +90,11 @@
         <div
             v-if="!excludedAttributes.includes('wayPointTags')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Tags:
             </div>
             <div
-                class="d-inline-flex flex-wrap p-2 bd-highlight"
+                class="d-inline-flex flex-wrap pa-2"
             >
                 <template
                     v-if="0 === wayPoint.wayPointTags.length"
@@ -128,7 +126,7 @@
                 v-for="ageGroup in ageGroups"
             >
                 <div
-                    class="d-inline-flex p-2 bd-highlight font-weight-bold"
+                    class="d-inline-flex pa-2 font-weight-bold"
                     :class="{'text-muted': !ageGroup.value}"
                 >
                     {{ ageGroup.name }}:
@@ -136,7 +134,7 @@
                 {{ ageGroup.value }}
             </div>
 
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Anzahl Personen vor Ort:
             </div>
             {{ wayPoint.peopleCount }}
@@ -144,7 +142,7 @@
         <div
             v-else-if="walk.isWithPeopleCount && !excludedAttributes.includes('peopleCount')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Anzahl Personen vor Ort:
             </div>
             {{ wayPoint.peopleCount }}
@@ -153,7 +151,7 @@
         <div
             v-if="walk.isWithUserGroups && !excludedAttributes.includes('userGroups')"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Personenanzahl von Nutzergruppen:
             </div>
 
@@ -163,7 +161,7 @@
             v-if="walk.isWithContactsCount && !excludedAttributes.includes('contactsCount')"
             class="d-flex flex-wrap"
         >
-            <div class="d-inline-flex p-2 bd-highlight font-weight-bold">
+            <div class="d-inline-flex pa-2 font-weight-bold">
                 Anzahl direkter Kontakte:
             </div>
             {{ this.wayPoint.contactsCount }}
@@ -176,7 +174,8 @@
     import LocationLink from '../LocationLink.vue';
     import ColorBadge from '../Tags/ColorBadge.vue';
     import dayjs from 'dayjs';
-    import { useTagStore, useWalkStore, useWayPointStore } from '../../stores';
+    import { useTagStore, useWalkStore, useWayPointStore } from '@/js/stores';
+    import {nl2br} from "@/js/utils";
 
     export default {
         name: "WayPointDetailData",
@@ -275,14 +274,6 @@
 
                 return ageGroups;
             },
-            sumPeopleCount() {
-                let sumPeopleCount = 0;
-                this.ageGroups.forEach(ageGroup => {
-                    sumPeopleCount += ageGroup.peopleCount.count;
-                });
-
-                return sumPeopleCount;
-            },
             visitedAt() {
                 return dayjs(this.wayPoint.visitedAt).format('ddd, DD.MM.YYYY HH:mm');
             },
@@ -304,6 +295,7 @@
             }
         },
         methods: {
+            nl2br,
             getTagByIri(iri) {
                 return this.tagStore.getTagByIri(iri);
             },

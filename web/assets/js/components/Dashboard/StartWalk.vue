@@ -1,89 +1,92 @@
 <template>
     <div
-        class="p-2"
+        class="pa-2"
     >
         <v-card
             v-if="hasUnfinishedWalks && !isLoading"
-            class="mb-2"
         >
-            <v-toolbar
-                dense
-            >
-                <v-overflow-btn
+            <v-card-text>
+                <v-select
                     v-model="selectedUnfinishedWalk"
                     :items="selectableUnfinishedWalks"
                     data-test="select-walk"
-                    label="Nicht beendete Runde wählen..."
+                    label="Nicht beendete Runde wählen"
                     overflow
                     hide-details
-                    dense
-                    class="pa-0"
-                />
-                <v-btn
-                    :disabled="!selectedUnfinishedWalk"
-                    @click="handleWalkContinue"
-                    class="rounded-0"
-                    data-test="runde-fortsetzen"
-                    color="secondary"
+                    variant="outlined"
+                    density="compact"
+                    class="my-round-start-helper"
+                    rounded="0"
                 >
-                    Runde fortsetzen
-                    <v-icon>mdi-shoe-print</v-icon>
-                    <v-icon>mdi-walk</v-icon>
-                    <v-icon>mdi-shoe-print</v-icon>
-                </v-btn>
-            </v-toolbar>
-        </v-card>
-        <v-divider
-            v-if="hasUnfinishedWalks && !isLoading"
-        />
-        <v-card
-            v-if="selectableTeams.length && !isLoading"
-        >
-            <v-toolbar
-                dense
+                    <template v-slot:append>
+                        <v-btn
+                            :disabled="!selectedUnfinishedWalk"
+                            @click="handleWalkContinue"
+                            class="rounded-0 btn-start"
+                            data-test="runde-fortsetzen"
+                            color="secondary"
+                        >
+                            Runde fortsetzen
+                            <v-icon>mdi-shoe-print</v-icon>
+                            <v-icon>mdi-walk</v-icon>
+                            <v-icon>mdi-shoe-print</v-icon>
+                        </v-btn>
+                    </template>
+                </v-select>
+            </v-card-text>
+            <v-divider
+                v-if="hasUnfinishedWalks && !isLoading"
+            />
+            <v-card-text
+                v-if="selectableTeams.length && !isLoading"
             >
-                <v-overflow-btn
+                <v-select
                     v-model="selectedTeam"
                     :items="selectableTeams"
                     label="Team wählen..."
                     data-test="select-team"
-                    overflow
                     hide-details
-                    dense
-                    class="pa-0"
-                />
-                <v-btn
-                    color="secondary"
-                    @click="handleWalkPrologue"
-                    :disabled="!hasSelectedTeamSystemicQuestionsAvailable"
-                    class="rounded-0"
+                    variant="outlined"
+                    density="compact"
+                    class="my-round-start-helper"
+                    rounded="0"
                 >
-                    Runde beginnen
-                    <v-icon>mdi-walk</v-icon>
-                    <v-icon>mdi-shoe-print</v-icon>
-                </v-btn>
-            </v-toolbar>
+                    <template v-slot:append>
+                        <v-btn
+                            color="secondary"
+                            @click="handleWalkPrologue"
+                            :disabled="!hasSelectedTeamSystemicQuestionsAvailable"
+                            class="rounded-0 btn-start"
+                        >
+                            Runde beginnen
+                            <v-icon>mdi-walk</v-icon>
+                            <v-icon>mdi-shoe-print</v-icon>
+                        </v-btn>
+                    </template>
+                </v-select>
+            </v-card-text>
         </v-card>
         <v-alert
-            v-else-if="!teams.length && !isLoading && isAllowedToCreateTeam"
+            v-if="!selectableTeams.length && !teams.length && !isLoading && isAllowedToCreateTeam"
             class="mb-0"
             type="info"
-            outlined
+            variant="outlined"
             prominent
         >
             Um eine neue Runde zu erstellen, musst Du zuerst
             <v-btn
                 :to="{ name: 'Teams' }"
                 color="info"
-                small
-                outlined
+                density="compact"
+                variant="outlined"
                 title="Teamverwaltung"
+                class="mx-1"
             >ein neues Team anlegen</v-btn>.
         </v-alert>
         <v-alert
-            v-else-if="!isLoading"
+            v-else-if="!selectableTeams.length && teams.length && !isLoading"
             type="info"
-            outlined
+            variant="outlined"
             class="mb-0"
             prominent
         >
@@ -97,7 +100,9 @@
                     :to="{ name: 'Teams' }"
                     title="Teamverwaltung"
                     color="info"
-                    outlined
+                    variant="outlined"
+                    density="compact"
+                    class="mx-1"
                 >einem Team zu</v-btn>
                 um eine Runde starten zu können.
             </p>
@@ -112,14 +117,14 @@
             v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable && !isLoading"
             type="warning"
             prominent
-            outlined
+            variant="outlined"
         >
             Um für dieses Team eine neue Runde zu erstellen, musst Du zuerst mindestens
             <v-btn
                 :to="{ name: 'SystemicQuestions' }"
                 title="Systemische Fragen"
                 color="warning"
-                outlined
+                variant="outlined"
             >eine Systemische Frage erstellen</v-btn>.
         </v-alert>
     </div>
@@ -127,7 +132,7 @@
 
 <script>
     "use strict";
-    import { useAuthStore, useSystemicQuestionStore, useTeamStore, useUserStore } from '../../stores';
+    import { useAuthStore, useSystemicQuestionStore, useTeamStore, useUserStore } from '@/js/stores';
     import WalkAPI from '../../api/walk.js';
     import dayjs from "dayjs";
 
@@ -173,7 +178,7 @@
                 this.teams.forEach((team) => {
                     team.users.forEach(userIri => {
                         if (userIri === this.currentUser['@id']) {
-                            options.push({ text: `Team '${team.name}'`, value: team });
+                            options.push({ title: `Team '${team.name}'`, value: team });
                         }
                     });
                 });
@@ -185,15 +190,14 @@
             },
             selectableUnfinishedWalks() {
                 let options = [
-                    {text: 'Runde wählen...', value: null}
                 ];
                 if (!this.hasUnfinishedWalks) {
                     return options;
                 }
                 this.unfinishedWalks.forEach((walk) => {
                     const walkCreator = walk.walkCreator ? this.getUserByUserIri(walk.walkCreator)?.username : 'nicht gesetzt';
-                    const text = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - Rundenersteller: ${walkCreator} - ${walk.wayPoints.length} Wegpunkt${walk.wayPoints.length !== 1 ? 'e' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
-                    options.push({ text: text, value: walk });
+                    const title = `${walk.name} - Beginn ${dayjs(walk.startTime).format('DD.MM.YYYY HH:mm:ss')} - Rundenersteller: ${walkCreator} - ${walk.wayPoints.length} Wegpunkt${walk.wayPoints.length !== 1 ? 'e' : ''} - Tageskonzept: ${walk.conceptOfDay}`;
+                    options.push({ title, value: walk });
                 });
 
                 return options;
@@ -247,5 +251,14 @@
     }
 </script>
 
+<style>
+.my-round-start-helper .v-input__append {
+    margin-inline-start: 0 !important;
+}
+</style>
 <style scoped>
+.btn-start {
+    width: 220px !important;
+    height: 40px;
+}
 </style>

@@ -1,7 +1,16 @@
 <template>
-    <div class="row m-auto pt-4 mt-4">
-        <div
-            class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 offset-lg-3 col-lg-6 border border-dark p-4 mt-4"
+    <v-row>
+        <v-col
+            cols="12"
+            sm="8"
+            md="6"
+            lg="6"
+            xl="4"
+            offset-sm="2"
+            offset-md="3"
+            offset-lg="3"
+            offset-xl="4"
+            class="mt-4"
         >
             <h2
                 class="text-center mb-3"
@@ -41,8 +50,8 @@
                         name="username"
                         data-test="username"
                         autocomplete="username email"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                     />
                     <v-text-field
                         v-model="password"
@@ -56,8 +65,8 @@
                         name="password"
                         data-test="password"
                         autocomplete="password"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         @click:append="switchPasswordVisibility"
                     />
                     <v-btn
@@ -84,8 +93,7 @@
                         {{ 'Die Kombination aus E-Mail-Adresse und Passwort ist ungültig.' }}
                     </v-alert>
                     <v-btn
-                        text
-                        plain
+                        variant="text"
                         block
                         class="my-3"
                     >
@@ -100,19 +108,21 @@
             <DemoInfo
                 @credentials-select="handleCredentialsSelect($event)"
             />
-        </div>
-    </div>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
     "use strict";
     import DemoInfo from './Demo/DemoInfo.vue';
     import { useAuthStore } from '../stores';
+    import {useRoute} from "vue-router";
 
     export default {
         name: "Login",
         components: { DemoInfo },
         data: () => ({
+            route: useRoute(),
             authStore: useAuthStore(),
             username: '',
             password: '',
@@ -122,7 +132,7 @@
         }),
         computed: {
             isOnDemoPage() {
-                return window.location.host.includes('swapp.demo') || this.$route.query.demo;
+                return window.location.host.includes('swapp.demo') || this.route.query.demo;
             },
             isLoading() {
                 return this.authStore.isLoading;
@@ -135,7 +145,7 @@
             },
         },
         created() {
-            let redirect = this.$route.query.redirect;
+            let redirect = this.route.query.redirect;
 
             if (this.authStore.isAuthenticated) {
                 if (typeof redirect !== "undefined") {
@@ -156,7 +166,7 @@
                     this.switchPasswordVisibility();
                 }
                 let payload = {username: this.$data.username, password: this.$data.password},
-                    redirect = this.$route.query.redirect;
+                    redirect = this.route.query.redirect;
                 const loginResult = await this.authStore.login(payload);
                 if (!this.error && loginResult) {
                     if (typeof redirect !== "undefined") {

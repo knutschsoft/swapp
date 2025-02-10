@@ -11,33 +11,33 @@ export default {
     },
     async mounted() {
         try {
-            const {registerSW} = await import('virtual:pwa-register')
-            const vm = this
-            this.updateSW = registerSW({
-                immediate: true,
-                onOfflineReady() {
-                    // alert('onOfflineReady');
-                    vm.offlineReady = true
-                    vm.onOfflineReadyFn()
-                },
-                onNeedRefresh() {
-                    // alert('onNeedRefresh');
-                    vm.needRefresh = true
-                    vm.onNeedRefreshFn()
-                },
-                onRegisteredSW(swUrl, r) {
-                    // alert(`onRegisteredSW // Service Worker at: ${swUrl}`)
-                    // if (r) {
-                    //     alert('Service Worker Registrierung erfolgreich.')
-                    // } else {
-                    //     alert(`Service Worker Registrierung NICHT erfolgreich`)
-                    // }
-                },
-                onRegisterError(e) {
-                    // alert(`Service Worker onRegisterError`)
-                    vm.handleSWRegisterError(e)
-                }
-            })
+            // const {registerSW} = await import('virtual:pwa-register')
+            // const vm = this
+            // this.updateSW = registerSW({
+            //     immediate: true,
+            //     onOfflineReady() {
+            //         // alert('onOfflineReady');
+            //         vm.offlineReady = true
+            //         vm.onOfflineReadyFn()
+            //     },
+            //     onNeedRefresh() {
+            //         // alert('onNeedRefresh');
+            //         vm.needRefresh = true
+            //         vm.onNeedRefreshFn()
+            //     },
+            //     onRegisteredSW(swUrl, r) {
+            //         // alert(`onRegisteredSW // Service Worker at: ${swUrl}`)
+            //         // if (r) {
+            //         //     alert('Service Worker Registrierung erfolgreich.')
+            //         // } else {
+            //         //     alert(`Service Worker Registrierung NICHT erfolgreich`)
+            //         // }
+            //     },
+            //     onRegisterError(e) {
+            //         // alert(`Service Worker onRegisterError`)
+            //         vm.handleSWRegisterError(e)
+            //     }
+            // })
         } catch {
             // alert('PWA ist deaktiviert oder wird nicht unterstützt')
         }

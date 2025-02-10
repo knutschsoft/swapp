@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import {computed} from "vue";
-import {ErrorData, getViolationsFeedback} from "../../utils";
+import {ErrorData, getViolationsFeedback} from "@/js/utils";
 import {useClientStore} from "@/js/stores";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
-    label?: string,
-    hint?: string,
-    placeholder?: string,
-    dataTest?: string,
-    error?: ErrorData,
-    violationFields?: string[],
-    isLoading?: boolean
-    disabled?: boolean
+    modelValue: string | null;
+    label?: string;
+    hint?: string;
+    placeholder?: string;
+    dataTest?: string;
+    error?: ErrorData;
+    violationFields?: string[];
+    isLoading?: boolean;
+    disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,26 +31,14 @@ const props = withDefaults(defineProps<Props>(), {
 const clientStore = useClientStore();
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value === null ? '' : value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val ?? ""),
 });
 
-const availableClients = computed(() => {
-    return clientStore.getClients;
-})
+const availableClients = computed(() => clientStore.getClients)
 
 const errorMessages = computed(() => {
-    if (!props.error) {
-        return ''
-    }
-
-    return getViolationsFeedback(props.violationFields, props.error);
+      return props.error ? getViolationsFeedback(props.violationFields, props.error) : "";
 })
 
 </script>
@@ -66,10 +52,10 @@ const errorMessages = computed(() => {
         clearable
         :items="availableClients"
         item-value="@id"
-        item-text="name"
+        item-title="name"
         :disabled="isLoading || disabled"
-        outlined
-        dense
+        variant="outlined"
+        density="compact"
         :hint="hint"
         :hide-details="!hint && !errorMessages?.length"
         :error-messages="errorMessages"

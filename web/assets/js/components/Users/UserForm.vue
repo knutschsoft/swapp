@@ -1,8 +1,8 @@
 <template>
     <v-form
-        @submit.prevent.stop="handleSubmit"
+        @submit.prevent="handleSubmit"
         ref="form"
-        class="p-1 p-sm-2 p-lg-3"
+        class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
         <v-text-field
             v-model="user.username"
@@ -13,7 +13,7 @@
             placeholder="vorname.nachname"
             :state="usernameState"
             data-test="username"
-            outlined
+            variant="outlined"
         />
         <v-text-field
             v-model="user.email"
@@ -24,10 +24,10 @@
             placeholder="vorname.nachname@domain.de"
             :state="emailState"
             data-test="email"
-            outlined
+            variant="outlined"
         />
         <v-row dense class="mt-0 mb-5">
-            <v-col cols="12" dense class="mb-0">Rollen</v-col>
+            <v-col cols="12" class="mb-0">Rollen</v-col>
             <v-col
                 v-for="role in availableRoles"
                 class="mt-0"
@@ -39,7 +39,8 @@
                     :key="role.value"
                     :disabled="isLoading"
                     class="mt-0"
-                    dense
+                    density="compact"
+                    color="primary"
                     hide-details
                     :label="role.text"
                 />
@@ -163,7 +164,7 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            this.$emit('submit', this.user);
+            this.$emit('submitted', this.user);
         },
         resetForm() {
             this.user.username = this.initialUser.username;

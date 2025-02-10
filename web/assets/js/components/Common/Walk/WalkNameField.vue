@@ -3,12 +3,10 @@ import {computed} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 import {Team, Walk} from "../../../model";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     label?: string,
     team?: Team | null,
     walk?: Walk | null,
@@ -27,14 +25,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value === null ? '' : value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val ?? ""),
 });
 
 const walkNameSuggestions = computed(() => {
@@ -44,6 +36,8 @@ const walkNameSuggestions = computed(() => {
     }
     if (props.walk?.name) {
         walkNames = [props.walk.name, ...new Set(props.team.walkNames)];
+    } else {
+        walkNames = [...new Set(props.team.walkNames)];
     }
 
     return walkNames;
@@ -64,7 +58,7 @@ const errorMessages = computed(() => {
         v-model="value"
         :items="walkNameSuggestions"
         clearable
-        outlined
+        variant="outlined"
         :label="label"
         placeholder="Wie ist der Name der Runde?"
         :disabled="isLoading"
@@ -72,7 +66,7 @@ const errorMessages = computed(() => {
         :hint="description"
         :persistent-hint="!!description"
         :hide-details="!description && !errorMessages?.length"
-        dense
+        density="compact"
         small-chips
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"

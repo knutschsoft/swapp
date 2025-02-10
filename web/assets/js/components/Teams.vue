@@ -15,7 +15,7 @@
             <team-form
                 ref="teamForm"
                 button-label="Team erstellen"
-                @submit="handleSubmit"
+                @submitted="handleSubmit"
             />
         </content-collapse>
     </div>
@@ -26,7 +26,7 @@
     import TeamList from './Teams/TeamList.vue';
     import TeamForm from './Teams/TeamForm.vue';
     import ContentCollapse from './ContentCollapse.vue';
-    import { useAlertStore, useTeamStore } from '../stores';
+    import { useAlertStore, useClientStore, useTeamStore } from '../stores';
 
     export default {
         name: "Teams",
@@ -38,10 +38,12 @@
         data: () => {
             return {
                 alertStore: useAlertStore(),
+                clientStore: useClientStore(),
                 teamStore: useTeamStore()
             };
         },
         mounted() {
+            this.clientStore.fetchClients();
         },
         methods: {
             async handleSubmit(team) {

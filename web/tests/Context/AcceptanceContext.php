@@ -278,17 +278,18 @@ final class AcceptanceContext extends MinkContext
         $explodedTime = \explode(':', $time);
         $hours = $explodedTime[0];
         $minutes = (int) $explodedTime[1];
-        $unsupportedMinutes = 55;
-        if ($unsupportedMinutes === $minutes) {
-            throw new \RuntimeException(\sprintf('Time in seconds should not be %d minutes.', $minutes));
+        if ($minutes < 10) {
+            $minutes .= '0' . $minutes;
         }
-        $minutes /= 5;
-        $locatorHour = \sprintf('[data-type="hour"] [data-index="%s"]', $hours);
-        $locatorMinute = \sprintf('[data-type="minute"] [data-index="%s"]', $minutes);
         $this->getTestElement($dataTestSelector)->click();
-        \sleep(1); // needed for issue when list is popping up
+        $locatorHour = \sprintf('[data-test-id="hours-toggle-overlay-btn-0"]');
+        $hourSelector = \sprintf('[data-test-id="%s"]', $hours);
+        $locatorMinute = \sprintf('[data-test-id="minutes-toggle-overlay-btn-0"]');
+        $minuteSelector = \sprintf('[data-test-id="%s"]', $minutes);
         $this->getNodeElement($locatorHour)->click();
+        $this->getNodeElement($hourSelector)->click();
         $this->getNodeElement($locatorMinute)->click();
+        $this->getNodeElement($minuteSelector)->click();
         $this->getNodeElement('body')->click();
     }
 
@@ -302,21 +303,25 @@ final class AcceptanceContext extends MinkContext
      */
     public function iSelectDateInDateSelector(string $date, string $dataTestSelector): void
     {
-        $this->getTestElement($dataTestSelector)->click();
-        $date = Carbon::create($date);
+        $rangePicker = $this->getTestElement($dataTestSelector);
+        $rangePicker->mouseOver();
+        $rangePicker->click();
 
-        $locatorYearSelect = '.mx-btn-current-year';
-        $this->getNodeElement($locatorYearSelect)->click();
-        $year = $date->format('Y');
-        $locatorYear = \sprintf('[data-year="%s"]', $year);
-        $this->getNodeElement($locatorYear)->click();
+        Carbon::setLocale('de');
+        $date = Carbon::parse($date);
+        $yearSelectElement = $this->getNodeElement("[data-dp-element='overlay-year']");
+        $yearSelectElement->click();
+        // following dataTestSelectors are inherently given by VueDatePicker
+        $yearElement = $this->getNodeElement("[data-test-id='".$date->year."']");
+        $yearElement->click();
 
-        $month = (int) $date->format('m');
-        $locatorMonth = \sprintf('[data-month="%s"]', $month - 1);
-        $this->getNodeElement($locatorMonth)->click();
+        $monthSelectElement = $this->getNodeElement("[data-dp-element='overlay-month']");
+        $monthSelectElement->click();
+        $this->getNodeElement("[data-test-id='".$date->isoFormat('MMM')."']")->click();
 
-        $locatorDay = \sprintf('[title="%s"]', $date->format('d.m.Y'));
-        $this->getNodeElement($locatorDay)->click();
+        $dateFrom = $date->format('Y-m-d');
+        $datePickerFrom = $this->getNodeElement(\sprintf("[data-test-id='dp-%s']", $dateFrom));
+        $datePickerFrom->click();
     }
 
     /**
@@ -453,21 +458,21 @@ final class AcceptanceContext extends MinkContext
                 \DIRECTORY_SEPARATOR,
                 \substr($value, 1)
             );
-            //$value = (new DataUriNormalizer())->normalize(new \SplFileInfo($path));
-            $element->attachFile($path);
-            // sleep(5); // maybe needed for big files but chrome is crashing nonetheless
+            if ($element->hasClass('v-file-input')) {
+                $element->find('css', 'input')->attachFile($path);
+            } else {
+                $element->attachFile($path);
+            }
         } else {
-            // workaround for v-combobox with multiple
-            $isPotentialCombobox = !$element->isVisible();
-            if ($isPotentialCombobox) {
+            $isDivField = $element->hasClass('v-combobox') || $element->hasClass('v-textarea')|| $element->hasClass('v-text-field');
+            if ($isDivField) {
                 $element->click();
+                $element->keyPress($this->enrichText($value));
+                $element->keyPress(WebDriverKeys::ENTER);
+
+                return;
             }
             $element->setValue($this->enrichText($value));
-            if ($isPotentialCombobox) {
-                $element->keyPress(WebDriverKeys::ENTER);
-            }
-            // workaround for vue-select fields:
-            $this->getNodeElement('body')->click();
         }
     }
 

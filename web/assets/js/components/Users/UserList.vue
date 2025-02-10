@@ -1,6 +1,8 @@
 <template>
     <div>
-        <v-row class="p-2 mt-0 mb-1">
+        <v-row
+            class="px-3 pt-3"
+        >
             <v-col
                 v-if="isSuperAdmin"
                 xs="12"
@@ -16,19 +18,15 @@
                 xs="12"
                 :sm="isSuperAdmin ? 6 : 12"
             >
-                <v-select
+                <filter-boolean-field
                     v-model="filter.isEnabled"
-                    :items="isEnabledOptions"
-                    :clearable="filter.isEnabled !== true"
-                    outlined
-                    :success="filter.isEnabled !== true"
-                    @click:clear="filter.isEnabled = true"
+                    :default-value="true"
                     label="Nur aktivierte?"
-                    dense
+                    :is-loading="isLoading"
                 />
             </v-col>
         </v-row>
-        <v-data-table
+        <v-data-table-server
             :items="users"
             :headers="headers"
             class="mb-0"
@@ -37,6 +35,8 @@
             :items-per-page="itemsPerPage"
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
+            items-length=""
+            hide-default-footer
             :no-data-text="noItemsText"
             :no-results-text="noItemsText"
             small
@@ -102,15 +102,14 @@
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-content-around">
                     <v-menu
-                        dense
-                        offset-y
+                        location="bottom end"
+                        eager
                     >
-                        <template v-slot:activator="{ attrs, on }">
+                        <template v-slot:activator="{ props }">
                             <v-btn
                                 color="secondary"
                                 small
-                                v-bind="attrs"
-                                v-on="on"
+                                v-bind="props"
                             >
                                 Aktionen
                                 <v-icon
@@ -122,7 +121,7 @@
                                 </v-icon>
                             </v-btn>
                         </template>
-                        <v-list dense>
+                        <v-list density="compact">
                             <v-list-item link>
                                 <v-list-item-title
                                     @click="openUserEditDialog(item)"
@@ -176,7 +175,7 @@
                     </v-btn>
                 </div>
             </template>
-        </v-data-table>
+        </v-data-table-server>
 
         <v-dialog
             v-model="dialog"
@@ -194,7 +193,7 @@
                         v-if="editUser"
                         submit-button-text="Speichern"
                         :initial-user="editUser"
-                        @submit="handleSubmit"
+                        @submitted="handleSubmit"
                     />
                 </v-card-text>
             </v-card>
@@ -205,19 +204,20 @@
 <script>
 'use strict';
 import UserForm from './UserForm.vue';
-import {useAlertStore, useAuthStore, useClientStore, useUserStore} from '../../stores';
-import {ClientSelect} from "@/js/components/Common";
+import {useAlertStore, useAuthStore, useClientStore, useUserStore} from '@/js/stores';
+import {ClientSelect, FilterBooleanField} from "@/js/components/Common";
 import {
     formatDateTime,
     itemsPerPageOptions,
     itemsPerPageText,
     loadingText,
     noItemsText,
-} from '../../utils'
+} from '@/js/utils'
 
 export default {
     name: 'UserList',
     components: {
+        FilterBooleanField,
         ClientSelect,
         UserForm,
     },
@@ -234,11 +234,7 @@ export default {
             noItemsText,
             editUser: null,
             dialog: false,
-            isEnabledOptions: [
-                { value: null, text: 'egal' },
-                { value: true, text: 'ja' },
-                { value: false, text: 'nur deaktivierte Accounts' },
-            ],
+
             filter: {
                 client: null,
                 isEnabled: true,
@@ -249,67 +245,73 @@ export default {
         headers() {
             const headers = [
                 {
-                    value: 'username',
-                    text: 'Benutzername',
+                    key: 'username',
+                    title: 'Benutzername',
                     sortable: true,
                     class: 'text-center',
                 },
                 {
-                    value: 'teams',
-                    text: 'Teams',
+                    key: 'teams',
+                    title: 'Teams',
                     sortable: false,
+                    align: 'center',
                 },
                 {
-                    value: 'email',
-                    text: 'E-Mail',
+                    key: 'email',
+                    title: 'E-Mail',
+                    align: 'center',
                 },
                 {
-                    value: 'roles',
-                    text: 'Rollen',
+                    key: 'roles',
+                    title: 'Rollen',
                     sortable: false,
+                    align: 'center',
                 },
                 {
-                    value: 'isEnabled',
-                    text: 'Account aktiviert?',
+                    key: 'isEnabled',
+                    title: 'Account aktiviert?',
                     sortable: true,
                     class: 'text-center',
+                    align: 'center',
                 }
             ];
             if (this.isSuperAdmin) {
                 headers.push({
-                    value: 'client',
-                    text: 'Klient',
-                    sortable: true,
-                    sortByFormatted: true,
-                    class: !this.isSuperAdmin ? 'd-none text-center' : 'text-center',
-                    formatter: this.clientFormatter,
+                    key: 'client',
+                    title: 'Klient',
+                    sortable: false,
+                    align: 'center',
                 })
             }
             headers.push(...[
                 {
-                    value: 'createdAt',
-                    text: 'Erstellt am',
+                    key: 'createdAt',
+                    title: 'Erstellt am',
+                    align: 'center',
                 },
                 {
-                    value: 'updatedAt',
-                    text: 'Geändert am',
+                    key: 'updatedAt',
+                    title: 'Geändert am',
+                    align: 'center',
                 }
             ]);
             if (this.isSuperAdmin) {
                 headers.push(...[
                     {
-                        value: 'createdBy',
-                        text: 'Erstellt von:',
+                        key: 'createdBy',
+                        title: 'Erstellt von:',
                         sortable: false,
+                        align: 'center',
                     },
                     {
-                        value: 'updatedBy',
-                        text: 'Geändert von:',
+                        key: 'updatedBy',
+                        title: 'Geändert von:',
                         sortable: false,
+                        align: 'center',
                     },
                 ]);
             }
-            headers.push({ value: 'actions', text: 'Aktionen' })
+            headers.push({ key: 'actions', title: 'Aktionen', sortable: false })
 
             return headers;
         },
@@ -325,7 +327,7 @@ export default {
         users() {
             return this.userStore.getUsers
                 .filter(user => !this.filter.client || this.filter.client === user.client)
-                .filter(user => null === this.filter.isEnabled || this.filter.isEnabled === user.isEnabled)
+                .filter(user => 'null' === this.filter.isEnabled || this.filter.isEnabled === user.isEnabled)
                 .slice()
                 .sort((userA, userB) => {
                     if (userA.isEnabled === userB.isEnabled) {

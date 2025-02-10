@@ -4,13 +4,12 @@ import {defineConfig} from 'vite'
 import symfonyPlugin from 'vite-plugin-symfony'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import fs from 'fs'
-import vue from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import {VitePWA} from 'vite-plugin-pwa'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+import vuetify from 'vite-plugin-vuetify'
 
-// vuetify2 support
 import Components from 'unplugin-vue-components/vite'
-import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
 
 const VIRTUAL_HOST = process.env.VIRTUAL_HOST
 const CERTS_FILENAME = 'swapp.local'
@@ -20,6 +19,7 @@ const isTest = 'test' === process.env.NODE_ENV
 export default defineConfig({
     plugins: [
         vue(),
+        vuetify(),
         VueDevTools(),
         viteStaticCopy({
             targets: [
@@ -30,7 +30,9 @@ export default defineConfig({
             ]
         }),
         Components({
-            resolvers: [VuetifyResolver()],
+            dts: 'assets/js/components.d.ts',
+            dirs: 'assets/js/components',
+            directoryAsNamespace: true,
         }),
         VitePWA({
             registerType: 'prompt',
@@ -38,6 +40,9 @@ export default defineConfig({
                 type: 'module',
                 navigateFallback: '/',
                 enabled: false
+            },
+            workbox: {
+                maximumFileSizeToCacheInBytes: 5000000
             },
             strategies: 'generateSW',
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
@@ -53,7 +58,7 @@ export default defineConfig({
                 'id': '/',
                 scope: '/',
                 'background_color': '#fff',
-                'theme_color': '#b2b3b5',
+                theme_color: '#b2b3b5',
                 'icons': [
                     {
                         "src": "/build/images/icons/android-chrome-72x72.png",
@@ -79,9 +84,15 @@ export default defineConfig({
                     key: fs.readFileSync(`/var/www/certs/${CERTS_FILENAME}.key`),
                     cert: fs.readFileSync(`/var/www/certs/${CERTS_FILENAME}.crt`)
                 },
-                port: 8874
+                port: 8899,
+                hmr: {
+                    clientPort: 8899,
+                },
+                origin: 'https://'+VIRTUAL_HOST+':8899',
+                cors: true
             },
     build: {
+        outDir: 'public/build',
         manifest: true,
         sourcemap: true,
         rollupOptions: {

@@ -2,14 +2,12 @@
 import {computed} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 import {Team, User, Walk} from "../../../model";
-import {useUserStore} from "../../../stores";
+import {useUserStore} from "@/js/stores";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
 const emit = defineEmits(['input', 'change']);
 
 export interface Props {
-    value: string,
+    modelValue: string | null,
     label?: string,
     team?: Team | null,
     walk?: Walk | null,
@@ -28,14 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val ?? ''),
 });
 
 const userStore = useUserStore();
@@ -89,11 +81,11 @@ const handleWalkCreatorChange = (newWalkCreator: string) => {
         :items="walkCreatorOptions"
         :disabled="isLoading"
         item-value="@id"
-        item-text="username"
+        item-title="username"
         label="Rundenersteller"
         required
-        dense
-        outlined
+        density="compact"
+        variant="outlined"
         :loading="isLoading"
         :hint="description"
         :persistent-hint="!!description"

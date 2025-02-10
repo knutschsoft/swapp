@@ -3,7 +3,7 @@
         <v-alert
             v-if="walk && walk.isUnfinished"
             prominent
-            dense
+            density="compact"
             type="info"
         >
             Die Runde ist noch nicht abgeschlossen.
@@ -46,13 +46,13 @@
                 v-if="!walk.isUnfinished"
                 submit-button-text="Runde speichern"
                 :initial-walk="walk"
-                @submit="handleSubmit"
+                @submitted="handleSubmit"
             />
             <walk-unfinished-form
                 v-else
                 submit-button-text="Runde speichern"
                 :initial-walk="walk"
-                @submit="handleWalkUnfinishedSubmit"
+                @submitted="handleWalkUnfinishedSubmit"
             />
         </content-collapse>
         <content-collapse
@@ -155,7 +155,7 @@
                 await this.walkStore.fetchById(this.walkId);
             }
             if (!this.walk) {
-                this.$router.push({ name: 'Dashboard', params: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
+                this.$router.push({ name: 'Dashboard', query: { redirect: 'Diese Runde existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' } });
                 return;
             }
             const promises = [

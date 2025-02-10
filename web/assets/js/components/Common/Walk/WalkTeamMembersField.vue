@@ -2,12 +2,10 @@
 import {ComponentPublicInstance, computed, nextTick, ref, watch} from "vue";
 import {User} from "../../../model";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string[],
+    modelValue: string[],
     walkCreator?: string,
     users: User[],
     label?: string,
@@ -22,14 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
     isLoading: false,
 });
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
 });
 
 const selectedWalkCreator = ref<ComponentPublicInstance<HTMLInputElement>[]>();
@@ -70,27 +62,29 @@ const hasDisabledUser = computed(() => {
 
 <template>
     <v-row class="my-0">
-        <v-col cols="12">
+        <v-col cols="12" class="pt-0">
             <v-card
-                outlined
+                variant="outlined"
+                color="grey"
             >
-                <v-card-subtitle class="font-weight-bold">{{ label }}</v-card-subtitle>
                 <v-card-text class="mb-0 pb-0">
+                    <div class="text-black text-body-2">{{ label }}</div>
                     <div class="d-flex flex-wrap" data-test="users">
-                        <template v-for="user in enabledUsers">
+                        <template v-for="user in enabledUsers" :key="user['@id']">
                             <v-switch
                                 v-if="user.isEnabled"
                                 :aria-describedby="description"
-                                name="users"
-                                dense
+                                :name="`users-${user.username}`"
+                                density="compact"
+                                color="primary"
                                 :disabled="isLoading || (walkCreator === user['@id'])"
                                 v-model="value"
-                                :key="user['@id']"
                                 :value="user['@id']"
                                 :data-test="`walkTeamMember-${user.username}`"
                                 class="min-w-[250px]"
                                 ref="selectedWalkCreator"
                                 :label="user.username"
+                                hide-details
                             >
                                 <template v-if="walkCreator === user['@id']"> (Rundenersteller)</template>
                             </v-switch>
@@ -104,18 +98,19 @@ const hasDisabledUser = computed(() => {
                     ></v-divider>
                 </v-card-text>
                 <v-card-text class="py-0">
-                    <div>
-                        <template v-for="user in disabledUsers">
+                    <div class="d-flex flex-wrap">
+                        <template v-for="user in disabledUsers" :key="user['@id']">
                             <v-switch
                                 v-model="value"
-                                :key="user['@id']"
                                 :value="user['@id']"
                                 :aria-describedby="description"
-                                name="users"
-                                dense
+                                :name="`users-${user.username}`"
+                                color="primary"
+                                density="compact"
                                 :disabled="isLoading || (walkCreator === user['@id'])"
                                 :data-test="`walkTeamMember-${user.username}`"
                                 class="min-w-[250px] text-disabled"
+                                hide-details
                             >
                                 <template v-slot:label>
                                     <span

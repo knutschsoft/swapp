@@ -2,12 +2,10 @@
 import {computed, ref} from "vue";
 import {getViolationsFeedback} from "../../../utils";
 
-// const props = defineProps(['modelValue', 'value']); // vue3
-// const emit = defineEmits(['update:modelValue']); // vue3
-const emit = defineEmits(['input']);
+const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
-    value: string,
+    modelValue: string,
     label?: string,
     description?: string,
     error?: Object | boolean,
@@ -24,14 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
 const weatherOptions = ref<string[]>(['', 'Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt']);
 
 const value = computed({
-    get() {
-        // return props.modelValue // vue3
-        return props.value
-    },
-    set(value) {
-        // emit('update:modelValue', value); // vue3
-        emit('input', value)
-    }
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
 });
 
 const errorMessages = computed(() => {
@@ -46,10 +38,10 @@ const errorMessages = computed(() => {
         :items="weatherOptions"
         :label="label"
         data-test="Wetter"
-        outlined
+        variant="outlined"
         :hint="description"
         :persistent-hint="!!description"
-        dense
+        density="compact"
         :disabled="isLoading"
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"

@@ -46,7 +46,7 @@ Feature: An user can change startTime of a wayPoint on form of first wayPoint
       | Gorbitz | date<now,d.m.Y H:i:s> |
 
     And I click on text "Wegpunkt speichern und Runde abschließen"
-    And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
+    And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich zur Runde hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
     And there are exactly 1 wayPoints in database
     And I can find the following wayPoints in database:
       | locationName | visitedAt             |

@@ -35,7 +35,7 @@ Feature: An user can create a wayPoint with and without ageRanges
     When I enter "Jugo geht ab" in "oneOnOneInterview" field
     Then I wait for 'Altersgruppen' to disappear
     And I click on text "Wegpunkt speichern und Runde abschließen"
-    And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
+    And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich zur Runde hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
     And there are exactly 1 wayPoints in database
     And I can find the following wayPoints in database:
       | locationName | ageGroups |
@@ -51,7 +51,7 @@ Feature: An user can create a wayPoint with and without ageRanges
     When I enter "3" in "1 - 10 w" field
     When I enter "1" in "1 - 10 x" field
     And I click on text "Wegpunkt speichern und Runde abschließen"
-    And I wait for "Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden." to appear
+    And I wait for 'Der Wegpunkt "Ackis" wurde erfolgreich zur Runde hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
     And there are exactly 2 wayPoints in database
     And I can find the following wayPoints in database:
       | locationName | ageGroups                   |

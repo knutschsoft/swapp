@@ -10,6 +10,7 @@
                 alt="Was ist Swapp, die Streetworkapp?"
                 title="Was ist Swapp, die Streetworkapp?"
                 center
+                cover
             />
         </content-collapse>
     </div>

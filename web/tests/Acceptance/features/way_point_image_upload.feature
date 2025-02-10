@@ -28,12 +28,12 @@ Feature: An user can upload an image when creating a new wayPoint
     When I enter "Assieck" in "locationName" field
     When I enter "Straßenbahnen sind blockiert" in "note" field
     When I enter "@image.jpg" in "Bildupload" field
-    Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
+    Then I wait for "Keine Daten vorhanden" to appear
     Then I wait for "Wegpunkt ansehen" to disappear
     And I click on test element "button-way-point-submit"
     And I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich zur Runde hinzugefügt.' to appear
 
-    Then I wait for "Für diese Runde gibt es keine Wegpunkte." to disappear
+    Then I wait for "Keine Daten vorhanden" to disappear
     Then I wait for "Wegpunkt ansehen" to appear
     And I set browser window size to "1000" x "1800"
     When I click on test element "button-wegpunkt-ansehen-Assieck"
@@ -50,7 +50,7 @@ Feature: An user can upload an image when creating a new wayPoint
     When I enter "Assieck" in "locationName" field
     When I enter "Straßenbahnen sind blockiert" in "note" field
     When I enter "@text_file.txt" in "Bildupload" field
-    Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
+    Then I wait for "Keine Daten vorhanden" to appear
     Then I wait for "Wegpunkt ansehen" to disappear
     And I click on test element "button-way-point-submit"
     And I wait for 'The provided "data:" URI is not valid.' to appear
@@ -65,7 +65,7 @@ Feature: An user can upload an image when creating a new wayPoint
     When I enter "Assieck" in "locationName" field
     When I enter "Straßenbahnen sind blockiert" in "note" field
     When I enter "@image_big.jpg" in "Bildupload" field
-    Then I wait for "Für diese Runde gibt es keine Wegpunkte." to appear
+    Then I wait for "Keine Daten vorhanden" to appear
     Then I wait for "Wegpunkt ansehen" to disappear
     And I click on test element "button-way-point-submit"
     And I wait for 'Das Bild ist mit 10.08 MB größer als die maximal erlaubten 10 MB.' to appear
