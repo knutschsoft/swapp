@@ -1,9 +1,8 @@
 <template>
     <div
         v-if="isOnDemoPage"
-        class="text-muted"
+        class="text-muted mt-5"
     >
-        <hr class="mt-3 mb-4" />
         <v-alert
             ref="wurst"
             color="info"
@@ -18,7 +17,7 @@
             <p>
                 Folgende Benutzende können sich anmelden:
             </p>
-            <ul>
+            <ul class="pl-5">
                 <li>
                     <span
                         class="cursor-pointer"
@@ -37,7 +36,7 @@
                             name="CheckCircleOutline"
                         />
                     </span>
-                    <ul>
+                    <ul class="pl-5">
                         <li>
                             <mdicon
                                 class="mr-1"
@@ -75,7 +74,7 @@
                             name="CheckCircleOutline"
                         />
                     </span>
-                    <ul>
+                    <ul class="pl-5">
                         <li>
                             <mdicon
                                 class="mr-1"
@@ -112,7 +111,7 @@
                             name="CheckCircleOutline"
                         />
                     </span>
-                    <ul>
+                    <ul class="pl-5">
                         <li>
                             <mdicon
                                 class="mr-1"
@@ -136,13 +135,11 @@
         </v-alert>
         <v-alert
             type="warning"
-            class="mb-0"
+            class="mb-0 mt-5"
+            prominent
+            icon="mdi-alert-decagram-outline"
         >
             <p class="d-flex align-items-center">
-                <mdicon
-                    name="AlertDecagramOutline"
-                    class="mr-1"
-                />
                 <b>BITTE NUR MIT UNSENSIBLEN DATEN TESTEN!</b>
             </p>
             <p>

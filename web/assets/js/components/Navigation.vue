@@ -193,8 +193,7 @@
                         href="https://streetworkapp.de"
                         target="_blank"
                     >
-                        <v-list-item-title>Swapp-Homepage</v-list-item-title>
-                        <v-icon small>mdi-open-in-new</v-icon>
+                        <v-list-item-title>Swapp-Homepage <v-icon small>mdi-open-in-new</v-icon></v-list-item-title>
                     </v-list-item>
                     <v-divider />
                     <v-list-item v-if="!isUserSwitched && isSuperAdmin">

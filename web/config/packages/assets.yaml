@@ -1,3 +1,4 @@
 framework:
     assets:
-        json_manifest_path: '%kernel.project_dir%/public/build/.vite/manifest.json'
+#        json_manifest_path: '%kernel.project_dir%/public/build/.vite/manifest.json'
+        version_strategy: 'Pentatrion\ViteBundle\Asset\ViteAssetVersionStrategy'

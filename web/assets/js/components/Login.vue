@@ -12,99 +12,104 @@
             offset-xl="4"
             class="mt-4"
         >
-            <h2
-                class="text-center mb-3"
-            >
-                Anmeldung
-            </h2>
-            <p class="text-center">
-                <template
-                    v-if="isOnDemoPage"
+            <v-card>
+                <h2
+                    class="text-center my-3"
                 >
-                    Bitte melde dich mit einem der unten stehenden Zugangsdaten an
-                    <br>
-                    <span class="text-muted ">
-                        oder alternativ mit deiner E-Mail-Adresse (oder deinem Benutzername) und deinem selbst gewählten Passwort an.
-                   </span>
-                </template>
-                <template
-                    v-else
-                >
-                    Bitte melde dich mit deiner E-Mail-Adresse (oder deinem Benutzername) und deinem selbst gewählten Passwort an.
-                </template>
-            </p>
-            <div>
-                <v-form
-                    novalidate
-                    @submit.stop.prevent
-                >
-                    <v-text-field
-                        v-model="username"
-                        id="username"
-                        prepend-inner-icon="mdi-account-circle-outline"
-                        autofocus
-                        type="text"
-                        :disabled="isLoading"
-                        label="Benutzername oder E-Mail"
-                        placeholder="vorname.nachname@domain.de"
-                        name="username"
-                        data-test="username"
-                        autocomplete="username email"
-                        density="compact"
-                        variant="outlined"
-                    />
-                    <v-text-field
-                        v-model="password"
-                        prepend-inner-icon="mdi-lock-outline"
-                        :append-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                        autofocus
-                        :type="passwordFieldType"
-                        :disabled="isLoading"
-                        label="Passwort"
-                        placeholder="Passwort"
-                        name="password"
-                        data-test="password"
-                        autocomplete="password"
-                        density="compact"
-                        variant="outlined"
-                        @click:append="switchPasswordVisibility"
-                    />
-                    <v-btn
-                        :disabled="username.length < 3 || password.length < -1 || isLoading"
-                        block
-                        color="secondary"
-                        type="submit"
-                        @click="performLogin()"
-                    >
-                        <v-progress-circular
-                            v-if="isLoading"
-                            :width="2"
-                            :size="20"
-                            indeterminate
-                            class="mr-2 position-relative"
-                        ></v-progress-circular>
-                        Anmelden
-                    </v-btn>
-                    <v-alert
-                        v-if="hasError"
-                        type="error"
-                        class="mt-2"
-                    >
-                        {{ 'Die Kombination aus E-Mail-Adresse und Passwort ist ungültig.' }}
-                    </v-alert>
-                    <v-btn
-                        variant="text"
-                        block
-                        class="my-3"
-                    >
-                        <router-link
-                            :to="{ name: 'PasswordReset' }"
+                    Anmeldung
+                </h2>
+                <v-card-text>
+                    <p class="text-center mb-3">
+                        <template
+                            v-if="isOnDemoPage"
                         >
-                            Passwort vergessen oder noch kein Passwort?
-                        </router-link>
-                    </v-btn>
-                </v-form>
-            </div>
+                            Bitte melde dich mit einem der unten stehenden Zugangsdaten an
+                            <br>
+                            <span class="text-muted ">
+                        oder alternativ mit deiner E-Mail-Adresse - oder deinem Benutzernamen - und deinem selbst gewählten Passwort an.
+                   </span>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            Bitte melde dich mit deiner E-Mail-Adresse - oder deinem Benutzernamen - und deinem selbst gewählten Passwort an.
+                        </template>
+                    </p>
+                    <div>
+                        <v-form
+                            novalidate
+                            @submit.stop.prevent
+                        >
+                            <v-text-field
+                                v-model="username"
+                                id="username"
+                                prepend-inner-icon="mdi-account-circle-outline"
+                                autofocus
+                                type="text"
+                                :disabled="isLoading"
+                                label="Benutzername oder E-Mail"
+                                placeholder="vorname.nachname@domain.de"
+                                name="username"
+                                data-test="username"
+                                autocomplete="username email"
+                                density="compact"
+                                variant="outlined"
+                            />
+                            <v-text-field
+                                v-model="password"
+                                prepend-inner-icon="mdi-lock-outline"
+                                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                                autofocus
+                                :type="passwordFieldType"
+                                :disabled="isLoading"
+                                label="Passwort"
+                                placeholder="Passwort"
+                                name="password"
+                                data-test="password"
+                                autocomplete="password"
+                                density="compact"
+                                variant="outlined"
+                                @click:append-inner="switchPasswordVisibility"
+                            />
+                            <v-btn
+                                :disabled="username.length < 3 || password.length < -1 || isLoading"
+                                block
+                                color="secondary"
+                                type="submit"
+                                @click="performLogin()"
+                            >
+                                <v-progress-circular
+                                    v-if="isLoading"
+                                    :width="2"
+                                    :size="20"
+                                    indeterminate
+                                    class="mr-2 position-relative"
+                                ></v-progress-circular>
+                                Anmelden
+                            </v-btn>
+                            <v-alert
+                                v-if="hasError"
+                                type="warning"
+                                class="mt-3"
+                            >
+                                {{ 'Die Kombination aus E-Mail-Adresse und Passwort ist ungültig.' }}
+                            </v-alert>
+                            <v-btn
+                                variant="text"
+                                block
+                                class="mt-3"
+                            >
+                                <router-link
+                                    :to="{ name: 'PasswordReset' }"
+                                >
+                                    Passwort vergessen oder noch kein Passwort?
+                                </router-link>
+                            </v-btn>
+                        </v-form>
+                    </div>
+                </v-card-text>
+            </v-card>
+
             <DemoInfo
                 @credentials-select="handleCredentialsSelect($event)"
             />

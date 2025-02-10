@@ -24,6 +24,7 @@
     "eslint-plugin-vue": "^9.5.1",
     "mdi-vue": "^3.0.13",
     "pinia": "^2.1.6",
+    "postcss": "^8.5.1",
     "sass": "^1.83.4",
     "typeface-roboto": "^1.1.13",
     "typescript": "^5.2.2",
@@ -37,13 +38,11 @@
     "vite-plugin-vuetify": "^2.1.0",
     "vue": "^3.5.13",
     "vue-axios": "^3.5.2",
-    "vue-cli-plugin-vuetify": "^2.5.8",
     "vue-clipboard2": "^0.3.3",
     "vue-datepicker-next": "^1.0.3",
     "vue-router": "^4.5.0",
     "vue-silentbox": "^3.0.4",
     "vuetify": "3.x",
-    "workbox-webpack-plugin": "^7.0.0",
     "workbox-window": "^7.0.0"
   },
   "scripts": {

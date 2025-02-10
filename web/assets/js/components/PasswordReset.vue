@@ -1,105 +1,119 @@
 <template>
-    <div class="">
-        <div
-            class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 offset-lg-3 col-lg-6 border border-dark p-4 mt-4"
+    <v-row>
+        <v-col
+            cols="12"
+            sm="8"
+            md="6"
+            lg="6"
+            xl="4"
+            offset-sm="2"
+            offset-md="3"
+            offset-lg="3"
+            offset-xl="4"
+            class="mt-4"
         >
-            <h2
-                class="text-center mb-3"
-            >
-                Passwort vergessen
-                <br>
-                oder noch kein Passwort?
-            </h2>
-            <ul class="text-left mt-3 pl-3">
-                <li>
-                    Um dein Passwort zu ändern, trage bitte deine E-Mail-Adresse ein und sende das Formular ab.
-                </li>
-                <li>
-                    Du bekommst dann eine E-Mail mit einem Link zugeschickt.
-                </li>
-                <li>
-                    Mit Hilfe dieses Links kannst du dann ein neues Passwort setzen.
-                </li>
-            </ul>
-            <div>
-                <v-form
-                    novalidate
-                    @submit.stop.prevent
+            <v-card>
+                <v-card-text>
+
+                <h2
+                    class="text-center mb-3"
                 >
-                    <v-text-field
-                        v-model="username"
-                        :state="validation"
-                        :disabled="isPasswordRequested"
-                        prepend-inner-icon="mdi-email"
-                        autofocus
-                        type="text"
-                        autocomplete="email"
-                        placeholder="vorname.nachname@domain.de"
-                        name="username"
-                        label="E-Mail-Adresse"
-                        density="compact"
-                        variant="outlined"
-                    />
-                    <v-alert
-                        v-if="usernameInvalidText && hasError"
-                        type="error"
-                        class=""
-                    >{{usernameInvalidText}}</v-alert>
-                    <v-text-field
-                        id="email"
-                        v-model="honeypotEmail"
-                        type="text"
-                        style="position: absolute; left: -10000px; top: -10000px;"
-                        placeholder="vorname.nachname@streetworkapp.de"
-                        name="email"
-                        aria-label="Email"
-                        aria-describedby="email-help-block"
-                    />
-                    <v-btn
-                        :disabled="username.length < 10 || isLoading || isPasswordRequested"
-                        block
-                        color="secondary"
-                        type="submit"
-                        @click="requestPasswordReset()"
+                    Passwort vergessen
+                    <br>
+                    oder noch kein Passwort?
+                </h2>
+                    <v-alert prominent class="mb-5">
+                        <ul class="text-left mt-3 pl-5">
+                            <li>
+                                Um dein Passwort zu ändern, trage bitte deine E-Mail-Adresse ein und sende das Formular ab.
+                            </li>
+                            <li>
+                                Du bekommst dann eine E-Mail mit einem Link zugeschickt.
+                            </li>
+                            <li>
+                                Mit Hilfe dieses Links kannst du dann ein neues Passwort setzen.
+                            </li>
+                        </ul>
+                    </v-alert>
+                <div>
+                    <v-form
+                        novalidate
+                        @submit.stop.prevent
                     >
-                        <v-progress-circular
-                            v-if="isLoading"
-                            indeterminate
-                        ></v-progress-circular>
-                        Passwortänderung beantragen
-                    </v-btn>
-                    <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
-                    <v-btn
-                        variant="text"
-                        block
-                        class="my-3"
-                    >
-                        <router-link
+                        <v-text-field
+                            v-model="username"
+                            :state="validation"
+                            :disabled="isPasswordRequested"
+                            prepend-inner-icon="mdi-email"
+                            autofocus
+                            type="text"
+                            autocomplete="email"
+                            placeholder="vorname.nachname@domain.de"
+                            name="username"
+                            label="E-Mail-Adresse"
+                            density="compact"
+                            variant="outlined"
+                        />
+                        <v-alert
+                            v-if="usernameInvalidText && hasError"
+                            type="error"
+                            class=""
+                        >{{usernameInvalidText}}</v-alert>
+                        <v-text-field
+                            id="email"
+                            v-model="honeypotEmail"
+                            type="text"
+                            style="position: absolute; left: -10000px; top: -10000px;"
+                            placeholder="vorname.nachname@streetworkapp.de"
+                            name="email"
+                            aria-label="Email"
+                            aria-describedby="email-help-block"
+                        />
+                        <v-btn
+                            :disabled="username.length < 10 || isLoading || isPasswordRequested"
+                            block
+                            color="secondary"
+                            type="submit"
+                            @click="requestPasswordReset()"
+                        >
+                            <v-progress-circular
+                                v-if="isLoading"
+                                indeterminate
+                            ></v-progress-circular>
+                            Passwortänderung beantragen
+                        </v-btn>
+                        <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
+                        <v-btn
+                            variant="text"
+                            block
+                            class="mt-3"
                             :to="{ name: 'Login' }"
                         >
                             Zurück zur Anmeldung
-                        </router-link>
-                    </v-btn>
-                </v-form>
-                <v-alert
-                    v-if="isPasswordRequested && !hasError"
-                    prominent
-                    type="success"
-                >
-                    <p class="font-weight-bold">
-                        Herzlichen Glückwunsch!
-                    </p>
-                    <p class="mb-0">
-                        Du solltest eine E-Mail bekommen haben.
-                        <br>
-                        Bitte schaue ggfs. auch in deinem Spam-Ordner nach.
-                        <br>
-                        Alle weiteren Schritte stehen in der E-Mail.
-                    </p>
-                </v-alert>
-            </div>
-        </div>
-    </div>
+                        </v-btn>
+                    </v-form>
+                    <v-alert
+                        v-if="isPasswordRequested && !hasError"
+                        prominent
+                        type="success"
+                        class="mt-3"
+                    >
+                        <p class="font-weight-bold">
+                            Herzlichen Glückwunsch!
+                        </p>
+                        <p class="mb-0">
+                            Du solltest eine E-Mail bekommen haben.
+                            <br>
+                            Bitte schaue ggfs. auch in deinem Spam-Ordner nach.
+                            <br>
+                            Alle weiteren Schritte stehen in der E-Mail.
+                        </p>
+                    </v-alert>
+                </div>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
 </template>
 <script>
     "use strict";

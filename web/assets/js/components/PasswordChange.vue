@@ -1,134 +1,156 @@
 <template>
-    <div class="">
-        <v-alert
-            v-if="!isConfirmationTokenValid"
-            type="warning"
+    <v-row>
+        <v-col
+            cols="12"
+            sm="8"
+            md="6"
+            lg="6"
+            xl="4"
+            offset-sm="2"
+            offset-md="3"
+            offset-lg="3"
+            offset-xl="4"
+            class="mt-4"
         >
-            Upps! Der von dir genutzte Link ist nicht länger gültig.
-            <br>
-            Bitte schaue nach, ob in deinem E-Mail-Postfach eine neuere E-Mail mit Link vorhanden ist oder beantrage
-            nochmal ein neues Passwort.
-            <v-btn
-                block
-                class="my-3"
-                color="secondary"
-                :to="{ name: user ? 'PasswordChangeRequest' : 'PasswordReset' }"
+            <v-alert
+                v-if="!isConfirmationTokenValid"
+                type="warning"
+                prominent
             >
-                Passwortänderung beantragen
-            </v-btn>
-        </v-alert>
-        <div
-            v-else
-            class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 offset-lg-3 col-lg-6 border border-dark p-4 mt-4"
-        >
-            <h2
-                class="text-center"
-            >
-                Passwort ändern
-            </h2>
-            <v-form
-                novalidate
-                @submit.stop.prevent
-            >
-                <v-text-field
-                    v-model="password"
-                    prepend-inner-icon="mdi-lock-outline"
-                    :append-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                    autofocus
-                    :type="passwordFieldType"
-                    label="Passwort"
-                    placeholder="Passwort"
-                    name="password"
-                    data-test="password"
-                    autocomplete="off"
-                    :disabled="isPasswordChanged || isLoading"
-                    density="compact"
-                    variant="outlined"
-                    @click:append="switchPasswordVisibility"
-                />
-                <v-text-field
-                    v-model="passwordRepeat"
-                    prepend-inner-icon="mdi-lock-outline"
-                    :append-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                    autofocus
-                    :type="passwordFieldType"
-                    label="Passwort wiederholen"
-                    placeholder="Passwort"
-                    name="passwordRepeat"
-                    data-test="passwordRepeat"
-                    autocomplete="off"
-                    hide
-                    :disabled="isPasswordChanged || isLoading"
-                    density="compact"
-                    variant="outlined"
-                    @input="passwordValidation"
-                    @click:append="switchPasswordVisibility"
-                />
-                <v-alert
-                    v-if="false === passwordState && passwordInvalidText"
-                    type="warning"
-                >
-                    {{ passwordInvalidText }}
-                </v-alert>
-                <v-alert
-                    v-if="false === passwordRepeatValidation"
-                    type="warning"
-                >
-                    {{ 'Die Passwörter sind unterschiedlich.' }}
-                </v-alert>
+                Upps! Der von dir genutzte Link ist nicht länger gültig.
+                <br>
+                Bitte schaue nach, ob in deinem E-Mail-Postfach eine neuere E-Mail mit Link vorhanden ist oder beantrage
+                nochmal ein neues Passwort.
                 <v-btn
-                    :disabled="!passwordState || !passwordRepeatValidation || isLoading || isPasswordChanged"
                     block
+                    class="my-3"
                     color="secondary"
-                    type="submit"
-                    data-test="btn-change-password"
-                    @click="changePassword()"
-                    class="mb-3"
+                    :to="{ name: user ? 'PasswordChangeRequest' : 'PasswordReset' }"
                 >
-                    <v-progress-circular
-                        v-if="isLoading"
-                        :width="2"
-                        :size="20"
-                        indeterminate
-                        class="mr-2 position-relative"
-                    />
-                    Passwort ändern
+                    Passwortänderung beantragen
                 </v-btn>
-                <general-error-alert v-if="hasError && !validationErrors.password" />
-            </v-form>
-            <div
-                v-if="isPasswordChanged && !hasError"
-                class="mb-3"
+            </v-alert>
+            <v-card
+                v-else
             >
-                <div
-                    class="alert alert-success w-100 mb-0"
-                    role="alert"
-                >
-                    <p class="font-weight-bold">
-                        Herzlichen Glückwunsch!
-                    </p>
-                    <p>
-                        Du hast erfolgreich dein Passwort geändert.
-                        <span
-                            v-if="!user"
-                        >
-                            <br>
-                            <br>
-                            Melde dich jetzt an:
-                        </span>
-                    </p>
-                    <v-btn
-                        v-if="!user"
-                        :to="{ name: 'Login'}"
-                        color="secondary"
-                        block
+                <v-card-text>
+                    <h2
+                        class="text-center"
                     >
-                        Zur Anmeldung
-                    </v-btn>
-                </div>
-            </div>
-        </div>
-    </div>
+                        Passwort ändern
+                    </h2>
+                    <v-form
+                        @submit.stop.prevent
+                    >
+                        <v-text-field
+                            v-model="password"
+                            prepend-inner-icon="mdi-lock-outline"
+                            :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                            :type="passwordFieldType"
+                            label="Passwort"
+                            placeholder="Passwort"
+                            name="password"
+                            data-test="password"
+                            autocomplete="off"
+                            :disabled="isPasswordChanged || isLoading"
+                            density="compact"
+                            variant="outlined"
+                            clearable
+                            counter
+                            maxlength="40"
+                            persistent-counter
+                            @click:append-inner="switchPasswordVisibility"
+                            @click:clear="password = ''"
+                        />
+                        <v-text-field
+                            v-model="passwordRepeat"
+                            prepend-inner-icon="mdi-lock-outline"
+                            :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                            :type="passwordFieldType"
+                            label="Passwort wiederholen"
+                            placeholder="Passwort"
+                            name="passwordRepeat"
+                            data-test="passwordRepeat"
+                            autocomplete="off"
+                            :disabled="isPasswordChanged || isLoading"
+                            density="compact"
+                            variant="outlined"
+                            clearable
+                            counter
+                            maxlength="40"
+                            persistent-counter
+                            @input="passwordValidation"
+                            @click:append-inner="switchPasswordVisibility"
+                            @click:clear="passwordRepeat = ''"
+                        />
+                        <v-alert
+                            v-if="false === passwordState && passwordInvalidText"
+                            type="warning"
+                            class="mb-3"
+                        >
+                            {{ passwordInvalidText }}
+                        </v-alert>
+                        <v-alert
+                            v-if="false === passwordRepeatValidation"
+                            type="warning"
+                            class="mb-3"
+                        >
+                            {{ 'Die Passwörter sind unterschiedlich.' }}
+                        </v-alert>
+                        <v-btn
+                            :disabled="!passwordState || !passwordRepeatValidation || isLoading || isPasswordChanged"
+                            block
+                            color="secondary"
+                            type="submit"
+                            data-test="btn-change-password"
+                            @click="changePassword()"
+                        >
+                            <v-progress-circular
+                                v-if="isLoading"
+                                :width="2"
+                                :size="20"
+                                indeterminate
+                                class="mr-2 position-relative"
+                            />
+                            Passwort ändern
+                        </v-btn>
+                        <general-error-alert v-if="hasError && !validationErrors.password" />
+                    </v-form>
+                    <div
+                        v-if="isPasswordChanged && !hasError"
+                    >
+                        <v-alert
+                            type="success"
+                            class="mt-3"
+                            prominent
+                        >
+                            <p class="font-weight-bold">
+                                Herzlichen Glückwunsch!
+                            </p>
+                            <p>
+                                Du hast erfolgreich dein Passwort geändert.
+                                <span
+                                    v-if="!user"
+                                >
+                                    <br>
+                                    <br>
+                                    Melde dich jetzt an:
+                                </span>
+                            </p>
+                            <v-btn
+                                v-if="!user"
+                                :to="{ name: 'Login'}"
+                                color="secondary"
+                                block
+                            >
+                                Zur Anmeldung
+                            </v-btn>
+                        </v-alert>
+                    </div>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
 </template>
 <script>
     "use strict";
@@ -221,7 +243,8 @@
             }
         },
         methods: {
-            passwordValidation(value) {
+            passwordValidation() {
+                const value = this.passwordRepeat;
                 let regex = new RegExp('^[\\w_.\+*,:;#!?=%&{}|$@()\\-\\[\\]\/\\\\]*$');
                 if (value.length < 1) {
                     this.passwordState = null;
