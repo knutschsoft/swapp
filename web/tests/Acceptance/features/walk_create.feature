@@ -85,15 +85,16 @@ Feature: A user can do a walk
     And there are exactly 1 walks in database
 
     Then I wait for 'Runde "Mein erster Lauf" abschließen' to appear
-    Then I wait for 'Wegpunkt erfolgreich hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
+    Then I wait for 'Der Wegpunkt "Assieck" wurde erfolgreich zur Runde hinzugefügt. Die Runde kann jetzt abgeschlossen werden.' to appear
 
     When I enter "38" in "systemicAnswer" field
     When I enter "Nice day!" in "walkReflection" field
     When I enter "nächste Woche nochmal" in "commitments" field
     When I enter "Blockieren ist doof!" in "insights" field
-    And I click on element with selector "[data-test='rating'] .vue-rate-it-rating-item:nth-child(4n)"
+    And I click on element with selector "[data-test='rating'] .v-rating__wrapper:nth-child(6n)"
     And I click on text "Runde abschließen"
 
+    And I wait for 'Runde erstellt' to appear
     And I wait for 'Die Runde "Mein erster Lauf" wurde erfolgreich erstellt.' to appear
     And I wait for "Runde abschließen" to disappear
 

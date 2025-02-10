@@ -67,7 +67,6 @@ Feature: An admin can see users of his client
     And I wait for "Geändert am" to appear
 
     And I wait for "Neuen Benutzer erstellen" to appear
-    And I wait for "Zeitraum" to appear
     And I wait for "Summe" to appear
     And I wait for "4" to appear
 

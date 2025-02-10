@@ -100,7 +100,7 @@ final class AcceptanceContext extends MinkContext
      *
      * @throws \Throwable
      */
-    public function iWaitForTextToAppear(string $text, ?int $tries = 125): void
+    public function iWaitForTextToAppear(string $text, ?int $tries = 25): void
     {
         $text = $this->enrichText($text);
         $this->spin(
@@ -470,11 +470,28 @@ final class AcceptanceContext extends MinkContext
                 $element->attachFile($path);
             }
         } else {
-            $isDivField = $element->hasClass('v-combobox') || $element->hasClass('v-textarea')|| $element->hasClass('v-text-field')  || $element->hasClass('v-select');
+            $isVTextarea = $element->hasClass('v-textarea');
+            $isVTextField = $element->hasClass('v-text-field');
+            $isDivField = $element->hasClass('v-combobox') || $isVTextarea || $isVTextField || $element->hasClass('v-select');
             if ($isDivField) {
                 $element->click();
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(WebDriverKeys::BACKSPACE);
                 $element->keyPress($this->enrichText($value));
-                $element->keyPress(WebDriverKeys::ENTER);
+                if (!$isVTextarea && !$isVTextField) {
+                    $element->keyPress(WebDriverKeys::ENTER);
+                }
                 $this->getNodeElement('body')->click();
 
                 return;

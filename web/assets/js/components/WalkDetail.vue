@@ -5,6 +5,7 @@
             prominent
             density="compact"
             type="info"
+            class="mb-3"
         >
             Die Runde ist noch nicht abgeschlossen.
             <v-btn

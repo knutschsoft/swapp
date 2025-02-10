@@ -67,7 +67,7 @@
             </v-card-text>
         </v-card>
         <v-alert
-            v-if="!selectableTeams.length && !teams.length && !isLoading && isAllowedToCreateTeam"
+            v-if="!teams.length && !isLoading && isAllowedToCreateTeam"
             class="mb-0"
             type="info"
             variant="outlined"
@@ -84,7 +84,7 @@
             >ein neues Team anlegen</v-btn>.
         </v-alert>
         <v-alert
-            v-else-if="!selectableTeams.length && teams.length && !isLoading"
+            v-else-if="!selectableTeams.length && !isLoading"
             type="info"
             variant="outlined"
             class="mb-0"

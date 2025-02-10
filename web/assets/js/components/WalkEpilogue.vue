@@ -173,6 +173,7 @@
                     :disabled="isLoading || isSubmitDisabled"
                     data-test="button-walk-submit"
                     block
+                    class="text-transform-none"
                 >
                     Runde abschließen
                 </v-btn>
@@ -422,12 +423,12 @@ export default {
         async handleSubmit() {
             const walk = await this.walkStore.epilogue(this.form);
             if (walk) {
-                this.alertStore.success(`Die Runde "${walk.name}" wurde erfolgreich erstellt.`, 'Runde erstellt');
                 window.scrollTo({
                     top: 0,
                     left: 0,
                     behavior: 'smooth'
                 });
+                this.alertStore.success(`Die Runde "${walk.name}" wurde erfolgreich erstellt.`, 'Runde erstellt');
                 this.$router.push({name: 'Dashboard'});
             } else {
                 this.alertStore.error('Runde abschließen fehlgeschlagen', 'Upps! :-(');
