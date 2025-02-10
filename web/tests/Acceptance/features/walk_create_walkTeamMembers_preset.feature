@@ -48,8 +48,8 @@ Feature: An user can do a walk with preset walkTeamMembers
 
         Then there are exactly 1 walks in database
         And I can find the following walks in database:
-            | name             | walkTeamMembers          | startTime |
-            | Mein erster Lauf | karl@gmx.de,brain@gmx.de | 18:50     |
+            | name             | walkTeamMembers          | startTime | weather   |
+            | Mein erster Lauf | karl@gmx.de,brain@gmx.de | 18:50     | Arschkalt |
 
         And I go to "/abmeldung"
         Given I am authenticated as "brain@gmx.de"

@@ -135,6 +135,9 @@ final class AcceptanceContext extends MinkContext
     public function iWaitForTestElementToBeSelected(string $selector): void
     {
         $testElement = $this->getTestElement($selector);
+        if ($testElement->hasClass('v-switch')) {
+            $testElement = $testElement->find('css', 'input');
+        }
         Assert::true($testElement->isSelected());
     }
 
@@ -148,6 +151,9 @@ final class AcceptanceContext extends MinkContext
     public function iWaitForTestElementToBeNotSelected(string $selector): void
     {
         $testElement = $this->getTestElement($selector);
+        if ($testElement->hasClass('v-switch')) {
+            $testElement = $testElement->find('css', 'input');
+        }
         Assert::false($testElement->isSelected());
     }
 
@@ -464,15 +470,17 @@ final class AcceptanceContext extends MinkContext
                 $element->attachFile($path);
             }
         } else {
-            $isDivField = $element->hasClass('v-combobox') || $element->hasClass('v-textarea')|| $element->hasClass('v-text-field');
+            $isDivField = $element->hasClass('v-combobox') || $element->hasClass('v-textarea')|| $element->hasClass('v-text-field')  || $element->hasClass('v-select');
             if ($isDivField) {
                 $element->click();
                 $element->keyPress($this->enrichText($value));
                 $element->keyPress(WebDriverKeys::ENTER);
+                $this->getNodeElement('body')->click();
 
                 return;
             }
             $element->setValue($this->enrichText($value));
+            $this->getNodeElement('body')->click();
         }
     }
 

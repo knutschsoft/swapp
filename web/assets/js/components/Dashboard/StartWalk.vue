@@ -1,11 +1,11 @@
 <template>
     <div
-        class="pa-2"
+        class=""
     >
-        <v-card
-            v-if="hasUnfinishedWalks && !isLoading"
-        >
-            <v-card-text>
+        <v-card>
+            <v-card-text
+                v-if="hasUnfinishedWalks && !isLoading"
+            >
                 <v-select
                     v-model="selectedUnfinishedWalk"
                     :items="selectableUnfinishedWalks"
