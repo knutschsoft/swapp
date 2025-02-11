@@ -116,13 +116,9 @@
                 width="400"
             >
                 <template v-slot:activator="{ props }">
-                    <v-btn data-test="nav-user-item-small" variant="text" v-bind="props" size="small" slim class="text-transform-none d-lg-none">
+                    <v-btn data-test="nav-user-item" variant="text" v-bind="props" class="text-transform-none">
                         <v-icon>mdi-account</v-icon>
-                        <span v-if="isAuthenticated">{{ currentUser?.username }}</span>
-                    </v-btn>
-                    <v-btn data-test="nav-user-item" variant="text" v-bind="props" slim class="text-transform-none d-none d-lg-block">
-                        <v-icon>mdi-account</v-icon>
-                        <span v-if="isAuthenticated">{{ currentUser?.username }}</span>
+                        <span v-if="isAuthenticated" class="d-none d-sm-block">{{ currentUser?.username }}</span>
                     </v-btn>
                 </template>
                 <v-list>
