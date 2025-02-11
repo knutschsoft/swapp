@@ -91,6 +91,7 @@
                 </v-chip-group>
             </v-col>
             <v-col
+                cols="12"
                 sm="6"
                 md="6"
                 xl="4"
@@ -103,6 +104,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 sm="6"
                 md="6"
                 xl="4"
@@ -115,6 +117,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 sm="6"
                 md="6"
                 xl="2"
@@ -127,6 +130,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 sm="6"
                 md="6"
                 xl="2"
@@ -140,6 +144,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 xs="12"
                 sm="12"
                 md="12"
@@ -155,6 +160,7 @@
             </v-col>
             <v-col
                 class="my-1"
+                cols="12"
                 xs="12"
                 sm="12"
                 md="12"
@@ -175,6 +181,7 @@
                 </v-btn>
             </v-col>
             <v-col
+                cols="12"
                 xs="12"
                 sm="12"
                 md="12"

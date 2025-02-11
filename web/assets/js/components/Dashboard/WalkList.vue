@@ -2,6 +2,7 @@
     <div class="px-2 pt-2">
         <v-row dense class="">
             <v-col
+                cols="12"
                 sm="6"
                 md="3"
                 xl="2"
@@ -14,6 +15,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 sm="6"
                 md="3"
                 xl="2"
@@ -26,6 +28,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 no-gutters
                 sm="6"
                 md="3"
@@ -38,6 +41,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 sm="6"
                 md="3"
             >
@@ -50,6 +54,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 xs="12"
                 sm="12"
                 md="12"
@@ -64,6 +69,7 @@
                 />
             </v-col>
             <v-col
+                cols="12"
                 class="my-1"
                 xs="12"
                 sm="12"
@@ -85,6 +91,7 @@
                 </v-btn>
             </v-col>
             <v-col
+                cols="12"
                 xs="12"
                 sm="12"
                 md="12"

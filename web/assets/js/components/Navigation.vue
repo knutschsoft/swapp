@@ -102,6 +102,7 @@
                 icon
                 :to="{ name: 'Changelog' }"
                 :title="`Es gibt ${hasNewChangelogItems ? '' : 'keine '}Neuigkeiten für dich!`"
+                class="d-none d-sm-flex"
             >
                 <v-icon color="primary" v-if="hasNewChangelogItems">mdi-bell-badge-outline</v-icon>
                 <v-icon color="grey lighten-1" v-else>mdi-bell-outline</v-icon>
