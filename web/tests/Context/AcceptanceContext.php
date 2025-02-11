@@ -476,19 +476,7 @@ final class AcceptanceContext extends MinkContext
             $isDivField = $element->hasClass('v-combobox') || $isVTextarea || $isVTextField || $isVSelect;
             if ($isDivField) {
                 $element->click();
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
-                $element->keyPress(WebDriverKeys::BACKSPACE);
+                $element->keyPress(\str_repeat(WebDriverKeys::BACKSPACE, 15));
                 $element->keyPress($this->enrichText($value));
                 if (!$isVTextarea && !$isVTextField) {
                     $element->keyPress(WebDriverKeys::ENTER);
