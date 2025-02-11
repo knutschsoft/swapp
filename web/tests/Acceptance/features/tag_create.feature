@@ -40,9 +40,14 @@ Feature: An user can create a tag
 
         Then the element "button-tag-create" should be disabled
         When I enter "Religion" in "name" field
-        When I select "Navy" from vue select "farbe"
+        When I enter "Navy" in "farbe" field
         Then the element "button-tag-create" should be enabled
         Then I click on test element "button-tag-create"
+
+        And I wait for "Tag erstellt" to appear
+        And I can find the following tags in database:
+            | name     | color |
+            | Religion | Navy  |
 
         And I click on text "Liste der Tags"
     # close create collapse
@@ -76,7 +81,8 @@ Feature: An user can create a tag
 
         Then the element "button-tag-create" should be disabled
         When I enter "Religion" in "name" field
-        When I select "Navy" from vue select "farbe"
+#        When I select "Navy" from vue select "farbe"
+        When I enter "Navy" in "farbe" field
 
         Then the element "button-tag-create" should be enabled
         Then I click on test element "button-tag-create"

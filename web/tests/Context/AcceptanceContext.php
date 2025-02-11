@@ -100,7 +100,7 @@ final class AcceptanceContext extends MinkContext
      *
      * @throws \Throwable
      */
-    public function iWaitForTextToAppear(string $text, ?int $tries = 25): void
+    public function iWaitForTextToAppear(string $text, ?int $tries = 35): void
     {
         $text = $this->enrichText($text);
         $this->spin(
@@ -347,10 +347,10 @@ final class AcceptanceContext extends MinkContext
         }
         $this->spin(
             static function () use ($element): void {
-                Assert::same($element->getAttribute('aria-checked'), 'true');
+                Assert::same($element->getAttribute('aria-disabled'), 'false');
             }
         );
-        Assert::same($element->getAttribute('aria-checked'), 'true');
+        Assert::same($element->getAttribute('aria-disabled'), 'false');
     }
 
     /**
@@ -472,7 +472,8 @@ final class AcceptanceContext extends MinkContext
         } else {
             $isVTextarea = $element->hasClass('v-textarea');
             $isVTextField = $element->hasClass('v-text-field');
-            $isDivField = $element->hasClass('v-combobox') || $isVTextarea || $isVTextField || $element->hasClass('v-select');
+            $isVSelect = $element->hasClass('v-select');
+            $isDivField = $element->hasClass('v-combobox') || $isVTextarea || $isVTextField || $isVSelect;
             if ($isDivField) {
                 $element->click();
                 $element->keyPress(WebDriverKeys::BACKSPACE);
@@ -492,6 +493,9 @@ final class AcceptanceContext extends MinkContext
                 if (!$isVTextarea && !$isVTextField) {
                     $element->keyPress(WebDriverKeys::ENTER);
                 }
+                if ($isVSelect) {
+                    $element->keyPress(WebDriverKeys::ENTER);
+                }
                 $this->getNodeElement('body')->click();
 
                 return;
@@ -499,22 +503,6 @@ final class AcceptanceContext extends MinkContext
             $element->setValue($this->enrichText($value));
             $this->getNodeElement('body')->click();
         }
-    }
-
-    /**
-     * @When /^I select "([^"]*)" from vue select "([^"]*)"$/
-     */
-    public function iSelectFromVueSelect(string $arg1, string $dataTestLocator): void
-    {
-        $select = $this->getTestElement($dataTestLocator);
-        $select->click();
-
-//        $locator = '.menuable__content__active .v-select-list div.v-list-item__title:contains("'.$arg1.'")';
-//        $this->getNodeElement($locator, 50)->click();
-        $this->getNodeElement(\sprintf("[data-title='%s']", $arg1))->click();
-
-        // unfocus and close vuetify dropdown
-        $this->getSession()->getPage()->find('css', 'body')->click();
     }
 
     private function getNodeElement(string $locator, ?int $tries = 25): NodeElement

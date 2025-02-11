@@ -28,6 +28,7 @@ Feature: An administrator can change startTime of a walk
     Given I am authenticated as "karl@gmx.de"
     When I go to swapp page "/runde/walkId<Klippe>/detail"
     Then I wait for 'Runde "Klippe" ändern' to appear
+    When I click on test element "collapse-walk-detail"
 
     When I select date "10.01.2021" in date selector "startTimeDate"
     When I select time "18:20" in time selector "startTimeTime"

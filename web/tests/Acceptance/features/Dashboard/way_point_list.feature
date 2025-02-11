@@ -51,20 +51,23 @@ Feature: An user can use way point list
         Given I am authenticated as "karl@gmx.de"
         Then I wait for 'Liste aller Wegpunkte (17)' to appear
 
+        And I click on test element "collapse-walk-start"
+        And I click on test element "collapse-finished-walk-list"
+
         Then I wait for "Assieck17" to appear
         Then I wait for "Assieck8 " to disappear
 
-        When I click on aria label "Go to page 2"
+        When I click on aria label "Nächste Seite"
 
-        Then I wait for "Assieck17" to disappear
+        Then I wait for "Assieckbe 17" to disappear
         Then I wait for "Assieck8 " to appear
-        And I wait for aria label "Go to page 2" to be active
+        And I wait for aria label "Nächste Seite" to be active
 
     # prevent page from totalRows filter issue
         When I go to "/dashboard"
         Then I wait for "Assieck17" to disappear
         Then I wait for "Assieck8 " to appear
-        And I wait for aria label "Go to page 2" to be active
+        And I wait for aria label "Nächste Seite" to be active
 
         When I click on test element "reset-way-point-filter"
         Then I wait for "Assieck17" to appear

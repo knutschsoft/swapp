@@ -8,7 +8,6 @@ export type SortItem = {
 export type TableItemsPerPageOptions = VDataTable['$props']['itemsPerPageOptions']
 
 export const itemsPerPageOptions: TableItemsPerPageOptions = [
-    { value: 1, title: '1' },
     { value: 5, title: '5' },
     { value: 10, title: '10' },
     { value: 25, title: '25' },

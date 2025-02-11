@@ -210,6 +210,7 @@
             item-value="name"
             :no-data-text="noItemsText"
             :loading-text="loadingText"
+            :sort-by="sortBy"
             multi-sort
             mobile-breakpoint="lg"
             density="compact"
@@ -311,9 +312,10 @@ export default {
             totalItems: 0,
             search: '',
             currentPage: 1,
-            itemsPerPage: itemsPerPageOptions[0].value,
+            itemsPerPage: itemsPerPageOptions[1].value,
             serverItems: [],
             tableOptions: [],
+            sortBy: [{key: 'visitedAt', order: 'desc'}],
         };
     },
     computed: {
@@ -334,7 +336,7 @@ export default {
                 { value: 'oneOnOneInterview', title: 'Einzelgespräch', sortable: true },
                 { value: 'wayPointTags', title: 'Tags', sortable: false },
                 { value: 'walk.teamName', title: 'Team', sortable: true },
-                { value: 'visitedAt', title: 'Ankunft', sortable: true },
+                { value: 'visitedAt', title: 'Ankunft' },
                 { value: 'walk.name', title: 'Runde', sortable: true },
                 { value: 'actions', title: 'Aktionen', sortable: false },
             ])
@@ -363,7 +365,7 @@ export default {
             return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);
         },
     },
-    async mounted() {
+    async created() {
         this.itemsPerPage = this.generalStore.wayPointPerPage;
         this.currentPage = this.generalStore.wayPointCurrentPage;
         const tagResult = await TagAPI.findAllWithWayPoints();
@@ -413,7 +415,6 @@ export default {
         },
         async loadItems({ page, itemsPerPage, sortBy }) {
             this.tableOptions = {page, itemsPerPage, sortBy};
-            this.currentPage = page
             const data = {
                 page,
                 itemsPerPage,
@@ -476,7 +477,7 @@ export default {
         },
         unsetAllFilter() {
             this.generalStore.updateWayPointFilter(this.defaultFilter);
-            this.currentPage = 1;
+            this.handleCurrentPageChange(1);
         },
         forceFileDownload(response, title) {
             const url = window.URL.createObjectURL(new Blob([response.data]));

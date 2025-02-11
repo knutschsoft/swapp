@@ -66,7 +66,7 @@ Feature: A user can get a new password on his own
     And I should see "Melde dich jetzt an:" disappear
     And I should see "Zur Anmeldung" disappear
 
-  @javascript @password_reset @disabled
+  @javascript @password_reset @disabledUser
   Scenario: I use "Passwort vergessen?" as a not authenticated and disabled user I can not set a new password for me
     Given I am on "/anmeldung"
     And there is an empty confirmationToken for "old_karl@gmx.de"

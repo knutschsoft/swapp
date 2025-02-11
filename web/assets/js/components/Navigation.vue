@@ -115,11 +115,11 @@
                 width="400"
             >
                 <template v-slot:activator="{ props }">
-                    <v-btn variant="text" v-bind="props" size="small" slim class="text-transform-none d-lg-none">
+                    <v-btn data-test="nav-user-item-small" variant="text" v-bind="props" size="small" slim class="text-transform-none d-lg-none">
                         <v-icon>mdi-account</v-icon>
                         <span v-if="isAuthenticated">{{ currentUser?.username }}</span>
                     </v-btn>
-                    <v-btn variant="text" v-bind="props" slim class="text-transform-none d-none d-lg-block">
+                    <v-btn data-test="nav-user-item" variant="text" v-bind="props" slim class="text-transform-none d-none d-lg-block">
                         <v-icon>mdi-account</v-icon>
                         <span v-if="isAuthenticated">{{ currentUser?.username }}</span>
                     </v-btn>
@@ -151,6 +151,7 @@
                     </v-list-item>
                     <v-list-item
                         v-if="isUserSwitched"
+                        data-test="exit-switch-user"
                         @click="exitSwitchUser"
                     >
                         <v-list-item-title>Nutzerwechsel beenden</v-list-item-title>

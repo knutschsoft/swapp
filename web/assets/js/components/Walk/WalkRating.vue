@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, computed, PropType, ref} from 'vue';
+import {defineComponent, computed, PropType, ref, watch} from 'vue';
 import { type Client } from '../../model';
 
 export default defineComponent({
@@ -44,17 +44,13 @@ export default defineComponent({
         });
 
         const ratingForChange = ref<number>(props.rating);
-
-        const handleRatingSelected = (rating: number) => {
-            console.log('handleRrating');
-            console.log(ratingForChange);
-            emit('select-rating', ratingForChange);
-        };
+        watch(ratingForChange, (newValue, oldValue) => {
+            emit('select-rating', newValue);
+        });
 
         return {
             ratingForChange,
             imageSrc,
-            handleRatingSelected,
         };
     },
 });
@@ -69,7 +65,6 @@ export default defineComponent({
         :item-size="itemSize"
         :show-rating="showRating"
         :data-test="`rating${readOnly ? '-read' : ''}`"
-        @rating-selected="handleRatingSelected"
     >
         <template v-slot:item="props">
             <v-avatar v-if="imageSrc">

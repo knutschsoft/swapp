@@ -120,6 +120,7 @@
             :no-data-text="noItemsText"
             :loading-text="loadingText"
             multi-sort
+            :sort-by="sortBy"
             mobile-breakpoint="md"
             density="compact"
             show-current-page
@@ -237,9 +238,10 @@ export default {
             totalItems: 0,
             search: '',
             currentPage: 1,
-            itemsPerPage: itemsPerPageOptions[0].value,
+            itemsPerPage: itemsPerPageOptions[1].value,
             serverItems: [],
             tableOptions: [],
+            sortBy: [{key: 'startTime', order: 'desc'}],
         };
     },
     computed: {
@@ -265,9 +267,10 @@ export default {
             return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);
         },
     },
-    async mounted() {
+    async created() {
         this.itemsPerPage = this.generalStore.walkPerPage;
         this.currentPage = this.generalStore.walkCurrentPage;
+        // this.currentPage = 1;
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['hydra:member'];
     },
@@ -296,7 +299,7 @@ export default {
         },
         async loadItems({ page, itemsPerPage, sortBy }) {
             this.tableOptions = {page, itemsPerPage, sortBy};
-            this.currentPage = page
+            // this.currentPage = page
             const data = {
                 page,
                 itemsPerPage,
@@ -342,7 +345,7 @@ export default {
         },
         unsetAllFilter() {
             this.generalStore.updateWalkFilter(this.defaultFilter);
-            this.currentPage = 1;
+            this.handleCurrentPageChange(1);
         },
         forceFileDownload(response, title) {
             const url = window.URL.createObjectURL(new Blob([response.data]));
