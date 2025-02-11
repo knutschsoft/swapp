@@ -64,6 +64,8 @@ const dateRange = computed({
         :loading="isLoading"
         @cleared="$emit('cleared')"
         autocomplete="off"
+        :month-change-on-scroll="false"
+        position="left"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />

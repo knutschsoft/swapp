@@ -118,6 +118,7 @@ const presetDates = ref(presetDatesValue);
         :loading="isLoading"
         @cleared="$emit('cleared')"
         autocomplete="off"
+        :month-change-on-scroll="false"
         :preset-dates="presetDates"
     >
         <template #clear-icon="{ clear }">
