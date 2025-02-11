@@ -91,7 +91,7 @@
             <template #body.append="{headers}">
                 <tr>
                     <td v-for="header in headers[0]" :key="header.key" class="text-center">
-                        <strong v-if="header.title === 'user'">Summe</strong>
+                        <strong v-if="header.key === 'user'">Summe</strong>
                         <span v-else>{{ getSumOfColumn(header.key) }}</span>
                     </td>
                 </tr>

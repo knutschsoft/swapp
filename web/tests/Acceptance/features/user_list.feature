@@ -67,7 +67,9 @@ Feature: An admin can see users of his client
     And I wait for "Geändert am" to appear
 
     And I wait for "Neuen Benutzer erstellen" to appear
-    And I wait for "Summe" to appear
     And I wait for "4" to appear
 
+    And I click on test element "collapse-user-list"  
+      
     And I wait for "Liste der aktiven Benutzer" to appear
+    And I wait for "Summe" to appear
