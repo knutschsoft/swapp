@@ -51,15 +51,17 @@
                     :error="error"
                 />
             </v-col>
-            <v-col cols="12" md="6">
-                <walk-start-time-field
-                    v-model="walk.startTime"
-                    :initial-walk="initialWalk"
-                    :is-loading="isLoading"
-                    :error="error"
-                />
-            </v-col>
-            <v-row class="my-1" dense>
+            <v-row dense>
+                <v-col cols="12" md="6">
+                    <walk-start-time-field
+                        v-model="walk.startTime"
+                        :initial-walk="initialWalk"
+                        :is-loading="isLoading"
+                        :error="error"
+                    />
+                </v-col>
+            </v-row>
+            <v-row dense>
                 <v-col>
                     <walk-end-time-field
                         v-model="walk.endTime"

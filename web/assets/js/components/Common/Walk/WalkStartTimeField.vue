@@ -96,13 +96,14 @@ const errorMessages = computed(() => {
 <template>
     <div>
         Rundenstartzeit<br>
-        <div class="d-flex">
+        <div class="">
             <time-picker
                 v-model="startTimeTime"
                 :is-loading="isLoading"
                 data-test="startTimeTime"
                 placeholder="Rundenstartzeit"
                 :clearable="false"
+                class="mb-2"
             />
             <date-picker
                 v-model="startTimeDate"
