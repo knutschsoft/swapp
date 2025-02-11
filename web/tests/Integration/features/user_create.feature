@@ -178,3 +178,19 @@ Feature: Testing user create resource
       | hydra:title | An error occurred |
     And the JSON nodes should contain:
       | hydra:description | Item not found for "/api/clients |
+
+  @api @userCreate
+  Scenario: I can request /api/users/create as an admin and will not be able to create an user for another client
+    Given I am authenticated against api as "admin@gmx.de"
+    When I send an api platform POST request to "/api/users/create" with parameters:
+      | key      | value                    |
+      | username | new@gmx.de               |
+      | email    | new@gmx.de               |
+      | roles    | array<ROLE_ADMIN>        |
+      | client   | clientIri<client@gmx.de> |
+    Then the response should be in JSON
+#    And print last JSON response
+    And the JSON nodes should be equal to:
+      | hydra:title | An error occurred |
+    And the JSON nodes should contain:
+      | hydra:description | username: Der Nutzername "new@gmx.de" ist ungültig. Erlaubt sind nur Kleinbuchstaben, Punkt und Bindestrich, jedoch nicht am Anfang oder Ende. |

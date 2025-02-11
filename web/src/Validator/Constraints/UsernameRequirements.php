@@ -19,6 +19,7 @@ class UsernameRequirements extends Compound
             new Assert\NotBlank(),
             new Assert\Type('string'),
             new Assert\Length(['min' => 3, 'max' => 100]),
+            new UsernameConstraint(),
         ];
     }
 }
