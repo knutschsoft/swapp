@@ -496,7 +496,9 @@ final class AcceptanceContext extends MinkContext
                 if ($isVSelect) {
                     $element->keyPress(WebDriverKeys::ENTER);
                 }
-                $this->getNodeElement('body')->click();
+                if (!$isVTextField) {
+                    $this->getNodeElement('body')->click();
+                }
 
                 return;
             }
