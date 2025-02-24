@@ -51,7 +51,6 @@ Feature: An user can do a walk with preset walkTeamMembers
             | name             | walkTeamMembers          | startTime | weather   |
             | Mein erster Lauf | karl@gmx.de,brain@gmx.de | 18:50     | Arschkalt |
 
-        And I go to "/abmeldung"
         Given I am authenticated as "brain@gmx.de"
         And I should be on "/dashboard"
         Then I wait for "Team 'Westhang'" to appear
@@ -76,7 +75,6 @@ Feature: An user can do a walk with preset walkTeamMembers
             | name              | walkTeamMembers | startDate        |
             | Mein zweiter Lauf | brain@gmx.de    | date<06.06.2025> |
 
-        And I go to "/abmeldung"
         Given I am authenticated as "pinky@gmx.de"
         And I should be on "/dashboard"
         Then I wait for "Team 'Westhang'" to appear
@@ -100,7 +98,6 @@ Feature: An user can do a walk with preset walkTeamMembers
             | name              | walkTeamMembers           |
             | Mein dritter Lauf | brain@gmx.de,pinky@gmx.de |
 
-        And I go to "/abmeldung"
         Given I am authenticated as "pinky@gmx.de"
         And I should be on "/dashboard"
         Then I wait for "Team 'Westhang'" to appear

@@ -158,6 +158,7 @@
                         :to="{ name: 'Logout' }"
                         exact
                         link
+                        data-test="nav-user-logout"
                     >
                         <v-list-item-title>Abmelden</v-list-item-title>
                     </v-list-item>

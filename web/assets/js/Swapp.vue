@@ -76,24 +76,7 @@
                     </router-view>
                 </v-container>
             </v-main>
-            <v-snackbar
-                v-model="alertStore.showAlert"
-                multi-line
-                timeout="6000"
-                top
-                right
-                elevation="24"
-                rounded
-                :color="alertStore.alert?.type ?? undefined"
-            >
-                <div v-if="alertStore.alert?.title" class="pb-2 text-overline">{{ alertStore.alert?.title }}</div>
-                {{ alertStore.alert?.message }}
-                <template v-slot:actions>
-                    <v-btn variant="text" @click="alertStore.clear()">
-                        <v-icon icon="mdi-close"></v-icon>
-                    </v-btn>
-                </template>
-            </v-snackbar>
+            <global-notifications />
         </v-app>
     </FrameError>
 </template>
@@ -106,10 +89,11 @@ import { UseNetwork } from '@vueuse/components';
 import { useAlertStore, useAuthStore, useChangelogStore } from './stores';
 import apiClient from './api';
 import {useRoute} from "vue-router";
+import {GlobalNotifications} from "@/js/components/Common";
 
 export default {
     name: 'Swapp',
-    components: {ReloadPrompt, Navigation, UseNetwork},
+    components: {GlobalNotifications, ReloadPrompt, Navigation, UseNetwork},
     props: {},
     data() {
         return {

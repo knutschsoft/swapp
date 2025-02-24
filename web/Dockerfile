@@ -26,6 +26,9 @@ RUN rm /usr/local/bin/yarnpkg
 RUN corepack enable yarn
 RUN yes y | yarn set version berry
 
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions relay redis
+
 # replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 

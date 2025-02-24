@@ -22,6 +22,7 @@ declare module 'vue' {
     CommonFormError: typeof import('./components/Common/FormError.vue')['default']
     CommonGeneralErrorAlert: typeof import('./components/Common/GeneralErrorAlert.vue')['default']
     CommonGlobalFormError: typeof import('./components/Common/GlobalFormError.vue')['default']
+    CommonGlobalNotifications: typeof import('./components/Common/GlobalNotifications.vue')['default']
     CommonMonthRangePicker: typeof import('./components/Common/MonthRangePicker.vue')['default']
     CommonSwitchField: typeof import('./components/Common/SwitchField.vue')['default']
     CommonTextareaField: typeof import('./components/Common/TextareaField.vue')['default']

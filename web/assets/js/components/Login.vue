@@ -59,7 +59,6 @@
                                 v-model="password"
                                 prepend-inner-icon="mdi-lock-outline"
                                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                                autofocus
                                 :type="passwordFieldType"
                                 :disabled="isLoading"
                                 label="Passwort"

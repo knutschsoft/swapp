@@ -20,3 +20,8 @@ services:
     restart: "no"
     ports:
       - 8875:3306 # adjust your own port here
+
+  redis:
+    restart: "no"
+    ports:
+      - 8876:6379 # adjust your own port here

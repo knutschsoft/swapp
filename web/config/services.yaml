@@ -33,6 +33,18 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    Relay\Relay:
+        arguments:
+            - '%env(REDIS_DSN)%'
+        calls:
+            -   auth:
+                 - '%env(REDIS_PASSWORD)%'
+    Redis: '@Relay\Relay'  # Alias für Symfony-Kompatibilität
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments:
+            - '@Redis'
+
     App\Security\EventListener\JWTCreatedListener:
         arguments: [ '@request_stack' ]
         tags:

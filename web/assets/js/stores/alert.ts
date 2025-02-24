@@ -2,34 +2,19 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useAlertStore = defineStore('alert', () => {
-    const defaultValues = {
-        message: '',
-        title: '',
-        type: null
+    const alerts = ref<{ message: string; title?: string, type: 'success' | 'info' | 'error' | null, show: boolean }[]>([])
+
+    const addAlert = (message: string, title: string = '', type: 'success' | 'info' | 'error' = 'info') => {
+        alerts.value.push({ message, title, type, show: true })
     }
 
-    const alert = ref<{ message: string; title?: string, type: 'success' | 'info' | 'error' | null }>(defaultValues)
-    const showAlert = ref(false)
+    const success = (message: string, title: string = '') => addAlert(message, title, 'success')
+    const info = (message: string, title: string = '') => addAlert(message, title, 'info')
+    const error = (message: string, title: string = '') => addAlert(message, title, 'error')
 
-    const success = (message: string, title: string = '') => {
-        alert.value = { message, title, type: 'success' }
-        showAlert.value = true
+    const remove = (index: number) => {
+        alerts.value.splice(index, 1)
     }
 
-    const info = (message: string, title: string = '') => {
-        alert.value = { message, title, type: 'info' }
-        showAlert.value = true
-    }
-
-    const error = (message: string, title: string = '') => {
-        alert.value = { message, title, type: 'error' }
-        showAlert.value = true
-    }
-
-    const clear = () => {
-        showAlert.value = false
-        alert.value = defaultValues
-    }
-
-    return { alert, success, info, error, clear, showAlert }
+    return { alerts, success, info, error, remove }
 })

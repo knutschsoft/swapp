@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Tests\Context;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Carbon\Carbon;
 use Facebook\WebDriver\WebDriverKeys;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
+use Webmozart\Assert\InvalidArgumentException;
 
 final class AcceptanceContext extends MinkContext
 {
@@ -29,6 +32,23 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @Given /^I am logged out$/
+     */
+    public function iAmLoggedOut(): void
+    {
+        if (!$this->getSession()->getDriver()->isStarted()) {
+            return;
+        }
+        try {
+            $this->getTestElement('nav-user-item', 0);
+        } catch (ElementNotFoundException | InvalidArgumentException) {
+            return;
+        }
+        $this->visit('/abmeldung');
+        $this->iWaitForTextToAppear('Anmelden');
+    }
+
+    /**
      * @Given /^I am authenticated as "([^"]*)"$/
      *
      * @param string $username
@@ -37,12 +57,20 @@ final class AcceptanceContext extends MinkContext
      */
     public function iAmAuthenticatedAs(string $username): void
     {
+        $this->iAmLoggedOut();
+        if (!$this->getSession()->getDriver()->isStarted()) {
+            $this->visit('/anmeldung');
+        }
+        try {
+            $this->assertPageAddress('/anmelden');
+        } catch (ExpectationException) {
+            $this->visit('/anmeldung');
+        }
         $this->visit('/anmeldung');
         $this->fillField('username', $username);
         $this->fillField('password', $username);
 
         $this->pressButton('Anmelden');
-        $this->iSetBrowserWindowSizeToX('2000', '1024');
         $this->iWaitForTextToAppear($username);
     }
 
@@ -484,7 +512,7 @@ final class AcceptanceContext extends MinkContext
                 if ($isVSelect) {
                     $element->keyPress(WebDriverKeys::ENTER);
                 }
-                if (!$isVTextField) {
+                if (!$isVTextField || $isVSelect) {
                     $this->getNodeElement('body')->click();
                 }
 

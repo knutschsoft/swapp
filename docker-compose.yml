@@ -32,9 +32,11 @@ services:
       - DB_USER=${DB_USER:?DB_USER is not set or empty}
       - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
       - BEHAT_HOST_URL=${BEHAT_HOST_URL:-https://swapp.local/images/screenshots/}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:?REDIS_PASSWORD is not set or empty}
     restart: "always"
     depends_on:
       - mysql
+      - redis
     healthcheck:
       interval: 10s
       timeout: 3s
@@ -54,6 +56,16 @@ services:
       - MYSQL_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is not set or empty}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is not set or empty}
       - MYSQL_USER=${DB_USER:?DB_USER is not set or empty}
+
+  redis:
+      image: redis:7-alpine
+      command: >
+          redis-server --requirepass ${REDIS_PASSWORD} --save "" --appendonly yes --appendfsync everysec  --maxmemory 1024mb --maxmemory-policy allkeys-lru
+      restart: always
+      volumes:
+        - ${VOLUME_DIR_REDIS:?VOLUME_DIR_REDIS is not set or empty}:/data
+      expose:
+          - 6379
 
 networks:
   default:

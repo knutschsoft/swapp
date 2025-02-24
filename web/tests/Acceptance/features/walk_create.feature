@@ -82,6 +82,8 @@ Feature: A user can do a walk
     When I enter "Jugo geht ab" in "oneOnOneInterview" field
     And I set browser window size to "1000" x "1800"
     And I click on text "Wegpunkt speichern und Runde abschließen"
+    And I wait for "Wegpunkt erstellt" to appear
+
     And there are exactly 1 walks in database
 
     Then I wait for 'Runde "Mein erster Lauf" abschließen' to appear
@@ -92,9 +94,9 @@ Feature: A user can do a walk
     When I enter "Nice day!" in "walkReflection" field
     When I enter "nächste Woche nochmal" in "commitments" field
     When I enter "Blockieren ist doof!" in "insights" field
-    And I click on text "Runde abschließen"
+    And I click on test element "button-walk-submit"
 
-    And I wait for 'Runde erstellt' to appear
+    And I wait for "Runde erstellt" to appear
     And I wait for 'Die Runde "Mein erster Lauf" wurde erfolgreich erstellt.' to appear
     And I wait for "Runde abschließen" to disappear
 
