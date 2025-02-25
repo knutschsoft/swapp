@@ -224,6 +224,7 @@ export default {
             walkStore: useWalkStore(),
             isLoading: false,
             isExportLoading: false,
+            abortController: null,
             exportCtx: null,
             isResubmission: null,
             isUnfinished: null,
@@ -306,7 +307,13 @@ export default {
         },
         async loadItems({ page, itemsPerPage, sortBy }) {
             this.tableOptions = {page, itemsPerPage, sortBy};
-            // this.currentPage = page
+
+            if (this.abortController) {
+                this.abortController.abort();
+            }
+            this.abortController = new AbortController();
+            const signal = this.abortController.signal;
+
             const data = {
                 page,
                 itemsPerPage,
@@ -327,7 +334,7 @@ export default {
 
             try {
                 this.isLoading = true;
-                const result = await WalkAPI.find(data);
+                const result = await WalkAPI.find(data, signal);
                 this.isLoading = false;
                 const items = result.data['hydra:member'];
                 const total = result.data['hydra:totalItems'] ?? 0;

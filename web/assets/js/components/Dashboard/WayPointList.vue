@@ -287,6 +287,7 @@ import {DateRangePicker, FilterComboboxField, FilterTextField} from "@/js/compon
 import ColorBadge from "@/js/components/Tags/ColorBadge.vue";
 import {formatDateTimeNoSecondsWithDayOfWeek, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText} from "@/js/utils";
 import Tooltip from "@/js/components/Common/Tooltip.vue";
+import {useDate} from "vuetify";
 
 export default {
     name: 'WayPointList',
@@ -308,6 +309,7 @@ export default {
             walkStore: useWalkStore(),
             isLoading: false,
             isExportLoading: false,
+            abortController: null,
             exportCtx: null,
             allTeamNames: [],
             tags: [],
@@ -422,6 +424,13 @@ export default {
         },
         async loadItems({ page, itemsPerPage, sortBy }) {
             this.tableOptions = {page, itemsPerPage, sortBy};
+
+            if (this.abortController) {
+                this.abortController.abort();
+            }
+            this.abortController = new AbortController();
+            const signal = this.abortController.signal;
+
             const data = {
                 page,
                 itemsPerPage,
@@ -443,7 +452,7 @@ export default {
 
             try {
                 this.isLoading = true;
-                const result = await WayPointAPI.find(data);
+                const result = await WayPointAPI.find(data, signal);
                 this.isLoading = false;
                 const items = result.data['hydra:member'];
                 const total = result.data['hydra:totalItems'] ?? 0;

@@ -29,10 +29,10 @@ const updateFilterParams = function (params) {
 };
 
 export default {
-    find(params) {
+    find(params, signal) {
         let transformedParams = useParamTransformer(params);
 
-        return apiClient.get(`/api/way_points?${transformedParams}`);
+        return apiClient.get(`/api/way_points?${transformedParams}`, { signal });
     },
     export(params) {
         params.page = 1

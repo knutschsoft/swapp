@@ -30,10 +30,10 @@ const updateFilterParams = function (params) {
 };
 
 export default {
-    find(params) {
+    find(params, signal) {
         let transformedParams = useParamTransformer(params);
 
-        return apiClient.get(`/api/walks?${transformedParams}`);
+        return apiClient.get(`/api/walks?${transformedParams}`, { signal });
     },
     findOld(params) {
         let sort = updateFilterParams(params);

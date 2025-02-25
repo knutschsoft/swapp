@@ -1,7 +1,6 @@
 import axios, {AxiosInstance, InternalAxiosRequestConfig} from 'axios'
 // import axios, { AxiosRequestConfig, AxiosPromise, AxiosResponse } from 'axios';
-import {useGeneralStore} from '../stores/general';
-import {useAuthStore} from '../stores/auth';
+import { useAuthStore, useGeneralStore } from '@/js/stores/';
 
 const apiClient: AxiosInstance = axios.create({
     headers: {
