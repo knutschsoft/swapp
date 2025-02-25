@@ -1,5 +1,6 @@
 <template>
     <v-form
+        ref="form"
         @submit.prevent="handleSubmit"
         class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
@@ -641,6 +642,7 @@ export default {
                 conceptOfDaySuggestions: [],
                 guestNames: [],
                 userGroupNames: [],
+                users: [],
             },
             client: null,
         }
@@ -679,7 +681,7 @@ export default {
             return this.authStore.isSuperAdmin
         },
         isFormInvalid() {
-            return !(this.nameState && this.team.client && !this.isLoading)
+            return !(this.nameState && this.team.client && !this.isLoading && this.team.users.length)
         },
         error() {
             return this.teamStore.getErrors.change;

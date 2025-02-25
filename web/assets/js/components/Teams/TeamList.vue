@@ -22,6 +22,7 @@
                     v-if="isUserLoading"
                     spin
                     indeterminate
+                    size="18"
                 />
                 <div
                     v-else-if="0 === item.users.length"
@@ -110,7 +111,7 @@ import {
     itemsPerPageOptions,
     itemsPerPageText,
     loadingText,
-} from '../../utils'
+} from '@/js/utils'
 import Tooltip from "@/js/components/Common/Tooltip.vue";
 
 export default {
