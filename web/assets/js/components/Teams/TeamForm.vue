@@ -593,213 +593,136 @@
     </v-form>
 </template>
 
-<script>
-'use strict'
-import FormError from '../Common/FormError.vue'
-import {useAuthStore, useClientStore, useTeamStore, useUserStore} from '../../stores';
-import {WalkTeamMembersField} from "../Common/Walk";
+<script setup>
+import {ref, computed, watch, onMounted, defineEmits} from 'vue';
+import {FormError} from '@/js/components/Common';
+import {useAuthStore, useClientStore, useTeamStore, useUserStore} from '@/js/stores';
+import {WalkTeamMembersField} from "@/js/components/Common/Walk";
 
-export default {
-    name: 'TeamForm',
-    props: {
-        initialTeam: {
-            type: Object,
-            required: false,
-            default: null,
-        },
-        buttonLabel: {
-            type: String,
-            required: true,
-        },
+const props = defineProps({
+    initialTeam: {
+        type: Object,
+        required: false,
+        default: null,
     },
-    components: {
-        WalkTeamMembersField,
-        FormError,
+    buttonLabel: {
+        type: String,
+        required: true,
     },
-    data: function () {
-        let isWithPeopleCountDefault = true;
+});
 
-        return {
-            authStore: useAuthStore(),
-            clientStore: useClientStore(),
-            teamStore: useTeamStore(),
-            userStore: useUserStore(),
-            items: ['Arial', 'Calibri', 'Courier', 'Verdana'],
-            team: {
-                team: null,
-                client: '',
-                name: '',
-                initialMembersConfig: 'rundenersteller',
-                isWithAgeRanges: !isWithPeopleCountDefault,
-                isWithPeopleCount: isWithPeopleCountDefault,
-                isWithContactsCount: false,
-                isWithGuests: false,
-                isWithSystemicQuestion: false,
-                isWithUserGroups: false,
-                ageRanges: [],
-                locationNames: [],
-                walkNames: [],
-                conceptOfDaySuggestions: [],
-                guestNames: [],
-                userGroupNames: [],
-                users: [],
-            },
-            client: null,
-        }
-    },
-    computed: {
-        users() {
-            return this.userStore.getUsers.slice(0).filter(user => {
-                return user.client === this.team.client
-            }).sort((a, b) => {
-                return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1
-            })
-        },
-        hasDisabledUser() {
-            return this.users.some(user => !user.isEnabled);
-        },
-        isPeopleCountDisabled() {
-            return this.team.isWithAgeRanges || this.isDisabled;
-        },
-        isDisabled() {
-            return this.teamStore.isLoadingCreate || this.teamStore.isLoadingChange(this.team['@id']);
-        },
-        nameState() {
-            if (null === this.team.name || '' === this.team.name) {
-                return
-            }
+const emit = defineEmits(['submitted']);
 
-            return this.team.name.length >= 3 && this.team.name.length <= 100
-        },
-        isLoading() {
-            return this.teamStore.isLoading
-        },
-        currentUser() {
-            return this.authStore.currentUser
-        },
-        isSuperAdmin() {
-            return this.authStore.isSuperAdmin
-        },
-        isFormInvalid() {
-            return !(this.nameState && this.team.client && !this.isLoading && this.team.users.length)
-        },
-        error() {
-            return this.teamStore.getErrors.change;
-        },
-        availableClients() {
-            return this.clientStore.getClients;
-        },
-    },
-    created() {
-        this.setInitialValues();
-        this.team.client = this.team.client || this.currentUser.client;
-        this.userStore.fetchUsers();
-    },
-    watch: {
-        'team.isWithAgeRanges': function (newValue) {
-            if (newValue) {
-                this.team.isWithPeopleCount = true;
-            }
-        },
-    },
-    methods: {
-        async handleSubmit() {
-            if (this.isFormInvalid) {
-                return false
-            }
-            this.$emit('submitted', this.team)
-        },
-        removeAgeRange(index) {
-            this.team.ageRanges.splice(index, 1)
-        },
-        addAgeRange() {
-            this.team.ageRanges = [...this.team.ageRanges, {rangeStart: '', rangeEnd: ''}]
-        },
-        removeLocationName(index) {
-            this.team.locationNames.splice(index, 1)
-        },
-        addLocationName() {
-            this.team.locationNames = [...this.team.locationNames, '']
-        },
-        removeWalkName(index) {
-            this.team.walkNames.splice(index, 1)
-        },
-        addWalkName() {
-            this.team.walkNames = [...this.team.walkNames, '']
-        },
-        removeConceptOfDaySuggestion(index) {
-            this.team.conceptOfDaySuggestions.splice(index, 1)
-        },
-        addConceptOfDaySuggestion() {
-            this.team.conceptOfDaySuggestions = [...this.team.conceptOfDaySuggestions, '']
-        },
-        removeGuestName(index) {
-            this.team.guestNames.splice(index, 1)
-        },
-        addGuestName() {
-            this.team.guestNames = [...this.team.guestNames, ''];
-            this.$nextTick(() => {
-                this.$refs.guestNameInputs[this.$refs.guestNameInputs.length - 1].focus();
-            });
-        },
-        removeUserGroupName(index) {
-            this.team.userGroupNames.splice(index, 1)
-        },
-        addUserGroupName() {
-            this.team.userGroupNames = [...this.team.userGroupNames, {name: ''}]
-        },
-        moveUserGroupUp(index) {
-            const tempUserGroupName = this.team.userGroupNames[index]
-            let newUserGroups = []
-            this.team.userGroupNames.splice(index, 1)
-            this.team.userGroupNames.forEach((userGroupName, key) => {
-                if (key === index - 1) {
-                    newUserGroups.push(tempUserGroupName)
-                }
-                newUserGroups.push(userGroupName)
-            })
-            this.team.userGroupNames = newUserGroups
-        },
-        moveUserGroupDown(index) {
-            const tempUserGroupName = this.team.userGroupNames[index]
-            let newUserGroups = []
-            this.team.userGroupNames.splice(index, 1)
-            this.team.userGroupNames.forEach((userGroupName, key) => {
-                newUserGroups.push(userGroupName)
-                if (key === index) {
-                    newUserGroups.push(tempUserGroupName)
-                }
-            })
-            this.team.userGroupNames = newUserGroups
-        },
-        setInitialValues() {
-            if (this.initialTeam) {
-                this.team = JSON.parse(JSON.stringify(this.initialTeam));
-            } else {
-                this.team.name = null;
-                this.team.isWithAgeRanges = false;
-                this.team.isWithPeopleCount = false;
-                this.team.isWithContactsCount = false;
-                this.team.isWithGuests = false;
-                this.team.isWithSystemicQuestion = false;
-                this.team.isWithUserGroups = false;
-                this.team.initialMembersConfig = 'rundenersteller';
-                this.team.users = [];
-                this.team.ageRanges = [];
-                this.team.locationNames = [];
-                this.team.walkNames = [];
-                this.team.conceptOfDaySuggestions = [];
-                this.team.guestNames = [];
-                this.team.userGroupNames = [];
-            }
-            this.team.client = this.team.client || this.currentUser.client;
-        },
-        resetForm() {
-            this.$refs.form.reset();
-            this.setInitialValues();
-        },
-    },
-}
+const form = ref(null);
+const authStore = useAuthStore();
+const clientStore = useClientStore();
+const teamStore = useTeamStore();
+const userStore = useUserStore();
+
+const isWithPeopleCountDefault = true;
+
+const team = ref({
+    team: null,
+    client: '',
+    name: '',
+    initialMembersConfig: 'rundenersteller',
+    isWithAgeRanges: !isWithPeopleCountDefault,
+    isWithPeopleCount: isWithPeopleCountDefault,
+    isWithContactsCount: false,
+    isWithGuests: false,
+    isWithSystemicQuestion: false,
+    isWithUserGroups: false,
+    ageRanges: [],
+    locationNames: [],
+    walkNames: [],
+    conceptOfDaySuggestions: [],
+    guestNames: [],
+    userGroupNames: [],
+    users: [],
+});
+
+const users = computed(() => userStore.getUsers.filter(user => user.client === team.value.client)
+    .sort((a, b) => a.username.toLowerCase().localeCompare(b.username.toLowerCase())));
+
+const isPeopleCountDisabled = computed(() => team.value.isWithAgeRanges || isDisabled.value);
+const isDisabled = computed(() => teamStore.isLoadingCreate || teamStore.isLoadingChange(team.value['@id']));
+const nameState = computed(() => team.value.name && team.value.name.length >= 3 && team.value.name.length <= 100);
+const isLoading = computed(() => teamStore.isLoading);
+const currentUser = computed(() => authStore.currentUser);
+const isSuperAdmin = computed(() => authStore.isSuperAdmin);
+const isFormInvalid = computed(() => !(nameState.value && team.value.client && !isLoading.value && team.value.users.length));
+const error = computed(() => teamStore.getErrors.change);
+const availableClients = computed(() => clientStore.getClients);
+
+const setInitialValues = () => {
+    if (props.initialTeam) {
+        team.value = JSON.parse(JSON.stringify(props.initialTeam));
+    } else {
+        team.value = {
+            team: null,
+            client: currentUser.value.client,
+            name: '',
+            initialMembersConfig: 'rundenersteller',
+            isWithAgeRanges: false,
+            isWithPeopleCount: false,
+            isWithContactsCount: false,
+            isWithGuests: false,
+            isWithSystemicQuestion: false,
+            isWithUserGroups: false,
+            users: [],
+            ageRanges: [],
+            locationNames: [],
+            walkNames: [],
+            conceptOfDaySuggestions: [],
+            guestNames: [],
+            userGroupNames: [],
+        };
+    }
+};
+
+const handleSubmit = async () => {
+    if (isFormInvalid.value) return;
+    emit('submitted', team.value);
+};
+
+const removeAgeRange = (index) => team.value.ageRanges.splice(index, 1);
+const addAgeRange = () => team.value.ageRanges.push({rangeStart: '', rangeEnd: ''});
+const removeLocationName = (index) => team.value.locationNames.splice(index, 1);
+const addLocationName = () => team.value.locationNames.push('');
+const removeWalkName = (index) => team.value.walkNames.splice(index, 1);
+const addWalkName = () => team.value.walkNames.push('');
+const removeConceptOfDaySuggestion = (index) => team.value.conceptOfDaySuggestions.splice(index, 1);
+const addConceptOfDaySuggestion = () => team.value.conceptOfDaySuggestions.push('');
+const removeGuestName = (index) => team.value.guestNames.splice(index, 1);
+const addGuestName = () => team.value.guestNames.push('');
+const removeUserGroupName = (index) => team.value.userGroupNames.splice(index, 1);
+const addUserGroupName = () => team.value.userGroupNames.push({name: ''});
+const moveUserGroupUp = (index) => {
+    const item = team.value.userGroupNames.splice(index, 1)[0];
+    team.value.userGroupNames.splice(index - 1, 0, item);
+};
+const moveUserGroupDown = (index) => {
+    const item = team.value.userGroupNames.splice(index, 1)[0];
+    team.value.userGroupNames.splice(index + 1, 0, item);
+};
+
+const resetForm = () => {
+    form.value?.reset();
+    setInitialValues();
+};
+
+watch(() => team.value.isWithAgeRanges, (newValue) => {
+    if (newValue) {
+        team.value.isWithPeopleCount = true;
+    }
+});
+
+onMounted(() => {
+    setInitialValues();
+    userStore.fetchUsers();
+});
+
+defineExpose({ resetForm });
 </script>
 
 <style scoped lang="scss">

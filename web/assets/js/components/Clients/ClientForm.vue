@@ -19,7 +19,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submitted']);
 
 const clientStore = useClientStore();
 const form = ref<HTMLFormElement | null>(null);
