@@ -21,6 +21,7 @@ use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\Walk\WalkRemoveRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Entity\Fields\ConsumableNamesField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMWalkRepository;
 use App\Security\Voter\TeamVoter;
@@ -110,6 +111,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Walk implements \Stringable
 {
     use AgeRangeField;
+    use ConsumableNamesField;
     use UserGroupNamesField;
 
     #[ApiProperty(identifier: true)]
@@ -207,11 +209,15 @@ class Walk implements \Stringable
     private bool $isWithUserGroups;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithConsumables;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isUnfinished = true;
 
     public function __construct()
     {
         $this->ageRanges = [];
+        $this->consumableNames = [];
         $this->userGroupNames = [];
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
@@ -236,7 +242,9 @@ class Walk implements \Stringable
         }
         $instance->setIsWithContactsCount($team->isWithContactsCount());
         $instance->setIsWithUserGroups($team->isWithUserGroups());
+        $instance->setIsWithConsumables($team->isWithConsumables());
         $instance->setUserGroupNames($team->getUserGroupNames());
+        $instance->setConsumableNames($team->getConsumableNames());
         $instance->updateClient($team->getClient());
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
@@ -736,6 +744,18 @@ class Walk implements \Stringable
         $this->isWithUserGroups = $isWithUserGroups;
     }
 
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithConsumables')]
+    public function isWithConsumables(): bool
+    {
+        return $this->isWithConsumables;
+    }
+
+    public function setIsWithConsumables(bool $isWithConsumables): void
+    {
+        $this->isWithConsumables = $isWithConsumables;
+    }
+
     public function getSumOfContactsCount(): ?int
     {
         if (!$this->isWithContactsCount) {
@@ -772,6 +792,19 @@ class Walk implements \Stringable
             $userGroups = \array_merge($userGroups, $wayPoint->getUserGroups());
         }
 
-        return  $userGroups;
+        return $userGroups;
+    }
+
+    /**
+     * @return Consumable[]
+     */
+    public function getConsumables(): array
+    {
+        $consumables = [];
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $consumables = \array_merge($consumables, $wayPoint->getConsumables());
+        }
+
+        return $consumables;
     }
 }

@@ -7,6 +7,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Validator\Constraints as AppAssert;
 use App\Value\AgeRange;
+use App\Value\ConsumableName;
 use App\Value\UserGroupName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -61,9 +62,16 @@ final class TeamChangeRequest
     #[AppAssert\IsWithUserGroupsRequirements]
     public bool $isWithUserGroups;
 
+    #[AppAssert\IsWithConsumablesRequirements]
+    public bool $isWithConsumables;
+
     /** @var UserGroupName[] */
     #[AppAssert\UserGroupNameRequirements]
     public array $userGroupNames;
+
+    /** @var ConsumableName[] */
+    #[AppAssert\ConsumableNameRequirements]
+    public array $consumableNames;
 
     #[AppAssert\InitialMembersConfigRequirements]
     public string $initialMembersConfig;

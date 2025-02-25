@@ -174,6 +174,7 @@ Feature: Testing walk delete resource
       | imageFileData     | @image.jpg                                                    |
       | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
       | userGroups        | userGroups<>                                                  |
+      | consumables       | consumables<>                                                 |
       | peopleCount       | int<0>                                                        |
     Then I can find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder
 

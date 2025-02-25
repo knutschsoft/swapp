@@ -39,6 +39,9 @@ final class WayPointExportNormalizer implements NormalizerInterface, NormalizerA
         foreach ($this->getCsvUserGroupCells($object) as $label => $csvUserGroupCell) {
             $newData[$label] = $csvUserGroupCell;
         }
+        foreach ($this->getCsvConsumableCells($object) as $label => $csvConsumableCell) {
+            $newData[$label] = $csvConsumableCell;
+        }
         foreach ($this->getCsvAgeCells($object) as $label => $csvAgeCell) {
             $newData[$label] = $csvAgeCell;
         }
@@ -125,5 +128,23 @@ final class WayPointExportNormalizer implements NormalizerInterface, NormalizerA
         }
 
         return $userGroupHeaders;
+    }
+
+    /**
+     * @param WayPointExport $wayPointExport
+     *
+     * @return array<string, int>
+     */
+    private function getCsvConsumableCells(WayPointExport $wayPointExport): array
+    {
+        $consumableHeaders = [];
+
+        foreach ($wayPointExport->consumables as $consumable) {
+            $label = $consumable->getFrontendLabel();
+            $value = $consumable->getPeopleCount()->getCount();
+            $consumableHeaders[$label] = $value;
+        }
+
+        return $consumableHeaders;
     }
 }

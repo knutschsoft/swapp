@@ -8,6 +8,7 @@ use App\Entity\Walk;
 use App\Serializer\Normalizer\Base64DataUriNormalizer;
 use App\Validator\Constraints as AppAssert;
 use App\Value\AgeGroup;
+use App\Value\Consumable;
 use App\Value\UserGroup;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,6 +44,10 @@ final class WayPointCreateRequest
     /** @var UserGroup[] */
     #[AppAssert\UserGroupsRequirements]
     public array $userGroups;
+
+    /** @var Consumable[] */
+    #[AppAssert\ConsumablesRequirements]
+    public array $consumables;
 
     /** @var Tag[] */
     #[AppAssert\TagsRequirements]

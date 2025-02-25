@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Post;
 use App\Dto\Team\TeamChangeRequest;
 use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Fields\AgeRangeField;
+use App\Entity\Fields\ConsumableNamesField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMTeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,6 +48,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Team implements \Stringable
 {
     use AgeRangeField;
+    use ConsumableNamesField;
     use UserGroupNamesField;
 
     /** @var Collection<int, User> */
@@ -98,6 +100,9 @@ class Team implements \Stringable
     #[ORM\Column(type: 'boolean')]
     private bool $isWithUserGroups;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithConsumables;
+
     #[ORM\Column(length: 15)]
     private string $initialMembersConfig;
 
@@ -105,6 +110,7 @@ class Team implements \Stringable
     {
         $this->ageRanges = [];
         $this->userGroupNames = [];
+        $this->consumableNames = [];
         $this->users = new ArrayCollection();
     }
 
@@ -306,6 +312,18 @@ class Team implements \Stringable
     public function setIsWithUserGroups(bool $isWithUserGroups): void
     {
         $this->isWithUserGroups = $isWithUserGroups;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithConsumables')]
+    public function isWithConsumables(): bool
+    {
+        return $this->isWithConsumables;
+    }
+
+    public function setIsWithConsumables(bool $isWithConsumables): void
+    {
+        $this->isWithConsumables = $isWithConsumables;
     }
 
     #[Groups(['team:read'])]

@@ -28,9 +28,11 @@ Feature: Testing team change resource with initialMembersConfig
             | isWithPeopleCount       | <true>                    |
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |
+            | isWithConsumables       | <false>                           |
             | isWithGuests            | <true>                    |
             | guestNames              | array<Opa Manfred, Karla> |
             | userGroupNames          | array<>                   |
+            | consumableNames         | array<>                           |
             | initialMembersConfig    | mitglieder                |
         Then the response should be in JSON
 #    And print last JSON response

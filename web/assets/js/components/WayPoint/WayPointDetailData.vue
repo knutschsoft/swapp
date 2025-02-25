@@ -151,11 +151,39 @@
         <div
             v-if="walk.isWithUserGroups && !excludedAttributes.includes('userGroups')"
         >
-            <div class="d-inline-flex pa-2 font-weight-bold">
-                Personenanzahl von Nutzergruppen:
+            <div class="d-inline-flex pa-2 font-weight-bold text-decoration-underline">
+                Personenanzahl von Nutzergruppen
             </div>
-
+            <div
+                v-for="userGroup in wayPoint.userGroups"
+            >
+                <div
+                    class="d-inline-flex pa-2 font-weight-bold"
+                    :class="{'text-muted': !userGroup.peopleCount.count}"
+                >
+                    {{ userGroup.userGroupName.name }}:
+                </div>
+                {{ userGroup.peopleCount.count }}
+            </div>
             {{ wayPoint.userGroups === null ? 'nicht erfasst' : wayPoint.userGroups.value }}
+        </div>
+        <div
+            v-if="walk.isWithConsumables && !excludedAttributes.includes('consumables')"
+        >
+            <div class="d-inline-flex pa-2 font-weight-bold text-decoration-underline">
+                Ausgabematerialien
+            </div>
+            <div
+                v-for="consumable in wayPoint.consumables"
+            >
+                <div
+                    class="d-inline-flex pa-2 font-weight-bold"
+                    :class="{'text-muted': !consumable.peopleCount.count}"
+                >
+                    {{ consumable.consumableName.name }}:
+                </div>
+                {{ consumable.peopleCount.count }}
+            </div>
         </div>
         <div
             v-if="walk.isWithContactsCount && !excludedAttributes.includes('contactsCount')"

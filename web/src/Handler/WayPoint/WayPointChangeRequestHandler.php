@@ -33,6 +33,9 @@ final readonly class WayPointChangeRequestHandler
         if ($wayPoint->getWalk()->isWithUserGroups()) {
             $wayPoint->setUserGroups($request->userGroups);
         }
+        if ($wayPoint->getWalk()->isWithConsumables()) {
+            $wayPoint->setConsumables($request->consumables);
+        }
         $wayPoint->setNote($request->note);
         $wayPoint->setOneOnOneInterview($request->oneOnOneInterview);
         $wayPoint->setIsMeeting($request->isMeeting);

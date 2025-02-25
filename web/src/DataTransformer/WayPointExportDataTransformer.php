@@ -34,6 +34,7 @@ final class WayPointExportDataTransformer
         $wayPointExport->contactsCount = $wayPoint->getContactsCount();
         $wayPointExport->peopleCount = $wayPoint->getPeopleCount();
         $wayPointExport->userGroups = $wayPoint->getUserGroups();
+        $wayPointExport->consumables = $wayPoint->getConsumables();
         $wayPointExport->ageGroups = $wayPoint->getAgeGroups();
         $wayPointExport->tags = $wayPoint->getWayPointTags()->toArray();
 

@@ -20,6 +20,7 @@ use App\Security\Voter\WalkVoter;
 use App\Security\Voter\WayPointVoter;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
+use App\Value\Consumable;
 use App\Value\Gender;
 use App\Value\PeopleCount;
 use App\Value\UserGroup;
@@ -125,6 +126,10 @@ class WayPoint implements \Stringable
     #[ORM\Column(type: 'json_document')]
     private array $userGroups = [];
 
+    /** @var UserGroup[] */
+    #[ORM\Column(type: 'json_document')]
+    private array $consumables = [];
+
     #[ORM\Column(length: 4096, nullable: true)]
     private ?string $note = '';
 
@@ -180,6 +185,9 @@ class WayPoint implements \Stringable
         if ($instance->getWalk()->isWithUserGroups()) {
             $instance->setUserGroups($request->userGroups);
         }
+        if ($instance->getWalk()->isWithConsumables()) {
+            $instance->setConsumables($request->consumables);
+        }
         $instance->setWayPointTags(new ArrayCollection($request->wayPointTags));
         if ($request->walk->isWithContactsCount()) {
             $instance->setContactsCount($request->contactsCount);
@@ -211,6 +219,23 @@ class WayPoint implements \Stringable
     public function setUserGroups(array $userGroups): void
     {
         $this->userGroups = $userGroups;
+    }
+
+    /**
+     * @return Consumable[]
+     */
+    #[Groups(['wayPoint:read'])]
+    public function getConsumables(): array
+    {
+        return $this->consumables;
+    }
+
+    /**
+     * @param Consumable[] $consumables
+     */
+    public function setConsumables(array $consumables): void
+    {
+        $this->consumables = $consumables;
     }
 
     /**

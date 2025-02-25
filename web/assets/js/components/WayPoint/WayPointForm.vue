@@ -181,6 +181,33 @@
                 />
             </v-col>
         </v-row>
+        <div
+            v-if="walk.isWithConsumables"
+            class="mb-4"
+        >
+            <b>Ausgabematerialien</b>
+        </div>
+        <v-row
+            v-if="walk.isWithConsumables"
+            class="d-flex align-items-end"
+            dense
+        >
+            <v-col
+                v-for="(consumable, index) in wayPoint.consumables"
+                :key="consumable.consumableName.name"
+            >
+                <v-select
+                    v-model="consumable.peopleCount.count"
+                    :items="ageRangeOptions"
+                    :disabled="isLoading"
+                    :help="consumable.consumableName.name"
+                    density="compact"
+                    variant="outlined"
+                    :label="consumable.consumableName.name"
+                    @click:clear="consumable.peopleCount.count = 0"
+                />
+            </v-col>
+        </v-row>
         <way-point-contacts-count-field
             v-if="walk.isWithContactsCount"
             v-model="wayPoint.contactsCount"
@@ -388,6 +415,7 @@ export default {
                 ageGroups: [],
                 peopleCount: 0,
                 userGroups: [],
+                consumables: [],
                 imageName: null,
                 isMeeting: false,
                 note: '',
@@ -641,6 +669,24 @@ export default {
 
             return userGroups;
         },
+        consumables() {
+            let consumables = [];
+            if (!this.walk.isWithConsumables) {
+                return consumables;
+            }
+            this.walk.consumableNames
+                .slice()
+                .forEach((consumableName) => {
+                    consumables.push({
+                        consumableName,
+                        peopleCount: {
+                            count: 0,
+                        },
+                    });
+                });
+
+            return consumables;
+        },
     },
     async created() {
         this.wayPointStore.resetChangeError();
@@ -661,6 +707,7 @@ export default {
             this.wayPoint.locationName = this.initialWayPoint.locationName;
             this.wayPoint.ageGroups = JSON.parse(JSON.stringify(this.initialWayPoint.ageGroups)) || [];
             this.wayPoint.userGroups = JSON.parse(JSON.stringify(this.initialWayPoint.userGroups)) || [];
+            this.wayPoint.consumables = JSON.parse(JSON.stringify(this.initialWayPoint.consumables)) || [];
             this.wayPoint.imageName = this.initialWayPoint.imageName;
             if (this.initialWayPoint.imageSrc) {
                 const response = await axios.get(this.initialWayPoint.imageSrc, { responseType: 'blob' });
@@ -678,6 +725,7 @@ export default {
         } else {
             this.wayPoint.ageGroups = this.ageGroups;
             this.wayPoint.userGroups = this.userGroups;
+            this.wayPoint.consumables = this.consumables;
             this.wayPoint.walk = this.walk['@id'];
         }
 

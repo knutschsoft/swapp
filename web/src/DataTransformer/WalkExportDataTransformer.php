@@ -51,6 +51,7 @@ final class WalkExportDataTransformer
         $walkExport->peopleCount = $walk->getPeopleCount();
         $walkExport->ageGroups = $walk->isWithAgeRanges() ? $walk->getAgeGroups() : [];
         $walkExport->userGroups = $walk->isWithUserGroups() ? $walk->getUserGroups() : [];
+        $walkExport->consumables = $walk->isWithConsumables() ? $walk->getConsumables() : [];
 
         return $walkExport;
     }

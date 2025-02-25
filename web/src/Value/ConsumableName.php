@@ -5,7 +5,7 @@ namespace App\Value;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-final readonly class UserGroupName
+final readonly class ConsumableName
 {
     public function __construct(private string $name)
     {
@@ -22,8 +22,8 @@ final readonly class UserGroupName
         return $this->name;
     }
 
-    public function equal(self $userGroupName): bool
+    public function equal(self $consumableName): bool
     {
-        return $this->getName() === $userGroupName->getName();
+        return $this->getName() === $consumableName->getName();
     }
 }

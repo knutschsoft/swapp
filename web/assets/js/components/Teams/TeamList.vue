@@ -252,7 +252,7 @@ export default {
             return !this.teams.every(team => !team.isWithAgeRanges);
         },
         hasAtLeastOneAdditionalWayPointField() {
-            return this.teams.every(team => team.isWithPeopleCount || team.isWithAgeRanges || team.isWithContactsCount || team.isWithUserGroups);
+            return this.teams.every(team => team.isWithPeopleCount || team.isWithAgeRanges || team.isWithContactsCount || team.isWithUserGroups || team.isWithConsumables);
         },
         hasAtLeastOneAdditionalWalkField() {
             return this.teams.every(team => team.isWithGuests || team.isWithSystemicQuestion);
@@ -307,6 +307,9 @@ export default {
             if (team.isWithUserGroups) {
                 additionalWayPointFields.push('Personenanzahl von Nutzergruppen');
             }
+            if (team.isWithConsumables) {
+                additionalWayPointFields.push('Ausgabematerialien');
+            }
 
             return additionalWayPointFields;
         },
@@ -346,10 +349,12 @@ export default {
                 users: team.users,
                 ageRanges: team.ageRanges,
                 userGroupNames: team.userGroupNames,
+                consumableNames: team.consumableNames,
                 isWithAgeRanges: team.isWithAgeRanges,
                 isWithPeopleCount: team.isWithPeopleCount,
                 isWithContactsCount: team.isWithContactsCount,
                 isWithUserGroups: team.isWithUserGroups,
+                isWithConsumables: team.isWithConsumables,
                 isWithGuests: team.isWithGuests,
                 isWithSystemicQuestion: team.isWithSystemicQuestion,
                 initialMembersConfig: team.initialMembersConfig,

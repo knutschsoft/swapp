@@ -328,6 +328,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['userGroups']) && '' !== $row['userGroups']) {
                 $wayPoint->setUserGroups($this->getUserGroupsFromString($row['userGroups']));
             }
+            if (isset($row['consumables']) && '' !== $row['consumables']) {
+                $wayPoint->setConsumables($this->getConsumablesFromString($row['consumables']));
+            }
             if (isset($row['ageGroups']) && '' !== $row['ageGroups']) {
                 $wayPoint->setAgeGroups($this->getAgeGroupsFromString($row['ageGroups']));
             }
@@ -936,6 +939,15 @@ final class DomainIntegrationContext extends RawMinkContext
                 $team->setUserGroupNames($this->getUserGroupNamesFromString($row['userGroupNames']));
             }
             $team->setIsWithUserGroups($isWithUserGroups);
+
+            $isWithConsumables = false;
+            if (isset($row['isWithConsumables']) && '' !== $row['isWithConsumables']) {
+                $isWithConsumables = (bool) $this->enrichText($row['isWithConsumables']);
+            }
+            if (isset($row['userGroupNames'])) {
+                $team->setUserGroupNames($this->getUserGroupNamesFromString($row['userGroupNames']));
+            }
+            $team->setIsWithConsumables($isWithConsumables);
             $isWithGuests = false;
             if (isset($row['isWithGuests']) && '' !== $row['isWithGuests']) {
                 $isWithGuests = (bool) $this->enrichText($row['isWithGuests']);

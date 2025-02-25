@@ -11,9 +11,9 @@ final readonly class UserGroup
     {
     }
 
-    public static function fromUserGroupNameAndCount(UserGroupName $range, PeopleCount $peopleCount): self
+    public static function fromUserGroupNameAndCount(UserGroupName $userGroupName, PeopleCount $peopleCount): self
     {
-        return new self($range, $peopleCount);
+        return new self($userGroupName, $peopleCount);
     }
 
     #[Groups(['walk:read', 'wayPoint:read'])]

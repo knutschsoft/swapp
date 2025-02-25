@@ -19,6 +19,8 @@ use App\Repository\WayPointRepository;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\ConfirmationToken;
+use App\Value\Consumable;
+use App\Value\ConsumableName;
 use App\Value\Gender;
 use App\Value\PeopleCount;
 use App\Value\UserGroup;
@@ -239,6 +241,32 @@ trait RepositoryTrait
     }
 
     /**
+     * @param string $consumablesString
+     *
+     * @return Consumable[]
+     */
+    protected function getConsumablesFromString(string $consumablesString): array
+    {
+        $consumables = [];
+        if (!$consumablesString) {
+            return $consumables;
+        }
+
+        $consumablesStrings = \explode(';', $consumablesString);
+
+        foreach ($consumablesStrings as $consumableString) {
+            $parts = \explode(',', $consumableString);
+            \assert(\count($parts) === 2);
+            $consumables[] = Consumable::fromConsumableNameAndCount(
+                ConsumableName::fromString($parts[0]),
+                PeopleCount::fromInt((int) $parts[1]),
+            );
+        }
+
+        return $consumables;
+    }
+
+    /**
      * @param string $userGroupNamesString
      *
      * @return UserGroupName[]
@@ -256,6 +284,26 @@ trait RepositoryTrait
         }
 
         return $userGroupNames;
+    }
+
+    /**
+     * @param string $consumableNamesString
+     *
+     * @return ConsumableName[]
+     */
+    protected function getConsumableNamesFromString(string $consumableNamesString): array
+    {
+        $consumableNames = [];
+        if (!$consumableNamesString) {
+            return $consumableNames;
+        }
+
+        $consumableNamesStrings = \explode(',', $consumableNamesString);
+        foreach ($consumableNamesStrings as $consumableNameString) {
+            $consumableNames[] = ConsumableName::fromString($consumableNameString);
+        }
+
+        return $consumableNames;
     }
 
     /**
@@ -413,6 +461,31 @@ trait RepositoryTrait
             }
 
             return $userGroupNames;
+        }
+        if (\str_starts_with($text, 'consumables<')) {
+            $consumables = [];
+            foreach ($this->getConsumablesFromString($referenceIdentifikator) as $consumable) {
+                $consumables[] = [
+                    'consumableName' => [
+                        'name' => $consumable->getConsumableName()->getName(),
+                    ],
+                    'peopleCount' => [
+                        'count' => $consumable->getPeopleCount()->getCount(),
+                    ],
+                ];
+            }
+
+            return $consumables;
+        }
+        if (\str_starts_with($text, 'consumableNames<')) {
+            $consumableNames = [];
+            foreach ($this->getConsumableNamesFromString($referenceIdentifikator) as $consumableName) {
+                $consumableNames[] = [
+                    'name' => $consumableName->getName(),
+                ];
+            }
+
+            return $consumableNames;
         }
 
         if (\str_starts_with($text, 'date<')) {

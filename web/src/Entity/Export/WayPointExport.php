@@ -10,6 +10,7 @@ use App\Entity\Tag;
 use App\Entity\WayPoint;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
+use App\Value\Consumable;
 use App\Value\UserGroup;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -81,6 +82,8 @@ class WayPointExport
     public int $peopleCount;
     /** @var UserGroup[] */
     public array $userGroups;
+    /** @var Consumable[] */
+    public array $consumables;
     /** @var AgeGroup[] */
     public array $ageGroups;
     /** @var Tag[] */

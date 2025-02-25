@@ -107,6 +107,7 @@
                                         />
                                         <template v-slot:append>
                                             <v-btn
+                                                density="compact"
                                                 class="ml-2"
                                                 icon
                                                 @click="removeConceptOfDaySuggestion(i)"
@@ -161,6 +162,7 @@
                                         </v-list-item-title>
                                         <template v-slot:append>
                                             <v-btn
+                                                density="compact"
                                                 icon
                                                 class="ml-2"
                                                 @click="removeWalkName(i)"
@@ -230,6 +232,7 @@
                                                             />
                                                             <template v-slot:append>
                                                                 <v-btn
+                                                                    density="compact"
                                                                     icon
                                                                     class="ml-2"
                                                                     @click="removeGuestName(i)"
@@ -328,6 +331,7 @@
                                 />
                                 <template v-slot:append>
                                     <v-btn
+                                        density="compact"
                                         icon
                                         class="ml-2"
                                         @click="removeLocationName(i)"
@@ -427,6 +431,7 @@
                                                             max="120"
                                                             trim
                                                             number
+                                                            density="compact"
                                                             variant="outlined"
                                                             hide-details
                                                             step="1"
@@ -439,10 +444,12 @@
                                                 <template v-slot:append>
                                                     <v-btn
                                                         icon
+                                                        density="compact"
                                                         class="ml-2 mt-4"
                                                         @click="removeAgeRange(i)"
                                                     >
                                                         <v-icon
+                                                            density="compact"
                                                             icon="mdi-trash-can"
                                                         />
                                                     </v-btn>
@@ -468,108 +475,10 @@
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="6" lg="5">
-                                <v-card outlined class="mb-0 pt-3">
-                                    <v-card-text>
-                                        <v-switch
-                                            v-model="team.isWithUserGroups"
-                                            :disabled="isDisabled"
-                                            color="primary"
-                                            label="Personenanzahl von Nutzergruppen"
-                                            density="compact"
-                                        />
-                                        <v-card-subtitle v-if="team.isWithUserGroups" class="font-weight-bold pb-1">Nutzergruppen definieren</v-card-subtitle>
-                                        <v-divider v-if="team.isWithUserGroups" class="mt-0 mb-0"></v-divider>
-                                        <v-list v-if="team.isWithUserGroups">
-                                            <v-list-item
-                                                v-for="(userGroupName, i) in team.userGroupNames"
-                                                density="compact"
-                                                :key="i"
-                                            >
-                                                <v-text-field
-                                                    v-model="team.userGroupNames[i].name"
-                                                    :disabled="isDisabled"
-                                                    type="text"
-                                                    :state="team.userGroupNames[i].name === '' ? null : (team.userGroupNames[i].name.length > 1 && team.userGroupNames[i].name.length <= 300)"
-                                                    trim
-                                                    required
-                                                    variant="outlined"
-                                                    density="compact"
-                                                    clearable
-                                                    hide-details
-                                                    autocomplete="off"
-                                                    placeholder="Name der Nutzergruppe eingeben..."
-                                                />
-                                                <template v-slot:append>
-                                                    <v-col>
-                                                        <v-btn
-                                                            icon
-                                                            @click="removeUserGroupName(i)"
-                                                        >
-                                                            <v-icon
-                                                                icon="mdi-trash-can"
-                                                            />
-                                                        </v-btn>
-                                                        <v-btn
-                                                            v-if="i !== 0"
-                                                            icon
-                                                            class="ml-2"
-                                                            @click="moveUserGroupUp(i)"
-                                                        >
-                                                            <v-icon
-                                                                icon="mdi-arrow-up-drop-circle-outline"
-                                                            />
-                                                        </v-btn>
-                                                        <v-btn
-                                                            v-if="i !== (team.userGroupNames.length - 1)"
-                                                            icon
-                                                            class="ml-2"
-                                                            @click="moveUserGroupDown(i)"
-                                                        >
-                                                            <v-icon
-                                                                icon="mdi-arrow-down-drop-circle-outline"
-                                                            />
-                                                        </v-btn>
-                                                    </v-col>
-                                                </template>
-                                            </v-list-item>
-                                            <v-list-item>
-                                                <div
-                                                    class="cursor-pointer mt-1 mb-2"
-                                                    @click="addUserGroupName()"
-                                                >
-                                                    <mdicon
-                                                        name="PlusCircleOutline"
-                                                    />
-                                                    neuen Autocomplete-Vorschlag hinzufügen
-                                                </div>
-                                            </v-list-item>
-                                        </v-list>
-                                        <v-alert
-                                            v-if="team.isWithUserGroups"
-                                            class="text-muted mb-0"
-                                            variant="text"
-                                        >
-                                            Beispiele für Nutzergruppen sind:
-                                            <ul class="pl-5 mb-0">
-                                                <li>Aktuell Nutzende</li>
-                                                <li>jemals genutzt - nutzungsberechtigt</li>
-                                                <li>jemals genutzt - nicht nutzungsberechtigt</li>
-                                                <li>nie genutzt - nutzungsberechtigt</li>
-                                                <li>nie genutzt - nicht nutzungsberechtigt</li>
-                                            </ul>
-                                            Alternativ können auch herausgegegebene Utensilien erfasst werden:
-                                            <ul class="pl-5 mb-0">
-                                                <li>Spritzenvergabe</li>
-                                                <li>Alkoholtupfer</li>
-                                                <li>Filteraufsätze</li>
-                                                <li>sterile Wasserampullen</li>
-                                                <li>Einmallöffel</li>
-                                                <li>Kondome</li>
-                                            </ul>
-                                            Hinweis: Die Werte werden beim Runden-CSV-Export zusammenaddiert.
-                                        </v-alert>
-                                    </v-card-text>
-                                </v-card>
+                                <user-groups-form-field :team="team" :isDisabled="isDisabled" />
+                            </v-col>
+                            <v-col cols="12" md="6" lg="5">
+                                <consumables-form-field :team="team" :isDisabled="isDisabled" />
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -598,6 +507,8 @@ import {ref, computed, watch, onMounted, defineEmits} from 'vue';
 import {FormError} from '@/js/components/Common';
 import {useAuthStore, useClientStore, useTeamStore, useUserStore} from '@/js/stores';
 import {WalkTeamMembersField} from "@/js/components/Common/Walk";
+import UserGroupsFormField from "@/js/components/Teams/UserGroupsFormField.vue";
+import ConsumablesFormField from "@/js/components/Teams/ConsumablesFormField.vue";
 
 const props = defineProps({
     initialTeam: {
@@ -632,12 +543,14 @@ const team = ref({
     isWithGuests: false,
     isWithSystemicQuestion: false,
     isWithUserGroups: false,
+    isWithConsumables: false,
     ageRanges: [],
     locationNames: [],
     walkNames: [],
     conceptOfDaySuggestions: [],
     guestNames: [],
     userGroupNames: [],
+    consumableNames: [],
     users: [],
 });
 
@@ -669,6 +582,7 @@ const setInitialValues = () => {
             isWithGuests: false,
             isWithSystemicQuestion: false,
             isWithUserGroups: false,
+            isWithConsumables: false,
             users: [],
             ageRanges: [],
             locationNames: [],
@@ -676,6 +590,7 @@ const setInitialValues = () => {
             conceptOfDaySuggestions: [],
             guestNames: [],
             userGroupNames: [],
+            consumableNames: [],
         };
     }
 };
@@ -695,16 +610,6 @@ const removeConceptOfDaySuggestion = (index) => team.value.conceptOfDaySuggestio
 const addConceptOfDaySuggestion = () => team.value.conceptOfDaySuggestions.push('');
 const removeGuestName = (index) => team.value.guestNames.splice(index, 1);
 const addGuestName = () => team.value.guestNames.push('');
-const removeUserGroupName = (index) => team.value.userGroupNames.splice(index, 1);
-const addUserGroupName = () => team.value.userGroupNames.push({name: ''});
-const moveUserGroupUp = (index) => {
-    const item = team.value.userGroupNames.splice(index, 1)[0];
-    team.value.userGroupNames.splice(index - 1, 0, item);
-};
-const moveUserGroupDown = (index) => {
-    const item = team.value.userGroupNames.splice(index, 1)[0];
-    team.value.userGroupNames.splice(index + 1, 0, item);
-};
 
 const resetForm = () => {
     form.value?.reset();

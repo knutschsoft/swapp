@@ -25,6 +25,7 @@ final readonly class TeamChangeRequestHandler
         $team->setIsWithAgeRanges($request->isWithAgeRanges);
         $team->setIsWithPeopleCount($request->isWithPeopleCount);
         $team->setUserGroupNames($request->userGroupNames);
+        $team->setConsumableNames($request->consumableNames);
         $team->setUsers(new ArrayCollection($request->users));
         $team->setName($request->name);
         $team->setIsWithGuests($request->isWithGuests);
@@ -36,6 +37,7 @@ final readonly class TeamChangeRequestHandler
         $team->setConceptOfDaySuggestions($request->conceptOfDaySuggestions);
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);
+        $team->setIsWithConsumables($request->isWithConsumables);
         $team->setIsWithSystemicQuestion($request->isWithSystemicQuestion);
         $team->setInitialMembersConfig($request->initialMembersConfig);
         $this->teamRepository->save($team);
