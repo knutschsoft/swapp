@@ -40,7 +40,9 @@ Feature: An user can create a tag
 
         Then the element "button-tag-create" should be disabled
         When I enter "Religion" in "name" field
-        When I enter "Navy" in "farbe" field
+        When I click on test element "farbe"
+        When I wait for "Navy" to appear
+        When I click on text "Navy"
         Then the element "button-tag-create" should be enabled
         Then I click on test element "button-tag-create"
 
@@ -81,8 +83,9 @@ Feature: An user can create a tag
 
         Then the element "button-tag-create" should be disabled
         When I enter "Religion" in "name" field
-#        When I select "Navy" from vue select "farbe"
-        When I enter "Navy" in "farbe" field
+        When I click on test element "farbe"
+        When I wait for "Navy" to appear
+        When I click on text "Navy"
 
         Then the element "button-tag-create" should be enabled
         Then I click on test element "button-tag-create"
