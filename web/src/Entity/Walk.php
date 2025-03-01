@@ -22,12 +22,17 @@ use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\Walk\WalkRemoveRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Entity\Fields\ConsumableNamesField;
+use App\Entity\Fields\CounselingNamesField;
+use App\Entity\Fields\MedicalNamesField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMWalkRepository;
 use App\Security\Voter\TeamVoter;
 use App\Security\Voter\WalkVoter;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
+use App\Value\Consumable;
+use App\Value\Counseling;
+use App\Value\Medical;
 use App\Value\UserGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -112,6 +117,8 @@ class Walk implements \Stringable
 {
     use AgeRangeField;
     use ConsumableNamesField;
+    use CounselingNamesField;
+    use MedicalNamesField;
     use UserGroupNamesField;
 
     #[ApiProperty(identifier: true)]
@@ -212,12 +219,20 @@ class Walk implements \Stringable
     private bool $isWithConsumables;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithCounselings;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithMedicals;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isUnfinished = true;
 
     public function __construct()
     {
         $this->ageRanges = [];
         $this->consumableNames = [];
+        $this->counselingNames = [];
+        $this->medicalNames = [];
         $this->userGroupNames = [];
         $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
@@ -243,8 +258,12 @@ class Walk implements \Stringable
         $instance->setIsWithContactsCount($team->isWithContactsCount());
         $instance->setIsWithUserGroups($team->isWithUserGroups());
         $instance->setIsWithConsumables($team->isWithConsumables());
+        $instance->setIsWithCounselings($team->isWithCounselings());
+        $instance->setIsWithMedicals($team->isWithMedicals());
         $instance->setUserGroupNames($team->getUserGroupNames());
         $instance->setConsumableNames($team->getConsumableNames());
+        $instance->setCounselingNames($team->getCounselingNames());
+        $instance->setMedicalNames($team->getMedicalNames());
         $instance->updateClient($team->getClient());
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
@@ -756,6 +775,30 @@ class Walk implements \Stringable
         $this->isWithConsumables = $isWithConsumables;
     }
 
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithCounselings')]
+    public function isWithCounselings(): bool
+    {
+        return $this->isWithCounselings;
+    }
+
+    public function setIsWithCounselings(bool $isWithCounselings): void
+    {
+        $this->isWithCounselings = $isWithCounselings;
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithMedicals')]
+    public function isWithMedicals(): bool
+    {
+        return $this->isWithMedicals;
+    }
+
+    public function setIsWithMedicals(bool $isWithMedicals): void
+    {
+        $this->isWithMedicals = $isWithMedicals;
+    }
+
     public function getSumOfContactsCount(): ?int
     {
         if (!$this->isWithContactsCount) {
@@ -806,5 +849,31 @@ class Walk implements \Stringable
         }
 
         return $consumables;
+    }
+
+    /**
+     * @return Counseling[]
+     */
+    public function getCounselings(): array
+    {
+        $counselings = [];
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $counselings = \array_merge($counselings, $wayPoint->getCounselings());
+        }
+
+        return $counselings;
+    }
+
+    /**
+     * @return Medical[]
+     */
+    public function getMedicals(): array
+    {
+        $medicals = [];
+        foreach ($this->getWayPoints() as $wayPoint) {
+            $medicals = \array_merge($medicals, $wayPoint->getMedicals());
+        }
+
+        return $medicals;
     }
 }

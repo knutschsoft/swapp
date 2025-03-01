@@ -153,6 +153,8 @@ Feature: Testing wayPoint delete resource
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
             | userGroups        | userGroups<>                                                  |
             | consumables       | consumables<>                                                 |
+            | counselings       | counselings<>                                                 |
+            | medicals          | medicals<>                                                    |
             | peopleCount       | int<0>                                                        |
         Then I can find the file "/images/way_points/timestamp<now>_AreYouDrunk.jpg" in public folder
 

@@ -252,7 +252,7 @@ export default {
             return !this.teams.every(team => !team.isWithAgeRanges);
         },
         hasAtLeastOneAdditionalWayPointField() {
-            return this.teams.every(team => team.isWithPeopleCount || team.isWithAgeRanges || team.isWithContactsCount || team.isWithUserGroups || team.isWithConsumables);
+            return this.teams.every(team => team.isWithPeopleCount || team.isWithAgeRanges || team.isWithContactsCount || team.isWithUserGroups || team.isWithConsumables || team.isWithCounselings || team.isWithMedicals);
         },
         hasAtLeastOneAdditionalWalkField() {
             return this.teams.every(team => team.isWithGuests || team.isWithSystemicQuestion);
@@ -310,6 +310,12 @@ export default {
             if (team.isWithConsumables) {
                 additionalWayPointFields.push('Ausgabematerialien');
             }
+            if (team.isWithCounselings) {
+                additionalWayPointFields.push('Beratungen');
+            }
+            if (team.isWithMedicals) {
+                additionalWayPointFields.push('Medizin');
+            }
 
             return additionalWayPointFields;
         },
@@ -350,11 +356,15 @@ export default {
                 ageRanges: team.ageRanges,
                 userGroupNames: team.userGroupNames,
                 consumableNames: team.consumableNames,
+                counselingNames: team.counselingNames,
+                medicalNames: team.medicalNames,
                 isWithAgeRanges: team.isWithAgeRanges,
                 isWithPeopleCount: team.isWithPeopleCount,
                 isWithContactsCount: team.isWithContactsCount,
                 isWithUserGroups: team.isWithUserGroups,
                 isWithConsumables: team.isWithConsumables,
+                isWithCounselings: team.isWithCounselings,
+                isWithMedicals: team.isWithMedicals,
                 isWithGuests: team.isWithGuests,
                 isWithSystemicQuestion: team.isWithSystemicQuestion,
                 initialMembersConfig: team.initialMembersConfig,

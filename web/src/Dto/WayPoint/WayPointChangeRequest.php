@@ -9,6 +9,8 @@ use App\Serializer\Normalizer\Base64DataUriNormalizer;
 use App\Validator\Constraints as AppAssert;
 use App\Value\AgeGroup;
 use App\Value\Consumable;
+use App\Value\Counseling;
+use App\Value\Medical;
 use App\Value\UserGroup;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,6 +49,14 @@ final class WayPointChangeRequest
     /** @var Consumable[] */
     #[AppAssert\ConsumablesRequirements]
     public array $consumables;
+
+    /** @var Counseling[] */
+    #[AppAssert\CounselingsRequirements]
+    public array $counselings;
+
+    /** @var Medical[] */
+    #[AppAssert\MedicalsRequirements]
+    public array $medicals;
 
     /** @var Tag[] */
     #[AppAssert\TagsRequirements]

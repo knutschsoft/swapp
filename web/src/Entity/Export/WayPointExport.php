@@ -11,6 +11,8 @@ use App\Entity\WayPoint;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Consumable;
+use App\Value\Counseling;
+use App\Value\Medical;
 use App\Value\UserGroup;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -84,6 +86,10 @@ class WayPointExport
     public array $userGroups;
     /** @var Consumable[] */
     public array $consumables;
+    /** @var Counseling[] */
+    public array $counselings;
+    /** @var Medical[] */
+    public array $medicals;
     /** @var AgeGroup[] */
     public array $ageGroups;
     /** @var Tag[] */

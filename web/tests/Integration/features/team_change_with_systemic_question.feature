@@ -28,10 +28,14 @@ Feature: Testing team change resource with systemicQuestion
             | isWithPeopleCount       | <true>                    |
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |
-            | consumableNames         | array<>                   |
+            | isWithCounselings       | <false>                   |
+            | isWithMedicals          | <false>                   |
             | isWithGuests            | <true>                    |
             | guestNames              | array<Opa Manfred, Karla> |
             | userGroupNames          | array<>                   |
+            | consumableNames         | array<>                   |
+            | counselingNames         | array<>                   |
+            | medicalNames            | array<>                   |
             | isWithConsumables       | <false>                   |
             | initialMembersConfig    | mitglieder                |
         Then the response should be in JSON

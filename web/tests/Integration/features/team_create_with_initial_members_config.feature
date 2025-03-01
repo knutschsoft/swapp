@@ -26,10 +26,14 @@ Feature: Testing team create resource with initialMembersConfig
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |
             | isWithConsumables       | <false>                           |
+            | isWithCounselings       | <false>                           |
+            | isWithMedicals          | <false>                           |
             | isWithGuests            | <true>                            |
             | guestNames              | array<Karla, Opa Manfred, Alfons> |
             | userGroupNames          | array<>                           |
             | consumableNames         | array<>                           |
+            | counselingNames         | array<>                           |
+            | medicalNames            | array<>                           |
             | initialMembersConfig    | rundenersteller                   |
         Then the response should be in JSON
 #    And print last JSON response
@@ -57,10 +61,14 @@ Feature: Testing team create resource with initialMembersConfig
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |
             | isWithConsumables       | <false>                           |
+            | isWithCounselings       | <false>                           |
+            | isWithMedicals          | <false>                           |
             | isWithGuests            | <true>                            |
             | guestNames              | array<Karla, Opa Manfred, Alfons> |
             | userGroupNames          | array<>                           |
             | consumableNames         | array<>                           |
+            | counselingNames         | array<>                           |
+            | medicalNames            | array<>                           |
             | initialMembersConfig    | mitglieder                        |
         Then the response should be in JSON
 #    And print last JSON response

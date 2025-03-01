@@ -75,6 +75,8 @@ declare module 'vue' {
     TagsTagList: typeof import('./components/Tags/TagList.vue')['default']
     Teams: typeof import('./components/Teams.vue')['default']
     TeamsConsumablesFormField: typeof import('./components/Teams/ConsumablesFormField.vue')['default']
+    TeamsCounselingsFormField: typeof import('./components/Teams/CounselingsFormField.vue')['default']
+    TeamsMedicalsFormField: typeof import('./components/Teams/MedicalsFormField.vue')['default']
     TeamsTeamForm: typeof import('./components/Teams/TeamForm.vue')['default']
     TeamsTeamList: typeof import('./components/Teams/TeamList.vue')['default']
     TeamsUserGroupsFormField: typeof import('./components/Teams/UserGroupsFormField.vue')['default']

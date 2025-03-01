@@ -1,4 +1,4 @@
-Feature: Testing wayPoint change resource with user groups
+Feature: Testing wayPoint change resource with counselings
 
     Background:
         Given the following clients exists:
@@ -9,9 +9,9 @@ Feature: Testing wayPoint change resource with user groups
             | karl@gmx.de  |            | client@gmx.de |
             | admin@gmx.de | ROLE_ADMIN | client@gmx.de |
         Given the following teams exists:
-            | name     | users       | client        | isWithUserGroups | userGroups     |
-            | Westhang | karl@gmx.de | client@gmx.de | <false>          |                |
-            | CA       | karl@gmx.de | client@gmx.de | <true>           | Nutzende,Dudes |
+            | name     | users       | client        | isWithCounselings | counselings                            |
+            | Westhang | karl@gmx.de | client@gmx.de | <false>           |                                        |
+            | CA       | karl@gmx.de | client@gmx.de | <true>            | Klassische Beratung,Krisenintervention |
         Given the following systemic questions exists:
             | question       | client        |
             | Esta muy bien? | client@gmx.de |
@@ -24,12 +24,12 @@ Feature: Testing wayPoint change resource with user groups
             | Spaziergang | Westhang |
             | Gamescon    | CA       |
         Given the following way points exists:
-            | locationName | walkName    | userGroups         |
-            | Assieck      | Spaziergang |                    |
-            | Ackis        | Gamescon    | Nutzende,7;Dudes,2 |
+            | locationName | walkName    | counselings                                |
+            | Assieck      | Spaziergang |                                            |
+            | Ackis        | Gamescon    | Klassische Beratung,7;Krisenintervention,2 |
 
     @api @wayPoint
-    Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithUserGroups disabled
+    Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithCounselings disabled
         Given I am authenticated against api as "admin@gmx.de"
         Given I can find the following wayPoints in database:
             | locationName | contactsCount |
@@ -47,9 +47,9 @@ Feature: Testing wayPoint change resource with user groups
             | imageFileData     | <null>                                                        |
             | contactsCount     | <null>                                                        |
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
-            | userGroups        | userGroups<Nutzende,7;Dudes,2>                                |
-            | consumables       | consumables<Nutzende,7;Dudes,2>                               |
-            | counselings       | counselings<>                                                 |
+            | userGroups        | userGroups<>                                                  |
+            | consumables       | consumables<>                                                 |
+            | counselings       | counselings<Klassische Beratung,7;Krisenintervention,2>       |
             | medicals          | medicals<>                                                    |
             | peopleCount       | int<0>                                                        |
 #    And print last response
@@ -57,19 +57,19 @@ Feature: Testing wayPoint change resource with user groups
         And the enriched JSON nodes should be equal to:
             | @type        | WayPoint |
             | locationName | Assieck  |
-            | userGroups   | array<>  |
+            | counselings  | array<>  |
 
         And I can find the following wayPoints in database:
-            | locationName | userGroups |
-            | Assieck      |            |
+            | locationName | counselings |
+            | Assieck      |             |
         And there are exactly 2 wayPoints in database
 
     @api @wayPoint
-    Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithUserGroups enabled
+    Scenario: I can request /api/way_points/change and will change a wayPoint for a team/walk with isWithCounselings enabled
         Given I am authenticated against api as "admin@gmx.de"
         Given I can find the following wayPoints in database:
-            | locationName | userGroups         |
-            | Ackis        | Nutzende,7;Dudes,2 |
+            | locationName | counselings                                |
+            | Ackis        | Klassische Beratung,7;Krisenintervention,2 |
         When I send an api platform "POST" request to "/api/way_points/change" with parameters:
             | key               | value                                                         |
             | wayPoint          | wayPointIri<Ackis>                                            |
@@ -83,22 +83,22 @@ Feature: Testing wayPoint change resource with user groups
             | imageFileData     | <null>                                                        |
             | contactsCount     | <null>                                                        |
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
-            | userGroups        | userGroups<Nutzende,0;Dudes,8>                                |
+            | userGroups        | userGroups<>                                                  |
             | consumables       | consumables<>                                                 |
-            | counselings       | counselings<>                                                 |
+            | counselings       | counselings<Klassische Beratung,0;Krisenintervention,8>       |
             | medicals          | medicals<>                                                    |
             | peopleCount       | int<0>                                                        |
 #    And print last response
         Then the response status code should be 200
         And the enriched JSON nodes should be equal to:
-            | @type                            | WayPoint |
-            | locationName                     | Ackis    |
-            | userGroups[0].userGroupName.name | Nutzende |
-            | userGroups[0].peopleCount.count  | 0        |
-            | userGroups[1].userGroupName.name | Dudes    |
-            | userGroups[1].peopleCount.count  | 8        |
+            | @type                              | WayPoint            |
+            | locationName                       | Ackis               |
+            | counselings[0].counselingName.name | Klassische Beratung |
+            | counselings[0].peopleCount.count   | 0                   |
+            | counselings[1].counselingName.name | Krisenintervention  |
+            | counselings[1].peopleCount.count   | 8                   |
 
         And I can find the following wayPoints in database:
-            | locationName | userGroups         |
-            | Ackis        | Nutzende,0;Dudes,8 |
+            | locationName | counselings                                |
+            | Ackis        | Klassische Beratung,0;Krisenintervention,8 |
         And there are exactly 2 wayPoints in database

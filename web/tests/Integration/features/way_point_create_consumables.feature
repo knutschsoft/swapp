@@ -41,6 +41,8 @@ Feature: Testing wayPoint create resource with consumables
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
             | userGroups        | userGroups<>                                                  |
             | consumables       | consumables<Carepakete,7;Nase,2>                              |
+            | counselings       | counselings<>                                                 |
+            | medicals          | medicals<>                                                    |
             | peopleCount       | int<0>                                                        |
 #    And print last response
         Then the response status code should be 200
@@ -74,6 +76,8 @@ Feature: Testing wayPoint create resource with consumables
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
             | userGroups        | userGroups<Carepakete,7;Nase,2>                               |
             | consumables       | consumables<Carepakete,7;Nase,2>                              |
+            | counselings       | counselings<>                                                 |
+            | medicals          | medicals<>                                                    |
             | peopleCount       | int<0>                                                        |
 #        And print last response
         Then the response status code should be 200

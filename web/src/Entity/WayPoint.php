@@ -21,7 +21,9 @@ use App\Security\Voter\WayPointVoter;
 use App\Value\AgeGroup;
 use App\Value\AgeRange;
 use App\Value\Consumable;
+use App\Value\Counseling;
 use App\Value\Gender;
+use App\Value\Medical;
 use App\Value\PeopleCount;
 use App\Value\UserGroup;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -126,9 +128,17 @@ class WayPoint implements \Stringable
     #[ORM\Column(type: 'json_document')]
     private array $userGroups = [];
 
-    /** @var UserGroup[] */
+    /** @var Consumable[] */
     #[ORM\Column(type: 'json_document')]
     private array $consumables = [];
+
+    /** @var Counseling[] */
+    #[ORM\Column(type: 'json_document')]
+    private array $counselings = [];
+
+    /** @var Medical[] */
+    #[ORM\Column(type: 'json_document')]
+    private array $medicals = [];
 
     #[ORM\Column(length: 4096, nullable: true)]
     private ?string $note = '';
@@ -188,6 +198,12 @@ class WayPoint implements \Stringable
         if ($instance->getWalk()->isWithConsumables()) {
             $instance->setConsumables($request->consumables);
         }
+        if ($instance->getWalk()->isWithCounselings()) {
+            $instance->setCounselings($request->counselings);
+        }
+        if ($instance->getWalk()->isWithMedicals()) {
+            $instance->setMedicals($request->medicals);
+        }
         $instance->setWayPointTags(new ArrayCollection($request->wayPointTags));
         if ($request->walk->isWithContactsCount()) {
             $instance->setContactsCount($request->contactsCount);
@@ -236,6 +252,40 @@ class WayPoint implements \Stringable
     public function setConsumables(array $consumables): void
     {
         $this->consumables = $consumables;
+    }
+
+    /**
+     * @return Counseling[]
+     */
+    #[Groups(['wayPoint:read'])]
+    public function getCounselings(): array
+    {
+        return $this->counselings;
+    }
+
+    /**
+     * @param Counseling[] $counselings
+     */
+    public function setCounselings(array $counselings): void
+    {
+        $this->counselings = $counselings;
+    }
+
+    /**
+     * @return Medical[]
+     */
+    #[Groups(['wayPoint:read'])]
+    public function getMedicals(): array
+    {
+        return $this->medicals;
+    }
+
+    /**
+     * @param Medical[] $medicals
+     */
+    public function setMedicals(array $medicals): void
+    {
+        $this->medicals = $medicals;
     }
 
     /**

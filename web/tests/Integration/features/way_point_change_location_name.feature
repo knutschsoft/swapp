@@ -59,6 +59,8 @@ Feature: Testing wayPoint change resource
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
             | userGroups        | userGroups<>                                                  |
             | consumables       | consumables<>                                                 |
+            | counselings       | counselings<>                                                 |
+            | medicals          | medicals<>                                                    |
             | peopleCount       | int<0>                                                        |
 #    And print last response
         Then the response status code should be 200

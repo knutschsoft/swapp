@@ -36,6 +36,12 @@ final readonly class WayPointChangeRequestHandler
         if ($wayPoint->getWalk()->isWithConsumables()) {
             $wayPoint->setConsumables($request->consumables);
         }
+        if ($wayPoint->getWalk()->isWithCounselings()) {
+            $wayPoint->setCounselings($request->counselings);
+        }
+        if ($wayPoint->getWalk()->isWithMedicals()) {
+            $wayPoint->setMedicals($request->medicals);
+        }
         $wayPoint->setNote($request->note);
         $wayPoint->setOneOnOneInterview($request->oneOnOneInterview);
         $wayPoint->setIsMeeting($request->isMeeting);

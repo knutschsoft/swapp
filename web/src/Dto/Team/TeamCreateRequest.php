@@ -7,8 +7,9 @@ use App\Entity\Client;
 use App\Entity\User;
 use App\Validator\Constraints as AppAssert;
 use App\Value\AgeRange;
-use App\Value\Consumable;
 use App\Value\ConsumableName;
+use App\Value\CounselingName;
+use App\Value\MedicalName;
 use App\Value\UserGroupName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,6 +67,12 @@ final class TeamCreateRequest
     #[AppAssert\IsWithConsumablesRequirements]
     public bool $isWithConsumables;
 
+    #[AppAssert\IsWithCounselingsRequirements]
+    public bool $isWithCounselings;
+
+    #[AppAssert\IsWithMedicalsRequirements]
+    public bool $isWithMedicals;
+
     /** @var UserGroupName[] */
     #[AppAssert\UserGroupNameRequirements]
     public array $userGroupNames;
@@ -73,6 +80,14 @@ final class TeamCreateRequest
     /** @var ConsumableName[] */
     #[AppAssert\ConsumableNameRequirements]
     public array $consumableNames;
+
+    /** @var CounselingName[] */
+    #[AppAssert\CounselingNameRequirements]
+    public array $counselingNames;
+
+    /** @var MedicalName[] */
+    #[AppAssert\MedicalNameRequirements]
+    public array $medicalNames;
 
     #[AppAssert\InitialMembersConfigRequirements]
     public string $initialMembersConfig;

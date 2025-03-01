@@ -36,11 +36,8 @@ final class WalkExportNormalizer implements NormalizerInterface, NormalizerAware
                 $newData[$propertyName] = $propertyValue;
         }
 
-        foreach ($this->getCsvUserGroupCells($object) as $label => $csvUserGroupCell) {
-            $newData[$label] = $csvUserGroupCell;
-        }
-        foreach ($this->getCsvConsumableCells($object) as $label => $csvUserGroupCell) {
-            $newData[$label] = $csvUserGroupCell;
+        foreach ($this->getCsvAdditionalCells($object) as $label => $csvAdditionalCell) {
+            $newData[$label] = $csvAdditionalCell;
         }
         foreach ($this->getCsvAgeCells($object) as $label => $csvAgeCell) {
             $newData[$label] = $csvAgeCell;
@@ -110,42 +107,24 @@ final class WalkExportNormalizer implements NormalizerInterface, NormalizerAware
      *
      * @return array<string, int>
      */
-    private function getCsvUserGroupCells(WalkExport $walkExport): array
+    private function getCsvAdditionalCells(WalkExport $walkExport): array
     {
-        $userGroupHeaders = [];
+        $additionalHeaders = [];
+        $dataSets = [
+            $walkExport->userGroups,
+            $walkExport->consumables,
+            $walkExport->counselings,
+            $walkExport->medicals,
+        ];
 
-        foreach ($walkExport->userGroups as $userGroup) {
-            $label = $userGroup->getFrontendLabel();
-            $value = $userGroup->getPeopleCount()->getCount();
-            if (isset($userGroupHeaders[$label])) {
-                $userGroupHeaders[$label] += $value;
-            } else {
-                $userGroupHeaders[$label] = $value;
+        foreach ($dataSets as $dataSet) {
+            foreach ($dataSet as $item) {
+                $label = $item->getFrontendLabel();
+                $value = $item->getPeopleCount()->getCount();
+                $additionalHeaders[$label] = ($additionalHeaders[$label] ?? 0) + $value;
             }
         }
 
-        return $userGroupHeaders;
-    }
-
-    /**
-     * @param WalkExport $walkExport
-     *
-     * @return array<string, int>
-     */
-    private function getCsvConsumableCells(WalkExport $walkExport): array
-    {
-        $consumableHeaders = [];
-
-        foreach ($walkExport->consumables as $consumable) {
-            $label = $consumable->getFrontendLabel();
-            $value = $consumable->getPeopleCount()->getCount();
-            if (isset($consumableHeaders[$label])) {
-                $consumableHeaders[$label] += $value;
-            } else {
-                $consumableHeaders[$label] = $value;
-            }
-        }
-
-        return $consumableHeaders;
+        return $additionalHeaders;
     }
 }

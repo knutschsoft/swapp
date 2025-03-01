@@ -21,7 +21,11 @@ use App\Value\AgeRange;
 use App\Value\ConfirmationToken;
 use App\Value\Consumable;
 use App\Value\ConsumableName;
+use App\Value\Counseling;
+use App\Value\CounselingName;
 use App\Value\Gender;
+use App\Value\Medical;
+use App\Value\MedicalName;
 use App\Value\PeopleCount;
 use App\Value\UserGroup;
 use App\Value\UserGroupName;
@@ -267,23 +271,65 @@ trait RepositoryTrait
     }
 
     /**
+     * @param string $counselingsString
+     *
+     * @return Counseling[]
+     */
+    protected function getCounselingsFromString(string $counselingsString): array
+    {
+        $counselings = [];
+        if (!$counselingsString) {
+            return $counselings;
+        }
+
+        $counselingsStrings = \explode(';', $counselingsString);
+
+        foreach ($counselingsStrings as $counselingString) {
+            $parts = \explode(',', $counselingString);
+            \assert(\count($parts) === 2);
+            $counselings[] = Counseling::fromCounselingNameAndCount(
+                CounselingName::fromString($parts[0]),
+                PeopleCount::fromInt((int) $parts[1]),
+            );
+        }
+
+        return $counselings;
+    }
+
+    /**
+     * @param string $medicalsString
+     *
+     * @return Medical[]
+     */
+    protected function getMedicalsFromString(string $medicalsString): array
+    {
+        $medicals = [];
+        if (!$medicalsString) {
+            return $medicals;
+        }
+
+        $medicalsStrings = \explode(';', $medicalsString);
+
+        foreach ($medicalsStrings as $medicalString) {
+            $parts = \explode(',', $medicalString);
+            \assert(\count($parts) === 2);
+            $medicals[] = Medical::fromMedicalNameAndCount(
+                MedicalName::fromString($parts[0]),
+                PeopleCount::fromInt((int) $parts[1]),
+            );
+        }
+
+        return $medicals;
+    }
+
+    /**
      * @param string $userGroupNamesString
      *
      * @return UserGroupName[]
      */
     protected function getUserGroupNamesFromString(string $userGroupNamesString): array
     {
-        $userGroupNames = [];
-        if (!$userGroupNamesString) {
-            return $userGroupNames;
-        }
-
-        $userGroupNamesStrings = \explode(',', $userGroupNamesString);
-        foreach ($userGroupNamesStrings as $userGroupNameString) {
-            $userGroupNames[] = UserGroupName::fromString($userGroupNameString);
-        }
-
-        return $userGroupNames;
+        return $this->parseNames($userGroupNamesString, [UserGroupName::class, 'fromString']);
     }
 
     /**
@@ -293,17 +339,27 @@ trait RepositoryTrait
      */
     protected function getConsumableNamesFromString(string $consumableNamesString): array
     {
-        $consumableNames = [];
-        if (!$consumableNamesString) {
-            return $consumableNames;
-        }
+        return $this->parseNames($consumableNamesString, [ConsumableName::class, 'fromString']);
+    }
 
-        $consumableNamesStrings = \explode(',', $consumableNamesString);
-        foreach ($consumableNamesStrings as $consumableNameString) {
-            $consumableNames[] = ConsumableName::fromString($consumableNameString);
-        }
+    /**
+     * @param string $counselingNamesString
+     *
+     * @return CounselingName[]
+     */
+    protected function getCounselingNamesFromString(string $counselingNamesString): array
+    {
+        return $this->parseNames($counselingNamesString, [CounselingName::class, 'fromString']);
+    }
 
-        return $consumableNames;
+    /**
+     * @param string $medicalNamesString
+     *
+     * @return MedicalName[]
+     */
+    protected function getMedicalNamesFromString(string $medicalNamesString): array
+    {
+        return $this->parseNames($medicalNamesString, [MedicalName::class, 'fromString']);
     }
 
     /**
@@ -487,6 +543,56 @@ trait RepositoryTrait
 
             return $consumableNames;
         }
+        if (\str_starts_with($text, 'counselings<')) {
+            $counselings = [];
+            foreach ($this->getCounselingsFromString($referenceIdentifikator) as $counseling) {
+                $counselings[] = [
+                    'counselingName' => [
+                        'name' => $counseling->getCounselingName()->getName(),
+                    ],
+                    'peopleCount' => [
+                        'count' => $counseling->getPeopleCount()->getCount(),
+                    ],
+                ];
+            }
+
+            return $counselings;
+        }
+        if (\str_starts_with($text, 'counselingNames<')) {
+            $counselingNames = [];
+            foreach ($this->getCounselingNamesFromString($referenceIdentifikator) as $counselingName) {
+                $counselingNames[] = [
+                    'name' => $counselingName->getName(),
+                ];
+            }
+
+            return $counselingNames;
+        }
+        if (\str_starts_with($text, 'medicals<')) {
+            $medicals = [];
+            foreach ($this->getMedicalsFromString($referenceIdentifikator) as $medical) {
+                $medicals[] = [
+                    'medicalName' => [
+                        'name' => $medical->getMedicalName()->getName(),
+                    ],
+                    'peopleCount' => [
+                        'count' => $medical->getPeopleCount()->getCount(),
+                    ],
+                ];
+            }
+
+            return $medicals;
+        }
+        if (\str_starts_with($text, 'medicalNames<')) {
+            $medicalNames = [];
+            foreach ($this->getMedicalNamesFromString($referenceIdentifikator) as $medicalName) {
+                $medicalNames[] = [
+                    'name' => $medicalName->getName(),
+                ];
+            }
+
+            return $medicalNames;
+        }
 
         if (\str_starts_with($text, 'date<')) {
             $dateConfig = \explode(',', $referenceIdentifikator);
@@ -573,5 +679,22 @@ trait RepositoryTrait
         Assert::same(\substr_count($reference, '<'), 1, \sprintf('$reference "%s" should only contain one < sign.', $reference));
 
         return \substr($reference, \strpos($reference, "<") + 1, -1);
+    }
+
+    /**
+     * Converts a comma-separated string into an array of domain objects.
+     *
+     * @param string   $namesString
+     * @param callable $factoryMethod
+     *
+     * @return UserGroupName[]|ConsumableName[]|CounselingName[]|MedicalName[]
+     */
+    private function parseNames(string $namesString, callable $factoryMethod): array
+    {
+        if ('' === $namesString) {
+            return [];
+        }
+
+        return \array_map($factoryMethod, \explode(',', $namesString));
     }
 }

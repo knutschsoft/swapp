@@ -186,6 +186,42 @@
             </div>
         </div>
         <div
+            v-if="walk.isWithCounselings && !excludedAttributes.includes('counselings')"
+        >
+            <div class="d-inline-flex pa-2 font-weight-bold text-decoration-underline">
+                Beratungen
+            </div>
+            <div
+                v-for="counseling in wayPoint.counselings"
+            >
+                <div
+                    class="d-inline-flex pa-2 font-weight-bold"
+                    :class="{'text-muted': !counseling.peopleCount.count}"
+                >
+                    {{ counseling.counselingName.name }}:
+                </div>
+                {{ counseling.peopleCount.count }}
+            </div>
+        </div>
+        <div
+            v-if="walk.isWithMedicals && !excludedAttributes.includes('medicals')"
+        >
+            <div class="d-inline-flex pa-2 font-weight-bold text-decoration-underline">
+                Medizin
+            </div>
+            <div
+                v-for="medical in wayPoint.medicals"
+            >
+                <div
+                    class="d-inline-flex pa-2 font-weight-bold"
+                    :class="{'text-muted': !medical.peopleCount.count}"
+                >
+                    {{ medical.medicalName.name }}:
+                </div>
+                {{ medical.peopleCount.count }}
+            </div>
+        </div>
+        <div
             v-if="walk.isWithContactsCount && !excludedAttributes.includes('contactsCount')"
             class="d-flex flex-wrap"
         >

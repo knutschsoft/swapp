@@ -26,10 +26,14 @@ Feature: Testing team create resource with systemicQuestion
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |
             | isWithConsumables       | <false>                           |
+            | isWithCounselings       | <false>                           |
+            | isWithMedicals          | <false>                           |
             | isWithGuests            | <true>                            |
             | guestNames              | array<Karla, Opa Manfred, Alfons> |
             | userGroupNames          | array<>                           |
             | consumableNames         | array<>                           |
+            | counselingNames         | array<>                           |
+            | medicalNames            | array<>                           |
             | initialMembersConfig    | mitglieder                        |
         Then the response should be in JSON
 #    And print last JSON response
@@ -58,12 +62,16 @@ Feature: Testing team create resource with systemicQuestion
             | isWithUserGroups        | <false>                           |
             | isWithConsumables       | <false>                           |
             | isWithGuests            | <true>                            |
+            | isWithCounselings       | <false>                           |
+            | isWithMedicals          | <false>                           |
             | guestNames              | array<Karla, Opa Manfred, Alfons> |
             | userGroupNames          | array<>                           |
             | consumableNames         | array<>                           |
+            | counselingNames         | array<>                           |
+            | medicalNames            | array<>                           |
             | initialMembersConfig    | mitglieder                        |
         Then the response should be in JSON
-    And print last JSON response
+        And print last JSON response
         And the response status code should be 200
         And the enriched JSON nodes should be equal to:
             | @type                  | Team     |

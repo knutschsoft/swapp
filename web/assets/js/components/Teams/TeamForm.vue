@@ -475,10 +475,16 @@
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="6" lg="5">
-                                <user-groups-form-field :team="team" :isDisabled="isDisabled" />
+                                <user-groups-form-field v-model:team="team" :isDisabled="isDisabled" />
                             </v-col>
                             <v-col cols="12" md="6" lg="5">
-                                <consumables-form-field :team="team" :isDisabled="isDisabled" />
+                                <consumables-form-field v-model:team="team" :isDisabled="isDisabled" />
+                            </v-col>
+                            <v-col cols="12" md="6" lg="5">
+                                <counselings-form-field v-model:team="team" :isDisabled="isDisabled" />
+                            </v-col>
+                            <v-col cols="12" md="6" lg="5">
+                                <medicals-form-field v-model:team="team" :isDisabled="isDisabled" />
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -544,6 +550,8 @@ const team = ref({
     isWithSystemicQuestion: false,
     isWithUserGroups: false,
     isWithConsumables: false,
+    isWithCounselings: false,
+    isWithMedicals: false,
     ageRanges: [],
     locationNames: [],
     walkNames: [],
@@ -551,6 +559,8 @@ const team = ref({
     guestNames: [],
     userGroupNames: [],
     consumableNames: [],
+    couneslingNames: [],
+    medicalNames: [],
     users: [],
 });
 
@@ -583,6 +593,8 @@ const setInitialValues = () => {
             isWithSystemicQuestion: false,
             isWithUserGroups: false,
             isWithConsumables: false,
+            isWithCounselings: false,
+            isWithMedicals: false,
             users: [],
             ageRanges: [],
             locationNames: [],
@@ -591,6 +603,8 @@ const setInitialValues = () => {
             guestNames: [],
             userGroupNames: [],
             consumableNames: [],
+            counselingNames: [],
+            medicalNames: [],
         };
     }
 };

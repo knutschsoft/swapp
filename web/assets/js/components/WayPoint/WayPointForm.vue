@@ -208,6 +208,48 @@
                 />
             </v-col>
         </v-row>
+        <v-row
+            v-if="walk.isWithCounselings"
+            class="d-flex align-items-end"
+            dense
+        >
+            <v-col
+                v-for="(counseling, index) in wayPoint.counselings"
+                :key="counseling.counselingName.name"
+            >
+                <v-select
+                    v-model="counseling.peopleCount.count"
+                    :items="ageRangeOptions"
+                    :disabled="isLoading"
+                    :help="counseling.counselingName.name"
+                    density="compact"
+                    variant="outlined"
+                    :label="counseling.counselingName.name"
+                    @click:clear="counseling.peopleCount.count = 0"
+                />
+            </v-col>
+        </v-row>
+        <v-row
+            v-if="walk.isWithMedicals"
+            class="d-flex align-items-end"
+            dense
+        >
+            <v-col
+                v-for="(medical, index) in wayPoint.medicals"
+                :key="medical.medicalName.name"
+            >
+                <v-select
+                    v-model="medical.peopleCount.count"
+                    :items="ageRangeOptions"
+                    :disabled="isLoading"
+                    :help="medical.medicalName.name"
+                    density="compact"
+                    variant="outlined"
+                    :label="medical.medicalName.name"
+                    @click:clear="medical.peopleCount.count = 0"
+                />
+            </v-col>
+        </v-row>
         <way-point-contacts-count-field
             v-if="walk.isWithContactsCount"
             v-model="wayPoint.contactsCount"
@@ -416,6 +458,8 @@ export default {
                 peopleCount: 0,
                 userGroups: [],
                 consumables: [],
+                counselings: [],
+                medicals: [],
                 imageName: null,
                 isMeeting: false,
                 note: '',
@@ -687,6 +731,42 @@ export default {
 
             return consumables;
         },
+        counselings() {
+            let counselings = [];
+            if (!this.walk.isWithCounselings) {
+                return counselings;
+            }
+            this.walk.counselingNames
+                .slice()
+                .forEach((counselingName) => {
+                    counselings.push({
+                        counselingName,
+                        peopleCount: {
+                            count: 0,
+                        },
+                    });
+                });
+
+            return counselings;
+        },
+        medicals() {
+            let medicals = [];
+            if (!this.walk.isWithMedicals) {
+                return medicals;
+            }
+            this.walk.medicalNames
+                .slice()
+                .forEach((medicalName) => {
+                    medicals.push({
+                        medicalName,
+                        peopleCount: {
+                            count: 0,
+                        },
+                    });
+                });
+
+            return medicals;
+        },
     },
     async created() {
         this.wayPointStore.resetChangeError();
@@ -708,6 +788,8 @@ export default {
             this.wayPoint.ageGroups = JSON.parse(JSON.stringify(this.initialWayPoint.ageGroups)) || [];
             this.wayPoint.userGroups = JSON.parse(JSON.stringify(this.initialWayPoint.userGroups)) || [];
             this.wayPoint.consumables = JSON.parse(JSON.stringify(this.initialWayPoint.consumables)) || [];
+            this.wayPoint.counselings = JSON.parse(JSON.stringify(this.initialWayPoint.counselings)) || [];
+            this.wayPoint.medicals = JSON.parse(JSON.stringify(this.initialWayPoint.medicals)) || [];
             this.wayPoint.imageName = this.initialWayPoint.imageName;
             if (this.initialWayPoint.imageSrc) {
                 const response = await axios.get(this.initialWayPoint.imageSrc, { responseType: 'blob' });
@@ -726,6 +808,8 @@ export default {
             this.wayPoint.ageGroups = this.ageGroups;
             this.wayPoint.userGroups = this.userGroups;
             this.wayPoint.consumables = this.consumables;
+            this.wayPoint.counselings = this.counselings;
+            this.wayPoint.medicals = this.medicals;
             this.wayPoint.walk = this.walk['@id'];
         }
 

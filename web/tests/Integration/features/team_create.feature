@@ -65,10 +65,14 @@ Feature: Testing team create resource
             | isWithContactsCount     | <false>                  |
             | isWithUserGroups        | <false>                  |
             | isWithConsumables       | <false>                  |
+            | isWithCounselings       | <false>                  |
+            | isWithMedicals          | <false>                  |
             | isWithGuests            | <false>                  |
             | guestNames              | array<>                  |
             | userGroupNames          | array<>                  |
             | consumableNames         | array<>                  |
+            | counselingNames         | array<>                  |
+            | medicalNames            | array<>                  |
             | initialMembersConfig    | mitglieder               |
         Then the response should be in JSON
 #    And print last JSON response
@@ -85,6 +89,8 @@ Feature: Testing team create resource
             | isWithContactsCount        | <false>                  |
             | isWithUserGroups           | <false>                  |
             | isWithConsumables          | <false>                  |
+            | isWithCounselings          | <false>                  |
+            | isWithMedicals             | <false>                  |
             | users[0]                   | userIri<two@pac.de>      |
             | client                     | clientIri<client@gmx.de> |
 
@@ -106,10 +112,14 @@ Feature: Testing team create resource
             | isWithContactsCount     | <false>                  |
             | isWithUserGroups        | <false>                  |
             | isWithConsumables       | <false>                  |
+            | isWithCounselings       | <false>                  |
+            | isWithMedicals          | <false>                  |
             | isWithGuests            | <false>                  |
             | guestNames              | array<>                  |
             | userGroupNames          | array<>                  |
             | consumableNames         | array<>                  |
+            | counselingNames         | array<>                  |
+            | medicalNames            | array<>                  |
             | initialMembersConfig    | mitglieder               |
         Then the response should be in JSON
 #    And print last JSON response
@@ -123,6 +133,8 @@ Feature: Testing team create resource
             | isWithContactsCount | <false>                  |
             | isWithUserGroups    | <false>                  |
             | isWithConsumables   | <false>                  |
+            | isWithCounselings   | <false>                  |
+            | isWithMedicals      | <false>                  |
             | users[0]            | userIri<two@pac.de>      |
             | client              | clientIri<client@gmx.de> |
         And the JSON node "ageRanges" should exist
@@ -146,8 +158,12 @@ Feature: Testing team create resource
             | isWithContactsCount     | <true>                         |
             | isWithUserGroups        | <true>                         |
             | isWithConsumables       | <false>                        |
+            | isWithCounselings       | <false>                        |
+            | isWithMedicals          | <false>                        |
             | userGroupNames          | userGroupNames<Nutzende,Dudes> |
             | consumableNames         | consumableNames<>              |
+            | counselingNames         | array<>                        |
+            | medicalNames            | array<>                        |
             | isWithGuests            | <false>                        |
             | guestNames              | array<>                        |
             | initialMembersConfig    | mitglieder                     |
@@ -166,6 +182,8 @@ Feature: Testing team create resource
             | isWithContactsCount        | <true>                   |
             | isWithUserGroups           | <true>                   |
             | isWithConsumables          | <false>                  |
+            | isWithCounselings          | <false>                  |
+            | isWithMedicals             | <false>                  |
             | users[0]                   | userIri<two@pac.de>      |
             | client                     | clientIri<client@gmx.de> |
             | userGroupNames[0].name     | Nutzende                 |
@@ -212,12 +230,20 @@ Feature: Testing team create resource
             | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
             | violations[14].propertyPath | isWithConsumables                                                      |
             | violations[14].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[15].propertyPath | userGroupNames                                                         |
+            | violations[15].propertyPath | isWithCounselings                                                      |
             | violations[15].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[16].propertyPath | consumableNames                                                        |
+            | violations[16].propertyPath | isWithMedicals                                                      |
             | violations[16].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[17].propertyPath | initialMembersConfig                                                   |
+            | violations[17].propertyPath | userGroupNames                                                         |
             | violations[17].message      | Dieser Wert sollte nicht null sein.                                    |
+            | violations[18].propertyPath | consumableNames                                                        |
+            | violations[18].message      | Dieser Wert sollte nicht null sein.                                    |
+            | violations[19].propertyPath | counselingNames                                                        |
+            | violations[19].message      | Dieser Wert sollte nicht null sein.                                    |
+            | violations[20].propertyPath | medicalNames                                                        |
+            | violations[20].message      | Dieser Wert sollte nicht null sein.                                    |
+            | violations[21].propertyPath | initialMembersConfig                                                   |
+            | violations[21].message      | Dieser Wert sollte nicht null sein.                                    |
 
     @api @apiTeamCreate
     Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team

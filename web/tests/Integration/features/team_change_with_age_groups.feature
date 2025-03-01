@@ -29,10 +29,14 @@ Feature: Testing team change resource with guests
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |
             | isWithConsumables       | <false>                   |
+            | isWithCounselings       | <false>                   |
+            | isWithMedicals          | <false>                   |
             | isWithGuests            | <true>                    |
             | guestNames              | array<Opa Manfred, Karla> |
             | userGroupNames          | array<>                   |
             | consumableNames         | array<>                   |
+            | counselingNames         | array<>                   |
+            | medicalNames            | array<>                   |
             | initialMembersConfig    | mitglieder                |
         Then the response should be in JSON
 #    And print last JSON response
@@ -59,10 +63,14 @@ Feature: Testing team change resource with guests
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |
             | isWithConsumables       | <false>                   |
+            | isWithCounselings       | <false>                   |
+            | isWithMedicals          | <false>                   |
             | isWithGuests            | <true>                    |
             | guestNames              | array<Opa Manfred, Karla> |
             | userGroupNames          | array<>                   |
             | consumableNames         | array<>                   |
+            | counselingNames         | array<>                   |
+            | medicalNames            | array<>                   |
             | initialMembersConfig    | mitglieder                |
         Then the response should be in JSON
 #    And print last JSON response

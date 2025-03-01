@@ -11,6 +11,8 @@ use App\Dto\Team\TeamChangeRequest;
 use App\Dto\Team\TeamCreateRequest;
 use App\Entity\Fields\AgeRangeField;
 use App\Entity\Fields\ConsumableNamesField;
+use App\Entity\Fields\CounselingNamesField;
+use App\Entity\Fields\MedicalNamesField;
 use App\Entity\Fields\UserGroupNamesField;
 use App\Repository\DoctrineORMTeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,6 +51,8 @@ class Team implements \Stringable
 {
     use AgeRangeField;
     use ConsumableNamesField;
+    use CounselingNamesField;
+    use MedicalNamesField;
     use UserGroupNamesField;
 
     /** @var Collection<int, User> */
@@ -103,6 +107,12 @@ class Team implements \Stringable
     #[ORM\Column(type: 'boolean')]
     private bool $isWithConsumables;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithCounselings;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isWithMedicals;
+
     #[ORM\Column(length: 15)]
     private string $initialMembersConfig;
 
@@ -111,6 +121,8 @@ class Team implements \Stringable
         $this->ageRanges = [];
         $this->userGroupNames = [];
         $this->consumableNames = [];
+        $this->counselingNames = [];
+        $this->medicalNames = [];
         $this->users = new ArrayCollection();
     }
 
@@ -324,6 +336,30 @@ class Team implements \Stringable
     public function setIsWithConsumables(bool $isWithConsumables): void
     {
         $this->isWithConsumables = $isWithConsumables;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithCounselings')]
+    public function isWithCounselings(): bool
+    {
+        return $this->isWithCounselings;
+    }
+
+    public function setIsWithCounselings(bool $isWithCounselings): void
+    {
+        $this->isWithCounselings = $isWithCounselings;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithMedicals')]
+    public function isWithMedicals(): bool
+    {
+        return $this->isWithMedicals;
+    }
+
+    public function setIsWithMedicals(bool $isWithMedicals): void
+    {
+        $this->isWithMedicals = $isWithMedicals;
     }
 
     #[Groups(['team:read'])]

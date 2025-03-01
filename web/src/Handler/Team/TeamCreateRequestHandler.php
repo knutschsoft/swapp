@@ -27,6 +27,8 @@ final readonly class TeamCreateRequestHandler
         $team->setIsWithPeopleCount($request->isWithPeopleCount);
         $team->setUserGroupNames($request->userGroupNames);
         $team->setConsumableNames($request->consumableNames);
+        $team->setCounselingNames($request->counselingNames);
+        $team->setMedicalNames($request->medicalNames);
         $team->setUsers(new ArrayCollection($request->users));
         $team->setName($request->name);
         $team->setIsWithGuests($request->isWithGuests);
@@ -39,6 +41,8 @@ final readonly class TeamCreateRequestHandler
         $team->setIsWithContactsCount($request->isWithContactsCount);
         $team->setIsWithUserGroups($request->isWithUserGroups);
         $team->setIsWithConsumables($request->isWithConsumables);
+        $team->setIsWithCounselings($request->isWithCounselings);
+        $team->setIsWithMedicals($request->isWithMedicals);
         $team->setIsWithSystemicQuestion($request->isWithSystemicQuestion);
         $team->setInitialMembersConfig($request->initialMembersConfig);
         $this->teamRepository->save($team);

@@ -331,6 +331,12 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['consumables']) && '' !== $row['consumables']) {
                 $wayPoint->setConsumables($this->getConsumablesFromString($row['consumables']));
             }
+            if (isset($row['counselings']) && '' !== $row['counselings']) {
+                $wayPoint->setCounselings($this->getCounselingsFromString($row['counselings']));
+            }
+            if (isset($row['medicals']) && '' !== $row['medicals']) {
+                $wayPoint->setMedicals($this->getMedicalsFromString($row['medicals']));
+            }
             if (isset($row['ageGroups']) && '' !== $row['ageGroups']) {
                 $wayPoint->setAgeGroups($this->getAgeGroupsFromString($row['ageGroups']));
             }
@@ -935,19 +941,34 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['isWithUserGroups']) && '' !== $row['isWithUserGroups']) {
                 $isWithUserGroups = (bool) $this->enrichText($row['isWithUserGroups']);
             }
+            $team->setIsWithUserGroups($isWithUserGroups);
             if (isset($row['userGroupNames'])) {
                 $team->setUserGroupNames($this->getUserGroupNamesFromString($row['userGroupNames']));
             }
-            $team->setIsWithUserGroups($isWithUserGroups);
-
             $isWithConsumables = false;
             if (isset($row['isWithConsumables']) && '' !== $row['isWithConsumables']) {
                 $isWithConsumables = (bool) $this->enrichText($row['isWithConsumables']);
             }
-            if (isset($row['userGroupNames'])) {
-                $team->setUserGroupNames($this->getUserGroupNamesFromString($row['userGroupNames']));
-            }
             $team->setIsWithConsumables($isWithConsumables);
+            if (isset($row['consumableNames'])) {
+                $team->setConsumableNames($this->getConsumableNamesFromString($row['consumableNames']));
+            }
+            $isWithCounselings = false;
+            if (isset($row['isWithCounselings']) && '' !== $row['isWithCounselings']) {
+                $isWithCounselings = (bool) $this->enrichText($row['isWithCounselings']);
+            }
+            $team->setIsWithCounselings($isWithCounselings);
+            if (isset($row['counselingsNames'])) {
+                $team->setCounselingNames($this->getCounselingNamesFromString($row['counselingNames']));
+            }
+            $isWithMedicals = false;
+            if (isset($row['isWithMedicals']) && '' !== $row['isWithMedicals']) {
+                $isWithMedicals = (bool) $this->enrichText($row['isWithMedicals']);
+            }
+            $team->setIsWithMedicals($isWithMedicals);
+            if (isset($row['medicalNames'])) {
+                $team->setMedicalNames($this->getMedicalNamesFromString($row['medicalNames']));
+            }
             $isWithGuests = false;
             if (isset($row['isWithGuests']) && '' !== $row['isWithGuests']) {
                 $isWithGuests = (bool) $this->enrichText($row['isWithGuests']);
