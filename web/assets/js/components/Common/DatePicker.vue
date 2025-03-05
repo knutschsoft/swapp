@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {defineProps, computed, ref} from "vue";
 import { de } from 'date-fns/locale'
+import {breakpointsVuetifyV3, useBreakpoints} from "@vueuse/core";
 
 interface Props {
     modelValue: any;
@@ -39,7 +40,15 @@ const activeUi = ref<UIOptions>({
     menu: '',
     input: props.isFilter ? 'active-bg text-primary' : '',
 });
-
+const breakpoints = useBreakpoints(breakpointsVuetifyV3)
+const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
+const multiCalendars = computed(() => {
+    return {
+        solo: false,
+        static: true,
+        count: count.value,
+    }
+})
 </script>
 
 <template>
@@ -47,7 +56,7 @@ const activeUi = ref<UIOptions>({
         v-model="dateRange"
         :week-numbers="{ type: 'iso' }"
         :placeholder="placeholder"
-        :multi-calendars="{ solo: false, static: true, count: 2 }"
+        :multi-calendars="multiCalendars"
         clearable
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"

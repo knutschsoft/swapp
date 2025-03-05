@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {defineProps, computed, ref} from "vue";
 import { de } from 'date-fns/locale'
+import { breakpointsVuetifyV3, useBreakpoints } from '@vueuse/core'
 
 interface Props {
     modelValue: any;
@@ -27,7 +28,7 @@ const activeUi = ref<UIOptions>({
     calendarCell: '',
     menu: '',
     input: 'active-bg text-primary',
-});
+})
 
 const props = withDefaults(defineProps<Props>(), {
     placeholder: 'Zeitraum wählen...'
@@ -37,7 +38,17 @@ const emit = defineEmits(["update:modelValue", "cleared"]);
 const dateRange = computed({
     get: () => props.modelValue,
     set: (value) => emit("update:modelValue", value),
-});
+})
+
+const breakpoints = useBreakpoints(breakpointsVuetifyV3)
+const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
+const multiCalendars = computed(() => {
+    return {
+        solo: false,
+        static: true,
+        count: count.value,
+    }
+})
 </script>
 
 <template>
@@ -45,7 +56,7 @@ const dateRange = computed({
         v-model="dateRange"
         :week-numbers="{ type: 'iso' }"
         :placeholder="placeholder"
-        :multi-calendars="{ solo: false, static: true, count: 2 }"
+        :multi-calendars="multiCalendars"
         clearable
         range
         :ui="dateRange ? activeUi : {}"

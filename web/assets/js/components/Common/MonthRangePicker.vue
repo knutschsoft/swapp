@@ -2,6 +2,7 @@
 import { defineProps, computed, ref } from "vue";
 import dayjs from 'dayjs';
 import { de } from 'date-fns/locale'
+import {breakpointsVuetifyV3, useBreakpoints} from "@vueuse/core";
 
 interface Props {
     modelValue: any;
@@ -92,6 +93,15 @@ for (let i = 1; i <= 4; i++) {
     });
 }
 const presetDates = ref(presetDatesValue);
+const breakpoints = useBreakpoints(breakpointsVuetifyV3)
+const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
+const multiCalendars = computed(() => {
+    return {
+        solo: false,
+        static: true,
+        count: count.value,
+    }
+})
 </script>
 
 <template>
@@ -99,7 +109,7 @@ const presetDates = ref(presetDatesValue);
         v-model="dateRange"
         :week-numbers="{ type: 'iso' }"
         placeholder="Zeitraum wählen..."
-        :multi-calendars="{ solo: false, static: true, count: 2 }"
+        :multi-calendars="multiCalendars"
         clearable
         month-picker
         range
