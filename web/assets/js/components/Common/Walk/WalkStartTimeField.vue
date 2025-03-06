@@ -43,6 +43,18 @@ const value = computed({
 });
 
 const startTimeTimeAsDayJs = computed(() => {
+    if (!startTimeTime.value) {
+        startTimeTime.value = props.initialWalk ? {
+                hours: dayjs(props.initialWalk.startTime).hour(),
+                minutes: dayjs(props.initialWalk.startTime).minute(),
+                seconds: 0,
+            }
+            : {
+                hours: dayjs().hour(),
+                minutes: dayjs().minute(),
+                seconds: 0,
+            }
+    }
     return dayjs().hour(startTimeTime.value.hours).minute(startTimeTime.value.minutes).second(startTimeTime.value.seconds);
 });
 onMounted(() => {

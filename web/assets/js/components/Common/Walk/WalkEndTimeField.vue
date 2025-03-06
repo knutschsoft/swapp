@@ -45,6 +45,18 @@ const value = computed({
 });
 
 const endTimeTimeAsDayJs = computed(() => {
+    if (!endTimeTime.value) {
+        endTimeTime.value = props.initialWalk ? {
+                hours: dayjs(props.initialWalk.endTime).hour(),
+                minutes: dayjs(props.initialWalk.endTime).minute(),
+                seconds: 0,
+            }
+            : {
+                hours: dayjs().hour(),
+                minutes: dayjs().minute(),
+                seconds: 0,
+            }
+    }
     return dayjs().hour(endTimeTime.value.hours).minute(endTimeTime.value.minutes).second(endTimeTime.value.seconds);
 });
 

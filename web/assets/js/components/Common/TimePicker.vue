@@ -54,7 +54,6 @@ const multiCalendars = computed(() => {
 </script>
 
 <template>
-    {{isGreaterThanMd.value}}
     <VueDatePicker
         v-model="dateRange"
         :week-numbers="{ type: 'iso' }"
