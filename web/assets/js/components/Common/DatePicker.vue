@@ -41,12 +41,12 @@ const activeUi = ref<UIOptions>({
     input: props.isFilter ? 'active-bg text-primary' : '',
 });
 const breakpoints = useBreakpoints(breakpointsVuetifyV3)
-const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
+const isGreaterThanMd = computed(() => breakpoints.greater("md"));
 const multiCalendars = computed(() => {
     return {
         solo: false,
         static: true,
-        count: count.value,
+        count: isGreaterThanMd.value ? 2 : 0,
     }
 })
 </script>
@@ -60,7 +60,7 @@ const multiCalendars = computed(() => {
         clearable
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"
-        text-input
+        :text-input="isGreaterThanMd.value"
         auto-apply
         locale="de"
         :format-locale="de"

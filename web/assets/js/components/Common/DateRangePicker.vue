@@ -61,7 +61,6 @@ const multiCalendars = computed(() => {
         range
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"
-        text-input
         auto-apply
         locale="de"
         :format-locale="de"
