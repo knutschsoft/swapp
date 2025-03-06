@@ -43,17 +43,18 @@ const dateRange = computed({
     set: (value) => emit("update:modelValue", value),
 });
 const breakpoints = useBreakpoints(breakpointsVuetifyV3)
-const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
+const isGreaterThanMd = computed(() => breakpoints.greater("md"));
 const multiCalendars = computed(() => {
     return {
         solo: false,
         static: true,
-        count: count.value,
+        count: isGreaterThanMd.value ? 2 : 0,
     }
 })
 </script>
 
 <template>
+    {{isGreaterThanMd.value}}
     <VueDatePicker
         v-model="dateRange"
         :week-numbers="{ type: 'iso' }"
@@ -65,7 +66,7 @@ const multiCalendars = computed(() => {
         :start-time="dateRange"
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"
-        text-input
+        :text-input="isGreaterThanMd.value"
         auto-apply
         locale="de"
         :format-locale="de"
