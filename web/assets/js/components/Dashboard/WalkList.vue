@@ -325,9 +325,10 @@ export default {
             sortBy.forEach((val) => {
                 data[`order[${val.key}]`] = val.order;
             })
-            if (this.filter.startTime?.startDate && this.filter.startTime?.endDate) {
-                data['startTime[after]'] = dayjs(this.filter.startTime.startDate).startOf('day').toISOString()
-                data['startTime[before]'] = dayjs(this.filter.startTime.endDate).endOf('day').toISOString()
+
+            if (this.filter.startTime[0] && this.filter.startTime[1]) {
+                data['startTime[after]'] = dayjs(this.filter.startTime[0]).startOf('day').toISOString()
+                data['startTime[before]'] = dayjs(this.filter.startTime[1]).endOf('day').toISOString()
             }
 
             this.exportCtx = data
@@ -391,8 +392,8 @@ export default {
                 title = `NAME_${this.filter.name}_${title}`;
             }
 
-            const startDate = dayjs(this.filter?.startTime?.startDate);
-            const endDate = dayjs(this.filter?.startTime?.endDate);
+            const startDate = dayjs(this.filter?.startTime[0]);
+            const endDate = dayjs(this.filter?.startTime[1]);
             if (startDate.isValid() && endDate.isValid()) {
                 const formattedStartDate = startDate.format('YYYYMMDD');
                 const formattedEndDate = endDate.format('YYYYMMDD');

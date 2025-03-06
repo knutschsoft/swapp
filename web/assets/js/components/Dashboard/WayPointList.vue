@@ -443,9 +443,9 @@ export default {
             sortBy.forEach((val) => {
                 data[`order[${val.key}]`] = val.order;
             })
-            if (this.filter.visitedAt?.startDate && this.filter.visitedAt?.endDate) {
-                data['visitedAt[after]'] = dayjs(this.filter.visitedAt.startDate).startOf('day').toISOString()
-                data['visitedAt[before]'] = dayjs(this.filter.visitedAt.endDate).endOf('day').toISOString()
+            if (this.filter.visitedAt[0] && this.filter.visitedAt[1]) {
+                data['visitedAt[after]'] = dayjs(this.filter.visitedAt[0]).startOf('day').toISOString()
+                data['visitedAt[before]'] = dayjs(this.filter.visitedAt[1]).endOf('day').toISOString()
             }
 
             this.exportCtx = data;
@@ -531,9 +531,9 @@ export default {
             if (this.filter.locationName) {
                 title = `ORT_${this.filter.locationName}_${title}`;
             }
-            if (this.filter?.visitedAt?.startDate && this.filter?.visitedAt?.endDate) {
-                const formattedStartDate = dayjs(this.filter.visitedAt.startDate).format('YYYYMMDD');
-                const formattedEndDate = dayjs(this.filter.visitedAt.endDate).format('YYYYMMDD');
+            if (this.filter?.visitedAt[0] && this.filter?.visitedAt[1]) {
+                const formattedStartDate = dayjs(this.filter.visitedAt[0]).format('YYYYMMDD');
+                const formattedEndDate = dayjs(this.filter.visitedAt[1]).format('YYYYMMDD');
                 if (formattedStartDate === formattedEndDate) {
                     title = `${formattedStartDate}_${title}`;
                 } else {
