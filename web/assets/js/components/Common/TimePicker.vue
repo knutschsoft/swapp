@@ -44,11 +44,12 @@ const dateRange = computed({
 });
 const breakpoints = useBreakpoints(breakpointsVuetifyV3)
 const isGreaterThanMd = computed(() => breakpoints.greater("md"));
+const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
 const multiCalendars = computed(() => {
     return {
         solo: false,
         static: true,
-        count: isGreaterThanMd.value ? 2 : 0,
+        count: count.value,
     }
 })
 </script>

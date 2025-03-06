@@ -94,6 +94,7 @@ for (let i = 1; i <= 4; i++) {
 }
 const presetDates = ref(presetDatesValue);
 const breakpoints = useBreakpoints(breakpointsVuetifyV3)
+const isGreaterThanMd = computed(() => breakpoints.greater("md"));
 const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
 const multiCalendars = computed(() => {
     return {
@@ -128,7 +129,7 @@ const multiCalendars = computed(() => {
         @cleared="$emit('cleared')"
         autocomplete="off"
         :month-change-on-scroll="false"
-        :preset-dates="presetDates"
+        :preset-dates="isGreaterThanMd.value ? presetDates : false"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />

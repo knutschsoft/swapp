@@ -2,6 +2,7 @@
 import {defineProps, computed, ref} from "vue";
 import { de } from 'date-fns/locale'
 import { breakpointsVuetifyV3, useBreakpoints } from '@vueuse/core'
+import dayjs from "dayjs";
 
 interface Props {
     modelValue: any;
@@ -40,7 +41,59 @@ const dateRange = computed({
     set: (value) => emit("update:modelValue", value),
 })
 
+const now = dayjs()
+let presetDatesValue =[
+    { label: 'Dieser Monat', value: [now.startOf('month').toDate(), now.endOf('month').toDate()] },
+    { label: 'Letzter Monat', value: [now.subtract(1, 'month').startOf('month').toDate(), now.subtract(1, 'month').endOf('month').toDate()] },
+    { label: 'Letzte 6 Monate', value: [now.subtract(5, 'month').startOf('month').toDate(), now.endOf('month').toDate()] },
+    { label: 'Dieses Jahr', value: [now.startOf('year').toDate(), now.endOf('year').toDate()] },
+    { label: 'Letztes Jahr', value: [now.subtract(1, 'year').startOf('year').toDate(), now.subtract(1, 'year').endOf('year').toDate()] },
+    { label: 'Vorletztes Jahr', value: [now.subtract(2, 'year').startOf('year').toDate(), now.subtract(2, 'year').endOf('year').toDate()] },
+]
+
+for (let i = -1; i <= 10; i++) {
+    if (i % 2 === 0) {
+        continue;
+    }
+    const quarter = now.subtract(i, 'quarter').quarter();
+    let halfOfYear;
+    switch (quarter) {
+        case 1:
+            halfOfYear = 1;
+            break;
+        case 2:
+            halfOfYear = 1;
+            break;
+        case 3:
+            halfOfYear = 2;
+            break;
+        case 4:
+            halfOfYear = 2;
+            break;
+        default:
+            halfOfYear = 1;
+    }
+
+    presetDatesValue.push({
+        label: `${now.subtract(i, 'quarter').year()} ${halfOfYear}. Halbjahr`,
+        value: [
+            now.subtract(i + 1, 'quarter').startOf('quarter').toDate(),
+            now.subtract(i, 'quarter').endOf('quarter').toDate()
+        ]
+    });
+}
+for (let i = 1; i <= 4; i++) {
+    presetDatesValue.push({
+        label: `${now.subtract(i, 'quarter').year()} ${now.subtract(i, 'quarter').quarter()}. Quartal`,
+        value: [
+            now.subtract(i, 'quarter').startOf('quarter').toDate(),
+            now.subtract(i, 'quarter').endOf('quarter').toDate()
+        ]
+    });
+}
+const presetDates = ref(presetDatesValue);
 const breakpoints = useBreakpoints(breakpointsVuetifyV3)
+const isGreaterThanMd = computed(() => breakpoints.greater("md"));
 const count = computed(() => (breakpoints.greater("md").value ? 2 : 0));
 const multiCalendars = computed(() => {
     return {
@@ -75,7 +128,7 @@ const multiCalendars = computed(() => {
         @cleared="$emit('cleared')"
         autocomplete="off"
         :month-change-on-scroll="false"
-        position="left"
+        :preset-dates="isGreaterThanMd.value ? presetDates : false"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />
