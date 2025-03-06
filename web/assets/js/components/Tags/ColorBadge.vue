@@ -11,6 +11,7 @@ defineProps<{
         class="font-weight-bold d-flex align-items-center"
         :style="`background-color: ${color}`"
         small
+        density="compact"
         pill
     >
     <span :style="`background-color: ${color}`">
