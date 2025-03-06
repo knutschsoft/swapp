@@ -7,7 +7,7 @@ const emit = defineEmits(['update:modelValue']);
 
 export interface Props {
     modelValue: string[],
-    team: Team,
+    team?: Team | null,
     initialWalk?: Walk | null,
     label?: string,
     description?: string,
@@ -18,6 +18,7 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
     label: 'Tageskonzept',
     description: '',
+    team: null,
     initialWalk: null,
     error: false,
     isLoading: false,
