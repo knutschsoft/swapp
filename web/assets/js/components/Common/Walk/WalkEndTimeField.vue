@@ -92,6 +92,11 @@ watch(() => endTimeTime.value, () => {
     value.value = endTimeDate.format();
 });
 watch(() => endTimeDate.value, () => {
+    if (null === endTimeDate.value) {
+        endTimeDate.value = props.modelValue ? dayjs(props.modelValue).toDate() : dayjs().toDate()
+        return
+    }
+
     const endTimeDateValue = dayjs(endTimeDate.value);
     let endTime = dayjs(props.modelValue);
     endTime = endTime.year(endTimeDateValue.year());

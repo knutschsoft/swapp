@@ -87,6 +87,11 @@ watch(() => startTimeTime.value, () => {
     value.value = startTimeDate.format();
 });
 watch(() => startTimeDate.value, () => {
+    if (null === startTimeDate.value) {
+        startTimeDate.value = props.modelValue ? dayjs(props.modelValue).toDate() : dayjs().toDate()
+        return
+    }
+
     const startTimeDateValue = dayjs(startTimeDate.value);
     let startTime = dayjs(props.modelValue);
     startTime = startTime.year(startTimeDateValue.year());
