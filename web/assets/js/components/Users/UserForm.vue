@@ -51,6 +51,7 @@
             v-model="user.client"
             :is-loading="isLoading"
             :disabled="isLoading"
+            hint="Der Benutzer wird für diesen Klienten erstellt."
         />
         <v-btn
             type="submit"

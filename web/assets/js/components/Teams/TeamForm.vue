@@ -515,6 +515,8 @@ import {useAuthStore, useClientStore, useTeamStore, useUserStore} from '@/js/sto
 import {WalkTeamMembersField} from "@/js/components/Common/Walk";
 import UserGroupsFormField from "@/js/components/Teams/UserGroupsFormField.vue";
 import ConsumablesFormField from "@/js/components/Teams/ConsumablesFormField.vue";
+import CounselingsFormField from "@/js/components/Teams/CounselingsFormField.vue";
+import MedicalsFormField from "@/js/components/Teams/MedicalsFormField.vue";
 
 const props = defineProps({
     initialTeam: {
