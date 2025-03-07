@@ -405,7 +405,7 @@
                                                 <v-row no-gutters>
                                                     <v-col cols="6">
                                                         <v-text-field
-                                                            v-model="team.ageRanges[i].rangeStart"
+                                                            v-model.number="team.ageRanges[i].rangeStart"
                                                             :disabled="isDisabled"
                                                             type="number"
                                                             min="0"
@@ -424,7 +424,7 @@
                                                     </v-col>
                                                     <v-col cols="6">
                                                         <v-text-field
-                                                            v-model="team.ageRanges[i].rangeEnd"
+                                                            v-model.number="team.ageRanges[i].rangeEnd"
                                                             :disabled="isDisabled"
                                                             type="number"
                                                             min="0"
@@ -617,7 +617,7 @@ const handleSubmit = async () => {
 };
 
 const removeAgeRange = (index) => team.value.ageRanges.splice(index, 1);
-const addAgeRange = () => team.value.ageRanges.push({rangeStart: '', rangeEnd: ''});
+const addAgeRange = () => team.value.ageRanges.push({rangeStart: null, rangeEnd: null});
 const removeLocationName = (index) => team.value.locationNames.splice(index, 1);
 const addLocationName = () => team.value.locationNames.push('');
 const removeWalkName = (index) => team.value.walkNames.splice(index, 1);
