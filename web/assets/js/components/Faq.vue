@@ -15,7 +15,7 @@
                         </div>
                     </v-list-item>
                     <v-list-item>
-                        <ul class="pl-3 mb-0">
+                        <ul class="pl-5 mb-0">
                             <li
                                 v-for="entry in item.entries"
                             >
@@ -23,7 +23,7 @@
                                     <span
                                         v-html="entry.text[0]"
                                     />
-                                    <ul>
+                                    <ul class="pl-5">
                                         <li
                                             v-for="(textItem, i) in entry.text"
                                             v-if="i !== 0"
@@ -80,9 +80,27 @@ export default {
                     'header': 'Was sind "Direkte Kontakte" an einem Wegpunkt?',
                     'entries': [
                         {
-                            text: [
-                                'Jedes Team kann für sich selber definieren, was direkte Kontakte sind. Bspw. können direkte Kontakte als Personen, mit denen gesprochen wurde, definiert werden.',
-                            ],
+                            text: 'Jedes Team kann für sich selber definieren, was direkte Kontakte sind. Bspw. können direkte Kontakte als Personen, mit denen gesprochen wurde, definiert werden.',
+                        },
+                    ],
+                },
+                {
+                    'header': 'Was ist der Unterschied zwischen der Benutzerrolle "Administrator" und einem Nutzer ohne diese Rolle?',
+                    'entries': [
+                        {
+                            text:  'Ein Nutzer kann nur Runden sowie Wegpunkte bearbeiten und löschen bei denen er der Rundenersteller ist.',
+                        },
+                        {
+                            text:  'Ein Administrator kann weitere Benutzer erstellen sowie deren Rolle, Nutzername und E-Mail-Adresse ändern.',
+                        },
+                        {
+                            text:  'Ein Administrator kann ein Team erstellen sowie Teams bearbeiten.',
+                        },
+                        {
+                            text:  'Ein Administrator kann Systemische Fragen erstellen sowie Systemische Fragen bearbeiten.',
+                        },
+                        {
+                            text:  'Ein Administrator kann Tags erstellen sowie Tags bearbeiten.',
                         },
                     ],
                 },
