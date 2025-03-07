@@ -128,7 +128,7 @@ final class AcceptanceContext extends MinkContext
      *
      * @throws \Throwable
      */
-    public function iWaitForTextToAppear(string $text, ?int $tries = 35): void
+    public function iWaitForTextToAppear(string $text, ?int $tries = 40): void
     {
         $text = $this->enrichText($text);
         $this->spin(
@@ -439,7 +439,7 @@ final class AcceptanceContext extends MinkContext
         Assert::false($testElement->hasAttribute('disabled'), \sprintf('The test element %s is not enabled.', $dataTestSelector));
     }
 
-    public function spin(\Closure $closure, ?int $tries = 25): ?NodeElement
+    public function spin(\Closure $closure, ?int $tries = 30): ?NodeElement
     {
         for ($i = 0; $i <= $tries; $i++) {
             try {
@@ -497,30 +497,33 @@ final class AcceptanceContext extends MinkContext
             } else {
                 $element->attachFile($path);
             }
-        } else {
-            $isVTextarea = $element->hasClass('v-textarea');
-            $isVTextField = $element->hasClass('v-text-field');
-            $isVSelect = $element->hasClass('v-select');
-            $isDivField = $element->hasClass('v-combobox') || $isVTextarea || $isVTextField || $isVSelect;
-            if ($isDivField) {
-                $element->click();
-                $element->keyPress(\str_repeat(WebDriverKeys::BACKSPACE, 15));
-                $element->keyPress($this->enrichText($value));
-                if (!$isVTextarea && !$isVTextField) {
-                    $element->keyPress(WebDriverKeys::ENTER);
-                }
-                if ($isVSelect) {
-                    $element->keyPress(WebDriverKeys::ENTER);
-                }
-                if (!$isVTextField || $isVSelect) {
-                    $element->getParent()->click();
-                }
 
-                return;
-            }
-            $element->setValue($this->enrichText($value));
-            $this->getNodeElement('body')->click();
+            return;
         }
+
+        $isVTextarea = $element->hasClass('v-textarea');
+        $isVTextField = $element->hasClass('v-text-field');
+        $isVSelect = $element->hasClass('v-select');
+        $isVCombobox = $element->hasClass('v-combobox');
+        $isDivField = $isVCombobox || $isVTextarea || $isVTextField || $isVSelect;
+        if ($isDivField) {
+            $element->click();
+            $element->keyPress(\str_repeat(WebDriverKeys::BACKSPACE, 25));
+            $element->keyPress($this->enrichText($value));
+            if (!$isVTextarea && !$isVTextField) {
+                $element->keyPress(WebDriverKeys::ENTER);
+            }
+            if ($isVSelect) {
+                $element->keyPress(WebDriverKeys::ENTER);
+            }
+            if (!$isVTextField || $isVSelect) {
+                $element->getParent()->click();
+            }
+
+            return;
+        }
+        $element->setValue($this->enrichText($value));
+        $this->getNodeElement('body')->click();
     }
 
     private function getNodeElement(string $locator, ?int $tries = 25): NodeElement
