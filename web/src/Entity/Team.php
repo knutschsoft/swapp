@@ -99,6 +99,9 @@ class Team implements \Stringable
     private bool $isWithSystemicQuestion = false;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithWeather = false;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithContactsCount;
 
     #[ORM\Column(type: 'boolean')]
@@ -300,6 +303,18 @@ class Team implements \Stringable
     public function setIsWithSystemicQuestion(bool $isWithSystemicQuestion): void
     {
         $this->isWithSystemicQuestion = $isWithSystemicQuestion;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithWeather')]
+    public function isWithWeather(): bool
+    {
+        return $this->isWithWeather;
+    }
+
+    public function setIsWithWeather(bool $isWithWeather): void
+    {
+        $this->isWithWeather = $isWithWeather;
     }
 
     #[Groups(['team:read'])]

@@ -28,7 +28,9 @@ final readonly class WalkChangeRequestHandler
             $walk->setSystemicAnswer($request->systemicAnswer);
         }
         $walk->setWalkReflection($request->walkReflection);
-        $walk->setWeather($request->weather);
+        if ($walk->isWithWeather()) {
+            $walk->setWeather($request->weather);
+        }
         $walk->setStartTime($request->startTime);
         $walk->setEndTime($request->endTime);
         $walk->setHolidays($request->holidays);

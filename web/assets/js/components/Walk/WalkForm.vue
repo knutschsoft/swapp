@@ -114,11 +114,12 @@
             :error="error"
         />
         <walk-weather-field
+            v-if="initialWalk.isWithWeather"
             v-model="walk.weather"
             :is-loading="isLoading"
             :error="error"
         />
-        <template v-if="walk.isWithSystemicQuestion">
+        <template v-if="initialWalk.isWithSystemicQuestion">
             <walk-systemic-answer-field
                 v-model="walk.systemicAnswer"
                 :label="walk.systemicQuestion"

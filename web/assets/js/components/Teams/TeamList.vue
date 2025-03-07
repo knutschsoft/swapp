@@ -255,7 +255,7 @@ export default {
             return this.teams.every(team => team.isWithPeopleCount || team.isWithAgeRanges || team.isWithContactsCount || team.isWithUserGroups || team.isWithConsumables || team.isWithCounselings || team.isWithMedicals);
         },
         hasAtLeastOneAdditionalWalkField() {
-            return this.teams.every(team => team.isWithGuests || team.isWithSystemicQuestion);
+            return this.teams.every(team => team.isWithGuests || team.isWithSystemicQuestion || team.isWithWeather);
         },
         hasAtLeastOneTeamWithConceptOfDaySuggestions() {
             return !this.teams.every(team => !team.conceptOfDaySuggestions.length);
@@ -327,6 +327,9 @@ export default {
             if (team.isWithSystemicQuestion) {
                 additionalWalkFields.push('Systemische Frage');
             }
+            if (team.isWithWeather) {
+                additionalWalkFields.push('Wetter');
+            }
 
             return additionalWalkFields;
         },
@@ -367,6 +370,7 @@ export default {
                 isWithMedicals: team.isWithMedicals,
                 isWithGuests: team.isWithGuests,
                 isWithSystemicQuestion: team.isWithSystemicQuestion,
+                isWithWeather: team.isWithWeather,
                 initialMembersConfig: team.initialMembersConfig,
                 guestNames: team.guestNames,
             });

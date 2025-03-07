@@ -44,6 +44,7 @@ final readonly class TeamCreateRequestHandler
         $team->setIsWithCounselings($request->isWithCounselings);
         $team->setIsWithMedicals($request->isWithMedicals);
         $team->setIsWithSystemicQuestion($request->isWithSystemicQuestion);
+        $team->setIsWithWeather($request->isWithWeather);
         $team->setInitialMembersConfig($request->initialMembersConfig);
         $this->teamRepository->save($team);
 

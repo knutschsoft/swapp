@@ -69,6 +69,7 @@
             </v-col>
             <v-col cols="12">
                 <walk-weather-field
+                    v-if="initialWalk.isWithWeather"
                     v-model="walk.weather"
                     :is-loading="isLoading"
                     :error="error"
@@ -150,12 +151,11 @@ export default {
     computed: {
         isSubmitDisabled() {
             return !this.walk
-                || !this.walk.weather
                 || !this.walk.conceptOfDay
                 || !this.walk.startTime
                 || !this.walk.walkTeamMembers.length
                 || !this.walk.walkCreator && this.initialWalk.walkCreator
-                || !this.walk.weather
+                || !this.walk.weather && this.walk.isWithWeather
                 || this.isLoading;
         },
         team() {

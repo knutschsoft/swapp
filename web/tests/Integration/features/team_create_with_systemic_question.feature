@@ -22,6 +22,7 @@ Feature: Testing team create resource with systemicQuestion
             | conceptOfDaySuggestions | array<>                           |
             | isWithAgeRanges         | <true>                            |
             | isWithSystemicQuestion  | <true>                            |
+            | isWithWeather           | <true>                            |
             | isWithPeopleCount       | <true>                            |
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |
@@ -57,6 +58,7 @@ Feature: Testing team create resource with systemicQuestion
             | conceptOfDaySuggestions | array<>                           |
             | isWithAgeRanges         | <true>                            |
             | isWithSystemicQuestion  | <false>                           |
+            | isWithWeather           | <true>                            |
             | isWithPeopleCount       | <true>                            |
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |

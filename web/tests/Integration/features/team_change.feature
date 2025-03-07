@@ -74,6 +74,7 @@ Feature: Testing team change resource
             | conceptOfDaySuggestions | array<>                 |
             | isWithAgeRanges         | <true>                  |
             | isWithSystemicQuestion  | <true>                  |
+            | isWithWeather           | <true>                  |
             | isWithPeopleCount       | <true>                  |
             | isWithContactsCount     | <false>                 |
             | isWithUserGroups        | <false>                 |
@@ -118,6 +119,7 @@ Feature: Testing team change resource
             | conceptOfDaySuggestions | array<>                        |
             | isWithAgeRanges         | <true>                         |
             | isWithSystemicQuestion  | <true>                         |
+            | isWithWeather           | <true>                         |
             | isWithPeopleCount       | <true>                         |
             | isWithContactsCount     | <true>                         |
             | isWithUserGroups        | <true>                         |
@@ -184,26 +186,28 @@ Feature: Testing team change resource
             | violations[10].message      | Dieser Wert sollte nicht null sein.                                    |
             | violations[11].propertyPath | isWithSystemicQuestion                                                 |
             | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[12].propertyPath | isWithContactsCount                                                    |
+            | violations[12].propertyPath | isWithWeather                                                          |
             | violations[12].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[13].propertyPath | isWithUserGroups                                                       |
+            | violations[13].propertyPath | isWithContactsCount                                                    |
             | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[14].propertyPath | isWithConsumables                                                      |
+            | violations[14].propertyPath | isWithUserGroups                                                       |
             | violations[14].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[15].propertyPath | isWithCounselings                                                      |
+            | violations[15].propertyPath | isWithConsumables                                                      |
             | violations[15].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[16].propertyPath | isWithMedicals                                                         |
+            | violations[16].propertyPath | isWithCounselings                                                      |
             | violations[16].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[17].propertyPath | userGroupNames                                                         |
+            | violations[17].propertyPath | isWithMedicals                                                         |
             | violations[17].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[18].propertyPath | consumableNames                                                        |
+            | violations[18].propertyPath | userGroupNames                                                         |
             | violations[18].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[19].propertyPath | counselingNames                                                        |
+            | violations[19].propertyPath | consumableNames                                                        |
             | violations[19].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[20].propertyPath | medicalNames                                                           |
+            | violations[20].propertyPath | counselingNames                                                        |
             | violations[20].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[21].propertyPath | initialMembersConfig                                                   |
+            | violations[21].propertyPath | medicalNames                                                           |
             | violations[21].message      | Dieser Wert sollte nicht null sein.                                    |
+            | violations[22].propertyPath | initialMembersConfig                                                   |
+            | violations[22].message      | Dieser Wert sollte nicht null sein.                                    |
 
     @api @apiTeamChange
     Scenario: I can request /api/teams/change as an admin and change isWithAgeRanges to false and the ageRanges are not changed
@@ -219,6 +223,7 @@ Feature: Testing team change resource
             | conceptOfDaySuggestions | array<>                 |
             | isWithAgeRanges         | <false>                 |
             | isWithSystemicQuestion  | <true>                  |
+            | isWithWeather           | <true>                  |
             | isWithPeopleCount       | <false>                 |
             | isWithContactsCount     | <false>                 |
             | isWithUserGroups        | <false>                 |

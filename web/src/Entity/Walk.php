@@ -204,6 +204,9 @@ class Walk implements \Stringable
     private bool $isWithSystemicQuestion = false;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isWithWeather = false;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isWithAgeRanges;
 
     #[ORM\Column(type: 'boolean')]
@@ -268,6 +271,7 @@ class Walk implements \Stringable
         $instance->setName($request->name);
         $instance->setStartTime($request->startTime);
         $instance->setRating(1);
+        $instance->setIsWithWeather($team->isWithWeather());
         $instance->setIsWithSystemicQuestion($team->isWithSystemicQuestion());
         if ($instance->isWithSystemicQuestion()) {
             $instance->setSystemicAnswer('');
@@ -350,6 +354,18 @@ class Walk implements \Stringable
     public function setIsWithSystemicQuestion(bool $isWithSystemicQuestion): void
     {
         $this->isWithSystemicQuestion = $isWithSystemicQuestion;
+    }
+
+    #[Groups(['walk:read'])]
+    #[SerializedName('isWithWeather')]
+    public function isWithWeather(): bool
+    {
+        return $this->isWithWeather;
+    }
+
+    public function setIsWithWeather(bool $isWithWeather): void
+    {
+        $this->isWithWeather = $isWithWeather;
     }
 
     #[Groups(['walk:read'])]

@@ -51,4 +51,10 @@ final class WalkCreateRequest
 
         return false;
     }
+
+    #[Assert\IsTrue(message: 'walk.isWeatherSetWhenNeeded', groups: ['SecondGroup'])]
+    public function isWeatherSetWhenNeeded(): bool
+    {
+        return $this->team->isWithWeather() === (bool) $this->weather;
+    }
 }

@@ -71,6 +71,7 @@
             </v-col>
             <v-col>
                 <walk-weather-field
+                    v-if="team.isWithWeather"
                     v-model="form.weather"
                     :is-loading="isLoading"
                     :error="error"
@@ -172,7 +173,7 @@ export default {
                 || !this.form.startTime
                 || !this.form.walkTeamMembers.length
                 || !this.form.walkCreator
-                || !this.form.weather
+                || !this.form.weather && this.team.isWithWeather
                 || this.isLoading;
         },
         currentUser() {

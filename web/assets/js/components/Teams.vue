@@ -56,6 +56,7 @@ const handleSubmit = async (team) => {
         medicalNames: team.medicalNames,
         isWithGuests: team.isWithGuests,
         isWithSystemicQuestion: team.isWithSystemicQuestion,
+        isWithWeather: team.isWithWeather,
         guestNames: team.guestNames,
         initialMembersConfig: team.initialMembersConfig,
     });

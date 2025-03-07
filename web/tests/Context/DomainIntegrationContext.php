@@ -279,6 +279,12 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['isWithSystemicQuestion'])) {
                 $walk->setIsWithSystemicQuestion($this->enrichText($row['isWithSystemicQuestion']));
             }
+            if (isset($row['isWithWeather'])) {
+                $walk->setIsWithWeather($this->enrichText($row['isWithWeather']));
+            }
+            if (!$walk->isWithWeather()) {
+                $walk->setWeather('');
+            }
             if ($walk->isWithSystemicQuestion()) {
                 $walk->setSystemicQuestion($systemicQuestion->getQuestion());
                 if (isset($row['systemicAnswer'])) {
@@ -617,6 +623,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['isWithSystemicQuestion']) && '' !== $row['isWithSystemicQuestion']) {
                 Assert::eq($walk->isWithSystemicQuestion(), (bool) $this->enrichText($row['isWithSystemicQuestion']));
             }
+            if (isset($row['isWithWeather']) && '' !== $row['isWithWeather']) {
+                Assert::eq($walk->isWithWeather(), (bool) $this->enrichText($row['isWithWeather']));
+            }
             if (isset($row['guestNames']) && '' !== $row['guestNames']) {
                 Assert::eq($walk->getGuestNames(), (array) $this->enrichText($row['guestNames']));
             }
@@ -933,6 +942,11 @@ final class DomainIntegrationContext extends RawMinkContext
                 $isWithSystemicQuestion = (bool) $this->enrichText($row['isWithSystemicQuestion']);
             }
             $team->setIsWithSystemicQuestion($isWithSystemicQuestion);
+            $isWithWeather = true;
+            if (isset($row['isWithWeather']) && '' !== $row['isWithWeather']) {
+                $isWithWeather = (bool) $this->enrichText($row['isWithWeather']);
+            }
+            $team->setIsWithWeather($isWithWeather);
             if ($team->isWithAgeRanges()) {
                 $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '1-2,3-10');
                 $team->setAgeRanges($ageRanges);

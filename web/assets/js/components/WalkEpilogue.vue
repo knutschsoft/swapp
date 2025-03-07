@@ -91,6 +91,7 @@
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
                 />
                 <walk-weather-field
+                    v-if="walk.isWithWeather"
                     v-model="form.weather"
                     :is-loading="isLoading"
                     :error="error"

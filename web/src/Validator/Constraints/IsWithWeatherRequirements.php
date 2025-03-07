@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 
 #[\Attribute]
-class WeatherRequirements extends Compound
+class IsWithWeatherRequirements extends Compound
 {
     /**
      * @inheritDoc
@@ -16,10 +16,8 @@ class WeatherRequirements extends Compound
     protected function getConstraints(array $options): array
     {
         return [
-            new Assert\Sequentially([
-                new Assert\NotNull(),
-                new Assert\Choice(choices: ['', 'Sonne', 'Wolken', 'Regen', 'Schnee', 'Arschkalt']),
-            ]),
+            new Assert\NotNull(),
+            new Assert\Type('bool'),
         ];
     }
 }

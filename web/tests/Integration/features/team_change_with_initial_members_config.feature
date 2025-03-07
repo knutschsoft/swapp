@@ -25,6 +25,7 @@ Feature: Testing team change resource with initialMembersConfig
             | conceptOfDaySuggestions | array<>                   |
             | isWithAgeRanges         | <true>                    |
             | isWithSystemicQuestion  | <false>                   |
+            | isWithWeather           | <true>                    |
             | isWithPeopleCount       | <true>                    |
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |

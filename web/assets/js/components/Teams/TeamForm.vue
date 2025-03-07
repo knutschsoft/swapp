@@ -60,9 +60,9 @@
             <v-card-title class="grey lighten-2">Einstellungen für die Dokumentation einer Runde</v-card-title>
             <v-card-text class="grey lighten-3 pt-5">
                 <v-row>
-                    <v-col cols="12" md="3" lg="2">
+                    <v-col cols="12" md="6" lg="4">
                         <v-card outlined class="mb-2">
-                            <v-card-subtitle class="font-weight-bold">Welche Mitglieder sollen beim Rundenstart vorausgewählt sein?</v-card-subtitle>
+                            <v-card-text class="font-weight-bold pb-0">Welche Mitglieder sollen beim Rundenstart vorausgewählt sein?</v-card-text>
                             <v-card-text>
                                 <v-radio-group
                                     v-model="team.initialMembersConfig"
@@ -81,9 +81,9 @@
                             </v-card-text>
                         </v-card>
                     </v-col>
-                    <v-col cols="12" md="4" lg="5">
+                    <v-col cols="12" md="6" lg="4">
                         <v-card outlined class="mb-0 pt-3">
-                            <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für das Tageskonzept einer Runde</v-card-subtitle>
+                            <v-card-text class="font-weight-bold pb-0">Autocomplete-Vorschläge für das Tageskonzept einer Runde</v-card-text>
                             <v-card-text>
                                 <v-list density="compact">
                                     <v-list-item
@@ -129,14 +129,14 @@
                                             neuen Autocomplete-Vorschlag hinzufügen
                                         </div>
                                     </v-list-item>
-                                    <v-list-subheader>Beim Erstellen der Runde ist eine Mehrfachauswahl sowie Freitexteingabe möglich.</v-list-subheader>
+                                    <v-list-item-subtitle>Beim Erstellen der Runde ist eine Mehrfachauswahl sowie Freitexteingabe möglich.</v-list-item-subtitle>
                                 </v-list>
                             </v-card-text>
                         </v-card>
                     </v-col>
-                    <v-col cols="12" md="5" lg="5">
+                    <v-col cols="12" md="6" lg="4">
                         <v-card outlined class="mb-0 pt-3">
-                            <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für den Namen einer Runde</v-card-subtitle>
+                            <v-card-text class="font-weight-bold pb-0">Autocomplete-Vorschläge für den Namen einer Runde</v-card-text>
                             <v-card-text>
                                 <v-list density="compact">
                                     <v-list-item
@@ -184,18 +184,18 @@
                                             neuen Autocomplete-Vorschlag hinzufügen
                                         </div>
                                     </v-list-item>
-                                    <v-list-subheader>Beim Erstellen der Runde ist eine Freitexteingabe zusätzlich möglich.</v-list-subheader>
+                                    <v-list-item-subtitle>Beim Erstellen der Runde ist eine Freitexteingabe zusätzlich möglich.</v-list-item-subtitle>
                                 </v-list>
                             </v-card-text>
                         </v-card>
                     </v-col>
                     <v-col cols="12">
                         <v-card outlined class="mb-0 pt-3">
-                            <v-card-subtitle class="font-weight-bold  grey lighten-5">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-subtitle>
-                            <v-card-text class=" grey lighten-5">
+                            <v-card-text class="font-weight-bold pb-0">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-text>
+                            <v-card-text class="">
                                 <v-row>
                                     <v-col lg="6">
-                                        <v-card outlined class="mb-0 pt-3">
+                                        <v-card>
                                             <v-card-text>
                                                 <v-switch
                                                     v-model="team.isWithGuests"
@@ -203,12 +203,13 @@
                                                     label="Weitere Teilnehmende"
                                                     color="primary"
                                                     density="compact"
+                                                    hide-details
                                                 />
                                                 <div
                                                     v-if="team.isWithGuests"
                                                     @keyup.alt.a="addGuestName"
                                                 >
-                                                    <v-card-subtitle class="font-weight-bold pb-1">Autocomplete-Vorschläge für weitere Teilnehmende</v-card-subtitle>
+                                                    <v-card-text class="font-weight-bold pb-1">Autocomplete-Vorschläge für weitere Teilnehmende</v-card-text>
                                                     <v-divider class="mt-0 mb-0"></v-divider>
                                                     <v-list density="compact">
                                                         <v-list-item
@@ -265,7 +266,7 @@
                                         </v-card>
                                     </v-col>
                                     <v-col md="6">
-                                        <v-card outlined>
+                                        <v-card>
                                             <v-card-text>
                                                 <v-switch
                                                     v-model="team.isWithSystemicQuestion"
@@ -273,14 +274,16 @@
                                                     color="primary"
                                                     label="Systemische Frage und Antwort darauf"
                                                     density="compact"
+                                                    hide-details
                                                 />
                                                 <v-alert
                                                     v-if="team.isWithSystemicQuestion"
                                                     class="text-muted mb-0"
                                                     variant="text"
+                                                    density="compact"
                                                 >
                                                     <b>Hinweis:</b>
-                                                    <ul class="mb-0">
+                                                    <ul class="mb-0 pl-5">
                                                         <li>
                                                             Beim Abschluss einer Runde gibt es ein Reflexionsprotokoll mit einer systemischen Reflexionsfrage, welche u.a. einen
                                                             psychohygienischen Beitrag zum Abschluss der Streetwork leistet.
@@ -290,6 +293,33 @@
                                                         </li>
                                                         <li>
                                                             Diese Fragen können im Navigations-Tab "Systemische Fragen" übergreifend für alle Teams definiert werden.
+                                                        </li>
+                                                    </ul>
+                                                </v-alert>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
+                                    <v-col md="6">
+                                        <v-card>
+                                            <v-card-text>
+                                                <v-switch
+                                                    v-model="team.isWithWeather"
+                                                    :disabled="isDisabled"
+                                                    color="primary"
+                                                    label="Das aktuelle Wetter"
+                                                    density="compact"
+                                                    hide-details
+                                                />
+                                                <v-alert
+                                                    v-if="team.isWithWeather"
+                                                    class="text-muted mb-0"
+                                                    variant="text"
+                                                    density="compact"
+                                                >
+                                                    <b>Hinweis:</b>
+                                                    <ul class="mb-0 pl-5">
+                                                        <li>
+                                                            Beim Beginn einer Runde gibt es die Möglichkeit das aktuelle Wetter mit zu erfassen.
                                                         </li>
                                                     </ul>
                                                 </v-alert>
@@ -545,6 +575,7 @@ const team = ref({
     client: '',
     name: '',
     initialMembersConfig: 'rundenersteller',
+    isWithWeather: false,
     isWithAgeRanges: !isWithPeopleCountDefault,
     isWithPeopleCount: isWithPeopleCountDefault,
     isWithContactsCount: false,
@@ -593,6 +624,7 @@ const setInitialValues = () => {
             isWithContactsCount: false,
             isWithGuests: false,
             isWithSystemicQuestion: false,
+            isWithWeather: false,
             isWithUserGroups: false,
             isWithConsumables: false,
             isWithCounselings: false,

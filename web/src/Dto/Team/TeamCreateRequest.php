@@ -58,6 +58,9 @@ final class TeamCreateRequest
     #[AppAssert\IsWithSystemicQuestionRequirements]
     public bool $isWithSystemicQuestion;
 
+    #[AppAssert\IsWithWeatherRequirements]
+    public bool $isWithWeather;
+
     #[AppAssert\IsWithContactsCountRequirements]
     public bool $isWithContactsCount;
 

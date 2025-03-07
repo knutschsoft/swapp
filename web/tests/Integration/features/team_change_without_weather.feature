@@ -1,4 +1,4 @@
-Feature: Testing team change resource with guests
+Feature: Testing team change resource without weather
 
     Background:
         Given the following clients exists:
@@ -8,11 +8,11 @@ Feature: Testing team change resource with guests
             | email        | roles      | client        |
             | admin@gmx.de | ROLE_ADMIN | client@gmx.de |
         Given the following teams exists:
-            | name     | users        | ageRanges          | client        | isWithGuests |
-            | Westhang | admin@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de | <true>       |
+            | name     | users        | ageRanges          | client        | isWithWeather |
+            | Westhang | admin@gmx.de | 1-10,3-12, 13 - 90 | client@gmx.de | <true>        |
 
-    @api @apiTeamChange @guests
-    Scenario: I can request /api/teams/change as an admin and change a team with guests
+    @api @apiTeamChange @systemicQuestion
+    Scenario: I can request /api/teams/change as an admin and change a team without weather
         Given I am authenticated against api as "admin@gmx.de"
         When I send an api platform "POST" request to "/api/teams/change" with parameters:
             | key                     | value                     |
@@ -24,12 +24,11 @@ Feature: Testing team change resource with guests
             | walkNames               | array<>                   |
             | conceptOfDaySuggestions | array<>                   |
             | isWithAgeRanges         | <true>                    |
-            | isWithSystemicQuestion  | <true>                    |
-            | isWithWeather           | <true>                    |
+            | isWithSystemicQuestion  | <false>                   |
+            | isWithWeather           | <false>                   |
             | isWithPeopleCount       | <true>                    |
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |
-            | isWithConsumables       | <false>                   |
             | isWithCounselings       | <false>                   |
             | isWithMedicals          | <false>                   |
             | isWithGuests            | <true>                    |
@@ -38,12 +37,12 @@ Feature: Testing team change resource with guests
             | consumableNames         | array<>                   |
             | counselingNames         | array<>                   |
             | medicalNames            | array<>                   |
+            | isWithConsumables       | <false>                   |
             | initialMembersConfig    | mitglieder                |
         Then the response should be in JSON
 #    And print last JSON response
         And the response status code should be 200
         And the enriched JSON nodes should be equal to:
-            | @type        | Team                     |
-            | name         | Religion                 |
-            | isWithGuests | <true>                   |
-            | guestNames   | array<Karla,Opa Manfred> |
+            | @type         | Team     |
+            | name          | Religion |
+            | isWithWeather | <false>  |

@@ -22,6 +22,7 @@ Feature: Testing team create resource with guests
             | conceptOfDaySuggestions | array<>                           |
             | isWithAgeRanges         | <true>                            |
             | isWithSystemicQuestion  | <true>                            |
+            | isWithWeather           | <true>                            |
             | isWithPeopleCount       | <true>                            |
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |

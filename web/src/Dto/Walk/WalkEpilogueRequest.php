@@ -80,4 +80,10 @@ final class WalkEpilogueRequest
 
         return true;
     }
+
+    #[Assert\IsTrue(message: 'walk.isWeatherSetWhenNeeded', groups: ['SecondGroup'])]
+    public function isWeatherSetWhenNeeded(): bool
+    {
+        return $this->walk->isWithWeather() === (bool) $this->weather;
+    }
 }
