@@ -78,18 +78,24 @@ RUN sh -c "echo 'xdebug.remote_enable=1' >> /usr/local/etc/php/conf.d/docker-php
     sed -i -e 's/zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini                                     >> /usr/local/etc/php/conf.d/xdebug.ini
 
 ### adjust panther ChromeDriver to installed chromium version
-ENV CHROME_VERSION=114.0.5735.198-1~deb12u1
-RUN apt update && apt upgrade -y && apt install -y wget gnupg2
-
-RUN  if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
-    wget -O /tmp/chromium.deb https://snapshot.debian.org/archive/debian-security/20230706T201015Z/pool/updates/main/c/chromium/chromium_${CHROME_VERSION}_amd64.deb && \
-    wget -O /tmp/chromium-common.deb https://snapshot.debian.org/archive/debian-security/20230706T201015Z/pool/updates/main/c/chromium/chromium-common_${CHROME_VERSION}_amd64.deb && \
-    wget -O /tmp/chromium-sandbox.deb https://snapshot.debian.org/archive/debian-security/20230706T201015Z/pool/updates/main/c/chromium/chromium-sandbox_${CHROME_VERSION}_amd64.deb && \
-    apt install --fix-broken -y \
+ENV CHROME_VERSION=135.0.7049.52-1~deb12u1
+# see for stable releaeses: https://chromereleases.googleblog.com/search/label/Stable%20updates?updated-max=2024-10-29T16:14:00-07:00&max-results=20&start=65&by-date=false
+# see for download-page: https://debian.sipwise.com/debian-security/pool/main/c/chromium/
+RUN if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
+    wget -O /tmp/chromium.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium_${CHROME_VERSION}_amd64.deb && \
+    wget -O /tmp/chromium-driver.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium-driver_${CHROME_VERSION}_amd64.deb && \
+    wget -O /tmp/chromium-common.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium-common_${CHROME_VERSION}_amd64.deb && \
+    wget -O /tmp/chromium-sandbox.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium-sandbox_${CHROME_VERSION}_amd64.deb && \
+    apt-get update && apt-get upgrade -y && \
+    apt install --fix-broken -y --allow-downgrades \
         /tmp/chromium.deb \
+        /tmp/chromium-driver.deb \
         /tmp/chromium-common.deb \
         /tmp/chromium-sandbox.deb && \
-    rm /tmp/chromium*.deb; \
+    rm /tmp/chromium*.deb && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes && \
+    rm -rf /var/lib/{apt,cache,log}; \
 fi
 
 COPY .docker/web/etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/
