@@ -26,8 +26,8 @@
                             Bitte melde dich mit einem der unten stehenden Zugangsdaten an
                             <br>
                             <span class="text-muted ">
-                        oder alternativ mit deiner E-Mail-Adresse - oder deinem Benutzernamen - und deinem selbst gewählten Passwort an.
-                   </span>
+                                oder alternativ mit deiner E-Mail-Adresse - oder deinem Benutzernamen - und deinem selbst gewählten Passwort an.
+                           </span>
                         </template>
                         <template
                             v-else
@@ -117,41 +117,62 @@
 </template>
 
 <script>
-    "use strict";
-    import DemoInfo from './Demo/DemoInfo.vue';
-    import { useAuthStore } from '../stores';
-    import {useRoute} from "vue-router";
+"use strict";
+import DemoInfo from './Demo/DemoInfo.vue';
+import {useAuthStore} from '../stores';
+import {useRoute} from "vue-router";
 
-    export default {
-        name: "Login",
-        components: { DemoInfo },
-        data: () => ({
-            route: useRoute(),
-            authStore: useAuthStore(),
-            username: '',
-            password: '',
-            state: null,
-            passwordFieldType: 'password',
-            isPasswordVisible: false,
-        }),
-        computed: {
-            isOnDemoPage() {
-                return window.location.host.includes('swapp.demo') || this.route.query.demo;
-            },
-            isLoading() {
-                return this.authStore.isLoading;
-            },
-            hasError() {
-                return !!this.authStore.getErrors.login;
-            },
-            error() {
-                return this.authStore.getErrors.login;
-            },
+export default {
+    name: "Login",
+    components: {DemoInfo},
+    data: () => ({
+        route: useRoute(),
+        authStore: useAuthStore(),
+        username: '',
+        password: '',
+        state: null,
+        passwordFieldType: 'password',
+        isPasswordVisible: false,
+    }),
+    computed: {
+        isOnDemoPage() {
+            return window.location.host.includes('swapp.demo') || this.route.query.demo;
         },
-        created() {
-            let redirect = this.route.query.redirect;
+        isLoading() {
+            return this.authStore.isLoading;
+        },
+        hasError() {
+            return !!this.authStore.getErrors.login;
+        },
+        error() {
+            return this.authStore.getErrors.login;
+        },
+    },
+    created() {
+        let redirect = this.route.query.redirect;
 
-            if (this.authStore.isAuthenticated) {
+        if (this.authStore.isAuthenticated) {
+            if (typeof redirect !== "undefined") {
+                this.$router.push({path: redirect});
+            } else {
+                this.$router.push({name: "Dashboard"});
+            }
+        }
+    },
+    methods: {
+        handleCredentialsSelect(credentials) {
+            this.username = credentials.username;
+            this.password = credentials.password;
+        },
+        async performLogin() {
+            if ('text' === this.passwordFieldType) {
+                // ensure that password can be saved via browser
+                this.switchPasswordVisibility();
+            }
+            let payload = {username: this.$data.username, password: this.$data.password},
+                redirect = this.route.query.redirect;
+            const loginResult = await this.authStore.login(payload);
+            if (!this.error && loginResult) {
                 if (typeof redirect !== "undefined") {
                     this.$router.push({path: redirect});
                 } else {
@@ -159,33 +180,12 @@
                 }
             }
         },
-        methods: {
-            handleCredentialsSelect(credentials) {
-                this.username = credentials.username;
-                this.password = credentials.password;
-            },
-            async performLogin() {
-                if ('text' === this.passwordFieldType) {
-                    // ensure that password can be saved via browser
-                    this.switchPasswordVisibility();
-                }
-                let payload = {username: this.$data.username, password: this.$data.password},
-                    redirect = this.route.query.redirect;
-                const loginResult = await this.authStore.login(payload);
-                if (!this.error && loginResult) {
-                    if (typeof redirect !== "undefined") {
-                        this.$router.push({path: redirect});
-                    } else {
-                        this.$router.push({name: "Dashboard"});
-                    }
-                }
-            },
-            switchPasswordVisibility() {
-                this.passwordFieldType = 'text' === this.passwordFieldType ? 'password' : 'text';
-                this.isPasswordVisible = 'text' === this.passwordFieldType;
-            },
+        switchPasswordVisibility() {
+            this.passwordFieldType = 'text' === this.passwordFieldType ? 'password' : 'text';
+            this.isPasswordVisible = 'text' === this.passwordFieldType;
         },
-    }
+    },
+}
 </script>
 
 <style scoped>

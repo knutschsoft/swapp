@@ -14,14 +14,13 @@
         >
             <v-card>
                 <v-card-text>
-
-                <h2
-                    class="text-center mb-3"
-                >
-                    Passwort vergessen
-                    <br>
-                    oder noch kein Passwort?
-                </h2>
+                    <h2
+                        class="text-center mb-3"
+                    >
+                        Passwort vergessen
+                        <br>
+                        oder noch kein Passwort?
+                    </h2>
                     <v-alert prominent class="mb-5">
                         <ul class="text-left mt-3 pl-5">
                             <li>
@@ -35,14 +34,12 @@
                             </li>
                         </ul>
                     </v-alert>
-                <div>
                     <v-form
                         novalidate
                         @submit.stop.prevent
                     >
                         <v-text-field
                             v-model="username"
-                            :state="validation"
                             :disabled="isPasswordRequested"
                             prepend-inner-icon="mdi-email"
                             autofocus
@@ -58,7 +55,8 @@
                             v-if="usernameInvalidText && hasError"
                             type="error"
                             class=""
-                        >{{usernameInvalidText}}</v-alert>
+                        >{{ usernameInvalidText }}
+                        </v-alert>
                         <v-text-field
                             id="email"
                             v-model="honeypotEmail"
@@ -82,7 +80,7 @@
                             ></v-progress-circular>
                             Passwortänderung beantragen
                         </v-btn>
-                        <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global" />
+                        <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global"/>
                         <v-btn
                             variant="text"
                             block
@@ -109,95 +107,87 @@
                             Alle weiteren Schritte stehen in der E-Mail.
                         </p>
                     </v-alert>
-                </div>
                 </v-card-text>
             </v-card>
         </v-col>
     </v-row>
 </template>
 <script>
-    "use strict";
-    import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
-    import { useAuthStore, useUserStore } from '../stores';
-    import {useRoute} from "vue-router";
+"use strict";
+import GeneralErrorAlert from './Common/GeneralErrorAlert.vue';
+import {useAuthStore, useUserStore} from '../stores';
+import {useRoute} from "vue-router";
 
-    export default {
-        name: "PasswordReset",
-        components: { GeneralErrorAlert },
-        data: () => ({
-            route: useRoute(),
-            authStore: useAuthStore(),
-            userStore: useUserStore(),
-            username: '',
-            honeypotEmail: '',
-            usernameInvalidText: '',
-            isPasswordRequested: false,
-        }),
-        computed: {
-            isLoading() {
-                return this.userStore.isLoading;
-            },
-            hasError() {
-                return this.userStore.hasError;
-            },
-            error() {
-                return this.userStore.getErrors.change;
-            },
-            validation() {
-                if (this.username.trim().length <= 4) {
-                    return null;
-                }
-
-                return !this.hasError;
-            },
-            validationErrors() {
-                const errors = {};
-                if (!this.hasError) {
-                    return errors;
-                }
-                this.state = false;
-                const error = this.error;
-                if (error && error.data.violations) {
-                    error.data.violations.forEach((violation) => {
-                        const key = violation.propertyPath ? violation.propertyPath : 'global';
-                        errors[key] = violation.message;
-                        this.usernameInvalidText = violation.message;
-                    });
-                    return errors;
-                }
-                if (error.data && error.data['hydra:description']) {
-                    errors.global = error.data['hydra:description'];
-                    this.usernameInvalidText = errors.global;
-                }
-
+export default {
+    name: "PasswordReset",
+    components: {GeneralErrorAlert},
+    data: () => ({
+        route: useRoute(),
+        authStore: useAuthStore(),
+        userStore: useUserStore(),
+        username: '',
+        honeypotEmail: '',
+        usernameInvalidText: '',
+        isPasswordRequested: false,
+    }),
+    computed: {
+        isLoading() {
+            return this.userStore.isLoading;
+        },
+        hasError() {
+            return this.userStore.hasError;
+        },
+        error() {
+            return this.userStore.getErrors.change;
+        },
+        validationErrors() {
+            const errors = {};
+            if (!this.hasError) {
                 return errors;
-            },
-        },
-        created() {
-            let redirect = this.route.query.redirect;
+            }
+            this.state = false;
+            const error = this.error;
+            if (error && error.data.violations) {
+                error.data.violations.forEach((violation) => {
+                    const key = violation.propertyPath ? violation.propertyPath : 'global';
+                    errors[key] = violation.message;
+                    this.usernameInvalidText = violation.message;
+                });
+                return errors;
+            }
+            if (error.data && error.data['hydra:description']) {
+                errors.global = error.data['hydra:description'];
+                this.usernameInvalidText = errors.global;
+            }
 
-            if (this.authStore.isAuthenticated) {
-                if (typeof redirect !== "undefined") {
-                    this.$router.push({path: redirect});
-                } else {
-                    this.$router.push({name: "Dashboard"});
-                }
-            }
+            return errors;
         },
-        methods: {
-            async requestPasswordReset() {
-                await this.userStore.requestPasswordReset(
-                    {
-                        username: this.username,
-                        email: this.honeypotEmail
-                    }
-                );
-                if (!this.hasError) {
-                    this.isPasswordRequested = true;
-                }
+    },
+    created() {
+        let redirect = this.route.query.redirect;
+
+        if (this.authStore.isAuthenticated) {
+            if (typeof redirect !== "undefined") {
+                this.$router.push({path: redirect});
+            } else {
+                this.$router.push({name: "Dashboard"});
             }
-        },
-    }
+        }
+    },
+    methods: {
+        async requestPasswordReset() {
+            await this.userStore.requestPasswordReset(
+                {
+                    username: this.username,
+                    email: this.honeypotEmail
+                }
+            );
+            if (!this.hasError) {
+                this.isPasswordRequested = true;
+            }
+        }
+    },
+}
 </script>
 
 <style scoped>

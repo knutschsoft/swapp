@@ -1,8 +1,8 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
-import {AxiosResponse} from "axios";
+import type {AxiosResponse} from "axios";
 
-import {SystemicQuestion, SystemicQuestionChangeRequest, SystemicQuestionCreateRequest, SystemicQuestionEnableRequest, SystemicQuestionDisableRequest, SystemicQuestionsResponse} from '../model';
+import type {SystemicQuestion, SystemicQuestionChangeRequest, SystemicQuestionCreateRequest, SystemicQuestionEnableRequest, SystemicQuestionDisableRequest, SystemicQuestionsResponse} from '../model';
 
 type State = {
     systemicQuestions: SystemicQuestion[],

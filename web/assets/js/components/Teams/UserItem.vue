@@ -21,7 +21,7 @@
 </template>
 <script setup lang="ts">
 "use strict";
-import {User} from "../../model";
+import type {User} from "../../model";
 
 defineProps<{
     user: User,

@@ -103,23 +103,15 @@
                             color="secondary"
                             type="submit"
                             data-test="btn-change-password"
+                            :loading="isLoading"
                             @click="changePassword()"
                         >
-                            <v-progress-circular
-                                v-if="isLoading"
-                                :width="2"
-                                :size="20"
-                                indeterminate
-                                class="mr-2 position-relative"
-                            />
                             Passwort ändern
                         </v-btn>
                         <general-error-alert v-if="hasError && !validationErrors.password" />
                     </v-form>
-                    <div
-                        v-if="isPasswordChanged && !hasError"
-                    >
-                        <v-alert
+                    <v-alert
+                            v-if="isPasswordChanged && !hasError"
                             type="success"
                             class="mt-3"
                             prominent
@@ -146,7 +138,6 @@
                                 Zur Anmeldung
                             </v-btn>
                         </v-alert>
-                    </div>
                 </v-card-text>
             </v-card>
         </v-col>
@@ -183,7 +174,6 @@
             passwordRepeatState: true,
             isPasswordChanged: false,
             passwordFieldType: 'password',
-            eyeIcon: 'eye-fill',
         }),
         computed: {
             isLoading() {
@@ -277,7 +267,6 @@
             },
             switchPasswordVisibility() {
                 this.passwordFieldType = 'text' === this.passwordFieldType ? 'password' : 'text';
-                this.eyeIcon = 'text' === this.passwordFieldType ? 'eye-slash-fill' : 'eye-fill';
             },
         },
     }

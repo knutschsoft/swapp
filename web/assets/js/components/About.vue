@@ -16,22 +16,12 @@
     </div>
 </template>
 
-<script>
-    "use strict";
-    import ContentCollapse from './ContentCollapse.vue';
-    import infoImage from '../../images/swapp-info.png';
+<script lang="ts" setup>
+import {ref} from 'vue';
+import ContentCollapse from './ContentCollapse.vue';
+import infoImage from '../../images/swapp-info.png';
 
-    export default {
-        name: "Users",
-        components: {
-            ContentCollapse,
-        },
-        data: () => {
-            return {
-                infoImageSrc: infoImage,
-            };
-        },
-    }
+const infoImageSrc = ref(infoImage);
 </script>
 
 <style scoped>

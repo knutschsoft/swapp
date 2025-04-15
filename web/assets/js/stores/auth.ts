@@ -1,8 +1,8 @@
 import {defineStore} from 'pinia';
 import apiClient from '../api'
 import {type RemovableRef, useLocalStorage } from "@vueuse/core";
-import {AxiosResponse} from "axios";
-import {User, LoginCheckRequest } from "../model";
+import type {AxiosResponse} from "axios";
+import type {User, LoginCheckRequest } from "@/js/model";
 import {useUserStore} from "./user";
 
 type EmptyObj = Record<PropertyKey, never>;

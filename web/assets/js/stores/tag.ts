@@ -1,8 +1,8 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
-import {AxiosResponse} from "axios";
+import type {AxiosResponse} from "axios";
 
-import {Tag, TagCreateRequest, TagEnableRequest, TagDisableRequest, TagsResponse} from '../model';
+import type {Tag, TagCreateRequest, TagEnableRequest, TagDisableRequest, TagsResponse} from '../model';
 
 type State = {
     tags: Tag[],

@@ -1,9 +1,9 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
 import dayjs from 'dayjs';
-import {AxiosResponse} from "axios";
+import type {AxiosResponse} from "axios";
 
-import {
+import type {
     Walk,
     WalkChangeRequest,
     WalkChangeStartTimeRequest,

@@ -20,11 +20,6 @@
                     v-else
                     v-html="title"
                 />
-                <template v-slot:actions>
-                    <v-icon>
-                        $expand
-                    </v-icon>
-                </template>
             </v-expansion-panel-title>
             <v-expansion-panel-text
                 class="p-0"

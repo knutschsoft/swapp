@@ -2,9 +2,9 @@ import {defineStore} from 'pinia';
 import {type RemovableRef, useLocalStorage } from "@vueuse/core";
 import dayjs, {Dayjs} from 'dayjs';
 
-import {
+import type {
     Walk, WayPoint,
-} from '../model';
+} from '@/js/model';
 
 type DateRange = {
     startDate: Dayjs | null,

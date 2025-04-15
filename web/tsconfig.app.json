@@ -1,0 +1,24 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "include": [
+        "env.d.ts",
+        "assets/**/*",
+        "assets/**/*.vue"
+    ],
+    "exclude": [
+        "assets/**/__tests__/*",
+        "assets/**/*.test.ts"
+    ],
+    "compilerOptions": {
+        "composite": true,
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+        "strict": true,
+        "noEmit": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./assets/*"
+            ]
+        }
+    }
+}

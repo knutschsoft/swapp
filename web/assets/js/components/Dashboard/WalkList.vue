@@ -286,9 +286,6 @@ export default {
         filter: {
             handler: async function () {
                 this.search = String(Date.now());
-                await this.loadItems({ ...this.tableOptions });
-                // search.value = String(Date.now())
-                // settings.betriebsbeauftragterFilter.store(betriebsbeauftragterFilter.value)
             },
             deep: true,
         },
@@ -306,6 +303,7 @@ export default {
             return this.formatDateTimeNoSecondsWithDayOfWeek(dateString);
         },
         async loadItems({ page, itemsPerPage, sortBy }) {
+            console.log('loadItems')
             this.tableOptions = {page, itemsPerPage, sortBy};
 
             if (this.abortController) {
@@ -318,7 +316,7 @@ export default {
                 page,
                 itemsPerPage,
                 teamName: this.filter.teamName,
-                name: this.filter.name,
+                name: '' !== this.filter.name ? this.filter.name : undefined,
                 isResubmission: this.filter.isResubmission !== 'null' ? this.filter.isResubmission : undefined,
                 isUnfinished: this.filter.isUnfinished !== 'null' ? !this.filter.isUnfinished : undefined,
             }
@@ -333,19 +331,15 @@ export default {
 
             this.exportCtx = data
 
-            try {
-                this.isLoading = true;
-                const result = await WalkAPI.find(data, signal);
-                this.isLoading = false;
-                const items = result.data['hydra:member'];
-                const total = result.data['hydra:totalItems'] ?? 0;
-                this.generalStore.updateWalkFilterResult(items);
-                this.serverItems = items;
-                this.totalItems = total;
-                await this.$emit('refresh-total-walks', this.totalItems);
-            } catch (e) {
-                console.error(e);
-            }
+            this.isLoading = true;
+            const result = await WalkAPI.find(data, signal);
+            this.isLoading = false;
+            const items = result.data['hydra:member'];
+            const total = result.data['hydra:totalItems'] ?? 0;
+            this.generalStore.updateWalkFilterResult(items);
+            this.serverItems = items;
+            this.totalItems = total;
+            await this.$emit('refresh-total-walks', this.totalItems);
         },
         handleCurrentPageChange(value) {
             this.currentPage = Number(value);

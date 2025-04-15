@@ -1,8 +1,8 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
-import {AxiosResponse} from "axios";
+import type {AxiosResponse} from "axios";
 
-import {Client, ClientChangeRequest, ClientCreateRequest, ClientsResponse} from '../model';
+import type {Client, ClientChangeRequest, ClientCreateRequest, ClientsResponse} from '../model';
 
 type State = {
     clients: Client[],

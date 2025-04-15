@@ -1,4 +1,6 @@
 export {
+    type AgeGroupJsonld as AgeGroup,
+    type AgeRangeJsonld as AgeRange,
     type ApiClientsGetCollection200Response as ClientsResponse,
     type ClientClientChangeRequestJsonld as ClientChangeRequest,
     type ClientClientCreateRequestJsonld as ClientCreateRequest,

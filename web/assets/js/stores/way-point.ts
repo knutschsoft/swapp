@@ -1,10 +1,10 @@
 import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
 import dayjs from 'dayjs';
-import {AxiosResponse} from "axios";
+import type {AxiosResponse} from "axios";
 import {useWalkStore} from "./walk";
 
-import {WayPoint, WayPointChangeRequest, WayPointCreateRequest, WayPointRemoveRequest, WayPointsResponse} from '../model';
+import type {WayPoint, WayPointChangeRequest, WayPointCreateRequest, WayPointRemoveRequest, WayPointsResponse} from '../model';
 
 type State = {
     wayPoints: WayPoint[],

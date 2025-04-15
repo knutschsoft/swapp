@@ -387,9 +387,6 @@ export default {
         filter: {
             handler: async function () {
                 this.search = String(Date.now());
-                await this.loadItems({ ...this.tableOptions });
-                // search.value = String(Date.now())
-                // settings.betriebsbeauftragterFilter.store(betriebsbeauftragterFilter.value)
             },
             deep: true,
         },
@@ -450,32 +447,28 @@ export default {
 
             this.exportCtx = data;
 
-            try {
-                this.isLoading = true;
-                const result = await WayPointAPI.find(data, signal);
-                this.isLoading = false;
-                const items = result.data['hydra:member'];
-                const total = result.data['hydra:totalItems'] ?? 0;
+            this.isLoading = true;
+            const result = await WayPointAPI.find(data, signal);
+            this.isLoading = false;
+            const items = result.data['hydra:member'];
+            const total = result.data['hydra:totalItems'] ?? 0;
 
-                let walkPromises = [];
-                let walkPromiseIds = [];
-                items.forEach(wayPoint => {
-                    if (!this.getWalkByIri(wayPoint.walk)) {
-                        const id = wayPoint.walk.replace('/api/walks/', '');
-                        if (!walkPromiseIds.includes(id)) {
-                            walkPromises.push(this.walkStore.fetchById(id));
-                            walkPromiseIds.push(id);
-                        }
+            let walkPromises = [];
+            let walkPromiseIds = [];
+            items.forEach(wayPoint => {
+                if (!this.getWalkByIri(wayPoint.walk)) {
+                    const id = wayPoint.walk.replace('/api/walks/', '');
+                    if (!walkPromiseIds.includes(id)) {
+                        walkPromises.push(this.walkStore.fetchById(id));
+                        walkPromiseIds.push(id);
                     }
-                });
-                await Promise.all(walkPromises);
-                this.generalStore.updateWayPointFilterResult(items);
-                this.serverItems = items;
-                this.totalItems = total;
-                await this.$emit('refresh-total-way-points', this.totalItems);
-            } catch (e) {
-                console.error(e);
-            }
+                }
+            });
+            await Promise.all(walkPromises);
+            this.generalStore.updateWayPointFilterResult(items);
+            this.serverItems = items;
+            this.totalItems = total;
+            await this.$emit('refresh-total-way-points', this.totalItems);
         },
         handleCurrentPageChange(value) {
             this.currentPage = Number(value);
