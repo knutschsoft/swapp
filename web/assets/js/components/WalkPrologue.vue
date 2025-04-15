@@ -204,8 +204,8 @@ export default {
                 });
                 return errors;
             }
-            if (error.data && error.data['hydra:description']) {
-                errors.global = error.data['hydra:description'];
+            if (error.data && error.data['description']) {
+                errors.global = error.data['description'];
             }
 
             return errors;
@@ -247,10 +247,10 @@ export default {
         },
         async getWalkTeamMembersOfLastWalkOfTeam(team) {
             const response = await WalkAPI.findLastWalkByTeam(team);
-            const hits = response.data['hydra:totalItems'];
+            const hits = response.data['totalItems'];
             let result = [];
             if (hits) {
-                response.data['hydra:member'][0].walkTeamMembers.forEach((userIri) => {
+                response.data['member'][0].walkTeamMembers.forEach((userIri) => {
                     if (-1 !== team.users.indexOf(userIri)) {
                         result.push(userIri);
                     }

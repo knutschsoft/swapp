@@ -275,7 +275,7 @@ export default {
                     },
                 });
 
-                users.data['hydra:member'].forEach((user) => {
+                users.data['member'].forEach((user) => {
                     this.entries.forEach((oldObject, key) => {
                         if (oldObject.user['@id'] === user['@id']) {
                             oldObject[this.getKeyOfDayjs(start)] = true;

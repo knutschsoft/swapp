@@ -45,7 +45,7 @@ Feature: Testing team create resource
 #    And print last JSON response
         And the response status code should be 403
         And the JSON nodes should be equal to:
-            | hydra:description | Access Denied. |
+            | description | Access Denied. |
 
     @api @apiTeamCreate
     Scenario: I can request /api/teams/create as an admin and create a team
@@ -265,4 +265,4 @@ Feature: Testing team create resource
 #    And print last JSON response
         And the response status code should be 400
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |

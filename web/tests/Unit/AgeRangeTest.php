@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit;
 
 use App\Value\AgeRange;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AgeRangeTest extends TestCase
@@ -12,11 +13,7 @@ class AgeRangeTest extends TestCase
 
     private const int END = 7;
 
-    /**
-     * @param array $count
-     *
-     * @dataProvider fromArrayProvider
-     */
+    #[DataProvider('fromArrayProvider')]
     public function test_from_array(array $count): void
     {
         $ageRange = AgeRange::fromArray($count);
@@ -25,7 +22,7 @@ class AgeRangeTest extends TestCase
         $this->assertEquals($ageRange->getRangeEnd(), self::END);
     }
 
-    public function fromArrayProvider(): array
+    public static function fromArrayProvider(): array
     {
         return [
             [[self::START, self::END]],

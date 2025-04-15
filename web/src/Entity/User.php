@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\Dto\User\ChangePasswordRequest;
 use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Dto\User\RequestPasswordResetRequest;
@@ -43,7 +44,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/request-password-reset',
             status: 200,
-            openapiContext: ['summary' => 'An user requests a new password.'],
+            openapi: new Operation(summary: 'An user requests a new password.'),
             input: RequestPasswordResetRequest::class,
             output: false,
             messenger: 'input'
@@ -51,7 +52,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/is-confirmation-token-valid',
             status: 200,
-            openapiContext: ['summary' => 'Check if an user is allowed to perform a certain action.'],
+            openapi: new Operation(summary: 'Check if an user is allowed to perform a certain action.'),
             input: IsConfirmationTokenValidRequest::class,
             output: User::class,
             messenger: 'input'
@@ -59,7 +60,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/user-email-confirm',
             status: 200,
-            openapiContext: ['summary' => 'Enables an user and sends password request notification.'],
+            openapi: new Operation(summary: 'Enables an user and sends password request notification.'),
             input: UserEmailConfirmRequest::class,
             output: User::class,
             messenger: 'input'
@@ -67,7 +68,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/change-password',
             status: 200,
-            openapiContext: ['summary' => 'Change password of an user.'],
+            openapi: new Operation(summary: 'Change password of an user.'),
             input: ChangePasswordRequest::class,
             output: User::class,
             messenger: 'input'
@@ -75,7 +76,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/change',
             status: 200,
-            openapiContext: ['summary' => 'Change attributes of an user.'],
+            openapi: new Operation(summary: 'Change attributes of an user.'),
             securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user) and (is_granted("ROLE_SUPER_ADMIN") or not object.superAdminRightsNeeded()) and is_granted(\'CLIENT_READ\', object.client)', // phpcs:ignore
             input: UserChangeRequest::class,
             output: User::class,
@@ -84,7 +85,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/disable',
             status: 200,
-            openapiContext: ['summary' => 'Disables an user. A disabled user will not be able to login.'],
+            openapi: new Operation(summary: 'Disables an user. A disabled user will not be able to login.'),
             securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user)',
             input: UserDisableRequest::class,
             output: User::class,
@@ -93,7 +94,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/enable',
             status: 200,
-            openapiContext: ['summary' => 'Enables an user. An enabled user will be able to login.'],
+            openapi: new Operation(summary: 'Enables an user. An enabled user will be able to login.'),
             securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user)',
             input: UserEnableRequest::class,
             output: User::class,
@@ -102,7 +103,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/users/create',
             status: 200,
-            openapiContext: ['summary' => 'Create an user which is initially disabled. Will send notification with further instructions.'],
+            openapi: new Operation(summary: 'Create an user which is initially disabled. Will send notification with further instructions.'),
             securityPostDenormalize: '(is_granted(\'ROLE_SUPER_ADMIN\') or not object.superAdminRightsNeeded()) and is_granted(\'ROLE_ADMIN\') and is_granted(\'CLIENT_READ\', object.client)',// phpcs:ignore
             input: UserCreateRequest::class,
             output: User::class,

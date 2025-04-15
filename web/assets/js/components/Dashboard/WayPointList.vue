@@ -378,10 +378,10 @@ export default {
         this.itemsPerPage = this.generalStore.wayPointPerPage;
         this.currentPage = this.generalStore.wayPointCurrentPage;
         const tagResult = await TagAPI.findAllWithWayPoints();
-        this.tags = tagResult.data['hydra:member'];
+        this.tags = tagResult.data['member'];
         this.tagStore.fetchTags();
         const allTeamNames = await WalkAPI.findAllTeamNames();
-        this.allTeamNames = allTeamNames.data['hydra:member'];
+        this.allTeamNames = allTeamNames.data['member'];
     },
     watch: {
         filter: {
@@ -450,8 +450,8 @@ export default {
             this.isLoading = true;
             const result = await WayPointAPI.find(data, signal);
             this.isLoading = false;
-            const items = result.data['hydra:member'];
-            const total = result.data['hydra:totalItems'] ?? 0;
+            const items = result.data['member'];
+            const total = result.data['totalItems'] ?? 0;
 
             let walkPromises = [];
             let walkPromiseIds = [];

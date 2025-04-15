@@ -176,7 +176,7 @@ export const useWayPointStore = defineStore("wayPoint", {
             this.errorArray.fetch = false;
             try {
                 const response: AxiosResponse<WayPointsResponse, any> = await apiClient.get(`/api/way_points?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
-                this.wayPoints = response.data["hydra:member"];
+                this.wayPoints = response.data["member"];
             } catch (error: any) {
                 this.errorArray.fetch = error.response;
             } finally {

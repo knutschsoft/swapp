@@ -222,7 +222,7 @@
                 await this.systemicQuestionStore.fetchSystemicQuestions();
             }
             if (this.currentUser.teams.length) {
-                this.unfinishedWalks = (await WalkAPI.findAllUnfinishedWalks(this.currentUser.teams)).data['hydra:member'];
+                this.unfinishedWalks = (await WalkAPI.findAllUnfinishedWalks(this.currentUser.teams)).data['member'];
             }
             const promises = [];
             this.unfinishedWalks.forEach(unfinishedWalk => {

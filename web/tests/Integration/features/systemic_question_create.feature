@@ -41,7 +41,7 @@ Feature: Testing systemic question resource
         And the response status code should be 403
 #    And print last JSON response
         And the JSON nodes should be equal to:
-            | hydra:description | Access Denied. |
+            | description | Access Denied. |
 
     @api @apiSystemicQuestionCreate
     Scenario: I can request /api/systemic_questions/create as an admin for another client and will get access denied
@@ -54,7 +54,7 @@ Feature: Testing systemic question resource
 #    And print last JSON response
         And the response status code should be 400
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |
 
     @api @apiSystemicQuestionCreate
     Scenario: I can request /api/systemic_questions/create as an admin and will get access denied
@@ -121,7 +121,7 @@ Feature: Testing systemic question resource
 #    And print last JSON response
         And the response status code should be 400
         And the JSON nodes should be equal to:
-            | hydra:description | The input data is misformatted. |
+            | description | The input data is misformatted. |
 
     @api @apiSystemicQuestionCreate
     Scenario: I can request /api/systemic_questions/create as an superadmin with unset color and name and will get a validation error

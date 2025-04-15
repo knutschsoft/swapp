@@ -249,10 +249,10 @@ export const useUserStore = defineStore("user", {
             this.errorArray.fetch = false;
             try {
                 const response: AxiosResponse<UsersResponse, any> = await apiClient.get(`/api/users?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
-                this.users = response.data["hydra:member"];
-                this.totalUsers = Number(response.data["hydra:totalItems"]);
+                this.users = response.data["member"];
+                this.totalUsers = Number(response.data["totalItems"]);
 
-                return response.data["hydra:member"];
+                return response.data["member"];
             } catch (error: any) {
                 this.errorArray.fetch = error.response;
             } finally {

@@ -93,7 +93,7 @@ Feature: Testing wayPoint change resource
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |
 
     @api @wayPoint
     Scenario: I can request /api/way_points/change as authenticated user and will change tags of a wayPoint of which i do not have access to
@@ -114,4 +114,4 @@ Feature: Testing wayPoint change resource
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |

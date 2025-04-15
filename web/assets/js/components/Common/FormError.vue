@@ -51,8 +51,8 @@ export default defineComponent({
                 return errors;
             }
 
-            if (error?.data?.['hydra:description']) {
-                errors.global = error.data['hydra:description'];
+            if (error?.data?.['description']) {
+                errors.global = error.data['description'];
             }
 
             return errors;

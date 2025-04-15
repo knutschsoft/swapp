@@ -91,8 +91,8 @@ Feature: Testing user create resource
         Then the response should be in JSON
 #    And print last JSON response
         And the JSON nodes should be equal to:
-            | hydra:title       | An error occurred |
-            | hydra:description | Access Denied.    |
+            | title       | An error occurred |
+            | description | Access Denied.    |
 
     @api @userCreate
     Scenario: I can request /api/users/create as an admin and will not be able to create a superadmin
@@ -106,8 +106,8 @@ Feature: Testing user create resource
         Then the response should be in JSON
 #    And print last JSON response
         And the JSON nodes should be equal to:
-            | hydra:title       | An error occurred |
-            | hydra:description | Access Denied.    |
+            | title       | An error occurred |
+            | description | Access Denied.    |
 
     @api @userCreate
     Scenario: I can request /api/users/create as an superadmin and will be able to create a superadmin
@@ -175,9 +175,9 @@ Feature: Testing user create resource
         Then the response should be in JSON
 #    And print last JSON response
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |
         And the JSON nodes should contain:
-            | hydra:description | Item not found for "/api/clients |
+            | description | Item not found for "/api/clients |
 
     @api @userCreate
     Scenario: I can request /api/users/create as an admin and will not be able to create an user for another client
@@ -191,6 +191,6 @@ Feature: Testing user create resource
         Then the response should be in JSON
 #    And print last JSON response
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |
         And the JSON nodes should contain:
-            | hydra:description | username: Der Nutzername "new@gmx.de" ist ungültig. Erlaubt sind nur Kleinbuchstaben, Punkt und Bindestrich. Punkt und Bindestrich jedoch nicht am Anfang oder Ende. |
+            | description | username: Der Nutzername "new@gmx.de" ist ungültig. Erlaubt sind nur Kleinbuchstaben, Punkt und Bindestrich. Punkt und Bindestrich jedoch nicht am Anfang oder Ende. |

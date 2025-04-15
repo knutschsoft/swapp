@@ -118,7 +118,7 @@ export const useTagStore = defineStore("tag", {
             this.errorArray.fetch = false;
             try {
                 const response: AxiosResponse<TagsResponse, any> = await apiClient.get('/api/tags?itemsPerPage=1000&page=1');
-                this.tags = response.data["hydra:member"];
+                this.tags = response.data["member"];
             } catch (error: any) {
                 this.errorArray.fetch = error.response;
             } finally {

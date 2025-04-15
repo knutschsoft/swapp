@@ -58,7 +58,7 @@ Feature: Testing team change resource
 #    And print last JSON response
         And the response status code should be 403
         And the JSON nodes should be equal to:
-            | hydra:description | Access Denied. |
+            | description | Access Denied. |
 
     @api @apiTeamChange
     Scenario: I can request /api/teams/change as an admin and change a team
@@ -270,7 +270,7 @@ Feature: Testing team change resource
 #    And print last JSON response
         And the response status code should be 400
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |
 
     @api @apiTeamChange
     Scenario: I can request /api/teams/change as an admin with an user of another client and can not change a team
@@ -287,4 +287,4 @@ Feature: Testing team change resource
 #    And print last JSON response
         And the response status code should be 400
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |

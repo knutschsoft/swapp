@@ -6,7 +6,7 @@ interface Violation {
 interface ErrorData {
     violations?: Violation[];
     data?: ErrorData;
-    "hydra:description"?: string;
+    "description"?: string;
 }
 
 interface ValidationErrors {
@@ -50,8 +50,8 @@ function getViolationErrorsObject(errorData?: ErrorData): ValidationErrors {
         return errors;
     }
 
-    if (localErrorData["hydra:description"]) {
-        errors.global.push(localErrorData["hydra:description"]);
+    if (localErrorData["description"]) {
+        errors.global.push(localErrorData["description"]);
     }
 
     return errors;

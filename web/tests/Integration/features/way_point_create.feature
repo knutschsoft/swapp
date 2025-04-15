@@ -126,13 +126,13 @@ Feature: Testing wayPoint create resource
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |
         And the JSON nodes should contain:
-            | hydra:description | Item not found for |
+            | description | Item not found for |
 #    And the JSON nodes should contain:
-#      | hydra:description | /api/tags |
+#      | description | /api/tags |
         And the JSON nodes should contain:
-            | hydra:description | /api/walks |
+            | description | /api/walks |
 
     @api @wayPointCreate
     Scenario: I can request /api/way_points/create as authenticated user with wrong client-wayPointTags-combination and will try to create a wayPoint
@@ -150,8 +150,8 @@ Feature: Testing wayPoint create resource
             | visitedAt         | date<now,Y-m-dTH:i:s+02:00>                                   |
 #    And print last response
         And the JSON nodes should be equal to:
-            | hydra:title | An error occurred |
+            | title | An error occurred |
         And the JSON nodes should contain:
-            | hydra:description | Item not found for |
+            | description | Item not found for |
         And the JSON nodes should contain:
-            | hydra:description | /api/tags |
+            | description | /api/tags |

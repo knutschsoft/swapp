@@ -5,6 +5,7 @@ namespace App\Entity\Export;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\DataTransformer\WalkExportProvider;
 use App\Entity\Walk;
 use App\Value\AgeGroup;
@@ -23,7 +24,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/walks/export',
             formats: ['csv' => 'text/csv'],
             status: 200,
-            openapiContext: ['summary' => 'Exports all walks for given filter as csv.'],
+            openapi: new Operation(summary: 'Exports all walks for given filter as csv.'),
             output: WalkExport::class,
             provider: WalkExportProvider::class,
             extraProperties: [

@@ -5,6 +5,7 @@ namespace App\Tests\Unit;
 
 use App\Validator\Constraints\UsernameConstraint;
 use App\Validator\Constraints\UsernameConstraintValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -28,7 +29,7 @@ class UsernameConstraintValidatorTest extends TestCase
         $this->validator->initialize($this->context);
     }
 
-    public function validUsernamesProvider(): array
+    public static function validUsernamesProvider(): array
     {
         return [
             ['david-ansat.sonntag'],
@@ -37,7 +38,7 @@ class UsernameConstraintValidatorTest extends TestCase
         ];
     }
 
-    public function invalidUsernamesProvider(): array
+    public static function invalidUsernamesProvider(): array
     {
         return [
             ['-david'],
@@ -50,22 +51,14 @@ class UsernameConstraintValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $username
-     *
-     * @dataProvider validUsernamesProvider
-     */
+    #[DataProvider('validUsernamesProvider')]
     public function testValidUsernames(string $username): void
     {
         $this->context->expects($this->never())->method('buildViolation');
         $this->validator->validate($username, new UsernameConstraint());
     }
 
-    /**
-     * @param string $username
-     *
-     * @dataProvider invalidUsernamesProvider
-     */
+    #[DataProvider('invalidUsernamesProvider')]
     public function testInvalidUsernames(string $username): void
     {
         $this->context->expects($this->once())->method('buildViolation');

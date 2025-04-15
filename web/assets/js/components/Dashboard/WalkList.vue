@@ -280,7 +280,7 @@ export default {
         this.currentPage = this.generalStore.walkCurrentPage;
         // this.currentPage = 1;
         const allTeamNames = await WalkAPI.findAllTeamNames();
-        this.allTeamNames = allTeamNames.data['hydra:member'];
+        this.allTeamNames = allTeamNames.data['member'];
     },
     watch: {
         filter: {
@@ -303,7 +303,6 @@ export default {
             return this.formatDateTimeNoSecondsWithDayOfWeek(dateString);
         },
         async loadItems({ page, itemsPerPage, sortBy }) {
-            console.log('loadItems')
             this.tableOptions = {page, itemsPerPage, sortBy};
 
             if (this.abortController) {
@@ -334,8 +333,8 @@ export default {
             this.isLoading = true;
             const result = await WalkAPI.find(data, signal);
             this.isLoading = false;
-            const items = result.data['hydra:member'];
-            const total = result.data['hydra:totalItems'] ?? 0;
+            const items = result.data['member'];
+            const total = result.data['totalItems'] ?? 0;
             this.generalStore.updateWalkFilterResult(items);
             this.serverItems = items;
             this.totalItems = total;

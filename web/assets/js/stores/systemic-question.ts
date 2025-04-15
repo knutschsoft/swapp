@@ -129,7 +129,7 @@ export const useSystemicQuestionStore = defineStore("systemicQuestion", {
             this.errorArray.fetch = false;
             try {
                 const response: AxiosResponse<SystemicQuestionsResponse, any> = await apiClient.get('/api/systemic_questions?itemsPerPage=1000&page=1');
-                this.systemicQuestions = response.data["hydra:member"];
+                this.systemicQuestions = response.data["member"];
             } catch (error: any) {
                 this.errorArray.fetch = error.response;
             } finally {

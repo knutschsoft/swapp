@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\Dto\Tag\TagCreateRequest;
 use App\Dto\Tag\TagDisableRequest;
 use App\Dto\Tag\TagEnableRequest;
@@ -40,7 +41,7 @@ use Webmozart\Assert\Assert;
         new Post(
             uriTemplate: '/tags/disable',
             status: 200,
-            openapiContext: ['summary' => 'Disables an tag. A disabled tag can not be assigned to a wayPoint.'],
+            openapi: new Operation(summary: 'Disables an tag. A disabled tag can not be assigned to a wayPoint.'),
             securityPostDenormalize: 'is_granted("'.TagVoter::EDIT.'", object.tag)',
             input: TagDisableRequest::class,
             output: Tag::class,
@@ -49,7 +50,7 @@ use Webmozart\Assert\Assert;
         new Post(
             uriTemplate: '/tags/enable',
             status: 200,
-            openapiContext: ['summary' => 'Enables an tag. An enabled tag can be assigned to a wayPoint.'],
+            openapi: new Operation(summary: 'Enables an tag. An enabled tag can be assigned to a wayPoint.'),
             securityPostDenormalize: 'is_granted("'.TagVoter::EDIT.'", object.tag)',
             input: TagEnableRequest::class,
             output: Tag::class,

@@ -102,7 +102,7 @@ export const useClientStore = defineStore("client", {
             this.errorArray.fetch = false;
             try {
                 const response: AxiosResponse<ClientsResponse, any> = await apiClient.get('/api/clients?itemsPerPage=1000&page=1');
-                this.clients = response.data["hydra:member"];
+                this.clients = response.data["member"];
             } catch (error: any) {
                 this.errorArray.fetch = error.response;
             } finally {

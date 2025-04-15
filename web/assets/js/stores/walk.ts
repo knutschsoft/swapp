@@ -224,8 +224,8 @@ export const useWalkStore = defineStore("walk", {
             this.errorArray.fetch = false;
             try {
                 const response: AxiosResponse<WalksResponse, any> = await apiClient.get(`/api/walks?page=${params.currentPage}&itemsPerPage=${params.perPage}` + sort);
-                this.walks = response.data["hydra:member"];
-                this.totalWalks = Number(response.data["hydra:totalItems"]);
+                this.walks = response.data["member"];
+                this.totalWalks = Number(response.data["totalItems"]);
             } catch (error: any) {
                 this.errorArray.fetch = error.response;
             } finally {

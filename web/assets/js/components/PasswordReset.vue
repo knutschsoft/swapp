@@ -155,8 +155,8 @@ export default {
                 });
                 return errors;
             }
-            if (error.data && error.data['hydra:description']) {
-                errors.global = error.data['hydra:description'];
+            if (error.data && error.data['description']) {
+                errors.global = error.data['description'];
                 this.usernameInvalidText = errors.global;
             }
 

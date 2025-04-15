@@ -109,7 +109,7 @@ export const useTeamStore = defineStore("team", {
             this.errorArray.fetch = false;
             try {
                 const response: AxiosResponse<TeamsResponse, any> = await apiClient.get('/api/teams?itemsPerPage=1000&page=1');
-                this.teams = response.data["hydra:member"];
+                this.teams = response.data["member"];
             } catch (error: any) {
                 this.errorArray.fetch = error.response;
             } finally {

@@ -112,9 +112,9 @@ Feature: Testing walk delete resource
 #    And print last response
         Then the response status code should be 403
         And the JSON nodes should be equal to:
-            | @type             | hydra:Error       |
-            | hydra:title       | An error occurred |
-            | hydra:description | Access Denied.    |
+            | @type       | Error             |
+            | title       | An error occurred |
+            | description | Access Denied.    |
 
         Given I can find the following walks in database:
             | name        |
@@ -135,10 +135,10 @@ Feature: Testing walk delete resource
 #    And print last response
         Then the response status code should be 400
         And the JSON nodes should be equal to:
-            | @type       | hydra:Error       |
-            | hydra:title | An error occurred |
+            | @type | Error             |
+            | title | An error occurred |
         And the JSON nodes should contain:
-            | hydra:description | Item not found for "/api/walks/ |
+            | description | Item not found for "/api/walks/ |
 
         And there are exactly 2 walks in database
         Given I can find the following walks in database:
