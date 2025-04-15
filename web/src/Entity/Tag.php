@@ -64,7 +64,7 @@ use Webmozart\Assert\Assert;
 #[ORM\Entity(repositoryClass: DoctrineORMTagRepository::class)]
 class Tag implements \Stringable
 {
-    final public const COLORS = [
+    final public const array COLORS = [
         "Navy",
         "MediumBlue",
         "Blue",

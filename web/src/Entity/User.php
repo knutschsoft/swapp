@@ -124,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     final public const string ROLE_ADMIN = 'ROLE_ADMIN';
     final public const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     final public const string ROLE_ALLOWED_TO_SWITCH = 'ROLE_ALLOWED_TO_SWITCH';
-    public const ROLES = [
+    public const array ROLES = [
         self::ROLE_DEFAULT,
         self::ROLE_ADMIN,
         self::ROLE_SUPER_ADMIN,

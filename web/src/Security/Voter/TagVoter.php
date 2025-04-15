@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class TagVoter extends Voter
 {
-    final public const READ = 'TAG_READ';
-    final public const EDIT = 'TAG_EDIT';
+    final public const string READ = 'TAG_READ';
+    final public const string EDIT = 'TAG_EDIT';
 
     public function __construct(private readonly Security $security)
     {

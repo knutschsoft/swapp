@@ -13,10 +13,10 @@ use Webmozart\Assert\Assert;
 
 class TeamVoter extends Voter
 {
-    final public const TEAM_CREATE = 'TEAM_CREATE';
-    final public const TEAM_READ = 'TEAM_READ';
-    final public const TEAM_EDIT = 'TEAM_EDIT';
-    final public const TEAM_DELETE = 'TEAM_DELETE';
+    final public const string TEAM_CREATE = 'TEAM_CREATE';
+    final public const string TEAM_READ = 'TEAM_READ';
+    final public const string TEAM_EDIT = 'TEAM_EDIT';
+    final public const string TEAM_DELETE = 'TEAM_DELETE';
 
     public function __construct(private readonly Security $security)
     {

@@ -11,9 +11,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class WayPointVoter extends Voter
 {
-    final public const READ = 'WAY_POINT_READ';
-    final public const EDIT = 'WAY_POINT_EDIT';
-    final public const REMOVE = 'WAY_POINT_REMOVE';
+    final public const string READ = 'WAY_POINT_READ';
+    final public const string EDIT = 'WAY_POINT_EDIT';
+    final public const string REMOVE = 'WAY_POINT_REMOVE';
 
     public function __construct(private readonly Security $security)
     {

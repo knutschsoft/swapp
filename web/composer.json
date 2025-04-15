@@ -30,7 +30,7 @@
         }
     },
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -113,6 +113,8 @@
         "pbehat": "vendor/bin/behat --suite integration --parallel 16 --colors --format=progress || true",
         "jbehat": "vendor/bin/behat --suite acceptance --colors --format=progress || true",
         "unit": "vendor/bin/phpunit --colors || true",
+        "tsc": "node_modules/.bin/vue-tsc --noEmit -p tsconfig.app.json",
+        "tsc-qa-ci": "node_modules/.bin/vue-tsc --noEmit -p tsconfig.app.json || true",
         "stan": "vendor/bin/phpstan analyse --no-progress --ansi || true",
         "security": "vendor/bin/security-checker security:check || true",
         "compile-test": [

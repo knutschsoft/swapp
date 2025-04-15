@@ -11,10 +11,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class WalkVoter extends Voter
 {
-    final public const READ = 'WALK_READ';
-    final public const EDIT = 'WALK_EDIT';
-    final public const EDIT_START_TIME = 'WALK_EDIT_START_TIME';
-    final public const REMOVE = 'WALK_REMOVE';
+    final public const string READ = 'WALK_READ';
+    final public const string EDIT = 'WALK_EDIT';
+    final public const string EDIT_START_TIME = 'WALK_EDIT_START_TIME';
+    final public const string REMOVE = 'WALK_REMOVE';
 
     public function __construct(private readonly Security $security)
     {

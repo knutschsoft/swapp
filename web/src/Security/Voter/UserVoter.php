@@ -11,10 +11,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter extends Voter
 {
-    final public const CREATE = 'USER_CREATE';
-    final public const READ = 'USER_READ';
-    final public const EDIT = 'USER_EDIT';
-    final public const DELETE = 'USER_DELETE';
+    final public const string CREATE = 'USER_CREATE';
+    final public const string READ = 'USER_READ';
+    final public const string EDIT = 'USER_EDIT';
+    final public const string DELETE = 'USER_DELETE';
 
     public function __construct(private readonly Security $security)
     {

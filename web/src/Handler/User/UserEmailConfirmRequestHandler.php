@@ -26,11 +26,11 @@ final readonly class UserEmailConfirmRequestHandler
         $request->user->requestPassword();
         $this->userRepository->save($request->user);
 
-        $notification = (new RequestPasswordResetNotification(
+        $notification = new RequestPasswordResetNotification(
             $request->user->getConfirmationToken(),
             $request->user->getId(),
             $request->user->getUsername()
-        ));
+        );
         $this->notifier->send($notification, new Recipient($request->user->getEmail()));
 
         return $request->user;

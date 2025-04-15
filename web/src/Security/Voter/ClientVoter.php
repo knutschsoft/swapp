@@ -11,9 +11,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ClientVoter extends Voter
 {
-    final public const READ = 'CLIENT_READ';
-    final public const EDIT = 'CLIENT_EDIT';
-    final public const CREATE = 'CLIENT_CREATE';
+    final public const string READ = 'CLIENT_READ';
+    final public const string EDIT = 'CLIENT_EDIT';
+    final public const string CREATE = 'CLIENT_CREATE';
 
     public function __construct(private readonly Security $security)
     {

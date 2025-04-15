@@ -36,11 +36,11 @@ final readonly class RequestPasswordResetRequestHandler
         if (!$honeypotEmail) {
             $userRequestedFor->requestPassword();
             $this->userRepository->save($userRequestedFor);
-            $notification = (new RequestPasswordResetNotification(
+            $notification = new RequestPasswordResetNotification(
                 $userRequestedFor->getConfirmationToken(),
                 $userRequestedFor->getId(),
                 $userRequestedFor->getUsername()
-            ));
+            );
             $this->notifier->send($notification, new Recipient($userRequestedFor->getEmail()));
         }
     }

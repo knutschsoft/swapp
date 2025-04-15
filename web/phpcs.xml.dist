@@ -9,6 +9,7 @@
     <arg name="extensions" value="php"/>
 
     <rule ref="vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/ruleset.xml">
+        <exclude name="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat" />
         <exclude name="SlevomatCodingStandard.Attributes.AttributesOrder" />
         <exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
     </rule>

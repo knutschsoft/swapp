@@ -8,7 +8,6 @@ use Symfony\Component\Mime\MimeTypeGuesserInterface;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -20,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
+class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     private const array SUPPORTED_TYPES = [
         \SplFileInfo::class => true,
@@ -30,7 +29,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
 
     private readonly ?MimeTypeGuesserInterface $mimeTypeGuesser;
 
-    public function __construct(MimeTypeGuesserInterface $mimeTypeGuesser = null)
+    public function __construct(?MimeTypeGuesserInterface $mimeTypeGuesser = null)
     {
         if (!$mimeTypeGuesser && class_exists(MimeTypes::class)) {
             $mimeTypeGuesser = MimeTypes::getDefault();
@@ -41,7 +40,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
 
     public function getSupportedTypes(?string $format): array
     {
-        $isCacheable = self::class === static::class || $this->hasCacheableSupportsMethod();
+        $isCacheable = self::class === static::class;
 
         return [
             \SplFileInfo::class => $isCacheable,
@@ -50,7 +49,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
         ];
     }
 
-    public function normalize(mixed $object, string $format = null, array $context = []): string
+    public function normalize(mixed $object, ?string $format = null, array $context = []): string
     {
         if (!$object instanceof \SplFileInfo) {
             throw new InvalidArgumentException('The object must be an instance of "\SplFileInfo".');
@@ -76,7 +75,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
     /**
      * @param array $context
      */
-    public function supportsNormalization(mixed $data, string $format = null /* , array $context = [] */): bool
+    public function supportsNormalization(mixed $data, ?string $format = null /* , array $context = [] */): bool
     {
         return $data instanceof \SplFileInfo;
     }
@@ -89,7 +88,7 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
      * @throws InvalidArgumentException
      * @throws NotNormalizableValueException
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): \SplFileInfo
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): \SplFileInfo
     {
         if (null === $data || !preg_match('/^data:([a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}\/[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}(;[a-z0-9\-]+\=[a-z0-9\-]+)?)?(;base64)?,[a-z0-9\!\$\&\\\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i', (string) $data)) {
             throw NotNormalizableValueException::createForUnexpectedDataType('The provided "data:" URI is not valid.', $data, ['string'], $context['deserialization_path'] ?? null, true);
@@ -118,19 +117,9 @@ class DataUriNormalizer implements NormalizerInterface, DenormalizerInterface, C
     /**
      * @param array $context
      */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null /* , array $context = [] */): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null /* , array $context = [] */): bool
     {
         return isset(self::SUPPORTED_TYPES[$type]);
-    }
-
-    /**
-     * @deprecated since Symfony 6.3, use "getSupportedTypes()" instead
-     */
-    public function hasCacheableSupportsMethod(): bool
-    {
-        trigger_deprecation('symfony/serializer', '6.3', 'The "%s()" method is deprecated, implement "%s::getSupportedTypes()" instead.', __METHOD__, get_debug_type($this));
-
-        return self::class === static::class;
     }
 
     /**
