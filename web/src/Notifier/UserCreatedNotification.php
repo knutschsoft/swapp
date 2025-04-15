@@ -17,7 +17,7 @@ class UserCreatedNotification extends Notification implements EmailNotificationI
         parent::__construct();
     }
 
-    public function asEmailMessage(EmailRecipientInterface $recipient, string $transport = null): ?EmailMessage
+    public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): ?EmailMessage
     {
         $email = (new TemplatedEmail())
             ->to($recipient->getEmail())

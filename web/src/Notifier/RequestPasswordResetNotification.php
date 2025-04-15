@@ -20,7 +20,7 @@ class RequestPasswordResetNotification extends Notification implements EmailNoti
         parent::__construct();
     }
 
-    public function asEmailMessage(EmailRecipientInterface $recipient, string $transport = null): ?EmailMessage
+    public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): ?EmailMessage
     {
         $email = (new TemplatedEmail())
             ->to($recipient->getEmail())
