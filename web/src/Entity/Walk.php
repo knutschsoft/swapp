@@ -151,10 +151,6 @@ class Walk implements \Stringable
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'createdWalks')]
     private ?User $walkCreator = null;
 
-    /** @var Collection<int, Tag> */
-    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'walks')]
-    private Collection $walkTags;
-
     #[ORM\Column(type: 'smallint')]
     private int $rating;
 
@@ -237,7 +233,6 @@ class Walk implements \Stringable
         $this->counselingNames = [];
         $this->medicalNames = [];
         $this->userGroupNames = [];
-        $this->walkTags = new ArrayCollection();
         $this->walkTeamMembers = new ArrayCollection();
         $this->wayPoints = new ArrayCollection();
     }
@@ -455,35 +450,6 @@ class Walk implements \Stringable
     public function setSystemicAnswer(string $systemicAnswer): void
     {
         $this->systemicAnswer = $systemicAnswer;
-    }
-
-    public function addWalkTag(Tag $tag): void
-    {
-        $tag->addWalk($this);
-        $this->walkTags->add($tag);
-    }
-
-    public function removeWalkTag(Tag $tag): void
-    {
-        $tag->removeWalk($this);
-        $this->walkTags->removeElement($tag);
-    }
-
-    /**
-     * @return Collection<int,Tag>
-     */
-    #[Groups(['walk:read'])]
-    public function getWalkTags(): Collection
-    {
-        return $this->walkTags;
-    }
-
-    /**
-     * @param Collection<int,Tag> $walkTags
-     */
-    public function setWalkTags(Collection $walkTags): void
-    {
-        $this->walkTags = $walkTags;
     }
 
     #[Groups(['walk:read'])]

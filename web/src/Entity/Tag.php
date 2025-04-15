@@ -140,10 +140,6 @@ class Tag implements \Stringable
     #[ORM\Column(type: 'string', length: 255)]
     private string $name = '';
 
-    /** @var Collection<int, Walk> */
-    #[ORM\ManyToMany(targetEntity: Walk::class, inversedBy: 'walkTags')]
-    private Collection $walks;
-
     /** @var Collection<int, WayPoint> */
     #[ORM\ManyToMany(targetEntity: WayPoint::class, inversedBy: 'wayPointTags')]
     private Collection $wayPoints;
@@ -157,7 +153,6 @@ class Tag implements \Stringable
     public function __construct()
     {
         $this->wayPoints = new ArrayCollection();
-        $this->walks = new ArrayCollection();
     }
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'tags')]
@@ -181,7 +176,7 @@ class Tag implements \Stringable
         return $instance;
     }
 
-    #[Groups(['tag:read', 'walk:read'])]
+    #[Groups(['tag:read'])]
     public function getName(): string
     {
         return $this->name;
@@ -192,7 +187,7 @@ class Tag implements \Stringable
         $this->name = $name;
     }
 
-    #[Groups(['tag:read', 'walk:read'])]
+    #[Groups(['tag:read'])]
     public function getColor(): string
     {
         return $this->color;
@@ -203,7 +198,7 @@ class Tag implements \Stringable
         $this->color = $color;
     }
 
-    #[Groups(['tag:read', 'walk:read'])]
+    #[Groups(['tag:read'])]
     #[SerializedName('tagId')]
     public function getId(): int
     {
@@ -213,32 +208,6 @@ class Tag implements \Stringable
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    public function addWalk(Walk $walk): void
-    {
-        if (!$this->walks->contains($walk)) {
-            $this->walks->add($walk);
-        }
-    }
-
-    public function removeWalk(Walk $walk): void
-    {
-        if ($this->walks->contains($walk)) {
-            $this->walks->removeElement($walk);
-        }
-    }
-
-    /** @return Collection<int, Walk> */
-    public function getWalks(): Collection
-    {
-        return $this->walks;
-    }
-
-    /** @param Collection<int, Walk> $walks */
-    public function setWalks(Collection $walks): void
-    {
-        $this->walks = $walks;
     }
 
     public function addWayPoint(WayPoint $wayPoint): void
