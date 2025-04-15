@@ -18,7 +18,7 @@ class IsClientEmailUniqueValidator extends ConstraintValidator
 
     /**
      * @param ClientCreateRequest|ClientChangeRequest $request
-     * @param Constraint                              $constraint
+     * @param IsClientEmailUnique                     $constraint
      */
     #[\Override]
     public function validate($request, Constraint $constraint): void

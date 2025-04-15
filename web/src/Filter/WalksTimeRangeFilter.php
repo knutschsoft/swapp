@@ -6,6 +6,7 @@ namespace App\Filter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\OpenApi\Model\Parameter;
 use App\Entity\Walk;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\PropertyInfo\Type;
@@ -24,13 +25,15 @@ final class WalksTimeRangeFilter extends AbstractFilter
         // phpcs:ignore
         foreach ($this->properties as $property => $strategy) {
             $description["walks.$property"] = [
-                'property' => $property,
                 'type' => Type::BUILTIN_TYPE_STRING,
                 'required' => false,
                 'description' => 'Filter using date range on startDate of walks.',
-                'openapi' => [
-                    'example' => '01.10.2021..31.12.2022',
-                ],
+                'openapi' => new Parameter(
+                    name: $property,
+                    in: 'query',
+                    description: 'Filter using date range on startDate of walks.',
+                    example: '01.10.2021..31.12.2022'
+                ),
             ];
         }
 

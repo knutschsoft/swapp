@@ -15,8 +15,8 @@ class NotAnEnabledUserValidator extends ConstraintValidator
     }
 
     /**
-     * @param string     $username
-     * @param Constraint $constraint
+     * @param string           $username
+     * @param NotAnEnabledUser $constraint
      */
     #[\Override]
     public function validate($username, Constraint $constraint): void

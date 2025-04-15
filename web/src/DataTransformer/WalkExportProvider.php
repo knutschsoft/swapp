@@ -12,6 +12,7 @@ use App\Entity\Export\WalkExport;
 use App\Entity\Walk;
 use Webmozart\Assert\Assert;
 
+/** @implements ProviderInterface<WalkExport> */
 class WalkExportProvider implements ProviderInterface
 {
     public function __construct(
@@ -22,9 +23,9 @@ class WalkExportProvider implements ProviderInterface
     }
 
     /**
-     * @param Operation $operation
-     * @param array     $uriVariables
-     * @param array     $context
+     * @param Operation            $operation
+     * @param array<string, mixed> $uriVariables
+     * @param array<string, mixed> $context
      *
      * @return array<WalkExport>
      */
@@ -32,6 +33,7 @@ class WalkExportProvider implements ProviderInterface
     {
         $extraProperties = $operation->getExtraProperties();
         Assert::isArray($extraProperties);
+        Assert::string($extraProperties['entity']);
         $collection = $this->collectionFactory->create($extraProperties['entity'])->getOperation(forceCollection: true);
 
         /** @var Paginator $paginator */

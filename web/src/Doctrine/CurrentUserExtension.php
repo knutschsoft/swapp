@@ -94,7 +94,9 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->setParameter('client', $user->getClient());
             }
 
-            if ($operation?->getOutput() && TeamName::class === $operation->getOutput()['class']) {
+            $output = $operation?->getOutput();
+
+            if (\is_array($output) && TeamName::class === $output['class']) {
                 $queryBuilder->select(\sprintf('%s.teamName', $rootAlias));
                 $queryBuilder->groupBy(\sprintf('%s.teamName', $rootAlias));
                 $queryBuilder->andWhere(\sprintf('LENGTH(%s.teamName) > 1', $rootAlias));

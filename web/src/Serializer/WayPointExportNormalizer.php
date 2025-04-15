@@ -24,6 +24,7 @@ final class WayPointExportNormalizer implements NormalizerInterface, NormalizerA
         $context[self::ALREADY_CALLED] = true;
         $data = $this->normalizer->normalize($object, $format, $context);
         if (!isset($context['output'])
+            || !\is_array($context['output'])
             || !isset($context['output']['class'])
             || $context['output']['class'] !== WayPointExport::class
         ) {
@@ -42,13 +43,11 @@ final class WayPointExportNormalizer implements NormalizerInterface, NormalizerA
         foreach ($this->getCsvAgeCells($object) as $label => $csvAgeCell) {
             $newData[$label] = $csvAgeCell;
         }
+        $tags = [];
         foreach ($object->tags as $tag) {
-            if (empty($newData['Tags'])) {
-                $newData['Tags'] = $tag->getName();
-            } else {
-                $newData['Tags'] .= \sprintf(',%s', $tag->getName());
-            }
+            $tags[] = (string) $tag->getName();
         }
+        $newData['Tags'] = \implode(',', $tags);
 
         return $newData;
     }

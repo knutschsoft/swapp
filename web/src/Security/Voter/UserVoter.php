@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**  @extends Voter<string, User> */
 class UserVoter extends Voter
 {
     final public const string CREATE = 'USER_CREATE';

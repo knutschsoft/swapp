@@ -11,9 +11,9 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Tag|null find($id, $lockMode = null, $lockVersion = null)
- * @method Tag|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Tag|null findOneBy(string[] $criteria, string[]|null $orderBy = null)
  * @method Tag[]    findAll()
- * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Tag[]    findBy(string[] $criteria, string[]|null $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Tag>
  */
@@ -32,7 +32,7 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
 
     public function findOneByColorAndNameAndClient(string $color, string $name, Client $client): Tag
     {
-        $tag = $this->findOneBy(['color' => $color, 'name' => $name, 'client' => $client]);
+        $tag = $this->findOneBy(['color' => $color, 'name' => $name, 'client' => (string) $client->getId()]);
         if (!$tag) {
             throw new NotFoundException(
                 \sprintf(

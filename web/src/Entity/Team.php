@@ -68,6 +68,7 @@ class Team implements \Stringable
     private string $name = '';
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'teams')]
+    #[ORM\JoinColumn(nullable: false)]
     private Client $client;
 
     /** @var string[] */

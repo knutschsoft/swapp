@@ -1,6 +1,5 @@
 parameters:
     level: max
-    checkGenericClassInNonGenericObjectType: false
     paths:
         - %currentWorkingDirectory%/src
     excludePaths:
@@ -9,11 +8,11 @@ parameters:
         - %currentWorkingDirectory%/src/Serializer/Normalizer/DataUriNormalizer.php
         - %currentWorkingDirectory%/tests/object-manager.php
     ignoreErrors:
-        - '#Access to an undefined property Symfony\\Component\\Validator\\Constraint::\$message#'
+        - '#Method App\\Serializer\\(.+)Normalizer::normalize\(\) return type with generic class ArrayObject does not specify its types: TKey, TValue#'
         - '#Method App\\Filter\\WalksTimeRangeFilter::filterProperty\(\) has parameter \$value with no type specified\.#'
         - '#Method App\\Serializer\\Normalizer\\Base64DataUriNormalizer::denormalize\(\) has parameter \$context with no value type specified in iterable type array.#'
         - '#Method [a-zA-Z0-9\\_]+Requirements::getConstraints\(\) has parameter \$options with no value type specified in iterable type array.#'
-        - '#Property App\\Entity\\(WayPoint|User|SystemicQuestion|Client)::\$(updated|created)(At|By) has no type specified\.#'
         - '#Method .+(ClientImageNormalizer|WayPointImageNormalizer|WayPointExportNormalizer|WalkExportNormalizer)::normalize\(\) return type has no value type specified in iterable type array\.#'
         - '#Method .+(ClientImageNormalizer|WayPointImageNormalizer|WayPointExportNormalizer|WalkExportNormalizer|WayPointExportDataTransformer)::(denormalize|normalize|supportsNormalization|supportsTransformation|transform)\(\) has parameter \$(context) with no value type specified in iterable type (array)\.#'
-        - '#Method .+(WayPoint|Walk)ExportProvider::(provide)\(\) has parameter \$(context|uriVariables) with no value type specified in iterable type (array)\.#'
+        - '#Method App\\Repository\\DoctrineORM.+::.+\(\) should return .+ but returns mixed\.#'
+        - '#Method App\\Repository\\DoctrineORM.+::.+\(\) should return .+ but returns Doctrine\\ORM\\Query<null, mixed>\.#'

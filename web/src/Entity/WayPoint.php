@@ -94,12 +94,14 @@ class WayPoint implements \Stringable
 {
     use TimestampableEntity;
 
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
-    protected $createdAt; // phpcs:ignore
+    protected $createdAt;
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
-    protected $updatedAt; // phpcs:ignore
+    protected $updatedAt;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     protected \DateTimeInterface $visitedAt;
@@ -115,6 +117,7 @@ class WayPoint implements \Stringable
 
     /** @MaxDepth(2) */
     #[ORM\ManyToOne(targetEntity: Walk::class, inversedBy: 'wayPoints')]
+    #[ORM\JoinColumn(nullable: false)]
     private Walk $walk;
 
     #[ORM\Column(length: 150)]

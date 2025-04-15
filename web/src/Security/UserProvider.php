@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/** @implements UserProviderInterface<UserInterface> */
 class UserProvider implements UserProviderInterface
 {
     public function __construct(private readonly UserRepository $userRepository)
@@ -52,7 +53,7 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(\sprintf('Expected an instance of %s, but got "%s".', User::class, $user::class));
         }
 
-        $reloadedUser = $this->userRepository->findOneBy(['id' => $user->getId()]);
+        $reloadedUser = $this->userRepository->findOneBy(['id' => (string) $user->getId()]);
         if (null === $reloadedUser) {
             throw new UserNotFoundException(\sprintf('User with ID "%s" could not be reloaded.', $user->getId()));
         }

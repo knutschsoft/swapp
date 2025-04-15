@@ -13,9 +13,9 @@ use Webmozart\Assert\Assert;
 
 /**
  * @method SystemicQuestion|null find($id, $lockMode = null, $lockVersion = null)
- * @method SystemicQuestion|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SystemicQuestion|null findOneBy(string[] $criteria, string[]|null $orderBy = null)
  * @method SystemicQuestion[]    findAll()
- * @method SystemicQuestion[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SystemicQuestion[]    findBy(string[] $criteria, string[]|null $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<SystemicQuestion>
  */

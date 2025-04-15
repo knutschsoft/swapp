@@ -25,6 +25,9 @@ interface WalkRepository
      */
     public function findAllUnfinishedByUser(User $user): array;
 
+    /**
+     * @return AbstractQuery<array-key, Walk>
+     */
     public function getFindAllQuery(): AbstractQuery;
 
     /** @param int|string $id */

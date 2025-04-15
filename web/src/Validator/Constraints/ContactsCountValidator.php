@@ -13,10 +13,10 @@ class ContactsCountValidator extends ConstraintValidator
 {
     /**
      * @param WayPointCreateRequest|WayPointChangeRequest $request
-     * @param ContactsCount|Constraint                    $constraint
+     * @param ContactsCount                               $constraint
      */
     #[\Override]
-    public function validate($request, ContactsCount|Constraint $constraint): void
+    public function validate($request, Constraint $constraint): void
     {
         if ($request instanceof WayPointCreateRequest) {
             $walk = $request->walk;

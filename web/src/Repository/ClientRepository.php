@@ -7,9 +7,9 @@ use App\Entity\Client;
 
 /**
  * @method Client|null find($id, $lockMode = null, $lockVersion = null)
- * @method Client|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Client|null findOneBy(string[] $criteria, string[]|null $orderBy = null)
  * @method Client[]    findAll()
- * @method Client[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Client[]    findBy(string[] $criteria, string[]|null $orderBy = null, $limit = null, $offset = null)
  */
 interface ClientRepository
 {

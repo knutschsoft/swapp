@@ -19,7 +19,6 @@ class JWTAuthenticationSuccessListener
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event): void
     {
         $data = $event->getData();
-        /** @var User $user */
         $user = $event->getUser();
 
         if (!$user instanceof User) {

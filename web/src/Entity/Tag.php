@@ -157,6 +157,7 @@ class Tag implements \Stringable
     }
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'tags')]
+    #[ORM\JoinColumn(nullable: false)]
     private Client $client;
 
     public static function fromTagCreateRequest(TagCreateRequest $request): self

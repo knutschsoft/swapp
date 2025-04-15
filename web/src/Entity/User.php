@@ -131,18 +131,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
         self::ROLE_SUPER_ADMIN,
         self::ROLE_ALLOWED_TO_SWITCH,
     ];
+
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
-    protected $createdAt; // phpcs:ignore
+    protected $createdAt;
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
-    protected $updatedAt; // phpcs:ignore
+    protected $updatedAt;
+    /** @var ?string */
     #[ORM\Column(nullable: true)]
     #[Gedmo\Blameable(on: 'create')]
-    protected $createdBy; // phpcs:ignore
+    protected $createdBy;
+    /** @var ?string */
     #[ORM\Column(nullable: true)]
     #[Gedmo\Blameable(on: 'update')]
-    protected $updatedBy; // phpcs:ignore
+    protected $updatedBy;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     protected string $email = '';
@@ -190,6 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     private Collection $teams;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
     private Client $client;
 
     /** @var Collection<int, Walk> **/

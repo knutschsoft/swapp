@@ -24,6 +24,7 @@ final class WalkExportNormalizer implements NormalizerInterface, NormalizerAware
         $context[self::ALREADY_CALLED] = true;
         $data = $this->normalizer->normalize($object, $format, $context);
         if (!isset($context['output'])
+            || !\is_array($context['output'])
             || !isset($context['output']['class'])
             || $context['output']['class'] !== WalkExport::class
         ) {

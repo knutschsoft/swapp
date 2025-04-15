@@ -12,6 +12,7 @@ use App\Entity\Export\WayPointExport;
 use App\Entity\WayPoint;
 use Webmozart\Assert\Assert;
 
+/** @implements ProviderInterface<WayPointExport> */
 class WayPointExportProvider implements ProviderInterface
 {
     public function __construct(
@@ -22,9 +23,9 @@ class WayPointExportProvider implements ProviderInterface
     }
 
     /**
-     * @param Operation $operation
-     * @param array     $uriVariables
-     * @param array     $context
+     * @param Operation            $operation
+     * @param array<string, mixed> $uriVariables
+     * @param array<string, mixed> $context
      *
      * @return array<WayPointExport>
      */
@@ -32,6 +33,7 @@ class WayPointExportProvider implements ProviderInterface
     {
         $extraProperties = $operation->getExtraProperties();
         Assert::isArray($extraProperties);
+        Assert::string($extraProperties['entity']);
         $collection = $this->collectionFactory->create($extraProperties['entity'])->getOperation(forceCollection: true);
 
         /** @var Paginator $paginator */

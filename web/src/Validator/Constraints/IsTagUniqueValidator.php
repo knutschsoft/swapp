@@ -17,7 +17,7 @@ class IsTagUniqueValidator extends ConstraintValidator
 
     /**
      * @param TagCreateRequest $value
-     * @param Constraint       $constraint
+     * @param IsTagUnique      $constraint
      */
     #[\Override]
     public function validate($value, Constraint $constraint): void

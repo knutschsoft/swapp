@@ -9,6 +9,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**  @extends Voter<string, SystemicQuestion> */
 class SystemicQuestionVoter extends Voter
 {
     final public const string READ = 'SYSTEMIC_QUESTION_READ';

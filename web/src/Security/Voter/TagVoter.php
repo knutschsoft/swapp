@@ -9,6 +9,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**  @extends Voter<string, Tag> */
 class TagVoter extends Voter
 {
     final public const string READ = 'TAG_READ';

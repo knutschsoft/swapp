@@ -17,7 +17,7 @@ class IsUserEmailUniqueValidator extends ConstraintValidator
 
     /**
      * @param UserCreateRequest|UserChangeRequest $request
-     * @param Constraint                          $constraint
+     * @param IsUserEmailUnique                   $constraint
      */
     #[\Override]
     public function validate($request, Constraint $constraint): void

@@ -49,12 +49,14 @@ class Client implements \Stringable
 {
     use TimestampableEntity;
 
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
-    protected $createdAt; // phpcs:ignore
+    protected $createdAt;
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
-    protected $updatedAt; // phpcs:ignore
+    protected $updatedAt;
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer', unique: true)]

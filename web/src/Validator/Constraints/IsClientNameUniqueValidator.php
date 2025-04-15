@@ -18,7 +18,7 @@ class IsClientNameUniqueValidator extends ConstraintValidator
 
     /**
      * @param ClientCreateRequest|ClientChangeRequest $request
-     * @param Constraint                              $constraint
+     * @param IsClientNameUnique                      $constraint
      */
     #[\Override]
     public function validate($request, Constraint $constraint): void

@@ -187,6 +187,7 @@ class Walk implements \Stringable
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'walks')]
     #[ORM\OrderBy(value: ['order' => 'asc'])]
+    #[ORM\JoinColumn(nullable: false)]
     private Client $client;
 
     /** @var string[] */

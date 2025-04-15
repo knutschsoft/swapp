@@ -65,12 +65,14 @@ class SystemicQuestion implements \Stringable
 {
     use TimestampableEntity;
 
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
-    protected $createdAt; // phpcs:ignore
+    protected $createdAt;
+    /** @var \DateTime */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
-    protected $updatedAt; // phpcs:ignore
+    protected $updatedAt;
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -83,9 +85,12 @@ class SystemicQuestion implements \Stringable
     #[ORM\Column(type: 'boolean')]
     private bool $isEnabled = true;
 
-    private function __construct(string $question, #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'systemicQuestions')]
-    private Client $client)
-    {
+    private function __construct(
+        string $question,
+        #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'systemicQuestions')]
+        #[ORM\JoinColumn(nullable: false)]
+        private Client $client
+    ) {
         Assert::minLength($question, 5);
         Assert::maxLength($question, 4096);
         $this->question = $question;
