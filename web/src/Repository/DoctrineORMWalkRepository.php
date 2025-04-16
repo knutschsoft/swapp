@@ -110,13 +110,13 @@ class DoctrineORMWalkRepository extends ServiceEntityRepository implements WalkR
 
     public function save(Walk $walk): void
     {
-        $this->_em->persist($walk);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($walk);
+        $this->getEntityManager()->flush();
     }
 
     public function remove(Walk $walk): void
     {
-        $this->_em->remove($walk);
-        $this->_em->flush();
+        $this->getEntityManager()->remove($walk);
+        $this->getEntityManager()->flush();
     }
 }

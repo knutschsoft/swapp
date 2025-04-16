@@ -37,13 +37,13 @@ class DoctrineORMWayPointRepository extends ServiceEntityRepository implements W
 
     public function save(WayPoint $wayPoint): void
     {
-        $this->_em->persist($wayPoint);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($wayPoint);
+        $this->getEntityManager()->flush();
     }
 
     public function remove(WayPoint $wayPoint): void
     {
-        $this->_em->remove($wayPoint);
-        $this->_em->flush();
+        $this->getEntityManager()->remove($wayPoint);
+        $this->getEntityManager()->flush();
     }
 }

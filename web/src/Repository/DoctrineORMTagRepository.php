@@ -26,8 +26,8 @@ class DoctrineORMTagRepository extends ServiceEntityRepository implements TagRep
 
     public function save(Tag $tag): void
     {
-        $this->_em->persist($tag);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($tag);
+        $this->getEntityManager()->flush();
     }
 
     public function findOneByColorAndNameAndClient(string $color, string $name, Client $client): Tag

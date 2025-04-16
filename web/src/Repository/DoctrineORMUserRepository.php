@@ -28,13 +28,13 @@ class DoctrineORMUserRepository extends ServiceEntityRepository implements UserR
 
     public function refresh(User $user): void
     {
-        $this->_em->refresh($user);
+        $this->getEntityManager()->refresh($user);
     }
 
     public function save(User $user): void
     {
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 
     public function loadUserByUsername(string $username): ?UserInterface

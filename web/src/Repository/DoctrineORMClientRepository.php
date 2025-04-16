@@ -27,13 +27,13 @@ class DoctrineORMClientRepository extends ServiceEntityRepository implements Cli
 
     public function refresh(Client $client): void
     {
-        $this->_em->refresh($client);
+        $this->getEntityManager()->refresh($client);
     }
 
     public function save(Client $client): void
     {
-        $this->_em->persist($client);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($client);
+        $this->getEntityManager()->flush();
     }
 
     public function findOneByName(string $name): Client

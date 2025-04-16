@@ -28,8 +28,8 @@ class DoctrineORMSystemicQuestionRepository extends ServiceEntityRepository impl
 
     public function save(SystemicQuestion $systemicQuestion): void
     {
-        $this->_em->persist($systemicQuestion);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($systemicQuestion);
+        $this->getEntityManager()->flush();
     }
 
     /**

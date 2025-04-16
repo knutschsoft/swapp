@@ -34,7 +34,7 @@ class DoctrineORMTeamRepository extends ServiceEntityRepository implements TeamR
 
     public function save(Team $team): void
     {
-        $this->_em->persist($team);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($team);
+        $this->getEntityManager()->flush();
     }
 }
