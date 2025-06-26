@@ -14,7 +14,7 @@ services:
       - ../nginx-proxy/certs:/var/www/certs # adjust to the place of your nginx-proxy; just needed for webpack encore dev server
     restart: "no"
     ports:
-      - 8080:8080 # adjust your own port for webpack encore here
+      - 8080:8900 # adjust your own port for webpack encore here
 
   mysql:
     restart: "no"
