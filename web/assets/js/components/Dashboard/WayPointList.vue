@@ -54,6 +54,7 @@
                     >
                         <v-chip
                             v-if="tag.isEnabled"
+                            :value="tag.tagId"
                             class="mr-1 mb-1"
                             density="compact"
                             filter
@@ -73,6 +74,7 @@
                     >
                         <v-chip
                             v-if="!tag.isEnabled"
+                            :value="tag.tagId"
                             class="mr-1 mb-1"
                             density="compact"
                             filter
