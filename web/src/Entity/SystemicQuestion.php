@@ -75,14 +75,14 @@ class SystemicQuestion implements \Stringable
     protected $updatedAt;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue()]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 4096)]
+    #[ORM\Column(type: Types::STRING, length: 4096)]
     private string $question = '';
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isEnabled = true;
 
     private function __construct(

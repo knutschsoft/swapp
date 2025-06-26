@@ -23,7 +23,11 @@ class Base64DataUriNormalizer extends DataUriNormalizer
         Assert::string($data);
         $match = [];
         // @codingStandardsIgnoreStart
-        \preg_match('/^data:(?P<mimeType>[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}\/[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}(;[a-z0-9\-]+\=[a-z0-9\-]+)?)?;base64,(?P<encoded>.+)$/i', $data, $match);
+        \preg_match(
+            '/^data:(?P<mimeType>[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}\/[a-z0-9][a-z0-9\!\#\$\&\-\^\_\+\.]{0,126}(;[a-z0-9\-]+\=[a-z0-9\-]+)?)?;base64,(?P<encoded>.+)$/i',
+            $data,
+            $match
+        );
         // @codingStandardsIgnoreEnd
 
         if (!\array_key_exists('mimeType', $match)) {
@@ -37,13 +41,28 @@ class Base64DataUriNormalizer extends DataUriNormalizer
         $tempfile = "{$filesystem->tempnam('/tmp', 'symfony')}.$extensions[0]";
         $content = \base64_decode($match['encoded'] ?? '', true);
         Assert::string($content);
-        if (\str_starts_with(\strtolower($extensions[0]), 'svg')) {
-            $sanitizer = new Sanitizer();
-            $content = $sanitizer->sanitize($content);
-        }
+        $content = $this->sanitizeSvgContent($extensions[0], $content);
 
         $filesystem->dumpFile("$tempfile", $content);
 
         return new File($tempfile);
+    }
+
+    public function sanitizeSvgContent(string $string, string $content): string
+    {
+        if (\str_starts_with(\strtolower($string), 'svg')) {
+            $sanitizer = new Sanitizer();
+            $content = $sanitizer->sanitize($content);
+            if (!\is_string($content)) {
+                throw new NotNormalizableValueException(
+                    \sprintf(
+                        "The svg could not be sanitized. Xml error is: %s",
+                        \json_encode($sanitizer->getXmlIssues())
+                    )
+                );
+            }
+        }
+
+        return $content;
     }
 }

@@ -152,7 +152,5 @@ EXPOSE 443
 
 WORKDIR /var/www/html
 
-RUN ls -la
-
 RUN chmod 777 /start-project.sh
 ENTRYPOINT /start-project.sh

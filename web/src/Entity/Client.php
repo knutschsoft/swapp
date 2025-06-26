@@ -59,40 +59,40 @@ class Client implements \Stringable
     protected $updatedAt;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer', unique: true)]
+    #[ORM\Column(type: Types::INTEGER, unique: true)]
     #[ORM\GeneratedValue()]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $email;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::TEXT)]
     private string $description;
 
     /** @var Collection<int, SystemicQuestion> **/
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: SystemicQuestion::class)]
+    #[ORM\OneToMany(targetEntity: SystemicQuestion::class, mappedBy: 'client')]
     private Collection $systemicQuestions;
 
     /** @var Collection<int, User> **/
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: User::class)]
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'client')]
     private Collection $users;
 
     /** @var Collection<int, Tag> **/
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Tag::class)]
+    #[ORM\OneToMany(targetEntity: Tag::class, mappedBy: 'client')]
     private Collection $tags;
 
     /** @var Collection<int, Team> **/
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Team::class)]
+    #[ORM\OneToMany(targetEntity: Team::class, mappedBy: 'client')]
     private Collection $teams;
 
     /** @var Collection<int, Walk> **/
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Walk::class)]
+    #[ORM\OneToMany(targetEntity: Walk::class, mappedBy: 'client')]
     private Collection $walks;
 
-    #[ORM\Column(name: 'rating_image_name', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'rating_image_name', type: Types::STRING, length: 255, nullable: true)]
     private ?string $ratingImageName = null;
     private string $ratingImageSrc = '';
 

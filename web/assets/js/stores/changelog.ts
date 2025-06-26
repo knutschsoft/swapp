@@ -11,6 +11,152 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '26.06.2025',
+                avatarText: '&#9728;&#65039;',
+                avatarTitle: 'Sommer-Update',
+                entries: [
+                    {
+                        text: [
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob „Ausgabematerialien“ als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
+                            'Dafür kann er in der Teamverwaltung Autocomplete-Vorschläge definieren.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob „Beratungen“ als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
+                            'Dafür kann er in der Teamverwaltung Autocomplete-Vorschläge definieren.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob „Medizinisches“ als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
+                            'Dafür kann er in der Teamverwaltung Autocomplete-Vorschläge definieren.',
+                            'Dies ermöglicht die Dokuimentation '
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob das Dokumentieren des Wetters für dessen Runden deaktiviert wird.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Neue FAQ-Seite „Benutzerrolle“ beantwortet häufige Fragen zur Rollenvergabe.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Feld „Ausgabematerialien“ ermöglicht die Dokumentation mitgeführter Materialien pro Wegpunkt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Höhe der ColorBadge-Komponente reduziert für kompaktere Darstellung.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Verhindert automatisches Öffnen der Tastatur auf Mobilgeräten bei Datums- und Zeitauswahl.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Verbesserte Nutzerführung im Datepicker.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Altersbereich im Teamformular wird korrekt als Ganzzahl konvertiert.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Fehlender Import für Formularfelder im Team-Formular ergänzt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Zurücksetzen des Team-Formulars nach Erstellung funktioniert wieder zuverlässig.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Kalender-Layout im Dashboard korrigiert.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Range-Picker im Dashboard arbeitet nun fehlerfrei.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Warnung bei fehlendem Team in WalkConceptOfDayField.vue entfernt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Fehler beim Leeren von Datumsfeldern verhindert.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Fehler beim Leeren von Zeitfeldern verhindert.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Ungültige DATABASE_URL-Einstellung in der Testumgebung korrigiert.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: Session-Persistenz erfolgt jetzt über Relay (Test-Env: REDIS_DSN ergänzt).'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: Asynchrone Listenanfragen nutzen jetzt AbortController.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: TeamForm auf Vue Composition API umgestellt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: ESLint & Prettier für konsistente Code-Formatierung hinzugefügt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: PHP auf Version 8.4 angehoben und Composer-Update durchgeführt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: PHPStan auf Version 2 aktualisiert und Verstöße bereinigt.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: API Platform v4, LexikAuthBundle v3 und PHPUnit v12 aktualisiert.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: Doctrine/ORM auf Version 3 angehoben.'
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: Chromium-Headless auf Version 135 angehoben.'
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '24.12.2024',
                 avatarText: '&#127876;',
                 avatarTitle: 'Weihnachts-Update',

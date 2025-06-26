@@ -5,12 +5,13 @@ namespace App\Entity\Fields;
 
 use App\Value\UserGroupName;
 use Doctrine\ORM\Mapping as ORM;
+use Dunglas\DoctrineJsonOdm\Type\JsonDocumentType;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 trait UserGroupNamesField
 {
     /** @var UserGroupName[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $userGroupNames;
 
     /** @return UserGroupName[] */

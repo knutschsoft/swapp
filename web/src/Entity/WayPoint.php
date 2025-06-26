@@ -30,6 +30,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Dunglas\DoctrineJsonOdm\Type\JsonDocumentType;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -89,7 +90,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     'walk.teamName' => 'partial',
     'walk' => 'exact',
 ])]
-#[ORM\Index(columns: ["locationName"], name: "idx_wayPoint_locationName")]
+#[ORM\Index(name: "idx_wayPoint_locationName", columns: ["locationName"])]
 class WayPoint implements \Stringable
 {
     use TimestampableEntity;
@@ -107,11 +108,11 @@ class WayPoint implements \Stringable
     protected \DateTimeInterface $visitedAt;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue()]
     private int $id;
 
-    #[ORM\Column(name: 'image_name', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'image_name', type: Types::STRING, length: 255, nullable: true)]
     private ?string $imageName = null;
     private string $imageSrc = '';
 
@@ -124,23 +125,23 @@ class WayPoint implements \Stringable
     private string $locationName = '';
 
     /** @var AgeGroup[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $ageGroups = [];
 
     /** @var UserGroup[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $userGroups = [];
 
     /** @var Consumable[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $consumables = [];
 
     /** @var Counseling[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $counselings = [];
 
     /** @var Medical[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $medicals = [];
 
     #[ORM\Column(length: 4096, nullable: true)]
@@ -149,17 +150,17 @@ class WayPoint implements \Stringable
     #[ORM\Column(length: 4096)]
     private string $oneOnOneInterview = '';
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isMeeting = false;
 
     /** @var Collection<int, Tag> */
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'wayPoints')]
     private Collection $wayPointTags;
 
-    #[ORM\Column(type: 'integer', nullable: false)]
+    #[ORM\Column(type: Types::INTEGER, nullable: false)]
     private int $peopleCount = 0;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $contactsCount = null;
 
     public function __construct()

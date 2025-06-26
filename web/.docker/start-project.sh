@@ -16,14 +16,13 @@ else
     sed -i -e 's/;zend_extension/zend_extension/g'                                   /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
-MYSQL_UP=$(nc -z -v -w30 mysql 3306 2>/dev/null; echo $?);
-while [ $MYSQL_UP -ne 0 ]
-do
-    echo "Waiting for MySQL connection "
+# Warte auf MySQL
+until nc -z -v -w30 mysql 3306; do
+    echo "Waiting for MySQL..."
     sleep 5
-    MYSQL_UP=$(nc -z -v -w30 mysql 3306 2>/dev/null; echo $?);
 done
 
+mkdir -p var/cache var/log config/jwt public/build public/bundles public/images
 bin/set_owner.sh
 bin/set_acl.sh ${CONTAINER_USER}
 
@@ -34,22 +33,11 @@ if [ "${APP_ENVIRONMENT}" = "dev" ]; then
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} vendor/bin/bdi detect drivers
     gosu ${CONTAINER_USER} vendor/bin/captainhook install -f
-
-    setfacl -R -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
-    setfacl -dR -m u:www-data:rwx -m u:$HOST_UID:rwx -m m:rwx var public/images
 elif [ "${APP_ENVIRONMENT}" = "prod" ]; then
     gosu ${CONTAINER_USER} php bin/console doctrine:migrations:sync-metadata-storage --env=${APP_ENVIRONMENT} --no-debug --no-interaction
     gosu ${CONTAINER_USER} php bin/console doctrine:database:create --if-not-exists --no-interaction --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} php bin/console doctrine:migrations:migrate --no-interaction --env=${APP_ENVIRONMENT}
     gosu ${CONTAINER_USER} php bin/console assets:install --env=${APP_ENVIRONMENT}
-fi
-
-gosu ${CONTAINER_USER} phpcs --config-set installed_paths vendor/projektmotor/symfony-coding-standard/ProjektMOTORCodingStandard/
-
-if [ "${APP_ENVIRONMENT}" != "dev" ]; then
-    #setfacl -R -m u:www-data:rwx -m m:rwx var public/uploads
-    #setfacl -dR -m u:www-data:rwx -m m:rwx var public/uploads
-    chown -R www-data:www-data var public/images
 fi
 
 ##############################################################

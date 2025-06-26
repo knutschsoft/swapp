@@ -123,7 +123,7 @@ class Walk implements \Stringable
 
     #[ApiProperty(identifier: true)]
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]
     private int $id;
 
@@ -131,16 +131,16 @@ class Walk implements \Stringable
     private string $name;
 
     /** @var Collection<int, WayPoint> **/
-    #[ORM\OneToMany(mappedBy: 'walk', targetEntity: WayPoint::class)]
+    #[ORM\OneToMany(targetEntity: WayPoint::class, mappedBy: 'walk')]
     private Collection $wayPoints;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private \DateTimeInterface $startTime;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endTime = null;
 
-    #[ORM\Column(type: 'string', length: 4096)]
+    #[ORM\Column(type: Types::STRING, length: 4096)]
     private string $walkReflection = '';
 
     /** @var Collection<int, User> */
@@ -151,38 +151,38 @@ class Walk implements \Stringable
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'createdWalks')]
     private ?User $walkCreator = null;
 
-    #[ORM\Column(type: 'smallint')]
+    #[ORM\Column(type: Types::SMALLINT)]
     private int $rating;
 
-    #[ORM\Column(type: 'string', length: 4096)]
+    #[ORM\Column(type: Types::STRING, length: 4096)]
     private string $systemicQuestion = '';
 
-    #[ORM\Column(type: 'string', length: 4096)]
+    #[ORM\Column(type: Types::STRING, length: 4096)]
     private string $systemicAnswer = '';
 
-    #[ORM\Column(type: 'text', length: 4096)]
+    #[ORM\Column(type: Types::TEXT, length: 4096)]
     private string $insights = '';
 
-    #[ORM\Column(type: 'text', length: 4096)]
+    #[ORM\Column(type: Types::TEXT, length: 4096)]
     private string $commitments = '';
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isResubmission;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $weather;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $holidays = false;
 
     /** @var string[] */
     #[ORM\Column(type: Types::JSON)]
     private array $conceptOfDay = [];
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: Types::STRING, length: 100)]
     private string $teamName;
 
-    #[ORM\Column(name: 'deletedAt', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'deletedAt', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTime $deletedAt = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'walks')]
@@ -191,40 +191,40 @@ class Walk implements \Stringable
     private Client $client;
 
     /** @var string[] */
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: Types::JSON)]
     private array $guestNames = [];
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithGuests;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithSystemicQuestion = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithWeather = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithAgeRanges;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithPeopleCount;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithContactsCount;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithUserGroups;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithConsumables;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithCounselings;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithMedicals;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isUnfinished = true;
 
     public function __construct()

@@ -7397,17 +7397,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sirv@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "sirv@npm:2.0.4"
-  dependencies:
-    "@polka/url": "npm:^1.0.0-next.24"
-    mrmime: "npm:^2.0.0"
-    totalist: "npm:^3.0.0"
-  checksum: 10c0/68f8ee857f6a9415e9c07a1f31c7c561df8d5f1b1ba79bee3de583fa37da8718def5309f6b1c6e2c3ef77de45d74f5e49efc7959214443aa92d42e9c99180a4e
-  languageName: node
-  linkType: hard
-
 "sirv@npm:^3.0.0":
   version: 3.0.1
   resolution: "sirv@npm:3.0.1"
@@ -7765,7 +7754,7 @@ __metadata:
     vite-plugin-pwa: "npm:^0.21"
     vite-plugin-sass: "npm:^0.1"
     vite-plugin-static-copy: "npm:^2.2"
-    vite-plugin-symfony: "npm:^7.1.0"
+    vite-plugin-symfony: "npm:^8.0"
     vite-plugin-vue-devtools: "npm:^7.3.7"
     vite-plugin-vuetify: "npm:^2.1.0"
     vue: "npm:^3.5.13"
@@ -8351,17 +8340,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-symfony@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "vite-plugin-symfony@npm:7.1.0"
+"vite-plugin-symfony@npm:^8.0":
+  version: 8.0.2
+  resolution: "vite-plugin-symfony@npm:8.0.2"
   dependencies:
-    debug: "npm:^4.3.6"
-    fast-glob: "npm:^3.3.2"
-    picocolors: "npm:^1.0.1"
-    sirv: "npm:^2.0.4"
+    debug: "npm:^4.4.0"
+    fast-glob: "npm:^3.3.3"
+    picocolors: "npm:^1.1.1"
+    sirv: "npm:^3.0.0"
   peerDependencies:
     vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
-  checksum: 10c0/e112d84342dd8773327791fdd387c8d22726706bfb2b09f6ec656c381856a3d8eedc4d65a30a1205e16f3699ecdb4a6e88812061f235940ca89c29e0cbcb3848
+  checksum: 10c0/cbaca5f179578cff2ff668ef64db909e66e8a0e2a008e519a3830f523949b06fd9e81a61f2a0495b52790b379cf8db7ca2bce5d50d6a4bc32fbde5353c64c8a3
   languageName: node
   linkType: hard
 

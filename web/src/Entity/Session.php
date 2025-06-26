@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'sessions')]
@@ -10,16 +11,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Session
 {
     #[ORM\Id]
-    #[ORM\Column(name: 'sess_id', type: 'string', length: 128, nullable: false)]
+    #[ORM\Column(name: 'sess_id', type: Types::STRING, length: 128, nullable: false)]
     protected string $sessId;
 
-    #[ORM\Column(name: 'sess_data', type: 'blob', nullable: false)]
+    #[ORM\Column(name: 'sess_data', type: Types::BLOB, nullable: false)]
     protected mixed $sessData;
 
-    #[ORM\Column(name: 'sess_time', type: 'integer', nullable: false, options: ['unsigned' => false])]
+    #[ORM\Column(name: 'sess_time', type: Types::INTEGER, nullable: false, options: ['unsigned' => false])]
     protected int $sessTime;
 
-    #[ORM\Column(name: 'sess_lifetime', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'sess_lifetime', type: Types::INTEGER, nullable: false)]
     protected int $sessLifetime;
 
     public function getSessId(): string

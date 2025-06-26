@@ -39,7 +39,7 @@ See **https://swapp.demo.streetworkapp.de** for a full working demo of Swapp.
                 - ./vhosts:/etc/nginx/conf.d
             networks:
                 - swapp-dev
-    
+
     networks:
         swapp-dev:
            external: true
@@ -74,7 +74,7 @@ See **https://swapp.demo.streetworkapp.de** for a full working demo of Swapp.
    ###### create Certs
    Navigate to the nginx-proxy certs volume e.g. `cd /var/apps/nginx-proxy/certs` or ```/<your-home-dir>/workspace/nginx-proxy/certs```
    ```BASH
-   mkcert -key-file swapp.local.key -cert-file swapp.local.crt swapp.local *.swapp.local    
+   mkcert -key-file swapp.local.key -cert-file swapp.local.crt swapp.local *.swapp.local
    ```
    This generates a certificate for all subdomains of `swapp.local`
 3.  ##### setup dns
@@ -85,13 +85,13 @@ See **https://swapp.demo.streetworkapp.de** for a full working demo of Swapp.
 4. ##### start nginx-proxy
 
     ```BASH
-    # this need to be run only once 
+    # this need to be run only once
     docker network create swapp-dev
     ```
 
     ```BASH
     # /var/apps/nginx-proxy/ or /<your-home-dir>/workspace/nginx-proxy/
-    docker-compose up -d    
+    docker-compose up -d
     ```
 
 5. ##### create .env
@@ -140,7 +140,7 @@ See **https://swapp.demo.streetworkapp.de** for a full working demo of Swapp.
         * Settings... -> Languages & Frameworks -> PHP -> Servers: Add
             * name: has to be same as PHP_IDE_CONFIG value
             * port: 80
-            * path-mapping: path of project root in host system 
+            * path-mapping: path of project root in host system
         * Setting -> Languages & Frameworks -> PHP -> Debug -> DBGp Proxy:
             * `Port`: 9000
     * Start containers:
@@ -149,7 +149,7 @@ See **https://swapp.demo.streetworkapp.de** for a full working demo of Swapp.
         ```
     * After clicking "Start Listening for PHP Debug Connections" in PHPStorm you can jump to web and cli breakpoints.
     * To activate/deactivate XDebug simply adjust ENV-Variable `PHP_XDEBUG_ENABLED` in `docker-compose.yml`
-    and restart containers (`docker-compose down && docker-compose up -d`) 
+    and restart containers (`docker-compose down && docker-compose up -d`)
 
 #### Cheat Sheet
 

@@ -149,40 +149,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     #[Gedmo\Blameable(on: 'update')]
     protected $updatedBy;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     protected string $email = '';
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $enabled = false;
 
-    #[ORM\Column(type: 'string', nullable: true)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     protected ?string $salt = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     protected string $password;
 
     protected ?string $plainPassword = null;
 
-    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'last_login', type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTime $lastLogin = null;
 
     /** Random string sent to the user email address in order to verify it. */
     #[ORM\Embedded(class: ConfirmationToken::class, columnPrefix: false)]
     protected ConfirmationToken $confirmationToken;
 
-    #[ORM\Column(name: 'password_requested_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'password_requested_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTime $passwordRequestedAt = null;
 
     /** @var string[] */
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: Types::JSON)]
     protected array $roles = [];
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue()]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private string $username = '';
 
     /** @var Collection<int, Walk> */
@@ -199,7 +199,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     private Client $client;
 
     /** @var Collection<int, Walk> **/
-    #[ORM\OneToMany(mappedBy: 'walkCreator', targetEntity: Walk::class)]
+    #[ORM\OneToMany(targetEntity: Walk::class, mappedBy: 'walkCreator')]
     private Collection $createdWalks;
 
     public function __construct()

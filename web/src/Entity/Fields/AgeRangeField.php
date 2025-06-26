@@ -5,12 +5,13 @@ namespace App\Entity\Fields;
 
 use App\Value\AgeRange;
 use Doctrine\ORM\Mapping as ORM;
+use Dunglas\DoctrineJsonOdm\Type\JsonDocumentType;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 trait AgeRangeField
 {
     /** @var AgeRange[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $ageRanges;
 
     /**

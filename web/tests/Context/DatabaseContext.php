@@ -59,7 +59,7 @@ final class DatabaseContext implements Context
         /** @var Connection $connection */
         $connection = $this->entityManager->getConnection();
         $purger = $this->createPurger();
-        $isMySQL = $connection->getDriver()->getDatabasePlatform() instanceof AbstractMySQLPlatform;
+        $isMySQL = $connection->getDriver()->getDatabasePlatform($connection) instanceof AbstractMySQLPlatform;
         if ($isMySQL) {
             $connection->executeStatement('SET FOREIGN_KEY_CHECKS = 0;');
         }

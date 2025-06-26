@@ -60,7 +60,7 @@ class Team implements \Stringable
     private Collection $users;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]
     private int $id;
 
@@ -72,11 +72,11 @@ class Team implements \Stringable
     private Client $client;
 
     /** @var string[] */
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: Types::JSON)]
     private array $guestNames = [];
 
     /** @var string[] */
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: Types::JSON)]
     private array $locationNames = [];
 
     /** @var string[] */
@@ -87,34 +87,34 @@ class Team implements \Stringable
     #[ORM\Column(type: Types::JSON)]
     private array $conceptOfDaySuggestions = [];
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithAgeRanges = true;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithPeopleCount = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithGuests = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithSystemicQuestion = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithWeather = false;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithContactsCount;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithUserGroups;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithConsumables;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithCounselings;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithMedicals;
 
     #[ORM\Column(length: 15)]

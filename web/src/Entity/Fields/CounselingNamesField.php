@@ -5,12 +5,13 @@ namespace App\Entity\Fields;
 
 use App\Value\CounselingName;
 use Doctrine\ORM\Mapping as ORM;
+use Dunglas\DoctrineJsonOdm\Type\JsonDocumentType;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 trait CounselingNamesField
 {
     /** @var CounselingName[] */
-    #[ORM\Column(type: 'json_document')]
+    #[ORM\Column(type: JsonDocumentType::NAME)]
     private array $counselingNames;
 
     /** @return CounselingName[] */

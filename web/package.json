@@ -43,7 +43,7 @@
     "vite-plugin-pwa": "^0.21",
     "vite-plugin-sass": "^0.1",
     "vite-plugin-static-copy": "^2.2",
-    "vite-plugin-symfony": "^7.1.0",
+    "vite-plugin-symfony": "^8.0",
     "vite-plugin-vue-devtools": "^7.3.7",
     "vite-plugin-vuetify": "^2.1.0",
     "vue": "^3.5.13",
@@ -68,5 +68,5 @@
   },
   "author": "robertfausk <robertfreigang@gmx.de>",
   "license": "MIT",
-  "packageManager": "yarn@4.9.1"
+  "packageManager": "yarn@4.9.2"
 }
