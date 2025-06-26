@@ -40,7 +40,7 @@
                 {{ formatDateTime(item.createdAt) }}
             </template>
             <template v-slot:item.updatedAt="{item}">
-                {{ formatDateTime(item.updatedAt) }}
+                {{ item.updatedAt ? formatDateTime(item.updatedAt) : 'nie' }}
             </template>
             <template v-slot:item.actions="{item}">
                 <v-row justify="center">

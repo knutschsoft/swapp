@@ -97,10 +97,10 @@
                 {{ formatDateTime(item.createdAt) }}
             </template>
             <template v-slot:item.updatedAt="{item}">
-                {{ formatDateTime(item.updatedAt) }}
+                {{ item.updatedAt ? formatDateTime(item.updatedAt) : 'nie' }}
             </template>
             <template v-slot:item.lastLoginAt="{item}">
-                {{ formatDateTime(item.lastLoginAt) }}
+                {{ item.lastLoginAt ? formatDateTime(item.lastLoginAt) : 'nie' }}
             </template>
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-content-around">
