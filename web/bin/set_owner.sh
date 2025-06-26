@@ -3,6 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 DIRECTORIES=(
+  "${DIR}/../var/api-client/"
   "${DIR}/../var/cache/"
   "${DIR}/../var/log/"
   "${DIR}/../config/jwt/"
