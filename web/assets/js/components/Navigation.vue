@@ -111,7 +111,7 @@
                 location="bottom"
                 eager
                 :close-on-content-click="false"
-                @input="showUserMenu"
+                @update:modelValue="showUserMenu"
                 allow-overflow
                 width="400"
             >
