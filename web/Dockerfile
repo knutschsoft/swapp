@@ -137,8 +137,8 @@ COPY . /var/www/html
 RUN cd /var/www/html && \
     if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
         chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
+        bin/set_owner.sh && \
         bin/set_acl.sh ${CONTAINER_USER} && \
-        bin/set_owner.sh ${CONTAINER_USER} && \
         gosu ${CONTAINER_USER} composer create-api-client && \
         gosu ${CONTAINER_USER} yarn build && \
         gosu ${CONTAINER_USER} php bin/console cache:clear --env="${APP_ENVIRONMENT}" --no-debug; \
