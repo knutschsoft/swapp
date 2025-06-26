@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Liste der zu bearbeitenden Verzeichnisse
 DIRECTORIES=(
-  "${DIR}/../var/api-client/"
+  "${DIR}/../var/"
   "${DIR}/../var/cache/"
   "${DIR}/../var/log/"
   "${DIR}/../config/jwt/"

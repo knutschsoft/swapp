@@ -1,4 +1,4 @@
-FROM composer:2.8 as composer
+FROM composer:2.8 AS composer
 FROM node:20-bookworm-slim AS node
 FROM php:8.4-apache
 
@@ -13,7 +13,7 @@ ENV HOST_UID=${HOST_UID}
 ENV HOST_GID=${HOST_UID}
 ENV CONTAINER_GROUP=${CONTAINER_GROUP}
 ENV CONTAINER_USER=${CONTAINER_USER}
-ENV PANTHER_NO_SANDBOX 1
+ENV PANTHER_NO_SANDBOX=1
 ENV PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors'
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
