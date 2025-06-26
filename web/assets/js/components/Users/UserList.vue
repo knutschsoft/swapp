@@ -99,6 +99,9 @@
             <template v-slot:item.updatedAt="{item}">
                 {{ formatDateTime(item.updatedAt) }}
             </template>
+            <template v-slot:item.lastLoginAt="{item}">
+                {{ formatDateTime(item.lastLoginAt) }}
+            </template>
             <template v-slot:item.actions="{item}">
                 <div class="d-flex justify-content-around">
                     <v-menu
@@ -297,6 +300,11 @@ export default {
             ]);
             if (this.isSuperAdmin) {
                 headers.push(...[
+                    {
+                        key: 'lastLoginAt',
+                        title: 'Letzter Login am:',
+                        align: 'center',
+                    },
                     {
                         key: 'createdBy',
                         title: 'Erstellt von:',
