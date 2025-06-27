@@ -1287,16 +1287,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "3.4.1",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "92e2f6db831be44bc041fdfbc49402a063ec33cc"
+                "reference": "b4ca0cd5fbf74b33fdd3d54d89746ab9748803b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/92e2f6db831be44bc041fdfbc49402a063ec33cc",
-                "reference": "92e2f6db831be44bc041fdfbc49402a063ec33cc",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/b4ca0cd5fbf74b33fdd3d54d89746ab9748803b9",
+                "reference": "b4ca0cd5fbf74b33fdd3d54d89746ab9748803b9",
                 "shasum": ""
             },
             "require": {
@@ -1371,9 +1371,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/3.4.1"
+                "source": "https://github.com/doctrine/orm/tree/3.4.2"
             },
-            "time": "2025-06-21T10:44:26+00:00"
+            "time": "2025-06-26T18:51:01+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -12401,16 +12401,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.2.4",
+            "version": "12.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "63f78466588d51e0f886c1d3b1ac22a7351cd026"
+                "reference": "b71849b29f7a8d7574e4401873cb8b539896613f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/63f78466588d51e0f886c1d3b1ac22a7351cd026",
-                "reference": "63f78466588d51e0f886c1d3b1ac22a7351cd026",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b71849b29f7a8d7574e4401873cb8b539896613f",
+                "reference": "b71849b29f7a8d7574e4401873cb8b539896613f",
                 "shasum": ""
             },
             "require": {
@@ -12478,7 +12478,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.2.4"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.2.5"
             },
             "funding": [
                 {
@@ -12502,7 +12502,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-26T15:03:18+00:00"
+            "time": "2025-06-27T04:37:55+00:00"
         },
         {
             "name": "projektmotor/symfony-coding-standard",
