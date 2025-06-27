@@ -93,17 +93,12 @@
                             >
                                 {{ 'Die Kombination aus E-Mail-Adresse und Passwort ist ungültig.' }}
                             </v-alert>
-                            <v-btn
-                                variant="text"
-                                block
-                                class="mt-3"
+                            <router-link
+                                class="mt-3 d-block"
+                                :to="{ name: 'PasswordReset' }"
                             >
-                                <router-link
-                                    :to="{ name: 'PasswordReset' }"
-                                >
-                                    Passwort vergessen oder noch kein Passwort?
-                                </router-link>
-                            </v-btn>
+                                Passwort vergessen oder noch kein Passwort?
+                            </router-link>
                         </v-form>
                     </div>
                 </v-card-text>

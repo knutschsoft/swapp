@@ -81,14 +81,12 @@
                             Passwortänderung beantragen
                         </v-btn>
                         <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global"/>
-                        <v-btn
-                            variant="text"
-                            block
-                            class="mt-3"
+                        <router-link
+                            class="mt-3 d-block"
                             :to="{ name: 'Login' }"
                         >
                             Zurück zur Anmeldung
-                        </v-btn>
+                        </router-link>
                     </v-form>
                     <v-alert
                         v-if="isPasswordRequested && !hasError"
