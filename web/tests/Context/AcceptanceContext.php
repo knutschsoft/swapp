@@ -520,7 +520,7 @@ final class AcceptanceContext extends MinkContext
             if (!$isVTextField && !$isVSelect) {
                 $parent->click();
             } elseif ($isVSelect && $parent->isVisible()) {
-                \usleep(100000); // 0,1s
+                \usleep(200000); // 0,2s
                 $parent->click();
             }
 
