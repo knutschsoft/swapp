@@ -34,6 +34,7 @@ use App\Value\Consumable;
 use App\Value\Counseling;
 use App\Value\Medical;
 use App\Value\UserGroup;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -55,7 +56,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/change-unfinished',
             status: 200,
-            securityPostDenormalize: 'is_granted("'.WalkVoter::EDIT.'", object.walk)',
+            securityPostDenormalize: 'is_granted("' . WalkVoter::EDIT . '", object.walk)',
             input: WalkChangeUnfinishedRequest::class,
             output: Walk::class,
             messenger: 'input'
@@ -63,7 +64,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/change',
             status: 200,
-            securityPostDenormalize: 'is_granted("'.WalkVoter::EDIT.'", object.walk)',
+            securityPostDenormalize: 'is_granted("' . WalkVoter::EDIT . '", object.walk)',
             input: WalkChangeRequest::class,
             output: Walk::class,
             messenger: 'input'
@@ -71,7 +72,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/change-start-time',
             status: 200,
-            securityPostDenormalize: 'is_granted("'.WalkVoter::EDIT_START_TIME.'", object.walk)',
+            securityPostDenormalize: 'is_granted("' . WalkVoter::EDIT_START_TIME . '", object.walk)',
             input: WalkChangeStartTimeRequest::class,
             output: Walk::class,
             messenger: 'input'
@@ -79,7 +80,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/epilogue',
             status: 200,
-            securityPostDenormalize: 'is_granted("'.WalkVoter::READ.'", object.walk)',
+            securityPostDenormalize: 'is_granted("' . WalkVoter::READ . '", object.walk)',
             input: WalkEpilogueRequest::class,
             output: Walk::class,
             messenger: 'input'
@@ -87,7 +88,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/create',
             status: 200,
-            securityPostDenormalize: 'is_granted("'.TeamVoter::TEAM_READ.'", object.team) and user.hasTeam(object.team)',
+            securityPostDenormalize: 'is_granted("' . TeamVoter::TEAM_READ . '", object.team) and user.hasTeam(object.team)',
             input: WalkCreateRequest::class,
             output: Walk::class,
             messenger: 'input'
@@ -95,7 +96,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Post(
             uriTemplate: '/walks/remove',
             status: 200,
-            securityPostDenormalize: 'is_granted("'.WalkVoter::REMOVE.'", object.walk)',
+            securityPostDenormalize: 'is_granted("' . WalkVoter::REMOVE . '", object.walk)',
             input: WalkRemoveRequest::class,
             messenger: 'input'
         ),
@@ -130,7 +131,7 @@ class Walk implements \Stringable
     #[ORM\Column(length: 50)]
     private string $name;
 
-    /** @var Collection<int, WayPoint> **/
+    /** @var Collection<int, WayPoint> */
     #[ORM\OneToMany(targetEntity: WayPoint::class, mappedBy: 'walk')]
     private Collection $wayPoints;
 
@@ -439,7 +440,7 @@ class Walk implements \Stringable
 
     public function setStartTime(\DateTimeInterface $startTime): void
     {
-        $this->startTime = $startTime;
+        $this->startTime = Carbon::parse($startTime)->startOfMinute();
     }
 
     #[Groups(['walk:read'])]
@@ -805,7 +806,7 @@ class Walk implements \Stringable
             $ageGroups = \array_merge($ageGroups, $wayPoint->getAgeGroups());
         }
 
-        return  $ageGroups;
+        return $ageGroups;
     }
 
     /**
