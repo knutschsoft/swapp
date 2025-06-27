@@ -62,7 +62,7 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Mein erster Lauf" in "Tageskonzept" field
         When I enter "Arschkalt" in "Wetter" field
 
-        When I select date "06.06.2025" in date selector "startTimeDate"
+        When I select date "06.06.2035" in date selector "startTimeDate"
 
         When I click on test element "walkTeamMember-karl@gmx.de"
 
@@ -73,7 +73,7 @@ Feature: An user can do a walk with preset walkTeamMembers
 
         And I can find the following walks in database:
             | name              | walkTeamMembers | startDate        |
-            | Mein zweiter Lauf | brain@gmx.de    | date<06.06.2025> |
+            | Mein zweiter Lauf | brain@gmx.de    | date<06.06.2035> |
 
         Given I am authenticated as "pinky@gmx.de"
         And I should be on "/dashboard"

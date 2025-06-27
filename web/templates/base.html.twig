@@ -82,7 +82,7 @@
         {% block stylesheets %}
             {{ vite_entry_link_tags('app') }}
         {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
     </head>
     <body>
         {% if 'Internet Explorer' is same as device.getClient.name %}

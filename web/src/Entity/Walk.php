@@ -105,9 +105,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     paginationItemsPerPage: 5
 )]
 #[ORM\Table(name: 'walk')]
-#[ORM\Index(columns: ["name"], name: "idx_walk_name")]
-#[ORM\Index(columns: ["teamName"], name: "idx_walk_teamName")]
-#[ORM\Index(columns: ["name", "teamName"], name: "idx_walk_name_teamName")]
+#[ORM\Index(name: "idx_walk_name", columns: ["name"])]
+#[ORM\Index(name: "idx_walk_teamName", columns: ["teamName"])]
+#[ORM\Index(name: "idx_walk_name_teamName", columns: ["name", "teamName"])]
 #[ORM\Entity(repositoryClass: DoctrineORMWalkRepository::class)]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['id', 'name', 'rating', 'teamName', 'startTime', 'endTime', 'isResubmission'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isResubmission', 'isUnfinished'])]
