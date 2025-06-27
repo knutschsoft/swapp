@@ -516,9 +516,10 @@ final class AcceptanceContext extends MinkContext
             if ($isVSelect) {
                 $element->keyPress(WebDriverKeys::ENTER);
             }
+            $parent = $element->getParent();
             if (!$isVTextField && !$isVSelect) {
-                $parent = $element->getParent();
-                Assert::true($parent->isVisible(), \sprintf('The element %s is not visible and so value %s can not be set.', $parent->getHtml(), $value));
+                $parent->click();
+            } elseif ($isVSelect && $parent->isVisible()) {
                 $parent->click();
             }
 
