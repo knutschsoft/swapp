@@ -508,6 +508,7 @@ final class AcceptanceContext extends MinkContext
         $isDivField = $isVCombobox || $isVTextarea || $isVTextField || $isVSelect;
         if ($isDivField) {
             $element->click();
+            dump('here' . ' ' . $value);
             $element->keyPress(\str_repeat(WebDriverKeys::BACKSPACE, 25));
             $element->keyPress($this->enrichText($value));
             if (!$isVTextarea && !$isVTextField) {
@@ -517,7 +518,9 @@ final class AcceptanceContext extends MinkContext
                 $element->keyPress(WebDriverKeys::ENTER);
             }
             if (!$isVTextField || $isVSelect) {
-                $element->getParent()->click();
+                $parent = $element->getParent();
+                Assert::true($parent->isVisible(), \sprintf('The element %s is not visible and so value %s can not be set.', $parent->getHtml(), $value));
+                $parent->click();
             }
 
             return;
