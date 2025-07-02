@@ -208,7 +208,7 @@
                         />
                     </v-list-item>
                     <v-divider v-if="!isUserSwitched && isSuperAdmin" />
-                    <v-list v-if="!isUserSwitched && isSuperAdmin" density="compact" nav  color="white" class="white">
+                    <v-list v-if="!isUserSwitched && isSuperAdmin && displayedUserList.length" density="compact" nav  color="white" class="white">
                         <v-list-item
                             v-for="(user, key) in displayedUserList"
                             :key="key"

@@ -127,6 +127,7 @@
                 variant="outlined"
             >eine Systemische Frage erstellen</v-btn>.
         </v-alert>
+        <v-skeleton-loader v-if="isLoading" type="text, divider, text" />
     </div>
 </template>
 
