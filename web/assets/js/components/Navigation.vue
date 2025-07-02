@@ -194,7 +194,7 @@
                     >
                         <v-list-item-title>Swapp-Homepage <v-icon small>mdi-open-in-new</v-icon></v-list-item-title>
                     </v-list-item>
-                    <v-divider />
+                    <v-divider v-if="!isUserSwitched && isSuperAdmin" />
                     <v-list-item v-if="!isUserSwitched && isSuperAdmin">
                         <v-list-item-title>Nutzerwechsel</v-list-item-title>
                         <v-text-field
@@ -207,8 +207,8 @@
                             placeholder="Benutzername eingeben"
                         />
                     </v-list-item>
-                    <v-divider />
-                    <v-list density="compact" nav  color="white" class="white">
+                    <v-divider v-if="!isUserSwitched && isSuperAdmin" />
+                    <v-list v-if="!isUserSwitched && isSuperAdmin" density="compact" nav  color="white" class="white">
                         <v-list-item
                             v-for="(user, key) in displayedUserList"
                             :key="key"
