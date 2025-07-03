@@ -9,8 +9,8 @@ import ConsumablesFormField from '@/js/components/Teams/ConsumablesFormField.vue
 import CounselingsFormField from '@/js/components/Teams/CounselingsFormField.vue';
 import MedicalsFormField from '@/js/components/Teams/MedicalsFormField.vue';
 
-const props = defineProps<{ initialTeam: any; buttonLabel: string }>();
-const emit = defineEmits<[('submitted', any)]>();
+const props = defineProps<{ initialTeam?: any; buttonLabel: string }>();
+const emit = defineEmits<{ (e: 'submitted', payload: any): void }>();
 
 const form = ref<any>(null);
 const authStore = useAuthStore();
@@ -27,6 +27,7 @@ const team = ref<any>({
     name: '',
     initialMembersConfig: 'rundenersteller',
     isWithWeather: false,
+    isWithHolidays: false,
     isWithAgeRanges: !isWithPeopleCountDefault,
     isWithPeopleCount: isWithPeopleCountDefault,
     isWithContactsCount: false,
@@ -79,6 +80,7 @@ function setInitialValues() {
         team.value.isWithGuests = false;
         team.value.isWithSystemicQuestion = false;
         team.value.isWithWeather = false;
+        team.value.isWithHolidays = false;
         team.value.users = [];
         team.value.ageRanges = [];
         team.value.locationNames = [];
@@ -451,6 +453,33 @@ defineExpose({ resetForm });
                                                     <ul class="mb-0 pl-5">
                                                         <li>
                                                             Beim Beginn einer Runde gibt es die Möglichkeit das aktuelle Wetter mit zu erfassen.
+                                                        </li>
+                                                    </ul>
+                                                </v-alert>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
+                                    <v-col md="6">
+                                        <v-card>
+                                            <v-card-text>
+                                                <v-switch
+                                                    v-model="team.isWithHolidays"
+                                                    :disabled="isDisabled"
+                                                    color="primary"
+                                                    label="Ferienzeit"
+                                                    density="compact"
+                                                    hide-details
+                                                />
+                                                <v-alert
+                                                    v-if="team.isWithHolidays"
+                                                    class="text-muted mb-0"
+                                                    variant="text"
+                                                    density="compact"
+                                                >
+                                                    <b>Hinweis:</b>
+                                                    <ul class="mb-0 pl-5">
+                                                        <li>
+                                                            Beim Beginn einer Runde gibt es die Möglichkeit mit zu erfassen, ob gerade Ferienzeit ist.
                                                         </li>
                                                     </ul>
                                                 </v-alert>
