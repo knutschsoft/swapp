@@ -21,7 +21,7 @@ Feature: An administrator can change an unfinished walk
             | name   | team     | startTime       | weather | isUnfinished |
             | Klippe | Westhang | 02.01.2021 7:20 | Sonne   | <true>       |
 
-    @javascript @suw
+    @javascript
     @walkChangeUnfinished
     Scenario: I can change an unfinished walk as an admin
         And there are exactly 1 walks in database

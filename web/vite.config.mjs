@@ -97,7 +97,7 @@ export default defineConfig({
         sourcemap: true,
         rollupOptions: {
             input: {
-                app: './assets/js/app.js'
+                app: './assets/js/app.ts'
             }
         }
     },
