@@ -30,6 +30,11 @@ watch(() => props.walkCreator, (newValue: string | undefined) => {
     if (undefined === newValue) {
         return;
     }
+    // ensure Rundenersteller is also walkTeamMember
+    if (!value.value.includes(newValue)) {
+        value.value.push(newValue);
+    }
+    // let it blink
     if (!selectedWalkCreator.value) {
         return;
     }
@@ -86,7 +91,6 @@ const hasDisabledUser = computed(() => {
                                 :label="user.username"
                                 hide-details
                             >
-                                <template v-if="walkCreator === user['@id']"> (Rundenersteller)</template>
                             </v-switch>
                         </template>
                     </div>
