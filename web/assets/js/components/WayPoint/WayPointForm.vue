@@ -195,6 +195,11 @@
             <v-col
                 v-for="(consumable, index) in wayPoint.consumables"
                 :key="consumable.consumableName.name"
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+                xl="2"
             >
                 <v-select
                     v-model="consumable.peopleCount.count"
@@ -222,6 +227,11 @@
             <v-col
                 v-for="(counseling, index) in wayPoint.counselings"
                 :key="counseling.counselingName.name"
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+                xl="2"
             >
                 <v-select
                     v-model="counseling.peopleCount.count"
@@ -249,6 +259,11 @@
             <v-col
                 v-for="(medical, index) in wayPoint.medicals"
                 :key="medical.medicalName.name"
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+                xl="2"
             >
                 <v-select
                     v-model="medical.peopleCount.count"

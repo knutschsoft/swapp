@@ -30,7 +30,7 @@
                         clearable
                         hide-details
                         autocomplete="off"
-                        placeholder="Name des Ausgabematerials eingeben..."
+                        placeholder="Name des Medizinischen eingeben..."
                     />
                     <template v-slot:append>
                         <v-col>
