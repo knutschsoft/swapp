@@ -1,3 +1,134 @@
+
+<script setup lang="ts">
+import { ref, computed, watch, onMounted } from 'vue';
+import { FormError } from '@/js/components/Common';
+import { useAuthStore, useClientStore, useTeamStore, useUserStore } from '@/js/stores';
+import { WalkTeamMembersField } from '@/js/components/Common/Walk';
+import UserGroupsFormField from '@/js/components/Teams/UserGroupsFormField.vue';
+import ConsumablesFormField from '@/js/components/Teams/ConsumablesFormField.vue';
+import CounselingsFormField from '@/js/components/Teams/CounselingsFormField.vue';
+import MedicalsFormField from '@/js/components/Teams/MedicalsFormField.vue';
+
+const props = defineProps<{ initialTeam: any; buttonLabel: string }>();
+const emit = defineEmits<[('submitted', any)]>();
+
+const form = ref<any>(null);
+const authStore = useAuthStore();
+const clientStore = useClientStore();
+const teamStore = useTeamStore();
+const userStore = useUserStore();
+
+const isWithPeopleCountDefault = true;
+
+// Einzelne State-Felder
+const team = ref<any>({
+    team: null,
+    client: '',
+    name: '',
+    initialMembersConfig: 'rundenersteller',
+    isWithWeather: false,
+    isWithAgeRanges: !isWithPeopleCountDefault,
+    isWithPeopleCount: isWithPeopleCountDefault,
+    isWithContactsCount: false,
+    isWithGuests: false,
+    isWithSystemicQuestion: false,
+    isWithUserGroups: false,
+    isWithConsumables: false,
+    isWithCounselings: false,
+    isWithMedicals: false,
+    ageRanges: [] as Array<{ rangeStart: number|null; rangeEnd: number|null }> ,
+    locationNames: [] as string[],
+    walkNames: [] as string[],
+    conceptOfDaySuggestions: [] as string[],
+    guestNames: [] as string[],
+    userGroupNames: [] as string[],
+    consumableNames: [] as string[],
+    counselingNames: [] as string[],
+    medicalNames: [] as string[],
+    users: [] as string[],
+});
+
+// Computeds
+const users = computed(() =>
+    userStore.getUsers
+        .filter(u => u.client === team.value.client)
+        .sort((a, b) => a.username.toLowerCase().localeCompare(b.username.toLowerCase()))
+);
+const isPeopleCountDisabled = computed(() => team.value.isWithAgeRanges || isDisabled.value);
+const isDisabled = computed(() => teamStore.isLoadingCreate || teamStore.isLoadingChange(team.value['@id']));
+const nameState = computed(() => team.value.name.length >= 3 && team.value.name.length <= 100);
+const isLoading = computed(() => teamStore.isLoading);
+const currentUser = computed(() => authStore.currentUser);
+const isSuperAdmin = computed(() => authStore.isSuperAdmin);
+const isFormInvalid = computed(() => !(nameState.value && team.value.client && !isLoading.value && team.value.users.length > 0));
+const error = computed(() => teamStore.getErrors.change);
+const availableClients = computed(() => clientStore.getClients);
+
+// Helpers
+function setInitialValues() {
+    if (props.initialTeam) {
+        team.value = JSON.parse(JSON.stringify(props.initialTeam));
+    } else {
+        team.value.client = currentUser.value.client;
+        team.value.name = '';
+        // reset booleans & arrays
+        team.value.initialMembersConfig = 'rundenersteller';
+        team.value.isWithAgeRanges = false;
+        team.value.isWithPeopleCount = false;
+        team.value.isWithContactsCount = false;
+        team.value.isWithGuests = false;
+        team.value.isWithSystemicQuestion = false;
+        team.value.isWithWeather = false;
+        team.value.users = [];
+        team.value.ageRanges = [];
+        team.value.locationNames = [];
+        team.value.walkNames = [];
+        team.value.conceptOfDaySuggestions = [];
+        team.value.guestNames = [];
+        team.value.userGroupNames = [];
+        team.value.consumableNames = [];
+        team.value.counselingNames = [];
+        team.value.medicalNames = [];
+    }
+}
+
+// Methods
+function handleSubmit() {
+    if (isFormInvalid.value) return;
+    emit('submitted', team.value);
+}
+
+function removeAgeRange(i: number) { team.value.ageRanges.splice(i, 1); }
+function addAgeRange() { team.value.ageRanges.push({ rangeStart: null, rangeEnd: null }); }
+function removeLocationName(i: number) { team.value.locationNames.splice(i, 1); }
+function addLocationName() { team.value.locationNames.push(''); }
+function removeWalkName(i: number) { team.value.walkNames.splice(i, 1); }
+function addWalkName() { team.value.walkNames.push(''); }
+function removeConceptOfDaySuggestion(i: number) { team.value.conceptOfDaySuggestions.splice(i, 1); }
+function addConceptOfDaySuggestion() { team.value.conceptOfDaySuggestions.push(''); }
+function removeGuestName(i: number) { team.value.guestNames.splice(i, 1); }
+function addGuestName() { team.value.guestNames.push(''); }
+
+function resetForm() {
+    form.value?.reset();
+    setInitialValues();
+}
+
+// Watchers
+watch(
+    () => team.value.isWithAgeRanges,
+    (newVal) => { if (newVal) team.value.isWithPeopleCount = true; }
+);
+
+// Lifecycle
+onMounted(() => {
+    setInitialValues();
+    userStore.fetchUsers();
+});
+
+defineExpose({ resetForm });
+</script>
+
 <template>
     <v-form
         ref="form"
@@ -538,146 +669,5 @@
     </v-form>
 </template>
 
-<script setup>
-import {ref, computed, watch, onMounted, defineEmits} from 'vue';
-import {FormError} from '@/js/components/Common';
-import {useAuthStore, useClientStore, useTeamStore, useUserStore} from '@/js/stores';
-import {WalkTeamMembersField} from "@/js/components/Common/Walk";
-import UserGroupsFormField from "@/js/components/Teams/UserGroupsFormField.vue";
-import ConsumablesFormField from "@/js/components/Teams/ConsumablesFormField.vue";
-import CounselingsFormField from "@/js/components/Teams/CounselingsFormField.vue";
-import MedicalsFormField from "@/js/components/Teams/MedicalsFormField.vue";
-
-const props = defineProps({
-    initialTeam: {
-        type: Object,
-        required: false,
-        default: null,
-    },
-    buttonLabel: {
-        type: String,
-        required: true,
-    },
-});
-
-const emit = defineEmits(['submitted']);
-
-const form = ref(null);
-const authStore = useAuthStore();
-const clientStore = useClientStore();
-const teamStore = useTeamStore();
-const userStore = useUserStore();
-
-const isWithPeopleCountDefault = true;
-
-const team = ref({
-    team: null,
-    client: '',
-    name: '',
-    initialMembersConfig: 'rundenersteller',
-    isWithWeather: false,
-    isWithAgeRanges: !isWithPeopleCountDefault,
-    isWithPeopleCount: isWithPeopleCountDefault,
-    isWithContactsCount: false,
-    isWithGuests: false,
-    isWithSystemicQuestion: false,
-    isWithUserGroups: false,
-    isWithConsumables: false,
-    isWithCounselings: false,
-    isWithMedicals: false,
-    ageRanges: [],
-    locationNames: [],
-    walkNames: [],
-    conceptOfDaySuggestions: [],
-    guestNames: [],
-    userGroupNames: [],
-    consumableNames: [],
-    couneslingNames: [],
-    medicalNames: [],
-    users: [],
-});
-
-const users = computed(() => userStore.getUsers.filter(user => user.client === team.value.client)
-    .sort((a, b) => a.username.toLowerCase().localeCompare(b.username.toLowerCase())));
-
-const isPeopleCountDisabled = computed(() => team.value.isWithAgeRanges || isDisabled.value);
-const isDisabled = computed(() => teamStore.isLoadingCreate || teamStore.isLoadingChange(team.value['@id']));
-const nameState = computed(() => team.value.name && team.value.name.length >= 3 && team.value.name.length <= 100);
-const isLoading = computed(() => teamStore.isLoading);
-const currentUser = computed(() => authStore.currentUser);
-const isSuperAdmin = computed(() => authStore.isSuperAdmin);
-const isFormInvalid = computed(() => !(nameState.value && team.value.client && !isLoading.value && team.value.users.length));
-const error = computed(() => teamStore.getErrors.change);
-const availableClients = computed(() => clientStore.getClients);
-
-const setInitialValues = () => {
-    if (props.initialTeam) {
-        team.value = JSON.parse(JSON.stringify(props.initialTeam));
-    } else {
-        team.value = {
-            team: null,
-            client: currentUser.value.client,
-            name: '',
-            initialMembersConfig: 'rundenersteller',
-            isWithAgeRanges: false,
-            isWithPeopleCount: false,
-            isWithContactsCount: false,
-            isWithGuests: false,
-            isWithSystemicQuestion: false,
-            isWithWeather: false,
-            isWithUserGroups: false,
-            isWithConsumables: false,
-            isWithCounselings: false,
-            isWithMedicals: false,
-            users: [],
-            ageRanges: [],
-            locationNames: [],
-            walkNames: [],
-            conceptOfDaySuggestions: [],
-            guestNames: [],
-            userGroupNames: [],
-            consumableNames: [],
-            counselingNames: [],
-            medicalNames: [],
-        };
-    }
-};
-
-const handleSubmit = async () => {
-    if (isFormInvalid.value) return;
-    emit('submitted', team.value);
-};
-
-const removeAgeRange = (index) => team.value.ageRanges.splice(index, 1);
-const addAgeRange = () => team.value.ageRanges.push({rangeStart: null, rangeEnd: null});
-const removeLocationName = (index) => team.value.locationNames.splice(index, 1);
-const addLocationName = () => team.value.locationNames.push('');
-const removeWalkName = (index) => team.value.walkNames.splice(index, 1);
-const addWalkName = () => team.value.walkNames.push('');
-const removeConceptOfDaySuggestion = (index) => team.value.conceptOfDaySuggestions.splice(index, 1);
-const addConceptOfDaySuggestion = () => team.value.conceptOfDaySuggestions.push('');
-const removeGuestName = (index) => team.value.guestNames.splice(index, 1);
-const addGuestName = () => team.value.guestNames.push('');
-
-const resetForm = () => {
-    form.value?.reset();
-    setInitialValues();
-};
-
-watch(() => team.value.isWithAgeRanges, (newValue) => {
-    if (newValue) {
-        team.value.isWithPeopleCount = true;
-    }
-});
-
-onMounted(() => {
-    setInitialValues();
-    userStore.fetchUsers();
-});
-
-defineExpose({ resetForm });
-</script>
-
 <style scoped lang="scss">
-
 </style>
