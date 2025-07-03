@@ -10,6 +10,7 @@ export interface Props {
     users: User[],
     label?: string,
     description?: string,
+    showDisabled?: boolean,
     isLoading?: boolean
 }
 
@@ -17,6 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
     walkCreator: undefined,
     label: 'Teilnehmende der Runde',
     description: 'Wer war mit dabei?',
+    showDisabled: true,
     isLoading: false,
 });
 const value = computed({
@@ -82,26 +84,26 @@ const hasDisabledUser = computed(() => {
                                 :name="`users-${user.username}`"
                                 density="compact"
                                 color="primary"
-                                :disabled="isLoading || (walkCreator === user['@id'])"
+                                :readonly="isLoading || (walkCreator === user['@id'])"
                                 v-model="value"
                                 :value="user['@id']"
                                 :data-test="`walkTeamMember-${user.username}`"
                                 class="min-w-[250px]"
                                 ref="selectedWalkCreator"
-                                :label="user.username"
+                                :label="walkCreator === user['@id'] ? `${user.username} (Rundenersteller)` : user.username"
                                 hide-details
                             >
                             </v-switch>
                         </template>
                     </div>
                 </v-card-text>
-                <v-card-text class="py-0">
+                <v-card-text v-if="showDisabled" class="py-0">
                     <v-divider
                         v-if="hasDisabledUser"
                         class="d-block w-100 my-1 mr-2"
                     ></v-divider>
                 </v-card-text>
-                <v-card-text class="py-0">
+                <v-card-text v-if="showDisabled" class="py-0">
                     <div class="d-flex flex-wrap">
                         <template v-for="user in disabledUsers" :key="user['@id']">
                             <v-switch

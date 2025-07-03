@@ -16,6 +16,7 @@
                     :team="team"
                     :is-loading="isLoading"
                     :error="error"
+                    :show-disabled="false"
                     @change="handleWalkCreatorChange"
                 />
             </v-col>
