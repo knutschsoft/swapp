@@ -12,6 +12,7 @@ export interface Props {
     team?: Team | null,
     walk?: Walk | null,
     description?: string,
+    showDisabled?: boolean
     error?: any,
     isLoading?: boolean
 }
@@ -21,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
     description: '',
     team: null,
     walk: null,
+    showDisabled: true,
     error: false,
     isLoading: false,
 });
@@ -54,7 +56,14 @@ const walkCreatorOptions = computed(() => {
     }
     const innerUsers = props.team.users
         .map((userIri: string) => getUserByIri(userIri))
-        .filter((user: User) => undefined !== user);
+        .filter((user: User) => undefined !== user)
+        .filter((user: User) => {
+            if (props.showDisabled) {
+                return true
+            }
+
+            return user.isEnabled;
+        });
     if (isInitiallyWithoutWalkCreator.value) {
         innerUsers.unshift({'@id': null, 'username': '-- Rundenersteller ist unbekannt --'})
     }

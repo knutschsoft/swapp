@@ -28,6 +28,7 @@
                     :is-loading="isLoading"
                     :error="error"
                     :label="`Teilnehmende des Teams &quot;${team?.name}&quot;`"
+                    :show-disabled="false"
                     description="Wer ist heute mit dabei?"
                 />
             </v-col>
