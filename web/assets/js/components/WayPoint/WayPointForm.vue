@@ -81,90 +81,98 @@
                 </v-btn>
             </div>
         </v-alert>
-        <template v-if="walk.isWithAgeRanges || walk.isWithPeopleCount">
-            <div class="mb-2">
+        <v-row
+            v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
+            dense
+        >
+            <v-col cols="12">
                 <b v-text="walk.isWithAgeRanges ? `Altersgruppen` : `Anzahl der Personen vor Ort`" />
                 <br v-if="walk.isWithAgeRanges">
                 <small
                     v-if="walk.isWithAgeRanges"
-                    class="font-weight-normal text-muted"
+                    class="font-weight-normal text-disabled"
                 >
                     Anzahl der Personen vor Ort
                 </small>
-            </div>
-            <v-row
-                v-if="walk.isWithAgeRanges && wayPoint"
-                v-for="(ageGroup, index) in wayPoint.ageGroups"
-                :key="ageGroup.frontendLabel"
-                dense
-            >
-                <template
-                    v-for="colIndex in 3"
-                    :key="wayPoint.ageGroups[index].frontendLabel + colIndex"
-                >
-                    <v-col
-                        v-if="index % 3 === 0"
-                        cols="4"
-                        sm="4"
-                        md="4"
-                        class="mb-1"
-                    >
-                        <v-select
-                            v-model="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count"
-                            :label="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                            :items="ageRangeOptions"
-                            :disabled="isLoading"
-                            :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                            :data-test="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
-                            density="compact"
-                            variant="outlined"
-                            hide-details
-                            :clearable="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count !== 0"
-                            persistent-clear
-                            class=""
-                            @click:clear="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count = 0"
-                        />
-                    </v-col>
-                </template>
-            </v-row>
-            <v-text-field
-                v-if="walk.isWithAgeRanges"
-                v-model="sumPeopleCount"
-                type="text"
-                data-test="sumPeopleCount"
-                disabled
-                readonly
-                density="compact"
-                persistent-hint
-                variant="outlined"
-                background-color="grey lighten-5"
-                label="Anzahl Personen vor Ort"
-                hint="Ergibt sich automatisch aus der Summe der Altersgruppen."
-                class="mt-2"
-            />
-            <v-select
-                v-else
-                v-model="wayPoint.peopleCount"
-                :items="ageRangeOptions"
-                :disabled="isLoading"
-                data-test="peopleCount"
-                class=""
-                variant="outlined"
-                density="compact"
-                label="Anzahl Personen vor Ort"
-            />
-        </template>
-        <div
-            v-if="walk.isWithUserGroups"
-            class="mb-4"
+            </v-col>
+        </v-row>
+        <v-row
+            v-if="walk.isWithAgeRanges && wayPoint"
+            v-for="(ageGroup, index) in wayPoint.ageGroups"
+            :key="ageGroup.frontendLabel"
+            dense
         >
-            <b>Personenanzahl von Nutzergruppen</b>
-        </div>
+            <template
+                v-for="colIndex in 3"
+                :key="wayPoint.ageGroups[index].frontendLabel + colIndex"
+            >
+                <v-col
+                    v-if="index % 3 === 0"
+                    cols="4"
+                    sm="4"
+                    md="4"
+                    class="mb-1"
+                >
+                    <v-select
+                        v-model="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count"
+                        :label="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                        :items="ageRangeOptions"
+                        :disabled="isLoading"
+                        :help="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                        :data-test="wayPoint.ageGroups[index + colIndex - 1].frontendLabel"
+                        density="compact"
+                        variant="outlined"
+                        hide-details
+                        :clearable="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count !== 0"
+                        persistent-clear
+                        class=""
+                        @click:clear="wayPoint.ageGroups[index + colIndex - 1].peopleCount.count = 0"
+                    />
+                </v-col>
+            </template>
+        </v-row>
+        <v-row
+            v-if="walk.isWithAgeRanges || walk.isWithPeopleCount"
+            dense
+        >
+            <v-col cols="12">
+                <v-text-field
+                    v-if="walk.isWithAgeRanges"
+                    v-model="sumPeopleCount"
+                    type="text"
+                    data-test="sumPeopleCount"
+                    disabled
+                    readonly
+                    density="compact"
+                    persistent-hint
+                    variant="outlined"
+                    background-color="grey lighten-5"
+                    label="Anzahl Personen vor Ort"
+                    hint="Ergibt sich automatisch aus der Summe der Altersgruppen."
+                    class="mt-2"
+                />
+                <v-select
+                    v-else
+                    v-model="wayPoint.peopleCount"
+                    :items="ageRangeOptions"
+                    :disabled="isLoading"
+                    data-test="peopleCount"
+                    class=""
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    label="Anzahl Personen vor Ort"
+                />
+            </v-col>
+        </v-row>
         <v-row
             v-if="walk.isWithUserGroups"
             class="d-flex align-items-end"
             dense
         >
+            <v-col cols="12">
+                <b>Personenanzahl von Nutzergruppen</b>
+            </v-col>
             <v-col
                 v-for="(userGroup, index) in wayPoint.userGroups"
                 :key="userGroup.userGroupName.name"
@@ -181,25 +189,21 @@
                 />
             </v-col>
         </v-row>
-        <div
-            v-if="walk.isWithConsumables"
-            class="mb-4"
-        >
-            <b>Ausgabematerialien</b>
-        </div>
         <v-row
             v-if="walk.isWithConsumables"
             class="d-flex align-items-end"
             dense
         >
+            <v-col cols="12">
+                <b>Ausgabematerialien</b>
+            </v-col>
             <v-col
                 v-for="(consumable, index) in wayPoint.consumables"
                 :key="consumable.consumableName.name"
-                cols="12"
-                sm="6"
-                md="4"
-                lg="3"
-                xl="2"
+                cols="6"
+                sm="4"
+                md="3"
+                lg="2"
             >
                 <v-select
                     v-model="consumable.peopleCount.count"
@@ -208,30 +212,27 @@
                     :help="consumable.consumableName.name"
                     density="compact"
                     variant="outlined"
+                    hide-details
                     :label="consumable.consumableName.name"
                     @click:clear="consumable.peopleCount.count = 0"
                 />
             </v-col>
         </v-row>
-        <div
-            v-if="walk.isWithCounselings"
-            class="mb-4"
-        >
-            <b>Beratungen</b>
-        </div>
         <v-row
             v-if="walk.isWithCounselings"
             class="d-flex align-items-end"
             dense
         >
+            <v-col cols="12">
+                <b>Beratungen</b>
+            </v-col>
             <v-col
                 v-for="(counseling, index) in wayPoint.counselings"
                 :key="counseling.counselingName.name"
-                cols="12"
-                sm="6"
-                md="4"
-                lg="3"
-                xl="2"
+                cols="6"
+                sm="4"
+                md="3"
+                lg="2"
             >
                 <v-select
                     v-model="counseling.peopleCount.count"
@@ -240,30 +241,27 @@
                     :help="counseling.counselingName.name"
                     density="compact"
                     variant="outlined"
+                    hide-details
                     :label="counseling.counselingName.name"
                     @click:clear="counseling.peopleCount.count = 0"
                 />
             </v-col>
         </v-row>
-        <div
-            v-if="walk.isWithMedicals"
-            class="mb-4"
-        >
-            <b>Medizin</b>
-        </div>
         <v-row
             v-if="walk.isWithMedicals"
             class="d-flex align-items-end"
             dense
         >
+            <v-col cols="12">
+                <b>Medizin</b>
+            </v-col>
             <v-col
                 v-for="(medical, index) in wayPoint.medicals"
                 :key="medical.medicalName.name"
-                cols="12"
-                sm="6"
-                md="4"
-                lg="3"
-                xl="2"
+                cols="6"
+                sm="4"
+                md="3"
+                lg="2"
             >
                 <v-select
                     v-model="medical.peopleCount.count"
@@ -272,6 +270,7 @@
                     :help="medical.medicalName.name"
                     density="compact"
                     variant="outlined"
+                    hide-details
                     :label="medical.medicalName.name"
                     @click:clear="medical.peopleCount.count = 0"
                 />
@@ -408,7 +407,9 @@
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit"
             block
+            height="48px"
             class="mb-2 text-transform-none"
+            style="height:48px"
             :tabindex="isSubmitDisabled ? '-1' : ''"
         >
             {{ submitButtonText }}
