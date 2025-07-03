@@ -143,7 +143,7 @@ Feature: Testing walk create resource
             | weather          | Arschkalt                 |
             | isUnfinished     | 1                         |
             | teamName         | Westhang                  |
-            | startTime        | 2020-01-01T13:37:22+02:00 |
+            | startTime        | 2020-01-01T13:37:00+02:00 |
             | endTime          | <null>                    |
         And there are exactly 3 walks in database
 

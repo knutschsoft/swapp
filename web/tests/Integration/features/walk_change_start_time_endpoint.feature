@@ -29,12 +29,12 @@ Feature: Testing walk change-start-time resource
         And the JSON nodes should be equal to:
             | @type     | Walk                      |
             | name      | Gamescon                  |
-            | startTime | 2021-05-11T15:51:06+00:00 |
+            | startTime | 2021-05-11T15:51:00+00:00 |
 
         And there are exactly 1 walks in database
         And I can find the following walks in database:
             | name     | startTime                                   |
-            | Gamescon | date<2021-05-11T15:51:06+00:00,d.m.Y H:i:s> |
+            | Gamescon | date<2021-05-11T15:51:00+00:00,d.m.Y H:i:s> |
 
     @api @walkChangeStartTime
     Scenario: I can request /api/walks/change-start-time as authenticated user and will change a walk
@@ -48,12 +48,12 @@ Feature: Testing walk change-start-time resource
         And the JSON nodes should be equal to:
             | @type     | Walk                      |
             | name      | Gamescon                  |
-            | startTime | 2021-05-11T15:51:06+00:00 |
+            | startTime | 2021-05-11T15:51:00+00:00 |
 
         And there are exactly 1 walks in database
         And I can find the following walks in database:
             | name     | startTime                                   |
-            | Gamescon | date<2021-05-11T15:51:06+00:00,d.m.Y H:i:s> |
+            | Gamescon | date<2021-05-11T15:51:00+00:00,d.m.Y H:i:s> |
 
     @api @walkChangeStartTime
     Scenario: I can not request /api/walks/change-start-time as unauthenticated user
