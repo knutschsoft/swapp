@@ -208,6 +208,12 @@
                 />
             </v-col>
         </v-row>
+        <div
+            v-if="walk.isWithCounselings"
+            class="mb-4"
+        >
+            <b>Beratungen</b>
+        </div>
         <v-row
             v-if="walk.isWithCounselings"
             class="d-flex align-items-end"
@@ -229,6 +235,12 @@
                 />
             </v-col>
         </v-row>
+        <div
+            v-if="walk.isWithMedicals"
+            class="mb-4"
+        >
+            <b>Medizin</b>
+        </div>
         <v-row
             v-if="walk.isWithMedicals"
             class="d-flex align-items-end"
