@@ -40,7 +40,7 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Arschkalt" in "Wetter" field
 
         When I click on test element "walkTeamMember-pinky@gmx.de"
-        When I click on test element "walkTeamMember-disabled@gmx.de"
+        When I wait for test element "walkTeamMember-disabled@gmx.de" to disappear
 
         When I select time "18:50" in time selector "startTimeTime"
 
@@ -87,7 +87,7 @@ Feature: An user can do a walk with preset walkTeamMembers
         When I enter "Arschkalt" in "Wetter" field
         Then I wait for test element "walkTeamMember-brain@gmx.de" to be selected
         Then I wait for test element "walkTeamMember-pinky@gmx.de" to be selected
-        Then I wait for test element "walkTeamMember-disabled@gmx.de" to be not selected
+        Then I wait for test element "walkTeamMember-disabled@gmx.de" to disappear
         Then I wait for test element "walkTeamMember-karl@gmx.de" to be not selected
 
         When I submit Runde beginnen formular

@@ -228,13 +228,16 @@ export default {
             });
             return;
         }
-        this.team.users.forEach((userIri) => {
+        // const fetchPromises: Promise<void>[] = [];
+        const fetchPromises = [];
+        for (const userIri of this.team.users) {
             if (!this.getUserByIri(userIri)) {
-                this.userStore.fetchByIri(userIri);
+                fetchPromises.push(this.userStore.fetchByIri(userIri));
             }
-        });
+        }
+        await Promise.all(fetchPromises);
         if (this.team.initialMembersConfig === 'mitglieder') {
-            this.form.walkTeamMembers = await this.getWalkTeamMembersOfLastWalkOfTeam(this.team);
+            this.form.walkTeamMembers = await this.getEnabledWalkTeamMembersOfLastWalkOfTeam(this.team);
         } else {
             this.form.walkTeamMembers = [this.currentUser['@id']];
         }
@@ -247,25 +250,28 @@ export default {
                 this.form.walkTeamMembers.push(newWalkCreator)
             }
         },
-        async getWalkTeamMembersOfLastWalkOfTeam(team) {
+        async getEnabledWalkTeamMembersOfLastWalkOfTeam(team) {
             const response = await WalkAPI.findLastWalkByTeam(team);
             const hits = response.data['totalItems'];
-            let result = [];
-            if (hits) {
-                response.data['member'][0].walkTeamMembers.forEach((userIri) => {
-                    if (-1 !== team.users.indexOf(userIri)) {
-                        result.push(userIri);
-                    }
+            const sourceArray = hits
+                ? response.data['member'][0].walkTeamMembers
+                : team.users;
+
+            // Nur User behalten, die im Team sind und isEnabled
+            const filtered = sourceArray
+                .filter(userIri => team.users.includes(userIri))  // Mitglied im Team?
+                .filter(userIri => {
+                    const user = this.getUserByIri(userIri);
+                    return !!(user && user.isEnabled);
                 });
-            } else {
-                result = team.users;
+
+            // Current User sicherstellen
+            const currentIri = this.currentUser['@id'];
+            if (!filtered.includes(currentIri)) {
+                filtered.push(currentIri);
             }
 
-            if (-1 === result.indexOf(this.currentUser['@id'])) {
-                result.push(this.currentUser['@id']);
-            }
-
-            return result;
+            return filtered;
         },
         getUserByIri(userIri) {
             return this.userStore.getUserByIri(userIri);
