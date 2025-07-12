@@ -510,18 +510,9 @@ final class AcceptanceContext extends MinkContext
             $element->click();
             $element->keyPress(\str_repeat(WebDriverKeys::BACKSPACE, 25));
             $element->keyPress($this->enrichText($value));
-            if (!$isVTextarea && !$isVTextField) {
+            if ($isVSelect || $isVCombobox) {
                 $element->keyPress(WebDriverKeys::ENTER);
-            }
-            if ($isVSelect) {
-                $element->keyPress(WebDriverKeys::ENTER);
-            }
-            $parent = $element->getParent();
-            if (!$isVTextField && !$isVSelect) {
-                $parent->click();
-            } elseif ($isVSelect && $parent->isVisible()) {
-                \usleep(200000); // 0,2s
-                $parent->click();
+                $element->keyPress(WebDriverKeys::TAB);
             }
 
             return;
