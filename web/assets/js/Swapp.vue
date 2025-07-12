@@ -134,6 +134,7 @@ export default {
     },
     created() {
         const that = this;
+
         apiClient.interceptors.response.use(undefined, (err) => {
             if (this.route.name === 'Logout') {
                 return Promise.reject(err);
@@ -166,7 +167,7 @@ export default {
             let title = '';
             let isProd = process.env.NODE_ENV === 'production';
             if (isProd) {
-                message = `Das hätte nicht passieren dürfen. Wende dich bitte mit einer Beschreibung zur Reproduktion des Fehlers an info@streetworkapp.de`;
+                message = 'globalError';
             } else {
                 message = `
                     Fehlermeldung: ${error.message}
