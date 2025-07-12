@@ -222,6 +222,29 @@ final class AcceptanceContext extends MinkContext
     }
 
     /**
+     * @When  I wait for element :selector to disappear
+     *
+     * @param string $selector
+     *
+     * @throws \Throwable
+     */
+    public function iWaitForElementToDisappear(string $selector): void
+    {
+        $this->spin(
+            function () use ($selector): void {
+                $tries = 10;
+                try {
+                    $element = $this->getNodeElement($selector, $tries);
+                } catch (\InvalidArgumentException) {
+                    // all fine here
+                    return;
+                }
+                Assert::false($element->isVisible());
+            }
+        );
+    }
+
+    /**
      * @Then (I )wait :count second(s)
      *
      * @param string $count
@@ -325,6 +348,7 @@ final class AcceptanceContext extends MinkContext
         $this->getNodeElement($locatorMinute)->click();
         $this->getNodeElement($minuteSelector)->click();
         $this->getNodeElement('body')->click();
+        $this->iWaitForElementToDisappear($locatorMinute);
     }
 
     /**
