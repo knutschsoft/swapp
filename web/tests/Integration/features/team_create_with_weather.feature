@@ -23,6 +23,7 @@ Feature: Testing team create resource without weather
             | isWithAgeRanges         | <true>                            |
             | isWithSystemicQuestion  | <true>                            |
             | isWithWeather           | <false>                           |
+            | isWithHolidays          | <true>                            |
             | isWithPeopleCount       | <true>                            |
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |
@@ -59,6 +60,7 @@ Feature: Testing team create resource without weather
             | isWithAgeRanges         | <true>                            |
             | isWithSystemicQuestion  | <false>                           |
             | isWithWeather           | <true>                            |
+            | isWithHolidays          | <true>                            |
             | isWithPeopleCount       | <true>                            |
             | isWithContactsCount     | <false>                           |
             | isWithUserGroups        | <false>                           |

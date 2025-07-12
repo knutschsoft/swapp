@@ -27,8 +27,7 @@ final class WalkChangeUnfinishedRequest
     #[AppAssert\DateTimeRequirements]
     public \DateTime $startTime;
 
-    #[Assert\NotNull]
-    public bool $holidays;
+    public ?bool $holidays;
 
     #[Assert\IsTrue(message: 'walk.isStartTimeBeforeWayPointsVisitedAt', groups: ['SecondGroup'])]
     public function isStartTimeBeforeAllWayPoints(): bool
@@ -76,5 +75,15 @@ final class WalkChangeUnfinishedRequest
     public function isWeatherSetWhenNeeded(): bool
     {
         return $this->walk->isWithWeather() === (bool) $this->weather;
+    }
+
+    #[Assert\IsTrue(message: 'walk.isHolidaysSetWhenNeeded', groups: ['SecondGroup'])]
+    public function isHolidaysSetWhenNeeded(): bool
+    {
+        if ($this->walk->isWithHolidays() && \in_array($this->holidays, [true, false], true)) {
+            return true;
+        }
+
+        return !$this->walk->isWithHolidays() && null === $this->holidays;
     }
 }

@@ -103,14 +103,12 @@ Feature: Testing walk change resource
             | violations[9].message       | Dieser Wert sollte nicht null sein. |
             | violations[10].propertyPath | endTime                             |
             | violations[10].message      | Dieser Wert sollte nicht null sein. |
-            | violations[11].propertyPath | holidays                            |
+            | violations[11].propertyPath | isResubmission                      |
             | violations[11].message      | Dieser Wert sollte nicht null sein. |
-            | violations[12].propertyPath | isResubmission                      |
+            | violations[12].propertyPath | walkTeamMembers                     |
             | violations[12].message      | Dieser Wert sollte nicht null sein. |
-            | violations[13].propertyPath | walkTeamMembers                     |
+            | violations[13].propertyPath | guestNames                          |
             | violations[13].message      | Dieser Wert sollte nicht null sein. |
-            | violations[14].propertyPath | guestNames                          |
-            | violations[14].message      | Dieser Wert sollte nicht null sein. |
 
     @api @walkChange
     Scenario: I can request /api/walks/change as authenticated user which is walkCreator and will try to change this walk

@@ -85,6 +85,7 @@
                     {{ lastWayPointOrRoundTimeAsCalendar }}.
                 </v-alert>
                 <walk-holidays-field
+                    v-if="walk.isWithHolidays"
                     v-model="form.holidays"
                     :is-loading="isLoading"
                     :error="error"

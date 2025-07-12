@@ -19,6 +19,8 @@ walk:
  isStartTimeBeforeWayPointsVisitedAt: Die Rundenstartzeit muss vor der Ankunftszeit aller Wegpunkte liegen.
  isEndTimeAfterWayPointsVisitedAt: Die Rundenendzeit muss nach der Ankunftszeit aller ihrer Wegpunkte liegen.
  isWalkCreatorInWalkMembers: Der Rundenersteller muss Teilnehmer der Runde sein.
+ isWeatherSetWhenNeeded: Das Wetter muss gesetzt sein.
+ isHolidaysSetWhenNeeded: Es muss gesetzt sein, ob gerade Ferien sind.
 team:
  hasAgeRangesWhenIsWithAgeRangesIsTrue: Das Team muss mindestens eine Altersgruppe haben, wenn die Altersgruppen mit erfasst werden.
  hasPeopleCountWhenIsWithAgeRangesIsTrue: Das Team muss "Anzahl Personen vor Ort" aktiviert haben, wenn die Altersgruppen mit erfasst werden.

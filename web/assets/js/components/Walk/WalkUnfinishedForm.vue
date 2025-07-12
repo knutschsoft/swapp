@@ -60,16 +60,15 @@
                     :error="error"
                 />
             </v-col>
-            <v-col cols="12">
+            <v-col v-if="initialWalk.isWithHolidays" cols="12">
                 <walk-holidays-field
                     v-model="walk.holidays"
                     :is-loading="isLoading"
                     :error="error"
                 />
             </v-col>
-            <v-col cols="12">
+            <v-col v-if="initialWalk.isWithWeather" cols="12">
                 <walk-weather-field
-                    v-if="initialWalk.isWithWeather"
                     v-model="walk.weather"
                     :is-loading="isLoading"
                     :error="error"
@@ -156,6 +155,7 @@ export default {
                 || !this.walk.walkTeamMembers.length
                 || !this.walk.walkCreator && this.initialWalk.walkCreator
                 || !this.walk.weather && this.walk.isWithWeather
+                || null !== this.walk.holidays && this.walk.isWithHolidays
                 || this.isLoading;
         },
         team() {

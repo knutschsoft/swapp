@@ -264,7 +264,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $request->name = $row['name'];
             $request->startTime = isset($row['startTime']) ? new \DateTime($this->enrichText($row['startTime'])) : new \DateTime();
             $request->weather = $row['weather'] ?? 'Arschkalt';
-            $request->holidays = isset($row['holidays']) && (bool) $row['holidays'];
+            $request->holidays = isset($row['holidays']) && $row['holidays'];
             $request->conceptOfDay = isset($row['conceptOfDay']) ? $this->enrichText($row['conceptOfDay']) : ['My daily concept.'];
             $request->walkTeamMembers = $team->getUsers()->toArray();
             $request->guestNames = $team->getGuestNames();
@@ -284,6 +284,9 @@ final class DomainIntegrationContext extends RawMinkContext
             }
             if (!$walk->isWithWeather()) {
                 $walk->setWeather('');
+            }
+            if (!$walk->isWithHolidays()) {
+                $walk->setHolidays(null);
             }
             if ($walk->isWithSystemicQuestion()) {
                 $walk->setSystemicQuestion($systemicQuestion->getQuestion());
@@ -626,6 +629,9 @@ final class DomainIntegrationContext extends RawMinkContext
             if (isset($row['isWithWeather']) && '' !== $row['isWithWeather']) {
                 Assert::eq($walk->isWithWeather(), (bool) $this->enrichText($row['isWithWeather']));
             }
+            if (isset($row['isWithHolidays']) && '' !== $row['isWithHolidays']) {
+                Assert::eq($walk->isWithHolidays(), (bool) $this->enrichText($row['isWithHolidays']));
+            }
             if (isset($row['guestNames']) && '' !== $row['guestNames']) {
                 Assert::eq($walk->getGuestNames(), (array) $this->enrichText($row['guestNames']));
             }
@@ -947,6 +953,11 @@ final class DomainIntegrationContext extends RawMinkContext
                 $isWithWeather = (bool) $this->enrichText($row['isWithWeather']);
             }
             $team->setIsWithWeather($isWithWeather);
+            $isWithHolidays = true;
+            if (isset($row['isWithHolidays']) && '' !== $row['isWithHolidays']) {
+                $isWithHolidays = (bool) $this->enrichText($row['isWithHolidays']);
+            }
+            $team->setIsWithHolidays($isWithHolidays);
             if ($team->isWithAgeRanges()) {
                 $ageRanges = $this->getAgeRangesFromString($row['ageRanges'] ?? '1-2,3-10');
                 $team->setAgeRanges($ageRanges);

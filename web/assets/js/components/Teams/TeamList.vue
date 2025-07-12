@@ -255,7 +255,7 @@ export default {
             return this.teams.every(team => team.isWithPeopleCount || team.isWithAgeRanges || team.isWithContactsCount || team.isWithUserGroups || team.isWithConsumables || team.isWithCounselings || team.isWithMedicals);
         },
         hasAtLeastOneAdditionalWalkField() {
-            return this.teams.every(team => team.isWithGuests || team.isWithSystemicQuestion || team.isWithWeather);
+            return this.teams.every(team => team.isWithGuests || team.isWithSystemicQuestion || team.isWithWeather|| team.isWithHolidays);
         },
         hasAtLeastOneTeamWithConceptOfDaySuggestions() {
             return !this.teams.every(team => !team.conceptOfDaySuggestions.length);
@@ -330,6 +330,9 @@ export default {
             if (team.isWithWeather) {
                 additionalWalkFields.push('Wetter');
             }
+            if (team.isWithHolidays) {
+                additionalWalkFields.push('Ferienzeit');
+            }
 
             return additionalWalkFields;
         },
@@ -371,6 +374,7 @@ export default {
                 isWithGuests: team.isWithGuests,
                 isWithSystemicQuestion: team.isWithSystemicQuestion,
                 isWithWeather: team.isWithWeather,
+                isWithHolidays: team.isWithHolidays,
                 initialMembersConfig: team.initialMembersConfig,
                 guestNames: team.guestNames,
             });

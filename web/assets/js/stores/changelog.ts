@@ -11,34 +11,71 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '12.07.2025',
+                avatarText: '🍮',
+                avatarTitle: 'Tag des Wackelpuddings',
+                entries: [
+                    {
+                        text: [
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob das Dokumentieren der <b>Ferienzeit</b> für die Runden des Teams deaktiviert ist.',
+                            'Damit muss nun nicht mehr jedes Team festhalten, ob gerade Ferien sind und braucht nur das dokumentieren, was benötigt wird.'
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/20250712_Runde_starten_Ferienzeit_vorher_nachher.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Runde erstellen-Seite (links: vorher - rechts: neu)',
+                            },
+                            {
+                                src: '../changelog/20250712_Teambearbeitenseite_Ferienzeit.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Team bearbeiten-Seite (links: vorher - rechts: neu)',
+                            },
+                        ]
+                    },
+                ],
+            },
+            {
                 header: '27.06.2025',
                 avatarText: '&#9728;&#65039;',
                 avatarTitle: 'Sommer-Update',
                 entries: [
                     {
                         text: [
-                            'Feature: Ein Team-Leiter kann je Team festlegen, ob „Ausgabematerialien“ als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob <b>Ausgabematerialien</b> als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
                             'Dafür kann er in der Teamverwaltung Autocomplete-Vorschläge definieren.'
                         ],
                     },
                     {
                         text: [
-                            'Feature: Ein Team-Leiter kann je Team festlegen, ob „Beratungen“ als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob <b>Beratungen</b> als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
                             'Dafür kann er in der Teamverwaltung Autocomplete-Vorschläge definieren.'
                         ],
                     },
                     {
                         text: [
-                            'Feature: Ein Team-Leiter kann je Team festlegen, ob „Medizinisches“ als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob <b>Medizinisches</b> als zusätzliche Datensätze für Wegpunkte mit festgehalten werden sollen.',
                             'Dafür kann er in der Teamverwaltung Autocomplete-Vorschläge definieren.',
                             'Dies ermöglicht die Dokumentation von medizinischen Angeboten, die gemacht wurden.'
                         ],
                     },
                     {
                         text: [
-                            'Feature: Ein Team-Leiter kann je Team festlegen, ob das Dokumentieren des Wetters für die Runden des Teams deaktiviert ist.',
+                            'Feature: Ein Team-Leiter kann je Team festlegen, ob das Dokumentieren des <b>Wetters</b> für die Runden des Teams deaktiviert ist.',
                             'Damit muss nun nicht mehr jedes Team das Wetter festhalten und braucht nur das dokumentieren, was benötigt wird.'
                         ],
+                        gallery: [
+                            {
+                                src: '../changelog/20250629_Runde_starten_Wetter_vorher_nachher.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Runde erstellen-Seite (links: vorher - rechts: neu)',
+                            },
+                            {
+                                src: '../changelog/20250629_Teambearbeitenseite_Wetter.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Team bearbeiten-Seite (links: vorher - rechts: neu)',
+                            },
+                        ]
                     },
                     {
                         text: [
@@ -52,7 +89,7 @@ export const useChangelogStore = defineStore("changelog", {
                     },
                     {
                         text: [
-                            'Misc: Großes Grafikupdate bei dem bootstrap-vue komplett durch vuetify 3 ersetzt wurde.',
+                            'Misc: Großes <b>Grafikupdate</b> bei dem bootstrap-vue komplett durch vuetify 3 ersetzt wurde.',
                             'In diesem Zuge wurde die komplette Seite grafisch auf den neuesten Stand gebracht.'
                         ],
                     },

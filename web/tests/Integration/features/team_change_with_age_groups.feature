@@ -26,6 +26,7 @@ Feature: Testing team change resource with guests
             | isWithAgeRanges         | <true>                    |
             | isWithSystemicQuestion  | <true>                    |
             | isWithWeather           | <true>                    |
+            | isWithHolidays          | <true>                    |
             | isWithPeopleCount       | <true>                    |
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |
@@ -61,6 +62,7 @@ Feature: Testing team change resource with guests
             | isWithAgeRanges         | <true>                    |
             | isWithSystemicQuestion  | <true>                    |
             | isWithWeather           | <true>                    |
+            | isWithHolidays          | <true>                    |
             | isWithPeopleCount       | <false>                   |
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |

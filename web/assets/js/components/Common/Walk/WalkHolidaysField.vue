@@ -35,7 +35,7 @@ const errorMessages = computed(() => {
 
 <template>
     <div>
-        Ferien<br>
+        Ferienzeit<br>
         <v-switch
             v-model="value"
             :disabled="isLoading"

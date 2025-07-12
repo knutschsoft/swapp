@@ -56,7 +56,6 @@ final readonly class WayPointChangeRequestHandler
         if ($tmpFile && $request->imageFileName) {
             $newImageName = \sprintf("%s_%s", \time(), $request->imageFileName);
             $wayPoint->setImageName($newImageName);
-
             $contents = \file_get_contents(\sprintf("%s%s%s", $tmpFile->getPath(), \DIRECTORY_SEPARATOR, $tmpFile->getFilename()));
             Assert::string($contents);
             $this->wayPointImageStorage->write($newImageName, $contents);

@@ -92,7 +92,7 @@ class WalkExport
     public string $weather;
     #[Groups('walkExport:read')]
     #[SerializedName('Ferien')]
-    public bool $isHolidays;
+    public ?bool $isHolidays = null;
     #[Groups('walkExport:read')]
     #[SerializedName('Tageskonzept')]
     public string $conceptOfDay;

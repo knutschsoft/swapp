@@ -32,7 +32,9 @@ final readonly class WalkEpilogueRequestHandler
         }
         $walk->setStartTime($request->startTime);
         $walk->setEndTime($request->endTime);
-        $walk->setHolidays($request->holidays);
+        if ($walk->isWithWeather()) {
+            $walk->setHolidays($request->holidays);
+        }
         $walk->setIsResubmission($request->isResubmission);
         $walk->setRating($request->rating);
         $walk->setIsUnfinished(false);

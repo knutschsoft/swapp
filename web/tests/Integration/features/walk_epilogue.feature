@@ -127,10 +127,8 @@ Feature: Testing walk epilogue resource
             | violations[9].message       | Dieser Wert sollte nicht null sein. |
             | violations[10].propertyPath | endTime                             |
             | violations[10].message      | Dieser Wert sollte nicht null sein. |
-            | violations[11].propertyPath | holidays                            |
+            | violations[11].propertyPath | isResubmission                      |
             | violations[11].message      | Dieser Wert sollte nicht null sein. |
-            | violations[12].propertyPath | isResubmission                      |
-            | violations[12].message      | Dieser Wert sollte nicht null sein. |
 
     @api @walkEpilogue
     Scenario: I can request /api/walks/epilogue as authenticated user and will epilogue a walk
@@ -157,7 +155,7 @@ Feature: Testing walk epilogue resource
             | name             | This is my Walk           |
             | systemicQuestion | How are you?              |
             | weather          | Sonne                     |
-            | startTime        | 2021-05-11T15:51:06+00:00 |
+            | startTime        | 2021-05-11T15:51:00+00:00 |
             | endTime          | 2030-05-11T15:51:08+00:00 |
 
         And there are exactly 2 walks in database

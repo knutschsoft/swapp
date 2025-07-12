@@ -109,6 +109,7 @@
             {{ lastWayPointOrRoundTimeAsCalendar }}.
         </v-alert>
         <walk-holidays-field
+            v-if="initialWalk.isWithWeather"
             v-model="walk.holidays"
             :is-loading="isLoading"
             :error="error"

@@ -33,7 +33,7 @@ Feature: An user can do a walk with preset walkTeamMembers
         Then I wait for "Name" to appear
         Then I wait for "Tageskonzept" to appear
         Then I wait for "Rundenstartzeit" to appear
-        Then I wait for "Ferien" to appear
+        Then I wait for "Ferienzeit" to appear
         Then I wait for "Wetter" to appear
         When I enter "Mein erster Lauf" in "Name" field
         When I enter "Freies Streetwork" in "Tageskonzept" field

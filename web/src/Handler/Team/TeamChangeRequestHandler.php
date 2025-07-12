@@ -44,6 +44,7 @@ final readonly class TeamChangeRequestHandler
         $team->setIsWithMedicals($request->isWithMedicals);
         $team->setIsWithSystemicQuestion($request->isWithSystemicQuestion);
         $team->setIsWithWeather($request->isWithWeather);
+        $team->setIsWithHolidays($request->isWithHolidays);
         $team->setInitialMembersConfig($request->initialMembersConfig);
         $this->teamRepository->save($team);
 

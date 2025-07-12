@@ -61,6 +61,9 @@ final class TeamChangeRequest
     #[AppAssert\IsWithWeatherRequirements]
     public bool $isWithWeather;
 
+    #[AppAssert\IsWithHolidaysRequirements]
+    public bool $isWithHolidays;
+
     #[AppAssert\IsWithContactsCountRequirements]
     public bool $isWithContactsCount;
 

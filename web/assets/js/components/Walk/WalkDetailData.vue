@@ -120,6 +120,9 @@
                 if (this.walk.isWithWeather) {
                     fields.push({ name: 'Wetter', value: this.walk.weather });
                 }
+                if (this.walk.isWithHolidays) {
+                    fields.push({ name: 'Ferien', value: this.walk.holidays });
+                }
                 fields = fields.concat([
                     { name: 'Beginn', value: this.formatDate(this.walk.startTime) },
                     { name: 'Ende', value: this.walk.isUnfinished ? '-' : this.formatDate(this.walk.endTime) },

@@ -173,8 +173,8 @@ class Walk implements \Stringable
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $weather;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $holidays = false;
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    private ?bool $holidays = null;
 
     /** @var string[] */
     #[ORM\Column(type: Types::JSON)]
@@ -203,6 +203,9 @@ class Walk implements \Stringable
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithWeather = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isWithHolidays = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithAgeRanges;
@@ -269,6 +272,7 @@ class Walk implements \Stringable
         $instance->setStartTime($request->startTime);
         $instance->setRating(1);
         $instance->setIsWithWeather($team->isWithWeather());
+        $instance->setIsWithHolidays($team->isWithHolidays());
         $instance->setIsWithSystemicQuestion($team->isWithSystemicQuestion());
         if ($instance->isWithSystemicQuestion()) {
             $instance->setSystemicAnswer('');
@@ -276,7 +280,9 @@ class Walk implements \Stringable
         $instance->setWalkReflection('');
         $instance->setWeather($request->weather);
         $instance->setIsResubmission(false);
-        $instance->setHolidays($request->holidays);
+        if ($instance->isWithHolidays()) {
+            $instance->setHolidays($request->holidays);
+        }
         $instance->setCommitments('');
         $instance->setInsights('');
         $instance->setConceptOfDay($request->conceptOfDay);
@@ -366,6 +372,18 @@ class Walk implements \Stringable
     }
 
     #[Groups(['walk:read'])]
+    #[SerializedName('isWithHolidays')]
+    public function isWithHolidays(): bool
+    {
+        return $this->isWithHolidays;
+    }
+
+    public function setIsWithHolidays(bool $isWithHolidays): void
+    {
+        $this->isWithHolidays = $isWithHolidays;
+    }
+
+    #[Groups(['walk:read'])]
     public function getWeather(): string
     {
         return $this->weather;
@@ -377,12 +395,12 @@ class Walk implements \Stringable
     }
 
     #[Groups(['walk:read'])]
-    public function getHolidays(): bool
+    public function getHolidays(): ?bool
     {
         return $this->holidays;
     }
 
-    public function setHolidays(bool $holidays): void
+    public function setHolidays(?bool $holidays): void
     {
         $this->holidays = $holidays;
     }

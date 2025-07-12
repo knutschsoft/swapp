@@ -89,9 +89,7 @@ Feature: Testing walk change unfinished resource
             | violations[3].message      | Dieser Wert sollte nicht null sein. |
             | violations[4].propertyPath | startTime                           |
             | violations[4].message      | Dieser Wert sollte nicht null sein. |
-            | violations[5].propertyPath | holidays                            |
+            | violations[5].propertyPath | walkTeamMembers                     |
             | violations[5].message      | Dieser Wert sollte nicht null sein. |
-            | violations[6].propertyPath | walkTeamMembers                     |
+            | violations[6].propertyPath | guestNames                          |
             | violations[6].message      | Dieser Wert sollte nicht null sein. |
-            | violations[7].propertyPath | guestNames                          |
-            | violations[7].message      | Dieser Wert sollte nicht null sein. |

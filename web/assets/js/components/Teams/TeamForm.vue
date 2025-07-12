@@ -327,7 +327,7 @@ defineExpose({ resetForm });
                             <v-card-text class="font-weight-bold pb-0">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-text>
                             <v-card-text class="">
                                 <v-row>
-                                    <v-col lg="6">
+                                    <v-col cols="12" md="6" lg="4">
                                         <v-card>
                                             <v-card-text>
                                                 <v-switch
@@ -398,7 +398,7 @@ defineExpose({ resetForm });
                                             </v-card-text>
                                         </v-card>
                                     </v-col>
-                                    <v-col md="6">
+                                    <v-col cols="12" md="6" lg="3">
                                         <v-card>
                                             <v-card-text>
                                                 <v-switch
@@ -432,7 +432,7 @@ defineExpose({ resetForm });
                                             </v-card-text>
                                         </v-card>
                                     </v-col>
-                                    <v-col md="6">
+                                    <v-col cols="12" md="6" lg="3">
                                         <v-card>
                                             <v-card-text>
                                                 <v-switch
@@ -459,7 +459,7 @@ defineExpose({ resetForm });
                                             </v-card-text>
                                         </v-card>
                                     </v-col>
-                                    <v-col md="6">
+                                    <v-col cols="12" md="6" lg="2">
                                         <v-card>
                                             <v-card-text>
                                                 <v-switch

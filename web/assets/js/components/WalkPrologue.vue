@@ -32,7 +32,7 @@ const walkTeamMembers = ref<string[]>([]);
 const guestNames = ref<string[]>([]);
 const conceptOfDay = ref<string[]>([]);
 const startTime = ref<string>(dayjs().startOf('minute').format());
-const holidays = ref<boolean>(false);
+const holidays = ref<boolean|null>(false);
 const weather = ref<string>('');
 const walkCreator = ref<string>('');
 const isFormLoading = ref<boolean>(false);
@@ -102,7 +102,7 @@ async function onSubmit() {
         guestNames: guestNames.value,
         conceptOfDay: conceptOfDay.value,
         startTime: startTime.value,
-        holidays: holidays.value,
+        holidays: team.value.isWithHolidays ? holidays.value : null,
         weather: weather.value,
         walkCreator: walkCreator.value,
     };
@@ -210,12 +210,11 @@ onMounted(async () => {
                     description="Die aktuelle Zeit ist vorausgewählt."
                 />
             </v-col>
-            <v-col>
+            <v-col v-if="team.isWithHolidays">
                 <walk-holidays-field v-model="holidays" :is-loading="isLoading" :error="error" />
             </v-col>
-            <v-col>
+            <v-col v-if="team.isWithWeather" >
                 <walk-weather-field
-                    v-if="team.isWithWeather"
                     v-model="weather"
                     :is-loading="isLoading"
                     :error="error"

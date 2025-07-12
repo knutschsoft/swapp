@@ -26,6 +26,7 @@ Feature: Testing team change resource without weather
             | isWithAgeRanges         | <true>                    |
             | isWithSystemicQuestion  | <false>                   |
             | isWithWeather           | <false>                   |
+            | isWithHolidays          | <true>                  |
             | isWithPeopleCount       | <true>                    |
             | isWithContactsCount     | <false>                   |
             | isWithUserGroups        | <false>                   |

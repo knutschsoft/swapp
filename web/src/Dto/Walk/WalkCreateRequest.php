@@ -34,7 +34,7 @@ final class WalkCreateRequest
     #[AppAssert\UserRequirements]
     public User $walkCreator;
 
-    public bool $holidays;
+    public ?bool $holidays = null;
 
     /** @var string[] */
     #[AppAssert\GuestNamesRequirements]
@@ -56,5 +56,15 @@ final class WalkCreateRequest
     public function isWeatherSetWhenNeeded(): bool
     {
         return $this->team->isWithWeather() === (bool) $this->weather;
+    }
+
+    #[Assert\IsTrue(message: 'walk.isHolidaysSetWhenNeeded', groups: ['SecondGroup'])]
+    public function isHolidaysSetWhenNeeded(): bool
+    {
+        if ($this->team->isWithHolidays() && \in_array($this->holidays, [true, false], true)) {
+            return true;
+        }
+
+        return !$this->team->isWithHolidays() && null === $this->holidays;
     }
 }

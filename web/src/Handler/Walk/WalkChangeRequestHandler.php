@@ -33,7 +33,9 @@ final readonly class WalkChangeRequestHandler
         }
         $walk->setStartTime($request->startTime);
         $walk->setEndTime($request->endTime);
-        $walk->setHolidays($request->holidays);
+        if ($walk->isWithHolidays()) {
+            $walk->setHolidays($request->holidays);
+        }
         $walk->setIsResubmission($request->isResubmission);
         $walk->setRating($request->rating);
         $walk->setWalkTeamMembers(new ArrayCollection($request->walkTeamMembers));

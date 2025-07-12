@@ -45,8 +45,7 @@ final class WalkChangeRequest
     #[AppAssert\DateTimeRequirements]
     public \DateTime $endTime;
 
-    #[Assert\NotNull]
-    public bool $holidays;
+    public ?bool $holidays;
 
     #[Assert\NotNull]
     public bool $isResubmission;
@@ -115,5 +114,15 @@ final class WalkChangeRequest
     public function isWeatherSetWhenNeeded(): bool
     {
         return $this->walk->isWithWeather() === (bool) $this->weather;
+    }
+
+    #[Assert\IsTrue(message: 'walk.isHolidaysSetWhenNeeded', groups: ['SecondGroup'])]
+    public function isHolidaysSetWhenNeeded(): bool
+    {
+        if ($this->walk->isWithHolidays() && \in_array($this->holidays, [true, false], true)) {
+            return true;
+        }
+
+        return !$this->walk->isWithHolidays() && null === $this->holidays;
     }
 }

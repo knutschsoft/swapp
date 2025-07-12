@@ -62,6 +62,7 @@ Feature: Testing team create resource
             | isWithAgeRanges         | <true>                   |
             | isWithSystemicQuestion  | <true>                   |
             | isWithWeather           | <true>                   |
+            | isWithHolidays          | <true>                   |
             | isWithPeopleCount       | <true>                   |
             | isWithContactsCount     | <false>                  |
             | isWithUserGroups        | <false>                  |
@@ -110,6 +111,7 @@ Feature: Testing team create resource
             | isWithAgeRanges         | <false>                  |
             | isWithSystemicQuestion  | <true>                   |
             | isWithWeather           | <true>                   |
+            | isWithHolidays          | <true>                   |
             | isWithPeopleCount       | <true>                   |
             | isWithContactsCount     | <false>                  |
             | isWithUserGroups        | <false>                  |
@@ -157,6 +159,7 @@ Feature: Testing team create resource
             | isWithAgeRanges         | <true>                         |
             | isWithSystemicQuestion  | <true>                         |
             | isWithWeather           | <true>                         |
+            | isWithHolidays          | <true>                  |
             | isWithPeopleCount       | <true>                         |
             | isWithContactsCount     | <true>                         |
             | isWithUserGroups        | <true>                         |
@@ -229,26 +232,28 @@ Feature: Testing team create resource
             | violations[11].message      | Dieser Wert sollte nicht null sein.                                    |
             | violations[12].propertyPath | isWithWeather                                                          |
             | violations[12].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[13].propertyPath | isWithContactsCount                                                    |
+            | violations[13].propertyPath | isWithHolidays                                                          |
             | violations[13].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[14].propertyPath | isWithUserGroups                                                       |
+            | violations[14].propertyPath | isWithContactsCount                                                    |
             | violations[14].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[15].propertyPath | isWithConsumables                                                      |
+            | violations[15].propertyPath | isWithUserGroups                                                       |
             | violations[15].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[16].propertyPath | isWithCounselings                                                      |
+            | violations[16].propertyPath | isWithConsumables                                                      |
             | violations[16].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[17].propertyPath | isWithMedicals                                                         |
+            | violations[17].propertyPath | isWithCounselings                                                      |
             | violations[17].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[18].propertyPath | userGroupNames                                                         |
+            | violations[18].propertyPath | isWithMedicals                                                         |
             | violations[18].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[19].propertyPath | consumableNames                                                        |
+            | violations[19].propertyPath | userGroupNames                                                         |
             | violations[19].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[20].propertyPath | counselingNames                                                        |
+            | violations[20].propertyPath | consumableNames                                                        |
             | violations[20].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[21].propertyPath | medicalNames                                                           |
+            | violations[21].propertyPath | counselingNames                                                        |
             | violations[21].message      | Dieser Wert sollte nicht null sein.                                    |
-            | violations[22].propertyPath | initialMembersConfig                                                   |
+            | violations[22].propertyPath | medicalNames                                                           |
             | violations[22].message      | Dieser Wert sollte nicht null sein.                                    |
+            | violations[23].propertyPath | initialMembersConfig                                                   |
+            | violations[23].message      | Dieser Wert sollte nicht null sein.                                    |
 
     @api @apiTeamCreate
     Scenario: I can request /api/teams/create as an admin of another client/team and can not create a team

@@ -61,6 +61,9 @@ final class TeamCreateRequest
     #[AppAssert\IsWithWeatherRequirements]
     public bool $isWithWeather;
 
+    #[AppAssert\IsWithHolidaysRequirements]
+    public bool $isWithHolidays;
+
     #[AppAssert\IsWithContactsCountRequirements]
     public bool $isWithContactsCount;
 

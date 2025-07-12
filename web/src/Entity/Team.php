@@ -103,6 +103,9 @@ class Team implements \Stringable
     private bool $isWithWeather = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isWithHolidays = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isWithContactsCount;
 
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -316,6 +319,18 @@ class Team implements \Stringable
     public function setIsWithWeather(bool $isWithWeather): void
     {
         $this->isWithWeather = $isWithWeather;
+    }
+
+    #[Groups(['team:read'])]
+    #[SerializedName('isWithHolidays')]
+    public function isWithHolidays(): bool
+    {
+        return $this->isWithHolidays;
+    }
+
+    public function setIsWithHolidays(bool $isWithHolidays): void
+    {
+        $this->isWithHolidays = $isWithHolidays;
     }
 
     #[Groups(['team:read'])]
