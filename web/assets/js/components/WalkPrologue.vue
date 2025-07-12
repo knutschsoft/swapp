@@ -121,12 +121,12 @@ async function onSubmit() {
 onMounted(async () => {
     if (!team.value) await teamStore.fetchTeams();
     if (!team.value) {
-        await router.push({ name: 'Dashboard', query: { redirect: 'Dieses Team existiert nicht.' }});
+        await router.push({ name: 'Dashboard', query: { redirect: 'Dieses Team existiert nicht. Du wurdest auf das Dashboard weitergeleitet.' }});
         return;
     }
     const me = currentUser.value['@id'];
     if (!team.value.users.includes(me)) {
-        await router.push({ name: 'Dashboard', query: { redirect: 'Kein Mitglied des Teams.' }});
+        await router.push({ name: 'Dashboard', query: { redirect: 'Du kannst für dieses Team keine Runde erstellen, da du kein Mitglied des Teams bist. Du wurdest auf das Dashboard weitergeleitet.' }});
         return;
     }
     await Promise.all(
