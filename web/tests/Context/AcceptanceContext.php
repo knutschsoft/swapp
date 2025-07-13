@@ -7,6 +7,8 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Step\Then;
+use Behat\Step\When;
 use Carbon\Carbon;
 use Facebook\WebDriver\WebDriverKeys;
 use Symfony\Component\DependencyInjection\Container;
@@ -118,17 +120,9 @@ final class AcceptanceContext extends MinkContext
         $this->iWaitForTestElementToDisappear($dataTestLocator);
     }
 
-    /**
-     * @When  I wait for :text to appear
-     *
-     * @Then  I should see :text appear
-     *
-     * @param string   $text
-     * @param int|null $tries
-     *
-     * @throws \Throwable
-     */
-    public function iWaitForTextToAppear(string $text, ?int $tries = 40): void
+    #[Then('I should see :text appear')]
+    #[When('I wait for :text to appear')]
+    public function iWaitForTextToAppear(string $text, ?int $tries = 45): void
     {
         $text = $this->enrichText($text);
         $this->spin(
@@ -221,27 +215,27 @@ final class AcceptanceContext extends MinkContext
         );
     }
 
-    /**
-     * @When  I wait for element :selector to disappear
-     *
-     * @param string $selector
-     *
-     * @throws \Throwable
-     */
-    public function iWaitForElementToDisappear(string $selector): void
+    #[When('I wait for element :selector to disappear')]
+    public function iWaitForElementToDisappear(string $selector, int $tries = 10): void
     {
         $this->spin(
-            function () use ($selector): void {
-                $tries = 10;
+            function () use ($selector, $tries): void {
                 try {
                     $element = $this->getNodeElement($selector, $tries);
                 } catch (\InvalidArgumentException) {
                     // all fine here
                     return;
                 }
-                Assert::false($element->isVisible());
+                Assert::false($element->isVisible(), \sprintf('Element %s should not be visible.', $selector));
             }
         );
+        try {
+            $element = $this->getNodeElement($selector, $tries);
+        } catch (\InvalidArgumentException) {
+            // all fine here
+            return;
+        }
+        Assert::false($element->isVisible(), \sprintf('Element %s should not be visible.', $selector));
     }
 
     /**
@@ -348,7 +342,7 @@ final class AcceptanceContext extends MinkContext
         $this->getNodeElement($locatorMinute)->click();
         $this->getNodeElement($minuteSelector)->click();
         $this->getNodeElement('body')->click();
-        $this->iWaitForElementToDisappear($locatorMinute);
+        $this->iWaitForElementToDisappear($locatorMinute, 20);
     }
 
     /**
