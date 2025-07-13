@@ -341,6 +341,7 @@ final class AcceptanceContext extends MinkContext
         $this->getNodeElement($hourSelector)->click();
         $this->getNodeElement($locatorMinute)->click();
         $this->getNodeElement($minuteSelector)->click();
+        \sleep(1);
         $this->getNodeElement('body')->click();
         $this->iWaitForElementToDisappear($locatorMinute, 45);
     }
