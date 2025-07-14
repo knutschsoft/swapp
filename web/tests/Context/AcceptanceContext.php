@@ -332,7 +332,8 @@ final class AcceptanceContext extends MinkContext
         if ($minutes < 10) {
             $minutes .= '0' . $minutes;
         }
-        $this->getTestElement($dataTestSelector)->click();
+        $timeSelectorElement = $this->getTestElement($dataTestSelector);
+        $timeSelectorElement->click();
         $locatorHour = \sprintf('[data-test-id="hours-toggle-overlay-btn-0"]');
         $hourSelector = \sprintf('[data-test-id="%s"]', $hours);
         $locatorMinute = \sprintf('[data-test-id="minutes-toggle-overlay-btn-0"]');
@@ -341,8 +342,7 @@ final class AcceptanceContext extends MinkContext
         $this->getNodeElement($hourSelector)->click();
         $this->getNodeElement($locatorMinute)->click();
         $this->getNodeElement($minuteSelector)->click();
-        \sleep(1);
-        $this->getNodeElement('body')->click();
+        $timeSelectorElement->click();
         $this->iWaitForElementToDisappear($locatorMinute, 45);
     }
 
