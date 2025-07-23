@@ -17,6 +17,7 @@ type WalkFilter = {
     isUnfinished: String | boolean,
     name: String,
     teamName: String[],
+    guestNames: String[],
     startTime: DateRange,
 }
 
@@ -64,6 +65,7 @@ const defaultWalkFilter: WalkFilter = {
     isUnfinished: 'null',
     name: '',
     teamName: [],
+    guestNames: [],
     startTime: startTime,
 };
 const defaultWayPointFilter: WayPointFilter = {
@@ -74,25 +76,27 @@ const defaultWayPointFilter: WayPointFilter = {
     oneOnOneInterview: '',
     visitedAt: startTime,
 };
+// change me every time a filter interface is changed
+const version = '0'
 
 export const useGeneralStore = defineStore("general", {
     state: (): State => ({
         apiUrl: '',
-        navUserFilter: useLocalStorage('nav-user-filter', ''),
+        navUserFilter: useLocalStorage(`${version}nav-user-filter`, ''),
         defaultClientFilter: defaultClientFilter,
-        clientFilter: useLocalStorage('swapp-store-client-filter', defaultClientFilter),
+        clientFilter: useLocalStorage(`${version}swapp-store-client-filter`, defaultClientFilter),
         defaultWalkFilter: defaultWalkFilter,
         defaultActiveUsersDateRange: defaultActiveUsersDateRange,
-        activeUsersDateRange: useLocalStorage('aktive-benutzer-date-range', defaultActiveUsersDateRange),
-        walkFilter: useLocalStorage('swapp-store-abgeschlossene-runden-filter', defaultWalkFilter),
-        walkPerPage: useLocalStorage('swapp-store-abgeschlossene-runden-per-page', 5),
-        walkCurrentPage: useLocalStorage('swapp-store-abgeschlossene-runden-current-page', 1),
-        walkFilterResult: useLocalStorage('swapp-store-abgeschlossene-runden-walks', []),
+        activeUsersDateRange: useLocalStorage(`${version}aktive-benutzer-date-range`, defaultActiveUsersDateRange),
+        walkFilter: useLocalStorage(`${version}swapp-store-abgeschlossene-runden-filter`, defaultWalkFilter),
+        walkPerPage: useLocalStorage(`${version}swapp-store-abgeschlossene-runden-per-page`, 5),
+        walkCurrentPage: useLocalStorage(`${version}swapp-store-abgeschlossene-runden-current-page`, 1),
+        walkFilterResult: useLocalStorage(`${version}swapp-store-abgeschlossene-runden-walks`, []),
         defaultWayPointFilter: defaultWayPointFilter,
-        wayPointFilter: useLocalStorage('swapp-store-alle-wegpunkte-filter', defaultWayPointFilter),
-        wayPointPerPage: useLocalStorage('swapp-store-alle-wegpunkte-per-page', 5),
-        wayPointCurrentPage: useLocalStorage('swapp-store-alle-wegpunkte-current-page', 1),
-        wayPointFilterResult: useLocalStorage('swapp-store-alle-wegpunkte-walks', []),
+        wayPointFilter: useLocalStorage(`${version}swapp-store-alle-wegpunkte-filter`, defaultWayPointFilter),
+        wayPointPerPage: useLocalStorage(`${version}swapp-store-alle-wegpunkte-per-page`, 5),
+        wayPointCurrentPage: useLocalStorage(`${version}swapp-store-alle-wegpunkte-current-page`, 1),
+        wayPointFilterResult: useLocalStorage(`${version}swapp-store-alle-wegpunkte-walks`, []),
     }),
     getters: {
         getApiUrl({apiUrl}): string {

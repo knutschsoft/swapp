@@ -11,6 +11,32 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '24.07.2025',
+                avatarText: '&#x1F600;',
+                avatarTitle: 'Internationaler Tag der Freude',
+                entries: [
+                    {
+                        text: [
+                            'Feature: Ein Nutzender kann die Rundenliste auf dem Dashboard nach weiteren Teilnehmenden filtern.',
+                            'Dieser Filter wirkt sich ebenfalls auf den Namen der csv-Export aus.'
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/20250727_Filter_Gästenamen_Dashboard_vorher_nachher.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Filterung auf dem Dashboard (links: vorher - rechts: neu)',
+                            },
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Die Filterung der Rundenliste auf dem Dashboard nach Teamname hatte nur 5 Vorschläge angezeigt.',
+                            'Nun werden alle Vorschläge angezeigt.'
+                        ],
+                    }
+                ],
+            },
+            {
                 header: '12.07.2025',
                 avatarText: '🍮',
                 avatarTitle: 'Tag des Wackelpuddings',

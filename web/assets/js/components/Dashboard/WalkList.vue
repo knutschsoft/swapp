@@ -5,7 +5,7 @@
                 cols="12"
                 sm="6"
                 md="3"
-                xl="2"
+                :xl="!guestNames.length ? 2 : 3"
             >
                 <filter-boolean-field
                     v-model="filter.isResubmission"
@@ -18,7 +18,7 @@
                 cols="12"
                 sm="6"
                 md="3"
-                xl="2"
+                :xl="!guestNames.length ? 2 : 3"
             >
                 <filter-boolean-field
                     v-model="filter.isUnfinished"
@@ -54,11 +54,25 @@
                 />
             </v-col>
             <v-col
+                v-if="guestNames.length"
+                cols="12"
+                sm="6"
+                md="6"
+            >
+                <filter-combobox-field
+                    v-model="filter.guestNames"
+                    label="weitere Teilnehmende"
+                    data-test="filter-team-guest-names"
+                    :is-loading="isLoading"
+                    :suggestions="guestNames"
+                />
+            </v-col>
+            <v-col
                 cols="12"
                 xs="12"
-                sm="12"
-                md="12"
-                xl="2"
+                :sm="!guestNames.length ? 12 : 6"
+                :md="!guestNames.length ? 12 : 6"
+                :xl="!guestNames.length ? 2 : null"
             >
                 <date-range-picker
                     v-model="filter.startTime"
@@ -239,6 +253,7 @@ export default {
                 { key: 'actions', title: 'Aktionen', align: 'center', sortable: false },
             ],
             allTeamNames: [],
+            allGuestNames: [],
             itemsPerPageText,
             itemsPerPageOptions,
             loadingText,
@@ -265,6 +280,9 @@ export default {
         teamNames() {
             return this.allTeamNames.map((teamName) => teamName.teamName);
         },
+        guestNames() {
+            return this.allGuestNames.map((guestName) => guestName.name);
+        },
         walks() {
             return this.walkStore.getWalks;
         },
@@ -281,6 +299,8 @@ export default {
         // this.currentPage = 1;
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['member'];
+        const allGuestNames = await WalkAPI.findAllGuestNames();
+        this.allGuestNames = allGuestNames.data['member'];
     },
     watch: {
         filter: {
@@ -315,6 +335,7 @@ export default {
                 page,
                 itemsPerPage,
                 teamName: this.filter.teamName,
+                guestNames: this.filter.guestNames,
                 name: '' !== this.filter.name ? this.filter.name : undefined,
                 isResubmission: this.filter.isResubmission !== 'null' ? this.filter.isResubmission : undefined,
                 isUnfinished: this.filter.isUnfinished !== 'null' ? !this.filter.isUnfinished : undefined,
@@ -374,6 +395,9 @@ export default {
 
             if (this.filter.teamName.length) {
                 title = `TEAM_${this.filter.teamName.join('_')}_${title}`;
+            }
+            if (this.filter.guestNames.length) {
+                title = `WEITERE_TEILNEHMENDE_${this.filter.guestNames.join('_')}_${title}`;
             }
             if ('null' !== this.filter.isResubmission) {
                 title = `WV_DB_${this.filter.isResubmission ? 'ja' : 'nein'}_${title}`;

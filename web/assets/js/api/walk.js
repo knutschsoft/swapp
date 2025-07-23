@@ -67,6 +67,9 @@ export default {
     findAllTeamNames() {
         return apiClient.get("/api/walks/team_names");
     },
+    findAllGuestNames() {
+        return apiClient.get("/api/walks/guest_names");
+    },
     findAllUnfinishedWalks(teams) {
         return this.findOld({
             sortBy: 'startTime',

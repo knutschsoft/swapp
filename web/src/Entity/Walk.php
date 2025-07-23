@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
@@ -13,6 +14,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\DataProvider\GuestNameCollectionProvider;
+use App\Dto\GuestName;
 use App\Dto\TeamName;
 use App\Dto\Walk\WalkChangeRequest;
 use App\Dto\Walk\WalkChangeStartTimeRequest;
@@ -52,6 +55,12 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/walks/team_names',
             output: TeamName::class,
             forceEager: false,
+        ),
+        new GetCollection(
+            uriTemplate: '/walks/guest_names',
+            output: GuestName::class,
+            forceEager: false,
+            provider: GuestNameCollectionProvider::class,
         ),
         new Post(
             uriTemplate: '/walks/change-unfinished',
@@ -113,7 +122,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['id', 'name', 'rating', 'teamName', 'startTime', 'endTime', 'isResubmission'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isResubmission', 'isUnfinished'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['startTime', 'endTime'])]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'teamName' => 'partial'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: [
+    'name' => SearchFilterInterface::STRATEGY_PARTIAL,
+    'teamName' => SearchFilterInterface::STRATEGY_PARTIAL,
+    'guestNames' => SearchFilterInterface::STRATEGY_IPARTIAL,
+])]
 class Walk implements \Stringable
 {
     use AgeRangeField;

@@ -177,7 +177,7 @@
                     >
                         <v-list-item-title>
                             Changelog
-                            <v-badge v-if="hasNewChangelogItems" color="primary" content="Neu" floating />
+                            <v-badge v-if="hasNewChangelogItems" color="primary" content="Neu" floating class="ml-2" />
                         </v-list-item-title>
                     </v-list-item>
                     <v-list-item
