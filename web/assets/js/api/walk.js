@@ -65,7 +65,7 @@ export default {
         );
     },
     findAllTeamNames() {
-        return apiClient.get("/api/walks/team_names");
+        return apiClient.get("/api/walks/team_names?itemsPerPage=1000");
     },
     findAllGuestNames() {
         return apiClient.get("/api/walks/guest_names");
