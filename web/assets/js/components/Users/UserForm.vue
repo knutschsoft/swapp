@@ -26,24 +26,25 @@
             data-test="email"
             variant="outlined"
         />
-        <v-row dense class="mt-0 mb-5">
+        <v-row dense class="mb-5">
             <v-col cols="12" class="mb-0">Rollen</v-col>
             <v-col
-                v-for="role in availableRoles"
-                class="mt-0"
-                cols="4"
+                :cols="12"
             >
-                <v-switch
-                    v-model="user.roles"
-                    :value="role.value"
-                    :key="role.value"
-                    :disabled="isLoading"
-                    class="mt-0"
-                    density="compact"
-                    color="primary"
-                    hide-details
-                    :label="role.text"
-                />
+                <div class="d-flex ga-4 flex-column flex-sm-row">
+                    <v-switch
+                        v-for="role in availableRoles"
+                        v-model="user.roles"
+                        :value="role.value"
+                        :key="role.value"
+                        :disabled="isLoading"
+                        class="ml-2"
+                        density="compact"
+                        color="primary"
+                        hide-details
+                        :label="role.text"
+                    />
+                </div>
             </v-col>
         </v-row>
         <client-select
