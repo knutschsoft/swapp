@@ -52,7 +52,7 @@
             v-model="user.client"
             :is-loading="isLoading"
             :disabled="isLoading"
-            hint="Der Benutzer wird für diesen Klienten erstellt."
+            hint="Bei welchem Klienten ist dieser Benutzer?"
         />
         <v-btn
             type="submit"
@@ -141,6 +141,18 @@ export default {
             return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
+            console.log(this.user.username, this.initialUser.username)
+            console.log(this.user.username === this.initialUser.username)
+            console.log(this.user.username === this.initialUser.username &&
+                (this.user.roles.length === (this.initialUser.roles?.length || ['ROLE_USER'].length)) &&
+                this.user.client === this.initialUser.client)
+            if (this.user.username === this.initialUser.username &&
+                (this.user.roles.length === (this.initialUser.roles?.length || ['ROLE_USER'].length)) &&
+                (this.user.email === this.initialUser.email) &&
+                this.user.client === this.initialUser.client) {
+                return true
+            }
+
             return !this.usernameState || !this.emailState || this.isLoading;
         },
         error() {
