@@ -122,7 +122,7 @@ final class AcceptanceContext extends MinkContext
 
     #[Then('I should see :text appear')]
     #[When('I wait for :text to appear')]
-    public function iWaitForTextToAppear(string $text, ?int $tries = 45): void
+    public function iWaitForTextToAppear(string $text, ?int $tries = 50): void
     {
         $text = $this->enrichText($text);
         $this->spin(

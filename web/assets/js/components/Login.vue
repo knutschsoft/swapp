@@ -76,15 +76,10 @@
                                 density="default"
                                 color="secondary"
                                 type="submit"
+                                :loading="isLoading"
+                                class="text-transform-none"
                                 @click="performLogin()"
                             >
-                                <v-progress-circular
-                                    v-if="isLoading"
-                                    :width="2"
-                                    :size="20"
-                                    indeterminate
-                                    class="mr-2 position-relative"
-                                ></v-progress-circular>
                                 Anmelden
                             </v-btn>
                             <v-alert
