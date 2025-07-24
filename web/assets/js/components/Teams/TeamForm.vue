@@ -140,7 +140,7 @@ defineExpose({ resetForm });
         <v-card class="mb-4">
             <v-card-title class="grey lighten-2 mb-5">Allgemeine Daten des Teams</v-card-title>
             <v-card-text>
-                <v-row>
+                <v-row dense>
                     <v-col
                         v-if="isSuperAdmin"
                         cols="12"
@@ -158,7 +158,10 @@ defineExpose({ resetForm });
                             :disabled="isDisabled"
                         />
                     </v-col>
-                    <v-col sm="6">
+                    <v-col
+                        cols="12"
+                        sm="6"
+                    >
                         <v-text-field
                             v-model="team.name"
                             label="Name"
