@@ -286,7 +286,7 @@ final class DomainIntegrationContext extends RawMinkContext
                 $walk->setWeather('');
             }
             if (!$walk->isWithGuests()) {
-                $walk->setGuestNames($this->enrichText($row['guestNames']));
+                $walk->setGuestNames($this->enrichText($row['guestNames'] ?? 'array<>'));
             }
             if (!$walk->isWithHolidays()) {
                 $walk->setHolidays(null);
