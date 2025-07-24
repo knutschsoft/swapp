@@ -242,13 +242,9 @@ defineExpose({ resetForm });
                                             <v-btn
                                                 density="compact"
                                                 class="ml-2"
-                                                icon
+                                                icon="mdi-trash-can"
                                                 @click="removeConceptOfDaySuggestion(i)"
-                                            >
-                                                <v-icon
-                                                    icon="mdi-trash-can"
-                                                />
-                                            </v-btn>
+                                            />
                                         </template>
                                     </v-list-item>
                                     <v-list-item density="compact">
@@ -296,14 +292,10 @@ defineExpose({ resetForm });
                                         <template v-slot:append>
                                             <v-btn
                                                 density="compact"
-                                                icon
+                                                icon="mdi-trash-can"
                                                 class="ml-2"
                                                 @click="removeWalkName(i)"
-                                            >
-                                                <v-icon
-                                                    icon="mdi-trash-can"
-                                                />
-                                            </v-btn>
+                                            />
                                         </template>
                                     </v-list-item>
                                     <v-list-item>
@@ -367,14 +359,10 @@ defineExpose({ resetForm });
                                                             <template v-slot:append>
                                                                 <v-btn
                                                                     density="compact"
-                                                                    icon
+                                                                    icon="mdi-trash-can"
                                                                     class="ml-2"
                                                                     @click="removeGuestName(i)"
-                                                                >
-                                                                    <v-icon
-                                                                        icon="mdi-trash-can"
-                                                                    />
-                                                                </v-btn>
+                                                                />
                                                             </template>
                                                         </v-list-item>
                                                         <v-list-item>
@@ -522,14 +510,10 @@ defineExpose({ resetForm });
                                 <template v-slot:append>
                                     <v-btn
                                         density="compact"
-                                        icon
+                                        icon="mdi-trash-can"
                                         class="ml-2"
                                         @click="removeLocationName(i)"
-                                    >
-                                        <v-icon
-                                            icon="mdi-trash-can"
-                                        />
-                                    </v-btn>
+                                    />
                                 </template>
                             </v-list-item>
                             <v-list-item>
@@ -633,16 +617,11 @@ defineExpose({ resetForm });
                                                 </v-row>
                                                 <template v-slot:append>
                                                     <v-btn
-                                                        icon
+                                                        icon="mdi-trash-can"
                                                         density="compact"
                                                         class="ml-2 mt-4"
                                                         @click="removeAgeRange(i)"
-                                                    >
-                                                        <v-icon
-                                                            density="compact"
-                                                            icon="mdi-trash-can"
-                                                        />
-                                                    </v-btn>
+                                                    />
                                                 </template>
                                             </v-list-item>
 
@@ -684,7 +663,9 @@ defineExpose({ resetForm });
         <v-btn
             type="submit"
             color="secondary"
-            class="btn btn-secondary"
+            class="text-transform-none"
+            density="comfortable"
+            :loading="isLoading"
             :data-test="`${ initialTeam ? 'button-team-form-change' : 'button-team-form-create'}`"
             block
             :disabled="isFormInvalid || isDisabled"

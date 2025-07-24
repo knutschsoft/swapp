@@ -221,7 +221,15 @@ onMounted(async () => {
                 />
             </v-col>
             <v-col class="mb-2">
-                <v-btn type="submit" :disabled="isFormInvalid" block color="secondary" data-test="btn-Runde beginnen">
+                <v-btn
+                    type="submit"
+                    :disabled="isFormInvalid"
+                    block color="secondary"
+                    data-test="btn-Runde beginnen"
+                    class="text-transform-none"
+                    density="comfortable"
+                    :loading="isLoading"
+                >
                     Runde beginnen
                 </v-btn>
             </v-col>

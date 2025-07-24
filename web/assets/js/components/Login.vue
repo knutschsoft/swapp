@@ -73,6 +73,7 @@
                             <v-btn
                                 :disabled="username.length < 3 || password.length < -1 || isLoading"
                                 block
+                                density="default"
                                 color="secondary"
                                 type="submit"
                                 @click="performLogin()"

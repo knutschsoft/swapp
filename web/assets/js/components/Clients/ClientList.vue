@@ -77,14 +77,11 @@
                     <v-btn
                         color="secondary"
                         @click.stop="openClientEditDialog(item)"
+                        class="text-transform-none"
+                        density="comfortable"
+                        append-icon="mdi-pencil-outline"
                     >
                         Klient bearbeiten
-                        <v-icon
-                            small
-                            class="ml-2"
-                        >
-                            mdi-pencil-outline
-                        </v-icon>
                     </v-btn>
                 </v-row>
             </template>

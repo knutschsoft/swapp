@@ -3,8 +3,9 @@
         <v-btn
             v-if="walk && walk.wayPoints.length"
             :to="{name: 'WalkEpilogue', params: { walkId: walk.walkId } }"
-            class="mb-1 mb-sm-2 mb-lg-3"
+            class="mb-1 mb-sm-2 mb-lg-3 text-transform-none"
             color="secondary"
+            density="comfortable"
             :disabled="isLoading"
             block
         >

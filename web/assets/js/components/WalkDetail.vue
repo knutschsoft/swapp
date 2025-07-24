@@ -10,7 +10,8 @@
             Die Runde ist noch nicht abgeschlossen.
             <v-btn
                 color="secondary"
-                class="ml-2"
+                class="ml-2 text-transform-none"
+                density="comfortable"
                 :to="{name:'WalkAddWayPoint', params: {walkId: walkId}}"
             >
                 Runde fortsetzen

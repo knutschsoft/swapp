@@ -62,6 +62,9 @@
                         data-test="button-tag-create"
                         :disabled="isFormInvalid || isLoading"
                         block
+                        class="text-transform-none"
+                        density="comfortable"
+                        :loading="isLoading"
                     >
                         Neuen Tag erstellen
                     </v-btn>
@@ -77,6 +80,9 @@
             color="secondary"
             data-test="button-tag-create"
             :disabled="isFormInvalid || isLoading"
+            class="text-transform-none"
+            density="comfortable"
+            :loading="isLoading"
             block
         >
             Neuen Tag erstellen

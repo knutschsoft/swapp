@@ -143,9 +143,7 @@ function readFile(file: Blob): Promise<string> {
                     <v-avatar size="50">
                         <v-img :src="client.ratingImageFileData" alt="Rating-Bild" />
                     </v-avatar>
-                    <v-btn class="align-self-start ml-n4 mt-n4" size="35" icon @click="ratingFile = null">
-                        <v-icon>mdi-close-circle</v-icon>
-                    </v-btn>
+                    <v-btn class="align-self-start ml-n4 mt-n4" size="35" icon="mdi-close-circle" @click="ratingFile = null" />
                 </div>
             </v-col>
         </v-row>
@@ -157,7 +155,15 @@ function readFile(file: Blob): Promise<string> {
             <walk-rating :rating="3" :client="client" />
         </v-alert>
 
-        <v-btn :disabled="isFormInvalid" color="secondary" block type="submit">
+        <v-btn
+            :disabled="isFormInvalid"
+            color="secondary"
+            block
+            type="submit"
+            :loading="isLoading"
+            class="text-transform-none"
+            density="comfortable"
+        >
             {{ submitButtonText }}
         </v-btn>
 

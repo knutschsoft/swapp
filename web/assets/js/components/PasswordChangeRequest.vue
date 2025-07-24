@@ -40,15 +40,10 @@
                             block
                             color="secondary"
                             type="submit"
+                            density="default"
+                            :loading="isLoading"
                             @click="requestPasswordReset()"
                         >
-                            <v-progress-circular
-                                v-if="isLoading"
-                                :width="2"
-                                :size="20"
-                                indeterminate
-                                class="mr-2 position-relative"
-                            />
                             Neues Passwort beantragen
                         </v-btn>
                     </div>

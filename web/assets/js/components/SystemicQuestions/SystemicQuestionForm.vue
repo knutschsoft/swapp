@@ -31,7 +31,8 @@
             :disabled="isFormInvalid"
             data-test="button-systemic-question-submit"
             block
-            small
+            class="text-transform-none"
+            density="comfortable"
         >
             {{ submitButtonText }}
         </v-btn>

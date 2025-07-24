@@ -176,6 +176,7 @@
                     data-test="button-walk-submit"
                     block
                     class="text-transform-none"
+                    density="comfortable"
                 >
                     Runde abschließen
                 </v-btn>

@@ -196,6 +196,8 @@
             :disabled="isFormInvalid || isSubmitDisabled"
             data-test="button-walk-submit"
             block
+            class="text-transform-none"
+            density="compact"
         >
             {{ submitButtonText }}
         </v-btn>

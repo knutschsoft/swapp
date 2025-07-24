@@ -19,7 +19,7 @@ export interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     label: 'Klient',
-    hint: 'Nur bestimmten Klient anzeigen.',
+    hint: '',
     placeholder: 'Für welchen Klienten?',
     violationFields: () => [] as string[],
     dataTest: 'client',
@@ -35,7 +35,7 @@ const value = computed({
   set: (val) => emit("update:modelValue", val ?? ""),
 });
 
-const availableClients = computed(() => clientStore.getClients)
+const availableClients = computed(() => clientStore.getClients.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
 
 const errorMessages = computed(() => {
       return props.error ? getViolationsFeedback(props.violationFields, props.error) : "";

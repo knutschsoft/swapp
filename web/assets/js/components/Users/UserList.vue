@@ -111,17 +111,13 @@
                         <template v-slot:activator="{ props }">
                             <v-btn
                                 color="secondary"
-                                small
                                 v-bind="props"
+                                class="text-transform-none"
+                                density="comfortable"
+                                :loading="isLoading"
+                                :append-icon="props['aria-expanded'] === 'true' ? 'mdi-triangle-small-up' : 'mdi-triangle-small-down'"
                             >
                                 Aktionen
-                                <v-icon
-                                    color="grey lighten-2"
-                                    small
-                                    class="ml-1"
-                                >
-                                    mdi-triangle-small-down
-                                </v-icon>
                             </v-btn>
                         </template>
                         <v-list density="compact">
@@ -145,19 +141,13 @@
                     </v-menu>
                     <v-btn
                         v-if="isSuperAdmin && !isUserSwitched"
-                        small
                         color="secondary"
-                        class="flex-item d-flex align-items-center ml-2"
+                        density="comfortable"
+                        class="ml-2 text-transform-none"
                         :data-test="`switch-user-${item.username}`"
+                        prepend-icon="mdi-account-switch"
                         @click="switchUser(item)"
                     >
-                        <v-icon
-                            color="grey lighten-2"
-                            small
-                            class="p-1 mr-1 cursor-pointer flex-item"
-                        >
-                            mdi-account-switch
-                        </v-icon>
                         Nutzer wechseln
                     </v-btn>
                     <v-btn

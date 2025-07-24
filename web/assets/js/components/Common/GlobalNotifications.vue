@@ -36,9 +36,7 @@ const snackbars = computed(() => alertStore.alerts);
                 {{ alert.message }}
             </template>
             <template v-slot:actions>
-                <v-btn variant="text" @click="alertStore.remove(index)">
-                    <v-icon icon="mdi-close"></v-icon>
-                </v-btn>
+                <v-btn variant="text" @click="alertStore.remove(index)" icon="mdi-close" />
             </template>
         </v-snackbar>
     </v-container>

@@ -3,14 +3,14 @@
         <v-btn
             v-if="wayPoints.length > 0"
             color="secondary"
+            density="comfortable"
             block
             @click="isDetailsShowing = !isDetailsShowing"
             data-test="toggle-waypoint-details"
+            class="text-transform-none"
+            :append-icon="isDetailsShowing ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
         >
             Alle Details {{ isDetailsShowing ? 'verbergen' : 'anzeigen' }}
-            <mdicon
-                :name="isDetailsShowing ? 'EyeOffOutline' : 'EyeOutline'"
-            />
         </v-btn>
         <v-data-table-server
             v-if="walk"
@@ -49,11 +49,12 @@
                 <v-btn
                     :to="{name: 'WayPointDetail', params: { walkId: walk.walkId, wayPointId: item.wayPointId}}"
                     :data-test="`button-wegpunkt-ansehen-${ item.locationName }`"
-                    size="small"
+                    density="compact"
+                    class="text-transform-none"
                     color="secondary"
                 >
                     Wegpunkt ansehen
-                    <v-icon icon="mdi-marker-path" class="ml-1"></v-icon>
+                    <v-icon icon="mdi-routes" class="ml-1"></v-icon>
                     <v-icon icon="mdi-eye" class="ml-1"></v-icon>
                 </v-btn>
             </template>

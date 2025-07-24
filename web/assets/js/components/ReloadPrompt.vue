@@ -27,20 +27,14 @@ export default {
                 </v-col>
                 <v-col align-self="center" cols="12">
                     <v-btn
-                        small
+                        density="compact"
                         color="secondary"
                         block
                         :disabled="isUpdateLoading"
+                        :loading="isUpdateLoading"
+                        prepend-icon="mdi-update"
                         @click="updateServiceWorker()"
                     >
-                        <v-progress-circular
-                            v-if="isUpdateLoading"
-                            :width="2"
-                            :size="20"
-                            indeterminate
-                            class="mr-2"
-                        />
-                        <v-icon v-if="!isUpdateLoading" class="mr-2">mdi-update</v-icon>
                         Versionsupdate
                     </v-btn>
                 </v-col>

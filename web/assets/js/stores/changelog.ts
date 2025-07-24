@@ -30,6 +30,11 @@ export const useChangelogStore = defineStore("changelog", {
                     },
                     {
                         text: [
+                            'Misc: Layout an vielen Stellen ausgebessert.',
+                        ],
+                    },
+                    {
+                        text: [
                             'Fix: Die Filterung der Rundenliste auf dem Dashboard nach Teamname hatte nur 5 Vorschläge angezeigt.',
                             'Nun werden alle Vorschläge angezeigt.'
                         ],

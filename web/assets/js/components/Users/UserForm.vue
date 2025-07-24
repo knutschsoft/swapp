@@ -59,6 +59,8 @@
             color="secondary"
             :disabled="isFormInvalid"
             :loading="isLoading"
+            class="text-transform-none"
+            density="comfortable"
             data-test="button-user-submit"
             block
         >

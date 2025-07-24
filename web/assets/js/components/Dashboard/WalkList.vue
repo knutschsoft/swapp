@@ -91,17 +91,16 @@
                 xl="12"
             >
                 <v-btn
-                    size="small"
                     color="secondary"
                     block
                     :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
                     data-test="reset-walk-filter"
+                    class="text-transform-none"
+                    density="comfortable"
+                    :append-icon="hasFilter ? 'mdi-filter-remove-outline' : 'mdi-filter-outline'"
                     @click="unsetAllFilter"
                 >
                     Alle Filter zurücksetzen
-                    <mdicon
-                        :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
-                    />
                 </v-btn>
             </v-col>
             <v-col
@@ -112,17 +111,16 @@
                 xl="12"
             >
                 <v-btn
-                    size="small"
                     color="secondary"
                     block
                     :disabled="isLoading || isExportLoading || this.totalItems === 0"
+                    class="text-transform-none"
+                    density="comfortable"
+                    append-icon="mdi-download"
+                    :loading="isExportLoading"
                     @click="exportWalks"
                 >
                     {{ this.totalItems > 5000 ? 5000 : this.totalItems }} Rund{{ this.totalItems === 1 ? 'e' : 'en' }} als .csv-Datei exportieren
-                    <mdicon
-                        :name="isExportLoading ? 'Loading' : 'Download'"
-                        :spin="isExportLoading"
-                    />
                 </v-btn>
             </v-col>
         </v-row>
@@ -180,8 +178,8 @@
                         :data-test="`button-runde-ansehen-${ item.name }`"
                         color="secondary"
                         :disabled="isLoading"
-                        density="comfortable"
-                        class="my-1"
+                        density="compact"
+                        class="my-1 text-transform-none"
                     >
                         Runde ansehen
                         <v-icon icon="mdi-walk" class="ml-1"></v-icon>
@@ -191,9 +189,9 @@
                         v-if="item.isUnfinished"
                         :to="{name: 'WalkAddWayPoint', params: { walkId: item.walkId}}"
                         :data-test="`button-runde-fortsetzen-${ item.name }`"
-                        density="comfortable"
+                        density="compact"
                         color="secondary"
-                        class="ml-1 my-1"
+                        class="ml-1 my-1 text-transform-none"
                         :disabled="isLoading"
                     >
                         Runde fortsetzen

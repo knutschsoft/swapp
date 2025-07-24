@@ -45,18 +45,14 @@
             <template v-slot:item.actions="{item}">
                 <v-row justify="center">
                     <v-btn
-                        small
+                        class="text-transform-none"
+                        density="default"
                         color="secondary"
+                        append-icon="mdi-pencil-outline"
                         @click.stop="openSystemicQuestionEditDialog(item)"
                     >
                         Systemische Frage<br>
                         bearbeiten
-                        <v-icon
-                            small
-                            class="ml-2"
-                        >
-                            mdi-pencil-outline
-                        </v-icon>
                     </v-btn>
                 </v-row>
             </template>

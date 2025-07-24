@@ -93,7 +93,8 @@
 
             <template v-slot:item.actions="{item}">
                 <v-btn
-                    small
+                    class="text-transform-none"
+                    density="comfortable"
                     color="secondary"
                     @click="toggleEnabled(item, item.isEnabled)"
                 >

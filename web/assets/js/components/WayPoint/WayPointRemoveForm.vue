@@ -12,6 +12,8 @@
             :disabled="isLoading"
             block
             @click="dialog = true"
+            class="text-transform-none"
+            density="comfortable"
         >
             Wegpunkt löschen und zur Runde zurückkehren
         </v-btn>
@@ -59,6 +61,9 @@
                         data-test="button-way-point-remove-modal"
                         @click="handleRemove"
                         block
+                        class="text-transform-none"
+                        density="comfortable"
+                        :loading="isLoading"
                     >
                         Ich verstehe die Auswirkungen; Wegpunkt löschen und zur Runde zurückkehren
                     </v-btn>

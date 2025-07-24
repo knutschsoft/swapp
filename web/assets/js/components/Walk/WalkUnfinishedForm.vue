@@ -82,6 +82,8 @@
             data-test="button-walk-submit"
             block
             :tabindex="isFormInvalid ? '-1' : ''"
+            class="text-transform-none"
+            density="comfortable"
         >
             {{ submitButtonText }}
         </v-btn>

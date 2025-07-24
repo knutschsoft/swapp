@@ -25,6 +25,7 @@
                     block
                     class="my-3"
                     color="secondary"
+                    density="default"
                     :to="{ name: user ? 'PasswordChangeRequest' : 'PasswordReset' }"
                 >
                     Passwortänderung beantragen
@@ -102,6 +103,7 @@
                             block
                             color="secondary"
                             type="submit"
+                            density="default"
                             data-test="btn-change-password"
                             :loading="isLoading"
                             @click="changePassword()"
@@ -133,6 +135,7 @@
                                 v-if="!user"
                                 :to="{ name: 'Login'}"
                                 color="secondary"
+                                density="default"
                                 block
                             >
                                 Zur Anmeldung

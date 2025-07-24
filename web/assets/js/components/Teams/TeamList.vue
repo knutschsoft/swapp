@@ -66,17 +66,13 @@
             </template>
             <template v-slot:item.actions="{item}">
                 <v-btn
-                    size="small"
                     color="secondary"
                     @click="openTeamEditDialog(item)"
+                    class="text-transform-none"
+                    density="comfortable"
+                    append-icon="mdi-pencil-outline"
                 >
                     Team bearbeiten
-                    <v-icon
-                        small
-                        class="ml-2"
-                    >
-                        mdi-pencil-outline
-                    </v-icon>
                 </v-btn>
             </template>
         </v-data-table-server>

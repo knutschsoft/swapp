@@ -308,9 +308,12 @@
                 >
                     <div class="d-flex align-center mb-4 justify-center">
                         <v-img :src="wayPoint.imageFileData" alt="Rating-Bild" width="50" height="50" />
-                        <v-btn class="align-self-start ml-n4 mt-n4" size="35" icon @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null">
-                            <v-icon>mdi-close-circle</v-icon>
-                        </v-btn>
+                        <v-btn
+                            class="align-self-start ml-n4 mt-n4"
+                            size="35"
+                            icon="mdi-close-circle"
+                            @click="wayPoint.imageFileData = wayPoint.imageFileName = wayPoint.imageName = null"
+                        />
                     </div>
                 </div>
             </v-col>
@@ -403,13 +406,11 @@
         />
         <v-btn
             color="secondary"
-            type="submit"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit"
             block
-            height="48px"
             class="mb-2 text-transform-none"
-            style="height:48px"
+            density="comfortable"
             :tabindex="isSubmitDisabled ? '-1' : ''"
         >
             {{ submitButtonText }}
@@ -417,6 +418,7 @@
         <v-btn
             v-if="initialWalk"
             class="text-transform-none"
+            density="comfortable"
             color="secondary"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit-and-finish"

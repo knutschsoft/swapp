@@ -11,6 +11,8 @@
             data-test="button-walk-remove"
             :disabled="isLoading"
             block
+            class="text-transform-none"
+            density="comfortable"
             @click="dialog = true"
         >
             Runde löschen und zum Dashboard zurückkehren
@@ -59,6 +61,9 @@
                         data-test="button-walk-remove-modal"
                         @click="handleRemove"
                         block
+                        class="text-transform-none"
+                        density="comfortable"
+                        :loading="isLoading"
                     >
                         Ich verstehe die Auswirkungen; Runde löschen und zum Dashboard zurückkehren
                     </v-btn>

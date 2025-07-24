@@ -63,6 +63,7 @@
                 v-if="isAuthenticated"
                 @click="drawer = !drawer"
                 class="d-md-none"
+                density="comfortable"
             />
             <v-spacer class="d-md-none" />
             <v-btn :to="{ name: 'Dashboard' }"
@@ -102,12 +103,14 @@
                 icon
                 :to="{ name: 'Changelog' }"
                 :title="`Es gibt ${hasNewChangelogItems ? '' : 'keine '}Neuigkeiten für dich!`"
-                class="d-none d-sm-flex"
+                class="d-flex"
+                density="comfortable"
             >
                 <v-icon color="primary" v-if="hasNewChangelogItems">mdi-bell-badge-outline</v-icon>
                 <v-icon color="grey lighten-1" v-else>mdi-bell-outline</v-icon>
             </v-btn>
             <v-menu
+                v-model="menu"
                 location="bottom"
                 eager
                 :close-on-content-click="false"
@@ -116,7 +119,7 @@
                 width="400"
             >
                 <template v-slot:activator="{ props }">
-                    <v-btn data-test="nav-user-item" variant="text" v-bind="props" class="text-transform-none">
+                    <v-btn data-test="nav-user-item" variant="text" v-bind="props" class="text-transform-none" @click="">
                         <v-icon>mdi-account</v-icon>
                         <span v-if="isAuthenticated" class="d-none d-sm-block">{{ currentUser?.username }}</span>
                     </v-btn>
@@ -127,6 +130,7 @@
                         :to="{ name: 'Login' }"
                         exact
                         link
+                        @click="menu = false"
                     >
                         <v-list-item-title>Login</v-list-item-title>
                     </v-list-item>
@@ -135,6 +139,7 @@
                         :to="{ name: 'PasswordReset' }"
                         exact
                         link
+                        @click="menu = false"
                     >
                         <v-list-item-title>Passwort vergessen?</v-list-item-title>
                     </v-list-item>
@@ -143,6 +148,7 @@
                         :to="{ name: 'PasswordChangeRequest' }"
                         exact
                         link
+                        @click="menu = false"
                     >
                         <v-list-item-title>Passwort ändern</v-list-item-title>
                     </v-list-item>
@@ -159,6 +165,7 @@
                         exact
                         link
                         data-test="nav-user-logout"
+                        @click="menu = false"
                     >
                         <v-list-item-title>Abmelden</v-list-item-title>
                     </v-list-item>
@@ -167,6 +174,7 @@
                         :to="{ name: 'About' }"
                         exact
                         link
+                        @click="menu = false"
                     >
                         <v-list-item-title>Was ist Swapp?</v-list-item-title>
                     </v-list-item>
@@ -174,6 +182,7 @@
                         :to="{ name: 'Changelog' }"
                         exact
                         link
+                        @click="menu = false"
                     >
                         <v-list-item-title>
                             Changelog
@@ -184,6 +193,7 @@
                         :to="{ name: 'Faq' }"
                         exact
                         link
+                        @click="menu = false"
                     >
                         <v-list-item-title>FAQ</v-list-item-title>
                     </v-list-item>
@@ -191,6 +201,7 @@
                     <v-list-item
                         href="https://streetworkapp.de"
                         target="_blank"
+                        @click="menu = false"
                     >
                         <v-list-item-title>Swapp-Homepage <v-icon small>mdi-open-in-new</v-icon></v-list-item-title>
                     </v-list-item>
@@ -199,26 +210,36 @@
                         <v-list-item-title>Nutzerwechsel</v-list-item-title>
                         <v-text-field
                             v-model="generalStore.navUserFilter"
-                            label="Benutzername"
+                            label="Benutzer eingrenzen"
                             type="search"
                             clearable
                             variant="outlined"
                             density="compact"
-                            placeholder="Benutzername eingeben"
+                            class="mt-2 mb-2"
+                            hide-details
+                            placeholder="Benutzer eingrenzen"
                         />
                     </v-list-item>
                     <v-divider v-if="!isUserSwitched && isSuperAdmin" />
-                    <v-list v-if="!isUserSwitched && isSuperAdmin && displayedUserList.length" density="compact" nav  color="white" class="white">
+                    <v-list v-if="!isUserSwitched && isSuperAdmin && displayedUserList.length" density="compact" nav>
                         <v-list-item
                             v-for="(user, key) in displayedUserList"
                             :key="key"
                             density="compact"
-                            @click="switchUser(user)"
+                            @click="switchUser(user);"
                             :disabled="!user.isEnabled"
                         >
-                            <v-list-item-title>{{ user.username }}</v-list-item-title>
-                            <v-list-item-subtitle>{{ getAdditionalUserInfo(user) }}</v-list-item-subtitle>
+                            <v-list-item-title>
+                                {{ hasUserRoleAdmin(user) ? '👨‍💼 ' : '' }}{{ user.username }}
+                                <span class="text-disabled font-weight-regular ml-2">
+                                    <v-icon icon="mdi-eye-outline" size="x-small" /> {{ user.lastLoginAt ? formatDateTimeNoSeconds(user.lastLoginAt) : 'nie' }}
+                                </span>
+                            </v-list-item-title>
+                            <v-list-item-subtitle
+                                :title="getAdditionalUserInfo(user)"
+                            >{{ getAdditionalUserInfo(user) }}</v-list-item-subtitle>
                         </v-list-item>
+                        <v-divider v-if="!isUserSwitched && isSuperAdmin && displayedUserList.length" />
                     </v-list>
                 </v-list>
             </v-menu>
@@ -242,6 +263,7 @@
         useWalkStore,
         useWayPointStore,
     } from '../stores';
+    import {formatDateTimeNoSeconds, formatDateTimeNoSecondsWithDayOfWeek} from "@/js/utils";
 
 
     export default {
@@ -262,6 +284,7 @@
             drawer: false,
             users: [],
             swappLogo: logo,
+            menu: false,
             linkClasses: 'text-left text-lg-center pl-2 pl-lg-0',
         }),
         computed: {
@@ -298,6 +321,16 @@
                     if (-1 !== user.username.toLowerCase().indexOf(searchString)) {
                         return true;
                     }
+                    for (const team of user.teams) {
+                        if (-1 !== team.name.toLowerCase().indexOf(searchString)) {
+                            return true;
+                        }
+                    }
+                    for (const role of user.roles) {
+                        if (-1 !== role.toLowerCase().indexOf(searchString)) {
+                            return true;
+                        }
+                    }
                     const client = this.getClientByIri(user.client);
 
                     return client && -1 !== client.name.toLowerCase().indexOf(searchString);
@@ -313,10 +346,14 @@
             },
         },
         methods: {
+            formatDateTimeNoSeconds,
+            formatDateTimeNoSecondsWithDayOfWeek,
             switchUser(user) {
+                this.menu = false;
                 this.authStore.switchUser(user);
             },
             exitSwitchUser() {
+                this.menu = false;
                 this.authStore.exitSwitchUser();
             },
             getClientByIri(clientIri) {
@@ -328,33 +365,17 @@
                     await this.clientStore.fetchClients();
                 }
             },
+            hasUserRoleAdmin(user) {
+                return user.roles.includes('ROLE_ADMIN');
+            },
             getAdditionalUserInfo(user) {
-                let trimLength = 22;
-                let usernameLength = 200;
-                let doShorten = false;
-                if (user.username.length > usernameLength) {
-                    doShorten = true;
-                }
-
-                let additionalUserInfo = Object.values(user.roles).map((currentRole) => {
-                    if ('ROLE_USER' === currentRole || 'ROLE_SUPER_ADMIN' === currentRole) {
-                        return '';
-                    }
-                    if ('ROLE_ALLOWED_TO_SWITCH' === currentRole) {
-                        return '';
-                    }
-                    if ('ROLE_ADMIN' === currentRole) {
-                        return '👨‍💼 ';
-                    }
-
-                    return `${currentRole.substring(5)} `;
-                }).join(' ');
-                let teams = Object.values(user.teams).map((currentTeam) => {
-                    return currentTeam.name
-                }).join(', ')
-                if ((doShorten || teams.length > 20) && teams !== teams.substring(0, trimLength)) {
-                    teams = `${teams.substring(0, trimLength)}...`;
-                }
+                let additionalUserInfo = '';
+                let teams = Object.values(user.teams)
+                    .map((team) => {
+                        return team.name
+                    })
+                    .sort((teamNameA, teamNameB) => teamNameA.toLowerCase().localeCompare(teamNameB.toLowerCase()))
+                    .join(', ')
                 additionalUserInfo += teams;
 
 
@@ -362,9 +383,6 @@
                     additionalUserInfo = additionalUserInfo.trim() + ' - ';
                 }
                 let clientName = this.getClientByIri(user.client)?.name;
-                if (doShorten && clientName && clientName !== clientName.substring(0, trimLength)) {
-                    clientName = `${clientName.substring(0, trimLength)}...`;
-                }
                 additionalUserInfo += ` ${clientName}`;
 
                 return `${additionalUserInfo.trim()}`;

@@ -1,6 +1,6 @@
 <template>
     <div class="pa-2">
-        <v-row class="my-2">
+        <v-row>
             <v-col
                 xs="12"
                 :sm="isSuperAdmin ? 8 : 12"

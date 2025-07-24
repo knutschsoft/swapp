@@ -70,14 +70,12 @@
                         <v-btn
                             :disabled="username.length < 10 || isLoading || isPasswordRequested"
                             block
+                            :loading="isLoading"
+                            density="default"
                             color="secondary"
                             type="submit"
                             @click="requestPasswordReset()"
                         >
-                            <v-progress-circular
-                                v-if="isLoading"
-                                indeterminate
-                            ></v-progress-circular>
                             Passwortänderung beantragen
                         </v-btn>
                         <general-error-alert v-if="hasError && !validationErrors.username && !validationErrors.global"/>

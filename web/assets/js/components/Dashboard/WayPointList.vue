@@ -169,17 +169,16 @@
                 xl="12"
             >
                 <v-btn
-                    site="small"
                     color="secondary"
                     block
                     :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
                     @click="unsetAllFilter"
                     data-test="reset-way-point-filter"
+                    density="comfortable"
+                    class="text-transform-none"
+                    :append-icon="hasFilter ? 'mdi-filter-remove-outline' : 'mdi-filter-outline'"
                 >
                     Alle Filter zurücksetzen
-                    <mdicon
-                        :name="hasFilter ? 'FilterRemoveOutline' : 'FilterOutline'"
-                    />
                 </v-btn>
             </v-col>
             <v-col
@@ -190,18 +189,16 @@
                 xl="12"
             >
                 <v-btn
-                    site="small"
                     color="secondary"
-                    size="sm"
                     block
                     :disabled="isLoading || isExportLoading || this.totalItems === 0"
+                    density="comfortable"
+                    class="text-transform-none"
+                    append-icon="mdi-download"
+                    :loading="isExportLoading"
                     @click="exportWayPoints"
                 >
                     {{ this.totalItems > 5000 ? 5000 : this.totalItems }} Wegpunkt{{ this.totalItems !== 1 ? 'e' : '' }} als .csv-Datei exportieren
-                    <mdicon
-                        :name="isExportLoading ? 'Loading' : 'Download'"
-                        :spin="isExportLoading"
-                    />
                 </v-btn>
             </v-col>
         </v-row>
@@ -267,9 +264,10 @@
                         color="secondary"
                         :to="{name: 'WayPointDetail', params: { wayPointId: item.wayPointId, walkId: getWalkByIri(item.walk)?.walkId }}"
                         :data-test="`button-wegpunkt-ansehen-${ item.locationName }`"
+                        class="text-transform-none"
                     >
                         Wegpunkt ansehen
-                        <v-icon icon="mdi-marker-path" class="ml-1"></v-icon>
+                        <v-icon icon="mdi-routes" class="ml-1"></v-icon>
                         <v-icon icon="mdi-eye" class="ml-1"></v-icon>
                     </v-btn>
                 </div>

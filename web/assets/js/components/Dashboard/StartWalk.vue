@@ -1,134 +1,147 @@
 <template>
-    <div
-        class=""
-    >
-        <v-card>
-            <v-card-text
-                v-if="hasUnfinishedWalks && !isLoading"
-            >
-                <v-select
-                    v-model="selectedUnfinishedWalk"
-                    :items="selectableUnfinishedWalks"
-                    data-test="select-walk"
-                    label="Nicht beendete Runde wählen"
-                    overflow
-                    hide-details
-                    variant="outlined"
-                    density="compact"
-                    class="my-round-start-helper"
-                    rounded="0"
-                >
-                    <template v-slot:append>
-                        <v-btn
-                            :disabled="!selectedUnfinishedWalk"
-                            @click="handleWalkContinue"
-                            class="rounded-0 btn-start"
-                            data-test="runde-fortsetzen"
-                            color="secondary"
-                        >
-                            Runde fortsetzen
-                            <v-icon>mdi-shoe-print</v-icon>
-                            <v-icon>mdi-walk</v-icon>
-                            <v-icon>mdi-shoe-print</v-icon>
-                        </v-btn>
-                    </template>
-                </v-select>
-            </v-card-text>
-            <v-divider
-                v-if="hasUnfinishedWalks && !isLoading"
-            />
-            <v-card-text
-                v-if="selectableTeams.length && !isLoading"
-            >
-                <v-select
-                    v-model="selectedTeam"
-                    :items="selectableTeams"
-                    label="Team wählen..."
-                    data-test="select-team"
-                    hide-details
-                    variant="outlined"
-                    density="compact"
-                    class="my-round-start-helper"
-                    rounded="0"
-                >
-                    <template v-slot:append>
-                        <v-btn
-                            color="secondary"
-                            @click="handleWalkPrologue"
-                            :disabled="!hasSelectedTeamSystemicQuestionsAvailable"
-                            class="rounded-0 btn-start"
-                        >
-                            Runde beginnen
-                            <v-icon>mdi-walk</v-icon>
-                            <v-icon>mdi-shoe-print</v-icon>
-                        </v-btn>
-                    </template>
-                </v-select>
-            </v-card-text>
-        </v-card>
-        <v-alert
-            v-if="!teams.length && !isLoading && isAllowedToCreateTeam"
-            class="mb-0"
-            type="info"
-            variant="outlined"
-            prominent
+    <v-row dense class="pa-2">
+        <v-col
+            v-if="hasUnfinishedWalks && !isLoading"
+            cols="12"
+            md="6"
         >
-            Um eine neue Runde zu erstellen, musst Du zuerst
-            <v-btn
-                :to="{ name: 'Teams' }"
-                color="info"
-                density="compact"
+            <v-select
+                v-model="selectedUnfinishedWalk"
+                :items="selectableUnfinishedWalks"
+                data-test="select-walk"
+                label="Nicht beendete Runde wählen"
+                overflow
+                hide-details
                 variant="outlined"
-                title="Teamverwaltung"
-                class="mx-1"
-            >ein neues Team anlegen</v-btn>.
-        </v-alert>
-        <v-alert
-            v-else-if="!selectableTeams.length && !isLoading"
-            type="info"
-            variant="outlined"
-            class="mb-0"
-            prominent
-        >
-            Du bist aktuell keinem Team zugeordnet.
-            <p
-                v-if="isAllowedToCreateTeam"
-                class="mb-0"
+                density="compact"
+                class="my-round-start-helper"
+                rounded="0"
             >
-                Ordne dich selber
+                <template v-slot:append>
+                    <v-btn
+                        :disabled="!selectedUnfinishedWalk"
+                        @click="handleWalkContinue"
+                        class="rounded-0 btn-start text-transform-none"
+                        density="compact"
+                        data-test="runde-fortsetzen"
+                        color="secondary"
+                    >
+                        Runde fortsetzen
+                        <v-icon>mdi-shoe-print</v-icon>
+                        <v-icon>mdi-walk</v-icon>
+                        <v-icon>mdi-shoe-print</v-icon>
+                    </v-btn>
+                </template>
+            </v-select>
+        </v-col>
+        <v-col
+            v-if="hasUnfinishedWalks && !isLoading"
+            class="d-md-none"
+        >
+            <v-divider />
+        </v-col>
+        <v-col
+            v-if="selectableTeams.length && !isLoading"
+            cols="12"
+            :md="hasUnfinishedWalks ? 5 : 12"
+            :offset-md="hasUnfinishedWalks ? 1 : 0"
+        >
+            <v-select
+                v-model="selectedTeam"
+                :items="selectableTeams"
+                label="Team wählen..."
+                data-test="select-team"
+                hide-details
+                variant="outlined"
+                density="compact"
+                class="my-round-start-helper"
+                rounded="0"
+            >
+                <template v-slot:append>
+                    <v-btn
+                        color="secondary"
+                        @click="handleWalkPrologue"
+                        :disabled="!hasSelectedTeamSystemicQuestionsAvailable"
+                        class="rounded-0 btn-start text-transform-none"
+                    >
+                        Runde beginnen
+                        <v-icon>mdi-walk</v-icon>
+                        <v-icon>mdi-shoe-print</v-icon>
+                    </v-btn>
+                </template>
+            </v-select>
+        </v-col>
+        <v-col v-if="!teams.length && isAllowedToCreateTeam || !selectableTeams.length || selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable || isLoading">
+            <v-alert
+                v-if="!teams.length && !isLoading && isAllowedToCreateTeam"
+                class="mb-0"
+                type="info"
+                variant="outlined"
+                prominent
+            >
+                Um eine neue Runde zu erstellen, musst Du zuerst
                 <v-btn
                     :to="{ name: 'Teams' }"
-                    title="Teamverwaltung"
                     color="info"
-                    variant="outlined"
                     density="compact"
-                    class="mx-1"
-                >einem Team zu</v-btn>
-                um eine Runde starten zu können.
-            </p>
-            <p
-                v-else
-                class="mb-0"
-            >
-                Bitte einen Admin dich einem Team zuzuordnen um eine Runde starten zu können.
-            </p>
-        </v-alert>
-        <v-alert
-            v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable && !isLoading"
-            type="warning"
-            prominent
-            variant="outlined"
-        >
-            Um für dieses Team eine neue Runde zu erstellen, musst Du zuerst mindestens
-            <v-btn
-                :to="{ name: 'SystemicQuestions' }"
-                title="Systemische Fragen"
-                color="warning"
+                    variant="outlined"
+                    title="Teamverwaltung"
+                    class="ml-1 mb-1 text-transform-none"
+                >ein neues Team anlegen
+                </v-btn>
+                .
+            </v-alert>
+            <v-alert
+                v-else-if="!selectableTeams.length && !isLoading"
+                type="info"
                 variant="outlined"
-            >eine Systemische Frage erstellen</v-btn>.
-        </v-alert>
-        <v-skeleton-loader v-if="isLoading" type="text, divider, text" />
-    </div>
+                class="mb-0"
+                prominent
+            >
+                Du bist aktuell keinem Team zugeordnet.
+                <p
+                    v-if="isAllowedToCreateTeam"
+                    class="mb-0"
+                >
+                    Ordne dich selber
+                    <v-btn
+                        :to="{ name: 'Teams' }"
+                        title="Teamverwaltung"
+                        color="info"
+                        variant="outlined"
+                        density="compact"
+                        class="mx-1 text-transform-none"
+                    >einem Team zu
+                    </v-btn>
+                    um eine Runde starten zu können.
+                </p>
+                <p
+                    v-else
+                    class="mb-0"
+                >
+                    Bitte einen Admin dich einem Team zuzuordnen um eine Runde starten zu können.
+                </p>
+            </v-alert>
+            <v-alert
+                v-if="selectedTeam && !hasSelectedTeamSystemicQuestionsAvailable && !isLoading"
+                type="warning"
+                prominent
+                variant="outlined"
+            >
+                Um für dieses Team eine neue Runde zu erstellen, musst Du zuerst mindestens
+                <v-btn
+                    :to="{ name: 'SystemicQuestions' }"
+                    title="Systemische Fragen"
+                    color="warning"
+                    variant="outlined"
+                >eine Systemische Frage erstellen
+                </v-btn>
+                .
+            </v-alert>
+            <v-skeleton-loader v-if="isLoading" class="d-md-none" type="text, divider, text"/>
+            <v-skeleton-loader v-if="isLoading" class="d-none d-md-block" type="text"/>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -168,7 +181,7 @@
                 return this.authStore.currentUser;
             },
             isAllowedToCreateTeam() {
-                return this.currentUser.isAdmin;
+                return this.currentUser.isAdmin || this.currentUser.isSuperAdmin;
             },
             selectableTeams() {
                 let options = [];
@@ -259,7 +272,7 @@
 </style>
 <style scoped>
 .btn-start {
-    width: 220px !important;
+    width: 185px !important;
     height: 40px;
 }
 </style>
