@@ -137,7 +137,7 @@ defineExpose({ resetForm });
         @submit.prevent="handleSubmit"
         class="pa-1 pa-sm-2 pa-md-4 pa-lg-5 pa-xl-6 pa-xxl-7"
     >
-        <v-card class="mb-4">
+        <v-card class="mb-4" density="compact">
             <v-card-title class="grey lighten-2 mb-5">Allgemeine Daten des Teams</v-card-title>
             <v-card-text>
                 <v-row dense>
@@ -193,7 +193,7 @@ defineExpose({ resetForm });
         </v-card>
 
         <v-card class="mb-4">
-            <v-card-title class="grey lighten-2">Einstellungen für die Dokumentation einer Runde</v-card-title>
+            <v-card-title class="grey lighten-2">Einstellungen der Runden-Dokumentation</v-card-title>
             <v-card-text class="grey lighten-3 pt-5">
                 <v-row>
                     <v-col cols="12" md="6" lg="4">
@@ -485,10 +485,10 @@ defineExpose({ resetForm });
             </v-card-text>
         </v-card>
         <v-card class="mb-4">
-            <v-card-title class="grey lighten-2">Einstellungen für die Dokumentation eines Wegpunktes</v-card-title>
+            <v-card-title class="grey lighten-2">Einstellungen der Wegpunkt-Dokumentation</v-card-title>
             <v-card-text class="grey lighten-4 pt-2">
                 <v-card outlined class="mb-0 pt-3">
-                    <v-card-subtitle class="font-weight-bold">Autocomplete-Vorschläge für den Ort eines Wegpunktes</v-card-subtitle>
+                    <v-card-text class="font-weight-bold pb-0">Autocomplete-Vorschläge für den Ort eines Wegpunktes</v-card-text>
                     <v-card-text>
                         <v-list density="compact">
                             <v-list-item
@@ -534,7 +534,7 @@ defineExpose({ resetForm });
                     </v-card-text>
                 </v-card>
                 <v-card class="mt-3 mb-0 pt-3">
-                    <v-card-subtitle class="font-weight-bold grey lighten-5">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-subtitle>
+                    <v-card-text class="font-weight-bold pb-0">Optionale Felder - Welche Daten sollen zusätzlich mit erfasst werden?</v-card-text>
                     <v-card-text class="grey lighten-5">
                         <v-row>
                             <v-col cols="12" md="6" lg="2">
