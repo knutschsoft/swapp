@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -45,6 +47,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     ],
     normalizationContext: ['groups' => ['team:read']]
 )]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['name', 'client.name'])]
 #[ORM\Table(name: 'team')]
 #[ORM\Entity(repositoryClass: DoctrineORMTeamRepository::class)]
 class Team implements \Stringable

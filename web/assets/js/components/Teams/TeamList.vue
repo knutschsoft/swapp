@@ -61,7 +61,7 @@
             <template v-slot:item.guestNames="{item}">
                 <tooltip :text="item.guestNames.join(', ') || '-'" />
             </template>
-            <template v-slot:item.client="{item}">
+            <template v-slot:item.client.name="{item}">
                 {{ clientFormatter(item.client) }}
             </template>
             <template v-slot:item.actions="{item}">
@@ -85,7 +85,7 @@
                 <v-card-title class="text-h5 grey lighten-2">
                     Team {{ editTeam ? editTeam.name : '' }} bearbeiten
                 </v-card-title>
-                <v-card-text>
+                <v-card-text class="pa-2">
                     <team-form
                         v-if="editTeam"
                         :initial-team="editTeam"
@@ -202,9 +202,9 @@ export default {
             }
             if (this.isSuperAdmin) {
                 headers.push({
-                    key: 'client',
+                    key: 'client.name',
                     title: 'Klient',
-                    sortable: false,
+                    sortable: true,
                     align: 'center',
                 });
                 // headers.push({
@@ -216,7 +216,7 @@ export default {
                 //     title: 'Geändert am',
                 // });
             }
-            headers.push({key: 'actions', title: 'Aktionen', align: 'center'});
+            headers.push({key: 'actions', title: 'Aktionen', align: 'center', sortable: false});
             return headers;
         },
         teams() {

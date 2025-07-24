@@ -61,7 +61,7 @@ use Webmozart\Assert\Assert;
     normalizationContext: ['groups' => ['tag:read']]
 )]
 #[ApiFilter(ExistsFilter::class, properties: ['wayPoints'])]
-#[ApiFilter(OrderFilter::class, properties: ['name'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'color', 'isEnabled', 'client.name'])]
 #[ORM\Table(name: 'tag')]
 #[ORM\Entity(repositoryClass: DoctrineORMTagRepository::class)]
 class Tag implements \Stringable

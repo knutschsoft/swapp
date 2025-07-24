@@ -87,46 +87,48 @@
                     :color="item.color"
                 />
             </template>
-            <template v-slot:item.client="{item}">
+            <template v-slot:item.client.name="{item}">
                 {{ clientFormatter(item.client) }}
             </template>
 
             <template v-slot:item.actions="{item}">
-                <v-btn
-                    class="text-transform-none"
-                    density="comfortable"
-                    color="secondary"
-                    @click="toggleEnabled(item, item.isEnabled)"
-                >
-                    {{ item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
-                </v-btn>
-                <v-menu
-                    location="bottom"
-                    open-on-hover
-                    open-on-click
-                >
-                    <template v-slot:activator="{ props }">
-                        <v-icon
-                            class="text-muted ml-2"
-                            v-bind="props"
-                        >
-                            mdi-help-circle-outline
-                        </v-icon>
-                    </template>
-                    <v-card>
-                        <v-card-text class="font-weight-bold">
-                            Wozu kann ich einen Tag aktivieren?
-                        </v-card-text>
-                        <v-divider class="my-0"></v-divider>
-                        <v-card-text>
-                            <ul class="mb-0 pl-5">
-                                <li>Aktivierte Tags können einem Wegpunkt zugeordnet werden.</li>
-                                <li>Deaktivierte Tags können einem Wegpunkt nicht zugeordnet werden. Sie sind jedoch weiterhin an bereits zugeordneten Wegpunkten vorhanden.</li>
-                                <li>Deaktivierte Tags werden nicht als Filter auf dem Dashboard angezeigt, wenn sie keinem Wegpunkt zugeordnet sind.</li>
-                            </ul>
-                        </v-card-text>
-                    </v-card>
-                </v-menu>
+                <div class="d-flex align-center">
+                    <v-btn
+                        class="text-transform-none"
+                        density="comfortable"
+                        color="secondary"
+                        @click="toggleEnabled(item, item.isEnabled)"
+                    >
+                        {{ item.isEnabled ? 'deaktivieren' : 'aktivieren' }}
+                    </v-btn>
+                    <v-menu
+                        location="bottom"
+                        open-on-hover
+                        open-on-click
+                    >
+                        <template v-slot:activator="{ props }">
+                            <v-icon
+                                class="text-muted ml-2"
+                                v-bind="props"
+                            >
+                                mdi-help-circle-outline
+                            </v-icon>
+                        </template>
+                        <v-card>
+                            <v-card-text class="font-weight-bold">
+                                Wozu kann ich einen Tag aktivieren?
+                            </v-card-text>
+                            <v-divider class="my-0"></v-divider>
+                            <v-card-text>
+                                <ul class="mb-0 pl-5">
+                                    <li>Aktivierte Tags können einem Wegpunkt zugeordnet werden.</li>
+                                    <li>Deaktivierte Tags können einem Wegpunkt nicht zugeordnet werden. Sie sind jedoch weiterhin an bereits zugeordneten Wegpunkten vorhanden.</li>
+                                    <li>Deaktivierte Tags werden nicht als Filter auf dem Dashboard angezeigt, wenn sie keinem Wegpunkt zugeordnet sind.</li>
+                                </ul>
+                            </v-card-text>
+                        </v-card>
+                    </v-menu>
+                </div>
             </template>
         </v-data-table-server>
     </div>
@@ -198,9 +200,9 @@ export default {
             ]);
             if (this.isSuperAdmin) {
                 headers.push({
-                    key: 'client',
+                    key: 'client.name',
                     title: 'Klient',
-                    sortable: false,
+                    sortable: true,
                     align: 'center',
                 });
             }
