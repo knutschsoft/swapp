@@ -406,6 +406,7 @@
         />
         <v-btn
             color="secondary"
+            type="submit"
             :disabled="isSubmitDisabled"
             data-test="button-way-point-submit"
             block
