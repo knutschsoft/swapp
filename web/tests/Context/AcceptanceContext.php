@@ -370,7 +370,6 @@ final class AcceptanceContext extends MinkContext
         $datePickerFrom->click();
     }
 
-
     #[Then('I select date range von :von bis :bis in date range picker :dateTestSelector')]
     public function iSelectDateRangeVonBisInDateRangePicker(string $von, string $bis, string $dateTestSelector): void
     {
@@ -603,6 +602,7 @@ final class AcceptanceContext extends MinkContext
     {
         return $this->getNodeElement("[data-test='$dataTestLocator']", $tries);
     }
+
     private function getTestIdElement(string $dataTestLocator, int $tries = 25): NodeElement
     {
         return $this->getNodeElement("[data-test-id='$dataTestLocator']", $tries);

@@ -49,6 +49,7 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libssl-dev \
         git-core \
+        chromium \
         libflac-dev \
         gosu \
         acl \
