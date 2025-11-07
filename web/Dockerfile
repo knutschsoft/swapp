@@ -1,5 +1,5 @@
 FROM composer:2.8 AS composer
-FROM node:20-bookworm-slim AS node
+FROM node:22-bookworm-slim AS node
 FROM php:8.4-apache
 
 ARG APP_ENVIRONMENT=prod
@@ -17,14 +17,12 @@ ENV PANTHER_NO_SANDBOX=1
 ENV PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors'
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-
-COPY --from=node /usr/lib /usr/lib
-COPY --from=node /usr/local/lib /usr/local/lib
-COPY --from=node /usr/local/bin /usr/local/bin
-RUN rm /usr/local/bin/yarn
-RUN rm /usr/local/bin/yarnpkg
-RUN corepack enable yarn
-RUN yes y | yarn set version berry
+RUN apt-get update && apt-get install -y curl ca-certificates gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && corepack enable \
+    && corepack prepare yarn@stable --activate \
+    && yarn set version stable
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions relay redis
@@ -43,7 +41,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && apt-get install -y \
         wget \
-        openjdk-17-jre-headless \
+        openjdk-21-jre-headless \
         netcat-traditional \
         libicu-dev \
         libzip-dev \
@@ -78,24 +76,12 @@ RUN sh -c "echo 'xdebug.remote_enable=1' >> /usr/local/etc/php/conf.d/docker-php
     sed -i -e 's/zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini                                     >> /usr/local/etc/php/conf.d/xdebug.ini
 
 ### adjust panther ChromeDriver to installed chromium version
-ENV CHROME_VERSION=135.0.7049.52-1~deb12u1
-# see for stable releaeses: https://chromereleases.googleblog.com/search/label/Stable%20updates?updated-max=2024-10-29T16:14:00-07:00&max-results=20&start=65&by-date=false
-# see for download-page: https://debian.sipwise.com/debian-security/pool/main/c/chromium/
 RUN if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
-    wget -O /tmp/chromium.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium_${CHROME_VERSION}_amd64.deb && \
-    wget -O /tmp/chromium-driver.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium-driver_${CHROME_VERSION}_amd64.deb && \
-    wget -O /tmp/chromium-common.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium-common_${CHROME_VERSION}_amd64.deb && \
-    wget -O /tmp/chromium-sandbox.deb https://debian.sipwise.com/debian-security/pool/main/c/chromium/chromium-sandbox_${CHROME_VERSION}_amd64.deb && \
-    apt-get update && apt-get upgrade -y && \
-    apt install --fix-broken -y --allow-downgrades \
-        /tmp/chromium.deb \
-        /tmp/chromium-driver.deb \
-        /tmp/chromium-common.deb \
-        /tmp/chromium-sandbox.deb && \
-    rm /tmp/chromium*.deb && \
-    apt-get clean autoclean && \
-    apt-get autoremove --yes && \
-    rm -rf /var/lib/{apt,cache,log}; \
+    apt-get update && apt-get install -y wget unzip xvfb libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libasound2 && \
+    wget -q https://storage.googleapis.com/chrome-for-testing-public/141.0.7390.122/linux64/chromedriver-linux64.zip && \
+    unzip chromedriver-linux64.zip -d /usr/local/bin/ && \
+    rm chromedriver-linux64.zip && \
+    apt-get clean autoclean && apt-get autoremove -y; \
 fi
 
 COPY .docker/web/etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/

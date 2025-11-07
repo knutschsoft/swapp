@@ -28,9 +28,6 @@
     "behat/mink-selenium2-driver": {
         "version": "v1.4.0"
     },
-    "behat/transliterator": {
-        "version": "v1.2.0"
-    },
     "captainhook/captainhook": {
         "version": "4.5.2"
     },
