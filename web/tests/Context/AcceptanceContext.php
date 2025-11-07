@@ -346,14 +346,7 @@ final class AcceptanceContext extends MinkContext
         $this->iWaitForElementToDisappear($locatorMinute, 45);
     }
 
-    /**
-     * @When /^I select date "([^"]*)" in date selector "([^"]*)"$/
-     *
-     * @param string $date             Format is d.m.Y
-     * @param string $dataTestSelector
-     *
-     * @throws \Throwable
-     */
+    #[When('/^I select date "([^"]*)" in date selector "([^"]*)"$/')]
     public function iSelectDateInDateSelector(string $date, string $dataTestSelector): void
     {
         $rangePicker = $this->getTestElement($dataTestSelector);
@@ -377,13 +370,59 @@ final class AcceptanceContext extends MinkContext
         $datePickerFrom->click();
     }
 
-    /**
-     * @When /^I wait for aria label "([^"]*)" to be active$/
-     *
-     * @param string $arg1
-     *
-     * @throws \Throwable
-     */
+
+    #[Then('I select date range von :von bis :bis in date range picker :dateTestSelector')]
+    public function iSelectDateRangeVonBisInDateRangePicker(string $von, string $bis, string $dateTestSelector): void
+    {
+        $rangePicker = $this->getTestElement($dateTestSelector);
+
+        $rangePicker->mouseOver();
+        $rangePicker->click();
+
+        Carbon::setLocale('de');
+        $von = Carbon::parse($von);
+        $bis = Carbon::parse($bis);
+
+        $this->iWaitForElementToAppear('[data-test-id=year-toggle-overlay-0]');
+        $yearFromSelectElement = $this->getTestIdElement('year-toggle-overlay-0');
+        $yearFromSelectElement->click();
+        $this->getTestIdElement((string) $von->year)->click();
+        $monthFromSelectElement = $this->getTestIdElement('month-toggle-overlay-0');
+        $monthFromSelectElement->click();
+        $this->getTestIdElement($von->shortLocaleMonth)->click();
+        $dateFrom = $von->format('Y-m-d');
+        $increasedTriesBecauseOfInstableTest = 50;
+        $datePickerFrom = $this->getTestIdElement(\sprintf("dp-%s", $dateFrom), $increasedTriesBecauseOfInstableTest);
+        $datePickerFrom->click();
+        $this->spin(
+            static function () use ($datePickerFrom): void {
+                Assert::true($datePickerFrom->isVisible());
+            },
+            100
+        );
+
+        $this->iWaitForElementToAppear('[data-test-id=year-toggle-overlay-1]');
+        $yearToSelectElement = $this->getTestIdElement('year-toggle-overlay-1');
+        $yearToSelectElement->click();
+        $this->getTestIdElement((string) $bis->year)->click();
+        $monthToSelectElement = $this->getTestIdElement('month-toggle-overlay-1');
+        $monthToSelectElement->click();
+        $this->getTestIdElement($bis->shortLocaleMonth)->click();
+        $dateFrom = $bis->format('Y-m-d');
+
+        try {
+            $datePickerFrom = $this->getNodeElement(\sprintf("#dp-%s", $dateFrom), $increasedTriesBecauseOfInstableTest);
+        } catch (\Throwable $exception) {
+            // In case this fuzzy test fails again, we would like to have some debugging data
+            $html = $this->getSession()->getPage()->getOuterHtml();
+            $filename = $this->iDumpTextToProtocollFile($html);
+            Assert::false(true, \sprintf('%s -- Printed HTML dumpt to: %s', $exception->getMessage(), $filename));
+        }
+        $datePickerFrom->click();
+        Assert::notEmpty($rangePicker->find('css', '[data-test-id="dp-input"]')->getValue());
+    }
+
+    #[When('/^I wait for aria label "([^"]*)" to be active$/')]
     public function iWaitForAriaLabelToBeActive(string $arg1): void
     {
         $locator = '[aria-label="'.$arg1.'"]';
@@ -563,5 +602,9 @@ final class AcceptanceContext extends MinkContext
     private function getTestElement(string $dataTestLocator, int $tries = 25): NodeElement
     {
         return $this->getNodeElement("[data-test='$dataTestLocator']", $tries);
+    }
+    private function getTestIdElement(string $dataTestLocator, int $tries = 25): NodeElement
+    {
+        return $this->getNodeElement("[data-test-id='$dataTestLocator']", $tries);
     }
 }

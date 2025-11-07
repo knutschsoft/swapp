@@ -153,7 +153,7 @@
                 xl="12"
             >
                 <date-range-picker
-                    v-model="filter.startTime"
+                    v-model="filter.visitedAt"
                     :is-loading="isLoading"
                     data-test="visited-at-filter"
                     placeholder="Ankunft"
@@ -359,6 +359,8 @@ export default {
             return this.generalStore.defaultWayPointFilter;
         },
         defaultDateRange() {
+            console.log('this.generalStore.defaultWayPointFilter.visitedAt')
+            console.log(this.generalStore.defaultWayPointFilter.visitedAt)
             return this.generalStore.defaultWayPointFilter.visitedAt;
         },
         teamNames() {
@@ -440,6 +442,8 @@ export default {
             sortBy.forEach((val) => {
                 data[`order[${val.key}]`] = val.order;
             })
+            console.log(this.filter)
+            console.log(this.filter.visitedAt)
             if (this.filter.visitedAt[0] && this.filter.visitedAt[1]) {
                 data['visitedAt[after]'] = dayjs(this.filter.visitedAt[0]).startOf('day').toISOString()
                 data['visitedAt[before]'] = dayjs(this.filter.visitedAt[1]).endOf('day').toISOString()

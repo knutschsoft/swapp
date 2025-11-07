@@ -11,6 +11,14 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '11.11.2025',
+                avatarText: '&#129313;',
+                avatarTitle: 'Karneval',
+                entries: [
+                    {text: ['Fix: Die Filterung der Wegpunktliste nach Ankunft hatte keine Auswirkung.']}
+                ]
+            },
+            {
                 header: '24.07.2025',
                 avatarText: '&#x1F600;',
                 avatarTitle: 'Internationaler Tag der Freude',
