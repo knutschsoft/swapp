@@ -66,8 +66,8 @@ const errorMessages = computed(() => {
         placeholder="Tageskonzept eintragen..."
         :disabled="isLoading"
         :loading="isLoading"
-        :hide-no-data="!conceptOfDaySearch"
-        :search-input.sync="conceptOfDaySearch"
+        :hide-no-data="false"
+        v-model:search="conceptOfDaySearch"
         :error-messages="errorMessages"
         :error="!!errorMessages?.length"
     >

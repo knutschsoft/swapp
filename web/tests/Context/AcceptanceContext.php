@@ -7,6 +7,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Step\Given;
 use Behat\Step\Then;
 use Behat\Step\When;
 use Carbon\Carbon;
@@ -528,17 +529,13 @@ final class AcceptanceContext extends MinkContext
         $this->visit($url);
     }
 
-    /**
-     * @Given /^I set browser window size to "([^"]*)" x "([^"]*)"$/
-     */
+    #[Given('/^I set browser window size to "([^"]*)" x "([^"]*)"$/')]
     public function iSetBrowserWindowSizeToX(string $width, string $height): void
     {
         $this->getSession()->resizeWindow((int) $width, (int) $height, 'current');
     }
 
-    /**
-     * @When /^I enter "([^"]*)" in "([^"]*)" field$/
-     */
+    #[When('/^I enter "([^"]*)" in "([^"]*)" field$/')]
     public function iEnterInField(string $value, string $dataTestLocator): void
     {
         $element = $this->getTestElement($dataTestLocator);

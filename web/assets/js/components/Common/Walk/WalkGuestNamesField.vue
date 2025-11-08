@@ -29,13 +29,21 @@ const value = computed({
 });
 
 const guestNames = computed(() => {
-    if (!props.team || !props.initialWalk || !props.initialWalk.isWithGuests) {
-        return [];
+    const names = [];
+
+    if (props.team && Array.isArray(props.team.guestNames)) {
+        names.push(...props.team.guestNames);
     }
 
-    return [
-        ...new Set(props.initialWalk.guestNames.concat(props.team.guestNames))
-    ];
+    if (
+        props.initialWalk &&
+        props.initialWalk.isWithGuests &&
+        Array.isArray(props.initialWalk.guestNames)
+    ) {
+        names.push(...props.initialWalk.guestNames);
+    }
+
+    return [...new Set(names)].sort((a, b) => a.localeCompare(b));
 });
 
 const errorMessages = computed(() => {
@@ -55,6 +63,7 @@ const errorMessages = computed(() => {
         deletable-chips
         clearable
         multiple
+        data-test="walk-guest-names-field"
         variant="outlined"
         density="compact"
         small-chips
@@ -63,8 +72,8 @@ const errorMessages = computed(() => {
         :persistent-hint="!!description"
         :hide-details="!description && !errorMessages?.length"
         placeholder="Namen eintragen..."
-        :hide-no-data="!guestNameSearch"
-        :search-input.sync="guestNameSearch"
+        :hide-no-data="false"
+        v-model:search="guestNameSearch"
         :disabled="isLoading"
         :loading="isLoading"
         :error-messages="errorMessages"

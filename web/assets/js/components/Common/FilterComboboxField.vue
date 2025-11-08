@@ -64,8 +64,8 @@ const errorMessages = computed(() => {
         :data-test="dataTest"
         :placeholder="placeholder"
         :loading="isLoading"
-        :hide-no-data="!suggestion"
-        :search-input.sync="suggestion"
+        :hide-no-data="false"
+        v-model:search="suggestion"
     >
         <template v-slot:no-data>
             <v-list-item density="compact">
