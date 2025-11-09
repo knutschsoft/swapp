@@ -4,31 +4,6 @@
             <v-col v-if="tags.length" cols="12">
                 <div class="d-flex flex-row align-items-center">
                     <div>Tags</div>
-                    <v-tooltip
-                        bottom
-                        content-class="bg-info"
-                    >
-                        <template v-slot:activator="{ props}">
-                            <v-icon
-                                class="text-muted ml-2"
-                                v-bind="props"
-                            >
-                                mdi-help-circle-outline
-                            </v-icon>
-                        </template>
-                        <v-alert
-                            prominent
-                            type="info"
-                            density="compact"
-                            class="mb-0 m-0"
-                        >
-                            <span>Welche Tags werden angezeigt?</span>
-                            <ul class="mb-0 pl-5">
-                                <li>Alle aktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
-                                <li>Alle deaktivierten Tags, die mindestens einer Runde zugeordnet sind, werden angezeigt.</li>
-                            </ul>
-                        </v-alert>
-                    </v-tooltip>
                     <v-btn
                         title="Filterung nach Tags entfernen"
                         class="ml-auto"
@@ -42,6 +17,38 @@
                             icon="mdi-filter-remove-outline"
                         />
                     </v-btn>
+                    <v-menu v-if="hasDisabledTag" :close-on-content-click="false">
+                        <template #activator="{ props }">
+                            <v-btn class="ml-2" size="x-small" v-bind="props" aria-label="Weitere Tag-Optionen" icon="mdi-dots-vertical" />
+                        </template>
+                        <v-list dense>
+                            <v-list-item>
+                                <v-list-item-title>Optionen</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-switch
+                                    v-model="filter.showDisabledTags"
+                                    color="primary"
+                                    label="Deaktivierte Tags anzeigen"
+                                    hide-details
+                                />
+                            </v-list-item>
+                                <v-expansion-panels flat density="compact" class="mt-1">
+                                    <v-expansion-panel>
+                                        <v-expansion-panel-title class="text-body-2">
+                                            <v-icon size="16" class="mr-1 text-muted">mdi-information-outline</v-icon>
+                                            Erklärung zu Tags
+                                        </v-expansion-panel-title>
+                                        <v-expansion-panel-text class="text-body-2 py-1 mx-4">
+                                            <ul class="pl-5 mb-1">
+                                                <li>Aktivierte Tags, die mindestens einer Runde zugeordnet sind, werden <strong>immer</strong> angezeigt.</li>
+                                                <li>Deaktivierte Tags werden nur angezeigt, wenn die Option oben aktiviert ist.</li>
+                                            </ul>
+                                        </v-expansion-panel-text>
+                                    </v-expansion-panel>
+                                </v-expansion-panels>
+                        </v-list>
+                    </v-menu>
                 </div>
                 <v-chip-group
                     v-model="filter.wayPointTags"
@@ -65,10 +72,11 @@
                         </v-chip>
                     </template>
                     <hr
-                        v-if="hasDisabledTag"
+                        v-if="hasDisabledTag && filter.showDisabledTags"
                         class="d-block w-100 my-1 mr-2"
                     >
                     <template
+                        v-if="hasDisabledTag && filter.showDisabledTags"
                         v-for="tag in tags"
                         :key="tag['id']"
                     >
@@ -82,12 +90,7 @@
                             variant="outlined"
                         >
                             {{ tag.name }}
-                            <mdicon
-                                name="TagOff"
-                                class="text-muted ml-1"
-                                title="deaktivierter Tag"
-                                size="16"
-                            />
+                            <mdicon name="TagOff" class="text-muted ml-1" size="16" />
                         </v-chip>
                     </template>
                 </v-chip-group>

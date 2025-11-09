@@ -15,7 +15,9 @@ export const useChangelogStore = defineStore("changelog", {
                 avatarText: '&#129313;',
                 avatarTitle: 'Karneval',
                 entries: [
-                    {text: ['Fix: Die Filterung der Wegpunktliste nach Ankunft hatte keine Auswirkung.']}
+                    {text: ['Fix: Die Filterung der Wegpunktliste nach Ankunft hatte keine Auswirkung.']},
+                    {text: ['Fix: Das Autocomplete für weitere Teilnehmende einer Runde zeigte keine Vorschläge an.']},
+                    {text: ['Feature: Ein Nutzer kann deaktivierte Tags bei der Filterung ein- und ausblenden. Standardmäßig sind deaktivierte Tags ausgeblendent.']},
                 ]
             },
             {

@@ -28,6 +28,7 @@ type WayPointFilter = {
     teamName: String[],
     oneOnOneInterview: String,
     visitedAt: DateRange,
+    showDisabledTags: boolean,
 }
 
 type State = {
@@ -75,6 +76,7 @@ const defaultWayPointFilter: WayPointFilter = {
     teamName: [],
     oneOnOneInterview: '',
     visitedAt: startTime,
+    showDisabledTags: false,
 };
 // change me every time a filter interface is changed
 const version = '0'
