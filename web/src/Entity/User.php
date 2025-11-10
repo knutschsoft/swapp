@@ -418,7 +418,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     public function refreshConfirmationToken(): void
     {
         $this->confirmationToken = ConfirmationToken::create();
-        ConfirmationToken::create();
     }
 
     /** @return string[] */

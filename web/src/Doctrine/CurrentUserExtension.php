@@ -8,6 +8,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Dto\TeamName;
+use App\Dto\WalkName;
 use App\Entity\Client;
 use App\Entity\SystemicQuestion;
 use App\Entity\Tag;
@@ -100,6 +101,14 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->select(\sprintf('%s.teamName', $rootAlias));
                 $queryBuilder->groupBy(\sprintf('%s.teamName', $rootAlias));
                 $queryBuilder->andWhere(\sprintf('LENGTH(%s.teamName) > 1', $rootAlias));
+                $queryBuilder->orderBy(\sprintf('%s.teamName', $rootAlias));
+            }
+
+            if (\is_array($output) && WalkName::class === $output['class']) {
+                $queryBuilder->select(\sprintf('%s.name', $rootAlias));
+                $queryBuilder->groupBy(\sprintf('%s.name', $rootAlias));
+                $queryBuilder->andWhere(\sprintf('LENGTH(%s.name) > 1', $rootAlias));
+                $queryBuilder->orderBy(\sprintf('%s.name', $rootAlias));
             }
         }
 

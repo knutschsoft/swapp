@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
@@ -83,12 +84,13 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isMeeting'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['visitedAt'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: [
-    'locationName' => 'partial',
-    'note' => 'partial',
-    'oneOnOneInterview' => 'partial',
-    'wayPointTags' => 'exact',
-    'walk.teamName' => 'partial',
-    'walk' => 'exact',
+    'locationName' => SearchFilterInterface::STRATEGY_IPARTIAL,
+    'note' => SearchFilterInterface::STRATEGY_IPARTIAL,
+    'oneOnOneInterview' => SearchFilterInterface::STRATEGY_IPARTIAL,
+    'wayPointTags' => SearchFilterInterface::STRATEGY_EXACT,
+    'walk.name' => SearchFilterInterface::STRATEGY_IPARTIAL,
+    'walk.teamName' => SearchFilterInterface::STRATEGY_IPARTIAL,
+    'walk' => SearchFilterInterface::STRATEGY_EXACT,
 ])]
 #[ORM\Index(name: "idx_wayPoint_locationName", columns: ["locationName"])]
 class WayPoint implements \Stringable

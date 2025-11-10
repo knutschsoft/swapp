@@ -41,6 +41,7 @@
                             color="secondary"
                             type="submit"
                             density="default"
+                            class="text-transform-none"
                             :loading="isLoading"
                             @click="requestPasswordReset()"
                         >

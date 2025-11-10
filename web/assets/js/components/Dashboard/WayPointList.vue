@@ -146,6 +146,22 @@
                     data-test="filter-team-walk"
                     :is-loading="isLoading"
                     :suggestions="teamNames"
+                    :hide-no-data="true"
+                />
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="6"
+                xl="2"
+            >
+                <filter-combobox-field
+                    v-model="filter.walkName"
+                    label="Rundenname"
+                    data-test="filter-name-walk"
+                    :is-loading="isLoading"
+                    :suggestions="walkNames"
+                    :hide-no-data="true"
                 />
             </v-col>
             <v-col
@@ -315,6 +331,7 @@ export default {
             abortController: null,
             exportCtx: null,
             allTeamNames: [],
+            allWalkNames: [],
             tags: [],
             itemsPerPageText,
             itemsPerPageOptions,
@@ -367,6 +384,9 @@ export default {
         teamNames() {
             return this.allTeamNames.map((teamName) => teamName.teamName);
         },
+        walkNames() {
+            return this.allWalkNames.map((walk) => walk.name);
+        },
         hasDisabledTag() {
             return !!this.tags.find(tag => !tag.isEnabled);
         },
@@ -385,6 +405,8 @@ export default {
         this.tagStore.fetchTags();
         const allTeamNames = await WalkAPI.findAllTeamNames();
         this.allTeamNames = allTeamNames.data['member'];
+        const allWalkNames = await WalkAPI.findAllWalkNames();
+        this.allWalkNames = allWalkNames.data['member'];
     },
     watch: {
         filter: {
@@ -438,7 +460,8 @@ export default {
                 note: this.filter.note,
                 oneOnOneInterview: this.filter.oneOnOneInterview,
                 locationName: this.filter.locationName,
-                teamName: !this.filter.teamName,
+                teamName: this.filter.teamName,
+                'walk.name': this.filter.walkName,
             }
             sortBy.forEach((val) => {
                 data[`order[${val.key}]`] = val.order;

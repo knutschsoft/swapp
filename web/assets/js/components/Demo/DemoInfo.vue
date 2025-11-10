@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="isOnDemoPage"
-        class="text-muted mt-5"
+        class="text-muted mt-5 mb-3"
     >
         <v-alert
             ref="wurst"

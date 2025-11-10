@@ -17,6 +17,7 @@ export interface Props {
     violationFields?: string[],
     isLoading?: boolean
     disabled?: boolean
+    hidNoData?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
     error: () => {return {} as ErrorData} ,
     isLoading: false,
     disabled: false,
+    hideNoData: false,
 });
 
 const value = computed({
@@ -47,13 +49,13 @@ const errorMessages = computed(() => {
         v-model="value"
         :items="suggestions"
         chips
-        deletable-chips
+        closable-chips
         clearable
         variant="outlined"
         multiple
         density="compact"
         small-chips
-        :class="value.length > 0 ? 'text-primary' : ''"
+        :class="value?.length > 0 ? 'text-primary' : ''"
         :label="label"
         :hint="hint"
         :persistent-clear="value?.length > 0"
@@ -64,7 +66,7 @@ const errorMessages = computed(() => {
         :data-test="dataTest"
         :placeholder="placeholder"
         :loading="isLoading"
-        :hide-no-data="false"
+        :hide-no-data="hideNoData"
         v-model:search="suggestion"
     >
         <template v-slot:no-data>
