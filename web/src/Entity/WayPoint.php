@@ -88,8 +88,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     'note' => SearchFilterInterface::STRATEGY_IPARTIAL,
     'oneOnOneInterview' => SearchFilterInterface::STRATEGY_IPARTIAL,
     'wayPointTags' => SearchFilterInterface::STRATEGY_EXACT,
-    'walk.name' => SearchFilterInterface::STRATEGY_IPARTIAL,
-    'walk.teamName' => SearchFilterInterface::STRATEGY_IPARTIAL,
+    'walk.name' => SearchFilterInterface::STRATEGY_EXACT,
+    'walk.teamName' => SearchFilterInterface::STRATEGY_EXACT,
+    'walk.conceptOfDay' => SearchFilterInterface::STRATEGY_IPARTIAL,
     'walk' => SearchFilterInterface::STRATEGY_EXACT,
 ])]
 #[ORM\Index(name: "idx_wayPoint_locationName", columns: ["locationName"])]

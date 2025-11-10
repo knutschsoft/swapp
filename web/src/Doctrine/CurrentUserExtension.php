@@ -8,6 +8,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Dto\TeamName;
+use App\Dto\WalkConceptOfDay;
 use App\Dto\WalkName;
 use App\Entity\Client;
 use App\Entity\SystemicQuestion;
@@ -109,6 +110,13 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
                 $queryBuilder->groupBy(\sprintf('%s.name', $rootAlias));
                 $queryBuilder->andWhere(\sprintf('LENGTH(%s.name) > 1', $rootAlias));
                 $queryBuilder->orderBy(\sprintf('%s.name', $rootAlias));
+            }
+
+            if (\is_array($output) && WalkConceptOfDay::class === $output['class']) {
+                $queryBuilder->select(\sprintf('%s.conceptOfDay', $rootAlias));
+                $queryBuilder->groupBy(\sprintf('%s.conceptOfDay', $rootAlias));
+                $queryBuilder->andWhere(\sprintf('LENGTH(%s.conceptOfDay) > 1', $rootAlias));
+                $queryBuilder->orderBy(\sprintf('%s.conceptOfDay', $rootAlias));
             }
         }
 

@@ -70,6 +70,9 @@ export default {
     findAllWalkNames() {
         return apiClient.get("/api/walks/walk_names?itemsPerPage=1000");
     },
+    findAllConceptOfDay() {
+        return apiClient.get("/api/walks/concepts_of_day?itemsPerPage=1000");
+    },
     findAllGuestNames() {
         return apiClient.get("/api/walks/guest_names");
     },

@@ -23,6 +23,7 @@ use App\Dto\Walk\WalkChangeUnfinishedRequest;
 use App\Dto\Walk\WalkCreateRequest;
 use App\Dto\Walk\WalkEpilogueRequest;
 use App\Dto\Walk\WalkRemoveRequest;
+use App\Dto\WalkConceptOfDay;
 use App\Dto\WalkName;
 use App\Entity\Fields\AgeRangeField;
 use App\Entity\Fields\ConsumableNamesField;
@@ -60,6 +61,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new GetCollection(
             uriTemplate: '/walks/walk_names',
             output: WalkName::class,
+            forceEager: false,
+        ),
+        new GetCollection(
+            uriTemplate: '/walks/concepts_of_day',
+            output: WalkConceptOfDay::class,
             forceEager: false,
         ),
         new GetCollection(

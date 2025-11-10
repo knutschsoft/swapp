@@ -156,6 +156,20 @@
                 xl="2"
             >
                 <filter-combobox-field
+                    v-model="filter.conceptOfDay"
+                    label="Tageskonzept"
+                    data-test="filter-conceptOfDay-walk"
+                    :is-loading="isLoading"
+                    :suggestions="conceptOfDaySuggestions"
+                />
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="6"
+                xl="2"
+            >
+                <filter-combobox-field
                     v-model="filter.walkName"
                     label="Rundenname"
                     data-test="filter-name-walk"
@@ -332,6 +346,7 @@ export default {
             exportCtx: null,
             allTeamNames: [],
             allWalkNames: [],
+            allConceptOfDaySuggestions: [],
             tags: [],
             itemsPerPageText,
             itemsPerPageOptions,
@@ -387,6 +402,12 @@ export default {
         walkNames() {
             return this.allWalkNames.map((walk) => walk.name);
         },
+        conceptOfDaySuggestions() {
+            return [...new Set(
+                this.allConceptOfDaySuggestions
+                    .flatMap(walk => walk.conceptOfDay ?? [])
+            )].sort((a, b) => a.localeCompare(b));
+        },
         hasDisabledTag() {
             return !!this.tags.find(tag => !tag.isEnabled);
         },
@@ -407,6 +428,8 @@ export default {
         this.allTeamNames = allTeamNames.data['member'];
         const allWalkNames = await WalkAPI.findAllWalkNames();
         this.allWalkNames = allWalkNames.data['member'];
+        const allConceptOfDaySuggestions = await WalkAPI.findAllConceptOfDay();
+        this.allConceptOfDaySuggestions = allConceptOfDaySuggestions.data['member'];
     },
     watch: {
         filter: {
@@ -462,6 +485,7 @@ export default {
                 locationName: this.filter.locationName,
                 teamName: this.filter.teamName,
                 'walk.name': this.filter.walkName,
+                'walk.conceptOfDay': this.filter.conceptOfDay,
             }
             sortBy.forEach((val) => {
                 data[`order[${val.key}]`] = val.order;
