@@ -404,8 +404,7 @@ export default {
         },
         conceptOfDaySuggestions() {
             return [...new Set(
-                this.allConceptOfDaySuggestions
-                    .flatMap(walk => walk.conceptOfDay ?? [])
+                this.allConceptOfDaySuggestions.flatMap(walk => Object.values(walk.conceptOfDay ?? {}))
             )].sort((a, b) => a.localeCompare(b));
         },
         hasDisabledTag() {
