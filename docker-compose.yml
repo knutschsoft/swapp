@@ -48,8 +48,6 @@ services:
     volumes:
       - ${VOLUME_DIR_MYSQL:?VOLUME_DIR_MYSQL is not set or empty}:/var/lib/mysql/
     restart: "always"
-    expose:
-      - 3306
     environment:
       - TZ=Europe/Berlin
       - MYSQL_DATABASE=${DB_NAME:?DB_NAME is not set or empty}
