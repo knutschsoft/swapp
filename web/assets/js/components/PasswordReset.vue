@@ -54,7 +54,7 @@
                         <v-alert
                             v-if="usernameInvalidText && hasError"
                             type="error"
-                            class=""
+                            class="mb-2"
                         >{{ usernameInvalidText }}
                         </v-alert>
                         <v-text-field
