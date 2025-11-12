@@ -1,3 +1,126 @@
+<script setup lang="ts">
+
+import logo from '../../images/Swapp_hp_logo.jpg'
+import {
+    useAuthStore,
+    useChangelogStore,
+    useClientStore,
+    useGeneralStore,
+    useSystemicQuestionStore,
+    useTagStore,
+    useTeamStore,
+    useUserStore,
+    useWalkStore,
+    useWayPointStore,
+} from '../stores'
+import {formatDateTimeNoSeconds, formatDateTimeNoSecondsWithDayOfWeek} from '@/js/utils'
+import {computed, ref} from 'vue'
+import {type Client, User} from "@/js/model";
+
+const authStore = useAuthStore()
+const changelogStore = useChangelogStore()
+const generalStore = useGeneralStore()
+const clientStore = useClientStore()
+const teamStore = useTeamStore()
+const systemicQuestionStore = useSystemicQuestionStore()
+const tagStore = useTagStore()
+const userStore = useUserStore()
+const walkStore = useWalkStore()
+const wayPointStore = useWayPointStore()
+
+const drawer = ref(false)
+const users = ref<User[]>([])
+const swappLogo = logo
+const menu = ref(false)
+const linkClasses = 'text-left text-lg-center pl-2 pl-lg-0'
+
+const isLoading = computed(() =>
+    clientStore.isLoadingFetch ||
+    authStore.isLoading ||
+    systemicQuestionStore.isLoading ||
+    tagStore.isLoading ||
+    teamStore.isLoading ||
+    userStore.isLoading ||
+    walkStore.isLoading ||
+    wayPointStore.isLoading
+)
+
+const isAuthenticated = computed(() => authStore.isAuthenticated)
+const isSuperAdmin = computed(() => authStore.isSuperAdmin)
+const isAdmin = computed(() => authStore.isAdmin || isSuperAdmin.value)
+const isUserSwitched = computed(() => authStore.isUserSwitched)
+const currentUser = computed(() => authStore.currentUser)
+const hasNewChangelogItems = computed(() => changelogStore.hasNewChangelogItems)
+
+const displayedUserList = computed(() => {
+    if (!users.value || !users.value.length) return []
+
+    const searchString = generalStore.navUserFilter.toLowerCase()
+
+    return users.value
+        .filter((user) => {
+            if (user.username.toLowerCase().includes(searchString)) return true
+
+            for (const team of user.teams) {
+                if (team.name.toLowerCase().includes(searchString)) return true
+            }
+
+            for (const role of user.roles) {
+                if (role.toLowerCase().includes(searchString)) return true
+            }
+
+            const client = getClientByIri(user.client)
+            return client && client.name.toLowerCase().includes(searchString)
+        })
+        .sort((a, b) => a.username.toLowerCase().localeCompare(b.username.toLowerCase()))
+})
+
+function getClientByIri(clientIri: Client['@id']) {
+    return clientStore.getClientByIri(clientIri)
+}
+
+async function showUserMenu() {
+    if (isSuperAdmin.value && users.value.length <= 1) {
+        const fetchedUsers = await userStore.fetchUsers()
+        users.value = fetchedUsers.filter((user: any) => user.isEnabled)
+        await clientStore.fetchClients()
+    }
+}
+
+function switchUser(user: any) {
+    menu.value = false
+    authStore.switchUser(user)
+}
+
+function exitSwitchUser() {
+    menu.value = false
+    authStore.exitSwitchUser()
+}
+
+function hasUserRoleAdmin(user: User) {
+    return user.roles.includes('ROLE_ADMIN')
+}
+
+function getAdditionalUserInfo(user: User) {
+    let additionalUserInfo = ''
+
+    const teams = Object.values(user.teams)
+        .map((team: any) => team.name)
+        .sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        .join(', ')
+
+    if (teams) {
+        additionalUserInfo += teams.trim() + ' - '
+    }
+
+    const clientName = getClientByIri(user.client)?.name
+    additionalUserInfo += ` ${clientName}`
+
+    return additionalUserInfo.trim()
+}
+</script>
+
+
 <template>
     <v-navigation-drawer
         v-model="drawer"
@@ -246,150 +369,6 @@
         </v-toolbar>
     </v-app-bar>
 </template>
-
-<script>
-    "use strict";
-    // import logo from '../../images/Logo_white_bg.png';
-    import logo from '../../images/Swapp_hp_logo.jpg';
-    import {
-        useAuthStore,
-        useChangelogStore,
-        useClientStore,
-        useGeneralStore,
-        useSystemicQuestionStore,
-        useTagStore,
-        useTeamStore,
-        useUserStore,
-        useWalkStore,
-        useWayPointStore,
-    } from '../stores';
-    import {formatDateTimeNoSeconds, formatDateTimeNoSecondsWithDayOfWeek} from "@/js/utils";
-
-
-    export default {
-        name: "Navigation",
-        components: {
-        },
-        data: () => ({
-            authStore: useAuthStore(),
-            changelogStore: useChangelogStore(),
-            generalStore: useGeneralStore(),
-            clientStore: useClientStore(),
-            teamStore: useTeamStore(),
-            systemicQuestionStore: useSystemicQuestionStore(),
-            tagStore: useTagStore(),
-            userStore: useUserStore(),
-            walkStore: useWalkStore(),
-            wayPointStore: useWayPointStore(),
-            drawer: false,
-            users: [],
-            swappLogo: logo,
-            menu: false,
-            linkClasses: 'text-left text-lg-center pl-2 pl-lg-0',
-        }),
-        computed: {
-            isLoading() {
-                return this.clientStore.isLoadingFetch
-                    || this.authStore.isLoading
-                    || this.systemicQuestionStore.isLoading
-                    || this.tagStore.isLoading
-                    || this.teamStore.isLoading
-                    || this.userStore.isLoading
-                    || this.walkStore.isLoading
-                    || this.walkStore.isLoading
-                    || this.wayPointStore.isLoading;
-            },
-            isAuthenticated() {
-                return this.authStore.isAuthenticated;
-            },
-            isAdmin() {
-                return this.authStore.isAdmin || this.isSuperAdmin;
-            },
-            isSuperAdmin() {
-                return this.authStore.isSuperAdmin;
-            },
-            isUserSwitched() {
-                return this.authStore.isUserSwitched;
-            },
-            displayedUserList() {
-                if (!this.users || !this.users.length) {
-                    return [];
-                }
-
-                const searchString = this.generalStore.navUserFilter.toLowerCase();
-                return this.users.slice(0).filter((user) => {
-                    if (-1 !== user.username.toLowerCase().indexOf(searchString)) {
-                        return true;
-                    }
-                    for (const team of user.teams) {
-                        if (-1 !== team.name.toLowerCase().indexOf(searchString)) {
-                            return true;
-                        }
-                    }
-                    for (const role of user.roles) {
-                        if (-1 !== role.toLowerCase().indexOf(searchString)) {
-                            return true;
-                        }
-                    }
-                    const client = this.getClientByIri(user.client);
-
-                    return client && -1 !== client.name.toLowerCase().indexOf(searchString);
-                }).sort((a, b) => {
-                    return (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1;
-                });
-            },
-            currentUser() {
-                return this.authStore.currentUser;
-            },
-            hasNewChangelogItems() {
-                return this.changelogStore.hasNewChangelogItems;
-            },
-        },
-        methods: {
-            formatDateTimeNoSeconds,
-            formatDateTimeNoSecondsWithDayOfWeek,
-            switchUser(user) {
-                this.menu = false;
-                this.authStore.switchUser(user);
-            },
-            exitSwitchUser() {
-                this.menu = false;
-                this.authStore.exitSwitchUser();
-            },
-            getClientByIri(clientIri) {
-                return this.clientStore.getClientByIri(clientIri);
-            },
-            async showUserMenu() {
-                if (this.isSuperAdmin && this.users.length <= 1) {
-                    this.users = (await this.userStore.fetchUsers()).slice(0).filter(user => user.isEnabled);
-                    await this.clientStore.fetchClients();
-                }
-            },
-            hasUserRoleAdmin(user) {
-                return user.roles.includes('ROLE_ADMIN');
-            },
-            getAdditionalUserInfo(user) {
-                let additionalUserInfo = '';
-                let teams = Object.values(user.teams)
-                    .map((team) => {
-                        return team.name
-                    })
-                    .sort((teamNameA, teamNameB) => teamNameA.toLowerCase().localeCompare(teamNameB.toLowerCase()))
-                    .join(', ')
-                additionalUserInfo += teams;
-
-
-                if ('' !== additionalUserInfo.trim()) {
-                    additionalUserInfo = additionalUserInfo.trim() + ' - ';
-                }
-                let clientName = this.getClientByIri(user.client)?.name;
-                additionalUserInfo += ` ${clientName}`;
-
-                return `${additionalUserInfo.trim()}`;
-            },
-        },
-    }
-</script>
 
 <style scoped>
 </style>
