@@ -141,11 +141,6 @@ export default {
             return this.authStore.isSuperAdmin;
         },
         isFormInvalid() {
-            console.log(this.user.username, this.initialUser.username)
-            console.log(this.user.username === this.initialUser.username)
-            console.log(this.user.username === this.initialUser.username &&
-                (this.user.roles.length === (this.initialUser.roles?.length || ['ROLE_USER'].length)) &&
-                this.user.client === this.initialUser.client)
             if (this.user.username === this.initialUser.username &&
                 (this.user.roles.length === (this.initialUser.roles?.length || ['ROLE_USER'].length)) &&
                 (this.user.email === this.initialUser.email) &&
