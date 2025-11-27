@@ -1,3 +1,80 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import DemoInfo from './Demo/DemoInfo.vue';
+import { useAuthStore } from '../stores';
+
+interface Credentials {
+    username: string;
+    password: string;
+}
+
+const route = useRoute();
+const router = useRouter();
+const authStore = useAuthStore();
+
+const username = ref('');
+const password = ref('');
+const passwordFieldType = ref<'password' | 'text'>('password');
+const isPasswordVisible = ref(false);
+
+const isOnDemoPage = computed(() => {
+    return window.location.host.includes('swapp.demo') || route.query.demo;
+});
+
+const isLoading = computed(() => authStore.isLoading);
+
+const hasError = computed(() => !!authStore.getErrors.login);
+
+const error = computed(() => authStore.getErrors.login);
+
+const handleCredentialsSelect = (credentials: Credentials) => {
+    username.value = credentials.username;
+    password.value = credentials.password;
+};
+
+const switchPasswordVisibility = () => {
+    passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password';
+    isPasswordVisible.value = passwordFieldType.value === 'text';
+};
+
+const performLogin = async () => {
+    if (passwordFieldType.value === 'text') {
+        // ensure that password can be saved via browser
+        switchPasswordVisibility();
+    }
+
+    const payload = {
+        username: username.value,
+        password: password.value
+    };
+
+    const redirect = route.query.redirect as string | undefined;
+    const loginResult = await authStore.login(payload);
+
+    if (!error.value && loginResult) {
+        if (typeof redirect !== 'undefined') {
+            router.push({ path: redirect });
+        } else {
+            router.push({ name: 'Dashboard' });
+        }
+    }
+};
+
+onMounted(() => {
+    const redirect = route.query.redirect as string | undefined;
+
+    if (authStore.isAuthenticated) {
+        if (typeof redirect !== 'undefined') {
+            router.push({ path: redirect });
+        } else {
+            router.push({ name: 'Dashboard' });
+        }
+    }
+});
+</script>
+
+
 <template>
     <v-row>
         <v-col
@@ -106,79 +183,3 @@
         </v-col>
     </v-row>
 </template>
-
-<script>
-"use strict";
-import DemoInfo from './Demo/DemoInfo.vue';
-import {useAuthStore} from '../stores';
-import {useRoute} from "vue-router";
-
-export default {
-    name: "Login",
-    components: {DemoInfo},
-    data: () => ({
-        route: useRoute(),
-        authStore: useAuthStore(),
-        username: '',
-        password: '',
-        state: null,
-        passwordFieldType: 'password',
-        isPasswordVisible: false,
-    }),
-    computed: {
-        isOnDemoPage() {
-            return window.location.host.includes('swapp.demo') || this.route.query.demo;
-        },
-        isLoading() {
-            return this.authStore.isLoading;
-        },
-        hasError() {
-            return !!this.authStore.getErrors.login;
-        },
-        error() {
-            return this.authStore.getErrors.login;
-        },
-    },
-    created() {
-        let redirect = this.route.query.redirect;
-
-        if (this.authStore.isAuthenticated) {
-            if (typeof redirect !== "undefined") {
-                this.$router.push({path: redirect});
-            } else {
-                this.$router.push({name: "Dashboard"});
-            }
-        }
-    },
-    methods: {
-        handleCredentialsSelect(credentials) {
-            this.username = credentials.username;
-            this.password = credentials.password;
-        },
-        async performLogin() {
-            if ('text' === this.passwordFieldType) {
-                // ensure that password can be saved via browser
-                this.switchPasswordVisibility();
-            }
-            let payload = {username: this.$data.username, password: this.$data.password},
-                redirect = this.route.query.redirect;
-            const loginResult = await this.authStore.login(payload);
-            if (!this.error && loginResult) {
-                if (typeof redirect !== "undefined") {
-                    this.$router.push({path: redirect});
-                } else {
-                    this.$router.push({name: "Dashboard"});
-                }
-            }
-        },
-        switchPasswordVisibility() {
-            this.passwordFieldType = 'text' === this.passwordFieldType ? 'password' : 'text';
-            this.isPasswordVisible = 'text' === this.passwordFieldType;
-        },
-    },
-}
-</script>
-
-<style scoped>
-
-</style>
