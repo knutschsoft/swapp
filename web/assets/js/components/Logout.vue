@@ -1,33 +1,40 @@
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import {
+    useAuthStore,
+    useClientStore,
+    useSystemicQuestionStore,
+    useTagStore,
+    useTeamStore,
+    useUserStore,
+    useWalkStore,
+    useWayPointStore
+} from '../stores';
+
+const router = useRouter();
+const authStore = useAuthStore();
+const clientStore = useClientStore();
+const teamStore = useTeamStore();
+const systemicQuestionStore = useSystemicQuestionStore();
+const tagStore = useTagStore();
+const userStore = useUserStore();
+const walkStore = useWalkStore();
+const wayPointStore = useWayPointStore();
+
+onMounted(() => {
+    clientStore.$reset();
+    systemicQuestionStore.$reset();
+    teamStore.$reset();
+    tagStore.$reset();
+    userStore.$reset();
+    walkStore.$reset();
+    wayPointStore.$reset();
+    authStore.logout();
+    router.push({ name: 'Login' });
+});
+</script>
+
 <template>
     <div />
 </template>
-
-<script>
-import {useAuthStore, useClientStore, useSystemicQuestionStore, useTagStore, useTeamStore, useUserStore, useWalkStore, useWayPointStore} from '../stores';
-    export default {
-        name: "Logout",
-        data() {
-            return {
-                authStore: useAuthStore(),
-                clientStore: useClientStore(),
-                teamStore: useTeamStore(),
-                systemicQuestionStore: useSystemicQuestionStore(),
-                tagStore: useTagStore(),
-                userStore: useUserStore(),
-                walkStore: useWalkStore(),
-                wayPointStore: useWayPointStore(),
-            };
-        },
-        created() {
-            this.clientStore.$reset();
-            this.systemicQuestionStore.$reset();
-            this.teamStore.$reset();
-            this.tagStore.$reset();
-            this.userStore.$reset();
-            this.walkStore.$reset();
-            this.wayPointStore.$reset();
-            this.authStore.logout();
-            this.$router.push({name: 'Login'});
-        },
-    }
-</script>
