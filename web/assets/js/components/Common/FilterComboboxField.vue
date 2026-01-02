@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, ref, watchEffect} from "vue";
 import {ErrorData, getViolationsFeedback} from "../../utils";
 
 const emit = defineEmits(['update:modelValue']);
@@ -17,7 +17,7 @@ export interface Props {
     violationFields?: string[],
     isLoading?: boolean
     disabled?: boolean
-    hidNoData?: boolean
+    hideNoData?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +39,18 @@ const value = computed({
 });
 
 const errorMessages = computed(() => {
+    if (!props.error) return []
+
+    return []
+    try {
+        return getViolationsFeedback(props.violationFields, props.error)
+    } catch (e) {
+        console.warn('Invalid error object', props.error)
+        return ['Unbekannter Fehler']
+    }
+
+    console.log(props.error)
+    console.log(props.violationFields)
       return props.error ? getViolationsFeedback(props.violationFields, props.error) : "";
 })
 

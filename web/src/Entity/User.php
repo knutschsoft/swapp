@@ -5,12 +5,14 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation;
 use App\Dto\User\ChangePasswordRequest;
+use App\Dto\User\ChangeUserPreferencesRequest;
 use App\Dto\User\IsConfirmationTokenValidRequest;
 use App\Dto\User\RequestPasswordResetRequest;
 use App\Dto\User\UserChangeRequest;
@@ -20,6 +22,7 @@ use App\Dto\User\UserEmailConfirmRequest;
 use App\Dto\User\UserEnableRequest;
 use App\Filter\WalksTimeRangeFilter;
 use App\Repository\DoctrineORMUserRepository;
+use App\Security\Voter\UserVoter;
 use App\Value\ConfirmationToken;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -83,10 +86,19 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             messenger: 'input'
         ),
         new Post(
+            uriTemplate: '/users/change-preferences',
+            status: 200,
+            normalizationContext: ['groups' => ['userPreferences:read']],
+            securityPostDenormalize: 'is_granted("' . UserVoter::CHANGE_PREFERENCES . '", object.user)',
+            input: ChangeUserPreferencesRequest::class,
+            output: UserPreferences::class,
+            messenger: 'input'
+        ),
+        new Post(
             uriTemplate: '/users/disable',
             status: 200,
             openapi: new Operation(summary: 'Disables an user. A disabled user will not be able to login.'),
-            securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user)',
+            securityPostDenormalize: 'is_granted("'.UserVoter::EDIT.'", object.user)',
             input: UserDisableRequest::class,
             output: User::class,
             messenger: 'input'
@@ -95,7 +107,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/users/enable',
             status: 200,
             openapi: new Operation(summary: 'Enables an user. An enabled user will be able to login.'),
-            securityPostDenormalize: 'is_granted(\'USER_EDIT\', object.user)',
+            securityPostDenormalize: 'is_granted("'.UserVoter::EDIT.'", object.user)',
             input: UserEnableRequest::class,
             output: User::class,
             messenger: 'input'
@@ -201,6 +213,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     /** @var Collection<int, Walk> **/
     #[ORM\OneToMany(targetEntity: Walk::class, mappedBy: 'walkCreator')]
     private Collection $createdWalks;
+
+    #[ORM\OneToOne(targetEntity: UserPreferences::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?UserPreferences $preferences = null;
 
     public function __construct()
     {
@@ -520,6 +535,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     public function updateClient(Client $client): void
     {
         $this->client = $client;
+    }
+
+    #[Groups(['user:read'])]
+    #[ApiProperty(required: true)]
+    public function getPreferences(): ?UserPreferences
+    {
+        return $this->preferences;
+    }
+
+    public function setPreferences(?UserPreferences $preferences): void
+    {
+        $this->preferences = $preferences;
+
+        if ($preferences && $preferences->getUser() !== $this) {
+            $preferences->assignToUser($this);
+        }
     }
 
     public function __toString(): string

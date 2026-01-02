@@ -88,6 +88,7 @@ declare module 'vue' {
     UsersUserCreate: typeof import('./components/Users/UserCreate.vue')['default']
     UsersUserForm: typeof import('./components/Users/UserForm.vue')['default']
     UsersUserList: typeof import('./components/Users/UserList.vue')['default']
+    UsersUserPreferencesForm: typeof import('./components/Users/UserPreferencesForm.vue')['default']
     WalkAddWayPoint: typeof import('./components/WalkAddWayPoint.vue')['default']
     WalkDetail: typeof import('./components/WalkDetail.vue')['default']
     WalkEpilogue: typeof import('./components/WalkEpilogue.vue')['default']

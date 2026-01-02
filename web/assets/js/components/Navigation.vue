@@ -16,6 +16,7 @@ import {
 import {formatDateTimeNoSeconds, formatDateTimeNoSecondsWithDayOfWeek} from '@/js/utils'
 import {computed, ref} from 'vue'
 import {type Client, User} from "@/js/model";
+import UserPreferencesForm from "@/js/components/Users/UserPreferencesForm.vue";
 
 const authStore = useAuthStore()
 const changelogStore = useChangelogStore()
@@ -31,7 +32,8 @@ const wayPointStore = useWayPointStore()
 const drawer = ref(false)
 const users = ref<User[]>([])
 const swappLogo = logo
-const menu = ref(false)
+const userMenu = ref(false)
+const showUserPreferencesForm = ref(false);
 const linkClasses = 'text-left text-lg-center pl-2 pl-lg-0'
 
 const isLoading = computed(() =>
@@ -88,12 +90,12 @@ async function showUserMenu() {
 }
 
 function switchUser(user: any) {
-    menu.value = false
+    userMenu.value = false
     authStore.switchUser(user)
 }
 
 function exitSwitchUser() {
-    menu.value = false
+    userMenu.value = false
     authStore.exitSwitchUser()
 }
 
@@ -233,7 +235,7 @@ function getAdditionalUserInfo(user: User) {
                 <v-icon color="grey lighten-1" v-else>mdi-bell-outline</v-icon>
             </v-btn>
             <v-menu
-                v-model="menu"
+                v-model="userMenu"
                 location="bottom"
                 eager
                 :close-on-content-click="false"
@@ -253,7 +255,7 @@ function getAdditionalUserInfo(user: User) {
                         :to="{ name: 'Login' }"
                         exact
                         link
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>Login</v-list-item-title>
                     </v-list-item>
@@ -262,7 +264,7 @@ function getAdditionalUserInfo(user: User) {
                         :to="{ name: 'PasswordReset' }"
                         exact
                         link
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>Passwort vergessen?</v-list-item-title>
                     </v-list-item>
@@ -271,9 +273,32 @@ function getAdditionalUserInfo(user: User) {
                         :to="{ name: 'PasswordChangeRequest' }"
                         exact
                         link
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>Passwort ändern</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item
+                        v-if="isAuthenticated"
+                        exact
+                        link
+                        @click=""
+                    >
+                        <v-list-item-title @click="showUserPreferencesForm = true">
+                            Einstellungen
+                            <v-dialog v-model="showUserPreferencesForm" fullscreen transition="dialog-bottom-transition">
+                                <v-card>
+                                    <v-toolbar flat>
+                                        <v-btn icon @click="showUserPreferencesForm = false"><v-icon>mdi-close</v-icon></v-btn>
+                                        <v-toolbar-title>Einstellungen</v-toolbar-title>
+                                        <v-spacer />
+                                    </v-toolbar>
+
+                                    <v-card-text class="pa-6">
+                                        <UserPreferencesForm />
+                                    </v-card-text>
+                                </v-card>
+                            </v-dialog>
+                        </v-list-item-title>
                     </v-list-item>
                     <v-list-item
                         v-if="isUserSwitched"
@@ -288,7 +313,7 @@ function getAdditionalUserInfo(user: User) {
                         exact
                         link
                         data-test="nav-user-logout"
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>Abmelden</v-list-item-title>
                     </v-list-item>
@@ -297,7 +322,7 @@ function getAdditionalUserInfo(user: User) {
                         :to="{ name: 'About' }"
                         exact
                         link
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>Was ist Swapp?</v-list-item-title>
                     </v-list-item>
@@ -305,7 +330,7 @@ function getAdditionalUserInfo(user: User) {
                         :to="{ name: 'Changelog' }"
                         exact
                         link
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>
                             Changelog
@@ -316,7 +341,7 @@ function getAdditionalUserInfo(user: User) {
                         :to="{ name: 'Faq' }"
                         exact
                         link
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>FAQ</v-list-item-title>
                     </v-list-item>
@@ -324,7 +349,7 @@ function getAdditionalUserInfo(user: User) {
                     <v-list-item
                         href="https://streetworkapp.de"
                         target="_blank"
-                        @click="menu = false"
+                        @click="userMenu = false"
                     >
                         <v-list-item-title>Swapp-Homepage <v-icon small>mdi-open-in-new</v-icon></v-list-item-title>
                     </v-list-item>

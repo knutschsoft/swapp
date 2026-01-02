@@ -15,6 +15,7 @@ class UserVoter extends Voter
     final public const string CREATE = 'USER_CREATE';
     final public const string READ = 'USER_READ';
     final public const string EDIT = 'USER_EDIT';
+    final public const string CHANGE_PREFERENCES = 'USER_CHANGE_PREFERENCES';
     final public const string DELETE = 'USER_DELETE';
 
     public function __construct(private readonly Security $security)
@@ -24,7 +25,7 @@ class UserVoter extends Voter
     #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
-        $supportsAttribute = \in_array($attribute, [self::CREATE, self::READ, self::EDIT, self::DELETE], true);
+        $supportsAttribute = \in_array($attribute, [self::CREATE, self::READ, self::EDIT, self::DELETE, self::CHANGE_PREFERENCES], true);
         $supportsSubject = $subject instanceof User;
 
         return $supportsAttribute && $supportsSubject;
@@ -42,7 +43,7 @@ class UserVoter extends Voter
             return false;
         }
 
-        if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($this->security->isGranted(User::ROLE_SUPER_ADMIN)) {
             return true;
         }
 
@@ -51,6 +52,16 @@ class UserVoter extends Voter
 
         switch ($attribute) {
             case self::READ:
+                return $user->getClient()->getId() === $subjectUser->getClient()->getId();
+            case self::CHANGE_PREFERENCES:
+                if ($user->equal($subjectUser)) {
+                    return true;
+                }
+
+                if (!$this->security->isGranted('ROLE_ADMIN')) {
+                    return false;
+                }
+
                 return $user->getClient()->getId() === $subjectUser->getClient()->getId();
             case self::CREATE:
             case self::DELETE:

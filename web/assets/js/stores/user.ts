@@ -6,6 +6,7 @@ import type {AxiosResponse} from "axios";
 import type {
     User,
     UserChangeRequest,
+    UserChangePreferencesRequest,
     UserChangePasswordRequest,
     UserEnableRequest,
     UserDisableRequest,
@@ -167,6 +168,21 @@ export const useUserStore = defineStore("user", {
                 this.errorArray.change = error.response;
             } finally {
                 this.loadingArray.splice(this.loadingArray.indexOf(`change-${payload.user}`), 1);
+            }
+        },
+        async changePreferences(payload: UserChangePreferencesRequest): Promise<User | void> {
+            this.loadingArray.push(`change-preferences-${payload.user}`);
+            this.errorArray.change = false;
+            try {
+                const response: AxiosResponse<any, any> = await apiClient.post('/api/users/change-preferences', payload);
+                const user: User = response.data;
+                replaceObjectInState(this, user);
+
+                return user;
+            } catch (error: any) {
+                this.errorArray.change = error.response;
+            } finally {
+                this.loadingArray.splice(this.loadingArray.indexOf(`change-preferences-${payload.user}`), 1);
             }
         },
         async disable(payload: UserDisableRequest): Promise<User | void> {

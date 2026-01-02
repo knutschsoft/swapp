@@ -32,6 +32,15 @@ export const useAuthStore = defineStore('auth', {
         errorArray: {'login': false, 'logout': false},
     }),
     getters: {
+        /**
+         * Returns the current authenticated user.
+         */
+        user: ({currentUser}): User | null => {
+            if (!currentUser || Object.keys(currentUser).length === 0) {
+                return null;
+            }
+            return currentUser as User;
+        },
         hasRole: ({currentUser}) => (role: string): Boolean => {
             if (!currentUser || !currentUser.roles) {
                 return false;
@@ -68,7 +77,7 @@ export const useAuthStore = defineStore('auth', {
             this.isUserSwitched = false;
             window.location.reload()
         },
-        logout(): void {
+        async logout(): Promise<void> {
             if (this.isUserSwitched) {
                 this.exitSwitchUser();
             }
@@ -76,6 +85,10 @@ export const useAuthStore = defineStore('auth', {
             this.token = '';
             this.isAuthenticated = false;
             this.currentUser = {};
+
+            // Clear preferences cache
+            const { useUserPreferencesStore } = await import('./userPreferences');
+            useUserPreferencesStore().clear();
         },
         async login(payload: LoginCheckRequest): Promise<User | void> {
             this.loadingArray.push(`login`);
@@ -90,6 +103,13 @@ export const useAuthStore = defineStore('auth', {
                     return;
                 }
                 this.currentUser = currentUser;
+
+                // Load user preferences in background (non-blocking)
+                const { useUserPreferencesStore } = await import('./userPreferences');
+                useUserPreferencesStore().load().catch((error) => {
+                    console.warn('Failed to load user preferences:', error);
+                    // Don't block login on preferences failure
+                });
 
                 return this.currentUser;
             } catch (error: any) {

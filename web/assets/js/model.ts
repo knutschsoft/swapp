@@ -23,6 +23,7 @@ export {
     type ApiUsersGetCollection200Response as UsersResponse,
     type UserUserCreateRequestJsonld as UserCreateRequest,
     type UserUserChangeRequestJsonld as UserChangeRequest,
+    type UserChangeUserPreferencesRequest as UserChangePreferencesRequest,
     type UserChangePasswordRequestJsonld as UserChangePasswordRequest,
     type UserUserDisableRequestJsonld as UserDisableRequest,
     type UserUserEnableRequestJsonld as UserEnableRequest,

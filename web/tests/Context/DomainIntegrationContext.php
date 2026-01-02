@@ -12,6 +12,7 @@ use App\Entity\SystemicQuestion;
 use App\Entity\Tag;
 use App\Entity\Team;
 use App\Entity\User;
+use App\Entity\UserPreferences;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
 use App\Value\ConfirmationToken;
@@ -175,6 +176,7 @@ final class DomainIntegrationContext extends RawMinkContext
             $registerUserRequest->client = $this->getClientByEmail($row['client']);
             $user = User::fromUserCreateRequest($registerUserRequest, $this->passwordEncoder);
             $user->changePassword($row['password'] ?? $registerUserRequest->email, $this->passwordEncoder);
+            $user->setPreferences(new UserPreferences($user));
 
             $isEnabled = $row['isEnabled'] ?? true;
             if ($isEnabled) {

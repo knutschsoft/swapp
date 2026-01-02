@@ -1,6 +1,7 @@
 import axios from 'axios'
-import type {AxiosInstance, InternalAxiosRequestConfig} from 'axios'
+import type {AxiosInstance, AxiosError, InternalAxiosRequestConfig} from 'axios'
 import { useAuthStore, useGeneralStore } from '@/js/stores/';
+import router from '@/js/router'
 
 const apiClient: AxiosInstance = axios.create({
     headers: {
@@ -23,5 +24,28 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig): Interna
 
     return config;
 })
+
+// apiClient.interceptors.response.use(
+//     response => response,
+//     (error: AxiosError) => {
+//         console.log(error);
+//         console.log(error.response);
+//         if (error.response?.status === 403) {
+//             // const authStore = useAuthStore();
+//
+//             // optional: Nachricht an Nutzer oder Loggen
+//             console.warn('403 erhalten – Benutzer wird ausgeloggt');
+//
+//             // ausloggen
+//             // authStore.logout(); // oder wie deine Logout-Methode heißt
+//
+//             // optional: Weiterleitung zur Login-Seite
+//             router.push({ name: 'Logout' }); // falls du vue-router verwendest
+//         }
+//
+//         // Fehler weiterreichen, damit Komponente damit umgehen kann, falls nötig
+//         return Promise.reject(error);
+//     }
+// );
 
 export default apiClient

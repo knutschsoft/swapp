@@ -7,6 +7,7 @@ use App\Entity\Client;
 use App\Entity\Tag;
 use App\Entity\Team;
 use App\Entity\User;
+use App\Entity\UserPreferences;
 use App\Entity\Walk;
 use App\Entity\WayPoint;
 use App\Repository\ClientRepository;
@@ -93,6 +94,11 @@ trait RepositoryTrait
         Assert::notNull($user, \sprintf('User with email "%s" not found.', $email));
 
         return $user;
+    }
+
+    protected function getUserPreferencesByEmail(string $email): ?UserPreferences
+    {
+        return $this->getUserByEmail($email)->getPreferences();
     }
 
     protected function getTagByName(string $name): Tag
@@ -652,6 +658,16 @@ trait RepositoryTrait
             return (string) $this->getUserByEmail($referenceIdentifikator)->getId();
         }
 
+        if (\str_starts_with($text, 'userPreferencesIri<')) {
+            return \sprintf('/api/user_preferences/%s', $this->getUserPreferencesByEmail($referenceIdentifikator)->getId());
+        }
+        if (\str_starts_with($text, 'userPreferences<')) {
+            return $this->getUserPreferencesByEmail($referenceIdentifikator);
+        }
+        if (\str_starts_with($text, 'userPreferencesId<')) {
+            return (string) $this->getUserPreferencesByEmail($referenceIdentifikator)->getId();
+        }
+
         if (\str_starts_with($text, 'clientIri<')) {
             return \sprintf('/api/clients/%s', (string) $this->getClientByEmail($referenceIdentifikator)->getId());
         }
@@ -667,6 +683,9 @@ trait RepositoryTrait
 
         if (\str_starts_with($text, 'array<')) {
             return '' !== $referenceIdentifikator ? \explode(',', (string) $referenceIdentifikator) : [];
+        }
+        if (\str_starts_with($text, 'json<')) {
+            return '' !== $referenceIdentifikator ? \json_decode($referenceIdentifikator) : '';
         }
 
         return \trim($text);
