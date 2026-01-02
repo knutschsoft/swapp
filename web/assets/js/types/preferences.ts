@@ -32,10 +32,10 @@ export const defaultPreferences: UserPreferences = {
                 note: true,
                 oneOnOneInterview: true,
                 wayPointTags: true,
-                teamName: true,
+                'walk.teamName': true,
                 conceptOfDay: false,
                 visitedAt: true,
-                walkName: true,
+                'walk.name': true,
             },
             filters: {
                 wayPointTags: true,

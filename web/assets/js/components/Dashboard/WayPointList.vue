@@ -309,7 +309,6 @@
         </v-data-table-server>
     </div>
 </template>
-
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 import dayjs from 'dayjs';
@@ -319,6 +318,7 @@ import TagAPI from '../../api/tag.js';
 import {
     useGeneralStore,
     useTagStore,
+    useUserPreferencesStore,
     useWalkStore,
     useWayPointStore,
 } from '@/js/stores';
@@ -360,6 +360,7 @@ const emit = defineEmits<{
 
 const generalStore = useGeneralStore();
 const tagStore = useTagStore();
+const userPreferencesStore = useUserPreferencesStore();
 const wayPointStore = useWayPointStore();
 const walkStore = useWalkStore();
 
@@ -388,6 +389,7 @@ const tableOptions = ref<{
 
 const sortBy = ref<SortItem[]>([{ key: 'visitedAt', order: 'desc' }]);
 
+const effectivePreferences = computed(() => userPreferencesStore.effective)
 const headers = computed<Header[]>(() => {
     const base: Header[] = [{ value: 'locationName', title: 'Ort', sortable: true }];
 
@@ -414,7 +416,14 @@ const headers = computed<Header[]>(() => {
         { value: 'actions', title: 'Aktionen', sortable: false }
     );
 
-    return base;
+    return base.filter(header => {
+        if (header.value === 'actions') {
+            return true
+        }
+        console.log(effectivePreferences.value.tables.wayPoints.columns[header.value])
+
+        return effectivePreferences.value.tables.wayPoints.columns[header.value];
+    })
 });
 
 const filter = computed(() => generalStore.getWayPointFilter);
@@ -653,6 +662,10 @@ onMounted(async () => {
 
     const allConceptOfDaySuggestionsResult = await WalkAPI.findAllConceptOfDay();
     allConceptOfDaySuggestions.value = allConceptOfDaySuggestionsResult.data['member'];
+
+    if (!userPreferencesStore.isLoaded) {
+        await userPreferencesStore.load()
+    }
 })
 
 const load = () => {
@@ -661,6 +674,7 @@ const load = () => {
 }
 load()
 </script>
+
 
 <style>
 </style>

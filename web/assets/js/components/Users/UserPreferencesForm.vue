@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useAuthStore } from '@/js/stores/auth'
-import { useUserPreferencesStore } from '@/js/stores/userPreferences'
+import { useUserPreferencesStore } from '@/js/stores'
 
 type KeyLabel = { key: string; label: string }
 
-const authStore = useAuthStore()
 const prefsStore = useUserPreferencesStore()
 
 // Load preferences if not already loaded
@@ -39,9 +37,9 @@ const wpColumns: KeyLabel[] = [
     { key: 'note', label: 'Beobachtung' },
     { key: 'oneOnOneInterview', label: 'Einzelgespräch' },
     { key: 'wayPointTags', label: 'Tags' },
-    { key: 'teamName', label: 'Team' },
+    { key: 'walk.teamName', label: 'Team' },
     { key: 'visitedAt', label: 'Ankunft' },
-    { key: 'walkName', label: 'Runde' },
+    { key: 'walk.name', label: 'Runde' },
 ]
 
 const walkFilters: KeyLabel[] = [
