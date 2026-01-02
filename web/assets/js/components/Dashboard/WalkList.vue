@@ -93,7 +93,7 @@
                 <v-btn
                     color="secondary"
                     block
-                    :disabled="(isLoading || isExportLoading || !this.hasFilter) && this.currentPage === 1"
+                    :disabled="(isLoading || isExportLoading || !hasFilter) && currentPage === 1"
                     data-test="reset-walk-filter"
                     class="text-transform-none"
                     density="comfortable"
@@ -113,14 +113,14 @@
                 <v-btn
                     color="secondary"
                     block
-                    :disabled="isLoading || isExportLoading || this.totalItems === 0"
+                    :disabled="isLoading || isExportLoading || totalItems === 0"
                     class="text-transform-none"
                     density="comfortable"
                     append-icon="mdi-download"
                     :loading="isExportLoading"
                     @click="exportWalks"
                 >
-                    {{ this.totalItems > 5000 ? 5000 : this.totalItems }} Rund{{ this.totalItems === 1 ? 'e' : 'en' }} als .csv-Datei exportieren
+                    {{ totalItems > 5000 ? 5000 : totalItems }} Rund{{ totalItems === 1 ? 'e' : 'en' }} als .csv-Datei exportieren
                 </v-btn>
             </v-col>
         </v-row>
@@ -160,9 +160,7 @@
                     :show-rating="false"
                     read-only
                 />
-                <template
-                    v-else
-                >-</template>
+                <template v-else>-</template>
             </template>
             <template v-slot:item.endTime="{item}">
                 <template v-if="item.isUnfinished">-</template>
@@ -188,7 +186,6 @@
                     <v-btn
                         v-if="item.isUnfinished"
                         :to="{name: 'WalkAddWayPoint', params: { walkId: item.walkId}}"
-                        :data-test="`button-runde-fortsetzen-${ item.name }`"
                         density="compact"
                         color="secondary"
                         class="ml-1 my-1 text-transform-none"
@@ -204,225 +201,188 @@
     </div>
 </template>
 
-<script>
-'use strict';
-import WalkAPI from '../../api/walk.js';
+<script setup lang="ts">
+import { ref, reactive, computed, watch, onMounted, defineEmits } from 'vue';
 import dayjs from 'dayjs';
+import WalkAPI from '../../api/walk.js';
 import WalkRating from '../Walk/WalkRating.vue';
 import { useClientStore, useGeneralStore, useWalkStore } from '@/js/stores';
-import {formatDateTimeNoSecondsWithDayOfWeek, formatTime, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText} from "@/js/utils";
-import {FilterBooleanField, FilterComboboxField, FilterTextField, TextareaField} from "@/js/components/Common";
-import {WalkConceptOfDayField} from "@/js/components/Common/Walk";
-import {DateRangePicker} from "@/js/components/Common";
+import { formatDateTimeNoSecondsWithDayOfWeek, formatTime, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText } from "@/js/utils";
+import { FilterBooleanField, FilterComboboxField, FilterTextField, TextareaField } from "@/js/components/Common";
+import { WalkConceptOfDayField } from "@/js/components/Common/Walk";
+import { DateRangePicker } from "@/js/components/Common";
 
-export default {
-    name: 'WalkList',
-    components: {
-        DateRangePicker,
-        FilterBooleanField,
-        WalkConceptOfDayField,
-        FilterComboboxField,
-        FilterTextField,
-        TextareaField,
-        WalkRating,
-    },
-    props: {},
-    data: function () {
-        const generalStore = useGeneralStore();
+const emits = defineEmits(['refresh-total-walks']);
 
-        return {
-            clientStore: useClientStore(),
-            generalStore: generalStore,
-            walkStore: useWalkStore(),
-            isLoading: false,
-            isExportLoading: false,
-            abortController: null,
-            exportCtx: null,
-            isResubmission: null,
-            isUnfinished: null,
-            headers: [
-                { key: 'name', title: 'Name', sortDirection: 'desc', align: 'center' },
-                { key: 'rating', title: 'Bewertung', align: 'center' },
-                { key: 'startTime', title: 'Rundenbeginn' },
-                { key: 'endTime', title: 'Ende', sortable: false },
-                { key: 'peopleCount', title: 'Anzahl Personen', sortable: false, align: 'center' },
-                { key: 'teamName', title: 'Team', align: 'center' },
-                { key: 'isResubmission', title: 'WV DB?' },
-                { key: 'actions', title: 'Aktionen', align: 'center', sortable: false },
-            ],
-            allTeamNames: [],
-            allGuestNames: [],
-            itemsPerPageText,
-            itemsPerPageOptions,
-            loadingText,
-            noItemsText,
-            totalItems: 0,
-            search: '',
-            currentPage: 1,
-            itemsPerPage: itemsPerPageOptions[1].value,
-            serverItems: [],
-            tableOptions: [],
-            sortBy: [{key: 'startTime', order: 'desc'}],
-        };
-    },
-    computed: {
-        filter() {
-            return this.generalStore.getWalkFilter;
-        },
-        defaultFilter() {
-            return this.generalStore.defaultWalkFilter;
-        },
-        defaultDateRange() {
-            return this.generalStore.defaultWalkFilter.startTime;
-        },
-        teamNames() {
-            return this.allTeamNames.map((teamName) => teamName.teamName);
-        },
-        guestNames() {
-            return this.allGuestNames.map((guestName) => guestName.name);
-        },
-        walks() {
-            return this.walkStore.getWalks;
-        },
-        totalWalks() {
-            return this.walkStore.getTotalWalks;
-        },
-        hasFilter() {
-            return JSON.stringify(this.filter) !== JSON.stringify(this.defaultFilter);
-        },
-    },
-    async created() {
-        this.itemsPerPage = this.generalStore.walkPerPage;
-        this.currentPage = this.generalStore.walkCurrentPage;
-        // this.currentPage = 1;
-        const allTeamNames = await WalkAPI.findAllTeamNames();
-        this.allTeamNames = allTeamNames.data['member'];
-        const allGuestNames = await WalkAPI.findAllGuestNames();
-        this.allGuestNames = allGuestNames.data['member'];
-    },
-    watch: {
-        filter: {
-            handler: async function () {
-                this.search = String(Date.now());
-            },
-            deep: true,
-        },
-    },
-    methods: {
-        formatDateTimeNoSecondsWithDayOfWeek,
-        getClientByIri(clientIri) {
-            return this.clientStore.getClientByIri(clientIri);
-        },
-        formatEndDate: function (dateString, startDateString) {
-            let date = new Date(dateString);
-            if (dayjs(dateString).isSame(dayjs(startDateString), 'day')) {
-                return formatTime(date);
-            }
-            return this.formatDateTimeNoSecondsWithDayOfWeek(dateString);
-        },
-        async loadItems({ page, itemsPerPage, sortBy }) {
-            this.tableOptions = {page, itemsPerPage, sortBy};
+const clientStore = useClientStore();
+const generalStore = useGeneralStore();
+const walkStore = useWalkStore();
 
-            if (this.abortController) {
-                this.abortController.abort();
-            }
-            this.abortController = new AbortController();
-            const signal = this.abortController.signal;
+const isLoading = ref(false);
+const isExportLoading = ref(false);
+let abortController: AbortController | null = null;
+let exportCtx: any = null;
 
-            const data = {
-                page,
-                itemsPerPage,
-                teamName: this.filter.teamName,
-                guestNames: this.filter.guestNames,
-                name: '' !== this.filter.name ? this.filter.name : undefined,
-                isResubmission: this.filter.isResubmission !== 'null' ? this.filter.isResubmission : undefined,
-                isUnfinished: this.filter.isUnfinished !== 'null' ? !this.filter.isUnfinished : undefined,
-            }
-            sortBy.forEach((val) => {
-                data[`order[${val.key}]`] = val.order;
-            })
+const headers = ref([
+    { key: 'name', title: 'Name', sortDirection: 'desc', align: 'center' },
+    { key: 'rating', title: 'Bewertung', align: 'center' },
+    { key: 'startTime', title: 'Rundenbeginn' },
+    { key: 'endTime', title: 'Ende', sortable: false },
+    { key: 'peopleCount', title: 'Anzahl Personen', sortable: false, align: 'center' },
+    { key: 'teamName', title: 'Team', align: 'center' },
+    { key: 'isResubmission', title: 'WV DB?' },
+    { key: 'actions', title: 'Aktionen', align: 'center', sortable: false },
+]);
 
-            if (this.filter.startTime[0] && this.filter.startTime[1]) {
-                data['startTime[after]'] = dayjs(this.filter.startTime[0]).startOf('day').toISOString()
-                data['startTime[before]'] = dayjs(this.filter.startTime[1]).endOf('day').toISOString()
-            }
+const allTeamNames = ref<any[]>([]);
+const allGuestNames = ref<any[]>([]);
 
-            this.exportCtx = data
+const itemsPerPageTextRef = ref(itemsPerPageText);
+const itemsPerPageOptionsRef = ref(itemsPerPageOptions);
+const loadingTextRef = ref(loadingText);
+const noItemsTextRef = ref(noItemsText);
 
-            this.isLoading = true;
-            const result = await WalkAPI.find(data, signal);
-            this.isLoading = false;
-            const items = result.data['member'];
-            const total = result.data['totalItems'] ?? 0;
-            this.generalStore.updateWalkFilterResult(items);
-            this.serverItems = items;
-            this.totalItems = total;
-            await this.$emit('refresh-total-walks', this.totalItems);
-        },
-        handleCurrentPageChange(value) {
-            this.currentPage = Number(value);
-            this.generalStore.updateWalkCurrentPage(Number(value));
-        },
-        handlePerPageChange(value) {
-            this.itemsPerPage = Number(value);
-            this.generalStore.updateWalkPerPage(Number(value));
-        },
-        unsetFilterStartTime() {
-            this.filter.startTime = this.defaultDateRange;
-        },
-        unsetAllFilter() {
-            this.generalStore.updateWalkFilter(this.defaultFilter);
-            this.handleCurrentPageChange(1);
-        },
-        forceFileDownload(response, title) {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', title);
-            document.body.appendChild(link);
-            link.click();
-        },
-        exportWalks: async function () {
-            this.isExportLoading = true;
-            const response = await WalkAPI.export(this.exportCtx);
-            this.forceFileDownload(response, this.getFileName());
-            this.isExportLoading = false;
-        },
-        getFileName() {
-            let title = `streetworkrunden_export.csv`;
+const totalItems = ref(0);
+const search = ref('');
+const currentPage = ref(1);
+const itemsPerPage = ref(itemsPerPageOptions[1].value);
+const serverItems = ref<any[]>([]);
+const tableOptions = ref<any>({});
+const sortBy = ref([{ key: 'startTime', order: 'desc' }]);
 
-            if (this.filter.teamName.length) {
-                title = `TEAM_${this.filter.teamName.join('_')}_${title}`;
-            }
-            if (this.filter.guestNames.length) {
-                title = `WEITERE_TEILNEHMENDE_${this.filter.guestNames.join('_')}_${title}`;
-            }
-            if ('null' !== this.filter.isResubmission) {
-                title = `WV_DB_${this.filter.isResubmission ? 'ja' : 'nein'}_${title}`;
-            }
-            if ('null' !== this.filter.isUnfinished) {
-                title = `BEENDET_${!this.filter.isUnfinished ? 'nein' : 'ja'}_${title}`;
-            }
-            if (this.filter.name) {
-                title = `NAME_${this.filter.name}_${title}`;
-            }
+const filter = computed(() => generalStore.getWalkFilter);
+const defaultFilter = computed(() => generalStore.defaultWalkFilter);
+const defaultDateRange = computed(() => generalStore.defaultWalkFilter.startTime);
 
-            const startDate = dayjs(this.filter?.startTime[0]);
-            const endDate = dayjs(this.filter?.startTime[1]);
-            if (startDate.isValid() && endDate.isValid()) {
-                const formattedStartDate = startDate.format('YYYYMMDD');
-                const formattedEndDate = endDate.format('YYYYMMDD');
-                if (formattedStartDate === formattedEndDate) {
-                    title = `${formattedStartDate}_${title}`;
-                } else {
-                    title = `${formattedStartDate}-${formattedEndDate}_${title}`;
-                }
-            }
+const teamNames = computed(() => allTeamNames.value.map(t => t.teamName));
+const guestNames = computed(() => allGuestNames.value.map(g => g.name));
+const walks = computed(() => walkStore.getWalks);
+const totalWalks = computed(() => walkStore.getTotalWalks);
+const hasFilter = computed(() => JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value));
 
-            return title;
-        },
-    },
-};
+watch(filter, () => {
+    search.value = String(Date.now());
+}, { deep: true });
+
+onMounted(async () => {
+    const allTeams = await WalkAPI.findAllTeamNames();
+    allTeamNames.value = allTeams.data['member'];
+    const allGuests = await WalkAPI.findAllGuestNames();
+    allGuestNames.value = allGuests.data['member'];
+});
+
+function getClientByIri(clientIri: string) {
+    return clientStore.getClientByIri(clientIri);
+}
+
+function formatEndDate(dateString: string, startDateString: string) {
+    const date = new Date(dateString);
+    if (dayjs(dateString).isSame(dayjs(startDateString), 'day')) {
+        return formatTime(date);
+    }
+    return formatDateTimeNoSecondsWithDayOfWeek(dateString);
+}
+
+async function loadItems(options: { page: number; itemsPerPage: number; sortBy: any[] }) {
+    tableOptions.value = options;
+
+    if (abortController) abortController.abort();
+    abortController = new AbortController();
+    const signal = abortController.signal;
+
+    const data: any = {
+        page: options.page,
+        itemsPerPage: options.itemsPerPage,
+        teamName: filter.value.teamName,
+        guestNames: filter.value.guestNames,
+        name: filter.value.name !== '' ? filter.value.name : undefined,
+        isResubmission: filter.value.isResubmission !== 'null' ? filter.value.isResubmission : undefined,
+        isUnfinished: filter.value.isUnfinished !== 'null' ? !filter.value.isUnfinished : undefined,
+    };
+
+    options.sortBy.forEach(val => {
+        data[`order[${val.key}]`] = val.order;
+    });
+
+    if (filter.value.startTime[0] && filter.value.startTime[1]) {
+        data['startTime[after]'] = dayjs(filter.value.startTime[0]).startOf('day').toISOString();
+        data['startTime[before]'] = dayjs(filter.value.startTime[1]).endOf('day').toISOString();
+    }
+
+    exportCtx = data;
+
+    isLoading.value = true;
+    const result = await WalkAPI.find(data, signal);
+    isLoading.value = false;
+
+    const items = result.data['member'];
+    const total = result.data['totalItems'] ?? 0;
+    generalStore.updateWalkFilterResult(items);
+    serverItems.value = items;
+    totalItems.value = total;
+    emits('refresh-total-walks', totalItems.value);
+}
+
+function handleCurrentPageChange(value: number) {
+    currentPage.value = Number(value);
+    generalStore.updateWalkCurrentPage(Number(value));
+}
+
+function handlePerPageChange(value: number) {
+    itemsPerPage.value = Number(value);
+    generalStore.updateWalkPerPage(Number(value));
+}
+
+function unsetFilterStartTime() {
+    filter.value.startTime = defaultDateRange.value;
+}
+
+function unsetAllFilter() {
+    generalStore.updateWalkFilter(defaultFilter.value);
+    handleCurrentPageChange(1);
+}
+
+function forceFileDownload(response: any, title: string) {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', title);
+    document.body.appendChild(link);
+    link.click();
+}
+
+async function exportWalks() {
+    isExportLoading.value = true;
+    const response = await WalkAPI.export(exportCtx);
+    forceFileDownload(response, getFileName());
+    isExportLoading.value = false;
+}
+
+function getFileName() {
+    let title = `streetworkrunden_export.csv`;
+
+    if (filter.value.teamName.length) title = `TEAM_${filter.value.teamName.join('_')}_${title}`;
+    if (filter.value.guestNames.length) title = `WEITERE_TEILNEHMENDE_${filter.value.guestNames.join('_')}_${title}`;
+    if (filter.value.isResubmission !== 'null') title = `WV_DB_${filter.value.isResubmission ? 'ja' : 'nein'}_${title}`;
+    if (filter.value.isUnfinished !== 'null') title = `BEENDET_${!filter.value.isUnfinished ? 'nein' : 'ja'}_${title}`;
+    if (filter.value.name) title = `NAME_${filter.value.name}_${title}`;
+
+    const startDate = dayjs(filter.value?.startTime[0]);
+    const endDate = dayjs(filter.value?.startTime[1]);
+    if (startDate.isValid() && endDate.isValid()) {
+        const formattedStartDate = startDate.format('YYYYMMDD');
+        const formattedEndDate = endDate.format('YYYYMMDD');
+        if (formattedStartDate === formattedEndDate) title = `${formattedStartDate}_${title}`;
+        else title = `${formattedStartDate}-${formattedEndDate}_${title}`;
+    }
+
+    return title;
+}
+const load = () => {
+    itemsPerPage.value = generalStore.walkPerPage;
+    currentPage.value = generalStore.walkCurrentPage;
+}
+load()
 </script>
 
 <style scoped>
