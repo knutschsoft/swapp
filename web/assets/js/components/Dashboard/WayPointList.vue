@@ -327,7 +327,6 @@ import {
     FilterComboboxField,
     FilterTextField,
 } from '@/js/components/Common';
-import ColorBadge from '@/js/components/Tags/ColorBadge.vue';
 import Tooltip from '@/js/components/Common/Tooltip.vue';
 import {
     formatDateTimeNoSecondsWithDayOfWeek,
@@ -376,8 +375,6 @@ const allConceptOfDaySuggestions = ref<Array<{ conceptOfDay?: Record<string, str
 );
 const tags = ref<any[]>([]);
 
-const deprecatedOptions = ref<Record<string, unknown>>({});
-
 const totalItems = ref(0);
 const search = ref('');
 const currentPage = ref<Number>(1);
@@ -390,11 +387,6 @@ const tableOptions = ref<{
 } | null>(null);
 
 const sortBy = ref<SortItem[]>([{ key: 'visitedAt', order: 'desc' }]);
-
-const itemsPerPageTextRef = itemsPerPageText;
-const itemsPerPageOptionsRef = itemsPerPageOptions;
-const loadingTextRef = loadingText;
-const noItemsTextRef = noItemsText;
 
 const headers = computed<Header[]>(() => {
     const base: Header[] = [{ value: 'locationName', title: 'Ort', sortable: true }];
@@ -509,7 +501,7 @@ async function loadItems({ page, itemsPerPage, sortBy }: LoadItemsOptions) {
         note: filter.value.note,
         oneOnOneInterview: filter.value.oneOnOneInterview,
         locationName: filter.value.locationName,
-        teamName: filter.value.teamName,
+        'walk.teamName': filter.value.teamName,
         'walk.name': filter.value.walkName,
         'walk.conceptOfDay': filter.value.conceptOfDay,
     };
