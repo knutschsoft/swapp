@@ -281,9 +281,9 @@ function getAdditionalUserInfo(user: User) {
                         v-if="isAuthenticated"
                         exact
                         link
-                        @click=""
+                        @click="userMenu = false; showUserPreferencesForm = true;"
                     >
-                        <v-list-item-title @click="showUserPreferencesForm = true">
+                        <v-list-item-title>
                             Einstellungen
                             <v-dialog v-model="showUserPreferencesForm" fullscreen transition="dialog-bottom-transition">
                                 <v-card>

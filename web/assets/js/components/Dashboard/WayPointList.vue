@@ -1,7 +1,7 @@
 <template>
     <div class="px-2 pt-2">
         <v-row density="compact">
-            <v-col v-if="tags.length" cols="12">
+            <v-col v-if="effectiveWayPointTableFiltersPreferences['wayPointTags'] && tags.length" cols="12">
                 <div class="d-flex flex-row align-items-center">
                     <div>Tags</div>
                     <v-btn
@@ -96,10 +96,12 @@
                 </v-chip-group>
             </v-col>
             <v-col
+                v-if="effectiveWayPointTableFiltersPreferences['note']"
                 cols="12"
                 sm="6"
                 md="6"
-                xl="4"
+                lg="4"
+                xl="2"
             >
                 <filter-text-field
                     v-model="filter.note"
@@ -109,10 +111,12 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWayPointTableFiltersPreferences['oneOnOneInterview']"
                 cols="12"
                 sm="6"
                 md="6"
-                xl="4"
+                lg="4"
+                xl="2"
             >
                 <filter-text-field
                     v-model="filter.oneOnOneInterview"
@@ -122,9 +126,11 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWayPointTableFiltersPreferences['locationName']"
                 cols="12"
                 sm="6"
                 md="6"
+                lg="4"
                 xl="2"
             >
                 <filter-text-field
@@ -135,9 +141,11 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWayPointTableFiltersPreferences['teamName']"
                 cols="12"
                 sm="6"
                 md="6"
+                lg="4"
                 xl="2"
             >
                 <filter-combobox-field
@@ -150,9 +158,11 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWayPointTableFiltersPreferences['walk.conceptOfDay']"
                 cols="12"
                 sm="6"
                 md="6"
+                lg="4"
                 xl="2"
             >
                 <filter-combobox-field
@@ -164,9 +174,11 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWayPointTableFiltersPreferences['walkName']"
                 cols="12"
                 sm="6"
                 md="6"
+                lg="4"
                 xl="2"
             >
                 <filter-combobox-field
@@ -179,11 +191,12 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWayPointTableFiltersPreferences['visitedAt']"
                 cols="12"
-                xs="12"
-                sm="12"
-                md="12"
-                xl="12"
+                sm="6"
+                md="6"
+                lg="4"
+                xl="2"
             >
                 <date-range-picker
                     v-model="filter.visitedAt"
@@ -310,7 +323,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import {ref, computed, watch, onBeforeMount} from 'vue';
 import dayjs from 'dayjs';
 import WayPointAPI from '../../api/wayPoint';
 import WalkAPI from '../../api/walk.js';
@@ -389,7 +402,8 @@ const tableOptions = ref<{
 
 const sortBy = ref<SortItem[]>([{ key: 'visitedAt', order: 'desc' }]);
 
-const effectivePreferences = computed(() => userPreferencesStore.effective)
+const effectiveWayPointTableFiltersPreferences = computed(() => userPreferencesStore.effective.tables.wayPoints.filters)
+const effectiveWayPointTableColumnsPreferences = computed(() => userPreferencesStore.effective.tables.wayPoints.columns)
 const headers = computed<Header[]>(() => {
     const base: Header[] = [{ value: 'locationName', title: 'Ort', sortable: true }];
 
@@ -420,9 +434,8 @@ const headers = computed<Header[]>(() => {
         if (header.value === 'actions') {
             return true
         }
-        console.log(effectivePreferences.value.tables.wayPoints.columns[header.value])
 
-        return effectivePreferences.value.tables.wayPoints.columns[header.value];
+        return effectiveWayPointTableColumnsPreferences.value[header.value];
     })
 });
 
@@ -449,14 +462,12 @@ const hasDisabledTag = computed<boolean>(() =>
     Boolean(tags.value.find((tag) => !tag.isEnabled))
 );
 
-const wayPoints = computed(() => wayPointStore.getWayPoints);
-
 const hasFilter = computed<boolean>(() => {
     return JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value);
 });
 
 watch(
-    filter,
+    [filter, effectiveWayPointTableFiltersPreferences],
     () => {
         search.value = String(Date.now());
     },
@@ -506,20 +517,28 @@ async function loadItems({ page, itemsPerPage, sortBy }: LoadItemsOptions) {
     const data: Record<string, any> = {
         page,
         itemsPerPage,
-        wayPointTags: filter.value.wayPointTags,
-        note: filter.value.note,
-        oneOnOneInterview: filter.value.oneOnOneInterview,
-        locationName: filter.value.locationName,
-        'walk.teamName': filter.value.teamName,
-        'walk.name': filter.value.walkName,
-        'walk.conceptOfDay': filter.value.conceptOfDay,
     };
+
+    const filterMapping: Record<string, keyof typeof filter.value> = {
+        wayPointTags: 'wayPointTags',
+        note: 'note',
+        oneOnOneInterview: 'oneOnOneInterview',
+        locationName: 'locationName',
+        'walk.teamName': 'teamName',
+        'walk.name': 'walkName',
+        'walk.conceptOfDay': 'conceptOfDay',
+    }
+    for (const [requestKey, filterKey] of Object.entries(filterMapping)) {
+        if (effectiveWayPointTableFiltersPreferences.value[requestKey]) {
+            data[requestKey] = filter.value[filterKey];
+        }
+    }
 
     sortBy.forEach((val) => {
         data[`order[${val.key}]`] = val.order;
     });
 
-    if (filter.value.visitedAt[0] && filter.value.visitedAt[1]) {
+    if (effectiveWayPointTableFiltersPreferences.value['visitedAt'] && filter.value.visitedAt[0] && filter.value.visitedAt[1]) {
         data['visitedAt[after]'] = dayjs(filter.value.visitedAt[0])
             .startOf('day')
             .toISOString();
@@ -649,7 +668,7 @@ function getFileName(): string {
     return title;
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
     const tagResult = await TagAPI.findAllWithWayPoints();
     tags.value = tagResult.data['member'];
     tagStore.fetchTags();
@@ -662,13 +681,10 @@ onMounted(async () => {
 
     const allConceptOfDaySuggestionsResult = await WalkAPI.findAllConceptOfDay();
     allConceptOfDaySuggestions.value = allConceptOfDaySuggestionsResult.data['member'];
-
-    if (!userPreferencesStore.isLoaded) {
-        await userPreferencesStore.load()
-    }
 })
 
-const load = () => {
+const load = async () => {
+    await userPreferencesStore.load()    ;
     itemsPerPage.value = generalStore.wayPointPerPage;
     currentPage.value = generalStore.wayPointCurrentPage;
 }

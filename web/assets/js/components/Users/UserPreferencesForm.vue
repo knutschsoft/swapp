@@ -22,9 +22,9 @@ const wpFilters: KeyLabel[] = [
     { key: 'note', label: 'Beobachtung' },
     { key: 'oneOnOneInterview', label: 'Einzelgespräch' },
     { key: 'locationName', label: 'Ort' },
-    { key: 'teamName', label: 'Teamname' },
-    { key: 'conceptOfDay', label: 'Tageskonzept' },
-    { key: 'walkName', label: 'Runde' },
+    { key: 'walk.teamName', label: 'Teamname' },
+    { key: 'walk.conceptOfDay', label: 'Tageskonzept' },
+    { key: 'walk.name', label: 'Runde' },
     { key: 'visitedAt', label: 'Ankunft' },
 ]
 
