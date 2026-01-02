@@ -13,22 +13,22 @@ type DateRange = {
 type MonthRange = { month: number; year: number }[] | null
 
 type WalkFilter = {
-    isResubmission: String | boolean,
-    isUnfinished: String | boolean,
-    name: String,
-    teamName: String[],
-    guestNames: String[],
+    isResubmission: string | boolean,
+    isUnfinished: string | boolean,
+    name: string,
+    teamName: string[],
+    guestNames: string[],
     startTime: DateRange,
 }
 
 type WayPointFilter = {
-    wayPointTags: String[],
+    wayPointTags: string[],
     locationName: '',
     note: '',
-    teamName: String[],
-    walkName: String[],
-    conceptOfDay: String[],
-    oneOnOneInterview: String,
+    teamName: string[],
+    walkName: string[],
+    conceptOfDay: string[],
+    oneOnOneInterview: string,
     visitedAt: DateRange,
     showDisabledTags: boolean,
 }
