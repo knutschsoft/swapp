@@ -32,17 +32,16 @@ const wpFilters: KeyLabel[] = [
 
 const wpColumns: KeyLabel[] = [
     { key: 'locationName', label: 'Ort' },
-    { key: 'malesCount', label: 'Männer' },
-    { key: 'femalesCount', label: 'Frauen' },
-    { key: 'queerCount', label: 'Andere' },
+    { key: 'malesCount', label: 'Anzahl Männer' },
+    { key: 'femalesCount', label: 'Anzahl Frauen' },
+    { key: 'queerCount', label: 'Anzahl Andere' },
     { key: 'peopleCount', label: 'Anzahl Personen' },
     { key: 'note', label: 'Beobachtung' },
     { key: 'oneOnOneInterview', label: 'Einzelgespräch' },
     { key: 'wayPointTags', label: 'Tags' },
-    { key: 'walkTeamName', label: 'Teamname' },
+    { key: 'walkTeamName', label: 'Team' },
     { key: 'visitedAt', label: 'Ankunft' },
     { key: 'walkName', label: 'Runde' },
-    { key: 'actions', label: 'Aktionen' },
 ]
 
 const walkFilters: KeyLabel[] = [
@@ -57,8 +56,8 @@ const walkFilters: KeyLabel[] = [
 const walkColumns: KeyLabel[] = [
     { key: 'name', label: 'Name' },
     { key: 'teamName', label: 'Teamname' },
-    { key: 'startTime', label: 'Start' },
-    { key: 'endTime', label: 'Ende' },
+    { key: 'startTime', label: 'Rundenbeginn' },
+    { key: 'endTime', label: 'Rundenende' },
     { key: 'walkCreator', label: 'Ersteller' },
     { key: 'rating', label: 'Bewertung' },
     { key: 'systemicQuestion', label: 'Systemische Frage' },

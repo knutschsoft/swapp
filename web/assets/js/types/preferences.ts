@@ -5,15 +5,15 @@
  */
 
 export interface TablePreferences {
-  columns: Record<string, boolean>;
-  filters: Record<string, boolean>;
+    columns: Record<string, boolean>;
+    filters: Record<string, boolean>;
 }
 
 export interface UserPreferences {
-  tables: {
-    wayPoints: TablePreferences;
-    walks: TablePreferences;
-  };
+    tables: {
+        wayPoints: TablePreferences;
+        walks: TablePreferences;
+    };
 }
 
 /**
@@ -21,65 +21,53 @@ export interface UserPreferences {
  * Must match UserPreferencesSchema::defaults() in PHP.
  */
 export const defaultPreferences: UserPreferences = {
-  tables: {
-    wayPoints: {
-      columns: {
-        locationName: true,
-        malesCount: true,
-        femalesCount: true,
-        queerCount: true,
-        peopleCount: true,
-        note: true,
-        oneOnOneInterview: true,
-        wayPointTags: true,
-        teamName: true,
-        conceptOfDay: false,
-        visitedAt: true,
-        walkName: true,
-        actions: true,
-      },
-      filters: {
-        wayPointTags: true,
-        note: true,
-        oneOnOneInterview: true,
-        locationName: true,
-        teamName: true,
-        conceptOfDay: true,
-        walkName: true,
-        visitedAt: true,
-      },
+    tables: {
+        wayPoints: {
+            columns: {
+                locationName: true,
+                malesCount: true,
+                femalesCount: true,
+                queerCount: true,
+                peopleCount: true,
+                note: true,
+                oneOnOneInterview: true,
+                wayPointTags: true,
+                teamName: true,
+                conceptOfDay: false,
+                visitedAt: true,
+                walkName: true,
+            },
+            filters: {
+                wayPointTags: true,
+                note: true,
+                oneOnOneInterview: true,
+                locationName: true,
+                teamName: true,
+                conceptOfDay: true,
+                walkName: true,
+                visitedAt: true,
+            },
+        },
+        walks: {
+            columns: {
+                name: true,
+                rating: true,
+                startTime: true,
+                endTime: true,
+                peopleCount: true,
+                teamName: true,
+                isResubmission: true,
+            },
+            filters: {
+                isResubmission: true,
+                isUnfinished: true,
+                name: true,
+                teamName: true,
+                guestNames: true,
+                startTime: true,
+            },
+        },
     },
-    walks: {
-      columns: {
-        name: true,
-        teamName: true,
-        startTime: true,
-        endTime: true,
-        walkCreator: true,
-        rating: true,
-        systemicQuestion: true,
-        systemicAnswer: true,
-        commitments: true,
-        insights: true,
-        isResubmission: true,
-        weather: true,
-        conceptOfDay: true,
-        holidays: true,
-        guestNames: true,
-        walkTeamMembers: true,
-        isUnfinished: true,
-        actions: true,
-      },
-      filters: {
-        isResubmission: true,
-        isUnfinished: true,
-        name: true,
-        teamName: true,
-        guestNames: true,
-        startTime: true,
-      },
-    },
-  },
 };
 
 /**
@@ -91,46 +79,46 @@ export const defaultPreferences: UserPreferences = {
  * @returns Complete preferences with defaults filled in
  */
 export function mergePreferences(
-  defaults: UserPreferences,
-  overrides: Partial<UserPreferences>
+    defaults: UserPreferences,
+    overrides: Partial<UserPreferences>
 ): UserPreferences {
-  return deepMerge(defaults, overrides) as UserPreferences;
+    return deepMerge(defaults, overrides) as UserPreferences;
 }
 
 /**
  * Deep merge utility function.
  */
 function deepMerge<T>(target: T, source: Partial<T>): T {
-  const output = { ...target } as any;
+    const output = {...target} as any;
 
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
-      const sourceValue = (source as any)[key];
-      const targetValue = (target as any)[key];
+    if (isObject(target) && isObject(source)) {
+        Object.keys(source).forEach((key) => {
+            const sourceValue = (source as any)[key];
+            const targetValue = (target as any)[key];
 
-      if (isObject(sourceValue) && isObject(targetValue)) {
-        output[key] = deepMerge(targetValue, sourceValue);
-      } else {
-        output[key] = sourceValue;
-      }
-    });
-  }
+            if (isObject(sourceValue) && isObject(targetValue)) {
+                output[key] = deepMerge(targetValue, sourceValue);
+            } else {
+                output[key] = sourceValue;
+            }
+        });
+    }
 
-  return output;
+    return output;
 }
 
 function isObject(item: any): item is Record<string, any> {
-  return item && typeof item === 'object' && !Array.isArray(item);
+    return item && typeof item === 'object' && !Array.isArray(item);
 }
 
 /**
  * Type guard for checking if preferences have the correct structure.
  */
 export function isValidPreferences(prefs: any): prefs is UserPreferences {
-  return (
-    prefs &&
-    typeof prefs === 'object' &&
-    prefs.tables &&
-    typeof prefs.tables === 'object'
-  );
+    return (
+        prefs &&
+        typeof prefs === 'object' &&
+        prefs.tables &&
+        typeof prefs.tables === 'object'
+    );
 }
