@@ -50,7 +50,6 @@ final class UserPreferencesSchema
                         'oneOnOneInterview' => true,
                         'wayPointTags' => true,
                         'teamName' => true,
-                        'conceptOfDay' => false,
                         'visitedAt' => true,
                         'walkName' => true,
                     ],

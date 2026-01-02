@@ -39,7 +39,7 @@ const wpColumns: KeyLabel[] = [
     { key: 'note', label: 'Beobachtung' },
     { key: 'oneOnOneInterview', label: 'Einzelgespräch' },
     { key: 'wayPointTags', label: 'Tags' },
-    { key: 'walkTeamName', label: 'Team' },
+    { key: 'teamName', label: 'Team' },
     { key: 'visitedAt', label: 'Ankunft' },
     { key: 'walkName', label: 'Runde' },
 ]
@@ -55,23 +55,12 @@ const walkFilters: KeyLabel[] = [
 
 const walkColumns: KeyLabel[] = [
     { key: 'name', label: 'Name' },
-    { key: 'teamName', label: 'Teamname' },
+    { key: 'rating', label: 'Bewertung' },
     { key: 'startTime', label: 'Rundenbeginn' },
     { key: 'endTime', label: 'Rundenende' },
-    { key: 'walkCreator', label: 'Ersteller' },
-    { key: 'rating', label: 'Bewertung' },
-    { key: 'systemicQuestion', label: 'Systemische Frage' },
-    { key: 'systemicAnswer', label: 'Systemische Antwort' },
-    { key: 'commitments', label: 'Vereinbarungen' },
-    { key: 'insights', label: 'Erkenntnisse' },
+    { key: 'peopleCount', label: 'Anzahl Personen' },
+    { key: 'teamName', label: 'Teamname' },
     { key: 'isResubmission', label: 'Wiedervorlage' },
-    { key: 'weather', label: 'Wetter' },
-    { key: 'conceptOfDay', label: 'Tageskonzept' },
-    { key: 'holidays', label: 'Feiertage' },
-    { key: 'guestNames', label: 'Gäste' },
-    { key: 'walkTeamMembers', label: 'Team-Mitglieder' },
-    { key: 'isUnfinished', label: 'Unbeendet' },
-    { key: 'actions', label: 'Aktionen' },
 ]
 
 const tab = ref<'walks' | 'wayPoints'>('wayPoints')
