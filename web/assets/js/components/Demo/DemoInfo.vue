@@ -149,60 +149,71 @@
     </div>
 </template>
 
-<script>
-"use strict";
-import {useAlertStore} from '@/js/stores';
-import {useRoute} from "vue-router";
+<script setup lang="ts">
+import { ref, computed, getCurrentInstance } from 'vue';
+import { useAlertStore } from '@/js/stores';
+import { useRoute } from 'vue-router';
 
-export default {
-    name: "DemoInfo",
-    data: () => ({
-        route: useRoute(),
-        alertStore: useAlertStore(),
-        isCopiedAdelheid: false,
-        isCopiedBenno: false,
-        isCopiedTessa: false,
-    }),
-    computed: {
-        isOnDemoPage() {
-            return window.location.host.includes('swapp.demo') || this.route.query.demo;
-        },
-    },
-    created() {
-    },
-    methods: {
-        doCopyAdelheid() {
-            this.isCopiedAdelheid = true;
-            this.isCopiedBenno = false;
-            this.isCopiedTessa = false;
-            this.doCopy('adelheid.administrator');
-            window.setTimeout(() => this.isCopiedAdelheid = false, 3000);
-        },
-        doCopyBenno() {
-            this.isCopiedBenno = true;
-            this.isCopiedAdelheid = false;
-            this.isCopiedTessa = false;
-            this.doCopy('benno.benutzer');
-            window.setTimeout(() => this.isCopiedBenno = false, 3000);
-        },
-        doCopyTessa() {
-            this.isCopiedTessa = true;
-            this.isCopiedAdelheid = false;
-            this.isCopiedBenno = false;
-            this.doCopy('tessa.administrator');
-            window.setTimeout(() => this.isCopiedTessa = false, 3000);
-        },
-        doCopy(copyText) {
-            this.$emit('credentials-select', {username: copyText, password: copyText});
-
-            this.$copyText(copyText).then(() => {
-                this.alertStore.info(`"${copyText}" ist nun in deiner Zwischenablage sowie in den Anmeldefeldern.`, 'Zugangsdaten in die Zwischenablage kopiert');
-            }, function (e) {
-                console.log(e);
-            });
-        },
-    },
+interface CredentialsSelectEvent {
+    username: string;
+    password: string;
 }
+
+const emit = defineEmits<{
+    'credentials-select': [payload: CredentialsSelectEvent];
+}>();
+
+const route = useRoute();
+const alertStore = useAlertStore();
+const instance = getCurrentInstance();
+
+const isCopiedAdelheid = ref(false);
+const isCopiedBenno = ref(false);
+const isCopiedTessa = ref(false);
+
+const isOnDemoPage = computed(() => {
+    return window.location.host.includes('swapp.demo') || route.query.demo;
+});
+
+const doCopyAdelheid = () => {
+    isCopiedAdelheid.value = true;
+    isCopiedBenno.value = false;
+    isCopiedTessa.value = false;
+    doCopy('adelheid.administrator');
+    window.setTimeout(() => isCopiedAdelheid.value = false, 3000);
+};
+
+const doCopyBenno = () => {
+    isCopiedBenno.value = true;
+    isCopiedAdelheid.value = false;
+    isCopiedTessa.value = false;
+    doCopy('benno.benutzer');
+    window.setTimeout(() => isCopiedBenno.value = false, 3000);
+};
+
+const doCopyTessa = () => {
+    isCopiedTessa.value = true;
+    isCopiedAdelheid.value = false;
+    isCopiedBenno.value = false;
+    doCopy('tessa.administrator');
+    window.setTimeout(() => isCopiedTessa.value = false, 3000);
+};
+
+const doCopy = (copyText: string) => {
+    emit('credentials-select', { username: copyText, password: copyText });
+
+    const copyTextPlugin = instance?.appContext.config.globalProperties.$copyText;
+    if (copyTextPlugin) {
+        copyTextPlugin(copyText).then(() => {
+            alertStore.info(
+                `"${copyText}" ist nun in deiner Zwischenablage sowie in den Anmeldefeldern.`,
+                'Zugangsdaten in die Zwischenablage kopiert'
+            );
+        }, (e: Error) => {
+            console.log(e);
+        });
+    }
+};
 </script>
 
 <style scoped>
