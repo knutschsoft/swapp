@@ -320,37 +320,6 @@ function noneSelected(table: 'wayPoints' | 'walks', type: 'filters' | 'columns')
             <!-- Wegpunkt-Liste -->
             <v-window-item value="wayPoints">
                 <v-container fluid class="pt-2 pb-6">
-                    <!-- Sektion: Filter -->
-                    <v-card class="mx-4 my-3" elevation="0" variant="outlined">
-                        <v-card-title class="text-subtitle-1">
-                            Filtermöglichkeiten
-                        </v-card-title>
-                        <v-card-subtitle class="mb-1">
-                            Wähle aus, welche Filter oberhalb der Wegpunkt-Tabelle angezeigt werden. Es werden nur Filter für sichtbare Spalten angezeigt.
-                        </v-card-subtitle>
-                        <v-card-text>
-                            <v-chip-group
-                                v-model="waypointVisibleFilters"
-                                multiple column class="mb-1"
-                            >
-                                <template
-                                    v-for="f in wpFilters"
-                                    :key="f.key"
-                                >
-                                    <v-chip
-                                        v-if="waypointVisibleColumns.includes(f.key)"
-                                        :value="f.key"
-                                        variant="outlined"
-                                        color="primary"
-                                        class="mr-2 mb-2"
-                                        :text="f.label"
-                                        filter
-                                        density="comfortable"
-                                    />
-                                </template>
-                            </v-chip-group>
-                        </v-card-text>
-                    </v-card>
 
                     <!-- Sektion: Spalten -->
                     <v-card class="mx-4 my-3" elevation="0" variant="outlined">
@@ -399,44 +368,44 @@ function noneSelected(table: 'wayPoints' | 'walks', type: 'filters' | 'columns')
                             </v-chip-group>
                         </v-card-text>
                     </v-card>
-                </v-container>
-            </v-window-item>
 
-            <!-- Rundenliste -->
-            <v-window-item value="walks">
-                <v-container fluid class="pt-2 pb-6">
                     <!-- Sektion: Filter -->
                     <v-card class="mx-4 my-3" elevation="0" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             Filtermöglichkeiten
                         </v-card-title>
                         <v-card-subtitle class="mb-1">
-                            Wähle aus, welche Filter oberhalb der Runden-Tabelle angezeigt werden. Es werden nur Filter für sichtbare Spalten angezeigt.
+                            Wähle aus, welche Filter oberhalb der Wegpunkt-Tabelle angezeigt werden. Es werden nur Filter für sichtbare Spalten angezeigt.
                         </v-card-subtitle>
                         <v-card-text>
                             <v-chip-group
-                                v-model="walkVisibleFilters"
+                                v-model="waypointVisibleFilters"
                                 multiple column class="mb-1"
                             >
                                 <template
-                                    v-for="f in walkFilters"
+                                    v-for="f in wpFilters"
                                     :key="f.key"
                                 >
                                     <v-chip
-                                        v-if="walkVisibleColumns.includes(f.key)"
+                                        v-if="waypointVisibleColumns.includes(f.key)"
                                         :value="f.key"
                                         variant="outlined"
                                         color="primary"
                                         class="mr-2 mb-2"
+                                        :text="f.label"
                                         filter
                                         density="comfortable"
-                                        :text="f.label"
                                     />
                                 </template>
                             </v-chip-group>
                         </v-card-text>
                     </v-card>
+                </v-container>
+            </v-window-item>
 
+            <!-- Rundenliste -->
+            <v-window-item value="walks">
+                <v-container fluid class="pt-2 pb-6">
                     <!-- Sektion: Spalten -->
                     <v-card class="mx-4 my-3" elevation="0" variant="outlined">
                         <v-card-title class="text-subtitle-1">
@@ -481,6 +450,38 @@ function noneSelected(table: 'wayPoints' | 'walks', type: 'filters' | 'columns')
                                 >
                                     {{ c.label }}
                                 </v-chip>
+                            </v-chip-group>
+                        </v-card-text>
+                    </v-card>
+
+                    <!-- Sektion: Filter -->
+                    <v-card class="mx-4 my-3" elevation="0" variant="outlined">
+                        <v-card-title class="text-subtitle-1">
+                            Filtermöglichkeiten
+                        </v-card-title>
+                        <v-card-subtitle class="mb-1">
+                            Wähle aus, welche Filter oberhalb der Runden-Tabelle angezeigt werden. Es werden nur Filter für sichtbare Spalten angezeigt.
+                        </v-card-subtitle>
+                        <v-card-text>
+                            <v-chip-group
+                                v-model="walkVisibleFilters"
+                                multiple column class="mb-1"
+                            >
+                                <template
+                                    v-for="f in walkFilters"
+                                    :key="f.key"
+                                >
+                                    <v-chip
+                                        v-if="walkVisibleColumns.includes(f.key)"
+                                        :value="f.key"
+                                        variant="outlined"
+                                        color="primary"
+                                        class="mr-2 mb-2"
+                                        filter
+                                        density="comfortable"
+                                        :text="f.label"
+                                    />
+                                </template>
                             </v-chip-group>
                         </v-card-text>
                     </v-card>
