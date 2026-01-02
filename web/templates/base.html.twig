@@ -55,26 +55,56 @@
 
         {% if 'test' == app.environment %}
             <script type="text/javascript">
-                window.jsErrors = []; window.jsWarns = []; window.jsLogs = [];
-                window.onerror = function(error, url, line) {
-                    window.jsErrors.push('[Uncaught error]: ' + error + '; Line: ' + line);
+                window.jsErrors = [];
+                window.jsWarns  = [];
+                window.jsLogs   = [];
+
+                function normalizeArg(arg) {
+                    if (arg === null) return 'null';
+                    if (arg === undefined) return 'undefined';
+                    if (typeof arg === 'string') return arg;
+                    if (typeof arg === 'number' || typeof arg === 'boolean') return String(arg);
+                    if (typeof arg === 'function') return '[Function]';
+
+                    try {
+                        return JSON.stringify(arg);
+                    } catch (e) {
+                        return '[Object]';
+                    }
+                }
+
+                function normalizeArguments(args) {
+                    return Array.prototype.slice.call(args).map(normalizeArg).join(' ');
+                }
+
+                window.onerror = function (message, source, lineno, colno) {
+                    window.jsErrors.push(
+                        '[Uncaught error] ' + message + ' (' + lineno + ':' + colno + ')'
+                    );
                 };
 
-                if (!console) var console = {};
-                var _privateError = console.error;
-                console.error = function() {
-                    window.jsErrors.push('[Console error]: ' + JSON.stringify(arguments)); _privateError.apply(console, arguments);
+                if (!window.console) {
+                    window.console = {};
                 }
 
-                var _privateWarn = console.warn;
-                console.warn = function() {
-                    window.jsWarns.push('[Console warn]: ' + JSON.stringify(arguments)); _privateWarn.apply(console, arguments);
-                }
+                var _error = console.error ? console.error.bind(console) : function () {};
+                var _warn  = console.warn  ? console.warn.bind(console)  : function () {};
+                var _log   = console.log   ? console.log.bind(console)   : function () {};
 
-                var _privateLog = console.log;
-                console.log = function() {
-                    window.jsLogs.push('[Console log]: ' + JSON.stringify(arguments)); _privateLog.apply(console, arguments);
-                }
+                console.error = function () {
+                    window.jsErrors.push('[Console error] ' + normalizeArguments(arguments));
+                    _error.apply(console, arguments);
+                };
+
+                console.warn = function () {
+                    window.jsWarns.push('[Console warn] ' + normalizeArguments(arguments));
+                    _warn.apply(console, arguments);
+                };
+
+                console.log = function () {
+                    window.jsLogs.push('[Console log] ' + normalizeArguments(arguments));
+                    _log.apply(console, arguments);
+                };
             </script>
         {% endif %}
 
