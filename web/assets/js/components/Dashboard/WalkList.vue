@@ -2,10 +2,12 @@
     <div class="px-2 pt-2">
         <v-row dense class="">
             <v-col
+                v-if="effectiveWalkTableFiltersPreferences['isResubmission']"
                 cols="12"
                 sm="6"
-                md="3"
-                :xl="!guestNames.length ? 2 : 3"
+                md="6"
+                lg="4"
+                xl="2"
             >
                 <filter-boolean-field
                     v-model="filter.isResubmission"
@@ -15,10 +17,12 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWalkTableFiltersPreferences['isUnfinished']"
                 cols="12"
                 sm="6"
-                md="3"
-                :xl="!guestNames.length ? 2 : 3"
+                md="6"
+                lg="4"
+                xl="2"
             >
                 <filter-boolean-field
                     v-model="filter.isUnfinished"
@@ -28,10 +32,13 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWalkTableFiltersPreferences['name']"
                 cols="12"
-                no-gutters
                 sm="6"
-                md="3"
+                md="6"
+                lg="4"
+                xl="2"
+                no-gutters
             >
                 <filter-text-field
                     v-model="filter.name"
@@ -41,9 +48,12 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWalkTableFiltersPreferences['teamName']"
                 cols="12"
                 sm="6"
-                md="3"
+                md="6"
+                lg="4"
+                xl="2"
             >
                 <filter-combobox-field
                     v-model="filter.teamName"
@@ -54,10 +64,12 @@
                 />
             </v-col>
             <v-col
-                v-if="guestNames.length"
+                v-if="effectiveWalkTableFiltersPreferences['guestNames']"
                 cols="12"
                 sm="6"
                 md="6"
+                lg="4"
+                xl="2"
             >
                 <filter-combobox-field
                     v-model="filter.guestNames"
@@ -68,11 +80,12 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWalkTableFiltersPreferences['startTime']"
                 cols="12"
-                xs="12"
-                :sm="!guestNames.length ? 12 : 6"
-                :md="!guestNames.length ? 12 : 6"
-                :xl="!guestNames.length ? 2 : null"
+                sm="6"
+                md="6"
+                lg="4"
+                xl="2"
             >
                 <date-range-picker
                     v-model="filter.startTime"
@@ -261,7 +274,7 @@ const teamNames = computed(() => allTeamNames.value.map(t => t.teamName));
 const guestNames = computed(() => allGuestNames.value.map(g => g.name));
 const hasFilter = computed(() => JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value));
 
-watch(filter, () => {
+watch([filter, effectiveWalkTableFiltersPreferences], () => {
     if (isInitializing.value) return;
 
     currentPage.value = 1;
@@ -307,18 +320,31 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
     const data: any = {
         page: options.page,
         itemsPerPage: options.itemsPerPage,
-        teamName: filter.value.teamName,
-        guestNames: filter.value.guestNames,
-        name: filter.value.name !== '' ? filter.value.name : undefined,
-        isResubmission: filter.value.isResubmission !== 'null' ? filter.value.isResubmission : undefined,
-        isUnfinished: filter.value.isUnfinished !== 'null' ? !filter.value.isUnfinished : undefined,
     };
+    const filterMapping: Record<string, keyof typeof filter.value> = {
+        'teamName': 'teamName',
+        'guestNames': 'guestNames',
+    }
+    for (const [requestKey, filterKey] of Object.entries(filterMapping)) {
+        if (effectiveWalkTableFiltersPreferences.value[requestKey]) {
+            data[requestKey] = filter.value[filterKey];
+        }
+    }
+    if (effectiveWalkTableFiltersPreferences.value['name']) {
+        data['name'] = filter.value.name !== '' ? filter.value.name : undefined;
+    }
+    if (effectiveWalkTableFiltersPreferences.value['isResubmission']) {
+        data['isResubmission'] = filter.value.isResubmission !== 'null' ? filter.value.isResubmission : undefined;
+    }
+    if (effectiveWalkTableFiltersPreferences.value['isUnfinished']) {
+        data['isUnfinished'] = filter.value.isUnfinished !== 'null' ? !filter.value.isUnfinished : undefined;
+    }
 
     options.sortBy.forEach(val => {
         data[`order[${val.key}]`] = val.order;
     });
 
-    if (filter.value.startTime[0] && filter.value.startTime[1]) {
+    if (effectiveWalkTableFiltersPreferences.value['startTime'] && filter.value.startTime[0] && filter.value.startTime[1]) {
         data['startTime[after]'] = dayjs(filter.value.startTime[0]).startOf('day').toISOString();
         data['startTime[before]'] = dayjs(filter.value.startTime[1]).endOf('day').toISOString();
     }
