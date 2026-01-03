@@ -259,7 +259,6 @@
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
             :loading="isLoading"
-            :search="search"
             item-value="name"
             :no-data-text="noItemsText"
             :loading-text="loadingText"
@@ -374,7 +373,6 @@ const emit = defineEmits<{
 const generalStore = useGeneralStore();
 const tagStore = useTagStore();
 const userPreferencesStore = useUserPreferencesStore();
-const wayPointStore = useWayPointStore();
 const walkStore = useWalkStore();
 
 const isLoading = ref(false);
@@ -390,7 +388,7 @@ const allConceptOfDaySuggestions = ref<Array<{ conceptOfDay?: Record<string, str
 const tags = ref<any[]>([]);
 
 const totalItems = ref(0);
-const search = ref('');
+const isInitializing = ref(true);
 const currentPage = ref<Number>(1);
 const itemsPerPage = ref<Number>(itemsPerPageOptions[1].value as number);
 const serverItems = ref<any[]>([]);
@@ -469,7 +467,16 @@ const hasFilter = computed<boolean>(() => {
 watch(
     [filter, effectiveWayPointTableFiltersPreferences],
     () => {
-        search.value = String(Date.now());
+        if (isInitializing.value) return;
+
+        currentPage.value = 1;
+        generalStore.updateWayPointCurrentPage(1);
+
+        loadItems({
+            page: currentPage.value,
+            itemsPerPage: itemsPerPage.value,
+            sortBy: sortBy.value,
+        });
     },
     { deep: true }
 );
@@ -588,12 +595,24 @@ function handleCurrentPageChange(value: number | string) {
     const newVal = Number(value);
     currentPage.value = newVal;
     generalStore.updateWayPointCurrentPage(newVal);
+
+    loadItems({
+        page: newVal,
+        itemsPerPage: itemsPerPage.value,
+        sortBy: sortBy.value,
+    });
 }
 
 function handlePerPageChange(value: number | string) {
     const newVal = Number(value);
     itemsPerPage.value = newVal;
     generalStore.updateWayPointPerPage(newVal);
+
+    loadItems({
+        page: 1,
+        itemsPerPage: newVal,
+        sortBy: sortBy.value,
+    });
 }
 
 function unsetFilterWayPointTags() {
@@ -684,9 +703,17 @@ onBeforeMount(async () => {
 })
 
 const load = async () => {
-    await userPreferencesStore.load()    ;
     itemsPerPage.value = generalStore.wayPointPerPage;
     currentPage.value = generalStore.wayPointCurrentPage;
+    await userPreferencesStore.load();
+
+    loadItems({
+        page: currentPage.value,
+        itemsPerPage: itemsPerPage.value,
+        sortBy: sortBy.value,
+    });
+
+    isInitializing.value = false;
 }
 load()
 </script>
