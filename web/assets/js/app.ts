@@ -12,7 +12,7 @@ import 'vue-silentbox/dist/style.css';
 import VueClipboard from 'vue-clipboard2';
 import mdiVue from 'mdi-vue/v3';
 import * as mdijs from '@mdi/js';
-import VueDatePicker from '@vuepic/vue-datepicker';
+import { VueDatePicker } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 import Swapp from './Swapp.vue';

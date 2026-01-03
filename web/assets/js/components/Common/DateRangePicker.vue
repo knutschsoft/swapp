@@ -110,15 +110,13 @@ const multiCalendars = computed(() => {
         :week-numbers="{ type: 'iso' }"
         :placeholder="placeholder"
         :multi-calendars="multiCalendars"
-        clearable
         range
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"
         auto-apply
         locale="de"
-        :format-locale="de"
-        :enable-time-picker="enableTimePicker"
-        format="dd.LL.y"
+        :time-config="{ enableTimePicker: enableTimePicker }"
+        :formats="{input: 'dd.LL.y'}"
         cancel-text="abbrechen"
         select-text="auswählen"
         :teleport="true"
@@ -126,9 +124,9 @@ const multiCalendars = computed(() => {
         :action-row="{ showPreview: true }"
         :loading="isLoading"
         @cleared="$emit('cleared')"
-        autocomplete="off"
+        :input-attrs="{autocomplete: 'off', clearable: true}"
         :month-change-on-scroll="false"
-        :preset-dates="isGreaterThanMd.value ? presetDates : false"
+        :preset-dates="isGreaterThanMd.value ? presetDates : []"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />
