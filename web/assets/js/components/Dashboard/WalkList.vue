@@ -134,7 +134,7 @@
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
             :loading="isLoading"
-            item-value="name"
+            item-value="@id"
             :no-data-text="noItemsText"
             :loading-text="loadingText"
             multi-sort

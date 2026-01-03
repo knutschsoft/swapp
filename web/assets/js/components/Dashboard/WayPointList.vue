@@ -259,7 +259,7 @@
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
             :loading="isLoading"
-            item-value="name"
+            item-value="@id"
             :no-data-text="noItemsText"
             :loading-text="loadingText"
             :sort-by="sortBy"
@@ -332,7 +332,6 @@ import {
     useTagStore,
     useUserPreferencesStore,
     useWalkStore,
-    useWayPointStore,
 } from '@/js/stores';
 import {
     DateRangePicker,
