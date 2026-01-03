@@ -201,35 +201,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted, defineEmits } from 'vue';
+import { ref, computed, watch, onMounted, defineEmits } from 'vue';
 import dayjs from 'dayjs';
 import WalkAPI from '../../api/walk.js';
 import WalkRating from '../Walk/WalkRating.vue';
-import { useClientStore, useGeneralStore } from '@/js/stores';
+import { useClientStore, useGeneralStore, useUserPreferencesStore } from '@/js/stores';
 import { formatDateTimeNoSecondsWithDayOfWeek, formatTime, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText } from "@/js/utils";
 import { FilterBooleanField, FilterComboboxField, FilterTextField, TextareaField } from "@/js/components/Common";
 import { DateRangePicker } from "@/js/components/Common";
+import axios, {AxiosError} from "axios";
 
 const emits = defineEmits(['refresh-total-walks']);
 
 const clientStore = useClientStore();
 const generalStore = useGeneralStore();
+const userPreferencesStore = useUserPreferencesStore();
 
 const isLoading = ref(false);
 const isExportLoading = ref(false);
 let abortController: AbortController | null = null;
 let exportCtx: any = null;
-
-const headers = ref([
-    { key: 'name', title: 'Name', sortDirection: 'desc', align: 'center' },
-    { key: 'rating', title: 'Bewertung', align: 'center' },
-    { key: 'startTime', title: 'Rundenbeginn' },
-    { key: 'endTime', title: 'Ende', sortable: false },
-    { key: 'peopleCount', title: 'Anzahl Personen', sortable: false, align: 'center' },
-    { key: 'teamName', title: 'Team', align: 'center' },
-    { key: 'isResubmission', title: 'WV DB?' },
-    { key: 'actions', title: 'Aktionen', align: 'center', sortable: false },
-]);
 
 const allTeamNames = ref<any[]>([]);
 const allGuestNames = ref<any[]>([]);
@@ -242,6 +233,26 @@ const serverItems = ref<any[]>([]);
 const tableOptions = ref<any>({});
 const sortBy = ref([{ key: 'startTime', order: 'desc' }]);
 
+const effectiveWalkTableFiltersPreferences = computed(() => userPreferencesStore.effective.tables.walks.filters)
+const effectiveWalkTableColumnsPreferences = computed(() => userPreferencesStore.effective.tables.walks.columns)
+const headers = computed(() =>
+    [
+        { value: 'name', title: 'Name', sortDirection: 'desc', align: 'center' },
+        { value: 'rating', title: 'Bewertung', align: 'center' },
+        { value: 'startTime', title: 'Rundenbeginn' },
+        { value: 'endTime', title: 'Ende', sortable: false },
+        { value: 'peopleCount', title: 'Anzahl Personen', sortable: false, align: 'center' },
+        { value: 'teamName', title: 'Team', align: 'center' },
+        { value: 'isResubmission', title: 'WV DB?' },
+        { value: 'actions', title: 'Aktionen', align: 'center', sortable: false },
+    ].filter(header => {
+        if (header.value === 'actions') {
+            return true
+        }
+
+        return effectiveWalkTableColumnsPreferences.value[header.value];
+    })
+)
 const filter = computed(() => generalStore.getWalkFilter);
 const defaultFilter = computed(() => generalStore.defaultWalkFilter);
 const defaultDateRange = computed(() => generalStore.defaultWalkFilter.startTime);
@@ -270,7 +281,11 @@ onMounted(async () => {
     allGuestNames.value = allGuests.data['member'];
 });
 
-function getClientByIri(clientIri: string) {
+async function getClientByIri(clientIri: string) {
+    if (!clientStore.getClientByIri(clientIri)) {
+        await clientStore.fetchByIri(clientIri)
+    }
+
     return clientStore.getClientByIri(clientIri);
 }
 
@@ -311,7 +326,21 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
     exportCtx = data;
 
     isLoading.value = true;
-    const result = await WalkAPI.find(data, signal);
+    let result = null;
+    try {
+        result = await WalkAPI.find(data, signal);
+    } catch (error: unknown) {
+        if (axios.isCancel(error)) {
+            return;
+        }
+
+        if (error instanceof AxiosError) {
+            console.error(error.code, error.message);
+        }
+
+        throw error;
+    }
+
     isLoading.value = false;
 
     const items = result.data['member'];

@@ -346,6 +346,7 @@ import {
     loadingText,
     noItemsText,
 } from '@/js/utils';
+import axios, {AxiosError} from "axios";
 
 interface Header {
     value: string;
@@ -559,8 +560,16 @@ async function loadItems({ page, itemsPerPage, sortBy }: LoadItemsOptions) {
     let result;
     try {
         result = await WayPointAPI.find(data, signal);
-    } catch (e) {
-        return
+    } catch (error: unknown) {
+        if (axios.isCancel(error)) {
+            return;
+        }
+
+        if (error instanceof AxiosError) {
+            console.error(error.code, error.message);
+        }
+
+        throw error;
     }
 
     isLoading.value = false;
