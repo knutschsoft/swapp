@@ -42,13 +42,13 @@ type State = {
     clientFilter: RemovableRef<string|null>,
     defaultWalkFilter: WalkFilter,
     walkFilter: RemovableRef<WalkFilter>,
-    walkPerPage: RemovableRef<Number>,
-    walkCurrentPage: RemovableRef<Number>,
+    walkPerPage: RemovableRef<number>,
+    walkCurrentPage: RemovableRef<number>,
     walkFilterResult: RemovableRef<Walk[]>
     defaultWayPointFilter: WayPointFilter,
     wayPointFilter: RemovableRef<WayPointFilter>,
-    wayPointPerPage: RemovableRef<Number>,
-    wayPointCurrentPage: RemovableRef<Number>,
+    wayPointPerPage: RemovableRef<number>,
+    wayPointCurrentPage: RemovableRef<number>,
     wayPointFilterResult: RemovableRef<WayPoint[]>
 }
 

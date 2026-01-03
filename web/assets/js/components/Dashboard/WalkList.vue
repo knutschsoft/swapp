@@ -134,7 +134,6 @@
             :items-per-page-options="itemsPerPageOptions"
             :items-per-page-text="itemsPerPageText"
             :loading="isLoading"
-            :search="search"
             item-value="name"
             :no-data-text="noItemsText"
             :loading-text="loadingText"
@@ -206,17 +205,15 @@ import { ref, reactive, computed, watch, onMounted, defineEmits } from 'vue';
 import dayjs from 'dayjs';
 import WalkAPI from '../../api/walk.js';
 import WalkRating from '../Walk/WalkRating.vue';
-import { useClientStore, useGeneralStore, useWalkStore } from '@/js/stores';
+import { useClientStore, useGeneralStore } from '@/js/stores';
 import { formatDateTimeNoSecondsWithDayOfWeek, formatTime, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText } from "@/js/utils";
 import { FilterBooleanField, FilterComboboxField, FilterTextField, TextareaField } from "@/js/components/Common";
-import { WalkConceptOfDayField } from "@/js/components/Common/Walk";
 import { DateRangePicker } from "@/js/components/Common";
 
 const emits = defineEmits(['refresh-total-walks']);
 
 const clientStore = useClientStore();
 const generalStore = useGeneralStore();
-const walkStore = useWalkStore();
 
 const isLoading = ref(false);
 const isExportLoading = ref(false);
@@ -237,13 +234,8 @@ const headers = ref([
 const allTeamNames = ref<any[]>([]);
 const allGuestNames = ref<any[]>([]);
 
-const itemsPerPageTextRef = ref(itemsPerPageText);
-const itemsPerPageOptionsRef = ref(itemsPerPageOptions);
-const loadingTextRef = ref(loadingText);
-const noItemsTextRef = ref(noItemsText);
-
 const totalItems = ref(0);
-const search = ref('');
+const isInitializing = ref(true);
 const currentPage = ref(1);
 const itemsPerPage = ref(itemsPerPageOptions[1].value);
 const serverItems = ref<any[]>([]);
@@ -256,12 +248,19 @@ const defaultDateRange = computed(() => generalStore.defaultWalkFilter.startTime
 
 const teamNames = computed(() => allTeamNames.value.map(t => t.teamName));
 const guestNames = computed(() => allGuestNames.value.map(g => g.name));
-const walks = computed(() => walkStore.getWalks);
-const totalWalks = computed(() => walkStore.getTotalWalks);
 const hasFilter = computed(() => JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value));
 
 watch(filter, () => {
-    search.value = String(Date.now());
+    if (isInitializing.value) return;
+
+    currentPage.value = 1;
+    generalStore.updateWayPointCurrentPage(1);
+
+    loadItems({
+        page: currentPage.value,
+        itemsPerPage: itemsPerPage.value,
+        sortBy: sortBy.value,
+    });
 }, { deep: true });
 
 onMounted(async () => {
@@ -326,11 +325,23 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
 function handleCurrentPageChange(value: number) {
     currentPage.value = Number(value);
     generalStore.updateWalkCurrentPage(Number(value));
+
+    loadItems({
+        page: value,
+        itemsPerPage: itemsPerPage.value,
+        sortBy: sortBy.value,
+    });
 }
 
 function handlePerPageChange(value: number) {
     itemsPerPage.value = Number(value);
     generalStore.updateWalkPerPage(Number(value));
+
+    loadItems({
+        page: 1,
+        itemsPerPage: value,
+        sortBy: sortBy.value,
+    });
 }
 
 function unsetFilterStartTime() {
@@ -381,6 +392,14 @@ function getFileName() {
 const load = () => {
     itemsPerPage.value = generalStore.walkPerPage;
     currentPage.value = generalStore.walkCurrentPage;
+
+    loadItems({
+        page: currentPage.value,
+        itemsPerPage: itemsPerPage.value,
+        sortBy: sortBy.value,
+    });
+
+    isInitializing.value = false;
 }
 load()
 </script>
