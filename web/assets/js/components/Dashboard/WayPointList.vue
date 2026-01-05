@@ -171,10 +171,11 @@
                     data-test="filter-conceptOfDay-walk"
                     :is-loading="isLoading"
                     :suggestions="conceptOfDaySuggestions"
+                    :hide-no-data="true"
                 />
             </v-col>
             <v-col
-                v-if="effectiveWayPointTableFiltersPreferences['walkName']"
+                v-if="effectiveWayPointTableFiltersPreferences['walk.name']"
                 cols="12"
                 sm="6"
                 md="6"
@@ -334,6 +335,7 @@ import {
     useWalkStore,
 } from '@/js/stores';
 import {
+    type SuggestionItem,
     DateRangePicker,
     FilterComboboxField,
     FilterTextField,
@@ -441,19 +443,26 @@ const filter = computed(() => generalStore.getWayPointFilter);
 const defaultFilter = computed(() => generalStore.defaultWayPointFilter);
 const defaultDateRange = computed(() => generalStore.defaultWayPointFilter.visitedAt);
 
-const teamNames = computed<string[]>(() =>
-    allTeamNames.value.map((teamName) => teamName.teamName)
+const teamNames = computed<SuggestionItem[]>(() =>
+    allTeamNames.value.map((teamName) => ({
+        type: 'item',
+        title: teamName.teamName
+    }))
 );
 
-const walkNames = computed<string[]>(() =>
-    allWalkNames.value.map((walk) => walk.name)
+const walkNames = computed<SuggestionItem[]>(() =>
+    allWalkNames.value.map((walk) => ({
+        type: 'item',
+        title: walk.name
+    }))
 );
 
-const conceptOfDaySuggestions = computed<string[]>(() => {
+const conceptOfDaySuggestions = computed<SuggestionItem[]>(() => {
     const all = allConceptOfDaySuggestions.value.flatMap((walk) =>
         Object.values(walk.conceptOfDay ?? {})
     );
-    return [...new Set(all)].sort((a, b) => a.localeCompare(b));
+    const uniqueSorted = [...new Set(all)].sort((a, b) => a.localeCompare(b));
+    return uniqueSorted.map((title) => ({ type: 'item', title }));
 });
 
 const hasDisabledTag = computed<boolean>(() =>

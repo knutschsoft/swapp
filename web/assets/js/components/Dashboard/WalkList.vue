@@ -61,6 +61,7 @@
                     data-test="filter-team-walk"
                     :is-loading="isLoading"
                     :suggestions="teamNames"
+                    :hide-no-data="true"
                 />
             </v-col>
             <v-col
@@ -77,6 +78,7 @@
                     data-test="filter-team-guest-names"
                     :is-loading="isLoading"
                     :suggestions="guestNames"
+                    :hide-no-data="true"
                 />
             </v-col>
             <v-col
@@ -220,7 +222,7 @@ import WalkAPI from '../../api/walk.js';
 import WalkRating from '../Walk/WalkRating.vue';
 import { useClientStore, useGeneralStore, useUserPreferencesStore } from '@/js/stores';
 import { formatDateTimeNoSecondsWithDayOfWeek, formatTime, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText } from "@/js/utils";
-import { FilterBooleanField, FilterComboboxField, FilterTextField, TextareaField } from "@/js/components/Common";
+import { FilterBooleanField, FilterComboboxField, FilterTextField, type SuggestionItem} from "@/js/components/Common";
 import { DateRangePicker } from "@/js/components/Common";
 import axios, {AxiosError} from "axios";
 
@@ -270,8 +272,14 @@ const filter = computed(() => generalStore.getWalkFilter);
 const defaultFilter = computed(() => generalStore.defaultWalkFilter);
 const defaultDateRange = computed(() => generalStore.defaultWalkFilter.startTime);
 
-const teamNames = computed(() => allTeamNames.value.map(t => t.teamName));
-const guestNames = computed(() => allGuestNames.value.map(g => g.name));
+const teamNames = computed<SuggestionItem[]>(() => allTeamNames.value.map(t => ({
+    type: 'item',
+    title: t.teamName
+})));
+const guestNames = computed<SuggestionItem[]>(() => allGuestNames.value.map(g => ({
+    type: 'item',
+    title: g.name
+})));
 const hasFilter = computed(() => JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value));
 
 watch([filter, effectiveWalkTableFiltersPreferences], () => {
