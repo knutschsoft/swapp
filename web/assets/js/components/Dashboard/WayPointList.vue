@@ -545,7 +545,7 @@ async function loadItems({ page, itemsPerPage, sortBy }: LoadItemsOptions) {
         data[`order[${val.key}]`] = val.order;
     });
 
-    if (effectiveWayPointTableFiltersPreferences.value['visitedAt'] && filter.value.visitedAt[0] && filter.value.visitedAt[1]) {
+    if (effectiveWayPointTableFiltersPreferences.value['visitedAt'] && filter.value.visitedAt && filter.value.visitedAt[0] && filter.value.visitedAt[1]) {
         data['visitedAt[after]'] = dayjs(filter.value.visitedAt[0])
             .startOf('day')
             .toISOString();

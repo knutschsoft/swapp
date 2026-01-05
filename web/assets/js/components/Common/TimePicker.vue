@@ -8,6 +8,7 @@ interface Props {
     placeholder: string;
     dataTest?: string;
     enableTimePicker?: boolean;
+    clearable?: boolean;
     isLoading?: boolean;
     isFilter?: boolean;
 }
@@ -25,6 +26,7 @@ interface UIOptions {
 const props = withDefaults(defineProps<Props>(), {
     placeholder: 'Zeitraum wählen...',
     isFilter: false,
+    clearable: false,
 });
 
 const activeUi = ref<UIOptions>({
@@ -60,7 +62,6 @@ const multiCalendars = computed(() => {
         :week-numbers="{ type: 'iso' }"
         :placeholder="placeholder"
         :multi-calendars="multiCalendars"
-        clearable
         time-picker
         :minutes-increment="5"
         :start-time="dateRange"
@@ -68,9 +69,7 @@ const multiCalendars = computed(() => {
         :data-test="dataTest"
         :text-input="isGreaterThanMd.value"
         auto-apply
-        locale="de"
-        :format-locale="de"
-        :enable-time-picker="enableTimePicker"
+        :locale="de"
         cancel-text="abbrechen"
         select-text="auswählen"
         :teleport="true"
@@ -78,7 +77,7 @@ const multiCalendars = computed(() => {
         :action-row="{ showPreview: true }"
         :loading="isLoading"
         @cleared="$emit('cleared')"
-        autocomplete="off"
+        :input-attrs="{autocomplete: 'off', clearable: clearable}"
     >
 <!--        <template #left-sidebar>-->
 <!--        </template>-->

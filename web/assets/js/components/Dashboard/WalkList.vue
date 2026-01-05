@@ -344,7 +344,7 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
         data[`order[${val.key}]`] = val.order;
     });
 
-    if (effectiveWalkTableFiltersPreferences.value['startTime'] && filter.value.startTime[0] && filter.value.startTime[1]) {
+    if (effectiveWalkTableFiltersPreferences.value['startTime'] && filter.value.startTime && filter.value.startTime[0] && filter.value.startTime[1]) {
         data['startTime[after]'] = dayjs(filter.value.startTime[0]).startOf('day').toISOString();
         data['startTime[before]'] = dayjs(filter.value.startTime[1]).endOf('day').toISOString();
     }

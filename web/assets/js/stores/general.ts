@@ -6,11 +6,11 @@ import type {
     Walk, WayPoint,
 } from '@/js/model';
 
-type DateRange = {
-    startDate: Dayjs | null,
-    endDate: Dayjs | null,
-}
-type MonthRange = { month: number; year: number }[] | null
+type DateRange = [
+    string | null,
+    string | null,
+] | null
+export type MonthRange = { month: number; year: number }[] | null
 
 type WalkFilter = {
     isResubmission: string | boolean,
@@ -52,10 +52,7 @@ type State = {
     wayPointFilterResult: RemovableRef<WayPoint[]>
 }
 
-const startTime: DateRange = {
-    startDate: null,
-    endDate: null,
-};
+const startTime: DateRange = null;
 let now = dayjs();
 const defaultClientFilter = null
 const defaultActiveUsersDateRange: MonthRange = [

@@ -5,8 +5,8 @@ import { breakpointsVuetifyV3, useBreakpoints } from '@vueuse/core'
 import dayjs from "dayjs";
 
 interface Props {
-    modelValue: any;
-    placeholder: string;
+    modelValue: [string, string] | null;
+    placeholder?: string;
     dataTest?: string;
     enableTimePicker?: boolean;
     isLoading?: boolean;
@@ -107,6 +107,7 @@ const multiCalendars = computed(() => {
 <template>
     <VueDatePicker
         v-model="dateRange"
+        model-type="iso"
         :week-numbers="{ type: 'iso' }"
         :placeholder="placeholder"
         :multi-calendars="multiCalendars"
@@ -114,7 +115,7 @@ const multiCalendars = computed(() => {
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"
         auto-apply
-        locale="de"
+        :locale="de"
         :time-config="{ enableTimePicker: enableTimePicker }"
         :formats="{input: 'dd.LL.y'}"
         cancel-text="abbrechen"

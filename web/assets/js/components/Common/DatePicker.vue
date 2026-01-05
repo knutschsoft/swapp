@@ -10,6 +10,7 @@ interface Props {
     enableTimePicker?: boolean;
     isLoading?: boolean;
     isFilter?: boolean;
+    clearable?: boolean;
 }
 type CustomClass = string | string[];
 
@@ -24,6 +25,7 @@ interface UIOptions {
 const props = withDefaults(defineProps<Props>(), {
     placeholder: 'Datum wählen...',
     isFilter: false,
+    clearable: false,
 });
 const emit = defineEmits(["update:modelValue", "cleared"]);
 
@@ -58,15 +60,13 @@ const multiCalendars = computed(() => {
         :week-numbers="{ type: 'iso' }"
         :placeholder="placeholder"
         :multi-calendars="multiCalendars"
-        clearable
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"
         :text-input="isGreaterThanMd.value"
         auto-apply
-        locale="de"
-        :format-locale="de"
-        :enable-time-picker="enableTimePicker"
-        format="EEEE, dd.LL.y"
+        :locale="de"
+        :time-config="{ enableTimePicker: enableTimePicker }"
+        :formats="{input: 'EEEE, dd.LL.y'}"
         cancel-text="abbrechen"
         select-text="auswählen"
         :teleport="true"
@@ -74,7 +74,7 @@ const multiCalendars = computed(() => {
         :action-row="{ showPreview: true }"
         :loading="isLoading"
         @cleared="$emit('cleared')"
-        autocomplete="off"
+        :input-attrs="{autocomplete: 'off', clearable: clearable}"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />

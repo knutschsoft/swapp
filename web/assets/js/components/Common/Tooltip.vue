@@ -4,7 +4,7 @@ import {nl2br} from "@/js/utils";
 
 const props = withDefaults(defineProps<{
     text: string;
-    nl2br: boolean;
+    nl2br?: boolean;
 }>(), {
     nl2br: false
 });
@@ -21,18 +21,18 @@ const isSingleLine = computed(() => displayText.value.split('\n').length === 1);
         location="bottom"
         max-width="600"
     >
-        <template v-slot:activator="{ props }">
+        <template #activator="{ props: activatorProps }">
             <div
                 :class="{
                   'text-clamp-4': !isSingleLine,
                   'text-truncate': isSingleLine,
                   'mw-25': true
                 }"
-                v-bind="props"
+                v-bind="activatorProps"
                 v-html="nl2br ? nl2brText : displayText"
             />
         </template>
-        <div class="" v-bind="props" v-html="nl2br ? nl2brText : displayText" />
+        <div class="" v-html="nl2br ? nl2brText : displayText" />
     </v-tooltip>
 </template>
 

@@ -41,7 +41,6 @@ const value = computed({
 const errorMessages = computed(() => {
     if (!props.error) return []
 
-    return []
     try {
         return getViolationsFeedback(props.violationFields, props.error)
     } catch (e) {
@@ -81,7 +80,7 @@ const errorMessages = computed(() => {
         :hide-no-data="hideNoData"
         v-model:search="suggestion"
     >
-        <template v-slot:no-data>
+        <template #no-data>
             <v-list-item density="compact">
                 <v-list-item-title>
                     Füge "<strong>{{ suggestion }}</strong>" hinzu.

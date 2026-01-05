@@ -243,8 +243,13 @@ function getAdditionalUserInfo(user: User) {
                 allow-overflow
                 width="400"
             >
-                <template v-slot:activator="{ props }">
-                    <v-btn data-test="nav-user-item" variant="text" v-bind="props" class="text-transform-none" @click="">
+                <template #activator="{ props }">
+                    <v-btn
+                        v-bind="props"
+                        data-test="nav-user-item"
+                        variant="text"
+                        class="text-transform-none"
+                    >
                         <v-icon>mdi-account</v-icon>
                         <span v-if="isAuthenticated" class="d-none d-sm-block">{{ currentUser?.username }}</span>
                     </v-btn>
@@ -285,21 +290,21 @@ function getAdditionalUserInfo(user: User) {
                     >
                         <v-list-item-title>
                             Einstellungen
-                            <v-dialog v-model="showUserPreferencesForm" fullscreen transition="dialog-bottom-transition">
-                                <v-card>
-                                    <v-toolbar flat>
-                                        <v-btn icon @click="showUserPreferencesForm = false"><v-icon>mdi-close</v-icon></v-btn>
-                                        <v-toolbar-title>Einstellungen</v-toolbar-title>
-                                        <v-spacer />
-                                    </v-toolbar>
-
-                                    <v-card-text class="pa-6">
-                                        <UserPreferencesForm />
-                                    </v-card-text>
-                                </v-card>
-                            </v-dialog>
                         </v-list-item-title>
                     </v-list-item>
+                    <v-dialog v-model="showUserPreferencesForm" fullscreen transition="dialog-bottom-transition">
+                        <v-card>
+                            <v-toolbar flat>
+                                <v-btn icon @click="showUserPreferencesForm = false"><v-icon>mdi-close</v-icon></v-btn>
+                                <v-toolbar-title>Einstellungen</v-toolbar-title>
+                                <v-spacer />
+                            </v-toolbar>
+
+                            <v-card-text class="pa-6">
+                                <UserPreferencesForm />
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
                     <v-list-item
                         v-if="isUserSwitched"
                         data-test="exit-switch-user"

@@ -3,14 +3,17 @@ import { defineProps, computed, ref } from "vue";
 import dayjs from 'dayjs';
 import { de } from 'date-fns/locale'
 import {breakpointsVuetifyV3, useBreakpoints} from "@vueuse/core";
+import type {MonthRange} from "@/js/stores";
 
 interface Props {
-    modelValue: any;
+    modelValue: MonthRange;
+    defaultDateRange?: MonthRange;
     dataTest?: string;
     isLoading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    defaultDateRange: null,
     dataTest: '',
     isLoading: false,
 });
@@ -35,7 +38,7 @@ const activeUi = ref<UIOptions>({
     input: 'active-bg text-primary',
 });
 
-const emit = defineEmits(["update:modelValue", "cleared"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const dateRange = computed({
     get: () => props.modelValue,
@@ -111,25 +114,24 @@ const multiCalendars = computed(() => {
         :week-numbers="{ type: 'iso' }"
         placeholder="Zeitraum wählen..."
         :multi-calendars="multiCalendars"
-        clearable
+        :input-attrs="{autocomplete: 'off', clearable: dateRange !== defaultDateRange}"
         month-picker
         range
         :ui="dateRange ? activeUi : {}"
         :data-test="dataTest"
         auto-apply
         :state="true"
-        locale="de"
-        :format-locale="de"
-        format="LL/yy"
+        :locale="de"
+        :formats="{input: 'LL/yy'}"
         cancel-text="abbrechen"
         select-text="auswählen"
         :teleport="true"
         :action-row="{ showPreview: true }"
         :loading="isLoading"
-        @cleared="$emit('cleared')"
+        @cleared="dateRange = defaultDateRange"
         autocomplete="off"
         :month-change-on-scroll="false"
-        :preset-dates="isGreaterThanMd.value ? presetDates : false"
+        :preset-dates="isGreaterThanMd.value ? presetDates : []"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />

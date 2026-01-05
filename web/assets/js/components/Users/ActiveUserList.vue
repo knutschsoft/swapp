@@ -10,7 +10,7 @@
                     v-model="dateRange"
                     data-test="termin-am-filter"
                     :is-loading="isLoadingEntries.length > 0"
-                    @cleared="resetDefaultDateRange"
+                    :default-date-range="defaultDateRange"
                 />
             </v-col>
             <v-col
@@ -48,7 +48,7 @@
             :options.sync="deprecatedOptions"
             :no-results-text="noItemsText"
         >
-            <template v-slot:item.user="{item}">
+            <template #item.user="{item}">
                 <span
                     :class="{ 'text-muted': !item.user.isEnabled }"
                     :title="!item.user.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
@@ -69,7 +69,7 @@
                     {{ clientFormatter(item.user.client) }}
                 </small>
             </template>
-            <template v-for="slot in valueSlots" v-slot:[`item.${slot.key}`]="{item}">
+            <template v-for="slot in valueSlots" #[`item.${slot.key}`]="{item}">
                 <v-icon
                     v-if="isLoadingEntries.includes(slot.key)"
                     class="text-muted"
@@ -178,7 +178,7 @@ export default {
         valueSlots() {
             let headers = [];
 
-            if (!this.dateRange?.length) {
+            if (this.dateRange[0] !== null && this.dateRange[1] === null) {
                 return headers
             }
             let start = dayjs().month(this.dateRange[0].month).year(this.dateRange[0].year).startOf('month');
@@ -253,11 +253,8 @@ export default {
 
             return sum;
         },
-        resetDefaultDateRange() {
-            this.dateRange = this.defaultDateRange;
-        },
         async loadItems() {
-            if (!this.dateRange?.length) {
+            if (this.dateRange[0] !== null && this.dateRange[1] === null) {
                 return
             }
             let start = dayjs().month(this.dateRange[0].month).year(this.dateRange[0].year).startOf('month');

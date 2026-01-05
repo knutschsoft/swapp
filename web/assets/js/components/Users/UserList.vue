@@ -42,7 +42,7 @@
             small
             striped
         >
-            <template v-slot:item.username="{item}">
+            <template #item.username="{item}">
                 <span
                     :class="{ 'text-muted': !item.isEnabled }"
                     :title="!item.isEnabled ? 'Account ist aktuell nicht aktiviert.' : ''"
@@ -57,14 +57,14 @@
                     </v-icon>
                 </span>
             </template>
-            <template v-slot:item.teams="{item}">
+            <template #item.teams="{item}">
                 <template v-if="item.teams.length === 0">-</template>
                 {{ item.teams.map(team => team.name).join(', ') }}
             </template>
-            <template v-slot:item.roles="{item}">
+            <template #item.roles="{item}">
                 {{ rolesFormatter(item.roles)}}
             </template>
-            <template v-slot:item.isEnabled="{item}">
+            <template #item.isEnabled="{item}">
                 <v-progress-circular
                     v-if="isLoadingToggleUserState(item['@id'])"
                     indeterminate
@@ -90,25 +90,25 @@
                     </v-icon>
                 </div>
             </template>
-            <template v-slot:item.client="{item}">
+            <template #item.client="{item}">
                 {{ clientFormatter(item.client) }}
             </template>
-            <template v-slot:item.createdAt="{item}">
+            <template #item.createdAt="{item}">
                 {{ formatDateTime(item.createdAt) }}
             </template>
-            <template v-slot:item.updatedAt="{item}">
+            <template #item.updatedAt="{item}">
                 {{ item.updatedAt ? formatDateTime(item.updatedAt) : 'nie' }}
             </template>
-            <template v-slot:item.lastLoginAt="{item}">
+            <template #item.lastLoginAt="{item}">
                 {{ item.lastLoginAt ? formatDateTime(item.lastLoginAt) : 'nie' }}
             </template>
-            <template v-slot:item.actions="{item}">
+            <template #item.actions="{item}">
                 <div class="d-flex justify-content-around">
                     <v-menu
                         location="bottom end"
                         eager
                     >
-                        <template v-slot:activator="{ props }">
+                        <template #activator="{ props }">
                             <v-btn
                                 color="secondary"
                                 v-bind="props"

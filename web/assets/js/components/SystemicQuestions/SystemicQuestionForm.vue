@@ -23,6 +23,8 @@
                 v-model="client"
                 :is-loading="isLoading"
                 :disabled="isLoading"
+                :clearable="false"
+                class="mb-4"
             />
         </template>
         <v-btn
