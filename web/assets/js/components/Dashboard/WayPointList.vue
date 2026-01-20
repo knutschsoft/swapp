@@ -485,22 +485,24 @@ const walkNames = computed<SuggestionItem[]>(() => {
 })
 
 const conceptOfDaySuggestions = computed<SuggestionItem[]>(() => {
-    // 1. Tageskonzepte aus allen Teams sammeln (dedupliziert & sortiert)
     const teamConcepts = Array.from(
         new Set(
             teams.value.flatMap(team => team.conceptOfDaySuggestions ?? [])
         )
     ).sort((a, b) => a.localeCompare(b))
 
-    // 2. Alle bekannten Tageskonzepte
-    const allConcepts = allConceptOfDaySuggestions.value.flatMap(walk =>
-        Object.values(walk.conceptOfDay ?? {})
+    const teamConceptSet = new Set(teamConcepts)
+
+    const otherConcepts = Array.from(
+        new Set(
+            allConceptOfDaySuggestions.value.flatMap(walk =>
+                Object.values(walk.conceptOfDay ?? {})
+            )
+        )
     )
+        .filter(title => !teamConceptSet.has(title))
+        .sort((a, b) => a.localeCompare(b))
 
-    // 3. Duplikate zu Team-Tageskonzepten entfernen
-    const filteredConcepts = allConcepts.filter(title => !teamConcepts.includes(title))
-
-    // 4. Suggestions zusammenbauen
     const items: SuggestionItem[] = []
 
     if (teamConcepts.length) {
@@ -512,7 +514,7 @@ const conceptOfDaySuggestions = computed<SuggestionItem[]>(() => {
     }
 
     items.push(
-        ...filteredConcepts.map(title => ({ type: 'item', title }))
+        ...otherConcepts.map(title => ({ type: 'item', title }))
     )
 
     return items
@@ -762,13 +764,13 @@ onBeforeMount(async () => {
     tags.value = tagResult.data['member'];
     tagStore.fetchTags();
 
-    const allTeamNamesResult = await WalkAPI.findAllTeamNames();
+    const allTeamNamesResult = await WalkAPI.findAllTeamNamesWithWayPoints();
     allTeamNames.value = allTeamNamesResult.data['member'];
 
-    const allWalkNamesResult = await WalkAPI.findAllWalkNames();
+    const allWalkNamesResult = await WalkAPI.findAllWalkNamesWithWayPoints();
     allWalkNames.value = allWalkNamesResult.data['member'];
 
-    const allConceptOfDaySuggestionsResult = await WalkAPI.findAllConceptOfDay();
+    const allConceptOfDaySuggestionsResult = await WalkAPI.findAllConceptOfDayWithWayPoints();
     allConceptOfDaySuggestions.value = allConceptOfDaySuggestionsResult.data['member'];
 })
 

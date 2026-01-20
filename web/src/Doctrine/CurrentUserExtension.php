@@ -113,11 +113,9 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
             }
 
             if (\is_array($output) && WalkConceptOfDay::class === $output['class']) {
-                // only walks with wayPoints
-                $queryBuilder->innerJoin(\sprintf('%s.wayPoints', $rootAlias), 'wp');
-
+                $queryBuilder->select(\sprintf('%s.conceptOfDay', $rootAlias));
+                $queryBuilder->groupBy(\sprintf('%s.conceptOfDay', $rootAlias));
                 $queryBuilder->andWhere(\sprintf('LENGTH(%s.conceptOfDay) > 1', $rootAlias));
-                $queryBuilder->groupBy(\sprintf('%s.id', $rootAlias));
                 $queryBuilder->orderBy(\sprintf('%s.conceptOfDay', $rootAlias));
             }
         }

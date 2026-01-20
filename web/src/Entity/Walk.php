@@ -6,6 +6,7 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -134,6 +135,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['id', 'name', 'rating', 'teamName', 'startTime', 'endTime', 'isResubmission'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['isResubmission', 'isUnfinished'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['startTime', 'endTime'])]
+#[ApiFilter(filterClass: ExistsFilter::class, properties: ['wayPoints'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: [
     'name' => SearchFilterInterface::STRATEGY_PARTIAL,
     'teamName' => SearchFilterInterface::STRATEGY_PARTIAL,

@@ -65,16 +65,28 @@ export default {
         );
     },
     findAllTeamNames() {
-        return apiClient.get("/api/walks/team_names?itemsPerPage=1000");
+        return apiClient.get("/api/walks/team_names?itemsPerPage=1000&exists[wayPoints]=1");
+    },
+    findAllTeamNamesWithWayPoints() {
+        return apiClient.get("/api/walks/team_names?itemsPerPage=1000&exists[wayPoints]=1");
     },
     findAllWalkNames() {
         return apiClient.get("/api/walks/walk_names?itemsPerPage=1000");
     },
+    findAllWalkNamesWithWayPoints() {
+        return apiClient.get("/api/walks/walk_names?itemsPerPage=1000&exists[wayPoints]=1");
+    },
     findAllConceptOfDay() {
         return apiClient.get("/api/walks/concepts_of_day?itemsPerPage=1000");
     },
+    findAllConceptOfDayWithWayPoints() {
+        return apiClient.get("/api/walks/concepts_of_day?itemsPerPage=1000&exists[wayPoints]=1");
+    },
+    findAllGuestNamesWithWayPoints() {
+        return apiClient.get("/api/walks/guest_names?itemsPerPage=1000&exists[wayPoints]=1");
+    },
     findAllGuestNames() {
-        return apiClient.get("/api/walks/guest_names");
+        return apiClient.get("/api/walks/guest_names?itemsPerPage=1000");
     },
     findAllUnfinishedWalks(teams) {
         return this.findOld({

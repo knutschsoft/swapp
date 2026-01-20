@@ -25,6 +25,9 @@ Feature: Testing walkNames resource
             | Spaziergang | CA       |
             | Gogo        | Westhang |
             | Gamescon    | Gamers   |
+        Given the following way points exists:
+            | locationName | walkName    |
+            | Assieck      | Spaziergang |
 
     @api @walkNames
     Scenario: I can request /api/walks/walk_names as a not authenticated user and an auth error will occur
@@ -34,6 +37,21 @@ Feature: Testing walkNames resource
 #    And print last JSON response
         And the JSON nodes should be equal to:
             | code | 401 |
+
+    @api @walkNames
+    Scenario: I can request /api/walks/walk_names as authenticated user and get a restricted result
+        Given I am authenticated against api as "karl@gmx.de"
+        When I send a GET request to "/api/walks/walk_names?exists[wayPoints]=false"
+        Then the response should be in JSON
+#        And print last JSON response
+        And the JSON nodes should be equal to:
+            | totalItems | 1 |
+        Given I am authenticated against api as "karl@gmx.de"
+        When I send a GET request to "/api/walks/walk_names?exists[wayPoints]=true"
+        Then the response should be in JSON
+#        And print last JSON response
+        And the JSON nodes should be equal to:
+            | totalItems | 1 |
 
     @api @walkNames
     Scenario: I can request /api/walks/walk_names as authenticated user and get a restricted result
