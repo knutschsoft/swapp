@@ -42,7 +42,7 @@
             >
                 <filter-text-field
                     v-model="filter.name"
-                    label="Name"
+                    label="Rundenname"
                     data-test="filter-name-walk"
                     :isLoading="isLoading"
                 />
@@ -452,9 +452,10 @@ function getFileName() {
 
     return title;
 }
-const load = () => {
+const load = async () => {
     itemsPerPage.value = generalStore.walkPerPage;
     currentPage.value = generalStore.walkCurrentPage;
+    await userPreferencesStore.load();
 
     loadItems({
         page: currentPage.value,

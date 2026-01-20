@@ -2,6 +2,7 @@
 import {computed, ref} from "vue";
 import {Team, Walk} from "../../../model";
 import {getViolationsFeedback} from "../../../utils";
+import {useDisplay} from "vuetify";
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
     error: false,
     isLoading: false,
 });
+const comboRef = ref<InstanceType<typeof VCombobox> | null>(null)
+const { mobile } = useDisplay()
 const guestNameSearch = ref<string>('');
 const value = computed({
   get: () => props.modelValue,
@@ -53,10 +56,14 @@ const errorMessages = computed(() => {
 
     return getViolationsFeedback(['guestNames'], props.error);
 })
+function closeCombobox () {
+    comboRef.value?.blur()
+}
 </script>
 
 <template>
     <v-combobox
+        ref="comboRef"
         v-model="value"
         :items="guestNames"
         chips
@@ -84,6 +91,19 @@ const errorMessages = computed(() => {
                 <v-list-item-title>
                     Füge "<strong>{{ guestNameSearch }}</strong>" hinzu.
                 </v-list-item-title>
+            </v-list-item>
+        </template>
+        <template v-if="mobile" #append-item>
+            <v-divider />
+            <v-list-item class="px-2">
+                <v-btn
+                    block
+                    variant="text"
+                    size="large"
+                    @click="closeCombobox"
+                >
+                    Fertig
+                </v-btn>
             </v-list-item>
         </template>
     </v-combobox>
