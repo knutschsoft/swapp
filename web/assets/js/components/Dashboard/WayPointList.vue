@@ -184,7 +184,7 @@
             >
                 <filter-combobox-field
                     v-model="filter.walkName"
-                    label="Runde"
+                    label="Rundenname"
                     data-test="filter-name-walk"
                     :is-loading="isLoading"
                     :suggestions="walkNames"
@@ -429,7 +429,7 @@ const headers = computed<Header[]>(() => {
         { value: 'wayPointTags', title: 'Tags', sortable: false },
         { value: 'walk.teamName', title: 'Team', sortable: true },
         { value: 'visitedAt', title: 'Ankunft' },
-        { value: 'walk.name', title: 'Runde', sortable: true },
+        { value: 'walk.name', title: 'Rundenname', sortable: true },
         { value: 'actions', title: 'Aktionen', sortable: false }
     );
 
@@ -471,7 +471,7 @@ const walkNames = computed<SuggestionItem[]>(() => {
 
     if (teamWalkNames.length) {
         items.push(
-            { type: 'divider', text: 'Rundennamen aus Teams' },
+            { type: 'divider', text: 'Rundennamen aus allen Teams' },
             ...teamWalkNames.map(name => ({ type: 'item', title: name })),
             { type: 'divider', text: 'Weitere verwendete Rundennamen' },
         )
@@ -485,12 +485,38 @@ const walkNames = computed<SuggestionItem[]>(() => {
 })
 
 const conceptOfDaySuggestions = computed<SuggestionItem[]>(() => {
-    const all = allConceptOfDaySuggestions.value.flatMap((walk) =>
+    // 1. Tageskonzepte aus allen Teams sammeln (dedupliziert & sortiert)
+    const teamConcepts = Array.from(
+        new Set(
+            teams.value.flatMap(team => team.conceptOfDaySuggestions ?? [])
+        )
+    ).sort((a, b) => a.localeCompare(b))
+
+    // 2. Alle bekannten Tageskonzepte
+    const allConcepts = allConceptOfDaySuggestions.value.flatMap(walk =>
         Object.values(walk.conceptOfDay ?? {})
-    );
-    const uniqueSorted = [...new Set(all)].sort((a, b) => a.localeCompare(b));
-    return uniqueSorted.map((title) => ({ type: 'item', title }));
-});
+    )
+
+    // 3. Duplikate zu Team-Tageskonzepten entfernen
+    const filteredConcepts = allConcepts.filter(title => !teamConcepts.includes(title))
+
+    // 4. Suggestions zusammenbauen
+    const items: SuggestionItem[] = []
+
+    if (teamConcepts.length) {
+        items.push(
+            { type: 'divider', text: 'Tageskonzepte aus allen Teams' },
+            ...teamConcepts.map(title => ({ type: 'item', title })),
+            { type: 'divider', text: 'Weitere verwendete Tageskonzepte' }
+        )
+    }
+
+    items.push(
+        ...filteredConcepts.map(title => ({ type: 'item', title }))
+    )
+
+    return items
+})
 
 const hasDisabledTag = computed<boolean>(() =>
     Boolean(tags.value.find((tag) => !tag.isEnabled))

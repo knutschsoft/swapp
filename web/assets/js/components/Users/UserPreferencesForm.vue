@@ -24,7 +24,7 @@ const wpFilters: KeyLabel[] = [
     { key: 'locationName', label: 'Ort' },
     { key: 'walk.teamName', label: 'Teamname' },
     { key: 'walk.conceptOfDay', label: 'Tageskonzept' },
-    { key: 'walk.name', label: 'Runde' },
+    { key: 'walk.name', label: 'Rundenname' },
     { key: 'visitedAt', label: 'Ankunft' },
 ]
 
@@ -39,20 +39,20 @@ const wpColumns: KeyLabel[] = [
     { key: 'wayPointTags', label: 'Tags' },
     { key: 'walk.teamName', label: 'Team' },
     { key: 'visitedAt', label: 'Ankunft' },
-    { key: 'walk.name', label: 'Runde' },
+    { key: 'walk.name', label: 'Rundenname' },
 ]
 
 const walkFilters: KeyLabel[] = [
     { key: 'isResubmission', label: 'Wiedervorlage' },
     { key: 'isUnfinished', label: 'Beendet' },
-    { key: 'name', label: 'Name' },
+    { key: 'name', label: 'Rundename' },
     { key: 'teamName', label: 'Teamname' },
     { key: 'guestNames', label: 'Gäste' },
     { key: 'startTime', label: 'Rundenbeginn' },
 ]
 
 const walkColumns: KeyLabel[] = [
-    { key: 'name', label: 'Name' },
+    { key: 'name', label: 'Rundenname' },
     { key: 'rating', label: 'Bewertung' },
     { key: 'startTime', label: 'Rundenbeginn' },
     { key: 'endTime', label: 'Rundenende' },
