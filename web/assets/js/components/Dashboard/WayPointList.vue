@@ -331,6 +331,7 @@ import TagAPI from '../../api/tag.js';
 import {
     useGeneralStore,
     useTagStore,
+    useTeamStore,
     useUserPreferencesStore,
     useWalkStore,
 } from '@/js/stores';
@@ -349,6 +350,7 @@ import {
     noItemsText,
 } from '@/js/utils';
 import axios, {AxiosError} from "axios";
+import {Team} from "@/js/model.ts";
 
 interface Header {
     value: string;
@@ -374,6 +376,7 @@ const emit = defineEmits<{
 
 const generalStore = useGeneralStore();
 const tagStore = useTagStore();
+const teamStore = useTeamStore();
 const userPreferencesStore = useUserPreferencesStore();
 const walkStore = useWalkStore();
 
@@ -443,6 +446,7 @@ const filter = computed(() => generalStore.getWayPointFilter);
 const defaultFilter = computed(() => generalStore.defaultWayPointFilter);
 const defaultDateRange = computed(() => generalStore.defaultWayPointFilter.visitedAt);
 
+const teams = computed<Team[]>(() => teamStore.getTeams)
 const teamNames = computed<SuggestionItem[]>(() =>
     allTeamNames.value.map((teamName) => ({
         type: 'item',
@@ -450,12 +454,35 @@ const teamNames = computed<SuggestionItem[]>(() =>
     }))
 );
 
-const walkNames = computed<SuggestionItem[]>(() =>
-    allWalkNames.value.map((walk) => ({
-        type: 'item',
-        title: walk.name
-    }))
-);
+const walkNames = computed<SuggestionItem[]>(() => {
+    const teamWalkNames = Array.from(
+        new Set(
+            teams.value.flatMap(team => team.walkNames ?? [])
+        )
+    ).sort()
+
+    const otherWalkNames = allWalkNames.value.map(w => w.name)
+
+    const filteredOtherWalkNames = otherWalkNames.filter(
+        name => !teamWalkNames.includes(name)
+    )
+
+    const items: SuggestionItem[] = []
+
+    if (teamWalkNames.length) {
+        items.push(
+            { type: 'divider', text: 'Rundennamen aus Teams' },
+            ...teamWalkNames.map(name => ({ type: 'item', title: name })),
+            { type: 'divider', text: 'Weitere verwendete Rundennamen' },
+        )
+    }
+
+    items.push(
+        ...filteredOtherWalkNames.map(name => ({ type: 'item', title: name }))
+    )
+
+    return items
+})
 
 const conceptOfDaySuggestions = computed<SuggestionItem[]>(() => {
     const all = allConceptOfDaySuggestions.value.flatMap((walk) =>
