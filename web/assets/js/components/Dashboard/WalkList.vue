@@ -297,7 +297,7 @@ const guestNames = computed<SuggestionItem[]>(() => {
         items.push(
             { type: 'divider', text: 'Teilnehmende aus allen Teams' },
             ...teamGuestNames.map(name => ({ type: 'item', title: name })),
-            { type: 'divider', text: 'Weitere bereits verwendete Teilnehmende' },
+            { type: 'divider', text: 'Weitere verwendete Teilnehmende' },
         )
     }
 
@@ -311,10 +311,35 @@ const teamNames = computed<SuggestionItem[]>(() => allTeamNames.value.map(t => (
     type: 'item',
     title: t.teamName
 })));
-const walkNames = computed<SuggestionItem[]>(() => allWalkNames.value.map(t => ({
-    type: 'item',
-    title: t.name
-})));
+const walkNames = computed<SuggestionItem[]>(() => {
+    const teamWalkNames = Array.from(
+        new Set(
+            teams.value.flatMap(team => team.walkNames ?? [])
+        )
+    ).sort()
+
+    const otherWalkNames = allWalkNames.value.map(w => w.name)
+
+    const filteredOtherWalkNames = otherWalkNames.filter(
+        name => !teamWalkNames.includes(name)
+    )
+
+    const items: SuggestionItem[] = []
+
+    if (teamWalkNames.length) {
+        items.push(
+            { type: 'divider', text: 'Rundennamen aus Teams' },
+            ...teamWalkNames.map(name => ({ type: 'item', title: name })),
+            { type: 'divider', text: 'Weitere verwendete Rundennamen' },
+        )
+    }
+
+    items.push(
+        ...filteredOtherWalkNames.map(name => ({ type: 'item', title: name }))
+    )
+
+    return items
+})
 const hasFilter = computed(() => JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value));
 
 watch([filter, effectiveWalkTableFiltersPreferences], () => {
