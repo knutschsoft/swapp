@@ -40,11 +40,13 @@
                 xl="2"
                 no-gutters
             >
-                <filter-text-field
+                <filter-combobox-field
                     v-model="filter.name"
                     label="Rundenname"
                     data-test="filter-name-walk"
-                    :isLoading="isLoading"
+                    :is-loading="isLoading"
+                    :suggestions="walkNames"
+                    :hide-no-data="true"
                 />
             </v-col>
             <v-col
@@ -58,7 +60,7 @@
                 <filter-combobox-field
                     v-model="filter.teamName"
                     label="Team"
-                    data-test="filter-team-walk"
+                    data-test="fil<ter-team-walk"
                     :is-loading="isLoading"
                     :suggestions="teamNames"
                     :hide-no-data="true"
@@ -238,6 +240,7 @@ let abortController: AbortController | null = null;
 let exportCtx: any = null;
 
 const allTeamNames = ref<any[]>([]);
+const allWalkNames = ref<any[]>([]);
 const allGuestNames = ref<any[]>([]);
 
 const totalItems = ref(0);
@@ -276,6 +279,10 @@ const teamNames = computed<SuggestionItem[]>(() => allTeamNames.value.map(t => (
     type: 'item',
     title: t.teamName
 })));
+const walkNames = computed<SuggestionItem[]>(() => allWalkNames.value.map(t => ({
+    type: 'item',
+    title: t.name
+})));
 const guestNames = computed<SuggestionItem[]>(() => allGuestNames.value.map(g => ({
     type: 'item',
     title: g.name
@@ -300,6 +307,8 @@ onMounted(async () => {
     allTeamNames.value = allTeams.data['member'];
     const allGuests = await WalkAPI.findAllGuestNames();
     allGuestNames.value = allGuests.data['member'];
+    const allNames = await WalkAPI.findAllWalkNames();
+    allWalkNames.value = allNames.data['member'];
 });
 
 async function getClientByIri(clientIri: string) {
@@ -330,6 +339,7 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
         itemsPerPage: options.itemsPerPage,
     };
     const filterMapping: Record<string, keyof typeof filter.value> = {
+        'name': 'name',
         'teamName': 'teamName',
         'guestNames': 'guestNames',
     }
@@ -337,9 +347,6 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
         if (effectiveWalkTableFiltersPreferences.value[requestKey]) {
             data[requestKey] = filter.value[filterKey];
         }
-    }
-    if (effectiveWalkTableFiltersPreferences.value['name']) {
-        data['name'] = filter.value.name !== '' ? filter.value.name : undefined;
     }
     if (effectiveWalkTableFiltersPreferences.value['isResubmission']) {
         data['isResubmission'] = filter.value.isResubmission !== 'null' ? filter.value.isResubmission : undefined;
@@ -439,7 +446,7 @@ function getFileName() {
     if (filter.value.guestNames.length) title = `WEITERE_TEILNEHMENDE_${filter.value.guestNames.join('_')}_${title}`;
     if (filter.value.isResubmission !== 'null') title = `WV_DB_${filter.value.isResubmission ? 'ja' : 'nein'}_${title}`;
     if (filter.value.isUnfinished !== 'null') title = `BEENDET_${!filter.value.isUnfinished ? 'nein' : 'ja'}_${title}`;
-    if (filter.value.name) title = `NAME_${filter.value.name}_${title}`;
+    if (filter.value.name.length) title = `NAME_${filter.value.name.join('_')}_${title}`;
 
     const startDate = dayjs(filter.value?.startTime[0]);
     const endDate = dayjs(filter.value?.startTime[1]);

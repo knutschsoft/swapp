@@ -15,7 +15,7 @@ export type MonthRange = { month: number; year: number }[] | null
 type WalkFilter = {
     isResubmission: string | boolean,
     isUnfinished: string | boolean,
-    name: string,
+    name: string[],
     teamName: string[],
     guestNames: string[],
     startTime: DateRange,
@@ -63,7 +63,7 @@ const defaultActiveUsersDateRange: MonthRange = [
 const defaultWalkFilter: WalkFilter = {
     isResubmission: 'null',
     isUnfinished: 'null',
-    name: '',
+    name: [],
     teamName: [],
     guestNames: [],
     startTime: startTime,
@@ -80,7 +80,7 @@ const defaultWayPointFilter: WayPointFilter = {
     showDisabledTags: false,
 };
 // change me every time a filter interface is changed
-const version = '0'
+const version = '1'
 
 export const useGeneralStore = defineStore("general", {
     state: (): State => ({
