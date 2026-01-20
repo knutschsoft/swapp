@@ -222,16 +222,18 @@ import { ref, computed, watch, onMounted, defineEmits } from 'vue';
 import dayjs from 'dayjs';
 import WalkAPI from '../../api/walk.js';
 import WalkRating from '../Walk/WalkRating.vue';
-import { useClientStore, useGeneralStore, useUserPreferencesStore } from '@/js/stores';
+import {useClientStore, useGeneralStore, useTeamStore, useUserPreferencesStore} from '@/js/stores';
 import { formatDateTimeNoSecondsWithDayOfWeek, formatTime, itemsPerPageOptions, itemsPerPageText, loadingText, noItemsText } from "@/js/utils";
 import { FilterBooleanField, FilterComboboxField, FilterTextField, type SuggestionItem} from "@/js/components/Common";
 import { DateRangePicker } from "@/js/components/Common";
 import axios, {AxiosError} from "axios";
+import {Team} from "@/js/model.ts";
 
 const emits = defineEmits(['refresh-total-walks']);
 
 const clientStore = useClientStore();
 const generalStore = useGeneralStore();
+const teamStore = useTeamStore();
 const userPreferencesStore = useUserPreferencesStore();
 
 const isLoading = ref(false);
@@ -275,6 +277,36 @@ const filter = computed(() => generalStore.getWalkFilter);
 const defaultFilter = computed(() => generalStore.defaultWalkFilter);
 const defaultDateRange = computed(() => generalStore.defaultWalkFilter.startTime);
 
+const teams = computed<Team[]>(() => teamStore.getTeams)
+const guestNames = computed<SuggestionItem[]>(() => {
+    const teamGuestNames = Array.from(
+        new Set(
+            teams.value.flatMap(team => team.guestNames ?? [])
+        )
+    ).sort()
+
+    const otherNames = allGuestNames.value.map(g => g.name)
+
+    const filteredOtherNames = otherNames.filter(
+        name => !teamGuestNames.includes(name)
+    )
+
+    const items: SuggestionItem[] = []
+
+    if (teamGuestNames.length) {
+        items.push(
+            { type: 'divider', text: 'Teilnehmende aus allen Teams' },
+            ...teamGuestNames.map(name => ({ type: 'item', title: name })),
+            { type: 'divider', text: 'Weitere bereits verwendete Teilnehmende' },
+        )
+    }
+
+    items.push(
+        ...filteredOtherNames.map(name => ({ type: 'item', title: name }))
+    )
+
+    return items
+})
 const teamNames = computed<SuggestionItem[]>(() => allTeamNames.value.map(t => ({
     type: 'item',
     title: t.teamName
@@ -282,10 +314,6 @@ const teamNames = computed<SuggestionItem[]>(() => allTeamNames.value.map(t => (
 const walkNames = computed<SuggestionItem[]>(() => allWalkNames.value.map(t => ({
     type: 'item',
     title: t.name
-})));
-const guestNames = computed<SuggestionItem[]>(() => allGuestNames.value.map(g => ({
-    type: 'item',
-    title: g.name
 })));
 const hasFilter = computed(() => JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value));
 
@@ -305,6 +333,7 @@ watch([filter, effectiveWalkTableFiltersPreferences], () => {
 onMounted(async () => {
     const allTeams = await WalkAPI.findAllTeamNames();
     allTeamNames.value = allTeams.data['member'];
+    await teamStore.fetchTeams();
     const allGuests = await WalkAPI.findAllGuestNames();
     allGuestNames.value = allGuests.data['member'];
     const allNames = await WalkAPI.findAllWalkNames();

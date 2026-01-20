@@ -89,8 +89,8 @@ const errorMessages = computed(() => {
             <v-list-item v-if="item.raw.type === 'item'" v-bind="props" density="compact">
             </v-list-item>
             <v-divider v-if="item.raw.type === 'divider'">
-                <template v-if="item.text">
-                    <v-list-item-title class="text-caption">{{ item.text }}</v-list-item-title>
+                <template v-if="item.raw.text">
+                    <v-list-item-title class="text-caption font-weight-medium">{{ item.raw.text }}</v-list-item-title>
                 </template>
             </v-divider>
         </template>
