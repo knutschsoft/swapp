@@ -46,6 +46,7 @@ const walkFilters: KeyLabel[] = [
     { key: 'isResubmission', label: 'Wiedervorlage' },
     { key: 'isUnfinished', label: 'Beendet' },
     { key: 'name', label: 'Rundename' },
+    { key: 'conceptOfDay', label: 'Tageskonzept' },
     { key: 'teamName', label: 'Teamname' },
     { key: 'guestNames', label: 'Gäste' },
     { key: 'startTime', label: 'Rundenbeginn' },
@@ -53,6 +54,7 @@ const walkFilters: KeyLabel[] = [
 
 const walkColumns: KeyLabel[] = [
     { key: 'name', label: 'Rundenname' },
+    { key: 'conceptOfDay', label: 'Tageskonzept' },
     { key: 'rating', label: 'Bewertung' },
     { key: 'startTime', label: 'Rundenbeginn' },
     { key: 'endTime', label: 'Rundenende' },

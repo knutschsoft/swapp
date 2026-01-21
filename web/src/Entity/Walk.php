@@ -140,6 +140,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     'name' => SearchFilterInterface::STRATEGY_PARTIAL,
     'teamName' => SearchFilterInterface::STRATEGY_PARTIAL,
     'guestNames' => SearchFilterInterface::STRATEGY_IPARTIAL,
+    'conceptOfDay' => SearchFilterInterface::STRATEGY_IPARTIAL,
 ])]
 class Walk implements \Stringable
 {

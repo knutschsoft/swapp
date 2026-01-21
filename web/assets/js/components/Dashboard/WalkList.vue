@@ -50,6 +50,24 @@
                 />
             </v-col>
             <v-col
+                v-if="effectiveWalkTableFiltersPreferences['conceptOfDay']"
+                cols="12"
+                sm="6"
+                md="6"
+                lg="4"
+                xl="2"
+                no-gutters
+            >
+                <filter-combobox-field
+                    v-model="filter.conceptOfDay"
+                    label="Tageskonzept"
+                    data-test="filter-conceptOfDay-walk"
+                    :is-loading="isLoading"
+                    :suggestions="conceptOfDaySuggestions"
+                    :hide-no-data="true"
+                />
+            </v-col>
+            <v-col
                 v-if="effectiveWalkTableFiltersPreferences['teamName']"
                 cols="12"
                 sm="6"
@@ -167,6 +185,9 @@
             <template v-slot:item.startTime="{item}">
                 {{ formatDateTimeNoSecondsWithDayOfWeek(item.startTime) }}
             </template>
+            <template #item.conceptOfDay="{item}">
+                {{ item.conceptOfDay.join(', ') }}
+            </template>
             <template v-slot:item.rating="{item}">
                 <walk-rating
                     v-if="!item.isUnfinished && getClientByIri(item.client)"
@@ -244,6 +265,9 @@ let exportCtx: any = null;
 const allTeamNames = ref<any[]>([]);
 const allWalkNames = ref<any[]>([]);
 const allGuestNames = ref<any[]>([]);
+const allConceptOfDaySuggestions = ref<Array<{ conceptOfDay?: Record<string, string> }>>(
+    []
+);
 
 const totalItems = ref(0);
 const isInitializing = ref(true);
@@ -257,13 +281,14 @@ const effectiveWalkTableFiltersPreferences = computed(() => userPreferencesStore
 const effectiveWalkTableColumnsPreferences = computed(() => userPreferencesStore.effective.tables.walks.columns)
 const headers = computed(() =>
     [
-        { value: 'name', title: 'Name', sortDirection: 'desc', align: 'center' },
-        { value: 'rating', title: 'Bewertung', align: 'center' },
-        { value: 'startTime', title: 'Rundenbeginn' },
+        { value: 'name', title: 'Name', sortable: true, align: 'center' },
+        { value: 'conceptOfDay', title: 'Tageskonzept', sortable: false, align: 'center' },
+        { value: 'rating', title: 'Bewertung', sortable: true, align: 'center' },
+        { value: 'startTime', title: 'Rundenbeginn', sortable: true },
         { value: 'endTime', title: 'Ende', sortable: false },
         { value: 'peopleCount', title: 'Anzahl Personen', sortable: false, align: 'center' },
-        { value: 'teamName', title: 'Team', align: 'center' },
-        { value: 'isResubmission', title: 'WV DB?' },
+        { value: 'teamName', title: 'Team', sortable: true, align: 'center' },
+        { value: 'isResubmission', sortable: true, title: 'WV DB?' },
         { value: 'actions', title: 'Aktionen', align: 'center', sortable: false },
     ].filter(header => {
         if (header.value === 'actions') {
@@ -340,6 +365,41 @@ const walkNames = computed<SuggestionItem[]>(() => {
 
     return items
 })
+const conceptOfDaySuggestions = computed<SuggestionItem[]>(() => {
+    const teamConcepts = Array.from(
+        new Set(
+            teams.value.flatMap(team => team.conceptOfDaySuggestions ?? [])
+        )
+    ).sort((a, b) => a.localeCompare(b))
+
+    const teamConceptSet = new Set(teamConcepts)
+
+    const otherConcepts = Array.from(
+        new Set(
+            allConceptOfDaySuggestions.value.flatMap(walk =>
+                Object.values(walk.conceptOfDay ?? {})
+            )
+        )
+    )
+        .filter(title => !teamConceptSet.has(title))
+        .sort((a, b) => a.localeCompare(b))
+
+    const items: SuggestionItem[] = []
+
+    if (teamConcepts.length) {
+        items.push(
+            { type: 'divider', text: 'Tageskonzepte aus allen Teams' },
+            ...teamConcepts.map(title => ({ type: 'item', title })),
+            { type: 'divider', text: 'Weitere verwendete Tageskonzepte' }
+        )
+    }
+
+    items.push(
+        ...otherConcepts.map(title => ({ type: 'item', title }))
+    )
+
+    return items
+})
 const hasFilter = computed(() => JSON.stringify(filter.value) !== JSON.stringify(defaultFilter.value));
 
 watch([filter, effectiveWalkTableFiltersPreferences], () => {
@@ -363,6 +423,8 @@ onMounted(async () => {
     allGuestNames.value = allGuests.data['member'];
     const allNames = await WalkAPI.findAllWalkNames();
     allWalkNames.value = allNames.data['member'];
+    const allConceptOfDaySuggestionsResult = await WalkAPI.findAllConceptOfDayWithWayPoints();
+    allConceptOfDaySuggestions.value = allConceptOfDaySuggestionsResult.data['member'];
 });
 
 async function getClientByIri(clientIri: string) {
@@ -396,6 +458,7 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
         'name': 'name',
         'teamName': 'teamName',
         'guestNames': 'guestNames',
+        'conceptOfDay': 'conceptOfDay',
     }
     for (const [requestKey, filterKey] of Object.entries(filterMapping)) {
         if (effectiveWalkTableFiltersPreferences.value[requestKey]) {
@@ -501,6 +564,7 @@ function getFileName() {
     if (filter.value.isResubmission !== 'null') title = `WV_DB_${filter.value.isResubmission ? 'ja' : 'nein'}_${title}`;
     if (filter.value.isUnfinished !== 'null') title = `BEENDET_${!filter.value.isUnfinished ? 'nein' : 'ja'}_${title}`;
     if (filter.value.name.length) title = `NAME_${filter.value.name.join('_')}_${title}`;
+    if (filter.value.conceptOfDay.length) title = `TAGESKONZEPT_${filter.value.conceptOfDay.join('_')}_${title}`;
 
     const startDate = dayjs(filter.value?.startTime[0]);
     const endDate = dayjs(filter.value?.startTime[1]);

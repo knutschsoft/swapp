@@ -51,6 +51,7 @@ export const defaultPreferences: UserPreferences = {
         walks: {
             columns: {
                 name: true,
+                conceptOfDay: false,
                 rating: true,
                 startTime: true,
                 endTime: true,
@@ -62,6 +63,7 @@ export const defaultPreferences: UserPreferences = {
                 isResubmission: true,
                 isUnfinished: true,
                 name: true,
+                conceptOfDay: true,
                 teamName: true,
                 guestNames: true,
                 startTime: true,

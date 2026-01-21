@@ -67,6 +67,7 @@ final class UserPreferencesSchema
                 'walks' => [
                     'columns' => [
                         'name' => true,
+                        'conceptOfDay' => false,
                         'rating' => true,
                         'startTime' => true,
                         'endTime' => true,
@@ -78,6 +79,7 @@ final class UserPreferencesSchema
                         'isResubmission' => true,
                         'isUnfinished' => true,
                         'name' => true,
+                        'conceptOfDay' => true,
                         'teamName' => true,
                         'guestNames' => true,
                         'startTime' => true,

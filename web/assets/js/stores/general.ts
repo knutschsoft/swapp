@@ -16,6 +16,7 @@ type WalkFilter = {
     isResubmission: string | boolean,
     isUnfinished: string | boolean,
     name: string[],
+    conceptOfDay: string[],
     teamName: string[],
     guestNames: string[],
     startTime: DateRange,
