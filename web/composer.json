@@ -110,6 +110,7 @@
         "behat": "vendor/bin/behat --colors --format=progress || true",
         "pbehat": "vendor/bin/behat --suite integration --parallel 16 --colors --format=progress || true",
         "jbehat": "vendor/bin/behat --suite acceptance --colors --format=progress || true",
+        "suw": "vendor/bin/behat --tags suw --colors || true",
         "unit": "vendor/bin/phpunit --colors || true",
         "tsc": "node_modules/.bin/vue-tsc --noEmit -p tsconfig.app.json",
         "tsc-qa-ci": "node_modules/.bin/vue-tsc --noEmit -p tsconfig.app.json || true",
@@ -128,7 +129,7 @@
         "compile-newest": [
             "bin/console doctrine:database:drop --env=dev --if-exists --no-interaction --force",
             "bin/console doctrine:database:create --env=dev --no-interaction --ansi",
-            "mysql -uroot -p12345678 -hmysql swapp < dump.sql",
+            "mysql --ssl=0 -uroot -p12345678 -hmysql swapp < dump.sql",
             "bin/console doctrine:migrations:migrate --env=dev --no-interaction --ansi"
         ],
         "create-api-client": [
