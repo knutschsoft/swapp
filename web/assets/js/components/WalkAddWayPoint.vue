@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-btn
-            v-if="walk && walk.wayPoints.length"
+            v-if="walk"
             :to="{name: 'WalkEpilogue', params: { walkId: walk.walkId } }"
             class="mb-1 mb-sm-2 mb-lg-3 text-transform-none"
             color="secondary"
@@ -9,7 +9,8 @@
             :disabled="isLoading"
             block
         >
-            Runde abschließen (kein weiterer Wegpunkt)
+            Runde abschließen
+            (<template v-if="walk.wayPoints.length">kein weiterer Wegpunkt</template><template v-else>ohne Wegpunkte</template>)
         </v-btn>
 
         <content-collapse
