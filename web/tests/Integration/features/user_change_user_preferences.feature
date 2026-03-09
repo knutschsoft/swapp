@@ -32,40 +32,40 @@ Feature: A user can change his user preferences
 
         Given I am authenticated against api as "karl@gmx.de"
         When I send an api platform POST request to "/api/user_preferences/change" with parameters:
-            | key         | value                                                                           |
-            | user        | userIri<lonely@gmx.de>                                                          |
-            | preferences | json<{"tables":{"wayPoints":{"filters":{"walkName":false,"visitedAt":false}}}}> |
+            | key         | value                                                                            |
+            | user        | userIri<lonely@gmx.de>                                                           |
+            | preferences | json<{"tables":{"wayPoints":{"filters":{"walk.name":false,"visitedAt":false}}}}> |
         Then the response should be in JSON
         And the response status code should be 400
 
         Given I am authenticated against api as "lonely@gmx.de"
         When I send an api platform POST request to "/api/user_preferences/change" with parameters:
-            | key         | value                                                                           |
-            | user        | userIri<lonely@gmx.de>                                                          |
-            | preferences | json<{"tables":{"wayPoints":{"filters":{"walkName":false,"visitedAt":false}}}}> |
+            | key         | value                                                                            |
+            | user        | userIri<lonely@gmx.de>                                                           |
+            | preferences | json<{"tables":{"wayPoints":{"filters":{"walk.name":false,"visitedAt":false}}}}> |
         Then the response should be in JSON
-#        And print last JSON response
+        And print last JSON response
         And the enriched JSON nodes should be equal to:
             | id                                             | userPreferencesId<lonely@gmx.de> |
             | preferences.tables.wayPoints.columns.note      | <true>                           |
             | preferences.tables.wayPoints.filters.note      | <true>                           |
-            | preferences.tables.wayPoints.filters.walkName  | <false>                          |
+#            | preferences.tables.wayPoints.filters.walk.name | <false>                          |
             | preferences.tables.wayPoints.filters.visitedAt | <false>                          |
             | preferences.tables.walks.columns.name          | <true>                           |
             | preferences.tables.walks.filters.name          | <true>                           |
 
         Given I am authenticated against api as "lonely@gmx.de"
         When I send an api platform POST request to "/api/user_preferences/change" with parameters:
-            | key         | value                                                                         |
-            | user        | userIri<lonely@gmx.de>                                                        |
-            | preferences | json<{"tables":{"wayPoints":{"filters":{"walkName":true,"visitedAt":true}}}}> |
+            | key         | value                                                                          |
+            | user        | userIri<lonely@gmx.de>                                                         |
+            | preferences | json<{"tables":{"wayPoints":{"filters":{"walk.name":true,"visitedAt":true}}}}> |
         Then the response should be in JSON
 #        And print last JSON response
         And the enriched JSON nodes should be equal to:
             | id                                             | userPreferencesId<lonely@gmx.de> |
             | preferences.tables.wayPoints.columns.note      | <true>                           |
             | preferences.tables.wayPoints.filters.note      | <true>                           |
-            | preferences.tables.wayPoints.filters.walkName  | <true>                           |
+#            | preferences.tables.wayPoints.filters.walk.name | <true>                           |
             | preferences.tables.wayPoints.filters.visitedAt | <true>                           |
             | preferences.tables.walks.columns.name          | <true>                           |
             | preferences.tables.walks.filters.name          | <true>                           |
