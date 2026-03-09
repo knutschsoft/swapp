@@ -192,7 +192,7 @@
                 this.teams.forEach((team) => {
                     team.users.forEach(userIri => {
                         if (userIri === this.currentUser['@id']) {
-                            options.push({ title: `Team '${team.name}'`, value: team });
+                            options.push({ title: `Team '${team.name}'`, value: team.teamId });
                         }
                     });
                 });
@@ -250,7 +250,7 @@
         },
         methods: {
             handleWalkPrologue: async function () {
-                this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam.teamId} })
+                this.$router.push({ name: 'WalkPrologue', params: {teamId: this.selectedTeam} })
             },
             handleWalkContinue: async function () {
                 if (!this.selectedUnfinishedWalk) {
