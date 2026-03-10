@@ -53,6 +53,7 @@ const errorMessages = computed(() => {
         :items="locationNameSuggestions"
         clearable
         variant="outlined"
+        autocomplete="off"
         :label="'Ort'"
         :placeholder="walk ? 'Wo seid ihr gerade?' : 'Ort eingeben...'"
         :disabled="isLoading"

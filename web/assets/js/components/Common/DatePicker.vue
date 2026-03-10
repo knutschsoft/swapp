@@ -2,6 +2,7 @@
 import {defineProps, computed, ref} from "vue";
 import { de } from 'date-fns/locale'
 import {breakpointsVuetifyV3, useBreakpoints} from "@vueuse/core";
+import { useThemeMode } from '@/js/composables/useThemeMode'
 
 interface Props {
     modelValue: any;
@@ -33,6 +34,8 @@ const dateRange = computed({
     get: () => props.modelValue,
     set: (value) => emit("update:modelValue", value),
 });
+
+const { isDark } = useThemeMode()
 
 const activeUi = ref<UIOptions>({
     navBtnNext: '',
@@ -75,6 +78,7 @@ const multiCalendars = computed(() => {
         :loading="isLoading"
         @cleared="$emit('cleared')"
         :input-attrs="{autocomplete: 'off', clearable: clearable}"
+        :dark="isDark"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />

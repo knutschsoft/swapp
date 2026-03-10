@@ -152,9 +152,9 @@
                     </v-btn>
                     <v-btn
                         v-else-if="isUserSwitched"
-                        small
+                        density="comfortable"
                         color="secondary"
-                        class="flex-item d-flex align-items-center ml-2"
+                        class="flex-item d-flex align-items-center ml-2 text-transform-none"
                         data-test="exit-switch-user"
                         @click="exitSwitchUser()"
                     >

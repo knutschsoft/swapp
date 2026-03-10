@@ -1,0 +1,29 @@
+.dp__theme_dark {
+    --dp-background-color: rgb(var(--v-theme-surface)); /* dunkelster Hintergrund */
+    --dp-text-color: rgb(var(--v-theme-on-surface)); /* Standard Textfarbe */
+    --dp-hover-color: rgb(var(--v-theme-surface-variant)); /* Hover-Hintergrund */
+    --dp-hover-text-color: rgb(var(--v-theme-on-surface)); /* Hover-Text */
+    --dp-hover-icon-color: rgb(var(--v-theme-outline)); /* Icons */
+    --dp-primary-color: rgb(var(--v-theme-primary)); /* Primärfarbe */
+    --dp-primary-disabled-color: rgb(var(--v-theme-primary-container)); /* abgeschwächt */
+    --dp-primary-text-color: rgb(var(--v-theme-on-primary)); /* Text auf primär */
+    --dp-secondary-color: rgb(var(--v-theme-secondary)); /* Sekundärfarbe */
+    --dp-border-color: rgb(var(--v-theme-outline)); /* Standardborder */
+    --dp-menu-border-color: rgb(var(--v-theme-outline)); /* Menü-Border */
+    --dp-border-color-hover: rgb(var(--v-theme-outline-variant)); /* Border Hover */
+    --dp-border-color-focus: rgb(var(--v-theme-primary)); /* Border Focus */
+    --dp-disabled-color: rgb(var(--v-theme-surface-variant)); /* disabled Background */
+    --dp-disabled-color-text: rgb(var(--v-theme-on-surface-variant)); /* disabled Text */
+    --dp-scroll-bar-background: rgb(var(--v-theme-surface)); /* Scrollbar Hintergrund */
+    --dp-scroll-bar-color: rgb(var(--v-theme-outline)); /* Scrollbar Farbe */
+    --dp-success-color: rgb(var(--v-theme-success)); /* Success */
+    --dp-success-color-disabled: rgb(var(--v-theme-success-container)); /* disabled */
+    --dp-icon-color: rgb(var(--v-theme-secondary)); /* Icons */
+    --dp-danger-color: rgb(var(--v-theme-error)); /* Danger */
+    --dp-marker-color: rgb(var(--v-theme-error)); /* Marker */
+    --dp-tooltip-color: rgb(var(--v-theme-surface-variant)); /* Tooltip */
+    --dp-highlight-color: rgb(var(--v-theme-primary) / 0.2); /* Highlight */
+    --dp-range-between-dates-background-color: var(--dp-hover-color);
+    --dp-range-between-dates-text-color: var(--dp-hover-text-color);
+    --dp-range-between-border-color: var(--dp-hover-color);
+}

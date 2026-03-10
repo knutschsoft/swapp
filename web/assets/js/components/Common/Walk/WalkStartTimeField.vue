@@ -112,7 +112,7 @@ const errorMessages = computed(() => {
 
 <template>
     <div>
-        Rundenstartzeit<br>
+        <span class="text-on-surface">Rundenstartzeit</span><br>
         <div class="">
             <time-picker
                 v-model="startTimeTime"

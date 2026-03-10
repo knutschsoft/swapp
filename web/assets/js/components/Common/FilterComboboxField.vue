@@ -64,6 +64,7 @@ const errorMessages = computed(() => {
         closable-chips
         clearable
         variant="outlined"
+        autocomplete="off"
         multiple
         density="compact"
         small-chips

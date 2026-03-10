@@ -72,6 +72,7 @@ function closeCombobox () {
         multiple
         data-test="walk-guest-names-field"
         variant="outlined"
+        autocomplete="off"
         density="compact"
         small-chips
         :label="label"

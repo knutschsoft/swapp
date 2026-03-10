@@ -24,6 +24,7 @@
                     :is-loading="isLoading"
                     :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
+                    class="mb-4"
                 />
                 <walk-concept-of-day-field
                     v-model="form.conceptOfDay"
@@ -32,6 +33,7 @@
                     :is-loading="isLoading"
                     :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
+                    class="mb-3"
                 />
                 <walk-start-time-field
                     v-model="form.startTime"
@@ -90,6 +92,7 @@
                     :is-loading="isLoading"
                     :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
+                    class="mb-3"
                 />
                 <walk-weather-field
                     v-if="walk.isWithWeather"
@@ -97,6 +100,7 @@
                     :is-loading="isLoading"
                     :error="error"
                     description="Der Wert vom Rundenbeginn ist vorausgewählt."
+                    class="mb-3"
                 />
                 <template v-if="walk.isWithSystemicQuestion">
                     <walk-systemic-answer-field

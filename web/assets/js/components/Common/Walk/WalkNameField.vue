@@ -59,6 +59,7 @@ const errorMessages = computed(() => {
         :items="walkNameSuggestions"
         clearable
         variant="outlined"
+        autocomplete="off"
         :label="label"
         placeholder="Wie ist der Name der Runde?"
         :disabled="isLoading"

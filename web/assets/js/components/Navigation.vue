@@ -15,8 +15,9 @@ import {
 } from '../stores'
 import {formatDateTimeNoSeconds, formatDateTimeNoSecondsWithDayOfWeek} from '@/js/utils'
 import {computed, ref} from 'vue'
-import {type Client, User} from "@/js/model";
+import {type Client, type User} from "@/js/model";
 import UserPreferencesForm from "@/js/components/Users/UserPreferencesForm.vue";
+import {useThemeMode} from '@/js/composables/useThemeMode.ts'
 
 const authStore = useAuthStore()
 const changelogStore = useChangelogStore()
@@ -34,7 +35,7 @@ const users = ref<User[]>([])
 const swappLogo = logo
 const userMenu = ref(false)
 const showUserPreferencesForm = ref(false);
-const linkClasses = 'text-left text-lg-center pl-2 pl-lg-0'
+const { themeMode } = useThemeMode()
 
 const isLoading = computed(() =>
     clientStore.isLoadingFetch ||
@@ -305,6 +306,22 @@ function getAdditionalUserInfo(user: User) {
                             </v-card-text>
                         </v-card>
                     </v-dialog>
+                    <v-list-item>
+                        <v-list-item-title>Darstellung</v-list-item-title>
+
+                        <v-btn-toggle
+                            v-model="themeMode"
+                            density="compact"
+                            mandatory
+                            divided
+                            border
+                            class="mt-2 w-100"
+                        >
+                            <v-btn class="flex-grow-1" value="light" prepend-icon="mdi-weather-sunny">Hell</v-btn>
+                            <v-btn class="flex-grow-1" value="system" prepend-icon="mdi-monitor">System</v-btn>
+                            <v-btn class="flex-grow-1" value="dark" prepend-icon="mdi-weather-night">Dunkel</v-btn>
+                        </v-btn-toggle>
+                    </v-list-item>
                     <v-list-item
                         v-if="isUserSwitched"
                         data-test="exit-switch-user"

@@ -75,7 +75,7 @@ const hasDisabledUser = computed(() => {
                 color="grey"
             >
                 <v-card-text class="mb-0 pb-0">
-                    <div class="text-black text-body-2">{{ label }}</div>
+                    <div class="text-secondary-darken-2 text-body-2">{{ label }}</div>
                     <div class="d-flex flex-wrap" data-test="users">
                         <template v-for="user in enabledUsers" :key="user['@id']">
                             <v-switch

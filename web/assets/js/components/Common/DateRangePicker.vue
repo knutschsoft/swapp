@@ -2,6 +2,7 @@
 import {defineProps, computed, ref} from "vue";
 import { de } from 'date-fns/locale'
 import { breakpointsVuetifyV3, useBreakpoints } from '@vueuse/core'
+import {useThemeMode} from '@/js/composables/useThemeMode'
 import dayjs from "dayjs";
 
 interface Props {
@@ -40,6 +41,8 @@ const dateRange = computed({
     get: () => props.modelValue,
     set: (value) => emit("update:modelValue", value),
 })
+
+const { isDark } = useThemeMode()
 
 const now = dayjs()
 let presetDatesValue =[
@@ -128,6 +131,7 @@ const multiCalendars = computed(() => {
         :input-attrs="{autocomplete: 'off', clearable: true}"
         :month-change-on-scroll="false"
         :preset-dates="isGreaterThanMd.value ? presetDates : []"
+        :dark="isDark"
     >
         <template #clear-icon="{ clear }">
             <v-icon icon="mdi-close-circle" color="primary-lighten-2" class="mr-2" @click="clear" />
