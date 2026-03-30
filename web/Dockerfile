@@ -79,7 +79,7 @@ RUN sh -c "echo 'xdebug.remote_enable=1' >> /usr/local/etc/php/conf.d/docker-php
 ### adjust panther ChromeDriver to installed chromium version
 RUN if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
     apt-get update && apt-get install -y wget unzip xvfb libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libasound2 && \
-    wget -q https://storage.googleapis.com/chrome-for-testing-public/141.0.7390.122/linux64/chromedriver-linux64.zip && \
+    wget -q https://storage.googleapis.com/chrome-for-testing-public/146.0.7680.165/linux64/chromedriver-linux64.zip && \
     unzip chromedriver-linux64.zip -d /usr/local/bin/ && \
     rm chromedriver-linux64.zip && \
     apt-get clean autoclean && apt-get autoremove -y; \
