@@ -11,6 +11,96 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '30.03.2026',
+                avatarText: '&#x1F338;',
+                avatarTitle: 'Frühlings-Update',
+                entries: [
+                    {
+                        text: [
+                            'Feature: Ein Nutzender kann in den Einstellungen zwischen <b>Dunkel-, Hell- und Systemmodus</b> wählen.',
+                            'Der gewählte Modus wird gespeichert und beim nächsten Besuch automatisch wieder verwendet.',
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/20260330_Dunkelmodus_vorher_nachher.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung des Dunkel- und Hellmodus (links: Hellmodus - rechts: Dunkelmodus)',
+                            },
+                            {
+                                src: '../changelog/20260330_Dunkelmodus_Einstellungen.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Einstellungsseite zum Wechseln des Anzeigemodus',
+                            },
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Ein Nutzender kann in den Einstellungen selbst festlegen, welche <b>Filter und Spalten</b> in der Runden- und Wegpunktliste angezeigt werden.',
+                            'Nicht benötigte Filter und Spalten lassen sich so einfach ausblenden und die Listen auf das Wesentliche reduzieren.',
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/20260330_Nutzereinstellungen_Filter_Spalten.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Nutzereinstellungen für Filter und Spalten',
+                            },
+                            {
+                                src: '../changelog/20260330_Nutzereinstellungen_Filter_Spalten_vorher_nachher.png',
+                                thumbnailHeight: 100,
+                                description: 'Darstellung der Rundenliste ohne Filter (links) und mit allen Filtern (rechts)',
+                            },
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Ein Nutzender kann eine <b>Runde abschließen, ohne vorher einen Wegpunkt erfasst</b> zu haben.',
+                            'Dies ermöglicht das Dokumentieren von Runden, bei denen kein Kontakt stattgefunden hat.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Die Rundenliste auf dem Dashboard kann nun nach <b>Tageskonzept</b> und <b>Rundenname</b> gefiltert werden.',
+                            'Die Vorschläge für diese Filter stammen aus den zugehörigen Teams und sind alphabetisch sortiert.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Die Autocomplete-Vorschläge für den Filter <b>Weitere Teilnehmende</b> in der Rundenliste sind nun strukturiert:',
+                            'Zuerst werden die den Teams zugeordneten Teilnehmenden angezeigt, danach – getrennt durch einen Teiler – die individuell verwendeten.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Die Wegpunktliste auf dem Dashboard kann nun nach <b>Rundenname</b> gefiltert werden.',
+                            'Die Vorschläge stammen ausschließlich aus Runden mit Wegpunkten.',
+                            'Rundennamen aus den zugehörigen Teams werden zuerst angezeigt, danach – getrennt durch einen Teiler – weitere verwendete Namen.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Feature: Die Wegpunktliste auf dem Dashboard kann nun nach <b>Tageskonzept</b> gefiltert werden.',
+                            'Die Vorschläge stammen ausschließlich aus Runden mit Wegpunkten.',
+                            'Tageskonzepte aus den zugehörigen Teams werden zuerst angezeigt, danach – getrennt durch einen Teiler – weitere verwendete Konzepte.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'UX-Feature: Auf Mobilgeräten gibt es beim Erfassen des <b>Tageskonzepts</b> und der <b>weiteren Teilnehmenden</b> nun einen „Fertig"-Button, um die Auswahlliste zu schließen.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Die Vorauswahl der Teammitglieder beim <b>Rundenstart</b> wurde korrigiert.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Fix: Die Filterung der <b>Wegpunktliste nach Teamname</b> funktioniert nun korrekt.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '11.11.2025',
                 avatarText: '&#129313;',
                 avatarTitle: 'Karneval',
