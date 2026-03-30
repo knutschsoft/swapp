@@ -268,7 +268,7 @@
             mobile-breakpoint="lg"
             density="compact"
             show-current-page
-            @update:options="loadItems"
+            @update:options="handleOptionsUpdate"
             :no-results-text="noItemsText"
             @update:items-per-page="handlePerPageChange"
             @update:page="handleCurrentPageChange"
@@ -663,7 +663,13 @@ async function loadItems({ page, itemsPerPage, sortBy }: LoadItemsOptions) {
     emit('refresh-total-way-points', totalItems.value);
 }
 
+function handleOptionsUpdate(options: LoadItemsOptions) {
+    if (isInitializing.value) return;
+    loadItems(options);
+}
+
 function handleCurrentPageChange(value: number | string) {
+    if (isInitializing.value) return;
     const newVal = Number(value);
     currentPage.value = newVal;
     generalStore.updateWayPointCurrentPage(newVal);
@@ -779,7 +785,7 @@ const load = async () => {
     currentPage.value = generalStore.wayPointCurrentPage;
     await userPreferencesStore.load();
 
-    loadItems({
+    await loadItems({
         page: currentPage.value,
         itemsPerPage: itemsPerPage.value,
         sortBy: sortBy.value,

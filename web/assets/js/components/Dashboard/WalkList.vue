@@ -177,7 +177,7 @@
             mobile-breakpoint="md"
             density="compact"
             show-current-page
-            @update:options="loadItems"
+            @update:options="handleOptionsUpdate"
             :no-results-text="noItemsText"
             @update:items-per-page="handlePerPageChange"
             @update:page="handleCurrentPageChange"
@@ -406,7 +406,7 @@ watch([filter, effectiveWalkTableFiltersPreferences], () => {
     if (isInitializing.value) return;
 
     currentPage.value = 1;
-    generalStore.updateWayPointCurrentPage(1);
+    generalStore.updateWalkCurrentPage(1);
 
     loadItems({
         page: currentPage.value,
@@ -509,7 +509,13 @@ async function loadItems(options: { page: number; itemsPerPage: number; sortBy: 
     emits('refresh-total-walks', totalItems.value);
 }
 
+function handleOptionsUpdate(options: { page: number; itemsPerPage: number; sortBy: any[] }) {
+    if (isInitializing.value) return;
+    loadItems(options);
+}
+
 function handleCurrentPageChange(value: number) {
+    if (isInitializing.value) return;
     currentPage.value = Number(value);
     generalStore.updateWalkCurrentPage(Number(value));
 
@@ -582,7 +588,7 @@ const load = async () => {
     currentPage.value = generalStore.walkCurrentPage;
     await userPreferencesStore.load();
 
-    loadItems({
+    await loadItems({
         page: currentPage.value,
         itemsPerPage: itemsPerPage.value,
         sortBy: sortBy.value,
