@@ -6,6 +6,7 @@ services:
   web:
     build:
       context: ./web
+      dockerfile: Dockerfile.frankenphp
       args:
         APP_ENVIRONMENT: 'dev'
     volumes:

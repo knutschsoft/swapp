@@ -3,6 +3,15 @@ framework:
     csrf_protection: ~
     #http_method_override: true
 
+    # Hinter dem jwilder/nginx-proxy + FrankenPHP wird intern HTTP gesprochen.
+    # `private_ranges` deckt die RFC1918-Netze ab (10/8, 172.16/12, 192.168/16);
+    # die Docker-Bridge swapp-* nutzt aber 172.39.0.0/16 - das liegt AUSSERHALB
+    # von 172.16.0.0/12. Daher zusätzlich 172.0.0.0/8 listen, damit Symfony den
+    # Proxy als vertrauenswürdig erkennt und X-Forwarded-Proto/Host/For übernimmt.
+    # (Selbe Ergänzung wie im Caddyfile.)
+    trusted_proxies: 'private_ranges,172.0.0.0/8'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']
+
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
     session:

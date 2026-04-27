@@ -33,13 +33,15 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Relay\Relay:
+    # Verwendet phpredis (\Redis aus der `redis`-Extension). Vorher Relay\Relay,
+    # wegen ZTS+FrankenPHP-Inkompatibilität auf phpredis umgestellt.
+    # createConnection parst die DSN (inkl. Passwort) und liefert eine
+    # bereits verbundene \Redis-Instanz.
+    Redis:
+        class: Redis
+        factory: ['Symfony\Component\Cache\Adapter\RedisAdapter', 'createConnection']
         arguments:
             - '%env(REDIS_DSN)%'
-        calls:
-            -   auth:
-                 - '%env(REDIS_PASSWORD)%'
-    Redis: '@Relay\Relay'  # Alias für Symfony-Kompatibilität
 
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
         arguments:

@@ -1,0 +1,63 @@
+{
+	# TLS-Termination macht der jwilder/nginx-proxy davor; intern reicht HTTP.
+	auto_https off
+	frankenphp
+	order php_server before file_server
+
+	# X-Forwarded-* vom jwilder-Proxy als vertrauenswürdig markieren,
+	# damit {request>client_ip} aus X-Forwarded-For die echte Client-IP liefert
+	# (für %a im Apache-LogFormat) und Symfony das richtige Schema kennt.
+	# `private_ranges` deckt RFC1918 ab, aber die Docker-Bridge swapp-* nutzt
+	# 172.39.0.0/16 - das liegt AUSSERHALB von 172.16.0.0/12. Daher zusätzlich
+	# 172.0.0.0/8 explizit listen.
+	servers {
+		trusted_proxies static private_ranges 172.0.0.0/8
+	}
+
+	# Caddy-eigene Server-Errors gehen in dieselbe Datei wie früher Apaches error.log,
+	# damit der ELK-Stack ohne Pfadänderung weiterliest.
+	log {
+		output file /var/log/apache2/error.log {
+			roll_disabled
+		}
+		level ERROR
+	}
+}
+
+:80 {
+	root * /var/www/html/public
+	encode zstd gzip
+
+	# Access-Log im Apache-LogFormat-Stil rebuilt mit transform-encoder.
+	# Original Apache-Format (LogIOTrackTTFB ON):
+	#   %a %l %u %t "%r" %>s %O "%{Referer}i" "%{User-Agent}i" "%D" "%{X-Route}o" "%I" "%O" "%^FB"
+	#
+	# Hinweise:
+	# - %D (Apache: Microseconds-Integer) → {duration} liefert Sekunden mit Dezimalstellen.
+	#   Falls ELK strikt Microseconds erwartet: dort entweder Multiplikation mit 1e6
+	#   im Filter, oder das Feld als Float lesen. Inhaltlich identisch, nur Einheit anders.
+	# - %I (Bytes inkl. Request-Header) und %^FB (TTFB von LogIOTrackTTFB) gibt es in
+	#   Caddy nicht 1:1 → werden als "-" geloggt, damit das Feldlayout für ELK gleich bleibt.
+	log {
+		output file /var/log/apache2/access.log {
+			roll_disabled
+		}
+		format transform `{request>client_ip} - - [{ts}] "{request>method} {request>uri} {request>proto}" {status} {size} "{request>headers>Referer>[0]}" "{request>headers>User-Agent>[0]}" "{duration}" "{resp_headers>X-Route>[0]}" "-" "{size}" "-"` {
+			time_format "02/Jan/2006:15:04:05 -0700"
+		}
+	}
+
+	# Replikation der Apache-Logik: Requests gegen `localhost` laufen im Behat/Mink-
+	# Setup auf APP_ENV=test (test-DB, Fixtures), Requests gegen swapp.local laufen
+	# in der normalen App-Env (dev/prod).
+	@localhost host localhost
+	handle @localhost {
+		php_server {
+			env APP_ENV test
+		}
+	}
+
+	handle {
+		php_server
+	}
+}

@@ -24,8 +24,9 @@ services:
       - PHP_XDEBUG_ENABLED=${PHP_XDEBUG_ENABLED:?PHP_XDEBUG_ENABLED is not set or empty}
       - DEPLOY_ENV=${DEPLOY_ENV:?DEPLOY_ENV is not set or empty}
       - VIRTUAL_HOST=${VIRTUAL_HOST:?VIRTUAL_HOST is not set or empty}
-      - VIRTUAL_PORT=443
-      - VIRTUAL_PROTO=https
+      # FrankenPHP spricht intern HTTP; TLS terminiert der jwilder/nginx-proxy davor.
+      - VIRTUAL_PORT=80
+      - VIRTUAL_PROTO=http
       - JWT_PASSPHRASE=${JWT_PASSPHRASE:?JWT_PASSPHRASE is not set or empty}
       - DB_NAME=${DB_NAME:?DB_NAME is not set or empty}
       - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is not set or empty}

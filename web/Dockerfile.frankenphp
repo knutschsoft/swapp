@@ -1,0 +1,184 @@
+FROM composer:2.8 AS composer
+
+# 1) FrankenPHP-Builder: Custom-Build mit transform-encoder, damit der Apache-LogFormat
+#    1:1 in Caddy nachgebaut werden kann (für ELK-Pipeline).
+#    xcaddy ist im FrankenPHP-Builder NICHT vorinstalliert -> aus caddy:builder kopieren.
+#    CGO_ENABLED=1 ist Pflicht, weil FrankenPHP libphp einbettet.
+FROM dunglas/frankenphp:1-builder-php8.4-bookworm AS frankenphp_builder
+
+COPY --from=caddy:builder /usr/bin/xcaddy /usr/bin/xcaddy
+
+RUN CGO_CFLAGS=$(php-config --includes) \
+    CGO_LDFLAGS="$(php-config --ldflags) $(php-config --libs)" \
+    CGO_ENABLED=1 \
+    XCADDY_SETCAP=1 \
+    XCADDY_GO_BUILD_FLAGS="-ldflags='-w -s' -tags=nobadger,nomysql,nopgx" \
+    xcaddy build \
+        --output /usr/local/bin/frankenphp \
+        --with github.com/dunglas/frankenphp=./ \
+        --with github.com/dunglas/frankenphp/caddy=./caddy/ \
+        --with github.com/dunglas/caddy-cbrotli \
+        --with github.com/caddyserver/transform-encoder
+
+# 2) Runtime-Image
+FROM dunglas/frankenphp:1-php8.4-bookworm
+
+ARG APP_ENVIRONMENT=prod
+ARG HOST_UID=1000
+ARG HOST_GID=1000
+ARG CONTAINER_USER=docker
+ARG CONTAINER_GROUP=docker
+
+ENV APP_ENVIRONMENT=${APP_ENVIRONMENT}
+ENV HOST_UID=${HOST_UID}
+ENV HOST_GID=${HOST_GID}
+ENV CONTAINER_GROUP=${CONTAINER_GROUP}
+ENV CONTAINER_USER=${CONTAINER_USER}
+ENV PANTHER_NO_SANDBOX=1
+ENV PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors'
+# FrankenPHP standardmäßig auf Worker-Mode 0 (Phase 5 schaltet das ggf. um).
+ENV FRANKENPHP_CONFIG=""
+# Fallback Caddy-Server-Name fürs interne Lauschen
+ENV SERVER_NAME=":80"
+
+# Custom-FrankenPHP-Binary mit transform-encoder einsetzen
+COPY --from=frankenphp_builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
+
+# Composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# Bash als Default-Shell, damit `[[ … ]]`/`source` funktioniert
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+# Zeitzone wie zuvor
+ENV TZ=Europe/Berlin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# System-Pakete (gleicher Satz wie Apache-Variante, ohne apache2-spezifisches)
+RUN apt-get update && apt-get install -y \
+        curl \
+        gnupg \
+        apt-transport-https \
+        ca-certificates \
+        wget \
+        openjdk-17-jre-headless \
+        netcat-traditional \
+        libicu-dev \
+        libzip-dev \
+        libjpeg-dev \
+        libpng-dev \
+        libssl-dev \
+        git-core \
+        libflac-dev \
+        gosu \
+        acl \
+        unzip \
+        default-mysql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node.js 20 + Yarn (via Corepack), wie im Apache-Dockerfile
+RUN apt-get update && apt-get install -y curl ca-certificates gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && corepack enable \
+    && corepack prepare yarn@stable --activate \
+    && yarn set version stable \
+    && rm -rf /var/lib/apt/lists/*
+
+# PHP-Extensions (FrankenPHP-Base bringt einige bereits mit; install-php-extensions
+# ist idempotent und installiert nur was fehlt).
+# `relay` (aus dem Apache-Dockerfile) wird im Code nicht referenziert; weggelassen,
+# weil es im FrankenPHP-Image Probleme mit libhiredis_ssl-Linking macht.
+# Falls Performance-Gewinn gewünscht, später separat nachziehen.
+RUN install-php-extensions \
+        opcache \
+        pdo_mysql \
+        gd \
+        intl \
+        bcmath \
+        zip \
+        apcu \
+        redis
+
+# php.ini übernehmen
+COPY .docker/web/etc/php/php.ini /usr/local/etc/php/
+
+# Caddyfile übernehmen
+COPY .docker/web/etc/caddy/Caddyfile /etc/caddy/Caddyfile
+
+# Chromium + ChromeDriver nur für dev/test (für Behat/Panther)
+RUN if [ "${APP_ENVIRONMENT}" = "test" ] || [ "${APP_ENVIRONMENT}" = "dev" ]; then \
+        apt-get update && apt-get install -y \
+            chromium wget unzip xvfb \
+            libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 \
+            libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libasound2 && \
+        wget -q https://storage.googleapis.com/chrome-for-testing-public/146.0.7680.165/linux64/chromedriver-linux64.zip && \
+        unzip chromedriver-linux64.zip -d /usr/local/bin/ && \
+        ln -sf /usr/local/bin/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
+        rm chromedriver-linux64.zip && \
+        apt-get clean autoclean && apt-get autoremove -y; \
+    fi
+
+# Container-User wie zuvor
+RUN groupadd --gid ${HOST_GID} ${CONTAINER_GROUP} && \
+    useradd --uid ${HOST_UID} --gid ${HOST_GID} -ms /bin/bash ${CONTAINER_USER} && \
+    usermod -a -G www-data ${CONTAINER_USER} && \
+    chown ${CONTAINER_USER}:${CONTAINER_GROUP} /usr/bin/composer
+
+# FrankenPHP-Image setzt XDG_CONFIG_HOME=/config und XDG_DATA_HOME=/data,
+# damit Caddy seine Auto-Config dort ablegt. Wir nutzen explizit
+# /etc/caddy/Caddyfile + `auto_https off` → /config und /data werden für Caddy
+# gar nicht gebraucht. Damit Tools, die als docker-User laufen (z.B. Composer
+# und Chromium in Behat-Tests), in beschreibbare Standard-Pfade schreiben,
+# leiten wir die XDG-Vars ins Home des docker-Users um.
+ENV XDG_CONFIG_HOME=/home/${CONTAINER_USER}/.config
+ENV XDG_DATA_HOME=/home/${CONTAINER_USER}/.local/share
+ENV COMPOSER_HOME=/home/${CONTAINER_USER}/.composer
+RUN mkdir -p ${COMPOSER_HOME} ${XDG_CONFIG_HOME} ${XDG_DATA_HOME} && \
+    chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} \
+        /home/${CONTAINER_USER}/.composer \
+        /home/${CONTAINER_USER}/.config \
+        /home/${CONTAINER_USER}/.local
+
+# Composer-Global-Pakete (Dev-Komfort)
+RUN gosu ${CONTAINER_USER} composer global config --no-plugins allow-plugins.pyrech/composer-changelogs true
+RUN gosu ${CONTAINER_USER} composer global require "pyrech/composer-changelogs:^2.1" --prefer-dist --no-progress --classmap-authoritative
+
+# Apache-Log-Pfad bewusst beibehalten: ELK-Pipeline + Volume-Mount in docker-compose.yml
+# (apache-logs/:/var/log/apache2/) bleiben unverändert. Caddy schreibt access.log/error.log dorthin.
+RUN mkdir -p /var/log/apache2 && chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/log/apache2
+
+COPY .docker /
+
+# Build-Zeit-Install nur für non-dev (in dev wird per Volume-Mount + start-project.sh geinstalliert)
+COPY composer.json composer.lock package.json yarn.lock .yarnrc.yml .yarn symfony.lock /var/www/html/
+RUN if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
+        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
+        cd /var/www/html && \
+        gosu ${CONTAINER_USER} composer install --optimize-autoloader --no-interaction --no-scripts && \
+        gosu ${CONTAINER_USER} yarn install; \
+    fi
+
+COPY . /var/www/html
+RUN cd /var/www/html && \
+    if [ "${APP_ENVIRONMENT}" != "dev" ]; then \
+        chown -R ${CONTAINER_USER}:${CONTAINER_GROUP} /var/www/html && \
+        bin/set_owner.sh && \
+        bin/set_acl.sh ${CONTAINER_USER} && \
+        gosu ${CONTAINER_USER} composer create-api-client && \
+        gosu ${CONTAINER_USER} yarn build && \
+        gosu ${CONTAINER_USER} php bin/console cache:clear --env="${APP_ENVIRONMENT}" --no-debug; \
+    fi
+
+RUN apt-get clean -y
+
+# Eigenes Start-Skript (ohne apache2-foreground, ohne xdebug)
+COPY ./.docker/start-project.frankenphp.sh /start-project.sh
+RUN chmod 777 /start-project.sh
+
+# jwilder/nginx-proxy spricht uns intern via HTTP an
+EXPOSE 80
+
+WORKDIR /var/www/html
+
+ENTRYPOINT /start-project.sh
