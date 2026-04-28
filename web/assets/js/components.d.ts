@@ -14,6 +14,7 @@ declare module 'vue' {
     ClientsClientCreate: typeof import('./components/Clients/ClientCreate.vue')['default']
     ClientsClientForm: typeof import('./components/Clients/ClientForm.vue')['default']
     ClientsClientList: typeof import('./components/Clients/ClientList.vue')['default']
+    ClientsClientRemoveForm: typeof import('./components/Clients/ClientRemoveForm.vue')['default']
     CommonClientSelect: typeof import('./components/Common/ClientSelect.vue')['default']
     CommonDatePicker: typeof import('./components/Common/DatePicker.vue')['default']
     CommonDateRangePicker: typeof import('./components/Common/DateRangePicker.vue')['default']

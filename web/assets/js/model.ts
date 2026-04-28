@@ -4,6 +4,7 @@ export {
     type ApiClientsGetCollection200Response as ClientsResponse,
     type ClientClientChangeRequestJsonld as ClientChangeRequest,
     type ClientClientCreateRequestJsonld as ClientCreateRequest,
+    type ClientClientRemoveRequestJsonld as ClientRemoveRequest,
     type ClientJsonldClientRead as Client,
     type ApiSystemicQuestionsGetCollection200Response as SystemicQuestionsResponse,
     type SystemicQuestionSystemicQuestionChangeRequestJsonld as SystemicQuestionChangeRequest,

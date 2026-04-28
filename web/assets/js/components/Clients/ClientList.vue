@@ -104,6 +104,19 @@
                         @submitted="handleSubmit"
                     />
                 </v-card-text>
+                <template v-if="editClient && isSuperAdmin && !isOwnClient(editClient)">
+                    <v-divider class="mt-4" />
+                    <v-card-title class="text-error d-flex align-center">
+                        <v-icon icon="mdi-alert-octagon-outline" class="mr-2" />
+                        Gefährliche Zone
+                    </v-card-title>
+                    <v-card-text>
+                        <client-remove-form
+                            :initial-client="editClient"
+                            @remove="handleRemove"
+                        />
+                    </v-card-text>
+                </template>
             </v-card>
         </v-dialog>
     </div>
@@ -113,8 +126,9 @@
 'use strict';
 import {ref, computed, onMounted, watch} from 'vue';
 import ClientForm from './ClientForm.vue';
+import ClientRemoveForm from './ClientRemoveForm.vue';
 import { type Client} from '../../model';
-import {useAlertStore, useClientStore, useUserStore} from '../../stores';
+import {useAlertStore, useAuthStore, useClientStore, useUserStore} from '../../stores';
 import ClientApi from '../../api/client.js';
 import {
     formatDateTime,
@@ -130,9 +144,11 @@ export default {
     name: 'ClientList',
     components: {
         ClientForm,
+        ClientRemoveForm,
     },
     setup() {
         const alertStore = useAlertStore();
+        const authStore = useAuthStore();
         const clientStore = useClientStore();
         const userStore = useUserStore();
 
@@ -220,6 +236,30 @@ export default {
             }
         };
 
+        const isSuperAdmin = computed(() => authStore.isSuperAdmin);
+
+        const isOwnClient = (client: Client) => {
+            const me = authStore.user;
+            if (!me) return false;
+            return (client.users ?? []).includes(me['@id']);
+        };
+
+        const handleRemove = async ({ client }: { client: Client }) => {
+            const ok = await clientStore.removeClient({ client: client['@id'] });
+            if (ok) {
+                alertStore.success(
+                    `Der Klient "${client.name}" wurde inklusive aller zugehörigen Daten gelöscht.`,
+                    'Klient gelöscht'
+                );
+                resetEditModalClient();
+                // Lokale Tabellenansicht aktualisieren, ohne Roundtrip:
+                serverItems.value = serverItems.value.filter((c: Client) => c['@id'] !== client['@id']);
+                totalItems.value = Math.max(0, totalItems.value - 1);
+            } else {
+                alertStore.error('Klient löschen fehlgeschlagen', 'Upps! :-(');
+            }
+        };
+
         watch(
             () => deprecatedOptions.value,
             async () => {
@@ -277,6 +317,10 @@ export default {
             editClient,
             resetEditModalClient,
             handleSubmit,
+            handleRemove,
+            isSuperAdmin,
+            isOwnClient,
+            authStore,
             loadItems,
             dialog,
             formatDateTime,

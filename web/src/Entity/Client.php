@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Dto\Client\ClientChangeRequest;
 use App\Dto\Client\ClientCreateRequest;
+use App\Dto\Client\ClientRemoveRequest;
 use App\Repository\DoctrineORMClientRepository;
 use App\Security\Voter\ClientVoter;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -38,6 +39,13 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             securityPostDenormalize: 'is_granted("'.ClientVoter::CREATE.'")',
             input: ClientCreateRequest::class,
             output: Client::class,
+            messenger: 'input'
+        ),
+        new Post(
+            uriTemplate: '/clients/remove',
+            status: 200,
+            securityPostDenormalize: 'is_granted("'.ClientVoter::REMOVE.'", object.client)',
+            input: ClientRemoveRequest::class,
             messenger: 'input'
         ),
     ],

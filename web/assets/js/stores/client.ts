@@ -2,12 +2,12 @@ import {acceptHMRUpdate, defineStore} from 'pinia';
 import apiClient from '../api'
 import type {AxiosResponse} from "axios";
 
-import type {Client, ClientChangeRequest, ClientCreateRequest, ClientsResponse} from '../model';
+import type {Client, ClientChangeRequest, ClientCreateRequest, ClientRemoveRequest, ClientsResponse} from '../model';
 
 type State = {
     clients: Client[],
     loadingArray: Array<string>,
-    errorArray: Record<'fetch' | 'change' | 'create', any>,
+    errorArray: Record<'fetch' | 'change' | 'create' | 'remove', any>,
 }
 
 function replaceObjectInState(state: State, object: Client) {
@@ -28,12 +28,13 @@ export const useClientStore = defineStore("client", {
     state: (): State => ({
         clients: [],
         loadingArray: [],
-        errorArray: {'fetch': false, 'change': false, 'create': false},
+        errorArray: {'fetch': false, 'change': false, 'create': false, 'remove': false},
     }),
     getters: {
         isLoadingChange: (state) => (clientIri: string) => state.loadingArray.includes(`change-${clientIri}`),
         isLoadingCreate: (state) => state.loadingArray.includes(`create`),
         isLoadingFetch: (state) => state.loadingArray.includes(`fetch`) || state.loadingArray.includes(`fetchByIri`),
+        isLoadingRemove: (state) => (clientIri: string) => state.loadingArray.includes(`remove-${clientIri}`),
         isLoading: (state) => state.loadingArray.length > 0,
         hasError: (state) => state.errorArray.fetch || state.errorArray.change || state.errorArray.create,
         getErrors: (state) => state.errorArray,
@@ -96,6 +97,25 @@ export const useClientStore = defineStore("client", {
             } finally {
                 this.loadingArray.splice(this.loadingArray.indexOf('create'), 1);
             }
+        },
+        async removeClient(payload: ClientRemoveRequest): Promise<boolean> {
+            this.loadingArray.push(`remove-${payload.client}`);
+            this.errorArray.remove = false;
+            try {
+                await apiClient.post('/api/clients/remove', payload);
+                this.clients = this.clients.filter(c => c['@id'] !== payload.client);
+
+                return true;
+            } catch (error: any) {
+                this.errorArray.remove = error.response;
+
+                return false;
+            } finally {
+                this.loadingArray.splice(this.loadingArray.indexOf(`remove-${payload.client}`), 1);
+            }
+        },
+        resetRemoveError(): void {
+            this.errorArray.remove = false;
         },
         async fetchClients(): Promise<void> {
             this.loadingArray.push('fetch');

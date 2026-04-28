@@ -15,6 +15,7 @@ class ClientVoter extends Voter
     final public const string READ = 'CLIENT_READ';
     final public const string EDIT = 'CLIENT_EDIT';
     final public const string CREATE = 'CLIENT_CREATE';
+    final public const string REMOVE = 'CLIENT_REMOVE';
 
     public function __construct(private readonly Security $security)
     {
@@ -23,7 +24,7 @@ class ClientVoter extends Voter
     #[\Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return \in_array($attribute, [self::READ, self::EDIT], true)
+        return \in_array($attribute, [self::READ, self::EDIT, self::REMOVE], true)
             && $subject instanceof Client
             || \in_array($attribute, [self::CREATE], true);
     }
@@ -35,6 +36,11 @@ class ClientVoter extends Voter
         // if the user is anonymous, do not grant access
         if (!$user instanceof User) {
             return false;
+        }
+
+        // REMOVE darf ausschließlich Super-Admin (auch der Voter-Default-Pfad ist hier strikt).
+        if (self::REMOVE === $attribute) {
+            return $this->security->isGranted(User::ROLE_SUPER_ADMIN);
         }
 
         if ($this->security->isGranted(User::ROLE_SUPER_ADMIN)) {
