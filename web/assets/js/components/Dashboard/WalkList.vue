@@ -577,8 +577,8 @@ function getFileName() {
     if (prefs['conceptOfDay'] && filter.value.conceptOfDay.length) title = `TAGESKONZEPT_${filter.value.conceptOfDay.join('_')}_${title}`;
 
     if (prefs['startTime']) {
-        const startDate = dayjs(filter.value?.startTime[0]);
-        const endDate = dayjs(filter.value?.startTime[1]);
+        const startDate = dayjs(filter.value?.startTime?.[0]);
+        const endDate = dayjs(filter.value?.startTime?.[1]);
         if (startDate.isValid() && endDate.isValid()) {
             const formattedStartDate = startDate.format('YYYYMMDD');
             const formattedEndDate = endDate.format('YYYYMMDD');

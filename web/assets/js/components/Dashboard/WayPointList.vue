@@ -756,7 +756,7 @@ function getFileName(): string {
         title = `ORT_${filter.value.locationName}_${title}`;
     }
 
-    if (prefs['visitedAt'] && filter.value?.visitedAt[0] && filter.value?.visitedAt[1]) {
+    if (prefs['visitedAt'] && filter.value?.visitedAt?.[0] && filter.value?.visitedAt?.[1]) {
         const formattedStartDate = dayjs(filter.value.visitedAt[0]).format('YYYYMMDD');
         const formattedEndDate = dayjs(filter.value.visitedAt[1]).format('YYYYMMDD');
         if (formattedStartDate === formattedEndDate) {

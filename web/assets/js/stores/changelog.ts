@@ -11,6 +11,25 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '29.04.2026',
+                avatarText: '&#x1F483;',
+                avatarTitle: 'Tag des Tanzes',
+                entries: [
+                    {
+                        text: [
+                            'Fix: Der CSV-Export der Rundenliste konnte unter bestimmten Umständen mit einem Fehler abbrechen, wenn nach <b>Tageskonzept</b> gefiltert wurde.',
+                            'Außerdem stimmt der <b>Dateiname</b> jetzt zuverlässig mit dem Inhalt überein: Filter, die in den Nutzereinstellungen ausgeblendet sind, tauchen nicht mehr fälschlich im Namen der CSV-Datei auf.',
+                        ],
+                    },
+                    {
+                        text: [
+                            'Misc: Der interne Webserver wurde von Apache auf <b>FrankenPHP</b> (Caddy + PHP) umgestellt.',
+                            'Für Nutzer ändert sich nichts an der Bedienung, intern profitiert swapp von schnelleren Antwortzeiten und einer moderneren, einfacher zu wartenden Infrastruktur.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '30.03.2026',
                 avatarText: '&#x1F338;',
                 avatarTitle: 'Frühlings-Update',

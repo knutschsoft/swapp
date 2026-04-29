@@ -65,6 +65,7 @@ const defaultWalkFilter: WalkFilter = {
     isResubmission: 'null',
     isUnfinished: 'null',
     name: [],
+    conceptOfDay: [],
     teamName: [],
     guestNames: [],
     startTime: startTime,
@@ -81,7 +82,7 @@ const defaultWayPointFilter: WayPointFilter = {
     showDisabledTags: false,
 };
 // change me every time a filter interface is changed
-const version = '1'
+const version = '2'
 
 export const useGeneralStore = defineStore("general", {
     state: (): State => ({
