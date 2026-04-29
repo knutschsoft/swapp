@@ -6,6 +6,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 import fs from 'fs'
 import vue from '@vitejs/plugin-vue'
 import {VitePWA} from 'vite-plugin-pwa'
+import { compression } from 'vite-plugin-compression2'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import vuetify from 'vite-plugin-vuetify'
 
@@ -23,6 +24,18 @@ export default defineConfig({
         // VueDevTools-Browser-Inspector ist ein Dev-Tool und hat im Prod-Build nichts
         // verloren - falsy Werte werden von Vite automatisch aus der Plugin-Liste gefiltert.
         !isProduction && VueDevTools(),
+        // Pre-compressed Files (.br + .gz) neben jedem Asset erzeugen, damit Caddy sie
+        // direkt vom Disk ausliefern kann statt jeden Request on-the-fly zu komprimieren.
+        // Brotli-Level 11 ist deutlich besser als das, was Caddy on-the-fly schaffen kann
+        // (dort wird ein niedrigeres Level genutzt, weil sonst zu CPU-teuer pro Request).
+        isProduction && compression({
+            algorithm: 'brotliCompress',
+            include: [/\.(js|css|html|svg|json)$/],
+        }),
+        isProduction && compression({
+            algorithm: 'gzip',
+            include: [/\.(js|css|html|svg|json)$/],
+        }),
         viteStaticCopy({
             targets: [
                 {

@@ -26,7 +26,9 @@
 
 :80 {
 	root * /var/www/html/public
-	encode zstd gzip
+	# Brotli ist ueber das eingebaute caddy-cbrotli-Modul verfuegbar (siehe Dockerfile).
+	# Reihenfolge: zstd > br > gzip - Caddy waehlt das beste vom Client unterstuetzte.
+	encode zstd br gzip
 
 	# Access-Log im Apache-LogFormat-Stil rebuilt mit transform-encoder.
 	# Original Apache-Format (LogIOTrackTTFB ON):
@@ -44,6 +46,16 @@
 		}
 		format transform `{request>client_ip} - - [{ts}] "{request>method} {request>uri} {request>proto}" {status} {size} "{request>headers>Referer>[0]}" "{request>headers>User-Agent>[0]}" "{duration}" "{resp_headers>X-Route>[0]}" "-" "{size}" "-"` {
 			time_format "02/Jan/2006:15:04:05 -0700"
+		}
+	}
+
+	# Build-Assets (Vite-Output) liegen statisch unter /build/* und werden vom
+	# vite-plugin-compression2 als .br/.gz-Geschwister neben jedem Asset abgelegt.
+	# Der file_server liefert die vorkomprimierte Variante direkt vom Disk aus statt
+	# sie pro Request neu zu komprimieren (= kein CPU-Aufwand, hoeheres Brotli-Level).
+	handle /build/* {
+		file_server {
+			precompressed br gzip
 		}
 	}
 
