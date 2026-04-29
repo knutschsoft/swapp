@@ -726,9 +726,13 @@ async function exportWayPoints() {
 }
 
 function getFileName(): string {
+    // Nur Filter im Dateinamen aufnehmen, die per UserPreferences sichtbar/aktiv sind -
+    // das deckt sich mit dem, was loadItems an die API schickt. Sonst entsteht eine
+    // irreführende Datei wie "TEAM_X_…csv", obwohl der Export gar nicht nach Team gefiltert wurde.
     let title = 'streetworkwegpunkte_export.csv';
+    const prefs = effectiveWayPointTableFiltersPreferences.value;
 
-    if (filter.value.wayPointTags.length) {
+    if (prefs['wayPointTags'] && filter.value.wayPointTags.length) {
         const tagNames: string[] = [];
         filter.value.wayPointTags.forEach((tagIri: string) => {
             tagNames.push(getTagByIri(tagIri)?.name);
@@ -736,23 +740,23 @@ function getFileName(): string {
         title = `TAGS_${tagNames.join('_')}_${title}`;
     }
 
-    if (filter.value.oneOnOneInterview) {
+    if (prefs['oneOnOneInterview'] && filter.value.oneOnOneInterview) {
         title = `EINZELGESPRAECH_${filter.value.oneOnOneInterview}_${title}`;
     }
 
-    if (filter.value.note) {
+    if (prefs['note'] && filter.value.note) {
         title = `BEOBACHTUNG_${filter.value.note}_${title}`;
     }
 
-    if (filter.value.teamName.length) {
+    if (prefs['walk.teamName'] && filter.value.teamName.length) {
         title = `TEAM_${filter.value.teamName.join('_')}_${title}`;
     }
 
-    if (filter.value.locationName) {
+    if (prefs['locationName'] && filter.value.locationName) {
         title = `ORT_${filter.value.locationName}_${title}`;
     }
 
-    if (filter.value?.visitedAt[0] && filter.value?.visitedAt[1]) {
+    if (prefs['visitedAt'] && filter.value?.visitedAt[0] && filter.value?.visitedAt[1]) {
         const formattedStartDate = dayjs(filter.value.visitedAt[0]).format('YYYYMMDD');
         const formattedEndDate = dayjs(filter.value.visitedAt[1]).format('YYYYMMDD');
         if (formattedStartDate === formattedEndDate) {

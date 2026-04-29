@@ -563,22 +563,28 @@ async function exportWalks() {
 }
 
 function getFileName() {
+    // Nur Filter im Dateinamen aufnehmen, die per UserPreferences sichtbar/aktiv sind -
+    // das deckt sich mit dem, was loadItems an die API schickt. Sonst entsteht eine
+    // irreführende Datei wie "TEAM_X_…csv", obwohl der Export gar nicht nach Team gefiltert wurde.
     let title = `streetworkrunden_export.csv`;
+    const prefs = effectiveWalkTableFiltersPreferences.value;
 
-    if (filter.value.teamName.length) title = `TEAM_${filter.value.teamName.join('_')}_${title}`;
-    if (filter.value.guestNames.length) title = `WEITERE_TEILNEHMENDE_${filter.value.guestNames.join('_')}_${title}`;
-    if (filter.value.isResubmission !== 'null') title = `WV_DB_${filter.value.isResubmission ? 'ja' : 'nein'}_${title}`;
-    if (filter.value.isUnfinished !== 'null') title = `BEENDET_${!filter.value.isUnfinished ? 'nein' : 'ja'}_${title}`;
-    if (filter.value.name.length) title = `NAME_${filter.value.name.join('_')}_${title}`;
-    if (filter.value.conceptOfDay.length) title = `TAGESKONZEPT_${filter.value.conceptOfDay.join('_')}_${title}`;
+    if (prefs['teamName'] && filter.value.teamName.length) title = `TEAM_${filter.value.teamName.join('_')}_${title}`;
+    if (prefs['guestNames'] && filter.value.guestNames.length) title = `WEITERE_TEILNEHMENDE_${filter.value.guestNames.join('_')}_${title}`;
+    if (prefs['isResubmission'] && filter.value.isResubmission !== 'null') title = `WV_DB_${filter.value.isResubmission ? 'ja' : 'nein'}_${title}`;
+    if (prefs['isUnfinished'] && filter.value.isUnfinished !== 'null') title = `BEENDET_${!filter.value.isUnfinished ? 'nein' : 'ja'}_${title}`;
+    if (prefs['name'] && filter.value.name.length) title = `NAME_${filter.value.name.join('_')}_${title}`;
+    if (prefs['conceptOfDay'] && filter.value.conceptOfDay.length) title = `TAGESKONZEPT_${filter.value.conceptOfDay.join('_')}_${title}`;
 
-    const startDate = dayjs(filter.value?.startTime[0]);
-    const endDate = dayjs(filter.value?.startTime[1]);
-    if (startDate.isValid() && endDate.isValid()) {
-        const formattedStartDate = startDate.format('YYYYMMDD');
-        const formattedEndDate = endDate.format('YYYYMMDD');
-        if (formattedStartDate === formattedEndDate) title = `${formattedStartDate}_${title}`;
-        else title = `${formattedStartDate}-${formattedEndDate}_${title}`;
+    if (prefs['startTime']) {
+        const startDate = dayjs(filter.value?.startTime[0]);
+        const endDate = dayjs(filter.value?.startTime[1]);
+        if (startDate.isValid() && endDate.isValid()) {
+            const formattedStartDate = startDate.format('YYYYMMDD');
+            const formattedEndDate = endDate.format('YYYYMMDD');
+            if (formattedStartDate === formattedEndDate) title = `${formattedStartDate}_${title}`;
+            else title = `${formattedStartDate}-${formattedEndDate}_${title}`;
+        }
     }
 
     return title;
