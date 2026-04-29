@@ -104,7 +104,27 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 app: './assets/js/app.ts'
-            }
+            },
+            output: {
+                // Vendor-Code in eigene Chunks ziehen, damit er zwischen Releases gecached
+                // bleibt (Folge-Visits laden nur den schmalen App-Chunk neu, statt den
+                // kompletten 4-MB-Bundle). Funktions-Form deckt auch Sub-Pfade wie
+                // `dayjs/plugin/calendar` zuverlaessig ab.
+                manualChunks(id) {
+                    if (!id.includes('node_modules')) {
+                        return
+                    }
+                    if (/[\\/]node_modules[\\/](vue|vue-router|pinia|@vue)[\\/]/.test(id)) {
+                        return 'vue-core'
+                    }
+                    if (/[\\/]node_modules[\\/]vuetify[\\/]/.test(id)) {
+                        return 'vuetify'
+                    }
+                    if (/[\\/]node_modules[\\/](dayjs|@vueuse|axios|vue-axios|deepmerge)[\\/]/.test(id)) {
+                        return 'vendor-utils'
+                    }
+                },
+            },
         }
     },
     resolve: {
