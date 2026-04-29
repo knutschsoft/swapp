@@ -10,7 +10,6 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import VueSilentbox from 'vue-silentbox';
 import 'vue-silentbox/dist/style.css';
-import VueClipboard from 'vue-clipboard2';
 import mdiVue from 'mdi-vue/v3';
 // Tree-shakable named imports statt `import * as mdijs from '@mdi/js'` -
 // der Star-Import zog ALLE ~7000 MDI-Icons in den Bundle, hier kommen nur
@@ -66,7 +65,6 @@ app.use(vuetify);
 app.use(VueAxios, axios);
 app.use(router);
 app.use(VueSilentbox);
-app.use(VueClipboard);
 
 // Mount application
 app.mount('#swapp');

@@ -2244,13 +2244,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geojson@npm:*":
-  version: 7946.0.16
-  resolution: "@types/geojson@npm:7946.0.16"
-  checksum: 10c0/1ff24a288bd5860b766b073ead337d31d73bdc715e5b50a2cee5cb0af57a1ed02cc04ef295f5fa68dc40fe3e4f104dd31282b2b818a5ba3231bc1001ba084e3c
-  languageName: node
-  linkType: hard
-
 "@types/jsdom@npm:^21.1.7":
   version: 21.1.7
   resolution: "@types/jsdom@npm:21.1.7"
@@ -2259,15 +2252,6 @@ __metadata:
     "@types/tough-cookie": "npm:*"
     parse5: "npm:^7.0.0"
   checksum: 10c0/c0c0025adc2b193e85453eeeea168bb909f0ebad08d6552be7474a407e9c163db8f696dcf1e3cbe8cb9c9d970ba45f4386171794509c1a0fe5d1fed72c91679d
-  languageName: node
-  linkType: hard
-
-"@types/leaflet@npm:^1.9.12":
-  version: 1.9.16
-  resolution: "@types/leaflet@npm:1.9.16"
-  dependencies:
-    "@types/geojson": "npm:*"
-  checksum: 10c0/80403093b918ed19911997dc8ebe1aac44f49ada065f5b60ea451f6b8c92ffc942ef49706f7faa1a4e7c62824390a44d407bd5b1a9cfbbaea82c1501129c919a
   languageName: node
   linkType: hard
 
@@ -3506,17 +3490,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clipboard@npm:^2.0.0":
-  version: 2.0.11
-  resolution: "clipboard@npm:2.0.11"
-  dependencies:
-    good-listener: "npm:^1.2.2"
-    select: "npm:^1.1.2"
-    tiny-emitter: "npm:^2.0.0"
-  checksum: 10c0/23bdf16b875bd2dd101eeefae3c25a2fbd990b613fad3d227ca6719d1b81a3c6f69701b494393fdecd07d98380024f82d045f464124dbbafbcf0557f2921978f
-  languageName: node
-  linkType: hard
-
 "cliui@npm:^7.0.2":
   version: 7.0.4
   resolution: "cliui@npm:7.0.4"
@@ -3548,13 +3521,6 @@ __metadata:
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: 10c0/a1a3f914156960902f46f7f56bc62effc6c94e84b2cae157a526b1c1f74b677a47ec602bf68a61abfa2b42d15b7c5651c6dbe72a43af720bc588dff885b10f95
-  languageName: node
-  linkType: hard
-
-"color_library@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "color_library@npm:0.0.2"
-  checksum: 10c0/90ffcf1ada85bb5b02548dd61ea8bd1c02977501d7e37e4162842ed179b51ead2796fa8f717383a8bd9d5d78a433e9a671e19db2cf7780b2a6638fdcb9299365
   languageName: node
   linkType: hard
 
@@ -3892,13 +3858,6 @@ __metadata:
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
   checksum: 10c0/d758899da03392e6712f042bec80aa293bbe9e9ff1b2634baae6a360113e708b91326594c8a486d475c69d6259afb7efacdc3537bfcda1c6c648e390ce601b19
-  languageName: node
-  linkType: hard
-
-"delegate@npm:^3.1.2":
-  version: 3.2.0
-  resolution: "delegate@npm:3.2.0"
-  checksum: 10c0/f8512633514f375b8675018088fdd679d92b84246ad6ba1de9fbc4ea7630f7fb0ff8772ac86c37a68233885f58c6b8b70676d7366f38cb2dcbf7baa474e2362d
   languageName: node
   linkType: hard
 
@@ -5037,15 +4996,6 @@ __metadata:
     merge2: "npm:^1.4.1"
     slash: "npm:^3.0.0"
   checksum: 10c0/b39511b4afe4bd8a7aead3a27c4ade2b9968649abab0a6c28b1a90141b96ca68ca5db1302f7c7bd29eab66bf51e13916b8e0a3d0ac08f75e1e84a39b35691189
-  languageName: node
-  linkType: hard
-
-"good-listener@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "good-listener@npm:1.2.2"
-  dependencies:
-    delegate: "npm:^3.1.2"
-  checksum: 10c0/5c532f2e223f1f3a12504077d6d960986979a7923fb428a26bde012b88ac57ffba1b28507f95bd16a73c1ae805fdb38d26d9442d538dd559fad159a7f58243fe
   languageName: node
   linkType: hard
 
@@ -7409,13 +7359,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"select@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "select@npm:1.1.2"
-  checksum: 10c0/5dbd871c03a52aa70ce29ab46e9115d26cb34404717e7e705e678b3b4d535bacfa0a4c4c2d32262acec7b6fdfb6827e8980ea4ef969a8681f8a0b752331a0a02
-  languageName: node
-  linkType: hard
-
 "semver@npm:^6.3.1":
   version: 6.3.1
   resolution: "semver@npm:6.3.1"
@@ -7881,7 +7824,6 @@ __metadata:
     "@tsconfig/node20": "npm:^20.1.4"
     "@types/axios": "npm:^0.14.0"
     "@types/jsdom": "npm:^21.1.7"
-    "@types/leaflet": "npm:^1.9.12"
     "@types/node": "npm:^20.14.15"
     "@types/vue": "npm:^2.0.0"
     "@typescript-eslint/parser": "npm:^8.26.0"
@@ -7895,7 +7837,6 @@ __metadata:
     "@vueuse/core": "npm:^12.5.0"
     autoprefixer: "npm:^10.4.20"
     axios: "npm:^1.13"
-    color_library: "npm:^0.0.2"
     date-fns: "npm:^4.1.0"
     dayjs: "npm:^1.11.12"
     deepmerge: "npm:^4.3.1"
@@ -7921,7 +7862,6 @@ __metadata:
     vite-plugin-vuetify: "npm:^2.1.0"
     vue: "npm:^3.5.13"
     vue-axios: "npm:^3.5.2"
-    vue-clipboard2: "npm:^0.3.3"
     vue-eslint-parser: "npm:^10.1.1"
     vue-router: "npm:^4.5.0"
     vue-silentbox: "npm:^3.0.4"
@@ -8006,13 +7946,6 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: 10c0/4b09f3774099de0d4df26d95c5821a62faee32c7e96fb1f4ebd54a2d7c11c57fe88b0a0d49cf375de5fee5ae6bf4eb56dbbf29d07366864e2ee805349970d3cc
-  languageName: node
-  linkType: hard
-
-"tiny-emitter@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "tiny-emitter@npm:2.1.0"
-  checksum: 10c0/459c0bd6e636e80909898220eb390e1cba2b15c430b7b06cec6ac29d87acd29ef618b9b32532283af749f5d37af3534d0e3bde29fdf6bcefbf122784333c953d
   languageName: node
   linkType: hard
 
@@ -8663,15 +8596,6 @@ __metadata:
     axios: "*"
     vue: ^3.0.0 || ^2.0.0
   checksum: 10c0/2899399e27f4fd925fb3dfeb5325c921e780218aeccab265506b8c120ac07611939071f9b92fd384d07bc93e7e4378f2a5b0937a39cbaa196c3395077777b0e4
-  languageName: node
-  linkType: hard
-
-"vue-clipboard2@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "vue-clipboard2@npm:0.3.3"
-  dependencies:
-    clipboard: "npm:^2.0.0"
-  checksum: 10c0/dab067086e8e1a42b2919e748c7416f303be10929eab9cdc1494d1bc9c89ad76fe2068554211e0919db992eacfbbd093aa6fde1e9d5573603ac5e474790b2caf
   languageName: node
   linkType: hard
 

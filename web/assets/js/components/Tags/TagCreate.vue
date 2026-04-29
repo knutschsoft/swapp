@@ -109,7 +109,7 @@
 <script>
 'use strict';
 import ColorBadge from './ColorBadge.vue';
-import { html } from 'color_library';
+import { availableColors } from './availableColors';
 import FormError from '../Common/FormError.vue';
 import {useAlertStore, useAuthStore, useClientStore, useTagStore} from '../../stores';
 import {ClientSelect} from "@/js/components/Common";
@@ -169,47 +169,9 @@ export default {
             return this.tagStore.getErrors.create;
         },
         availableColors() {
-            return html.filter(htmlColor => (-1 === this.colors.indexOf(htmlColor.name)
-                && !htmlColor.name.toLowerCase().includes('grey')
-                && !htmlColor.name.toLowerCase().includes('gray')
-                && !htmlColor.name.toLowerCase().includes('black')
-                && !htmlColor.name.toLowerCase().includes('dodgerblue')
-                && !htmlColor.name.toLowerCase().includes('white')
-                && !htmlColor.name.toLowerCase().includes('oldlace')
-                && !htmlColor.name.toLowerCase().includes('mitcream')
-                && !htmlColor.name.toLowerCase().includes('lawngreen')
-                && !htmlColor.name.toLowerCase().includes('greenyellow')
-                && !htmlColor.name.toLowerCase().includes('red')
-                && !htmlColor.name.toLowerCase().includes('darkblue')
-                && !htmlColor.name.toLowerCase().includes('blanchedalmond')
-                && !htmlColor.name.toLowerCase().includes('paleturquoise')
-                && !htmlColor.name.toLowerCase().includes('peachpuff')
-                && !htmlColor.name.toLowerCase().includes('moccasin')
-                && !htmlColor.name.toLowerCase().includes('lightgoldenrodyellow')
-                && !htmlColor.name.toLowerCase().includes('rebeccapurple')
-                && !htmlColor.name.toLowerCase().includes('magenta')
-                && !htmlColor.name.toLowerCase().includes('seashell')
-                && !htmlColor.name.toLowerCase().includes('lightskyblue')
-                && !htmlColor.name.toLowerCase().includes('darkgoldenrod')
-                && !htmlColor.name.toLowerCase().includes('green')
-                && !htmlColor.name.toLowerCase().includes('aliceblue')
-                && !htmlColor.name.toLowerCase().includes('lightyellow')
-                && !htmlColor.name.toLowerCase().includes('lightcyan')
-                && !htmlColor.name.toLowerCase().includes('snow')
-                && !htmlColor.name.toLowerCase().includes('cyan')
-                && !htmlColor.name.toLowerCase().includes('lightblue')
-                && !htmlColor.name.toLowerCase().includes('mincream')
-                && !htmlColor.name.toLowerCase().includes('lightcoral')
-                && !htmlColor.name.toLowerCase().includes('darkviolet')
-                && !htmlColor.name.toLowerCase().includes('violet')
-                && !htmlColor.name.toLowerCase().includes('mediumturquoise')
-                && !htmlColor.name.toLowerCase().includes('mintcream')
-                && !htmlColor.name.toLowerCase().includes('burlywood')
-                && !htmlColor.name.toLowerCase().includes('cornsilk')
-                && !htmlColor.name.toLowerCase().includes('honeydew')
-            )).sort(function(a, b) {
-                return 3 * a.rgb.r - 3 * b.rgb.r + 2 * a.rgb.g - 2 * b.rgb.g + a.rgb.b - b.rgb.b > 0 ? 1 : -1;
-            });
+            // availableColors ist bereits gefiltert/sortiert (siehe ./availableColors.ts).
+            // Hier nur noch Farben rauswerfen, die schon als Tag verwendet werden.
+            return availableColors.filter(c => -1 === this.colors.indexOf(c.name));
         },
     },
     async created() {
