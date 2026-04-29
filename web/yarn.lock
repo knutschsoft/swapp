@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 9
   cacheKey: 10c0
 
 "@ampproject/remapping@npm:^2.2.0":
@@ -1994,6 +1994,22 @@ __metadata:
     rollup:
       optional: true
   checksum: 10c0/6d58fbc6f1024eb4b087bc9bf59a1d655a8056a60c0b4021d3beaeec3f0743503f52467fd89d2cf0e7eccf2831feb40a05ad541a17637ea21ba10b21c2004deb
+  languageName: node
+  linkType: hard
+
+"@rollup/pluginutils@npm:^5.1.0":
+  version: 5.3.0
+  resolution: "@rollup/pluginutils@npm:5.3.0"
+  dependencies:
+    "@types/estree": "npm:^1.0.0"
+    estree-walker: "npm:^2.0.2"
+    picomatch: "npm:^4.0.2"
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: 10c0/001834bf62d7cf5bac424d2617c113f7f7d3b2bf3c1778cbcccb72cdc957b68989f8e7747c782c2b911f1dde8257f56f8ac1e779e29e74e638e3f1e2cac2bcd0
   languageName: node
   linkType: hard
 
@@ -7896,6 +7912,7 @@ __metadata:
     typescript: "npm:^5.2.2"
     unplugin-vue-components: "npm:^28.0.0"
     vite: "npm:^6.4.1"
+    vite-plugin-compression2: "npm:^2.2.0"
     vite-plugin-pwa: "npm:^0.21"
     vite-plugin-sass: "npm:^0.1"
     vite-plugin-static-copy: "npm:^2.2"
@@ -7921,6 +7938,13 @@ __metadata:
     "@pkgr/core": "npm:^0.1.0"
     tslib: "npm:^2.6.2"
   checksum: 10c0/e0c262817444e5b872708adb6f5ad37951ba33f6b2d1d4477d45db1f57573a784618ceed5e6614e0225db330632b1f6b95bb74d21e4d013e45ad4bde03d0cb59
+  languageName: node
+  linkType: hard
+
+"tar-mini@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "tar-mini@npm:0.2.0"
+  checksum: 10c0/41154778d635edb09c730fe591d74faf0ecda23b2f32bbab8bcb0090284dd6850f60ccf60394fc398f3a54bd75c6150294d1c8006e25156da3e89d1d89e96b14
   languageName: node
   linkType: hard
 
@@ -8427,6 +8451,16 @@ __metadata:
   peerDependencies:
     vite: ^2.6.0 || ^3.0.0 || ^4.0.0 || ^5.0.0-0 || ^6.0.0-0
   checksum: 10c0/e08397caaae9148e501e42f6e091efd9f6d97e21841a3c494d54dafc0ae5b9ba77e7abb137c9a28224add2eeda511574dccc3a61cf8299e2c086a58b94ad04a4
+  languageName: node
+  linkType: hard
+
+"vite-plugin-compression2@npm:^2.2.0":
+  version: 2.5.3
+  resolution: "vite-plugin-compression2@npm:2.5.3"
+  dependencies:
+    "@rollup/pluginutils": "npm:^5.1.0"
+    tar-mini: "npm:^0.2.0"
+  checksum: 10c0/c5311b8040e156adb6ae0c7aabb0ef90e55a76292dcf70ac53af34611daf6c47c0a1a443f6ada0e717a8f104f30f8073d2f3b3b7832a2edbd7af68085c6dffaf
   languageName: node
   linkType: hard
 
