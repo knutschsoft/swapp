@@ -11,6 +11,21 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '30.04.2026',
+                avatarText: '&#x1F9F9;',
+                avatarTitle: 'Walpurgisnacht',
+                entries: [
+                    {
+                        text: [
+                            'Misc: Großes <b>Performance-Update</b> unter der Haube.',
+                            'Der <b>erste Aufruf</b> von swapp ist deutlich schneller geworden – vor allem auf langsamen Mobilfunkverbindungen.',
+                            'Beim <b>Wechseln zwischen den Seiten</b> wird nur noch das geladen, was die jeweilige Seite wirklich braucht, statt wie bisher die ganze Anwendung auf einmal.',
+                            'Wer swapp <b>regelmäßig</b> nutzt, profitiert zusätzlich: zwischen Releases ändert sich nur noch der Teil, der tatsächlich angepasst wurde – der Rest bleibt im Browser-Cache und muss nicht erneut geladen werden.',
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '29.04.2026',
                 avatarText: '&#x1F483;',
                 avatarTitle: 'Tag des Tanzes',

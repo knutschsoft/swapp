@@ -53,7 +53,23 @@
 	# vite-plugin-compression2 als .br/.gz-Geschwister neben jedem Asset abgelegt.
 	# Der file_server liefert die vorkomprimierte Variante direkt vom Disk aus statt
 	# sie pro Request neu zu komprimieren (= kein CPU-Aufwand, hoeheres Brotli-Level).
+	#
+	# /build/assets/*: Hash-benamte Files (app-XYZ.js, vuetify-XYZ.css, font-XYZ.woff2).
+	#   Diese aendern sich per Definition nie - bei Code-Aenderung kommt ein neuer Hash
+	#   und damit eine neue URL. Daher Cache-Control: immutable + 1 Jahr TTL. Damit
+	#   muss der Browser nie wieder revalidieren - spart bei Folge-Visits massiv
+	#   Round-Trips (Lighthouse-"Cache-TTL"-Audit).
+	# /build/* (Rest, vor allem manifest.json): KEIN immutable, nur kurzer Cache,
+	#   weil das Manifest sich bei jedem Release aendert und Symfony es zur Aufloesung
+	#   der Asset-URLs braucht.
+	handle /build/assets/* {
+		header Cache-Control "public, max-age=31536000, immutable"
+		file_server {
+			precompressed br gzip
+		}
+	}
 	handle /build/* {
+		header Cache-Control "public, max-age=300"
 		file_server {
 			precompressed br gzip
 		}
