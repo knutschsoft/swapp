@@ -20,7 +20,9 @@ export default defineConfig({
     plugins: [
         vue(),
         vuetify(),
-        VueDevTools(),
+        // VueDevTools-Browser-Inspector ist ein Dev-Tool und hat im Prod-Build nichts
+        // verloren - falsy Werte werden von Vite automatisch aus der Plugin-Liste gefiltert.
+        !isProduction && VueDevTools(),
         viteStaticCopy({
             targets: [
                 {
@@ -94,7 +96,11 @@ export default defineConfig({
     build: {
         outDir: 'public/build',
         manifest: true,
-        sourcemap: true,
+        // In Dev/Test sourcemap fürs Debugging, in Prod nicht: vorher wurde eine 9-MB-Map
+        // in public/build ausgeliefert. Falls später Error-Tracking (z.B. Sentry) angebunden
+        // werden soll, auf 'hidden' wechseln - Map wird dann generiert, aber nicht via
+        // Comment im JS referenziert.
+        sourcemap: !isProduction,
         rollupOptions: {
             input: {
                 app: './assets/js/app.ts'
