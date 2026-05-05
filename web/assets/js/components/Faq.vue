@@ -35,6 +35,11 @@
                                     v-else
                                     v-html="entry.text"
                                 />
+                                <silent-box
+                                    v-if="entry.gallery && entry.gallery.length"
+                                    :gallery="entry.gallery"
+                                    lazy-loading
+                                />
                             </li>
                         </ul>
                     </v-list-item>
@@ -60,6 +65,26 @@ export default {
     computed: {
         items() {
             return [
+                {
+                    'header': 'Kann ich Swapp wie eine App auf meinem Smartphone, Tablet oder Computer installieren?',
+                    'entries': [
+                        {
+                            text: 'Ja. Swapp ist eine Progressive Web App (PWA) und lässt sich auf iPhone, iPad, Android, Windows und macOS direkt aus dem Browser auf den Homescreen bzw. den Desktop legen – ohne App Store und ohne Installationsdatei. Vorteile: schnellerer Zugriff, eigenes App-Icon und keine Browserleiste.',
+                        },
+                        {
+                            text: 'Schritt-für-Schritt als Video (iPhone):',
+                            gallery: [
+                                {
+                                    src: '../changelog/RPReplay_Final1653921611.mp4',
+                                    thumbnailHeight: 100,
+                                    description: 'Swapp als App auf einem iPhone installieren.',
+                                    autoplay: false,
+                                    thumbnail: '../changelog/pexels-torsten-dettlaff-347734.jpg',
+                                },
+                            ],
+                        },
+                    ],
+                },
                 {
                     'header': 'Werden bestehende Runden geändert, wenn ich ein Team ändere?',
                     'entries': [

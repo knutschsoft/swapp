@@ -11,6 +11,28 @@ export const useChangelogStore = defineStore("changelog", {
     state: (): State => ({
         changelogs: [
             {
+                header: '05.05.2026',
+                avatarText: '&#x1F4F2;',
+                avatarTitle: 'App-Installation',
+                entries: [
+                    {
+                        text: [
+                            'Hilfe: Im <b>FAQ</b> findest du eine neue Antwort zur Frage, wie sich Swapp als <b>App</b> auf Smartphone, Tablet oder Computer installieren lässt.',
+                            'Inklusive einer Schritt-für-Schritt-Anleitung als Video für das iPhone.',
+                        ],
+                        gallery: [
+                            {
+                                src: '../changelog/RPReplay_Final1653921611.mp4',
+                                thumbnailHeight: 100,
+                                description: 'Swapp als App auf einem iPhone installieren.',
+                                autoplay: false,
+                                thumbnail: '../changelog/pexels-torsten-dettlaff-347734.jpg',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
                 header: '30.04.2026',
                 avatarText: '&#x1F9F9;',
                 avatarTitle: 'Walpurgisnacht',
